@@ -26,8 +26,9 @@ import useScroll from 'react-router-scroll';
 import configureStore from './store';
 
 
-// Import Firebase
-var firebase = require('firebase/app');
+// Import Firebase - for now (8/25/16), the use of require and import of individual
+// submodules is needed to avoid problems with webpack (import seems to require
+// beta version of webpack 2).var firebase = require('firebase/app');
 require('firebase/auth');
 require('firebase/database');
 require('firebase/storage')

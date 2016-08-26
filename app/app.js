@@ -33,14 +33,10 @@ require('firebase/auth');
 require('firebase/database');
 require('firebase/storage')
 
-const config = {
-      apiKey: "AIzaSyAEwpGQsTfOhwxUXaLX43FNAPA7BfL4SQ0",
-      authDomain: "simplicityii-878be.firebaseapp.com",
-      databaseURL: "https://simplicityii-878be.firebaseio.com",
-      storageBucket: "simplicityii-878be.appspot.com",
-};
+import firebaseConfig from './firebase_config';
 console.log("initialize firebase");
-firebase.initializeApp(config);
+console.log(JSON.stringify(firebaseConfig));
+firebase.initializeApp(firebaseConfig);
 console.log("done initializing firebase");
 
 

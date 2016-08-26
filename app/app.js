@@ -28,17 +28,14 @@ import configureStore from './store';
 
 // Import Firebase - for now (8/25/16), the use of require and import of individual
 // submodules is needed to avoid problems with webpack (import seems to require
-// beta version of webpack 2).var firebase = require('firebase/app');
+// beta version of webpack 2).
+const firebase = require('firebase/app');
 require('firebase/auth');
 require('firebase/database');
-require('firebase/storage')
+require('firebase/storage');
 
 import firebaseConfig from './firebase_config';
-console.log("initialize firebase");
-console.log(JSON.stringify(firebaseConfig));
 firebase.initializeApp(firebaseConfig);
-console.log("done initializing firebase");
-
 
 // Import Language Provider
 import LanguageProvider from 'containers/LanguageProvider';

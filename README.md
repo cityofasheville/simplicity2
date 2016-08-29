@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/cityofasheville/simplicity2.png?label=ready&title=Ready)](https://waffle.io/cityofasheville/simplicity2)
 # SimpliCity II
 
 

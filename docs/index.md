@@ -1,3 +1,7 @@
+---
+layout: default
+title: Simplicity II
+---
 # SimpliCity II
 
 ## Table of Contents

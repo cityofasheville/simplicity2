@@ -6,7 +6,7 @@ title: Simplicity II
 
 ## Table of Contents
 
-- [Requirements](./requirements/index.html)
+- [Requirements](./requirements/principles)
 - Resources
   - [Declarative events vs imperative actions](./resources-literature-concepts/declarative-events-vs-imperative-actions)
   - [PostCSS and CSS Modules](./resources-literature-concepts/postcss-and-cssmodules)

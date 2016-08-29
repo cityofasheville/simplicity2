@@ -31,6 +31,15 @@ const addDevMiddlewares = (app, webpackConfig) => {
     });
   }
 
+  app.get('/login', (req, res) => {
+    fs.readFile(path.join(compiler.outputPath, 'login.html'), (err, file) => {
+      if (err) {
+        res.sendStatus(404);
+      } else {
+        res.send(file.toString());
+      }
+    });
+  });
   app.get('*', (req, res) => {
     fs.readFile(path.join(compiler.outputPath, 'index.html'), (err, file) => {
       if (err) {

@@ -11,7 +11,7 @@ title: Simplicity II
   - [Declarative events vs imperative actions](./resources-literature-concepts/declarative-events-vs-imperative-actions.md)
   - [PostCSS and CSS Modules](./resources-literature-concepts/postcss-and-css-modules.md)
   - [React Apps with Pages](./resources-literature-concepts/react-apps-with-pages.md)
-  - [Sagas](./resources-literature-concepts/sagas.md)
+  - [Sagas](./resources-literature-concepts/sagas)
 
 
 ## Overview

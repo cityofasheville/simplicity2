@@ -1,6 +1,8 @@
 [![Stories in Ready](https://badge.waffle.io/cityofasheville/simplicity2.png?label=ready&title=Ready)](https://waffle.io/cityofasheville/simplicity2)
 # SimpliCity II
 
+## Documentation
+The documentation is maintained in the [docs directory](./docs), but may be more easily navigated on [Github pages](https://cityofasheville.github.io/simplicity2).
 
 ## License
 

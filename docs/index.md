@@ -13,6 +13,7 @@ title: Simplicity II
   - [React Apps with Pages](./resources-literature-concepts/react-apps-with-pages)
   - [Sagas](./resources-literature-concepts/sagas)
   - [GraphQL](./resources-literature-concepts/graphql)
+  - [Client-Side GIS](./resources-literature-concepts/gis)
 
 
 ## Overview

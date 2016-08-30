@@ -12,6 +12,7 @@ title: Simplicity II
   - [PostCSS and CSS Modules](./resources-literature-concepts/postcss-and-cssmodules)
   - [React Apps with Pages](./resources-literature-concepts/react-apps-with-pages)
   - [Sagas](./resources-literature-concepts/sagas)
+  - [GraphQL](./resources-literature-concepts/graphql)
 
 
 ## Overview

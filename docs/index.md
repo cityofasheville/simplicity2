@@ -8,12 +8,6 @@ title: Simplicity II
 
 - [Requirements](./requirements/principles)
 - [Resources](./development-resources/readme)
-  - [Declarative events vs imperative actions](./resources-literature-concepts/declarative-events-vs-imperative-actions)
-  - [PostCSS and CSS Modules](./resources-literature-concepts/postcss-and-cssmodules)
-  - [React Apps with Pages](./resources-literature-concepts/react-apps-with-pages)
-  - [Sagas](./resources-literature-concepts/sagas)
-  - [GraphQL](./resources-literature-concepts/graphql)
-  - [Client-Side GIS](./resources-literature-concepts/gis)
 
 
 ## Overview

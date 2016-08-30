@@ -8,7 +8,7 @@ title: Simplicity II
 
 - [Requirements](./requirements/principles)
 - [Resources](./development-resources/readme)
-
+- [Testing](./testing/readme)
 
 ## Overview
 

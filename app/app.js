@@ -37,6 +37,48 @@ require('firebase/storage');
 import firebaseConfig from './firebase_config';
 firebase.initializeApp(firebaseConfig);
 
+//var initApp = function() {
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      // User is signed in.
+      var displayName = user.displayName;
+      var email = user.email;
+      var emailVerified = user.emailVerified;
+      var photoURL = user.photoURL;
+      var uid = user.uid;
+      var providerData = user.providerData;
+      user.getToken().then(function(accessToken) {
+        console.log("I am signed in!");
+        console.log(JSON.stringify({
+          displayName: displayName,
+          email: email,
+          emailVerified: emailVerified,
+          photoURL: photoURL,
+          uid: uid,
+          accessToken: accessToken,
+          providerData: providerData
+        }));
+
+        // document.getElementById('sign-in-status').textContent = 'Signed in';
+        // document.getElementById('sign-in').textContent = 'Sign out';
+        // document.getElementById('account-details').textContent = JSON.stringify({
+        //   displayName: displayName,
+        //   email: email,
+        //   emailVerified: emailVerified,
+        //   photoURL: photoURL,
+        //   uid: uid,
+        //   accessToken: accessToken,
+        //   providerData: providerData
+        // }, null, '  ');
+      });
+    } else {
+      console.log("I am NOT signed in!");
+    }
+  }, function(error) {
+    console.log(error);
+  });
+//};
+
 // Import Language Provider
 import LanguageProvider from 'containers/LanguageProvider';
 
@@ -105,6 +147,15 @@ const render = (translatedMessages) => {
     document.getElementById('app')
   );
 };
+
+const doit = false;
+if (doit) {
+  firebase.auth().signOut().then(function() {
+    console.log('Sign out is successful');
+  }, function(error) {
+    console.log(`An error happened: ${JSON.stringify(error)}`);
+  });
+}
 
 // Hot reloadable translation json files
 if (module.hot) {

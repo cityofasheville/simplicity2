@@ -8,7 +8,7 @@ const selectLocationState = () => {
 
     if (!routingState.equals(prevRoutingState)) {
       prevRoutingState = routingState;
-      prevRoutingStateJS = routingState.toJS();
+      prevRoutingStateJS = routingState; // Was a .toJS() call
     }
 
     return prevRoutingStateJS;

@@ -4,26 +4,26 @@
 
 import { createSelector } from 'reselect';
 
-const selectGlobal = () => (state) => state.get('global');
+const selectGlobal = () => (state) => state.global;
 
 const selectCurrentUser = () => createSelector(
   selectGlobal(),
-  (globalState) => globalState.get('currentUser')
+  (globalState) => globalState.currentUser
 );
 
 const selectLoading = () => createSelector(
   selectGlobal(),
-  (globalState) => globalState.get('loading')
+  (globalState) => globalState.loading
 );
 
 const selectError = () => createSelector(
   selectGlobal(),
-  (globalState) => globalState.get('error')
+  (globalState) => globalState.error
 );
 
 const selectRepos = () => createSelector(
   selectGlobal(),
-  (globalState) => globalState.getIn(['userData', 'repositories'])
+  (globalState) => globalState.userData.repositories
 );
 
 const selectLocationState = () => {
@@ -31,11 +31,11 @@ const selectLocationState = () => {
   let prevRoutingStateJS;
 
   return (state) => {
-    const routingState = state.get('route'); // or state.route
+    const routingState = state.route; // or state.route
 
-    if (!routingState.equals(prevRoutingState)) {
+    if (!(routingState === prevRoutingState)) {
       prevRoutingState = routingState;
-      prevRoutingStateJS = routingState.toJS();
+      prevRoutingStateJS = routingState; // was .toJS() - we should be able to delete/simplify
     }
 
     return prevRoutingStateJS;

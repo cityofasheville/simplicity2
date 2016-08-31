@@ -1,4 +1,3 @@
-import { fromJS } from 'immutable';
 import expect from 'expect';
 
 import {
@@ -13,10 +12,10 @@ import {
 describe('selectGlobal', () => {
   const globalSelector = selectGlobal();
   it('should select the global state', () => {
-    const globalState = fromJS({});
-    const mockedState = fromJS({
+    const globalState = {};
+    const mockedState = {
       global: globalState,
-    });
+    };
     expect(globalSelector(mockedState)).toEqual(globalState);
   });
 });
@@ -25,11 +24,11 @@ describe('selectCurrentUser', () => {
   const currentUserSelector = selectCurrentUser();
   it('should select the current user', () => {
     const username = 'mxstbr';
-    const mockedState = fromJS({
+    const mockedState = {
       global: {
         currentUser: username,
       },
-    });
+    };
     expect(currentUserSelector(mockedState)).toEqual(username);
   });
 });
@@ -38,11 +37,11 @@ describe('selectLoading', () => {
   const loadingSelector = selectLoading();
   it('should select the loading', () => {
     const loading = false;
-    const mockedState = fromJS({
+    const mockedState = {
       global: {
         loading,
       },
-    });
+    };
     expect(loadingSelector(mockedState)).toEqual(loading);
   });
 });
@@ -51,11 +50,11 @@ describe('selectError', () => {
   const errorSelector = selectError();
   it('should select the error', () => {
     const error = 404;
-    const mockedState = fromJS({
+    const mockedState = {
       global: {
         error,
       },
-    });
+    };
     expect(errorSelector(mockedState)).toEqual(error);
   });
 });
@@ -63,14 +62,14 @@ describe('selectError', () => {
 describe('selectRepos', () => {
   const reposSelector = selectRepos();
   it('should select the repos', () => {
-    const repositories = fromJS([]);
-    const mockedState = fromJS({
+    const repositories = [];
+    const mockedState = {
       global: {
         userData: {
           repositories,
         },
       },
-    });
+    };
     expect(reposSelector(mockedState)).toEqual(repositories);
   });
 });
@@ -78,12 +77,12 @@ describe('selectRepos', () => {
 describe('selectLocationState', () => {
   const locationStateSelector = selectLocationState();
   it('should select the route as a plain JS object', () => {
-    const route = fromJS({
+    const route = {
       locationBeforeTransitions: null,
-    });
-    const mockedState = fromJS({
+    };
+    const mockedState = {
       route,
-    });
-    expect(locationStateSelector(mockedState)).toEqual(route.toJS());
+    };
+    expect(locationStateSelector(mockedState)).toEqual(route);
   });
 });

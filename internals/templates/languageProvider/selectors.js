@@ -11,7 +11,7 @@ const selectLanguage = () => state => state.get('language');
 
 const selectLocale = () => createSelector(
   selectLanguage(),
-  (languageState) => languageState.get('locale')
+  (languageState) => languageState.locale
 );
 
 export {

@@ -10,17 +10,6 @@ import { push } from 'react-router-redux';
 import Helmet from 'react-helmet';
 
 import messages from './messages';
-import { createStructuredSelector } from 'reselect';
-
-import {
-  selectRepos,
-  selectLoading,
-  selectError,
-} from 'containers/App/selectors';
-
-import {
-  selectUsername,
-} from './selectors';
 
 import { changeUsername } from './actions';
 import { loadRepos } from '../App/actions';
@@ -156,12 +145,16 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-const mapStateToProps = createStructuredSelector({
-  repos: selectRepos(),
-  username: selectUsername(),
-  loading: selectLoading(),
-  error: selectError(),
-});
+function mapStateToProps(state) {
+  const { global, home } = state;
+  const props = {
+    repos: global.userData.repositories,
+    username: home.username,
+    loading: global.loading,
+    error: global.error,
+  };
+  return props;
+}
 
 // Wrap the component to inject dispatch and state into it
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

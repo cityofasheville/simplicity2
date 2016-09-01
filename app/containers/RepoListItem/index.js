@@ -6,10 +6,8 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { createSelector } from 'reselect';
 
 import { FormattedNumber } from 'react-intl';
-import { selectCurrentUser } from 'containers/App/selectors';
 import ListItem from 'components/ListItem';
 import IssueIcon from 'components/IssueIcon';
 import A from 'components/A';
@@ -60,7 +58,12 @@ RepoListItem.propTypes = {
   currentUser: React.PropTypes.string,
 };
 
-export default connect(createSelector(
-  selectCurrentUser(),
-  (currentUser) => ({ currentUser })
-))(RepoListItem);
+function mapStateToProps(state) {
+  const { home } = state;
+  const props = {
+    username: home.username,
+  };
+  return props;
+}
+
+export default connect(mapStateToProps)(RepoListItem);

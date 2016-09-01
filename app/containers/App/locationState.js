@@ -1,4 +1,7 @@
-// selectLocationState expects a plain JS object for the routing state
+/**
+ * The global state selectors
+ */
+
 const selectLocationState = () => {
   let prevRoutingState;
   let prevRoutingStateJS;
@@ -6,15 +9,13 @@ const selectLocationState = () => {
   return (state) => {
     const routingState = state.route; // or state.route
 
-    if (!routingState.equals(prevRoutingState)) {
+    if (!(routingState === prevRoutingState)) {
       prevRoutingState = routingState;
-      prevRoutingStateJS = routingState; // Was a .toJS() call
+      prevRoutingStateJS = routingState; // was .toJS() - we should be able to delete/simplify
     }
 
     return prevRoutingStateJS;
   };
 };
 
-export {
-  selectLocationState,
-};
+export default selectLocationState;

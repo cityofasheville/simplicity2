@@ -1,8 +1,8 @@
 import expect from 'expect';
 
-import { selectLocationState } from 'containers/App/selectors';
+import locationState from 'containers/App/locationState';
 
-describe('selectLocationState', () => {
+describe('locationState', () => {
   it('should select the route as a plain JS object', () => {
     const route = {
       locationBeforeTransitions: null,
@@ -10,6 +10,6 @@ describe('selectLocationState', () => {
     const mockedState = {
       route,
     };
-    expect(selectLocationState()(mockedState)).toEqual(route);
+    expect(locationState()(mockedState)).toEqual(route);
   });
 });

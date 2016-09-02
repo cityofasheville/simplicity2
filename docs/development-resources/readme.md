@@ -31,6 +31,9 @@ Here’s a really good intro video: https://www.youtube.com/watch?v=Wq02BNrN1dU
 
 And here’s the docs: http://graphql.org/docs/getting-started/
 
+https://medium.com/apollo-stack/graphql-the-next-generation-of-api-design-f24b1689756a#.bk3a14at1
+
+
 ## GIS
 
 ### Client-Side GIS

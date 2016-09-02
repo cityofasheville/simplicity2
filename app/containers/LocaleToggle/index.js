@@ -6,10 +6,8 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { selectLocale } from '../LanguageProvider/selectors';
 import { changeLocale } from '../LanguageProvider/actions';
 import { appLocales } from '../../i18n';
-import { createSelector } from 'reselect';
 import styles from './styles.css';
 import messages from './messages';
 import Toggle from 'components/Toggle';
@@ -28,10 +26,13 @@ LocaleToggle.propTypes = {
   onLocaleToggle: React.PropTypes.func,
 };
 
-const mapStateToProps = createSelector(
-  selectLocale(),
-  (locale) => ({ locale })
-);
+function mapStateToProps(state) {
+  const { language } = state;
+  const props = {
+    locale: language.locale,
+  };
+  return props;
+}
 
 function mapDispatchToProps(dispatch) {
   return {

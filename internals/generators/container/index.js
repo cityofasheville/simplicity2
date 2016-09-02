@@ -103,20 +103,6 @@ module.exports = {
         abortOnFail: true,
       });
 
-      // Selectors
-      actions.push({
-        type: 'add',
-        path: '../../app/containers/{{properCase name}}/selectors.js',
-        templateFile: './container/selectors.js.hbs',
-        abortOnFail: true,
-      });
-      actions.push({
-        type: 'add',
-        path: '../../app/containers/{{properCase name}}/tests/selectors.test.js',
-        templateFile: './container/selectors.test.js.hbs',
-        abortOnFail: true,
-      });
-
       // Reducer
       actions.push({
         type: 'add',

@@ -20,6 +20,8 @@ import {
 const initialState = {
   loading: false,
   error: false,
+  loggedIn: false,
+  privileged: 0,
   currentUser: false,
   userData: {
     repositories: false,

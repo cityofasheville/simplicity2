@@ -17,10 +17,12 @@ import Footer from 'components/Footer';
 import Banner from './banner-metal.jpg';
 import A from 'components/A';
 import Login from 'components/Login';
+import EjContainer from 'containers/Ejcontainer';
 
 import styles from './styles.css';
 
 function App(props) {
+  console.log(`The props: ${JSON.stringify(props.global)}`);
   return (
     <div className={styles.wrapper}>
       <Helmet
@@ -34,6 +36,7 @@ function App(props) {
         <Img className={styles.logo} src={Banner} alt="react-boilerplate - Logo" />
       </A>
       <Login/>
+      <EjContainer />
       {React.Children.toArray(props.children)}
       <Footer />
     </div>

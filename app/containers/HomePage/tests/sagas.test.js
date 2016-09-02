@@ -12,7 +12,7 @@ import { LOAD_REPOS } from 'containers/App/constants';
 import { reposLoaded, repoLoadingError } from 'containers/App/actions';
 
 import request from 'utils/request';
-import { selectUsername } from 'containers/HomePage/selectors';
+import sagaSelector from '../sagaSelector';
 
 const username = 'mxstbr';
 
@@ -23,9 +23,8 @@ describe('getRepos Saga', () => {
   // so we do all the stuff that happens beforehand automatically in the beforeEach
   beforeEach(() => {
     getReposGenerator = getRepos();
-
     const selectDescriptor = getReposGenerator.next().value;
-    expect(selectDescriptor).toEqual(select(selectUsername()));
+    expect(selectDescriptor).toEqual(select(sagaSelector, ['home', 'username']));
 
     const requestURL = `https://api.github.com/users/${username}/repos?type=all&sort=updated`;
     const callDescriptor = getReposGenerator.next(username).value;

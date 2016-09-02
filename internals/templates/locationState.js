@@ -4,17 +4,15 @@ const selectLocationState = () => {
   let prevRoutingStateJS;
 
   return (state) => {
-    const routingState = state.get('route'); // or state.route
+    const routingState = state.route; // or state.route
 
     if (!routingState.equals(prevRoutingState)) {
       prevRoutingState = routingState;
-      prevRoutingStateJS = routingState.toJS();
+      prevRoutingStateJS = routingState; // Was a .toJS() call
     }
 
     return prevRoutingStateJS;
   };
 };
 
-export {
-  selectLocationState,
-};
+export default selectLocationState;

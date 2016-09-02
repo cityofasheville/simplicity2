@@ -9,9 +9,6 @@ import { connect } from 'react-redux';
 {{#if wantHeaders}}
 import Helmet from 'react-helmet';
 {{/if}}
-{{#if wantActionsAndReducer}}
-import select{{properCase name}} from './selectors';
-{{/if}}
 {{#if wantMessages}}
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
@@ -45,7 +42,13 @@ export class {{ properCase name }} extends React.Component { // eslint-disable-l
 }
 
 {{#if wantActionsAndReducer}}
-const mapStateToProps = select{{properCase name}}();
+function mapStateToProps(state) {
+  const { {{camelCase name}} } = state;
+  const props = {
+    {{camelCase name}},
+  };
+  return props;
+}
 {{/if}}
 
 function mapDispatchToProps(dispatch) {

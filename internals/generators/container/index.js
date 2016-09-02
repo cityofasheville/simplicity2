@@ -32,7 +32,7 @@ module.exports = {
     type: 'confirm',
     name: 'wantActionsAndReducer',
     default: true,
-    message: 'Do you want an actions/constants/selectors/reducer tupel for this container?',
+    message: 'Do you want an actions/constants/reducer tupel for this container?',
   }, {
     type: 'confirm',
     name: 'wantSagas',

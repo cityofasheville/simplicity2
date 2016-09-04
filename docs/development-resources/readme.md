@@ -15,6 +15,8 @@ We need to remember to fire declarative (past-tensed) events rather than imperat
 
 [A really awesome presentation by Mark Dalgleish on The case for CSS modules] (https://www.youtube.com/watch?v=zR1lOuyQEt8)
 
+Helpful examples of CSS Modules: http://andrewhfarmer.com/css-modules-by-example/
+
 ## React Apps with Pages
 
 [React Apps with Pages](http://blog.mxstbr.com/2016/01/react-apps-with-pages/)

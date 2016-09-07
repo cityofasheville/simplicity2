@@ -1,4 +1,4 @@
-// import Login from '../index';
+// import Login from '../login';
 
 import expect from 'expect';
 // import { shallow } from 'enzyme';

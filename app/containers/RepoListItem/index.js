@@ -8,8 +8,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { FormattedNumber } from 'react-intl';
-import ListItem from 'components/ListItem';
-import IssueIcon from 'components/IssueIcon';
+import ListItem from 'components/ListItem/listItem';
+import IssueIcon from 'components/IssueIcon/issueIcon';
 import A from 'components/A/a';
 
 import styles from './styles.css';

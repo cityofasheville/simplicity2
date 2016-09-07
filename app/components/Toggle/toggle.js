@@ -7,8 +7,8 @@
 import React from 'react';
 
 // import { FormattedMessage } from 'react-intl';
-import styles from './styles.css';
-import ToggleOption from '../ToggleOption';
+import styles from './toggleStyles.css';
+import ToggleOption from '../ToggleOption/toggleOption';
 
 function Toggle(props) {  // eslint-disable-line react/prefer-stateless-function
   let content = (<option>--</option>);

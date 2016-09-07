@@ -8,7 +8,7 @@ import React from 'react';
 
 import { IntlProvider } from 'react-intl';
 import { RepoListItem } from '../index';
-import ListItem from 'components/ListItem';
+import ListItem from 'components/ListItem/listItem';
 
 describe('<RepoListItem />', () => {
   let item;

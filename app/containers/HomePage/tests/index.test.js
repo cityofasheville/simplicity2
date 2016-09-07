@@ -9,8 +9,8 @@ import React from 'react';
 import { IntlProvider } from 'react-intl';
 import { HomePage } from '../index';
 import RepoListItem from 'containers/RepoListItem';
-import List from 'components/List';
-import LoadingIndicator from 'components/LoadingIndicator';
+import List from 'components/List/list';
+import LoadingIndicator from 'components/LoadingIndicator/loadingIndicator';
 
 describe('<HomePage />', () => {
   it('should render the loading indicator when its loading', () => {

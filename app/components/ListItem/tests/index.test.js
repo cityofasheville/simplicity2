@@ -1,4 +1,4 @@
-import ListItem from '../index';
+import ListItem from '../listItem';
 
 import expect from 'expect';
 import { shallow } from 'enzyme';

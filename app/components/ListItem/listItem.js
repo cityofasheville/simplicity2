@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './styles.css';
+import styles from './listItemStyles.css';
 
 function ListItem(props) {
   return (

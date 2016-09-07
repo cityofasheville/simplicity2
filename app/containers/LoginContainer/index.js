@@ -6,7 +6,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import Login from 'components/Login';
+import Login from 'components/Login/login';
 
 export class LoginContainer extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {

@@ -3,8 +3,8 @@ import { shallow } from 'enzyme';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import messages from '../messages';
-import Footer from '../index';
+import messages from '../footerMessages';
+import Footer from '../footer';
 import A from 'components/A/a';
 
 describe('<Footer />', () => {

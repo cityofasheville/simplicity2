@@ -7,7 +7,7 @@
 import React from 'react';
 
 import { FormattedMessage } from 'react-intl';
-import messages from './messages';
+import messages from './loginMessages';
 
 class Login extends React.Component { // eslint-disable-line react/prefer-stateless-function
 

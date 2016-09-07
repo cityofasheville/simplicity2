@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './styles.css';
+import styles from './loadingIndicatorStyles.css';
 
 function LoadingIndicator() {
   return (

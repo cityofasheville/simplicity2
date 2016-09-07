@@ -17,9 +17,9 @@ import { loadRepos } from '../App/actions';
 import { FormattedMessage } from 'react-intl';
 import RepoListItem from 'containers/RepoListItem';
 import Button from 'components/Button/button';
-import List from 'components/List';
-import ListItem from 'components/ListItem';
-import LoadingIndicator from 'components/LoadingIndicator';
+import List from 'components/List/list';
+import ListItem from 'components/ListItem/listItem';
+import LoadingIndicator from 'components/LoadingIndicator/loadingIndicator';
 
 import styles from './styles.css';
 

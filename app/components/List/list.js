@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './styles.css';
+import styles from './listStyles.css';
 
 function List(props) {
   const ComponentToRender = props.component;

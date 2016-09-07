@@ -10,8 +10,7 @@ import Helmet from 'react-helmet';
 
 import messages from './messages';
 import { FormattedMessage } from 'react-intl';
-import Button from 'components/Button';
-import H1 from 'components/H1';
+import Button from 'components/Button/button';
 
 import styles from './styles.css';
 
@@ -41,9 +40,9 @@ export class FeaturePage extends React.Component {
             { name: 'description', content: 'Feature page of React.js Boilerplate application' },
           ]}
         />
-        <H1>
+        <h1>
           <FormattedMessage {...messages.header} />
-        </H1>
+        </h1>
         <ul className={styles.list}>
           <li className={styles.listItem}>
             <p className={styles.listItemTitle}>

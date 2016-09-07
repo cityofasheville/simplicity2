@@ -12,10 +12,9 @@ import Helmet from 'react-helmet';
 // Import the CSS reset, which HtmlWebpackPlugin transfers to the build folder
 import 'sanitize.css/sanitize.css';
 
-import Img from 'components/Img';
 import Footer from 'components/Footer';
 import Banner from './banner-metal.jpg';
-import A from 'components/A';
+import A from 'components/A/a';
 import MessagePane from 'containers/MessagePane';
 import LoginContainer from 'containers/LoginContainer';
 
@@ -32,7 +31,7 @@ function App(props) {
         ]}
       />
       <A className={styles.logoWrapper} href="https://twitter.com/mxstbr">
-        <Img className={styles.logo} src={Banner} alt="react-boilerplate - Logo" />
+        <img className={styles.logo} src={Banner} alt="react-boilerplate - Logo" />
       </A>
       <MessagePane />
       <LoginContainer />

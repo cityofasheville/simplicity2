@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { FormattedNumber } from 'react-intl';
 import ListItem from 'components/ListItem';
 import IssueIcon from 'components/IssueIcon';
-import A from 'components/A';
+import A from 'components/A/a';
 
 import styles from './styles.css';
 

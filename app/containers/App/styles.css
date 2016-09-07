@@ -6,6 +6,15 @@ body {
   width: 100%;
 }
 
+h1 {
+  font-size: 2em;
+  margin-bottom: 0.25em;
+}
+
+h2 {
+  font-size: 1.5em;
+}
+
 body {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }

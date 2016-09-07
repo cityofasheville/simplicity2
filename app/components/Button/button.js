@@ -8,7 +8,7 @@
 
 import React, { PropTypes, Children } from 'react';
 
-import styles from './styles.css';
+import styles from './buttonStyles.css';
 
 function Button(props) {
   const className = props.className ? props.className : styles.button;

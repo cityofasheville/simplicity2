@@ -11,6 +11,8 @@ describe('appReducer', () => {
   beforeEach(() => {
     state = {
       loading: false,
+      hasMessage: false,
+      message: null,
       error: false,
       currentUser: false,
       userData: {

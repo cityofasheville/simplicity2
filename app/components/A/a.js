@@ -4,7 +4,7 @@
 
 import React, { PropTypes } from 'react';
 
-import styles from './styles.css';
+import styles from './aStyles.css';
 
 function A(props) {
   return (

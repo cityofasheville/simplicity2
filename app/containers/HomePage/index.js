@@ -16,8 +16,7 @@ import { loadRepos } from '../App/actions';
 
 import { FormattedMessage } from 'react-intl';
 import RepoListItem from 'containers/RepoListItem';
-import Button from 'components/Button';
-import H2 from 'components/H2';
+import Button from 'components/Button/button';
 import List from 'components/List';
 import ListItem from 'components/ListItem';
 import LoadingIndicator from 'components/LoadingIndicator';
@@ -78,17 +77,17 @@ export class HomePage extends React.Component {
         />
         <div>
           <section className={`${styles.textSection} ${styles.centered}`}>
-            <H2>
+            <h2>
               <FormattedMessage {...messages.startProjectHeader} />
-            </H2>
+            </h2>
             <p>
               <FormattedMessage {...messages.startProjectMessage} />
             </p>
           </section>
           <section className={styles.textSection}>
-            <H2>
+            <h2>
               <FormattedMessage {...messages.trymeHeader} />
-            </H2>
+            </h2>
             <form className={styles.usernameForm} onSubmit={this.props.onSubmitForm}>
               <label htmlFor="username">
                 <FormattedMessage {...messages.trymeMessage} />

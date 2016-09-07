@@ -7,7 +7,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import styles from './styles.css';
+import styles from './messagePaneStyles.css';
 import { CLEAR_MESSAGE } from 'containers/App/constants';
 
 export class MessagePane extends React.Component { // eslint-disable-line react/prefer-stateless-function

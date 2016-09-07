@@ -1,4 +1,4 @@
-// import MessagePane from '../index';
+// import MessagePane from '../messagePane';
 
 import expect from 'expect';
 // import { shallow } from 'enzyme';

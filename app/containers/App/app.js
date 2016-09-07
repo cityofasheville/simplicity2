@@ -15,8 +15,8 @@ import 'sanitize.css/sanitize.css';
 import Footer from 'components/Footer/footer';
 import Banner from './banner-metal.jpg';
 import A from 'components/A/a';
-import MessagePane from 'containers/MessagePane';
-import LoginContainer from 'containers/LoginContainer';
+import MessagePane from 'containers/MessagePane/messagePane';
+import LoginContainer from 'containers/LoginContainer/loginContainer';
 
 import styles from './styles.css';
 

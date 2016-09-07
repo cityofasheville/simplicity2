@@ -1,0 +1,25 @@
+/*
+ *
+ * {{properCase name }}
+ *
+ */
+
+{{#if wantMessages}}
+import { FormattedMessage } from 'react-intl';
+import messages from './messages';
+{{/if}}
+
+{{#if wantActionsAndReducer}}
+import { defaultAction } from './actions';
+{{/if}}
+
+export class {{ properCase name }} {
+  constructor (store) {
+    this.store = store;
+    store.subscribe(this.storeListener.bind(this));
+  }
+
+  storeListener() {
+    const state = this.store.getState();
+  }
+}

@@ -16,13 +16,12 @@ import Img from 'components/Img';
 import Footer from 'components/Footer';
 import Banner from './banner-metal.jpg';
 import A from 'components/A';
-import Login from 'components/Login';
-import EjContainer from 'containers/Ejcontainer';
+import MessagePane from 'containers/MessagePane';
+import LoginContainer from 'containers/LoginContainer';
 
 import styles from './styles.css';
 
 function App(props) {
-  console.log(`The props: ${JSON.stringify(props.global)}`);
   return (
     <div className={styles.wrapper}>
       <Helmet
@@ -35,8 +34,8 @@ function App(props) {
       <A className={styles.logoWrapper} href="https://twitter.com/mxstbr">
         <Img className={styles.logo} src={Banner} alt="react-boilerplate - Logo" />
       </A>
-      <Login/>
-      <EjContainer />
+      <MessagePane />
+      <LoginContainer />
       {React.Children.toArray(props.children)}
       <Footer />
     </div>

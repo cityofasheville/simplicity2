@@ -25,60 +25,6 @@ import FontFaceObserver from 'fontfaceobserver';
 import useScroll from 'react-router-scroll';
 import configureStore from './store';
 
-
-// Import Firebase - for now (8/25/16), the use of require and import of individual
-// submodules is needed to avoid problems with webpack (import seems to require
-// beta version of webpack 2).
-const firebase = require('firebase/app');
-require('firebase/auth');
-require('firebase/database');
-require('firebase/storage');
-
-import firebaseConfig from './firebase_config';
-firebase.initializeApp(firebaseConfig);
-
-//var initApp = function() {
-  firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-      // User is signed in.
-      var displayName = user.displayName;
-      var email = user.email;
-      var emailVerified = user.emailVerified;
-      var photoURL = user.photoURL;
-      var uid = user.uid;
-      var providerData = user.providerData;
-      user.getToken().then(function(accessToken) {
-        console.log("I am signed in!");
-        console.log(JSON.stringify({
-          displayName: displayName,
-          email: email,
-          emailVerified: emailVerified,
-          photoURL: photoURL,
-          uid: uid,
-          accessToken: accessToken,
-          providerData: providerData
-        }));
-
-        // document.getElementById('sign-in-status').textContent = 'Signed in';
-        // document.getElementById('sign-in').textContent = 'Sign out';
-        // document.getElementById('account-details').textContent = JSON.stringify({
-        //   displayName: displayName,
-        //   email: email,
-        //   emailVerified: emailVerified,
-        //   photoURL: photoURL,
-        //   uid: uid,
-        //   accessToken: accessToken,
-        //   providerData: providerData
-        // }, null, '  ');
-      });
-    } else {
-      console.log("I am NOT signed in!");
-    }
-  }, function(error) {
-    console.log(error);
-  });
-//};
-
 // Import Language Provider
 import LanguageProvider from 'containers/LanguageProvider';
 
@@ -104,6 +50,23 @@ import { translationMessages } from './i18n';
 const initialState = {};
 const store = configureStore(initialState, browserHistory);
 
+// Import Firebase - for now (8/25/16), the use of require and import of individual
+// submodules is needed to avoid problems with webpack (import seems to require
+// beta version of webpack 2).
+const firebase = require('firebase/app');
+require('firebase/auth');
+require('firebase/database');
+require('firebase/storage');
+
+import User from './modules/User/index';
+const user = new User(store);
+
+import firebaseConfig from './firebase_config';
+firebase.initializeApp(firebaseConfig);
+
+firebase.auth().onAuthStateChanged(user.firebaseAuthStateListener.bind(user));
+
+
 // If you use Redux devTools extension, since v2.0.1, they added an
 // `updateStore`, so any enhancers that change the store object
 // could be used with the devTools' store.
@@ -114,8 +77,8 @@ if (window.devToolsExtension) {
 }
 
 // Sync history and store, as the react-router-redux reducer
-// is under the non-default key ("routing"), selectLocationState
-// must be provided for resolving how to retrieve the "route" in the state
+// is under the non-default key ('routing'), selectLocationState
+// must be provided for resolving how to retrieve the 'route' in the state
 import selectLocationState from 'containers/App/locationState';
 const history = syncHistoryWithStore(browserHistory, store, {
   selectLocationState: selectLocationState(),
@@ -147,15 +110,6 @@ const render = (translatedMessages) => {
     document.getElementById('app')
   );
 };
-
-const doit = false;
-if (doit) {
-  firebase.auth().signOut().then(function() {
-    console.log('Sign out is successful');
-  }, function(error) {
-    console.log(`An error happened: ${JSON.stringify(error)}`);
-  });
-}
 
 // Hot reloadable translation json files
 if (module.hot) {

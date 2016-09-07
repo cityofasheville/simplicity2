@@ -16,6 +16,8 @@ import Img from 'components/Img';
 import Footer from 'components/Footer';
 import Banner from './banner-metal.jpg';
 import A from 'components/A';
+import MessagePane from 'containers/MessagePane';
+import LoginContainer from 'containers/LoginContainer';
 
 import styles from './styles.css';
 
@@ -32,6 +34,8 @@ function App(props) {
       <A className={styles.logoWrapper} href="https://twitter.com/mxstbr">
         <Img className={styles.logo} src={Banner} alt="react-boilerplate - Logo" />
       </A>
+      <MessagePane />
+      <LoginContainer />
       {React.Children.toArray(props.children)}
       <Footer />
     </div>

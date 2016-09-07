@@ -146,12 +146,13 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-  const { global, home } = state;
+  const { global, home, user } = state;
   const props = {
     repos: global.userData.repositories,
     username: home.username,
     loading: global.loading,
     error: global.error,
+    user,
   };
   return props;
 }

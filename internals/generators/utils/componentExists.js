@@ -7,7 +7,8 @@
 const fs = require('fs');
 const pageComponents = fs.readdirSync('app/components');
 const pageContainers = fs.readdirSync('app/containers');
-const components = pageComponents.concat(pageContainers);
+const pageModules = fs.readdirSync('app/modules');
+const components = pageComponents.concat(pageContainers).concat(pageModules);
 
 function componentExists(comp) {
   return components.indexOf(comp) >= 0;

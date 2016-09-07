@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const OfflinePlugin = require('offline-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 // PostCSS plugins
 const cssnext = require('postcss-cssnext');
@@ -78,6 +79,11 @@ module.exports = require('./webpack.base.babel')({
       },
       inject: true,
     }),
+
+    // Move over any special static pages
+    new CopyWebpackPlugin([
+      { from: `${process.cwd()}/app/login.html`, force: true },
+    ]),
 
     // Extract the CSS into a seperate file
     new ExtractTextPlugin('[name].[contenthash].css'),

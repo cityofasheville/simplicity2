@@ -25,18 +25,6 @@ import FontFaceObserver from 'fontfaceobserver';
 import useScroll from 'react-router-scroll';
 import configureStore from './store';
 
-
-// Import Firebase - for now (8/25/16), the use of require and import of individual
-// submodules is needed to avoid problems with webpack (import seems to require
-// beta version of webpack 2).
-const firebase = require('firebase/app');
-require('firebase/auth');
-require('firebase/database');
-require('firebase/storage');
-
-import firebaseConfig from './firebase_config';
-firebase.initializeApp(firebaseConfig);
-
 // Import Language Provider
 import LanguageProvider from 'containers/LanguageProvider';
 
@@ -62,6 +50,23 @@ import { translationMessages } from './i18n';
 const initialState = {};
 const store = configureStore(initialState, browserHistory);
 
+// Import Firebase - for now (8/25/16), the use of require and import of individual
+// submodules is needed to avoid problems with webpack (import seems to require
+// beta version of webpack 2).
+const firebase = require('firebase/app');
+require('firebase/auth');
+require('firebase/database');
+require('firebase/storage');
+
+import User from './modules/User/index';
+const user = new User(store);
+
+import firebaseConfig from './firebase_config';
+firebase.initializeApp(firebaseConfig);
+
+firebase.auth().onAuthStateChanged(user.firebaseAuthStateListener.bind(user));
+
+
 // If you use Redux devTools extension, since v2.0.1, they added an
 // `updateStore`, so any enhancers that change the store object
 // could be used with the devTools' store.
@@ -72,8 +77,8 @@ if (window.devToolsExtension) {
 }
 
 // Sync history and store, as the react-router-redux reducer
-// is under the non-default key ("routing"), selectLocationState
-// must be provided for resolving how to retrieve the "route" in the state
+// is under the non-default key ('routing'), selectLocationState
+// must be provided for resolving how to retrieve the 'route' in the state
 import selectLocationState from 'containers/App/locationState';
 const history = syncHistoryWithStore(browserHistory, store, {
   selectLocationState: selectLocationState(),

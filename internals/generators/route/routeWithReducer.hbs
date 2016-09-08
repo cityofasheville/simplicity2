@@ -3,9 +3,9 @@
       name: '{{ camelCase component }}',
       getComponent(nextState, cb) {
         const importModules = Promise.all([
-          System.import('containers/{{ properCase component }}/reducer'),
+          System.import('containers/{{ properCase component }}/{{ camelCase component }}Reducer'),
           {{#if useSagas}}
-          System.import('containers/{{ properCase component }}/sagas'),
+          System.import('containers/{{ properCase component }}/{{ camelCase component }}Sagas'),
           {{/if}}
           System.import('containers/{{ properCase component }}'),
         ]);

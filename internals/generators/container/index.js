@@ -48,7 +48,7 @@ module.exports = {
     // Generate index.js and index.test.js
     const actions = [{
       type: 'add',
-      path: '../../app/containers/{{properCase name}}/index.js',
+      path: '../../app/containers/{{properCase name}}/{{camelCase name}}.js',
       templateFile: './container/index.js.hbs',
       abortOnFail: true,
     }, {
@@ -62,7 +62,7 @@ module.exports = {
     if (data.wantCSS) {
       actions.push({
         type: 'add',
-        path: '../../app/containers/{{properCase name}}/styles.css',
+        path: '../../app/containers/{{properCase name}}/{{camelCase name}}Styles.css',
         templateFile: './container/styles.css.hbs',
         abortOnFail: true,
       });
@@ -72,7 +72,7 @@ module.exports = {
     if (data.wantMessages) {
       actions.push({
         type: 'add',
-        path: '../../app/containers/{{properCase name}}/messages.js',
+        path: '../../app/containers/{{properCase name}}/{{camelCase name}}Messages.js',
         templateFile: './container/messages.js.hbs',
         abortOnFail: true,
       });
@@ -84,7 +84,7 @@ module.exports = {
       // Actions
       actions.push({
         type: 'add',
-        path: '../../app/containers/{{properCase name}}/actions.js',
+        path: '../../app/containers/{{properCase name}}/{{camelCase name}}Actions.js',
         templateFile: './container/actions.js.hbs',
         abortOnFail: true,
       });
@@ -98,7 +98,7 @@ module.exports = {
       // Constants
       actions.push({
         type: 'add',
-        path: '../../app/containers/{{properCase name}}/constants.js',
+        path: '../../app/containers/{{properCase name}}/{{camelCase name}}Constants.js',
         templateFile: './container/constants.js.hbs',
         abortOnFail: true,
       });
@@ -106,7 +106,7 @@ module.exports = {
       // Reducer
       actions.push({
         type: 'add',
-        path: '../../app/containers/{{properCase name}}/reducer.js',
+        path: '../../app/containers/{{properCase name}}/{{camelCase name}}Reducer.js',
         templateFile: './container/reducer.js.hbs',
         abortOnFail: true,
       });
@@ -122,7 +122,7 @@ module.exports = {
     if (data.wantSagas) {
       actions.push({
         type: 'add',
-        path: '../../app/containers/{{properCase name}}/sagas.js',
+        path: '../../app/containers/{{properCase name}}/{{camelCase name}}Sagas.js',
         templateFile: './container/sagas.js.hbs',
         abortOnFail: true,
       });

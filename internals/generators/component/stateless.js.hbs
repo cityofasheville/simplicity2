@@ -8,11 +8,11 @@ import React from 'react';
 
 {{#if wantMessages}}
 import { FormattedMessage } from 'react-intl';
-import messages from './messages';
+import messages from './{{ camelCase name }}Messages';
 {{/if}}
 
 {{#if wantCSS}}
-import styles from './styles.css';
+import styles from './{{ camelCase name }}Styles.css';
 {{/if}}
 
 function {{ properCase name }}() {

@@ -1,4 +1,4 @@
-// import User from '../index';
+// import User from '../user';
 
 import expect from 'expect';
 // import { shallow } from 'enzyme';

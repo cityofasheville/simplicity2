@@ -4,8 +4,8 @@
 
 import { take, call, put, select, fork, cancel } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
-import { LOAD_REPOS } from 'containers/App/constants';
-import { reposLoaded, repoLoadingError } from 'containers/App/actions';
+import { LOAD_REPOS } from 'containers/App/appConstants';
+import { reposLoaded, repoLoadingError } from 'containers/App/appActions';
 
 import request from 'utils/request';
 import sagaSelector from './sagaSelector';

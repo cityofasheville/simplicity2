@@ -8,7 +8,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 
-import messages from './messages';
+import messages from './notFoundPageMessages';
 import { FormattedMessage } from 'react-intl';
 import Button from 'components/Button/button';
 

@@ -2,11 +2,11 @@ import expect from 'expect';
 
 import {
   CHANGE_USERNAME,
-} from '../constants';
+} from '../homePageConstants';
 
 import {
   changeUsername,
-} from '../actions';
+} from '../homePageActions';
 
 describe('Home Actions', () => {
   describe('changeUsername', () => {

@@ -7,7 +7,7 @@ import { shallow, mount } from 'enzyme';
 import React from 'react';
 
 import { IntlProvider, FormattedMessage } from 'react-intl';
-import { NotFound } from '../index';
+import { NotFound } from '../notFoundPage';
 import Button from 'components/Button/button';
 
 describe('<NotFound />', () => {

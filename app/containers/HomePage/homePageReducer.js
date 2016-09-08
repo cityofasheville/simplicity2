@@ -12,7 +12,7 @@
 
 import {
   CHANGE_USERNAME,
-} from './constants';
+} from './homePageConstants';
 
 // The initial state of the App
 const initialState = {

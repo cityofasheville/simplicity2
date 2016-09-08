@@ -16,7 +16,7 @@ import {
   LOAD_REPOS_ERROR,
   ERROR_MESSAGE,
   CLEAR_MESSAGE,
-} from './constants';
+} from './appConstants';
 
 // The initial state of the App
 const initialState = {

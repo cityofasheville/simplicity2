@@ -7,7 +7,7 @@ import { shallow, mount } from 'enzyme';
 import React from 'react';
 
 import { IntlProvider } from 'react-intl';
-import { RepoListItem } from '../index';
+import { RepoListItem } from '../repoListItem';
 import ListItem from 'components/ListItem/listItem';
 
 describe('<RepoListItem />', () => {

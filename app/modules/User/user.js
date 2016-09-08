@@ -7,9 +7,9 @@ require('firebase/auth');
 require('firebase/database');
 require('firebase/storage');
 
-import { userLoggedIn, userLoggedOut } from './actions';
-import messages from './messages';
-import { ERROR_MESSAGE } from 'containers/App/constants';
+import { userLoggedIn, userLoggedOut } from './userActions';
+import messages from './userMessages';
+import { ERROR_MESSAGE } from 'containers/App/appConstants';
 
 export default class User {
 

@@ -1,5 +1,5 @@
 import expect from 'expect';
-import userReducer from '../reducer';
+import userReducer from '../userReducer';
 
 const expected = {
   loggedIn: false,

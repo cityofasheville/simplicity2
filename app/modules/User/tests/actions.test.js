@@ -1,7 +1,7 @@
 import expect from 'expect';
 import {
   USER_LOGGED_IN,
-} from '../constants';
+} from '../userConstants';
 
 describe('User actions', () => {
   describe('UserLoggedIn Action', () => {

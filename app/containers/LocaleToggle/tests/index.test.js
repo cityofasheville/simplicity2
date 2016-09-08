@@ -1,5 +1,5 @@
-import LocaleToggle from '../index';
-import LanguageProvider from '../../LanguageProvider';
+import LocaleToggle from '../localeToggle';
+import LanguageProvider from '../../LanguageProvider/languageProvider';
 
 import expect from 'expect';
 import { shallow, mount } from 'enzyme';

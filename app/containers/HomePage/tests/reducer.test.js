@@ -1,8 +1,8 @@
 import expect from 'expect';
-import homeReducer from '../reducer';
+import homeReducer from '../homePageReducer';
 import {
   changeUsername,
-} from '../actions';
+} from '../homePageActions';
 
 describe('homeReducer', () => {
   let state;

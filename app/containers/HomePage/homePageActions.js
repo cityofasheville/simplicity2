@@ -17,7 +17,7 @@
 
 import {
   CHANGE_USERNAME,
-} from './constants';
+} from './homePageConstants';
 
 /**
  * Changes the input field of the form

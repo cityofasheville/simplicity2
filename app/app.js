@@ -26,11 +26,11 @@ import useScroll from 'react-router-scroll';
 import configureStore from './store';
 
 // Import Language Provider
-import LanguageProvider from 'containers/LanguageProvider';
+import LanguageProvider from 'containers/LanguageProvider/languageProvider';
 
 // Observe loading of Open Sans (to remove open sans, remove the <link> tag in
 // the index.html file and this observer)
-import styles from 'containers/App/styles.css';
+import styles from 'containers/App/appStyles.css';
 const openSansObserver = new FontFaceObserver('Open Sans', {});
 
 // When Open Sans is loaded, add a font-family using Open Sans to the body
@@ -58,7 +58,7 @@ require('firebase/auth');
 require('firebase/database');
 require('firebase/storage');
 
-import User from './modules/User/index';
+import User from './modules/User/user';
 const user = new User(store);
 
 import firebaseConfig from './firebase_config';

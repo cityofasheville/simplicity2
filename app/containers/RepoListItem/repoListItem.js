@@ -12,7 +12,7 @@ import ListItem from 'components/ListItem/listItem';
 import IssueIcon from 'components/IssueIcon/issueIcon';
 import A from 'components/A/a';
 
-import styles from './styles.css';
+import styles from './repoListItemStyles.css';
 
 export class RepoListItem extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {

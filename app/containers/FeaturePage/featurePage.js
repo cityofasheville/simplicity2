@@ -8,11 +8,11 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import Helmet from 'react-helmet';
 
-import messages from './messages';
+import messages from './featurePageMessages';
 import { FormattedMessage } from 'react-intl';
 import Button from 'components/Button/button';
 
-import styles from './styles.css';
+import styles from './featurePageStyles.css';
 
 export class FeaturePage extends React.Component {
   /**

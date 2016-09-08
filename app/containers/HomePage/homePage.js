@@ -9,19 +9,19 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import Helmet from 'react-helmet';
 
-import messages from './messages';
+import messages from './homePageMessages';
 
-import { changeUsername } from './actions';
-import { loadRepos } from '../App/actions';
+import { changeUsername } from './homePageActions';
+import { loadRepos } from '../App/appActions';
 
 import { FormattedMessage } from 'react-intl';
-import RepoListItem from 'containers/RepoListItem';
+import RepoListItem from 'containers/RepoListItem/repoListItem';
 import Button from 'components/Button/button';
 import List from 'components/List/list';
 import ListItem from 'components/ListItem/listItem';
 import LoadingIndicator from 'components/LoadingIndicator/loadingIndicator';
 
-import styles from './styles.css';
+import styles from './homePageStyles.css';
 
 export class HomePage extends React.Component {
   /**

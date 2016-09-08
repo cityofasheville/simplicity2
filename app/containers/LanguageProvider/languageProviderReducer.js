@@ -6,7 +6,7 @@
 
 import {
   CHANGE_LOCALE,
-} from './constants';
+} from './languageProviderConstants';
 
 const initialState = {
   locale: 'en',

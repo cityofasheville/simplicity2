@@ -18,7 +18,7 @@ import A from 'components/A/a';
 import MessagePane from 'containers/MessagePane/messagePane';
 import LoginContainer from 'containers/LoginContainer/loginContainer';
 
-import styles from './styles.css';
+import styles from './appStyles.css';
 
 function App(props) {
   return (

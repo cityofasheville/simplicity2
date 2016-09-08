@@ -3,8 +3,8 @@ import { shallow, mount } from 'enzyme';
 import React from 'react';
 
 import { IntlProvider, FormattedMessage } from 'react-intl';
-import messages from '../messages';
-import { FeaturePage } from '../index';
+import messages from '../featurePageMessages';
+import { FeaturePage } from '../featurePage';
 
 describe('<FeaturePage />', () => {
   it('should render its heading', () => {

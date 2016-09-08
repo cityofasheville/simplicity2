@@ -6,10 +6,10 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { changeLocale } from '../LanguageProvider/actions';
+import { changeLocale } from '../LanguageProvider/languageProviderActions';
 import { appLocales } from '../../i18n';
-import styles from './styles.css';
-import messages from './messages';
+import styles from './localeToggleStyles.css';
+import messages from './localeToggleMessages';
 import Toggle from 'components/Toggle/toggle';
 
 export class LocaleToggle extends React.Component { // eslint-disable-line

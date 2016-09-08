@@ -6,9 +6,9 @@
 import { combineReducers } from 'redux';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
-import globalReducer from 'containers/App/reducer';
-import languageProviderReducer from 'containers/LanguageProvider/reducer';
-import userReducer from 'modules/User/reducer';
+import globalReducer from 'containers/App/appReducer';
+import languageProviderReducer from 'containers/LanguageProvider/languageProviderReducer';
+import userReducer from 'modules/User/userReducer';
 
 /*
  * routeReducer

@@ -4,7 +4,7 @@ import messages from './footerMessages';
 import A from 'components/A/a';
 import styles from './footerStyles.css';
 import { FormattedMessage } from 'react-intl';
-import LocaleToggle from 'containers/LocaleToggle';
+import LocaleToggle from 'containers/LocaleToggle/localeToggle';
 
 function Footer() {
   return (

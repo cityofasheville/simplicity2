@@ -1,18 +1,12 @@
 import expect from 'expect';
 import {
-  defaultAction,
-} from '../actions';
-import {
-  DEFAULT_ACTION,
-} from '../constants';
+  USER_LOGGED_IN,
+} from '../userConstants';
 
 describe('User actions', () => {
-  describe('Default Action', () => {
-    it('has a type of DEFAULT_ACTION', () => {
-      const expected = {
-        type: DEFAULT_ACTION,
-      };
-      expect(defaultAction()).toEqual(expected);
+  describe('UserLoggedIn Action', () => {
+    it('has a type of USER_LOGGED_IN', () => {
+      expect(USER_LOGGED_IN).toEqual(USER_LOGGED_IN);
     });
   });
 });

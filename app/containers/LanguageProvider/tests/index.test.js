@@ -1,4 +1,4 @@
-import LanguageProvider from '../index';
+import LanguageProvider from '../languageProvider';
 
 import expect from 'expect';
 import { shallow } from 'enzyme';

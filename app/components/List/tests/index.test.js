@@ -2,8 +2,8 @@ import expect from 'expect';
 import { render } from 'enzyme';
 import React from 'react';
 
-import List from '../index';
-import ListItem from 'components/ListItem';
+import List from '../list';
+import ListItem from 'components/ListItem/listItem';
 
 describe('<List />', () => {
   it('should render the component if no items are passed', () => {

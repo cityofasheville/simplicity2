@@ -1,5 +1,5 @@
 import expect from 'expect';
-import languageProviderReducer from '../reducer';
+import languageProviderReducer from '../languageProviderReducer';
 
 describe('languageProviderReducer', () => {
   it('returns the initial state', () => {

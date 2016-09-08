@@ -1,16 +1,18 @@
 import expect from 'expect';
-import appReducer from '../reducer';
+import appReducer from '../appReducer';
 import {
   loadRepos,
   reposLoaded,
   repoLoadingError,
-} from '../actions';
+} from '../appActions';
 
 describe('appReducer', () => {
   let state;
   beforeEach(() => {
     state = {
       loading: false,
+      hasMessage: false,
+      message: null,
       error: false,
       currentUser: false,
       userData: {

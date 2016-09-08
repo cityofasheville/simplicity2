@@ -38,7 +38,7 @@ module.exports = {
     // Generate index.js and index.test.js
     const actions = [{
       type: 'add',
-      path: '../../app/modules/{{properCase name}}/index.js',
+      path: '../../app/modules/{{properCase name}}/{{ camelCase name }}.js',
       templateFile: './module/index.js.hbs',
       abortOnFail: true,
     }, {
@@ -52,7 +52,7 @@ module.exports = {
     if (data.wantMessages) {
       actions.push({
         type: 'add',
-        path: '../../app/modules/{{properCase name}}/messages.js',
+        path: '../../app/modules/{{properCase name}}/{{ camelCase name }}Messages.js',
         templateFile: './module/messages.js.hbs',
         abortOnFail: true,
       });
@@ -64,7 +64,7 @@ module.exports = {
       // Actions
       actions.push({
         type: 'add',
-        path: '../../app/modules/{{properCase name}}/actions.js',
+        path: '../../app/modules/{{properCase name}}/{{ camelCase name }}Actions.js',
         templateFile: './module/actions.js.hbs',
         abortOnFail: true,
       });
@@ -78,7 +78,7 @@ module.exports = {
       // Constants
       actions.push({
         type: 'add',
-        path: '../../app/modules/{{properCase name}}/constants.js',
+        path: '../../app/modules/{{properCase name}}/{{ camelCase name }}Constants.js',
         templateFile: './module/constants.js.hbs',
         abortOnFail: true,
       });
@@ -86,7 +86,7 @@ module.exports = {
       // Reducer
       actions.push({
         type: 'add',
-        path: '../../app/modules/{{properCase name}}/reducer.js',
+        path: '../../app/modules/{{properCase name}}/{{ camelCase name }}Reducer.js',
         templateFile: './module/reducer.js.hbs',
         abortOnFail: true,
       });
@@ -102,7 +102,7 @@ module.exports = {
     if (data.wantSagas) {
       actions.push({
         type: 'add',
-        path: '../../app/modules/{{properCase name}}/sagas.js',
+        path: '../../app/modules/{{properCase name}}/{{ camelCase name }}Sagas.js',
         templateFile: './module/sagas.js.hbs',
         abortOnFail: true,
       });

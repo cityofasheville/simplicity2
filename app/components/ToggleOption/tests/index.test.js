@@ -1,4 +1,4 @@
-import ToggleOption from '../index';
+import ToggleOption from '../toggleOption';
 
 import expect from 'expect';
 import { shallow } from 'enzyme';

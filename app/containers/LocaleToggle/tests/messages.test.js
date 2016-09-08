@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { getLocaleMessages } from '../messages';
+import { getLocaleMessages } from '../localeToggleMessages';
 
 describe('getLocaleMessages', () => {
   it('should create i18n messages for all locales', () => {

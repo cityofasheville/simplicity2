@@ -3,9 +3,8 @@ import { shallow, mount } from 'enzyme';
 import React from 'react';
 
 import { IntlProvider, FormattedMessage } from 'react-intl';
-import messages from '../messages';
-import { FeaturePage } from '../index';
-import H1 from 'components/H1';
+import messages from '../featurePageMessages';
+import { FeaturePage } from '../featurePage';
 
 describe('<FeaturePage />', () => {
   it('should render its heading', () => {
@@ -13,9 +12,9 @@ describe('<FeaturePage />', () => {
       <FeaturePage />
     );
     expect(renderedComponent.contains(
-      <H1>
+      <h1>
         <FormattedMessage {...messages.header} />
-      </H1>
+      </h1>
     )).toEqual(true);
   });
 

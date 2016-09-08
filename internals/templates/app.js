@@ -19,7 +19,7 @@ import { Provider } from 'react-redux';
 import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import useScroll from 'react-router-scroll';
-import LanguageProvider from 'containers/LanguageProvider';
+import LanguageProvider from 'containers/LanguageProvider/languageProvider';
 import configureStore from './store';
 
 // Import i18n messages
@@ -44,7 +44,7 @@ const history = syncHistoryWithStore(browserHistory, store, {
 });
 
 // Set up the router, wrapping all Routes in the App component
-import App from 'containers/App';
+import App from 'containers/App/app';
 import createRoutes from './routes';
 const rootRoute = {
   component: App,

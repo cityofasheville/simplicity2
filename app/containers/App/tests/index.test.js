@@ -2,15 +2,15 @@ import expect from 'expect';
 import { shallow } from 'enzyme';
 import React from 'react';
 
-import App from '../index';
-import Footer from 'components/Footer';
+import App from '../app';
+import Footer from 'components/Footer/footer';
 
 describe('<App />', () => {
   it('should render the logo', () => {
     const renderedComponent = shallow(
       <App />
     );
-    expect(renderedComponent.find('Img').length).toEqual(1);
+    expect(renderedComponent.find('img').length).toEqual(1);
   });
 
   it('should render its children', () => {

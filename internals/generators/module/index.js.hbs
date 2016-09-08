@@ -6,15 +6,15 @@
 
 {{#if wantMessages}}
 import { FormattedMessage } from 'react-intl';
-import messages from './messages';
+import messages from './{{ camelCase name }}Messages';
 {{/if}}
 
 {{#if wantActionsAndReducer}}
-import { defaultAction } from './actions';
+import { defaultAction } from './{{ camelCase name }}Actions';
 {{/if}}
 
 export class {{ properCase name }} {
-  constructor (store) {
+  constructor(store) {
     this.store = store;
     store.subscribe(this.storeListener.bind(this));
   }

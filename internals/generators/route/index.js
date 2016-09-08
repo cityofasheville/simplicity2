@@ -6,7 +6,7 @@ const componentExists = require('../utils/componentExists');
 
 function reducerExists(comp) {
   try {
-    fs.accessSync(`app/containers/${comp}/reducer.js`, fs.F_OK);
+    fs.accessSync(`app/containers/${comp}/{{ camelCase comp }}Reducer.js`, fs.F_OK);
     return true;
   } catch (e) {
     return false;
@@ -15,7 +15,7 @@ function reducerExists(comp) {
 
 function sagasExists(comp) {
   try {
-    fs.accessSync(`app/containers/${comp}/sagas.js`, fs.F_OK);
+    fs.accessSync(`app/containers/${comp}/{{ camelCase comp }}Sagas.js`, fs.F_OK);
     return true;
   } catch (e) {
     return false;

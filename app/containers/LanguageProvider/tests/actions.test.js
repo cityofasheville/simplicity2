@@ -1,10 +1,10 @@
 import expect from 'expect';
 import {
   changeLocale,
-} from '../actions';
+} from '../languageProviderActions';
 import {
   CHANGE_LOCALE,
-} from '../constants';
+} from '../languageProviderConstants';
 
 describe('LanguageProvider actions', () => {
   describe('Change Local Action', () => {

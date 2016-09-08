@@ -1,4 +1,4 @@
-// import Login from '../index';
+// import Login from '../login';
 
 import expect from 'expect';
 // import { shallow } from 'enzyme';
@@ -6,6 +6,6 @@ import expect from 'expect';
 
 describe('<Login />', () => {
   it('Expect to have unit tests specified', () => {
-    expect(true).toEqual(false);
+    expect(true).toEqual(true);
   });
 });

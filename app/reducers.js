@@ -36,6 +36,11 @@ function routeReducer(state = routeInitialState, action) {
   }
 }
 
+let graphQLClient = null;
+export function registerApolloClient(client) {
+  graphQLClient = client;
+}
+
 /**
  * Creates the main reducer with the asynchronously loaded ones
  */
@@ -45,6 +50,7 @@ export default function createReducer(asyncReducers) {
     global: globalReducer,
     language: languageProviderReducer,
     user: userReducer,
+    apollo: graphQLClient.reducer(),
     ...asyncReducers,
   });
 }

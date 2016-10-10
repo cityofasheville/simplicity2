@@ -5,12 +5,12 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { routerMiddleware } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
-import createReducer from './reducers';
+import createReducer, { registerApolloClient } from './reducers';
 
 const sagaMiddleware = createSagaMiddleware();
 const devtools = window.devToolsExtension || (() => noop => noop);
 
-export default function configureStore(initialState = {}, history) {
+export default function configureStore(graphQLClient, initialState = {}, history) {
   // Create the store with two middlewares
   // 1. sagaMiddleware: Makes redux-sagas work
   // 2. routerMiddleware: Syncs the location/URL path to the state
@@ -24,6 +24,7 @@ export default function configureStore(initialState = {}, history) {
     devtools(),
   ];
 
+  registerApolloClient(graphQLClient);
   const store = createStore(
     createReducer(),
     initialState,

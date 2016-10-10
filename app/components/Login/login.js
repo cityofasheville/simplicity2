@@ -17,11 +17,9 @@ class Login extends React.Component { // eslint-disable-line react/prefer-statel
 
     if (this.props.user.loggedIn) {
       return (
-        <div>
-          <a href="." onClick={(e) => { e.preventDefault(); this.props.user.logout(this.props.dispatch); }}>
-            { linkName }
-          </a>
-        </div>
+        <a href="." onClick={(e) => { e.preventDefault(); this.props.user.logout(this.props.dispatch); }}>
+          { linkName }
+        </a>
       );
     }
 

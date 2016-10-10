@@ -7,21 +7,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
+import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 
-import messages from './homePageMessages';
+// import messages from './homePageMessages';
 
 import { changeUsername } from './homePageActions';
 import { loadRepos } from '../App/appActions';
 
-import { FormattedMessage } from 'react-intl';
-import RepoListItem from 'containers/RepoListItem/repoListItem';
-import Button from 'components/Button/button';
-import List from 'components/List/list';
-import ListItem from 'components/ListItem/listItem';
-import LoadingIndicator from 'components/LoadingIndicator/loadingIndicator';
+// import { FormattedMessage } from 'react-intl';
 
-import styles from './homePageStyles.css';
+
+// import styles from './homePageStyles.css';
 
 export class HomePage extends React.Component {
   /**
@@ -49,66 +46,19 @@ export class HomePage extends React.Component {
   };
 
   render() {
-    let mainContent = null;
-
-    // Show a loading indicator when we're loading
-    if (this.props.loading) {
-      mainContent = (<List component={LoadingIndicator} />);
-
-    // Show an error if there is one
-    } else if (this.props.error !== false) {
-      const ErrorComponent = () => (
-        <ListItem item={'Something went wrong, please try again!'} />
-      );
-      mainContent = (<List component={ErrorComponent} />);
-
-    // If we're not loading, don't have an error and there are repos, show the repos
-    } else if (this.props.repos !== false) {
-      mainContent = (<List items={this.props.repos} component={RepoListItem} />);
-    }
-
     return (
       <article>
         <Helmet
           title="Home Page"
           meta={[
-            { name: 'description', content: 'A React.js Boilerplate application homepage' },
+            { name: 'description', content: 'SimpliCity homepage' },
           ]}
         />
         <div>
-          <section className={`${styles.textSection} ${styles.centered}`}>
-            <h2>
-              <FormattedMessage {...messages.startProjectHeader} />
-            </h2>
-            <p>
-              <FormattedMessage {...messages.startProjectMessage} />
-            </p>
-          </section>
-          <section className={styles.textSection}>
-            <h2>
-              <FormattedMessage {...messages.trymeHeader} />
-            </h2>
-            <form className={styles.usernameForm} onSubmit={this.props.onSubmitForm}>
-              <label htmlFor="username">
-                <FormattedMessage {...messages.trymeMessage} />
-                <span className={styles.atPrefix}>
-                  <FormattedMessage {...messages.trymeAtPrefix} />
-                </span>
-                <input
-                  id="username"
-                  className={styles.input}
-                  type="text"
-                  placeholder="mxstbr"
-                  value={this.props.username}
-                  onChange={this.props.onChangeUsername}
-                />
-              </label>
-            </form>
-            {mainContent}
-          </section>
-          <Button handleRoute={this.openFeaturesPage}>
-            <FormattedMessage {...messages.featuresButton} />
-          </Button>
+          <h1>Home Page</h1>
+          <div>
+            <Link to="/topics/topic-container-page">Test Topic Container Page</Link>
+          </div>
         </div>
       </article>
     );

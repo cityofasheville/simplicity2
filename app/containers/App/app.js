@@ -13,10 +13,9 @@ import Helmet from 'react-helmet';
 import 'sanitize.css/sanitize.css';
 
 import Footer from 'components/Footer/footer';
-import Banner from './banner-metal.jpg';
-import A from 'components/A/a';
+
 import MessagePane from 'containers/MessagePane/messagePane';
-import LoginContainer from 'containers/LoginContainer/loginContainer';
+import NavbarContainer from 'containers/NavbarContainer/navbarContainer';
 
 import styles from './appStyles.css';
 
@@ -30,11 +29,9 @@ function App(props) {
           { name: 'description', content: 'A React.js Boilerplate application' },
         ]}
       />
-      <A className={styles.logoWrapper} href="https://twitter.com/mxstbr">
-        <img className={styles.logo} src={Banner} alt="react-boilerplate - Logo" />
-      </A>
+      <NavbarContainer />
       <MessagePane />
-      <LoginContainer />
+
       {React.Children.toArray(props.children)}
       <Footer />
     </div>

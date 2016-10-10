@@ -39,10 +39,26 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
-      path: '/features',
-      name: 'features',
-      getComponent(nextState, cb) {
-        System.import('containers/FeaturePage/featurePage')
+      path: '/my-simplicity',
+      name: 'mySimpliCity',
+      getComponent(location, cb) {
+        System.import('containers/MySimpliCityPage/mySimpliCityPage')
+          .then(loadModule(cb))
+          .catch(errorLoading);
+      },
+    }, {
+      path: '/topics',
+      name: 'topics',
+      getComponent(location, cb) {
+        System.import('containers/TopicsPage/topicsPage')
+          .then(loadModule(cb))
+          .catch(errorLoading);
+      },
+    }, {
+      path: '/topics/topic-container-page',
+      name: 'topicContainerPage',
+      getComponent(location, cb) {
+        System.import('containers/TopicContainerPage/topicContainerPage')
           .then(loadModule(cb))
           .catch(errorLoading);
       },

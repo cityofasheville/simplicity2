@@ -49,8 +49,22 @@ import { translationMessages } from './i18n';
 // Create the connection to the GraphQL server
 import { graphQLConfig } from './simplicityConfig';
 
+const networkInterface = createNetworkInterface(graphQLConfig.serverURL);
+/* eslint-disable no-param-reassign */
+networkInterface.use([{
+  applyMiddleware(req, next) {
+    if (!req.options.headers) {
+      req.options.headers = {};
+    }
+    // get the authentation token from storage if it exists
+    req.options.headers.authorization = sessionStorage.getItem('token') || null;
+    next();
+  },
+}]);
+/* eslint-enable no-param-reassign */
+
 const graphQLClient = new ApolloClient({
-  networkInterface: createNetworkInterface(graphQLConfig.serverURL),
+  networkInterface,
 });
 
 // Create redux store with history

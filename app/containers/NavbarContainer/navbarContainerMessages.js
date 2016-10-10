@@ -6,8 +6,8 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  header: {
+  title: {
     id: 'app.containers.NavbarContainer.header',
-    title: 'SimpliCity',
+    defaultMessage: 'SimpliCity',
   },
 });

@@ -37,17 +37,26 @@ export default class User {
   }
 
   firebaseAuthStateListener(user) {
+    const store = this.store;
     if (user) {
       // User is signed in.
-      const userData = userLoggedIn({
+      const udata = {
         email: user.email,
         name: user.displayName,
         provider: user.providerData[0].providerId,
         token: null,
         logout: this.firebaseLogout,
+      };
+
+      firebase.auth().currentUser.getToken(/* forceRefresh */ true).then((idToken) => {
+        udata.token = idToken;
+        sessionStorage.setItem('token', idToken);
+        const userData = userLoggedIn(udata);
+        store.dispatch(userData);
+        store.dispatch({ type: ERROR_MESSAGE, data: { message: messages.testError } });
+      }).catch((error) => {
+        console.log(`TOKEN ERROR: ${JSON.stringify(error)}`);
       });
-      this.store.dispatch(userData);
-      this.store.dispatch({ type: ERROR_MESSAGE, data: { message: messages.testError } });
     }
   }
 }

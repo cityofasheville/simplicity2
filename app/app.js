@@ -18,11 +18,14 @@ import 'file?name=[name].[ext]!./.htaccess';
 // Import all the third party stuff
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
 import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import FontFaceObserver from 'fontfaceobserver';
 import useScroll from 'react-router-scroll';
+import ApolloClient, { createNetworkInterface } from 'apollo-client';
+import { ApolloProvider } from 'react-apollo';
+
+// Get the store initialization routine
 import configureStore from './store';
 
 // Import Language Provider
@@ -43,12 +46,19 @@ openSansObserver.load().then(() => {
 // Import i18n messages
 import { translationMessages } from './i18n';
 
+// Create the connection to the GraphQL server
+import { graphQLConfig } from './simplicityConfig';
+
+const graphQLClient = new ApolloClient({
+  networkInterface: createNetworkInterface(graphQLConfig.serverURL),
+});
+
 // Create redux store with history
 // this uses the singleton browserHistory provided by react-router
 // Optionally, this could be changed to leverage a created history
 // e.g. `const browserHistory = useRouterHistory(createBrowserHistory)();`
 const initialState = {};
-const store = configureStore(initialState, browserHistory);
+const store = configureStore(graphQLClient, initialState, browserHistory);
 
 // Import Firebase - for now (8/25/16), the use of require and import of individual
 // submodules is needed to avoid problems with webpack (import seems to require
@@ -94,7 +104,7 @@ const rootRoute = {
 
 const render = (translatedMessages) => {
   ReactDOM.render(
-    <Provider store={store}>
+    <ApolloProvider store={store} client={graphQLClient}>
       <LanguageProvider messages={translatedMessages}>
         <Router
           history={history}
@@ -106,7 +116,7 @@ const render = (translatedMessages) => {
           }
         />
       </LanguageProvider>
-    </Provider>,
+    </ApolloProvider>,
     document.getElementById('app')
   );
 };

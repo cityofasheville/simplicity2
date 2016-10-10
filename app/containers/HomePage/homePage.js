@@ -59,6 +59,9 @@ export class HomePage extends React.Component {
           <div>
             <Link to="/topics/topic-container-page">Test Topic Container Page</Link>
           </div>
+          <div>
+            <Link to="/topics/development-dashboard">Development Dashboard</Link>
+          </div>
         </div>
       </article>
     );

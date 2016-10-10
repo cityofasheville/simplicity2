@@ -11,8 +11,6 @@ import { FormattedMessage } from 'react-intl';
 import messages from './topicContainerPageMessages';
 import styles from './topicContainerPageStyles.css';
 
-import GqlTest from '../../components/GqlTest/gqlTest';
-
 export class TopicContainerPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
@@ -24,11 +22,15 @@ export class TopicContainerPage extends React.Component { // eslint-disable-line
           ]}
         />
         <FormattedMessage {...messages.header} />
-        <GqlTest />
+        {this.props.children}
       </div>
     );
   }
 }
+
+TopicContainerPage.propTypes = {
+  children: React.PropTypes.any,
+};
 
 function mapStateToProps(state) {
   const { topicContainerPage } = state;

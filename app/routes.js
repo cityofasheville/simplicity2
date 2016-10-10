@@ -63,6 +63,14 @@ export default function createRoutes(store) {
           .catch(errorLoading);
       },
     }, {
+      path: '/topics/development-dashboard',
+      name: 'developmentDashboard',
+      getComponent(location, cb) {
+        System.import('topics/development/citywide/DevelopmentDashboard/developmentDashboard')
+          .then(loadModule(cb))
+          .catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {

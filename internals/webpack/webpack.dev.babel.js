@@ -15,7 +15,9 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 // PostCSS plugins
 const cssnext = require('postcss-cssnext');
 const postcssFocus = require('postcss-focus');
+const postcssLostGrid = require('lost');
 const postcssReporter = require('postcss-reporter');
+
 
 const plugins = [
   new webpack.HotModuleReplacementPlugin(), // Tell webpack we want hot reloading
@@ -53,6 +55,7 @@ module.exports = require('./webpack.base.babel')({
   // Process the CSS with PostCSS
   postcssPlugins: [
     postcssFocus(), // Add a :focus to every :hover
+    postcssLostGrid(), // Add the PostCSS Lost Grid
     cssnext({ // Allow future CSS features to be used, also auto-prefixes the CSS...
       browsers: ['last 2 versions', 'IE > 10'], // ...based on this browser list
     }),

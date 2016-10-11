@@ -33,3 +33,21 @@ label {
   color: black;
   margin-left: 0.4em;
 }
+
+.blueDiv {
+  background: blue;
+  height: 100px;
+  lost-column: 1/3;
+}
+
+.redDiv {
+  background: red;
+  height: 100px;
+  lost-column: 1/3;
+}
+
+.greenDiv {
+  background: green;
+  height: 100px;
+  lost-column: 1/3;
+}

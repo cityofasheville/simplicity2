@@ -10,6 +10,7 @@ import Helmet from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
 import messages from './mySimpliCityPageMessages';
 import styles from './mySimpliCityPageStyles.css';
+import MySimpliCityCards from '../../topics/mysimplicity/mySimpliCityCards';
 
 export class MySimpliCityPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
@@ -23,6 +24,7 @@ export class MySimpliCityPage extends React.Component { // eslint-disable-line r
         />
         <FormattedMessage {...messages.header} />
         <h1>My SimpliCity</h1>
+        <MySimpliCityCards />
       </div>
     );
   }

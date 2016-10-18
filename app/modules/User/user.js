@@ -13,8 +13,9 @@ import { ERROR_MESSAGE } from 'containers/App/appConstants';
 
 export default class User {
 
-  constructor(store) {
+  constructor(store, graphQLClient) {
     this.store = store;
+    this.client = graphQLClient;
     store.subscribe(this.storeListener.bind(this));
   }
 
@@ -57,6 +58,9 @@ export default class User {
       }).catch((error) => {
         console.log(`TOKEN ERROR: ${JSON.stringify(error)}`);
       });
+    } else {
+      sessionStorage.setItem('token', null);
+      this.client.resetStore();
     }
   }
 }

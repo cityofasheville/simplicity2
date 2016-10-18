@@ -83,7 +83,7 @@ require('firebase/database');
 require('firebase/storage');
 
 import User from './modules/User/user';
-const user = new User(store);
+const user = new User(store, graphQLClient);
 
 import firebaseConfig from './firebase_config';
 firebase.initializeApp(firebaseConfig);

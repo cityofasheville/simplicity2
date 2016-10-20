@@ -15,6 +15,7 @@ class DevelopmentDashboard extends React.Component { // eslint-disable-line reac
       <TopicContainerPage>
         <div>
           <p>{JSON.stringify(this.props.data.address)}</p>
+          <p>{JSON.stringify(this.props.data.search)}</p>
         </div>
       </TopicContainerPage>
     );
@@ -30,6 +31,14 @@ const sampleCivicAddressId = '230095';
 
 const myQuery = gql`
   query {
+    search (searchString: "60", searchContexts:["civicAddressId", "alialiuncomefree"]) {
+      type
+      results {
+        id
+        text
+        score
+      }
+    }
     address (id: ${sampleCivicAddressId}) {
       full_address
       is_in_city

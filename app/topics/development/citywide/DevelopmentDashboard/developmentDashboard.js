@@ -8,6 +8,7 @@ import React from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import TopicContainerPage from '../../../../containers/TopicContainerPage/topicContainerPage';
+import SearchBox from '../../../../containers/SearchBox/searchBox';
 
 class DevelopmentDashboard extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
@@ -15,7 +16,9 @@ class DevelopmentDashboard extends React.Component { // eslint-disable-line reac
       <TopicContainerPage>
         <div>
           <p>{JSON.stringify(this.props.data.address)}</p>
+          <p>{JSON.stringify(this.props.data.search)}</p>
         </div>
+        <SearchBox />
       </TopicContainerPage>
     );
   }
@@ -30,6 +33,14 @@ const sampleCivicAddressId = '230095';
 
 const myQuery = gql`
   query {
+    search (searchString: "60", searchContexts:["civicAddressId", "alialiuncomefree"]) {
+      type
+      results {
+        id
+        text
+        score
+      }
+    }
     address (id: ${sampleCivicAddressId}) {
       full_address
       is_in_city

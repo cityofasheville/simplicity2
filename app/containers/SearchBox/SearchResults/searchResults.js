@@ -35,7 +35,6 @@ const myQuery = gql`
       results {
         id
         text
-        score
       }
     }
   }

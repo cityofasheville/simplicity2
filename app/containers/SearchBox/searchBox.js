@@ -24,7 +24,7 @@ export class SearchBox extends React.Component { // eslint-disable-line react/pr
     console.log(`The query string is ${this.state.queryString}`);
     let searchResult = null;
     if (this.state.queryString.length > 2) {
-      searchResult = <SearchResults contexts={['civicAddressId']} searchString={this.state.queryString} />;
+      searchResult = <SearchResults searchContexts={['civicAddressId']} searchString={this.state.queryString} />;
     }
     return (
       <div className={styles.searchBox}>

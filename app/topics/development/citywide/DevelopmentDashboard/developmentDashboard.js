@@ -8,6 +8,7 @@ import React from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import TopicContainerPage from '../../../../containers/TopicContainerPage/topicContainerPage';
+import SearchBox from '../../../../containers/SearchBox/searchBox';
 
 class DevelopmentDashboard extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
@@ -17,6 +18,7 @@ class DevelopmentDashboard extends React.Component { // eslint-disable-line reac
           <p>{JSON.stringify(this.props.data.address)}</p>
           <p>{JSON.stringify(this.props.data.search)}</p>
         </div>
+        <SearchBox />
       </TopicContainerPage>
     );
   }

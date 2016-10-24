@@ -38,7 +38,7 @@ const sampleCivicAddressId = '230095';
 
 const myQuery = gql`
   query {
-    search (searchString: "60", searchContexts:["civicAddressId", "alialiuncomefree"]) {
+    search (searchString: "230095", searchContexts:["civicAddressId", "alialiuncomefree"]) {
       type
       results {
         ... on SillyResult {
@@ -47,7 +47,12 @@ const myQuery = gql`
           score
         }
         ... on AddressResult {
+          score
+          civic_address_id
           full_address
+          pin
+          owner
+          is_in_city
         }
       }
     }

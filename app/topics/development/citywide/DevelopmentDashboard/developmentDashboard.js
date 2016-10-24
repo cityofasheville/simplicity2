@@ -15,10 +15,15 @@ class DevelopmentDashboard extends React.Component { // eslint-disable-line reac
     return (
       <TopicContainerPage>
         <div>
+          <h3>Results of a couple hardcoded searches:</h3>
           <p>{JSON.stringify(this.props.data.address)}</p>
           <p>{JSON.stringify(this.props.data.search)}</p>
         </div>
-        <SearchBox />
+        <div>
+          <h2>Search by Civic Address ID</h2>
+          <p>Try 230095</p>
+          <SearchBox />
+        </div>
       </TopicContainerPage>
     );
   }
@@ -36,9 +41,14 @@ const myQuery = gql`
     search (searchString: "60", searchContexts:["civicAddressId", "alialiuncomefree"]) {
       type
       results {
-        id
-        text
-        score
+        ... on SillyResult {
+          id
+          text
+          score
+        }
+        ... on AddressResult {
+          full_address
+        }
       }
     }
     address (id: ${sampleCivicAddressId}) {

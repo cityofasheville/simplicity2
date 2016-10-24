@@ -1,7 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
-import messages from './searchBoxMessages';
 import styles from './searchBoxStyles.css';
 import SearchResults from './SearchResults/searchResults';
 
@@ -21,14 +19,12 @@ export class SearchBox extends React.Component { // eslint-disable-line react/pr
   }
 
   render() {
-    console.log(`The query string is ${this.state.queryString}`);
     let searchResult = null;
     if (this.state.queryString.length > 2) {
       searchResult = <SearchResults searchContexts={['civicAddressId']} searchString={this.state.queryString} />;
     }
     return (
       <div className={styles.searchBox}>
-        <h3><FormattedMessage {...messages.header} /></h3>
         <input type="text" onChange={this.localOnChange} placeholder="Enter civic address id"></input>
         <hr />
         {searchResult}

@@ -7,7 +7,7 @@ class SearchResults extends React.Component { // eslint-disable-line react/prefe
     if (this.props.data) {
       return (
         <div>
-          <p>Here is the data</p>
+          <p>Results:</p>
           <p>{JSON.stringify(this.props.data.search)}</p>
         </div>
       );
@@ -33,8 +33,20 @@ const myQuery = gql`
     search (searchString: $searchString, searchContexts: $searchContexts) {
       type
       results {
-        id
-        text
+        score
+        type
+        ... on AddressResult {
+          id
+          civic_address_id
+          full_address
+          pin
+          owner
+          is_in_city
+        }
+        ... on SillyResult {
+          id
+          text
+        }
       }
     }
   }

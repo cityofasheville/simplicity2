@@ -25,11 +25,7 @@ export class MessagePane extends React.Component { // eslint-disable-line react/
     }
 
     return (
-      <div className={styles.messagePane}>
-
-        {content}
-  
-      </div>
+      <div className={styles.messagePane}>{content}</div>
     );
   }
 }

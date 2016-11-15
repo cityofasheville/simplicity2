@@ -11,7 +11,7 @@ import Login from 'components/Login/login';
 export class LoginContainer extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
-      <Login className = {this.props.className} user={this.props.user} dispatch={this.props.dispatch} />
+      <Login className={this.props.className} user={this.props.user} dispatch={this.props.dispatch} />
     );
   }
 }

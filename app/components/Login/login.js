@@ -13,7 +13,6 @@ class Login extends React.Component { // eslint-disable-line react/prefer-statel
 
   render() {
     const { user } = this.props;
-    console.log(user);
     const linkName = (user.loggedIn) ? <FormattedMessage {...messages.logoutLabel} /> : <FormattedMessage {...messages.loginLabel} />;
 
     if (this.props.user.loggedIn) {
@@ -26,9 +25,9 @@ class Login extends React.Component { // eslint-disable-line react/prefer-statel
     }
 
     return (
-        <a className={this.props.className} href="login">
-          { linkName }
-        </a>
+      <a className={this.props.className} href="login">
+      { linkName }
+      </a>
     );
   }
 }

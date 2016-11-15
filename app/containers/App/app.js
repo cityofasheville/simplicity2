@@ -17,7 +17,7 @@ import Footer from 'components/Footer/footer';
 import MessagePane from 'containers/MessagePane/messagePane';
 import NavbarContainer from 'containers/NavbarContainer/navbarContainer';
 
-import styles from './appStyles.css';
+// import styles from './appStyles.css';
 
 function App(props) {
   return (

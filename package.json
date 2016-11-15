@@ -150,6 +150,8 @@
     "rules": {
       "color-hex-case": "upper",
       "string-quotes": "single",
+      "font-weight-notation": "numeric",
+      "length-zero-no-unit": false,
       "font-family-name-quotes": "always-where-recommended",
       "selector-pseudo-class-no-unknown": [
         true,

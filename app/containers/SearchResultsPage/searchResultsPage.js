@@ -14,7 +14,6 @@ import styles from './searchResultsPageStyles.css';
 export class SearchResultsPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
 
   render() {
-    console.log(this.props)
     return (
       <article>
         <div className={styles.searchResultsPage}>
@@ -36,7 +35,7 @@ function mapStateToProps(state, ownProps) {
   const { searchResultsPage } = state;
   const props = {
     searchResultsPage,
-    ownProps
+    ownProps,
   };
   return props;
 }

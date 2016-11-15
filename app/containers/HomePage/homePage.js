@@ -46,8 +46,6 @@ export class HomePage extends React.Component {
     this.openRoute('/features');
   };
 
-
-
   render() {
     return (
       <article>
@@ -58,19 +56,19 @@ export class HomePage extends React.Component {
           ]}
         />
         <div>
-        <section className={styles.homeMain}>
-          <p className={styles.theCityOfAshevilles}>The City of Asheville's</p>
-          <h1 className={styles.homeTitle}>SimpliCity</h1>
-          <p className={styles.citydatasimplified}>city data simplified</p>
-          <div className={styles.searchComponent}>
+          <section className={styles.homeMain}>
+            <p className={styles.theCityOfAshevilles}>The City of Asheville's</p>
+            <h1 className={styles.homeTitle}>SimpliCity</h1>
+            <p className={styles.citydatasimplified}>city data simplified</p>
+            <div className={styles.searchComponent}>
               <div className={styles.searchComponentWrapper}>
                 <button className={styles.allDropdown}>
                   All <i className="fa fa-caret-down" aria-hidden="true"></i>
                 </button>
                 <input
                   className={styles.searchInput}
-                  ref= {(searchInput)=> this._searchInput = searchInput}
-                  onKeyUp={()=>{browserHistory.push(`/search-results?text=${this._searchInput.value}`)}}
+                  ref={() => this.searchInput}
+                  onKeyUp={() => { browserHistory.push(`/search-results?text=${this.searchInput.value}`); }}
                   placeholder="Search for a location, name or ID..."
                   type="text"
                 />
@@ -78,32 +76,32 @@ export class HomePage extends React.Component {
                   <i className="fa fa-search" aria-hidden="true"></i>
                 </button>
               </div>
-          </div>
-        </section>
-        <section>
-          <div className={styles.bigNavButtons}>
-            <div className={styles.bigNavButton}>
-              Citywide Topics
             </div>
-            <div className={styles.bigNavButton}>
-              Citywide Performance
-            </div>
-            <div className={styles.bigNavButton}>
-              Explore with a Map
-            </div>
+          </section>
+          <section>
+            <div className={styles.bigNavButtons}>
+              <div className={styles.bigNavButton}>
+                Citywide Topics
+              </div>
+              <div className={styles.bigNavButton}>
+                Citywide Performance
+              </div>
+              <div className={styles.bigNavButton}>
+                Explore with a Map
+              </div>
 
-          </div>
-        </section>
-        <section>
-          <div className={styles.bigNavButtons}>
-            <div className={styles.bigNavButton}>
-              <Link to="/topics/topic-container-page">Test Topic Container Page</Link>
             </div>
-            <div className={styles.bigNavButton}>
-              <Link to="/topics/topic-container-page">Test Topic Container Page</Link>
+          </section>
+          <section>
+            <div className={styles.bigNavButtons}>
+              <div className={styles.bigNavButton}>
+                <Link to="/topics/topic-container-page">Test Topic Container Page</Link>
+              </div>
+              <div className={styles.bigNavButton}>
+                <Link to="/topics/topic-container-page">Test Topic Container Page</Link>
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
         </div>
       </article>
     );

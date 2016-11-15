@@ -6,8 +6,8 @@
 
 import React, { PropTypes } from 'react';
 
-import { FormattedMessage } from 'react-intl';
-import messages from './navbarLinkMessages';
+// import { FormattedMessage } from 'react-intl';
+// import messages from './navbarLinkMessages';
 import { Link } from 'react-router';
 
 
@@ -15,7 +15,7 @@ import styles from './navbarLinkStyles.css';
 
 function NavbarLink(props) {
   return (
-    <Link className={styles.navbarLink} activeStyle={{color: 'red'}} {...props}/>
+    <Link className={styles.navbarLink} activeStyle={{ color: 'red' }} {...props} />
   );
 }
 

@@ -7,8 +7,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import Helmet from 'react-helmet';
+
 
 // import messages from './homePageMessages';
 
@@ -18,7 +19,7 @@ import { loadRepos } from '../App/appActions';
 // import { FormattedMessage } from 'react-intl';
 
 
-// import styles from './homePageStyles.css';
+import styles from './homePageStyles.css';
 
 export class HomePage extends React.Component {
   /**
@@ -45,6 +46,8 @@ export class HomePage extends React.Component {
     this.openRoute('/features');
   };
 
+
+
   render() {
     return (
       <article>
@@ -55,14 +58,52 @@ export class HomePage extends React.Component {
           ]}
         />
         <div>
+        <section className={styles.homeMain}>
+          <p className={styles.theCityOfAshevilles}>The City of Asheville's</p>
+          <h1 className={styles.homeTitle}>SimpliCity</h1>
+          <p className={styles.citydatasimplified}>city data simplified</p>
+          <div className={styles.searchComponent}>
+              <div className={styles.searchComponentWrapper}>
+                <button className={styles.allDropdown}>
+                  All <i className="fa fa-caret-down" aria-hidden="true"></i>
+                </button>
+                <input
+                  className={styles.searchInput}
+                  ref= {(searchInput)=> this._searchInput = searchInput}
+                  onKeyUp={()=>{browserHistory.push(`/search-results?text=${this._searchInput.value}`)}}
+                  placeholder="Search for a location, name or ID..."
+                  type="text"
+                />
+                <button className={styles.searchButton}>
+                  <i className="fa fa-search" aria-hidden="true"></i>
+                </button>
+              </div>
+          </div>
+        </section>
+        <section>
+          <div className={styles.bigNavButtons}>
+            <div className={styles.bigNavButton}>
+              Citywide Topics
+            </div>
+            <div className={styles.bigNavButton}>
+              Citywide Performance
+            </div>
+            <div className={styles.bigNavButton}>
+              Explore with a Map
+            </div>
 
-          <h1>Home Page</h1>
-          <div>
-            <Link to="/topics/topic-container-page">Test Topic Container Page</Link>
           </div>
-          <div>
-            <Link to="/topics/development-dashboard">Development Dashboard</Link>
+        </section>
+        <section>
+          <div className={styles.bigNavButtons}>
+            <div className={styles.bigNavButton}>
+              <Link to="/topics/topic-container-page">Test Topic Container Page</Link>
+            </div>
+            <div className={styles.bigNavButton}>
+              <Link to="/topics/topic-container-page">Test Topic Container Page</Link>
+            </div>
           </div>
+        </section>
         </div>
       </article>
     );
@@ -93,7 +134,6 @@ function mapDispatchToProps(dispatch) {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(loadRepos());
     },
-
     dispatch,
   };
 }

@@ -11,7 +11,7 @@ import Login from 'components/Login/login';
 export class LoginContainer extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
-      <Login user={this.props.user} dispatch={this.props.dispatch} />
+      <Login className = {this.props.className} user={this.props.user} dispatch={this.props.dispatch} />
     );
   }
 }
@@ -19,6 +19,7 @@ export class LoginContainer extends React.Component { // eslint-disable-line rea
 LoginContainer.propTypes = {
   user: React.PropTypes.object,
   dispatch: React.PropTypes.func,
+  className: React.PropTypes.string,
 };
 
 function mapStateToProps(state) {

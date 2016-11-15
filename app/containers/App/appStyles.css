@@ -8,19 +8,34 @@ body {
 
 h1 {
   font-size: 2em;
-  margin-bottom: 0.25em;
+  font-family: 'Roboto', sans-serif;;
 }
 
 h2 {
   font-size: 1.5em;
+  font-family: 'Roboto', sans-serif;
+}
+
+h3 {
+  font-size: 1.25em;
+  font-family: 'Roboto', sans-serif;
+}
+
+h4 {
+  font-size: 1.1em;
+  font-family: 'Roboto', sans-serif;
 }
 
 body {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Roboto', Arial, sans-serif;
 }
 
 body.fontLoaded {
-  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Roboto', Arial, sans-serif;
+}
+
+article {
+  lost-center: 90%;
 }
 
 :global(#app) {

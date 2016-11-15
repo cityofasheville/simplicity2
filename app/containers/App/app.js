@@ -21,7 +21,7 @@ import styles from './appStyles.css';
 
 function App(props) {
   return (
-    <div className={styles.wrapper}>
+    <div >
       <Helmet
         titleTemplate="%s - React.js Boilerplate"
         defaultTitle="React.js Boilerplate"
@@ -31,7 +31,6 @@ function App(props) {
       />
       <NavbarContainer />
       <MessagePane />
-
       {React.Children.toArray(props.children)}
       <Footer />
     </div>

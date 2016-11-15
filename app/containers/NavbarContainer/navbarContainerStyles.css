@@ -3,27 +3,85 @@
     margin-left: auto;
     padding-left: 15px;
     padding-right: 15px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     top: 0;
     height: 64px;
-
-}
-
-.navbarContainer div{ 
-    display: inline;
 }
 
 .navbarRight{
-  display: block;
+  display: none;
   float: right;
   margin-right: -15px;
 }
+
 .navbarContainer ul li{
   list-style: none;
   display: inline;
   margin: 20px;
 }
 
-.navbarTitle {
-  display: inline;
+.navbarTitle{
+  display: block;
+  float: left;
+  font-weight: 100;
+  text-decoration: none;
+  font-size: 22px;
+  margin: 10px;
+  color: #335984
+}
+
+.navbarLink{
+  color: #9E9E9E
+;  text-decoration: none;
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.navbarLink:hover{
+  color: #335984;
+}
+
+.active{
+  color: #335984;
+}
+
+.allDropdown{
+  width: 71px;
+  height: 40px;
+  background: #9E9E9E;
+  color: white;
+  font-size: 25px;
+  margin: 0px;
+  padding: 0px;
+}
+
+.searchInput{
+  min-width: 500px;
+  height: 40px;
+  border: 1px solid #9E9E9E;
+  font-size: 25px;
+  outline: none;
+  color: #335984;
+}
+.searchInput::placeholder{
+  font-weight: 700;
+  color: #ccc;
+  padding-left: 10px;
+}
+
+.searchComponentWrapper{
+  margin-top: 5px;
+}
+
+
+.searchInput:focus{
+  border: 2px solid #335984;
+  outline: none;
+}
+
+.searchButton {
+  height: 40px;
+  width: 40px;
+  background: #335984;
+  color: white;
+  font-size: 25px;
 }

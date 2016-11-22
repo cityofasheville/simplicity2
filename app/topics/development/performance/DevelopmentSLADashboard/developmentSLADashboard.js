@@ -8,23 +8,41 @@ import React from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import TopicContainerPage from '../../../../containers/TopicContainerPage/topicContainerPage';
-import SearchBox from '../../../../containers/SearchBox/searchBox';
 
 class DevelopmentSLADashboard extends React.Component { // eslint-disable-line react/prefer-stateless-function
+
+  stats(permits, cFields) {
+    const counters = {};
+    cFields.forEach((field) => {
+      counters[field] = {};
+    });
+    permits.forEach((permit) => {
+      for (let i = 0; i < cFields.length; ++i) {
+        const field = cFields[i];
+        const c = permit[field];
+        if (!(c in counters[field])) counters[field][c] = 0;
+        ++counters[field][c];
+      }
+    });
+    return counters;
+  }
+
   render() {
+    let counters = {};
+    if (!this.props.data.loading) {
+      counters = this.stats(this.props.data.permits, ['type', 'subtype', 'sla']);
+    }
     return (
       <TopicContainerPage>
-        <div>
-          <h3>Results of a couple hardcoded searches:</h3>
-          <p>{JSON.stringify(this.props.data.address)}</p>
-          <p>{JSON.stringify(this.props.data.search)}</p>
+        <div><br /></div>
+        <div id="full-period-stats">
+          Full period stats:
+          <br />
+          {JSON.stringify(counters)}
         </div>
-        <div>
-          <h2>Search by Civic Address ID</h2>
-          <p>Try 230095</p>
-          <SearchBox />
+        <div id="performance-over-time">
+          Performance over time
         </div>
-        And that is all folks.
       </TopicContainerPage>
     );
   }
@@ -35,32 +53,25 @@ DevelopmentSLADashboard.propTypes = {
   dispatch: React.PropTypes.func,
 };
 
-const sampleCivicAddressId = '230095';
-
 const myQuery = gql`
   query {
-    search (searchString: "230095", searchContexts:["civicAddressId", "alialiuncomefree"]) {
+    permits {
+      permit_id
       type
-      results {
-        ... on SillyResult {
-          id
-          text
-          score
-        }
-        ... on AddressResult {
-          score
-          civic_address_id
-          full_address
-          pin
-          owner
-          is_in_city
-        }
-      }
-    }
-    address (id: ${sampleCivicAddressId}) {
-      full_address
-      is_in_city
-      pin
+      subtype
+      category
+      app_date
+      app_status
+      app_status_date
+      trips
+      violation
+      violation_count
+      violation_days
+      sla
+      building
+      fire
+      zoning
+      addressing
     }
   }
 `;

@@ -70,6 +70,14 @@ export default function createRoutes(store) {
           .then(loadModule(cb))
           .catch(errorLoading);
       },
+    }, { // EJ Adding from here
+      path: '/topics/development-sla-dashboard',
+      name: 'developmentSLADashboard',
+      getComponent(location, cb) {
+        System.import('topics/development/performance/DevelopmentSLADashboard/developmentSLADashboard')
+          .then(loadModule(cb))
+          .catch(errorLoading);
+      }, // to here
     }, {
       path: '*',
       name: 'notfound',

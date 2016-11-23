@@ -63,7 +63,7 @@ const myQuery = gql`
       app_date
       app_status
       app_status_date
-      trips
+      ntrips
       violation
       violation_count
       violation_days
@@ -72,6 +72,15 @@ const myQuery = gql`
       fire
       zoning
       addressing
+      trips {
+        trip
+        start_date
+        end_date
+        due_date
+        trip_violation_days
+        trip_sla
+        division
+      }
     }
   }
 `;

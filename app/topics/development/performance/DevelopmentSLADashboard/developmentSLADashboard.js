@@ -8,8 +8,7 @@ import React from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import TopicContainerPage from '../../../../containers/TopicContainerPage/topicContainerPage';
-// I have no idea why ESLint is complaining about the following line, which seems to work.
-require('./dashboard.css');
+import './dashboard.css';
 
 class DevelopmentSLADashboard extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {

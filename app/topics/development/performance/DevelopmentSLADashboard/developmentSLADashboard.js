@@ -1,13 +1,10 @@
-/**
-*
-* GqlTest
-*
-*/
-
 import React from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import TopicContainerPage from '../../../../containers/TopicContainerPage/topicContainerPage';
+import PieChart from '../../../../components/PieChart/pieChart';
+import BarChart from '../../../../components/BarChart/barChart';
+
 import './dashboard.css';
 
 class DevelopmentSLADashboard extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -18,6 +15,8 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
       end: null,
       commercial: true,
       residential: true,
+      timeBy: 'week', // options: month, week, day-of-week
+      timeFor: 'permits', // permits, violations, reviews
       slaToggles: [
         { name: '1', show: true },
         { name: '3', show: true },
@@ -39,6 +38,30 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
         None: 7,
       },
     };
+    this.updateDateRange = this.updateDateRange.bind(this);
+    this.checkType = this.checkType.bind(this); // eslint-disable-line react/jsx-no-bind
+    this.handleTimeBy = this.handleTimeBy.bind(this);
+    this.handleTimeFor = this.handleTimeFor.bind(this);
+  }
+
+  // Returns the ISO week of the date. From https://weeknumber.net/how-to/javascript
+  getWeek(dd) {
+    const date = new Date(dd.getTime());
+    date.setHours(0, 0, 0, 0);
+    // Thursday in current week decides the year.
+    date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7); // eslint-disable-line no-mixed-operators
+    // January 4 is always in week 1.
+    const week1 = new Date(date.getFullYear(), 0, 4);
+    // Adjust to Thursday in week 1 and count number of weeks from date to week1.
+    return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 // eslint-disable-line no-mixed-operators
+                          - 3 + (week1.getDay() + 6) % 7) / 7); // eslint-disable-line no-mixed-operators
+  }
+
+  // Returns the four-digit year corresponding to the ISO week of the date.
+  getWeekYear(dd) {
+    const date = new Date(dd.getTime());
+    date.setDate((date.getDate() + 3) - (date.getDay() + 6) % 7); // eslint-disable-line no-mixed-operators
+    return date.getFullYear();
   }
 
   inDateRange(inDate) {
@@ -51,14 +74,57 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
     return inRange;
   }
 
+  dateIndex(date) {
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    let idx = null;
+    if (this.state.timeBy === 'month') {
+      const m = date.getMonth();
+      idx = { index: m, value: months[m] };
+    } else if (this.state.timeBy === 'week') {
+      const week = this.getWeek(date);
+      const dd = new Date(date.getTime());
+      dd.setHours(0, 0, 0, 0);
+      dd.setDate(dd.getDate() - (dd.getDay() + 6) % 7); // eslint-disable-line no-mixed-operators
+      idx = { index: week, value: months[dd.getMonth()] };
+    } else if (this.state.timeBy === 'day-of-week') {
+      const day = date.getDay();
+      idx = { index: day, value: days[day] };
+    }
+    return idx;
+  }
+
   stats(permits, cFields) {
     const slaToggles = this.state.slaToggles;
     const slaIndex = this.state.slaIndex;
+    const stats = {};
     const counters = {};
-    this.total = 0;
+    let i;
     cFields.forEach((field) => {
       counters[field] = {};
     });
+    const timeStats = {
+      permits: {
+        data: [],
+        labels: [],
+        minIndex: Number.MAX_SAFE_INTEGER,
+      },
+      violations: {
+        data: [],
+        labels: [],
+        minIndex: Number.MAX_SAFE_INTEGER,
+      },
+      reviews: {
+        data: [],
+        labels: [],
+        minIndex: Number.MAX_SAFE_INTEGER,
+      },
+    };
+    stats.permitsWithViolations = 0;
+    stats.totalViolations = 0;
+    stats.totalPermits = 0;
+    stats.daysLate = [0, 0, 0];
+    const daysLate = [];
     permits.forEach((permit) => {
       if (this.inDateRange(permit.app_date)) {
         let included = true;
@@ -69,8 +135,45 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
           included = false;
         }
         if (included) {
-          ++this.total;
-          for (let i = 0; i < cFields.length; ++i) {
+          stats.totalPermits++;
+          // Time series
+          let idx = this.dateIndex(new Date(permit.app_date));
+
+          if (!(timeStats.permits.data[idx.index])) {
+            timeStats.permits.data[idx.index] = 0;
+            timeStats.permits.labels[idx.index] = idx.value;
+            timeStats.permits.minIndex = Math.min(timeStats.permits.minIndex, idx.index);
+          }
+          timeStats.permits.data[idx.index] += 1;
+
+          if (permit.violation) {
+            if (!(timeStats.violations.data[idx.index])) {
+              timeStats.violations.data[idx.index] = 0;
+              timeStats.violations.labels[idx.index] = idx.value;
+              timeStats.violations.minIndex = Math.min(timeStats.violations.minIndex, idx.index);
+            }
+            timeStats.violations.data[idx.index] += 1;
+          }
+
+          if (permit.violation) {
+            ++stats.permitsWithViolations;
+            stats.totalViolations += permit.violation_count;
+            if (permit.trips && permit.trips.length > 0) {
+              permit.trips.forEach((trip) => {
+                if (trip.trip_violation_days > 0) {
+                  daysLate.push(Number(trip.trip_violation_days));
+                  idx = this.dateIndex(new Date(trip.start_date));
+                  if (!(timeStats.reviews.data[idx.index])) {
+                    timeStats.reviews.data[idx.index] = 0;
+                    timeStats.reviews.labels[idx.index] = idx.value;
+                    timeStats.reviews.minIndex = Math.min(timeStats.reviews.minIndex, idx.index);
+                  }
+                  timeStats.reviews.data[idx.index] += 1;
+                }
+              });
+            }
+          }
+          for (i = 0; i < cFields.length; ++i) {
             const field = cFields[i];
             const c = permit[field];
             if (!(c in counters[field])) counters[field][c] = 0;
@@ -79,7 +182,69 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
         }
       }
     });
-    return counters;
+
+    if (daysLate.length > 0) {
+      daysLate.sort((val1, val2) => (Number(val1) - Number(val2)));
+
+      stats.daysLate = [
+        daysLate[Math.floor(daysLate.length / 2)],
+        daysLate[0],
+        daysLate[daysLate.length - 1],
+      ];
+    }
+    stats.categoryCounts = {};
+    Object.keys(counters).forEach((field) => {
+      stats.categoryCounts[field] = [];
+      Object.keys(counters[field]).forEach((val) => {
+        stats.categoryCounts[field].push({ key: val, value: counters[field][val] });
+      });
+    });
+
+    // Prune the labels & offset index to 0
+    if (timeStats.permits && timeStats.permits.labels && timeStats.permits.labels.length > 1) {
+      const pdata = timeStats.permits.data;
+      const plabels = timeStats.permits.labels;
+      const minIndex = timeStats.permits.minIndex;
+      timeStats.permits = { data: [], labels: [], minIndex };
+      let last = null;
+      pdata.forEach((item, idx) => {
+        let label = plabels[idx];
+        if (label === last) label = '';
+        last = plabels[idx];
+        timeStats.permits.data[idx - minIndex] = item;
+        timeStats.permits.labels[idx - minIndex] = label;
+      });
+    }
+    if (timeStats.violations && timeStats.violations.labels && timeStats.violations.labels.length > 1) {
+      const pdata = timeStats.violations.data;
+      const plabels = timeStats.violations.labels;
+      const minIndex = timeStats.violations.minIndex;
+      timeStats.violations = { data: [], labels: [], minIndex };
+      let last = null;
+      pdata.forEach((item, idx) => {
+        let label = plabels[idx];
+        if (label === last) label = '';
+        last = plabels[idx];
+        timeStats.violations.data[idx - minIndex] = item;
+        timeStats.violations.labels[idx - minIndex] = label;
+      });
+    }
+    if (timeStats.reviews && timeStats.reviews.labels && timeStats.reviews.labels.length > 1) {
+      const pdata = timeStats.reviews.data;
+      const plabels = timeStats.reviews.labels;
+      const minIndex = timeStats.reviews.minIndex;
+      timeStats.reviews = { data: [], labels: [], minIndex };
+      let last = null;
+      pdata.forEach((item, idx) => {
+        let label = plabels[idx];
+        if (label === last) label = '';
+        last = plabels[idx];
+        timeStats.reviews.data[idx - minIndex] = item;
+        timeStats.reviews.labels[idx - minIndex] = label;
+      });
+    }
+    stats.timeStats = timeStats;
+    return stats;
   }
 
   dateString(date) {
@@ -95,12 +260,12 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
     let end = null;
     if (this.startInput.value.trim().length > 0) {
       try {
-        let date = `${new Date(this.startInput.value.trim())} 00:00:00`;
+        let date = new Date(`${this.startInput.value.trim()} 00:00:00`);
         if (!isNaN(date.getMonth())) {
           start = date;
           this.startInput.value = this.dateString(date);
         }
-        date = `${new Date(this.endInput.value.trim())} 00:00:00`;
+        date = new Date(`${this.endInput.value.trim()} 00:00:00`);
         if (!isNaN(date.getMonth())) {
           end = date;
           this.endInput.value = this.dateString(date);
@@ -135,30 +300,140 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
     }
   }
 
-  render() {
-    let counters = {};
-    this.total = 0;
+  handleTimeBy(e) {
+    this.setState({ timeBy: e.target.value });
+  }
 
-    if (!this.props.data.loading) {
-      counters = this.stats(this.props.data.permits, ['type', 'subtype', 'sla']);
+  handleTimeFor(e) {
+    this.setState({ timeFor: e.target.value });
+  }
+
+  badge(description, value, min = null, max = null) {
+    let divStyle = {
+      borderStyle: 'solid',
+      borderRadius: '5px',
+      borderWidth: 'thick',
+      width: '200px',
+      textAlign: 'center',
+      display: 'inline-block',
+      padding: '5px',
+      marginLeft: '15px',
+      marginRight: '5px',
+    };
+    let minStyle = {
+      fontSize: 'medium',
+      fontWeight: 'bold',
+      marginRight: '25px',
+    };
+    let maxStyle = {
+      fontSize: 'medium',
+      fontWeight: 'bold',
+      marginLeft: '25px',
+    };
+    let mainStyle = {
+      fontSize: 'x-large',
+      fontWeight: 'bold',
+    };
+    let minSpan = <span style={minStyle}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>;
+    let maxSpan = <span style={maxStyle}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>;
+    if (min) {
+      minSpan = <span style={minStyle}>{min}</span>;
     }
-    const boundUpdateDateRange = this.updateDateRange.bind(this); // eslint-disable-line react/jsx-no-bind
-    const boundCheck = this.checkType.bind(this); // eslint-disable-line react/jsx-no-bind
+    if (max) {
+      maxSpan = <span style={maxStyle}>{max}</span>;
+    }
+    return (
+      <div className="badge" style={divStyle}>
+        <div>
+          {minSpan}
+          <span style={mainStyle}>{`${value}`}</span>
+          {maxSpan}
+        </div>
+        <div>
+          <span style={{ fontWeight: 'bold' }}>{description}</span>
+        </div>
+      </div>
+    );
+  }
+
+  pieChart(data, title) {
+    const pieStyle = {
+      width: '33%',
+      display: 'inline-block',
+    };
+    return <div style={pieStyle}><PieChart data={data} title={title} /></div>;
+  }
+
+  barChart(data, labels, title) {
+    return <BarChart data={data} labels={labels} title={title} />;
+  }
+
+  createTimeTitle() {
+    switch (this.state.timeFor) {
+      case 'permits':
+        return 'Permits Filed By Application Date';
+      case 'violations':
+        return 'Permit SLA Failures By Application Date';
+      case 'reviews':
+        return 'Review SLA Failures By Review Start Date';
+      default:
+        return 'Unknown';
+    }
+  }
+
+  render() {
+    let stats = {
+      permitsWithViolations: 0,
+      totalViolations: 0,
+      totalPermits: 0,
+      daysLate: [0, 0, 0],
+      categoryCounts: {
+        type: null,
+        subtype: null,
+        sla: null,
+      },
+      timeStats: {
+        permits: {
+          data: [],
+          labels: [],
+        },
+        violations: {
+          data: [],
+          labels: [],
+        },
+        reviews: {
+          data: [],
+          labels: [],
+        },
+      },
+    };
+    let pctFailures = 0;
+    if (!this.props.data.loading) {
+      stats = this.stats(this.props.data.permits, ['type', 'subtype', 'sla']);
+      if (stats.permitsWithViolations > 0) {
+        pctFailures = ((100 * stats.permitsWithViolations) / (stats.totalPermits)).toFixed(0);
+      }
+    }
+    const timeTitle = this.createTimeTitle();
+    const timeData = stats.timeStats[this.state.timeFor].data;
+    const timeLabels = stats.timeStats[this.state.timeFor].labels;
+
+
     return (
       <TopicContainerPage>
-        <div>
+        <div id="data-filter-section">
           <div id="date-inputs" style={{ marginBottom: '15px' }}>
             <label htmlFor="startdate">Start Date: </label>
             <input ref={(input) => { this.startInput = input; }} defaultValue="" name="startdate" />
             <label htmlFor="enddate">End Date: </label>
             <input id="end-date" ref={(input) => { this.endInput = input; }} defaultValue="" name="enddate" />
-            <input type="button" value="Update Date Range" onClick={boundUpdateDateRange} />
+            <input type="button" value="Update Date Range" onClick={this.updateDateRange} />
           </div>
           <div id="type-inputs" style={{ marginBottom: '15px' }}>
             <label htmlFor="commtoggle">Commercial: </label>
-            <input type="checkbox" name="commtoggle" id="commercial-toggle" checked={this.state.commercial} onChange={boundCheck} />
+            <input type="checkbox" name="commtoggle" id="commercial-toggle" checked={this.state.commercial} onChange={this.checkType} />
             <label htmlFor="restoggle">Residential: </label>
-            <input type="checkbox" name="restoggle" id="residential-toggle" checked={this.state.residential} onChange={boundCheck} />
+            <input type="checkbox" name="restoggle" id="residential-toggle" checked={this.state.residential} onChange={this.checkType} />
           </div>
           <div id="sla-inputs" style={{ marginBottom: '15px', marginLeft: '15px' }}>
             <b>SLAs: </b>&nbsp;
@@ -170,7 +445,7 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
                   name={`slacheck${idx}`}
                   id={`slatoggle-${sla.name}`}
                   checked={sla.show}
-                  onChange={boundCheck}
+                  onChange={this.checkType}
                 />
               </span>
             )}
@@ -178,19 +453,40 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
 
         </div>
         <div>
+          <div id="full-period-stats">
+            {this.badge('Total Permits', stats.totalPermits)}
+            {this.badge('Permits Failing SLA', stats.permitsWithViolations, null, `${pctFailures}%`)}
+            {this.badge('Total SLA Failures', stats.totalViolations)}
+            {this.badge('Days Late', stats.daysLate[0], stats.daysLate[1], stats.daysLate[2])}
+          </div>
           <br />
-          <p><b>Total Permits:</b> {this.total}</p>
-          <p><span>&nbsp;&nbsp;&nbsp;</span><b>Commercial:</b> {counters.type ? counters.type.Commercial : 0}</p>
-          <p><span>&nbsp;&nbsp;&nbsp;</span><b>Residential:</b> {counters.type ? counters.type.Residential : 0}</p>
-          <br />
-        </div>
-        <div id="full-period-stats">
-          Full period stats:
-          <br />
-          {JSON.stringify(counters)}
+          <div id="full-period-charts">
+          {this.pieChart(stats.categoryCounts.type, 'Permit Type')}
+          {this.pieChart(stats.categoryCounts.subtype, 'Permit SubType')}
+          {this.pieChart(stats.categoryCounts.sla, 'SLA')}
+          </div>
         </div>
         <div id="performance-over-time">
-          Performance over time
+          <div>
+            <h2>Performance over time</h2>
+            <div style={{ float: 'right' }}>
+              <label htmlFor="timeby">Time:</label>
+              <select name="timeby" value={this.state.timeBy} onChange={this.handleTimeBy}>
+                <option value="month">Monthly</option>
+                <option value="week">Weekly</option>
+                <option value="day-of-week">Day of Week</option>
+              </select>
+            </div>
+            <div style={{ float: 'right' }}>
+              <label htmlFor="timefor">Statistic:</label>
+              <select name="timefor" value={this.state.timeFor} onChange={this.handleTimeFor}>
+                <option value="permits">Permits</option>
+                <option value="violations">SLA Failures</option>
+                <option value="reviews">Review Failures</option>
+              </select>
+            </div>
+          </div>
+          {this.barChart(timeData, timeLabels, timeTitle)}
         </div>
       </TopicContainerPage>
     );

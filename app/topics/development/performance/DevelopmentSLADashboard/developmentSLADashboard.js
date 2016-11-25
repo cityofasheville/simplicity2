@@ -361,11 +361,13 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
       width: '33%',
       display: 'inline-block',
     };
-    return <div style={pieStyle}><PieChart data={data} title={title} /></div>;
+    if (data) return <div style={pieStyle}><PieChart data={data} title={title} /></div>;
+    return '';
   }
 
   barChart(data, labels, title) {
-    return <BarChart data={data} labels={labels} title={title} />;
+    if (data) return <BarChart data={data} labels={labels} title={title} />;
+    return '';
   }
 
   createTimeTitle() {
@@ -407,6 +409,7 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
         },
       },
     };
+
     let pctFailures = 0;
     if (!this.props.data.loading) {
       stats = this.stats(this.props.data.permits, ['type', 'subtype', 'sla']);
@@ -414,10 +417,10 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
         pctFailures = ((100 * stats.permitsWithViolations) / (stats.totalPermits)).toFixed(0);
       }
     }
+
     const timeTitle = this.createTimeTitle();
     const timeData = stats.timeStats[this.state.timeFor].data;
     const timeLabels = stats.timeStats[this.state.timeFor].labels;
-
 
     return (
       <TopicContainerPage>

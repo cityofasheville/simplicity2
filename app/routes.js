@@ -71,7 +71,7 @@ export default function createRoutes(store) {
           .catch(errorLoading);
       },
     }, { // EJ Adding from here
-      path: '/topics/development-sla-dashboard',
+      path: '/topics/development/performance/development-sla-dashboard',
       name: 'developmentSLADashboard',
       getComponent(location, cb) {
         System.import('topics/development/performance/DevelopmentSLADashboard/developmentSLADashboard')

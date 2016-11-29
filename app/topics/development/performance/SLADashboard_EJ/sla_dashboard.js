@@ -362,6 +362,8 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
     };
 
     let pctFailures = 0;
+    let categoryCounts = { type: null, subtype: null, sla: null };
+
     if (!this.props.data.loading) {
       const filters = [
         { type: 'date_range', field: 'app_date', values: [this.state.start, this.state.end] },
@@ -370,7 +372,7 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
       ];
       const permits = Statistics.filter(this.props.data.permits, filters);
       stats = this.stats(permits);
-      stats.categoryCounts = Statistics.categoryCounts(permits, ['type', 'subtype', 'sla']);
+      categoryCounts = Statistics.categoryCounts(permits, ['type', 'subtype', 'sla']);
       if (stats.permitsWithViolations > 0) {
         pctFailures = ((100 * stats.permitsWithViolations) / (stats.totalPermits)).toFixed(0);
       }
@@ -422,9 +424,9 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
           </div>
           <br />
           <div id="full-period-charts">
-          {this.pieChart(stats.categoryCounts.type, 'Permit Type')}
-          {this.pieChart(stats.categoryCounts.subtype, 'Permit SubType')}
-          {this.pieChart(stats.categoryCounts.sla, 'SLA')}
+          {this.pieChart(categoryCounts.type, 'Permit Type')}
+          {this.pieChart(categoryCounts.subtype, 'Permit SubType')}
+          {this.pieChart(categoryCounts.sla, 'SLA')}
           </div>
         </div>
         <div id="performance-over-time">

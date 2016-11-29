@@ -31,7 +31,7 @@ const plugins = [
   new CopyWebpackPlugin([
     { from: `${process.cwd()}/app/login.html`, force: true },
   ]),
-  new ExtractTextPlugin('boostrap.css')
+  new ExtractTextPlugin('boostrap.css'),
 ];
 
 module.exports = require('./webpack.base.babel')({
@@ -52,7 +52,7 @@ module.exports = require('./webpack.base.babel')({
   plugins: dependencyHandlers().concat(plugins), // eslint-disable-line no-use-before-define
 
   // Load sass
-  scssLoaders: ExtractTextPlugin.extract('style','css?sourceMap!sass?sourceMap'),
+  scssLoaders: ExtractTextPlugin.extract('style', 'css?sourceMap!sass?sourceMap'),
 
   // Load the CSS in a style tag in development
   cssLoaders: 'style-loader!css-loader?localIdentName=[local]__[path][name]__[hash:base64:5]&modules&importLoaders=1&sourceMap!postcss-loader',

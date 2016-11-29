@@ -6,63 +6,58 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link, browserHistory } from 'react-router';
-import { FormattedMessage } from 'react-intl';
-import messages from './navbarContainerMessages';
-import styles from './navbarContainerStyles.css';
-
-
+// import { browserHistory } from 'react-router';
+// import { FormattedMessage } from 'react-intl';
+// import messages from './navbarContainerMessages';
+// import styles from './navbarContainerStyles.css';
 // import NavbarLink from 'components/NavbarLink/navbarLink';
-import LoginContainer from 'containers/LoginContainer/loginContainer';
+// import LoginContainer from 'containers/LoginContainer/loginContainer';
 
 export class NavbarContainer extends React.Component { // eslint-disable-line react/prefer-stateless-function
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      navbarCollapse: "collapse",
-      navbarDropdown: "",
-      navbarDisplay: "block",
+      navbarCollapse: 'collapse',
+      navbarDropdown: '',
+      navbarDisplay: 'block',
     };
 
     this.toggleNavbarCollapse = this.toggleNavbarCollapse.bind(this);
     this.toggleNavbarDropdown = this.toggleNavbarDropdown.bind(this);
+    this.setNavbarDisplay = this.setNavbarDisplay.bind(this);
   }
 
-  toggleNavbarCollapse(){
-    if(this.state.navbarCollapse == "collapse"){
-      this.setState({navbarCollapse: "collapsed"});
-    }else{
-      this.setState({navbarCollapse: "collapse"});
+  setNavbarDisplay() {
+    if (window.location.pathname === '/search-results') {
+      this.setState({ navbarDisplay: 'none' });
+    } else {
+      this.setState({ navbarDisplay: 'block' });
     }
   }
 
-  toggleNavbarDropdown(){
-    if(this.state.navbarDropdown == ""){
-      this.setState({navbarDropdown: "open"});
-    }else{
-      this.setState({navbarDropdown: ""});
+  toggleNavbarCollapse() {
+    if (this.state.navbarCollapse === 'collapse') {
+      this.setState({ navbarCollapse: 'collapsed' });
+    } else {
+      this.setState({ navbarCollapse: 'collapse' });
     }
   }
 
-  componentDidMount(){
-    console.log("componentDidMount");
-    if(window.location.pathname === "/search-results"){
-      this.setState({navbarDisplay: "none"})
-    }else{
-      this.setState({navbarDisplay: "block"})
+  toggleNavbarDropdown() {
+    if (this.state.navbarDropdown === '') {
+      this.setState({ navbarDropdown: 'open' });
+    } else {
+      this.setState({ navbarDropdown: '' });
     }
   }
-
-
 
   render() {
-
     return (
-      <div style={{display: this.state.navbarDisplay}}>
+      <div style={{ display: this.state.navbarDisplay }}>
         <nav className="navbar navbar-default">
           <div className="container-fluid">
             <div className="navbar-header">
-              <button type="button" className="navbar-toggle collapsed" onClick = {this.toggleNavbarCollapse} aria-expanded="false">
+              <button type="button" className="navbar-toggle collapsed" onClick={this.toggleNavbarCollapse} aria-expanded="false">
                 <span className="sr-only">Toggle navigation</span>
                 <span className="icon-bar"></span>
                 <span className="icon-bar"></span>
@@ -70,16 +65,16 @@ export class NavbarContainer extends React.Component { // eslint-disable-line re
               </button>
               <a className="navbar-brand" href="/">SimpliCity</a>
             </div>
-            <div className={[this.state.navbarCollapse, "navbar-collapse"].join(" ")}>
+            <div className={[this.state.navbarCollapse, 'navbar-collapse'].join(' ')}>
               <ul className="nav navbar-nav navbar-right">
                 <li><a href="/my-simplicity">My SimpliCity</a></li>
                 <li><a href="/topics">Topics</a></li>
                 <li><a href="/search-results?text="><i className="fa fa-search"></i></a></li>
-                <li className={["dropdown", this.state.navbarDropdown].join(" ")}>
-                  <a href="#" className="dropdown-toggle" onClick= {this.toggleNavbarDropdown} data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Cameron Carlyle <span className="caret"></span></a>
+                <li className={['dropdown', this.state.navbarDropdown].join(' ')}>
+                  <a className="dropdown-toggle" onClick={this.toggleNavbarDropdown} data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Cameron Carlyle <span className="caret"></span></a>
                   <ul className="dropdown-menu">
-                    <li><a href="#">Profile</a></li>
-                    <li><a href="#">Log Out</a></li>
+                    <li><a href="/profile">Profile</a></li>
+                    <li><a href="/log-out">Log Out</a></li>
                   </ul>
                 </li>
               </ul>
@@ -95,7 +90,7 @@ function mapStateToProps(state, ownProps) {
   const { navbarContainer } = state;
   const props = {
     navbarContainer,
-    location: ownProps
+    location: ownProps,
   };
   return props;
 }

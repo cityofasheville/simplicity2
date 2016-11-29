@@ -7,7 +7,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
-import { Link, browserHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 import Helmet from 'react-helmet';
 
 
@@ -23,11 +23,11 @@ import styles from './homePageStyles.css';
 
 export class HomePage extends React.Component {
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      searchText: ""
-    }
+      searchText: '',
+    };
 
     this.handleSearchOnKeyUp = this.handleSearchOnKeyUp.bind(this);
   }
@@ -49,21 +49,20 @@ export class HomePage extends React.Component {
     this.props.changeRoute(route);
   };
 
-  handleSearchOnKeyUp(e){
-    browserHistory.push(`/search-results?text=${e.target.value}`)
+  handleSearchOnKeyUp(e) {
+    browserHistory.push(`/search-results?text=${e.target.value}`);
   }
 
 
   render() {
     return (
-      <article className="container">
+      <div className="container">
         <Helmet
           title="Home Page"
           meta={[
             { name: 'description', content: 'SimpliCity homepage' },
           ]}
         />
-        <div>
         <div className="col-md-8 col-md-offset-2">
           <h1 className={styles.homeTitle}>SimpliCity</h1>
           <form>
@@ -80,25 +79,24 @@ export class HomePage extends React.Component {
             </div>
           </form>
         </div>
-        <div className={["col-md-12", styles.bigNavWrapper].join(" ")}>
-            <div className={["col-md-4", styles.bigNavButtonWrapper].join(" ")}>
-              <div className={["col-xs-12", styles.bigNavButton].join(" ")}>
-                Citywide Topics
-              </div>
+        <div className={['col-md-12', styles.bigNavWrapper].join(' ')}>
+          <div className={['col-md-4', styles.bigNavButtonWrapper].join(' ')}>
+            <div className={['col-xs-12', styles.bigNavButton].join(' ')}>
+            Citywide Topics
             </div>
-            <div className={["col-md-4", styles.bigNavButtonWrapper].join(" ")}>
-              <div className={["col-xs-12", styles.bigNavButton].join(" ")}>
-                Citywide Performance
-              </div>
+          </div>
+          <div className={['col-md-4', styles.bigNavButtonWrapper].join(' ')}>
+            <div className={['col-xs-12', styles.bigNavButton].join(' ')}>
+            Citywide Performance
             </div>
-            <div className={["col-md-4", styles.bigNavButtonWrapper].join(" ")}>
-              <div className={["col-xs-12", styles.bigNavButton].join(" ")}>
-                Explore with a Map
-              </div>
+          </div>
+          <div className={['col-md-4', styles.bigNavButtonWrapper].join(' ')}>
+            <div className={['col-xs-12', styles.bigNavButton].join(' ')}>
+            Explore with a Map
             </div>
+          </div>
         </div>
-        </div>
-      </article>
+      </div>
     );
   }
 }

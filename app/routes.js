@@ -70,6 +70,22 @@ export default function createRoutes(store) {
           .then(loadModule(cb))
           .catch(errorLoading);
       },
+    }, { // EJ Adding from here
+      path: '/topics/development/performance/sla-dashboard',
+      name: 'SLADashboard',
+      getComponent(location, cb) {
+        System.import('topics/development/performance/SLADashboard/sla_dashboard')
+          .then(loadModule(cb))
+          .catch(errorLoading);
+      }, // to here
+    }, {
+      path: '/topics/development/performance/sla-dashboard-ej',
+      name: 'SLADashboardEJ',
+      getComponent(location, cb) {
+        System.import('topics/development/performance/SLADashboard_EJ/sla_dashboard')
+          .then(loadModule(cb))
+          .catch(errorLoading);
+      }, // to here
     }, {
       path: '/search-results',
       name: 'searchResultsPage',

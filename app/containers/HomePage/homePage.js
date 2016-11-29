@@ -22,6 +22,16 @@ import { loadRepos } from '../App/appActions';
 import styles from './homePageStyles.css';
 
 export class HomePage extends React.Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+      searchText: ""
+    }
+
+    this.handleSearchOnKeyUp = this.handleSearchOnKeyUp.bind(this);
+  }
+
   /**
    * when initial state username is not null, submit the form to load repos
    */
@@ -39,16 +49,14 @@ export class HomePage extends React.Component {
     this.props.changeRoute(route);
   };
 
-  /**
-   * Changed route to '/features'
-   */
-  openFeaturesPage = () => {
-    this.openRoute('/features');
-  };
+  handleSearchOnKeyUp(e){
+    browserHistory.push(`/search-results?text=${e.target.value}`)
+  }
+
 
   render() {
     return (
-      <article>
+      <article className="container">
         <Helmet
           title="Home Page"
           meta={[
@@ -56,52 +64,39 @@ export class HomePage extends React.Component {
           ]}
         />
         <div>
-          <section className={styles.homeMain}>
-            <p className={styles.theCityOfAshevilles}>The City of Asheville's</p>
-            <h1 className={styles.homeTitle}>SimpliCity</h1>
-            <p className={styles.citydatasimplified}>city data simplified</p>
-            <div className={styles.searchComponent}>
-              <div className={styles.searchComponentWrapper}>
-                <button className={styles.allDropdown}>
-                  All <i className="fa fa-caret-down" aria-hidden="true"></i>
-                </button>
-                <input
-                  className={styles.searchInput}
-                  ref={() => this.searchInput}
-                  onKeyUp={() => { browserHistory.push(`/search-results?text=${this.searchInput.value}`); }}
-                  placeholder="Search for a location, name or ID..."
-                  type="text"
-                />
-                <button className={styles.searchButton}>
-                  <i className="fa fa-search" aria-hidden="true"></i>
-                </button>
-              </div>
+        <div className="col-md-8 col-md-offset-2">
+          <h1 className={styles.homeTitle}>SimpliCity</h1>
+          <form>
+            <div className="input-group">
+              <input
+                type="text"
+                className="form-control"
+                onKeyUp={this.handleSearchOnKeyUp}
+                placeholder="Search for a location, name or ID..."
+              />
+              <span className="input-group-btn">
+                <button className="btn btn-primary" type="button"><i className="fa fa-search"></i></button>
+              </span>
             </div>
-          </section>
-          <section>
-            <div className={styles.bigNavButtons}>
-              <div className={styles.bigNavButton}>
+          </form>
+        </div>
+        <div className={["col-md-12", styles.bigNavWrapper].join(" ")}>
+            <div className={["col-md-4", styles.bigNavButtonWrapper].join(" ")}>
+              <div className={["col-xs-12", styles.bigNavButton].join(" ")}>
                 Citywide Topics
               </div>
-              <div className={styles.bigNavButton}>
+            </div>
+            <div className={["col-md-4", styles.bigNavButtonWrapper].join(" ")}>
+              <div className={["col-xs-12", styles.bigNavButton].join(" ")}>
                 Citywide Performance
               </div>
-              <div className={styles.bigNavButton}>
+            </div>
+            <div className={["col-md-4", styles.bigNavButtonWrapper].join(" ")}>
+              <div className={["col-xs-12", styles.bigNavButton].join(" ")}>
                 Explore with a Map
               </div>
-
             </div>
-          </section>
-          <section>
-            <div className={styles.bigNavButtons}>
-              <div className={styles.bigNavButton}>
-                <Link to="/topics/topic-container-page">Test Topic Container Page</Link>
-              </div>
-              <div className={styles.bigNavButton}>
-                <Link to="/topics/topic-container-page">Test Topic Container Page</Link>
-              </div>
-            </div>
-          </section>
+        </div>
         </div>
       </article>
     );

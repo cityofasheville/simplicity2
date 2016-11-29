@@ -1,118 +1,32 @@
-section {
-  lost-column: 1/1 1;
-  margin-top: 20px;
-}
-
-.homeMain {
-  min-height: 300px;
-  margin-top: 150px;
-}
-
 .homeTitle {
   font-weight: 100;
-  color: #335984;
+  color: #4579B3;
   font-size: 60px;
   margin: 0px;
+  margin-top: 100px;
+  margin-bottom: 20px;
   text-align: center;
 }
-
-.theCityOfAshevilles {
-  font-weight: 500;
-  color: #A7BFD4;
-  font-size: 14px;
-  margin-bottom: -22px;
-  text-align: center;
-}
-
-.citydatasimplified {
-  font-weight: 500;
-  color: #9E9E9E;
-  margin-top: -15px;
-  text-align: center;
-  line-height: 1.2;
-}
-
-.link {
-  text-decoration: none;
-}
-
-.usernameForm {
-  margin-bottom: 1em;
-}
-
-.searchComponentWrapper {
-  left: 50%;
-  right: 50%;
-  min-width: 611px;
-}
-
-.searchComponent {
-  lost-center: 70%;
-  lost-align: center;
-  min-height: 50px;
-}
-
-.menu {
-  font-size: 30px;
-}
-
-.allDropdown {
-  width: 71px;
-  height: 40px;
-  background: #9E9E9E;
-  color: white;
-  font-size: 25px;
-  margin: 0px;
-  padding: 0px;
-}
-
-.searchInput {
-  min-width: 500px;
-  height: 40px;
-  border: 1px solid #9E9E9E;
-  font-size: 25px;
-  outline: none;
-}
-
-.searchInput::placeholder {
-  font-weight: 700;
-  color: #CCC;
-  padding-left: 10px;
-}
-
-.searchInput:focus {
-  border: 2px solid #335984;
-  outline: none;
-}
-
-.searchButton {
-  height: 40px;
-  width: 40px;
-  background: #335984;
-  color: white;
-  font-size: 25px;
-}
-
-.bigNavButtons {
-  lost-center: 80%;
-  lost-utility: clearfix;
+.bigNavWrapper{
+  margin-top: 100px;
 }
 
 .bigNavButton {
-  lost-column: 1/3 3;
-  background: #E0E0E0;
+  background: #fff;
   color: #9E9E9E;
   font-weight: 500;
   height: 80px;
   text-align: center;
   vertical-align: middle;
   padding: 25px;
+  margin: 10px;
   font-size: 18px;
+  border-radius: 4px;
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
 }
 
 .bigNavButton:hover {
   box-shadow: 3px 3px 9px rgba(0, 0, 0, 0.4);
-  margin-top: -5px;
+  margin-top: -1px;
   cursor: pointer;
 }

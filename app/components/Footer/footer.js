@@ -9,7 +9,6 @@ function Footer() {
   return (
     <footer className={styles.footer}>
       <section>
-      This is the footer
       </section>
     </footer>
   );

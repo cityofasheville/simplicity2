@@ -16,54 +16,86 @@ import styles from './navbarContainerStyles.css';
 import LoginContainer from 'containers/LoginContainer/loginContainer';
 
 export class NavbarContainer extends React.Component { // eslint-disable-line react/prefer-stateless-function
+  constructor(props){
+    super(props);
+    this.state = {
+      navbarCollapse: "collapse",
+      navbarDropdown: "",
+      navbarDisplay: "block",
+    };
+
+    this.toggleNavbarCollapse = this.toggleNavbarCollapse.bind(this);
+    this.toggleNavbarDropdown = this.toggleNavbarDropdown.bind(this);
+  }
+
+  toggleNavbarCollapse(){
+    if(this.state.navbarCollapse == "collapse"){
+      this.setState({navbarCollapse: "collapsed"});
+    }else{
+      this.setState({navbarCollapse: "collapse"});
+    }
+  }
+
+  toggleNavbarDropdown(){
+    if(this.state.navbarDropdown == ""){
+      this.setState({navbarDropdown: "open"});
+    }else{
+      this.setState({navbarDropdown: ""});
+    }
+  }
+
+  componentDidMount(){
+    console.log("componentDidMount");
+    if(window.location.pathname === "/search-results"){
+      this.setState({navbarDisplay: "none"})
+    }else{
+      this.setState({navbarDisplay: "block"})
+    }
+  }
+
+
+
   render() {
+
     return (
-      <div className={styles.navbarContainer}>
-        <nav>
-          <Link className={styles.navbarTitle} to="/"><FormattedMessage {...messages.title} /></Link>
-          <div className={styles.searchComponentWrapper}>
-            <button className={styles.allDropdown}>
-              All
-              <i className="fa fa-caret-down" aria-hidden="true"></i>
-            </button>
-            <input
-              className={styles.searchInput}
-              ref={() => this.searchInput}
-              onKeyUp={() => { browserHistory.push(`/search-results?text=${this.searchInput.value}`); }}
-              placeholder="Search for a location, name or ID..."
-              type="text"
-            />
-            <button className={styles.searchButton}>
-              <i className="fa fa-search" aria-hidden="true"></i>
-            </button>
+      <div style={{display: this.state.navbarDisplay}}>
+        <nav className="navbar navbar-default">
+          <div className="container-fluid">
+            <div className="navbar-header">
+              <button type="button" className="navbar-toggle collapsed" onClick = {this.toggleNavbarCollapse} aria-expanded="false">
+                <span className="sr-only">Toggle navigation</span>
+                <span className="icon-bar"></span>
+                <span className="icon-bar"></span>
+                <span className="icon-bar"></span>
+              </button>
+              <a className="navbar-brand" href="/">SimpliCity</a>
+            </div>
+            <div className={[this.state.navbarCollapse, "navbar-collapse"].join(" ")}>
+              <ul className="nav navbar-nav navbar-right">
+                <li><a href="/my-simplicity">My SimpliCity</a></li>
+                <li><a href="/topics">Topics</a></li>
+                <li><a href="/search-results?text="><i className="fa fa-search"></i></a></li>
+                <li className={["dropdown", this.state.navbarDropdown].join(" ")}>
+                  <a href="#" className="dropdown-toggle" onClick= {this.toggleNavbarDropdown} data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Cameron Carlyle <span className="caret"></span></a>
+                  <ul className="dropdown-menu">
+                    <li><a href="#">Profile</a></li>
+                    <li><a href="#">Log Out</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
           </div>
-          <ul className={styles.navbarRight}>
-            <li>
-              <Link className={styles.navbarLink} to="topics" activeClassName={styles.active}>Topics</Link>
-            </li>
-            <li>
-              <Link className={styles.navbarLink} to="performance" activeClassName={styles.active}>Performance</Link>
-            </li>
-            <li>
-              <Link className={styles.navbarLink} to="map" activeClassName={styles.active}>Map</Link>
-            </li>
-            <li>
-              <Link className={styles.navbarLink} to="my-simplicity" activeClassName={styles.active} >My SimpliCity</Link>
-            </li>
-            <li>
-              <LoginContainer className={styles.navbarLink} />
-            </li>
-          </ul>
         </nav>
       </div>
     );
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   const { navbarContainer } = state;
   const props = {
     navbarContainer,
+    location: ownProps
   };
   return props;
 }

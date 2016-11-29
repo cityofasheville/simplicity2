@@ -55,16 +55,6 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
     return date.getFullYear();
   }
 
-  inDateRange(inDate) {
-    let inRange = true;
-    const date = new Date(inDate).getTime();
-    if ((this.state.start && date < this.state.start.getTime()) ||
-        (this.state.end && date > this.state.end.getTime())) {
-      inRange = false;
-    }
-    return inRange;
-  }
-
   dateIndex(date) {
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -84,128 +74,6 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
       idx = { index: day, value: days[day] };
     }
     return idx;
-  }
-
-  stats(permits) {
-    const stats = {};
-    const timeStats = {
-      permits: {
-        data: [],
-        labels: [],
-        minIndex: Number.MAX_SAFE_INTEGER,
-      },
-      violations: {
-        data: [],
-        labels: [],
-        minIndex: Number.MAX_SAFE_INTEGER,
-      },
-      reviews: {
-        data: [],
-        labels: [],
-        minIndex: Number.MAX_SAFE_INTEGER,
-      },
-    };
-    stats.permitsWithViolations = 0;
-    stats.totalViolations = 0;
-    stats.totalPermits = 0;
-    stats.daysLate = [0, 0, 0];
-    const daysLate = [];
-    permits.forEach((permit) => {
-      stats.totalPermits++;
-      // Time series
-      let idx = this.dateIndex(new Date(permit.app_date));
-
-      if (!(timeStats.permits.data[idx.index])) {
-        timeStats.permits.data[idx.index] = 0;
-        timeStats.permits.labels[idx.index] = idx.value;
-        timeStats.permits.minIndex = Math.min(timeStats.permits.minIndex, idx.index);
-      }
-      timeStats.permits.data[idx.index] += 1;
-
-      if (permit.violation) {
-        if (!(timeStats.violations.data[idx.index])) {
-          timeStats.violations.data[idx.index] = 0;
-          timeStats.violations.labels[idx.index] = idx.value;
-          timeStats.violations.minIndex = Math.min(timeStats.violations.minIndex, idx.index);
-        }
-        timeStats.violations.data[idx.index] += 1;
-      }
-
-      if (permit.violation) {
-        ++stats.permitsWithViolations;
-        stats.totalViolations += permit.violation_count;
-        if (permit.trips && permit.trips.length > 0) {
-          permit.trips.forEach((trip) => {
-            if (trip.trip_violation_days > 0) {
-              daysLate.push(Number(trip.trip_violation_days));
-              idx = this.dateIndex(new Date(trip.start_date));
-              if (!(timeStats.reviews.data[idx.index])) {
-                timeStats.reviews.data[idx.index] = 0;
-                timeStats.reviews.labels[idx.index] = idx.value;
-                timeStats.reviews.minIndex = Math.min(timeStats.reviews.minIndex, idx.index);
-              }
-              timeStats.reviews.data[idx.index] += 1;
-            }
-          });
-        }
-      }
-    });
-
-    if (daysLate.length > 0) {
-      daysLate.sort((val1, val2) => (Number(val1) - Number(val2)));
-
-      stats.daysLate = [
-        daysLate[Math.floor(daysLate.length / 2)],
-        daysLate[0],
-        daysLate[daysLate.length - 1],
-      ];
-    }
-
-    // Prune the labels & offset index to 0
-    if (timeStats.permits && timeStats.permits.labels && timeStats.permits.labels.length > 1) {
-      const pdata = timeStats.permits.data;
-      const plabels = timeStats.permits.labels;
-      const minIndex = timeStats.permits.minIndex;
-      timeStats.permits = { data: [], labels: [], minIndex };
-      let last = null;
-      pdata.forEach((item, idx) => {
-        let label = plabels[idx];
-        if (label === last) label = '';
-        last = plabels[idx];
-        timeStats.permits.data[idx - minIndex] = item;
-        timeStats.permits.labels[idx - minIndex] = label;
-      });
-    }
-    if (timeStats.violations && timeStats.violations.labels && timeStats.violations.labels.length > 1) {
-      const pdata = timeStats.violations.data;
-      const plabels = timeStats.violations.labels;
-      const minIndex = timeStats.violations.minIndex;
-      timeStats.violations = { data: [], labels: [], minIndex };
-      let last = null;
-      pdata.forEach((item, idx) => {
-        let label = plabels[idx];
-        if (label === last) label = '';
-        last = plabels[idx];
-        timeStats.violations.data[idx - minIndex] = item;
-        timeStats.violations.labels[idx - minIndex] = label;
-      });
-    }
-    if (timeStats.reviews && timeStats.reviews.labels && timeStats.reviews.labels.length > 1) {
-      const pdata = timeStats.reviews.data;
-      const plabels = timeStats.reviews.labels;
-      const minIndex = timeStats.reviews.minIndex;
-      timeStats.reviews = { data: [], labels: [], minIndex };
-      let last = null;
-      pdata.forEach((item, idx) => {
-        let label = plabels[idx];
-        if (label === last) label = '';
-        last = plabels[idx];
-        timeStats.reviews.data[idx - minIndex] = item;
-        timeStats.reviews.labels[idx - minIndex] = label;
-      });
-    }
-    stats.timeStats = timeStats;
-    return stats;
   }
 
   dateString(date) {
@@ -334,17 +202,112 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
     }
   }
 
+  pruneTimeStats(set) {
+    let newSet = set;
+    if (set && set.labels && set.labels.length > 1) {
+      const pdata = set.data;
+      const plabels = set.labels;
+      const minIndex = set.minIndex;
+      newSet = { data: [], labels: [], minIndex };
+      let last = null;
+      pdata.forEach((item, idx) => {
+        let label = plabels[idx];
+        if (label === last) label = '';
+        last = plabels[idx];
+        newSet.data[idx - minIndex] = item;
+        newSet.labels[idx - minIndex] = label;
+      });
+    }
+    return newSet;
+  }
+
+  stats(permits) {
+    const stats = {};
+    const timeStats = {
+      permits: {
+        data: [],
+        labels: [],
+        minIndex: Number.MAX_SAFE_INTEGER,
+      },
+      violations: {
+        data: [],
+        labels: [],
+        minIndex: Number.MAX_SAFE_INTEGER,
+      },
+      reviews: {
+        data: [],
+        labels: [],
+        minIndex: Number.MAX_SAFE_INTEGER,
+      },
+    };
+    stats.permitsWithViolations = 0;
+    stats.totalViolations = 0;
+    stats.totalPermits = 0;
+    stats.daysLate = [0, 0, 0];
+    const daysLate = [];
+    permits.forEach((permit) => {
+      stats.totalPermits++;
+      // Time series
+      let idx = this.dateIndex(new Date(permit.app_date));
+
+      if (!(timeStats.permits.data[idx.index])) {
+        timeStats.permits.data[idx.index] = 0;
+        timeStats.permits.labels[idx.index] = idx.value;
+        timeStats.permits.minIndex = Math.min(timeStats.permits.minIndex, idx.index);
+      }
+      timeStats.permits.data[idx.index] += 1;
+
+      if (permit.violation) {
+        ++stats.permitsWithViolations;
+        stats.totalViolations += permit.violation_count;
+        if (!(timeStats.violations.data[idx.index])) {
+          timeStats.violations.data[idx.index] = 0;
+          timeStats.violations.labels[idx.index] = idx.value;
+          timeStats.violations.minIndex = Math.min(timeStats.violations.minIndex, idx.index);
+        }
+        timeStats.violations.data[idx.index] += 1;
+
+        if (permit.trips && permit.trips.length > 0) {
+          permit.trips.forEach((trip) => {
+            if (trip.trip_violation_days > 0) {
+              daysLate.push(Number(trip.trip_violation_days));
+              idx = this.dateIndex(new Date(trip.start_date));
+              if (!(timeStats.reviews.data[idx.index])) {
+                timeStats.reviews.data[idx.index] = 0;
+                timeStats.reviews.labels[idx.index] = idx.value;
+                timeStats.reviews.minIndex = Math.min(timeStats.reviews.minIndex, idx.index);
+              }
+              timeStats.reviews.data[idx.index] += 1;
+            }
+          });
+        }
+      }
+    });
+
+    if (daysLate.length > 0) {
+      daysLate.sort((val1, val2) => (Number(val1) - Number(val2)));
+
+      stats.daysLate = [
+        daysLate[Math.floor(daysLate.length / 2)],
+        daysLate[0],
+        daysLate[daysLate.length - 1],
+      ];
+    }
+
+    // Prune the labels & offset index to 0
+    timeStats.permits = this.pruneTimeStats(timeStats.permits);
+    timeStats.violations = this.pruneTimeStats(timeStats.violations);
+    timeStats.reviews = this.pruneTimeStats(timeStats.reviews);
+    stats.timeStats = timeStats;
+    return stats;
+  }
+
   render() {
     let stats = {
       permitsWithViolations: 0,
       totalViolations: 0,
       totalPermits: 0,
       daysLate: [0, 0, 0],
-      categoryCounts: {
-        type: null,
-        subtype: null,
-        sla: null,
-      },
       timeStats: {
         permits: {
           data: [],

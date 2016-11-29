@@ -7,8 +7,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
-import { Link } from 'react-router';
+import { browserHistory } from 'react-router';
 import Helmet from 'react-helmet';
+
 
 // import messages from './homePageMessages';
 
@@ -18,9 +19,19 @@ import { loadRepos } from '../App/appActions';
 // import { FormattedMessage } from 'react-intl';
 
 
-// import styles from './homePageStyles.css';
+import styles from './homePageStyles.css';
 
 export class HomePage extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      searchText: '',
+    };
+
+    this.handleSearchOnKeyUp = this.handleSearchOnKeyUp.bind(this);
+  }
+
   /**
    * when initial state username is not null, submit the form to load repos
    */
@@ -38,32 +49,54 @@ export class HomePage extends React.Component {
     this.props.changeRoute(route);
   };
 
-  /**
-   * Changed route to '/features'
-   */
-  openFeaturesPage = () => {
-    this.openRoute('/features');
-  };
+  handleSearchOnKeyUp(e) {
+    browserHistory.push(`/search-results?text=${e.target.value}`);
+  }
+
 
   render() {
     return (
-      <article>
+      <div className="container">
         <Helmet
           title="Home Page"
           meta={[
             { name: 'description', content: 'SimpliCity homepage' },
           ]}
         />
-        <div>
-          <h1>Home Page</h1>
-          <div>
-            <Link to="/topics/topic-container-page">Test Topic Container Page</Link>
+        <div className="col-md-8 col-md-offset-2">
+          <h1 className={styles.homeTitle}>SimpliCity</h1>
+          <form>
+            <div className="input-group">
+              <input
+                type="text"
+                className="form-control"
+                onKeyUp={this.handleSearchOnKeyUp}
+                placeholder="Search for a location, name or ID..."
+              />
+              <span className="input-group-btn">
+                <button className="btn btn-primary" type="button"><i className="fa fa-search"></i></button>
+              </span>
+            </div>
+          </form>
+        </div>
+        <div className={['col-md-12', styles.bigNavWrapper].join(' ')}>
+          <div className={['col-md-4', styles.bigNavButtonWrapper].join(' ')}>
+            <div className={['col-xs-12', styles.bigNavButton].join(' ')}>
+            Citywide Topics
+            </div>
           </div>
-          <div>
-            <Link to="/topics/development-dashboard">Development Dashboard</Link>
+          <div className={['col-md-4', styles.bigNavButtonWrapper].join(' ')}>
+            <div className={['col-xs-12', styles.bigNavButton].join(' ')}>
+            Citywide Performance
+            </div>
+          </div>
+          <div className={['col-md-4', styles.bigNavButtonWrapper].join(' ')}>
+            <div className={['col-xs-12', styles.bigNavButton].join(' ')}>
+            Explore with a Map
+            </div>
           </div>
         </div>
-      </article>
+      </div>
     );
   }
 }
@@ -92,7 +125,6 @@ function mapDispatchToProps(dispatch) {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(loadRepos());
     },
-
     dispatch,
   };
 }

@@ -17,23 +17,23 @@ class Login extends React.Component { // eslint-disable-line react/prefer-statel
 
     if (this.props.user.loggedIn) {
       return (
-        <a href="." onClick={(e) => { e.preventDefault(); this.props.user.logout(this.props.dispatch); }}>
+
+        <a className={this.props.className} href="." onClick={(e) => { e.preventDefault(); this.props.user.logout(this.props.dispatch); }}>
           { linkName }
         </a>
       );
     }
 
     return (
-      <div>
-        <a href="login">
-          { linkName }
-        </a>
-      </div>
+      <a className={this.props.className} href="login">
+      { linkName }
+      </a>
     );
   }
 }
 
 Login.propTypes = {
+  className: React.PropTypes.string,
   user: React.PropTypes.object,
   dispatch: React.PropTypes.func,
 };

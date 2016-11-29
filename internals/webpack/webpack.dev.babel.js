@@ -11,11 +11,14 @@ const cheerio = require('cheerio');
 const pkg = require(path.resolve(process.cwd(), 'package.json'));
 const dllPlugin = pkg.dllPlugin;
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 // PostCSS plugins
 const cssnext = require('postcss-cssnext');
 const postcssFocus = require('postcss-focus');
+const postcssLostGrid = require('lost');
 const postcssReporter = require('postcss-reporter');
+
 
 const plugins = [
   new webpack.HotModuleReplacementPlugin(), // Tell webpack we want hot reloading
@@ -28,6 +31,7 @@ const plugins = [
   new CopyWebpackPlugin([
     { from: `${process.cwd()}/app/login.html`, force: true },
   ]),
+  new ExtractTextPlugin('boostrap.css'),
 ];
 
 module.exports = require('./webpack.base.babel')({
@@ -47,12 +51,16 @@ module.exports = require('./webpack.base.babel')({
   // Add development plugins
   plugins: dependencyHandlers().concat(plugins), // eslint-disable-line no-use-before-define
 
+  // Load sass
+  scssLoaders: ExtractTextPlugin.extract('style', 'css?sourceMap!sass?sourceMap'),
+
   // Load the CSS in a style tag in development
   cssLoaders: 'style-loader!css-loader?localIdentName=[local]__[path][name]__[hash:base64:5]&modules&importLoaders=1&sourceMap!postcss-loader',
 
   // Process the CSS with PostCSS
   postcssPlugins: [
     postcssFocus(), // Add a :focus to every :hover
+    postcssLostGrid(), // Add the PostCSS Lost Grid
     cssnext({ // Allow future CSS features to be used, also auto-prefixes the CSS...
       browsers: ['last 2 versions', 'IE > 10'], // ...based on this browser list
     }),

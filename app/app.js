@@ -49,6 +49,9 @@ import { translationMessages } from './i18n';
 // Create the connection to the GraphQL server
 import { graphQLConfig } from './simplicityConfig';
 
+// Get application styles from bootstrap
+require('./styles/bootstrap.scss');
+
 const networkInterface = createNetworkInterface(graphQLConfig.serverURL);
 /* eslint-disable no-param-reassign */
 networkInterface.use([{

@@ -17,11 +17,11 @@ import Footer from 'components/Footer/footer';
 import MessagePane from 'containers/MessagePane/messagePane';
 import NavbarContainer from 'containers/NavbarContainer/navbarContainer';
 
-import styles from './appStyles.css';
+// import styles from './appStyles.css';
 
 function App(props) {
   return (
-    <div className={styles.wrapper}>
+    <div>
       <Helmet
         titleTemplate="%s - React.js Boilerplate"
         defaultTitle="React.js Boilerplate"
@@ -31,8 +31,10 @@ function App(props) {
       />
       <NavbarContainer />
       <MessagePane />
+      <div className="container">
+        {React.Children.toArray(props.children)}
+      </div>
 
-      {React.Children.toArray(props.children)}
       <Footer />
     </div>
   );

@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 import TopicContainerPage from '../../../../containers/TopicContainerPage/topicContainerPage';
 import PieChart from '../../../../components/PieChart/pieChart';
 import BarChart from '../../../../components/BarChart/barChart';
+import Statistics from './statistics';
 
 import './dashboard.css';
 
@@ -17,25 +18,15 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
       residential: true,
       timeBy: 'week', // options: month, week, day-of-week
       timeFor: 'permits', // permits, violations, reviews
-      slaToggles: [
-        { name: '1', show: true },
-        { name: '3', show: true },
-        { name: '10', show: true },
-        { name: '21', show: true },
-        { name: '30', show: true },
-        { name: '45', show: true },
-        { name: '90', show: true },
-        { name: 'None', show: true },
-      ],
-      slaIndex: {
-        1: 0,
-        3: 1,
-        10: 2,
-        21: 3,
-        30: 4,
-        45: 5,
-        90: 6,
-        None: 7,
+      slaMap: {
+        1: true,
+        3: true,
+        10: true,
+        21: true,
+        30: true,
+        45: true,
+        90: true,
+        '-1': true,
       },
     };
     this.updateDateRange = this.updateDateRange.bind(this);
@@ -85,7 +76,8 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
       const week = this.getWeek(date);
       const dd = new Date(date.getTime());
       dd.setHours(0, 0, 0, 0);
-      dd.setDate(dd.getDate() - (dd.getDay() + 6) % 7); // eslint-disable-line no-mixed-operators
+      // Adding 4 to date to get the Friday, not the Monday
+      dd.setDate(dd.getDate() - (dd.getDay() + 6) % 7 + 4); // eslint-disable-line no-mixed-operators
       idx = { index: week, value: months[dd.getMonth()] };
     } else if (this.state.timeBy === 'day-of-week') {
       const day = date.getDay();
@@ -94,15 +86,8 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
     return idx;
   }
 
-  stats(permits, cFields) {
-    const slaToggles = this.state.slaToggles;
-    const slaIndex = this.state.slaIndex;
+  stats(permits) {
     const stats = {};
-    const counters = {};
-    let i;
-    cFields.forEach((field) => {
-      counters[field] = {};
-    });
     const timeStats = {
       permits: {
         data: [],
@@ -126,59 +111,42 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
     stats.daysLate = [0, 0, 0];
     const daysLate = [];
     permits.forEach((permit) => {
-      if (this.inDateRange(permit.app_date)) {
-        let included = true;
-        const sla = (permit.sla === -1) ? 'None' : permit.sla;
-        if (!slaToggles[slaIndex[sla]].show) included = false;
-        if (!((permit.type === 'Commercial' && this.state.commercial) ||
-              (permit.type === 'Residential' && this.state.residential))) {
-          included = false;
+      stats.totalPermits++;
+      // Time series
+      let idx = this.dateIndex(new Date(permit.app_date));
+
+      if (!(timeStats.permits.data[idx.index])) {
+        timeStats.permits.data[idx.index] = 0;
+        timeStats.permits.labels[idx.index] = idx.value;
+        timeStats.permits.minIndex = Math.min(timeStats.permits.minIndex, idx.index);
+      }
+      timeStats.permits.data[idx.index] += 1;
+
+      if (permit.violation) {
+        if (!(timeStats.violations.data[idx.index])) {
+          timeStats.violations.data[idx.index] = 0;
+          timeStats.violations.labels[idx.index] = idx.value;
+          timeStats.violations.minIndex = Math.min(timeStats.violations.minIndex, idx.index);
         }
-        if (included) {
-          stats.totalPermits++;
-          // Time series
-          let idx = this.dateIndex(new Date(permit.app_date));
+        timeStats.violations.data[idx.index] += 1;
+      }
 
-          if (!(timeStats.permits.data[idx.index])) {
-            timeStats.permits.data[idx.index] = 0;
-            timeStats.permits.labels[idx.index] = idx.value;
-            timeStats.permits.minIndex = Math.min(timeStats.permits.minIndex, idx.index);
-          }
-          timeStats.permits.data[idx.index] += 1;
-
-          if (permit.violation) {
-            if (!(timeStats.violations.data[idx.index])) {
-              timeStats.violations.data[idx.index] = 0;
-              timeStats.violations.labels[idx.index] = idx.value;
-              timeStats.violations.minIndex = Math.min(timeStats.violations.minIndex, idx.index);
+      if (permit.violation) {
+        ++stats.permitsWithViolations;
+        stats.totalViolations += permit.violation_count;
+        if (permit.trips && permit.trips.length > 0) {
+          permit.trips.forEach((trip) => {
+            if (trip.trip_violation_days > 0) {
+              daysLate.push(Number(trip.trip_violation_days));
+              idx = this.dateIndex(new Date(trip.start_date));
+              if (!(timeStats.reviews.data[idx.index])) {
+                timeStats.reviews.data[idx.index] = 0;
+                timeStats.reviews.labels[idx.index] = idx.value;
+                timeStats.reviews.minIndex = Math.min(timeStats.reviews.minIndex, idx.index);
+              }
+              timeStats.reviews.data[idx.index] += 1;
             }
-            timeStats.violations.data[idx.index] += 1;
-          }
-
-          if (permit.violation) {
-            ++stats.permitsWithViolations;
-            stats.totalViolations += permit.violation_count;
-            if (permit.trips && permit.trips.length > 0) {
-              permit.trips.forEach((trip) => {
-                if (trip.trip_violation_days > 0) {
-                  daysLate.push(Number(trip.trip_violation_days));
-                  idx = this.dateIndex(new Date(trip.start_date));
-                  if (!(timeStats.reviews.data[idx.index])) {
-                    timeStats.reviews.data[idx.index] = 0;
-                    timeStats.reviews.labels[idx.index] = idx.value;
-                    timeStats.reviews.minIndex = Math.min(timeStats.reviews.minIndex, idx.index);
-                  }
-                  timeStats.reviews.data[idx.index] += 1;
-                }
-              });
-            }
-          }
-          for (i = 0; i < cFields.length; ++i) {
-            const field = cFields[i];
-            const c = permit[field];
-            if (!(c in counters[field])) counters[field][c] = 0;
-            ++counters[field][c];
-          }
+          });
         }
       }
     });
@@ -192,13 +160,6 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
         daysLate[daysLate.length - 1],
       ];
     }
-    stats.categoryCounts = {};
-    Object.keys(counters).forEach((field) => {
-      stats.categoryCounts[field] = [];
-      Object.keys(counters[field]).forEach((val) => {
-        stats.categoryCounts[field].push({ key: val, value: counters[field][val] });
-      });
-    });
 
     // Prune the labels & offset index to 0
     if (timeStats.permits && timeStats.permits.labels && timeStats.permits.labels.length > 1) {
@@ -282,21 +243,11 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
       this.setState({ commercial: !this.state.commercial });
     } else if (e.target.id.startsWith('residential')) {
       this.setState({ residential: !this.state.residential });
-    } else if (e.target.id.startsWith('slatoggle')) {
-      const sla = e.target.id.substring(10);
-      const slaToggles = [].concat(this.state.slaToggles);
-      let idx = -1;
-      for (let i = 0; i < slaToggles.length; ++i) {
-        if (sla === slaToggles[i].name) {
-          idx = i;
-          break;
-        }
-      }
-
-      if (idx >= 0) {
-        slaToggles[idx].show = !slaToggles[idx].show;
-        this.setState({ slaToggles });
-      }
+    } else if (e.target.id.startsWith('sla-map')) {
+      const sla = e.target.id.substring(8);
+      const slaMap = { ...this.state.slaMap };
+      slaMap[sla] = !slaMap[sla];
+      this.setState({ slaMap });
     }
   }
 
@@ -412,7 +363,14 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
 
     let pctFailures = 0;
     if (!this.props.data.loading) {
-      stats = this.stats(this.props.data.permits, ['type', 'subtype', 'sla']);
+      const filters = [
+        { type: 'date_range', field: 'app_date', values: [this.state.start, this.state.end] },
+        { type: 'truthy_in_set', field: 'type', values: { Commercial: this.state.commercial, Residential: this.state.residential } },
+        { type: 'truthy_in_set', field: 'sla', values: this.state.slaMap },
+      ];
+      const permits = Statistics.filter(this.props.data.permits, filters);
+      stats = this.stats(permits);
+      stats.categoryCounts = Statistics.categoryCounts(permits, ['type', 'subtype', 'sla']);
       if (stats.permitsWithViolations > 0) {
         pctFailures = ((100 * stats.permitsWithViolations) / (stats.totalPermits)).toFixed(0);
       }
@@ -438,16 +396,16 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
             <label htmlFor="restoggle">Residential: </label>
             <input type="checkbox" name="restoggle" id="residential-toggle" checked={this.state.residential} onChange={this.checkType} />
           </div>
-          <div id="sla-inputs" style={{ marginBottom: '15px', marginLeft: '15px' }}>
+          <div id="sla-map" style={{ marginBottom: '15px', marginLeft: '15px' }}>
             <b>SLAs: </b>&nbsp;
-            {this.state.slaToggles.map((sla, idx) =>
-              <span key={`sla-toggle-${idx}`}>
-                <label htmlFor={`slacheck${idx}`}>{sla.name} </label>
+            {Object.keys(this.state.slaMap).map((sla, idx) =>
+              <span key={`sla-map-${idx}`}>
+                <label htmlFor={`slacheck${idx}`}>{(sla === -1) ? 'None' : sla} </label>
                 <input
                   type="checkbox"
                   name={`slacheck${idx}`}
-                  id={`slatoggle-${sla.name}`}
-                  checked={sla.show}
+                  id={`sla-map-${sla}`}
+                  checked={this.state.slaMap[sla]}
                   onChange={this.checkType}
                 />
               </span>

@@ -1,0 +1,28 @@
+.dashboardValueRangeInner {
+  border: 2px solid #4579B3;
+  border-radius: 4px;
+  height: 120px;
+  margin-bottom: 10px;
+}
+
+.dashboardValueWrapper h1 {
+  font-size: 3.5em;
+  font-weight: 700;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.dashboardValueWrapper h3 {
+  font-size: 2em;
+  font-weight: 700;
+  margin-bottom: 0px;
+}
+
+.dashboardValueRangeWrapper {
+  height: 75px;
+  margin-top: 10px;
+}
+
+.dashboardValueWrapper small {
+  margin-top: 0px;
+}

@@ -4,6 +4,9 @@ import gql from 'graphql-tag';
 import TopicContainerPage from '../../../../containers/TopicContainerPage/topicContainerPage';
 import PieChart from '../../../../components/PieChart/pieChart';
 import BarChart from '../../../../components/BarChart/barChart';
+import DashboardValue from '../../../../components/DashboardValue/dashboardValue';
+import DashboardValueRange from '../../../../components/DashboardValueRange/dashboardValueRange';
+
 
 import './dashboard.css';
 
@@ -308,54 +311,6 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
     this.setState({ timeFor: e.target.value });
   }
 
-  badge(description, value, min = null, max = null) {
-    let divStyle = {
-      borderStyle: 'solid',
-      borderRadius: '5px',
-      borderWidth: 'thick',
-      width: '200px',
-      textAlign: 'center',
-      display: 'inline-block',
-      padding: '5px',
-      marginLeft: '15px',
-      marginRight: '5px',
-    };
-    let minStyle = {
-      fontSize: 'medium',
-      fontWeight: 'bold',
-      marginRight: '25px',
-    };
-    let maxStyle = {
-      fontSize: 'medium',
-      fontWeight: 'bold',
-      marginLeft: '25px',
-    };
-    let mainStyle = {
-      fontSize: 'x-large',
-      fontWeight: 'bold',
-    };
-    let minSpan = <span style={minStyle}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>;
-    let maxSpan = <span style={maxStyle}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>;
-    if (min) {
-      minSpan = <span style={minStyle}>{min}</span>;
-    }
-    if (max) {
-      maxSpan = <span style={maxStyle}>{max}</span>;
-    }
-    return (
-      <div className="badge" style={divStyle}>
-        <div>
-          {minSpan}
-          <span style={mainStyle}>{`${value}`}</span>
-          {maxSpan}
-        </div>
-        <div>
-          <span style={{ fontWeight: 'bold' }}>{description}</span>
-        </div>
-      </div>
-    );
-  }
-
   pieChart(data, title) {
     const pieStyle = {
       width: '33%',
@@ -457,10 +412,29 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
         </div>
         <div>
           <div id="full-period-stats">
-            {this.badge('Total Permits', stats.totalPermits)}
-            {this.badge('Permits Failing SLA', stats.permitsWithViolations, null, `${pctFailures}%`)}
-            {this.badge('Total SLA Failures', stats.totalViolations)}
-            {this.badge('Days Late', stats.daysLate[0], stats.daysLate[1], stats.daysLate[2])}
+            <DashboardValue
+              value={stats.totalPermits}
+              label="Total Permits"
+            >
+            </DashboardValue>
+            <DashboardValue
+              value={stats.permitsWithViolations}
+              subValue={`${pctFailures}%`}
+              label="Permits Failing SLA"
+            >
+            </DashboardValue>
+            <DashboardValue
+              value={stats.totalViolations}
+              label="Total SLA Failures"
+            >
+            </DashboardValue>
+            <DashboardValueRange
+              minValue={stats.daysLate[1]}
+              medValue={stats.daysLate[0]}
+              maxValue={stats.daysLate[2]}
+              label="Days Late"
+            >
+            </DashboardValueRange>
           </div>
           <br />
           <div id="full-period-charts">

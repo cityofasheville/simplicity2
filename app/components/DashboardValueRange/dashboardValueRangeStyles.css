@@ -1,8 +1,4 @@
-.dashboardValueRange { /* stylelint-disable */
-
-}
-
-.dashboardValueRangeInner { /* stylelint-disable */
+.dashboardValueRangeInner {
   border: 2px solid #4579B3;
   border-radius: 4px;
   height: 120px;

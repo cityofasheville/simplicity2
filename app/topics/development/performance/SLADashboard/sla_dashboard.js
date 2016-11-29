@@ -414,22 +414,26 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
           <div id="full-period-stats">
             <DashboardValue
               value={stats.totalPermits}
-              label='Total Permits'>
+              label="Total Permits"
+            >
             </DashboardValue>
             <DashboardValue
               value={stats.permitsWithViolations}
               subValue={`${pctFailures}%`}
-              label='Permits Failing SLA'>
+              label="Permits Failing SLA"
+            >
             </DashboardValue>
             <DashboardValue
               value={stats.totalViolations}
-              label='Total SLA Failures'>
+              label="Total SLA Failures"
+            >
             </DashboardValue>
             <DashboardValueRange
               minValue={stats.daysLate[1]}
               medValue={stats.daysLate[0]}
               maxValue={stats.daysLate[2]}
-              label='Days Late'>
+              label="Days Late"
+            >
             </DashboardValueRange>
           </div>
           <br />

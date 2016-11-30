@@ -219,27 +219,6 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
   }
 
   render() {
-    let stats = {
-      permitsWithViolations: 0,
-      totalViolations: 0,
-      totalPermits: 0,
-      daysLate: [0, 0, 0],
-      timeStats: {
-        permits: {
-          data: [],
-          labels: [],
-        },
-        violations: {
-          data: [],
-          labels: [],
-        },
-        reviews: {
-          data: [],
-          labels: [],
-        },
-      },
-    };
-
     let pctFailures = 0;
     let categoryCounts = { type: null, subtype: null, sla: null };
     const counters = new CounterSet(['totalPermits', 'permitsWithViolations', 'totalViolations',
@@ -260,14 +239,10 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
       counters.finalizeCounter('daysLate');
       // Process to get category counts
       categoryCounts = Statistics.categoryCounts(permits, ['type', 'subtype', 'sla']);
-      stats = { counters, timeSeries, categoryCounts };
 
       if (counters.getValue('permitsWithViolations') > 0) {
         pctFailures = ((100 * counters.getValue('permitsWithViolations')) /
                         counters.getValue('totalPermits')).toFixed(0);
-      }
-      if (counters.permitsWithViolations > 0) {
-        pctFailures = ((100 * stats.permitsWithViolations) / (stats.totalPermits)).toFixed(0);
       }
     }
     const timeTitle = this.createTimeTitle();

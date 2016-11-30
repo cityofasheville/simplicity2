@@ -1,4 +1,6 @@
-
+.styledTable{
+  border-radius: 4px;
+}
 
 input {
   padding: 5px;

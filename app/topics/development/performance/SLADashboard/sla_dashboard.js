@@ -6,6 +6,7 @@ import PieChart from '../../../../components/PieChart/pieChart';
 import BarChart from '../../../../components/BarChart/barChart';
 import DashboardValue from '../../../../components/DashboardValue/dashboardValue';
 import DashboardValueRange from '../../../../components/DashboardValueRange/dashboardValueRange';
+import DateRangeSelector from '../../../../components/DateRangeSelector/dateRangeSelector';
 
 
 import './dashboard.css';
@@ -45,6 +46,7 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
     this.checkType = this.checkType.bind(this); // eslint-disable-line react/jsx-no-bind
     this.handleTimeBy = this.handleTimeBy.bind(this);
     this.handleTimeFor = this.handleTimeFor.bind(this);
+    this.handleDateRangeSelectorOnChange = this.handleDateRangeSelectorOnChange.bind(this);
   }
 
   // Returns the ISO week of the date. From https://weeknumber.net/how-to/javascript
@@ -276,6 +278,7 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
       } catch (e) {
         throw new Error(`Error parsing date: ${JSON.stringify(e)}`);
       }
+      console.log(start)
       this.setState({ start, end });
     }
   }
@@ -309,6 +312,10 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
 
   handleTimeFor(e) {
     this.setState({ timeFor: e.target.value });
+  }
+
+  handleDateRangeSelectorOnChange(dateRange){
+    this.setState({ start: dateRange.start, end: dateRange.end });
   }
 
   pieChart(data, title) {
@@ -377,8 +384,18 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
     const timeData = stats.timeStats[this.state.timeFor].data;
     const timeLabels = stats.timeStats[this.state.timeFor].labels;
 
+
     return (
       <TopicContainerPage>
+        <div className="col-xs-12">
+          <div className="col-md-6">
+            <DateRangeSelector
+              className="col-md-6"
+              options={['last-week', 'last-30-days', 'last-6-months', 'last-year']}
+              onChange={this.handleDateRangeSelectorOnChange}
+            />
+          </div>
+        </div>
         <div id="data-filter-section">
           <div id="date-inputs" style={{ marginBottom: '15px' }}>
             <label htmlFor="startdate">Start Date: </label>
@@ -413,25 +430,25 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
         <div>
           <div id="full-period-stats">
             <DashboardValue
-              value={stats.totalPermits}
+              value={stats.totalPermits.toString()}
               label="Total Permits"
             >
             </DashboardValue>
             <DashboardValue
-              value={stats.permitsWithViolations}
+              value={stats.permitsWithViolations.toString()}
               subValue={`${pctFailures}%`}
               label="Permits Failing SLA"
             >
             </DashboardValue>
             <DashboardValue
-              value={stats.totalViolations}
+              value={stats.totalViolations.toString()}
               label="Total SLA Failures"
             >
             </DashboardValue>
             <DashboardValueRange
-              minValue={stats.daysLate[1]}
-              medValue={stats.daysLate[0]}
-              maxValue={stats.daysLate[2]}
+              minValue={stats.daysLate[1].toString()}
+              medValue={stats.daysLate[0].toString()}
+              maxValue={stats.daysLate[2].toString()}
               label="Days Late"
             >
             </DashboardValueRange>

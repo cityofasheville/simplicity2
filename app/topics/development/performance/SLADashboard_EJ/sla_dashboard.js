@@ -5,6 +5,8 @@ import TopicContainerPage from '../../../../containers/TopicContainerPage/topicC
 import PieChart from '../../../../components/PieChart/pieChart';
 import BarChart from '../../../../components/BarChart/barChart';
 import Statistics from './statistics';
+import CounterSet from './counterset';
+import TimeSeriesSet from './timeseriesset';
 
 import './dashboard.css';
 
@@ -18,16 +20,7 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
       residential: true,
       timeBy: 'week', // options: month, week, day-of-week
       timeFor: 'permits', // permits, violations, reviews
-      slaMap: {
-        1: true,
-        3: true,
-        10: true,
-        21: true,
-        30: true,
-        45: true,
-        90: true,
-        '-1': true,
-      },
+      slaMap: { 1: true, 3: true, 10: true, 21: true, 30: true, 45: true, 90: true, '-1': true },
     };
     this.updateDateRange = this.updateDateRange.bind(this);
     this.checkType = this.checkType.bind(this); // eslint-disable-line react/jsx-no-bind
@@ -202,104 +195,27 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
     }
   }
 
-  pruneTimeStats(set) {
-    let newSet = set;
-    if (set && set.labels && set.labels.length > 1) {
-      const pdata = set.data;
-      const plabels = set.labels;
-      const minIndex = set.minIndex;
-      newSet = { data: [], labels: [], minIndex };
-      let last = null;
-      pdata.forEach((item, idx) => {
-        let label = plabels[idx];
-        if (label === last) label = '';
-        last = plabels[idx];
-        newSet.data[idx - minIndex] = item;
-        newSet.labels[idx - minIndex] = label;
-      });
-    }
-    return newSet;
-  }
+  timeStats(permit, timeSeries, counters) {
+    let idx = this.dateIndex(new Date(permit.app_date));
+    counters.incrementCounter('totalPermits');
 
-  stats(permits) {
-    const stats = {};
-    const timeStats = {
-      permits: {
-        data: [],
-        labels: [],
-        minIndex: Number.MAX_SAFE_INTEGER,
-      },
-      violations: {
-        data: [],
-        labels: [],
-        minIndex: Number.MAX_SAFE_INTEGER,
-      },
-      reviews: {
-        data: [],
-        labels: [],
-        minIndex: Number.MAX_SAFE_INTEGER,
-      },
-    };
-    stats.permitsWithViolations = 0;
-    stats.totalViolations = 0;
-    stats.totalPermits = 0;
-    stats.daysLate = [0, 0, 0];
-    const daysLate = [];
-    permits.forEach((permit) => {
-      stats.totalPermits++;
-      // Time series
-      let idx = this.dateIndex(new Date(permit.app_date));
+    timeSeries.addTimePoint('permits', idx.index, idx.value);
 
-      if (!(timeStats.permits.data[idx.index])) {
-        timeStats.permits.data[idx.index] = 0;
-        timeStats.permits.labels[idx.index] = idx.value;
-        timeStats.permits.minIndex = Math.min(timeStats.permits.minIndex, idx.index);
+    if (permit.violation) {
+      counters.incrementCounter('permitsWithViolations');
+      counters.incrementCounter('totalViolations', permit.violation_count);
+      timeSeries.addTimePoint('violations', idx.index, idx.value);
+
+      if (permit.trips && permit.trips.length > 0) {
+        permit.trips.forEach((trip) => {
+          if (trip.trip_violation_days > 0) {
+            counters.incrementCounter('daysLate', trip.trip_violation_days);
+            idx = this.dateIndex(new Date(trip.start_date));
+            timeSeries.addTimePoint('reviews', idx.index, idx.value);
+          }
+        });
       }
-      timeStats.permits.data[idx.index] += 1;
-
-      if (permit.violation) {
-        ++stats.permitsWithViolations;
-        stats.totalViolations += permit.violation_count;
-        if (!(timeStats.violations.data[idx.index])) {
-          timeStats.violations.data[idx.index] = 0;
-          timeStats.violations.labels[idx.index] = idx.value;
-          timeStats.violations.minIndex = Math.min(timeStats.violations.minIndex, idx.index);
-        }
-        timeStats.violations.data[idx.index] += 1;
-
-        if (permit.trips && permit.trips.length > 0) {
-          permit.trips.forEach((trip) => {
-            if (trip.trip_violation_days > 0) {
-              daysLate.push(Number(trip.trip_violation_days));
-              idx = this.dateIndex(new Date(trip.start_date));
-              if (!(timeStats.reviews.data[idx.index])) {
-                timeStats.reviews.data[idx.index] = 0;
-                timeStats.reviews.labels[idx.index] = idx.value;
-                timeStats.reviews.minIndex = Math.min(timeStats.reviews.minIndex, idx.index);
-              }
-              timeStats.reviews.data[idx.index] += 1;
-            }
-          });
-        }
-      }
-    });
-
-    if (daysLate.length > 0) {
-      daysLate.sort((val1, val2) => (Number(val1) - Number(val2)));
-
-      stats.daysLate = [
-        daysLate[Math.floor(daysLate.length / 2)],
-        daysLate[0],
-        daysLate[daysLate.length - 1],
-      ];
     }
-
-    // Prune the labels & offset index to 0
-    timeStats.permits = this.pruneTimeStats(timeStats.permits);
-    timeStats.violations = this.pruneTimeStats(timeStats.violations);
-    timeStats.reviews = this.pruneTimeStats(timeStats.reviews);
-    stats.timeStats = timeStats;
-    return stats;
   }
 
   render() {
@@ -326,6 +242,9 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
 
     let pctFailures = 0;
     let categoryCounts = { type: null, subtype: null, sla: null };
+    const counters = new CounterSet(['totalPermits', 'permitsWithViolations', 'totalViolations',
+                                      { type: 'full', name: 'daysLate' }]);
+    const timeSeries = new TimeSeriesSet(['permits', 'violations', 'reviews']);
 
     if (!this.props.data.loading) {
       const filters = [
@@ -333,18 +252,29 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
         { type: 'truthy_in_set', field: 'type', values: { Commercial: this.state.commercial, Residential: this.state.residential } },
         { type: 'truthy_in_set', field: 'sla', values: this.state.slaMap },
       ];
+      // Filter the permits
       const permits = Statistics.filter(this.props.data.permits, filters);
-      stats = this.stats(permits);
+      // Process to get timeseries and counters
+      permits.forEach((permit) => this.timeStats(permit, timeSeries, counters));
+      timeSeries.finalizeSeries();
+      counters.finalizeCounter('daysLate');
+      // Process to get category counts
       categoryCounts = Statistics.categoryCounts(permits, ['type', 'subtype', 'sla']);
-      if (stats.permitsWithViolations > 0) {
+      stats = { counters, timeSeries, categoryCounts };
+
+      if (counters.getValue('permitsWithViolations') > 0) {
+        pctFailures = ((100 * counters.getValue('permitsWithViolations')) /
+                        counters.getValue('totalPermits')).toFixed(0);
+      }
+      if (counters.permitsWithViolations > 0) {
         pctFailures = ((100 * stats.permitsWithViolations) / (stats.totalPermits)).toFixed(0);
       }
     }
-
     const timeTitle = this.createTimeTitle();
-    const timeData = stats.timeStats[this.state.timeFor].data;
-    const timeLabels = stats.timeStats[this.state.timeFor].labels;
+    const timeData = timeSeries.getSeriesData(this.state.timeFor);
+    const timeLabels = timeSeries.getSeriesLabels(this.state.timeFor);
 
+    const daysLate = counters.getStats('daysLate');
     return (
       <TopicContainerPage>
         <div id="data-filter-section">
@@ -376,20 +306,19 @@ class DevelopmentSLADashboard extends React.Component { // eslint-disable-line r
               </span>
             )}
           </div>
-
         </div>
         <div>
           <div id="full-period-stats">
-            {this.badge('Total Permits', stats.totalPermits)}
-            {this.badge('Permits Failing SLA', stats.permitsWithViolations, null, `${pctFailures}%`)}
-            {this.badge('Total SLA Failures', stats.totalViolations)}
-            {this.badge('Days Late', stats.daysLate[0], stats.daysLate[1], stats.daysLate[2])}
+            {this.badge('Total Permits', counters.getValue('totalPermits'))}
+            {this.badge('Permits Failing SLA', counters.getValue('permitsWithViolations'), null, `${pctFailures}%`)}
+            {this.badge('Total SLA Failures', counters.getValue('totalViolations'))}
+            {this.badge('Days Late', daysLate[0], daysLate[1], daysLate[2])}
           </div>
           <br />
           <div id="full-period-charts">
-          {this.pieChart(categoryCounts.type, 'Permit Type')}
-          {this.pieChart(categoryCounts.subtype, 'Permit SubType')}
-          {this.pieChart(categoryCounts.sla, 'SLA')}
+            {this.pieChart(categoryCounts.type, 'Permit Type')}
+            {this.pieChart(categoryCounts.subtype, 'Permit SubType')}
+            {this.pieChart(categoryCounts.sla, 'SLA')}
           </div>
         </div>
         <div id="performance-over-time">

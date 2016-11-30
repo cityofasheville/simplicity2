@@ -7,8 +7,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
-import { FormattedMessage } from 'react-intl';
-import messages from './topicContainerPageMessages';
+// import { FormattedMessage } from 'react-intl';
+// import messages from './topicContainerPageMessages';
 import styles from './topicContainerPageStyles.css';
 
 export class TopicContainerPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -21,7 +21,6 @@ export class TopicContainerPage extends React.Component { // eslint-disable-line
             { name: 'description', content: 'Description of TopicContainerPage' },
           ]}
         />
-        <FormattedMessage {...messages.header} />
         {this.props.children}
       </div>
     );

@@ -10,11 +10,11 @@ import { push } from 'react-router-redux';
 import { browserHistory } from 'react-router';
 import Helmet from 'react-helmet';
 
-
 // import messages from './homePageMessages';
 
 import { changeUsername } from './homePageActions';
 import { loadRepos } from '../App/appActions';
+import DashboardPerformanceSummary from '../../components/DashboardPerformanceSummary/dashboardPerformanceSummary';
 
 // import { FormattedMessage } from 'react-intl';
 
@@ -55,6 +55,84 @@ export class HomePage extends React.Component {
 
 
   render() {
+    const summaryArray = [
+      {
+        id: 'residential',
+        summaryTitle: 'Residential',
+        summaryStatus: 'success',
+        summaryDetails: [
+          {
+            id: 'residential1',
+            detailValue: '12%',
+            detailLabel: 'Permits Fail SLA',
+            detailStatus: 'success',
+          },
+          {
+            id: 'residential2',
+            detailValue: '4',
+            detailLabel: 'Med Days Late',
+            detailStatus: 'success',
+          },
+        ],
+      },
+      {
+        id: 'commericialSmall',
+        summaryTitle: 'Commercial Small',
+        summaryStatus: 'success',
+        summaryDetails: [
+          {
+            id: 'commericialSmall1',
+            detailValue: '9%',
+            detailLabel: 'Permits Fail SLA',
+            detailStatus: 'success',
+          },
+          {
+            id: 'commericialSmall2',
+            detailValue: '3',
+            detailLabel: 'Med Days Late',
+            detailStatus: 'success',
+          },
+        ],
+      },
+      {
+        id: 'commericialStandard',
+        summaryTitle: 'Commercial Standard',
+        summaryStatus: 'warning',
+        summaryDetails: [
+          {
+            id: 'commericialStandard1',
+            detailValue: '31%',
+            detailLabel: 'Permits Fail SLA',
+            detailStatus: 'warning',
+          },
+          {
+            id: 'commericialStandard2',
+            detailValue: '5',
+            detailLabel: 'Med Days Late',
+            detailStatus: 'success',
+          },
+        ],
+      },
+      {
+        id: 'commericialLarge',
+        summaryTitle: 'Commercial Large',
+        summaryStatus: 'success',
+        summaryDetails: [
+          {
+            id: 'commericialLarge1',
+            detailValue: '4%',
+            detailLabel: 'Permits Fail SLA',
+            detailStatus: 'success',
+          },
+          {
+            id: 'commericialLarge2',
+            detailValue: '7',
+            detailLabel: 'Med Days Late',
+            detailStatus: 'success',
+          },
+        ],
+      },
+    ];
     return (
       <div className="container">
         <Helmet
@@ -95,6 +173,9 @@ export class HomePage extends React.Component {
             Explore with a Map
             </div>
           </div>
+        </div>
+        <div className="col-xs-12">
+          <DashboardPerformanceSummary summary={summaryArray}></DashboardPerformanceSummary>
         </div>
       </div>
     );

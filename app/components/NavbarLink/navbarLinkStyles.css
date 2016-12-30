@@ -1,7 +1,0 @@
-.navbarLink { /* stylelint-disable */
-  text-decoration: none;
-}
-
-:global(.active){
-  color: grey;
-}

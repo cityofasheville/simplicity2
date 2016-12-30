@@ -1,6 +1,3 @@
-## SIMPLICITY!
-
-
 ## Keeping code clean and improving the development experience
 * eslint (lints your JS: install VS Code extension to get this to work)
 * stylelint (lints your CSS: install VS Code extension to get this to work)

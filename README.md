@@ -1,16 +1,13 @@
-## SIMPLICITY!
+[![Stories in Ready](https://badge.waffle.io/cityofasheville/simplicity2.png?label=ready&title=Ready)](https://waffle.io/cityofasheville/simplicity2)
+# SimpliCity II
 
+## Documentation
+The documentation is maintained in the [docs directory](./docs), but may be more easily navigated on [Github pages](https://cityofasheville.github.io/simplicity2).
 
-## Keeping code clean and improving the development experience
-* eslint (lints your JS: install VS Code extension to get this to work)
-* stylelint (lints your CSS: install VS Code extension to get this to work)
-* editorconfig (sets some defaults for your text editor (ident size and what not): (install VS Code extension to get this to work)
+## License
 
-##Todo 
+This project is licensed under the MIT license. For more information see the [license file](./LICENSE.md).
 
-1. If you want to make this a progressive web app:
-  - Update the manifest.json file to allow user to install to home screen
-  - Add `<link rel="manifest" href="manifest.json">`
-  - Add `<meta name="mobile-web-app-capable" content="yes">`
-2. Helmet is a really good idea for SEO
+## Acknowledgments
 
+SimpliCity was originally developed by [Cameron Carlyle](https://github.com/carlyleec) and [Dave Michelson](https://github.com/daveism).

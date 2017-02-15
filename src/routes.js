@@ -12,8 +12,11 @@ import Home from './components/Home';
 import SearchResults from './components/SearchResults';
 import MySimpliCity from './components/MySimpliCity';
 import Topics from './topics/Topics';
-import Development from './topics/development/citywide/development';
+import DevelopmentSummary from './topics/development/summary/DevelopmentSummary';
+import DevelopmentDetail from './topics/development/detail/DevelopmentDetail';
 import DevelopmentSLADashboard from './topics/development/slaDashboard/slaDashboard';
+import CrimeSummary from './topics/crime/summary/CrimeSummary';
+import CrimeDetail from './topics/crime/detail/CrimeDetail';
 
 const Routes = props => (
   <ApolloProvider store={props.store} client={client} >
@@ -25,8 +28,13 @@ const Routes = props => (
         <Route path="topics">
           <IndexRoute component={Topics} />
           <Route path="development">
-            <IndexRoute component={Development} />
+            <IndexRoute component={DevelopmentSummary} />
+            <Route path="detail" component={DevelopmentDetail}></Route>
             <Route path="sla-dashboard" component={DevelopmentSLADashboard}></Route>
+          </Route>
+          <Route path="crime">
+            <IndexRoute component={CrimeSummary} />
+            <Route path="detail" component={CrimeDetail}></Route>
           </Route>
         </Route>
       </Route>

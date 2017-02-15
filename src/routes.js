@@ -11,10 +11,17 @@ import App from './components/App';
 import Home from './components/Home';
 import SearchResults from './components/SearchResults';
 import MySimpliCity from './components/MySimpliCity';
+// Locations
+import Locations from './locations/Locations';
+import Address from './locations/address/Address';
+import Property from './locations/property/Property';
+import Street from './locations/street/Street';
+import Neighborhood from './locations/neighborhood/Neighborhood';
+// Topics
 import Topics from './topics/Topics';
 import DevelopmentSummary from './topics/development/summary/DevelopmentSummary';
 import DevelopmentDetail from './topics/development/detail/DevelopmentDetail';
-import DevelopmentSLADashboard from './topics/development/slaDashboard/slaDashboard';
+import DevelopmentSLADashboard from './topics/development/sla_dashboard/SLADashboard';
 import CrimeSummary from './topics/crime/summary/CrimeSummary';
 import CrimeDetail from './topics/crime/detail/CrimeDetail';
 
@@ -25,6 +32,13 @@ const Routes = props => (
         <IndexRoute component={Home} />
         <Route path="search-results" component={SearchResults}></Route>
         <Route path="my-simplicity" component={MySimpliCity}></Route>
+        <Route path="locations">
+          <IndexRoute component={Locations} />
+          <Route path="address" component={Address}></Route>
+          <Route path="property" component={Property}></Route>
+          <Route path="street" component={Street}></Route>
+          <Route path="neighborhood" component={Neighborhood}></Route>
+        </Route>
         <Route path="topics">
           <IndexRoute component={Topics} />
           <Route path="development">

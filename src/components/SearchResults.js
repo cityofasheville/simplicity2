@@ -1,14 +1,32 @@
 import React from 'react';
 
+import SearchResultGroup from './SearchResultGroup';
+
 const SearchResults = props => (
-  <div className="">
-    <h1>Search Results</h1>
-    { props.children }
+  <div className="search-results">
+    {
+      props.results.map(resultGroup => (
+        <SearchResultGroup
+          key={resultGroup.label}
+          label={resultGroup.label}
+          count={resultGroup.results.length}
+          icon={resultGroup.icon}
+          results={resultGroup.results}
+        />
+      ))
+    }
   </div>
 );
 
+const resultsShape = {
+  label: React.PropTypes.string,
+  icon: React.PropTypes.string,
+  results: React.PropTypes.array,
+};
+
+
 SearchResults.propTypes = {
-  children: React.PropTypes.node,
+  results: React.PropTypes.arrayOf(React.PropTypes.shape(resultsShape)),
 };
 
 export default SearchResults;

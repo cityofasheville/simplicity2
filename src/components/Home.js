@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import Search from './Search';
+import SearchBarLink from './SearchBarLink';
 
 const Homepage = () => (
   <div className="container">
-    <Search />
+    <SearchBarLink />
     <div className="col-md-12">
       <div className="col-xs-12">
         <h4 className="text-primary">TOPICS</h4>

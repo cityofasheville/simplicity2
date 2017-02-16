@@ -1,12 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import Search from '../components/Search';
+
 
 
 const Topics = props => (
   <div className="container">
-    <Search />
     <div className="col-md-12">
       <div className="col-xs-12">
         <h4 className="text-primary">TOPICS</h4>

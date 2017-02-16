@@ -9,8 +9,8 @@ import { client } from './modules/gql/gqlClient';
 // Routed components
 import App from './components/App';
 import Home from './components/Home';
-import SearchResults from './components/SearchResults';
 import MySimpliCity from './components/MySimpliCity';
+import Search from './containers/search/Search';
 // Locations
 import Locations from './locations/Locations';
 import Address from './locations/address/Address';
@@ -30,7 +30,7 @@ const Routes = props => (
     <Router history={browserHistory}>
       <Route path="/" component={App}>
         <IndexRoute component={Home} />
-        <Route path="search-results" component={SearchResults}></Route>
+        <Route path="search" component={Search}></Route>
         <Route path="my-simplicity" component={MySimpliCity}></Route>
         <Route path="locations">
           <IndexRoute component={Locations} />

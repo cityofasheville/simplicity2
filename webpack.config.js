@@ -23,6 +23,18 @@ module.exports = {
         exclude: /node_modules/,
         loader: ExtractTextPlugin.extract('css?sourceMap!sass?sourceMap'),
       },
+      {
+        test: /\.css$/,
+        loader: 'style-loader',
+      },
+      {
+        test: /\.css$/,
+        loader: 'css-loader',
+        query: {
+          modules: true,
+          localIdentName: '[name]__[local]___[hash:base64:5]',
+        },
+      },
     ],
   },
   devServer: {

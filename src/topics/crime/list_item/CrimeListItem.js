@@ -4,27 +4,25 @@ import styles from '../../spatial_event_topic_list/spatialEventTopicListItemStyl
 const CrimeListItem = props => (
   <div>
     <div className="col-xs-12">
-      <div className="row">
-        <span className={['col-sm-8 col-xs-12', styles.categoryTitle].join(' ')}>{props.itemData.crime}</span>
-        <span className={['col-sm-4 col-xs-12', styles.mapLink, styles.centeredCol].join(' ')}>
-          <a><i className="fa fa-map-o"></i> Zoom to crime in map</a>
-        </span>
-        <span className={['col-sm-8 col-xs-12', styles.listTitle].join(' ')}>{props.itemData.location}</span>
-        <span className={['col-sm-4 col-xs-12', styles.listSubTitle, styles.centeredCol].join(' ')}>{props.itemData.date}</span>
+      <div className={['row', styles.flexRow, styles.titleRow].join(' ')}>
+        <div className={['col-sm-4', styles.categoryTitle].join(' ')}>
+          <span>{props.itemData.crime}</span>
+        </div>
+        <div className={['col-sm-8', styles.categoryTitle].join(' ')}>
+          <div className="pull-right">
+            <span>{props.itemData.date} - </span>
+            <span className={styles.itemLink}> <a title="Zoom to crime in map"><i className="fa fa-map-o"></i> {props.itemData.location}</a></span>
+          </div>
+        </div>
       </div>
-      <hr />
       <div className={['row', styles.flexRow].join(' ')}>
-        <div className={['col-sm-4', styles.centeredCol].join(' ')}>
-          <span className={styles.columnTitle}>Case #<br /></span>
-          <span className={styles.columnValue}>{props.itemData.caseNumber}</span>
+        <div className="col-sm-6">
+          <span className={styles.columnTitle}>Case #:</span>
+          <span className={styles.columnValue}> {props.itemData.caseNumber}</span>
         </div>
-        <div className={['col-sm-4', styles.centeredCol].join(' ')}>
-          <span className={styles.columnTitle}>Law beat<br /></span>
-          <span className={styles.columnValue}>{props.itemData.lawBeat}</span>
-        </div>
-        <div className={['col-sm-4', styles.centeredCol].join(' ')}>
-          <span className={styles.columnTitle}>Severity<br /></span>
-          <span className={styles.columnValue}>{props.itemData.severity}</span>
+        <div className="col-sm-6">
+          <span className={styles.columnTitle}>Law beat:</span>
+          <span className={styles.columnValue}> {props.itemData.lawBeat}</span>
         </div>
       </div>
     </div>
@@ -38,7 +36,6 @@ CrimeListItem.propTypes = {
     date: React.PropTypes.date,
     caseNumber: React.PropTypes.string,
     lawBeat: React.PropTypes.string,
-    severity: React.PropTypes.string,
   }).isRequired,
 };
 

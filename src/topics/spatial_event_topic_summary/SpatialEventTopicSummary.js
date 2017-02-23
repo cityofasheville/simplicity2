@@ -8,6 +8,20 @@ const testData = [
   { name: 'Crimes', 'Aggravated assault': 123, Burglary: 1000, Larceny: 1500, 'Larceny of Motor Vehicle': 2500, Robbery: 100, Vandalism: 4000 },
 ];
 
+const testCrimeData = [
+  { crime: 'Larceny', location: '123 Main Street, 28805', date: '01/01/2001', caseNumber: '1234567879', lawBeat: 'AC2' },
+  { crime: 'Larceny of Motor Vehicle', location: '10 Main Street, 28803', date: '01/01/2002', caseNumber: '11111', lawBeat: 'AC3' },
+  { crime: 'Larceny', location: '1 Main Street, Apt 17, 28805', date: '05/01/2001', caseNumber: '9999999', lawBeat: 'AC6' },
+  { crime: 'Larceny', location: '12 Main Street', date: '06/16/2001', caseNumber: 'X12354999', lawBeat: 'AC3' },
+  { crime: 'Larceny', location: '1234 Main Street', date: '01/01/2001', caseNumber: '00009990', lawBeat: 'AC2' },
+];
+
+const testPermitData = [
+  { PermitName: 'A permit name something', PermitType: 'Residential', PermitSubType: 'Permit subtype', AppliedDate: '01/01/2001', PermitNum: '1234567879', PermitCategory: 'Planning Level I', Address: '12 Main Street, Apt 4, 20001', PermitGroup: 'Residential', UpdatedDate: '02/02/2001', CurrentStatus: 'Issued' },
+  { PermitName: 'My permit name', PermitType: 'Commercial', PermitSubType: 'Permit subtype', AppliedDate: '01/01/2001', PermitNum: '1234567879', PermitCategory: 'Planning Level II', Address: '12 Main Street, 28804', PermitGroup: 'Commercial', UpdatedDate: '02/02/2001', CurrentStatus: 'Issued'  },
+  { PermitName: 'Riverridge condos', PermitType: 'Residential', PermitSubType: 'Permit subtype', AppliedDate: '01/01/2001', PermitNum: '1234567879', PermitCategory: 'permit category', Address: '12 Main Street, 23456', PermitGroup: 'Residential', UpdatedDate: '02/02/2001', CurrentStatus: 'Issued'  },
+];
+
 const SpatialEventTopicSummary = props => (
   <div>
     <div className="row">
@@ -35,7 +49,7 @@ const SpatialEventTopicSummary = props => (
       </div>
 
       <div id="listView">
-        <SpatialEventTopicList spatialEventTopic="Crime" />
+        <SpatialEventTopicList spatialEventTopic="Crime" listData={testCrimeData} />
       </div>
 
       <div id="mapView" className="col-xs-12" hidden>

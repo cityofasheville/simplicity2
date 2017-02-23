@@ -2,28 +2,29 @@
   border:1px solid #ecf0f1;
   border-radius: 4px;
   margin-bottom: 10px;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
 }
 
-hr {
-  margin-top: 7px;
-  margin-bottom: 7px;
-  border-top: 1px solid #ecf0f1;
+.titleRow {
+  background-color: rgba(236, 240, 241, 0.24);
+  border-bottom: 1px solid #ecf0f1;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
 }
 
 .categoryTitle {
   font-weight: bold;
-  font-size: 1.3em;
+  font-size: 1.1em;
 }
 
 @media screen and (max-width: 767px) {
-  .categoryTitle, .listTitle {
+  .titleRow {
     text-align: center;
   }
 }
 
-.mapLink a {
+.itemLink a {
   cursor: pointer;
 }
 
@@ -38,9 +39,4 @@ hr {
 .flexRow {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
-}
-
-.centeredCol {
-  text-align: center;
 }

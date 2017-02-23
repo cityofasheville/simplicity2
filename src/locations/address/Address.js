@@ -4,7 +4,7 @@ import SpatialEventTopicSummary from '../../topics/spatial_event_topic_summary/S
 const Address = () => (
   <div className="col-xs-12">
     <h1>Address</h1>
-    <SpatialEventTopicSummary />
+    <SpatialEventTopicSummary spatialEventTopic="Crime" />
   </div>
 );
 

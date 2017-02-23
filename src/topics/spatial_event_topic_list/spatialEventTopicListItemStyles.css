@@ -1,0 +1,46 @@
+.topicSummaryListItem {
+  border:1px solid #ecf0f1;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+hr {
+  margin-top: 7px;
+  margin-bottom: 7px;
+  border-top: 1px solid #ecf0f1;
+}
+
+.categoryTitle {
+  font-weight: bold;
+  font-size: 1.3em;
+}
+
+@media screen and (max-width: 767px) {
+  .categoryTitle, .listTitle {
+    text-align: center;
+  }
+}
+
+.mapLink a {
+  cursor: pointer;
+}
+
+.columnTitle {
+  color: #545e5f;
+}
+
+.columnValue {
+  font-weight: normal;
+}
+
+.flexRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.centeredCol {
+  text-align: center;
+}

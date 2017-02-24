@@ -20,7 +20,7 @@ const renderCategories = (spatialEventTopic) => {
 
 const SpatialEventTopicCategoryFilters = props => (
   <div className="row">
-    <label htmlFor="categoriesPanel" className="control-label col-sm-2">about</label>
+    <label htmlFor="categoriesPanel" className="control-label col-sm-2">view</label>
     <div className="col-sm-10">
       <div className="panel-group">
         <div className="panel panel-default" name="categoriesPanel">

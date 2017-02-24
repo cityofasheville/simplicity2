@@ -17,7 +17,9 @@ const SpatialEventTopicLocationInfo = props => (
   <div className="form-group">
     <label htmlFor="extent" className="col-sm-2 control-label">{renderLabel(props.spatialType)}</label>
     <div className="col-sm-10">
-      <span className="form-control-static" style={{ display: 'block' }}>{props.spatialDescription}</span>
+      <div className="form-control-static" style={{ display: 'block' }}>{props.spatialDescription}
+        <span className="pull-right"><a title="Change location"><i className="fa fa-search"></i> Change location</a></span>
+      </div>
     </div>
   </div>
 );

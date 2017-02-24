@@ -1,29 +1,39 @@
 import React from 'react';
 import styles from '../../spatial_event_topic_list/spatialEventTopicListItemStyles.css';
 
+const getDataItemsToDisplay = item => (
+  {
+    'Case #': item.caseNumber,
+    'Law beat': item.lawBeat,
+  }
+);
+
 const CrimeListItem = props => (
   <div>
     <div className="col-xs-12">
       <div className={['row', styles.flexRow, styles.titleRow].join(' ')}>
-        <div className={['col-sm-4', styles.categoryTitle].join(' ')}>
+        <div className={['col-sm-8', styles.categoryTitle].join(' ')}>
           <span>{props.itemData.crime}</span>
         </div>
-        <div className={['col-sm-8', styles.categoryTitle].join(' ')}>
+        <div className={['col-sm-4', styles.categoryTitle].join(' ')}>
           <div className="pull-right">
-            <span>{props.itemData.date} - </span>
-            <span className={styles.itemLink}> <a title="Zoom to crime in map"><i className="fa fa-map-o"></i> {props.itemData.location}</a></span>
+            {props.itemData.date}
           </div>
         </div>
       </div>
+      <div className={['row', styles.addressRow].join(' ')}>
+        <div className="col-sm-12">
+          <span className={styles.columnTitle}>{props.itemData.location}</span>
+          <div className="pull-right"> <a title="View crime in map"><i className="fa fa-map-o"></i> View crime in map</a></div>          
+        </div>
+      </div>
       <div className={['row', styles.flexRow].join(' ')}>
-        <div className="col-sm-6">
-          <span className={styles.columnTitle}>Case #:</span>
-          <span className={styles.columnValue}> {props.itemData.caseNumber}</span>
-        </div>
-        <div className="col-sm-6">
-          <span className={styles.columnTitle}>Law beat:</span>
-          <span className={styles.columnValue}> {props.itemData.lawBeat}</span>
-        </div>
+        {Object.keys(getDataItemsToDisplay(props.itemData)).map(key => (
+          <div className="col-sm-6" key={key}>
+            <label htmlFor={key} className={['control-label', styles.columnTitle].join(' ')}>{key}:</label>
+            <span className={styles.columnValue} name={key}> {getDataItemsToDisplay(props.itemData)[key]}</span>
+          </div>
+        ))}
       </div>
     </div>
   </div>

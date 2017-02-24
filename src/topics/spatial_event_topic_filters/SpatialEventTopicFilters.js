@@ -10,10 +10,10 @@ const SpatialEventTopicFilters = props => (
     <form className="row form-horizontal">
       <div className="col-xs-12">
         <fieldset className={styles.filtersDiv}>
+          <SpatialEventTopicCategoryFilters spatialEventTopic={props.spatialEventTopic} />
           <SpatialEventTopicTimeFilter />
           <SpatialEventTopicExtentFilter spatialType={props.spatialType} />
           <SpatialEventTopicLocationInfo spatialType={props.spatialType} spatialDescription={props.spatialDescription} />
-          <SpatialEventTopicCategoryFilters spatialEventTopic={props.spatialEventTopic} />
         </fieldset>
       </div>
     </form>

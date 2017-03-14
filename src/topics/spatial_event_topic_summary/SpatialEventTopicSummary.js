@@ -49,7 +49,7 @@ const SpatialEventTopicSummary = props => (
       </div>
 
       <div id="listView">
-        <SpatialEventTopicList spatialEventTopic="Development" listData={testPermitData} />
+        <SpatialEventTopicList spatialEventTopic="Develop" listData={testPermitData} />
       </div>
 
       <div id="mapView" className="col-xs-12" hidden>

@@ -30,8 +30,6 @@ const DevelopmentListItem = (props) => {
           <div className="col-sm-12">
             <span className={styles.itemLink}>{props.itemData.Address}</span>
             <span className={styles.columnTitle}>{props.itemData.location}</span>
-            <div className="pull-right"><a title="View permit in map"><i className="fa fa-map-o"></i> View permit in map</a></div>
-            <div className="pull-right"><a title="See permit details"><i className="fa fa-align-justify"></i> Permit details</a></div>
           </div>
         </div>
         <div className={['row', styles.flexRow].join(' ')}>
@@ -41,6 +39,11 @@ const DevelopmentListItem = (props) => {
               <span className={styles.columnValue} name={key}> {displayItems[key]}</span>
             </div>
           ))}
+        </div>
+        <div className={['row', styles.linkRow].join(' ')}>
+          <div className="col-sm-12">
+            <div className="pull-right"><a title="See permit details"><i className="fa fa-align-justify"></i> Details</a></div><div className="pull-right"> <a title="View crime in map"><i className="fa fa-map-o"></i> Map</a></div>
+          </div>
         </div>
       </div>
     </div>

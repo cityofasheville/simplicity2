@@ -23,7 +23,6 @@ const CrimeListItem = (props) => {
         <div className={['row', styles.addressRow].join(' ')}>
           <div className="col-sm-12">
             <span className={styles.columnTitle}>{props.itemData.location}</span>
-            <div className="pull-right"> <a title="View crime in map"><i className="fa fa-map-o"></i> View crime in map</a></div>
           </div>
         </div>
         <div className={['row', styles.flexRow].join(' ')}>
@@ -33,6 +32,11 @@ const CrimeListItem = (props) => {
               <span className={styles.columnValue} name={key}> {displayItems[key]}</span>
             </div>
           ))}
+        </div>
+        <div className={['row', styles.linkRow].join(' ')}>
+          <div className="col-sm-12">
+            <div className="pull-right"> <a title="View crime in map"><i className="fa fa-map-o"></i> Map</a></div>
+          </div>
         </div>
       </div>
     </div>

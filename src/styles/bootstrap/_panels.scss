@@ -239,6 +239,14 @@
     + .panel-collapse > .list-group {
       border-top: 1px solid $panel-inner-border;
     }
+
+    .fa-chevron:after {
+      content: "\f078";
+    }
+
+    &.collapsed .fa-chevron:after {
+      content: "\f054";
+    }
   }
 
   .panel-footer {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ResponsiveContainer, BarChart as RechartsBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
-const barColors = ['#9C27B0', '#03A9F4', '#FFC107', '#4CAF50'];
+const barColors = ['#9C27B0', '#03A9F4', '#FFC107', '#4CAF50', '#E91E63', '#795548', '#9E9E9E'];
 
 const renderTitle = (title) => {
   if (title === undefined) {

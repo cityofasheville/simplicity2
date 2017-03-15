@@ -1,11 +1,16 @@
 import React from 'react';
-import BarChart from '../../components/BarChart';
+import PieChart from '../../components/PieChart';
 import SpatialEventTopicFilters from '../spatial_event_topic_filters/SpatialEventTopicFilters';
 import EmailDownload from '../../components/EmailDownload';
 import SpatialEventTopicList from '../spatial_event_topic_list/SpatialEventTopicList';
 
 const testData = [
-  { name: 'Crimes', 'Aggravated assault': 123, Burglary: 1000, Larceny: 1500, 'Larceny of Motor Vehicle': 2500, Robbery: 100, Vandalism: 4000 },
+  { name: 'Aggravated assault', value: 123 },
+  { name: 'Burglary', value: 1000 },
+  { name: 'Larceny', value: 1500 },
+  { name: 'Larceny of Motor Vehicle', value: 2500 },
+  { name: 'Robbery', value: 750 },
+  { name: 'Vandalism', value: 4000 },
 ];
 
 const testCrimeData = [
@@ -44,12 +49,12 @@ const SpatialEventTopicSummary = props => (
     </div>
 
     <div className="row">
-      <div id="summaryView" className="col-xs-12" style={{ height: '400px' }} hidden>
-        <BarChart data={testData} chartTitle={[props.spatialEventTopic, 'Summary'].join(' ')} barDataKeys={['Aggravated assault', 'Burglary', 'Larceny', 'Larceny of Motor Vehicle', 'Robbery', 'Vandalism']} xAxisDataKey="name" />
+      <div id="summaryView" className="col-xs-12" style={{ height: '400px' }}>
+        <PieChart data={testData} />
       </div>
 
-      <div id="listView">
-        <SpatialEventTopicList spatialEventTopic="Develop" listData={testPermitData} />
+      <div id="listView" hidden>
+        <SpatialEventTopicList spatialEventTopic={props.spatialEventTopic} listData={testCrimeData} />
       </div>
 
       <div id="mapView" className="col-xs-12" hidden>

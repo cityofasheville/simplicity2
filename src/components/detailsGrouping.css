@@ -1,0 +1,10 @@
+.titleDiv {
+  margin-bottom: 5px;
+  margin-left: 10px;
+}
+
+.titleDiv i {
+  font-size: 25px;
+  vertical-align: middle;
+  margin-right: 5px;
+}

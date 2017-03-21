@@ -1,0 +1,15 @@
+.detailsFormGroup i{
+  display: inline-block;
+  font-size: 25px;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+
+.labelClass {
+  font-weight: bold;
+  display: inline-block;
+}
+
+.valueClass {
+  margin-left: 15px;
+}

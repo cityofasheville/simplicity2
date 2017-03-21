@@ -17,6 +17,13 @@ fieldset {
   min-width: 0;
 }
 
+fieldset.detailsFieldset {
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  padding-top: 15px;
+  margin-bottom: 10px;
+}
+
 legend {
   display: block;
   width: 100%;

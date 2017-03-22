@@ -2,52 +2,46 @@ import React from 'react';
 import DetailsFormGroup from './DetailsFormGroup';
 import styles from './detailsGrouping.css';
 
-const renderData = (dataLabels, dataValues, dataIcons, colWidth) => {
-  const numArrays = Math.floor(12 / colWidth); // step one, determine number of subArrays needed
-  const subArraySize = Math.floor(dataValues.length / numArrays);
+const DetailsGrouping = (props) => {
+  const numArrays = Math.floor(12 / props.colWidth); // step one, determine number of subArrays needed
+  const subArraySize = Math.floor(props.dataValues.length / numArrays);
   const subValuesArrays = [];
   const subLabelsArrays = [];
   const subIconsArrays = [];
-  const hasLabels = dataLabels.length === dataValues.length;
-  const hasIcons = dataIcons.length === dataValues.length;
+  const hasLabels = props.dataLabels.length === props.dataValues.length;
+  const hasIcons = props.dataIcons.length === props.dataValues.length;
 
-  for (let i = 0, j = dataValues.length; i < j; i += subArraySize) { // step 2, split into subarrays
-    subValuesArrays.push(dataValues.slice(i, i + subArraySize));
+  for (let i = 0, j = props.dataValues.length; i < j; i += subArraySize) { // step 2, split into subarrays
+    subValuesArrays.push(props.dataValues.slice(i, i + subArraySize));
     if (hasLabels) {
-      subLabelsArrays.push(dataLabels.slice(i, i + subArraySize));
+      subLabelsArrays.push(props.dataLabels.slice(i, i + subArraySize));
     }
     if (hasIcons) {
-      subIconsArrays.push(dataIcons.slice(i, i + subArraySize));
+      subIconsArrays.push(props.dataIcons.slice(i, i + subArraySize));
     }
   }
   return (
     <div>
+      {props.dataValues.length > 0 && <div>
+        {props.hasTitle &&
+          <div className={styles.titleDiv}>
+            {props.hasTitleIcon &&
+              <i className={['fa fa-', props.titleIcon].join('')}></i>
+            } {props.title}
+          </div>
+        }
+        </div>
+      }
       {subValuesArrays.map((values, i) => (
-        <div key={i} className={['col-xs-', colWidth.toString()].join('')}>
+        <div key={i} className={['col-xs-', props.colWidth].join('')}>
           {values.map((value, j) => (
-            <DetailsFormGroup key={j} hasLabel={hasLabels} hasIcon={hasIcons} label={hasLabels ? subLabelsArrays[i][j] : ''} icon={hasIcons ? subIconsArrays[i][j] : ''} value={value} />
+            <DetailsFormGroup key={[i, j].join('_')} hasLabel={hasLabels} hasIcon={hasIcons} label={hasLabels ? subLabelsArrays[i][j] : ''} icon={hasIcons ? subIconsArrays[i][j] : ''} value={value} />
           ))}
         </div>
       ))}
     </div>
   );
 };
-
-const DetailsGrouping = props => (
-  <div>
-    {props.dataValues.length > 0 && <fieldset className={styles.detailsFieldset}>
-      {props.hasTitle &&
-        <div className={styles.titleDiv}>
-          {props.hasTitleIcon &&
-            <i className={['fa fa-', props.titleIcon].join('')}></i>
-          } {props.title}
-        </div>
-      }
-      {renderData(props.dataLabels, props.dataValues, props.dataIcons, props.colWidth)}
-    </fieldset>
-    }
-  </div>
-);
 
 DetailsGrouping.propTypes = {
   hasTitle: React.PropTypes.bool,

@@ -1,0 +1,32 @@
+.titleDiv {
+  margin-bottom: 5px;
+  margin-left: 10px;
+}
+
+.titleDiv i {
+  font-size: 25px;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+
+.headerRow {
+  border-bottom: 2px solid #ddd;
+  margin-right: 15px;
+  margin-left: 15px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  padding-bottom: 25px;
+}
+
+.columnHeader {
+  font-weight: bold;
+}
+
+.columnHeader:first-of-type {
+  margin-left: -15px;
+  margin-right: 15px;
+}
+
+.columnData {
+  border-bottom: 1px solid #ddd;
+}

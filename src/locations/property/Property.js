@@ -8,7 +8,7 @@ const renderZoning = propertyZoning => (
     <div style={{ 'font-weight': 'bold' }}>Zoning</div>
     <div style={{ 'margin-left': '15px' }}>
       {propertyZoning.map((types, i) => (
-        <a key={['zoning', i].join('_')} href={types.dataHrefs} title={types.type}>{types.type}{i < propertyZoning.length - 1 && <span>,</span>} </a>
+        <a key={['zoning', i].join('_')} href={types.href} target={'_blank'} title={types.type}>{types.type}{i < propertyZoning.length - 1 && <span>,</span>} </a>
       ))}
     </div>
   </div>

@@ -1,0 +1,12 @@
+.topicCard {
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  margin-bottom: 10px;
+}
+
+.topicCard i {
+  padding-bottom: 5px;
+  width: 100%;
+}

@@ -23,6 +23,7 @@ import DevelopmentSummary from './topics/development/summary/DevelopmentSummary'
 import DevelopmentDetail from './topics/development/detail/DevelopmentDetail';
 import DevelopmentSLADashboard from './topics/development/sla_dashboard/SLADashboard';
 import CrimeSummary from './topics/crime/summary/CrimeSummary';
+import BudgetSummary from './topics/budget/summary/BudgetSummary';
 import CrimeDetail from './topics/crime/detail/CrimeDetail';
 
 const Routes = props => (
@@ -49,6 +50,9 @@ const Routes = props => (
           <Route path="crime">
             <IndexRoute component={CrimeSummary} />
             <Route path="detail" component={CrimeDetail}></Route>
+          </Route>
+          <Route path="budget">
+            <IndexRoute component={BudgetSummary} />
           </Route>
         </Route>
       </Route>

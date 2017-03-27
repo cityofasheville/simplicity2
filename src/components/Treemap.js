@@ -3,6 +3,15 @@ import { ResponsiveContainer, Treemap as RechartsTreemap } from 'recharts';
 
 const COLORS = ['#9C27B0', '#03A9F4', '#FFC107', '#b71c1c', '#4CAF50', '#E91E63', '#9E9E9E'];
 
+const getDollars = (value) => {
+  if (value > 1000000) {
+    return ['$', (value / 1000000).toLocaleString(), ' M'].join('');
+  } else if (value > 1000) {
+    return ['$', (value / 1000).toLocaleString(), ' k'].join('');
+  }
+  return ['$', value.toLocaleString()].join('');
+};
+
 const CustomTreemap = (props) => {
   const { root, depth, x, y, width, height, index, colors, name, amount, diveDeeper } = props;
 
@@ -27,9 +36,9 @@ const CustomTreemap = (props) => {
           <foreignObject width={width} height={'20px'} x={x + 4} y={y + 2}>
             <span
               style={{ fontWeight: 'bold', wordWrap: 'break-word', color: '#fff' }}
-              title={[name, amount, 'Click to see more details'].join(' ')}
+              title={[name, getDollars(amount), 'Click to see more details'].join(' ')}
             >
-              {amount}
+              {getDollars(amount)}
             </span>
             <br />
             <span
@@ -54,21 +63,20 @@ CustomTreemap.propTypes = {
   index: React.PropTypes.number,
   colors: React.PropTypes.arrayOf(React.PropTypes.string),
   name: React.PropTypes.string,
-  amount: React.PropTypes.string,
+  amount: React.PropTypes.number,
   diveDeeper: React.PropTypes.func,
 };
 
 const Treemap = props => (
-  <div style={{ height: '450px' }}>
+  <div style={{ height: props.height }}>
     <ResponsiveContainer>
       <RechartsTreemap
-        width={900}
-        height={450}
         data={props.data}
         dataKey="size"
         ratio={4 / 3}
         stroke="#fff"
         fill="#8884d8"
+        isAnimationActive={false}
         content={<CustomTreemap colors={COLORS} diveDeeper={props.diveDeeper} />}
       />
     </ResponsiveContainer>
@@ -76,8 +84,15 @@ const Treemap = props => (
 );
 
 Treemap.propTypes = {
+  height: React.PropTypes.number,
   data: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
   diveDeeper: React.PropTypes.func,
+};
+
+Treemap.defaultProps = {
+  height: 450,
+  data: [],
+  diveDeeper: undefined,
 };
 
 export default Treemap;

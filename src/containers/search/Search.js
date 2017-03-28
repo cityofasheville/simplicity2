@@ -1,5 +1,4 @@
 import React from 'react';
-import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 
 import SearchBar from '../../components/SearchBar';
@@ -89,14 +88,11 @@ class Search extends React.Component {
 
   render() {
     return (
-      <div className="search">
-        <div className="container">
-          <button onClick={browserHistory.goBack} className="search-close">&times;</button>
-          <div className="search-bar-wrapper">
-            <SearchBar text={this.props.text} onKeyUp={this.props.onKeyUp}/>
-          </div>
-          <SearchResults results={searchJSON} ></SearchResults>
+      <div>
+        <div className="row">
+          <SearchBar text={this.props.text} onKeyUp={this.props.onKeyUp} />
         </div>
+        <SearchResults results={searchJSON} ></SearchResults>
       </div>
     );
   }

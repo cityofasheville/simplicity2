@@ -1,38 +1,41 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import SearchBarLink from './SearchBarLink';
+import SearchBar from './SearchBarLink'; // temporarily using the link version
+import TopicCard from './TopicCard';
 
-const Homepage = () => (
-  <div className="container">
-    <SearchBarLink />
-    <div className="col-md-12">
+const Homepage = props => (
+  <div>
+    <div className="row">
+      <SearchBar />
+    </div>
+    <div className="row">
       <div className="col-xs-12">
-        <h4 className="text-primary">TOPICS</h4>
+        <p className="text-muted text-center lead">or</p>
+        <p className="text-muted text-center lead">View citywide <strong>topic</strong> summaries about your community.</p>
       </div>
-      <div className="col-md-4">
-        <div className="col-xs-12 topic-tile">
-          <div className="row text-center">
-            <i className="fa fa-shield fa-5x text-primary" aria-hidden="true"></i>
-          </div>
-          <h2 className="text-primary text-center">CRIME</h2>
-          <hr />
+    </div>
+    <div className="row">
+      {props.topics.map((topic, i) => (
+        <div className="col-xs-4" key={['topic', i].join('_')}>
+          <TopicCard topic={topic} />
         </div>
-      </div>
-      <div className="col-md-4">
-        <div className="col-xs-12 topic-tile">
-          <div className="row text-center">
-            <i className="fa fa-building-o fa-5x text-primary" aria-hidden="true"></i>
-          </div>
-          <Link to="/topics/development"><h2 className="text-primary text-center">DEVELOPMENT</h2></Link>
-          <hr />
-        </div>
-      </div>
+      ))}
     </div>
   </div>
 );
 
-Homepage.propTypes = {};
+Homepage.propTypes = {
+  topics: React.PropTypes.arrayOf(React.PropTypes.string),
+};
+
+Homepage.defaultProps = {
+  topics: [
+    'CRIME',
+    'DEVELOPMENT',
+    'BUDGET',
+  ],
+};
 
 export default Homepage;
 

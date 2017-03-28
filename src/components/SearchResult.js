@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-
+import styles from './searchResult.css';
 
 const getLink = (type, id) => {
   switch (type) {
@@ -22,10 +22,14 @@ const getLink = (type, id) => {
 };
 
 const SearchResult = props => (
-  <Link to={getLink(props.type, props.id)} className="col-xs-12 search-result">
-      <i className={['fa', props.icon, 'search-result-icon'].join(' ')}></i>
-      {props.children}
-      <i className="fa fa-chevron-right search-result-arrow-icon"></i>
+  <Link to={getLink(props.type, props.id)} className={styles.searchResult}>
+    <div className={['form-group', styles.searchResultFormGroup].join(' ')}>
+      <div className={['form-control', styles.searchResultDiv].join(' ')}>
+        <i className={['fa', props.icon, styles.searchResultIcon].join(' ')}></i>
+        {props.children}
+        <i className={['fa fa-chevron-right pull-right', styles.searchResultArrowIcon].join(' ')}></i>
+      </div>
+    </div>
   </Link>
 );
 

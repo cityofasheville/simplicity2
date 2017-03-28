@@ -1,5 +1,5 @@
 import React from 'react';
-import { ResponsiveContainer, AreaChart as RechartsAreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
+import { ResponsiveContainer, AreaChart as RechartsAreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
 const COLORS = ['#9C27B0', '#03A9F4', '#FFC107', '#b71c1c', '#4CAF50', '#E91E63', '#9E9E9E'];
 
@@ -25,6 +25,7 @@ const AreaChart = props => (
         {props.data.dataKeys.map((area, i) => (
           <Area key={['area', i].join('_')} type="monotone" dataKey={props.data.dataKeys[i]} stackId={1} fill={COLORS[i % COLORS.length]} stroke={COLORS[i % COLORS.length]} fillOpacity={1} onClick={props.diveDeeper !== undefined ? () => props.diveDeeper(props.data.dataValues[i]) : null} style={{ cursor: 'pointer' }} />
         ))}
+        <Legend />
       </RechartsAreaChart>
     </ResponsiveContainer>
   </div>

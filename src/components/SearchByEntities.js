@@ -26,7 +26,7 @@ SearchByEntities.defaultProps = {
     { entityType: 'Neighborhoods', checked: true },
     { entityType: 'Streets', checked: true },
     { entityType: 'Addresses', checked: true },
-    { entityType: 'Owners', checked: false },
+    { entityType: 'Owners', checked: true },
     { entityType: 'Google places', checked: true },
     { entityType: 'Properties', checked: true },
   ],

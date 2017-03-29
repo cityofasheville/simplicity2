@@ -5,8 +5,8 @@ import DetailsTable from '../../components/DetailsTable';
 
 const renderZoning = propertyZoning => (
   <div className="form-group">
-    <div style={{ 'font-weight': 'bold' }}>Zoning</div>
-    <div style={{ 'margin-left': '15px' }}>
+    <div style={{ fontWeight: 'bold' }}>Zoning</div>
+    <div style={{ marginLeft: '15px' }}>
       {propertyZoning.map((types, i) => (
         <a key={['zoning', i].join('_')} href={types.href} target={'_blank'} title={types.type}>{types.type}{i < propertyZoning.length - 1 && <span>,</span>} </a>
       ))}

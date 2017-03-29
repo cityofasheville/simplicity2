@@ -19,9 +19,9 @@ const SearchBarLink = props => (
             <button className="btn btn-primary" type="button"><i className="fa fa-search"></i></button>
           </span>
         </div>
-        <SearchByEntities />
       </form>
     </Link>
+    <SearchByEntities />
   </div>
 );
 

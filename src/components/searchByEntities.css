@@ -45,3 +45,9 @@
 .unchecked {
   color: #999;
 }
+
+.entityDescriptionUnchecked {
+  display: block;
+  padding-left: 10px;
+  color: #999;
+}

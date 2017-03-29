@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router';
 
 import SearchBar from './SearchBarLink'; // temporarily using the link version
 import TopicCard from './TopicCard';
@@ -18,7 +17,7 @@ const Homepage = props => (
     <div className="row">
       {props.topics.map((topic, i) => (
         <div className="col-xs-4" key={['topic', i].join('_')}>
-          <TopicCard topic={topic} />
+          <TopicCard topic={topic} entity="city" />
         </div>
       ))}
     </div>

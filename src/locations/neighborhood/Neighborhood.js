@@ -6,7 +6,7 @@ const Neighborhood = props => (
   <div>
     <div className="row">
       <div className="col-sm-12">
-        <h1><button className="btn btn-primary pull-right">Back</button>{props.neighborhoodName}</h1>
+        <h1><button className="btn btn-primary pull-right">Back</button>{props.location.query.label}</h1>
         <h3>About this neighborhood</h3>
       </div>
     </div>
@@ -15,7 +15,7 @@ const Neighborhood = props => (
         <div className="row">
           {props.topics.map((topic, i) => (
             <div className="col-xs-6" key={['topic', i].join('_')}>
-              <TopicCard topic={topic} urlParams={'searchby=neighborhood&view=summary'} />
+              <TopicCard topic={topic} entity="neighborhood" id={props.location.query.id} />
             </div>
           ))}
         </div>
@@ -36,7 +36,7 @@ const iconLinksDataShape = {
 };
 
 Neighborhood.propTypes = {
-  neighborhoodName: React.PropTypes.string,
+  location: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
   topics: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
   iconLinksData: React.PropTypes.shape(iconLinksDataShape).isRequired, // eslint-disable-line react/forbid-prop-types
 };

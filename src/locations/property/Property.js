@@ -18,7 +18,7 @@ const Property = props => (
   <div>
     <div className="row">
       <div className="col-sm-12">
-        <h1><button className="btn btn-primary pull-right">Back</button>{props.propertyName}</h1>
+        <h1><button className="btn btn-primary pull-right">Back</button>{props.location.query.label}</h1>
         <h2>{props.propertyAddress}</h2>
         <h3>About this property</h3>
       </div>
@@ -70,7 +70,7 @@ const iconLinksDataShape = {
 };
 
 Property.propTypes = {
-  propertyName: React.PropTypes.string,
+  location: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
   propertyAddress: React.PropTypes.string,
   propertyDetails: React.PropTypes.shape(propertyDataShape).isRequired, // eslint-disable-line react/forbid-prop-types
   ownerData: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
@@ -83,7 +83,7 @@ Property.propTypes = {
 // TODO - this is temporary dummy data
 Property.defaultProps = {
   propertyName: '450 MONTFORD AVE Unit',
-  propertyAddress: '450 Montford Ave, 28801',
+  propertyAddress: 'Address of the Property 28123',
   propertyZoning: [
     { type: 'OFFICE', href: 'https://www.municode.com/library/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTVIIIGEUSDI_S7-8-18CEBUDI' },
     { type: 'RSA', href: 'https://www.municode.com/library/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTVIIIGEUSDI_S7-8-18CEBUDI' },

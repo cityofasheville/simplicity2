@@ -19,7 +19,7 @@ const Address = props => (
   <div>
     <div className="row">
       <div className="col-sm-12">
-        <h1><button className="btn btn-primary pull-right">Back</button>{props.address}</h1>
+        <h1><button className="btn btn-primary pull-right">Back</button>{props.location.query.label}</h1>
         <h3>About this address</h3>
       </div>
     </div>
@@ -40,7 +40,7 @@ const Address = props => (
         <div className="row">
           {props.topics.map((topic, i) => (
             <div className="col-xs-6" key={['topic', i]}>
-              <TopicCard topic={topic} urlParams={'searchby=address&view=summary'} />
+              <TopicCard topic={topic} entity="address" id={props.location.query.id} />
             </div>
           ))}
         </div>
@@ -56,7 +56,7 @@ const iconLinksDataShape = {
 };
 
 Address.propTypes = {
-  address: React.PropTypes.string,
+  location: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
   inTheCity: React.PropTypes.bool,
   addressZoning: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
   dataLabels: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types

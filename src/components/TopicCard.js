@@ -8,6 +8,8 @@ const getTopicIcon = (topic) => {
       return 'shield';
     case 'DEVELOPMENT':
       return 'building-o';
+    case 'BUDGET':
+      return 'usd';
     default:
       return 'university';
   }
@@ -30,7 +32,7 @@ TopicCard.propTypes = {
 
 TopicCard.defaultProps = {
   topic: 'CRIME',
-  urlParams: 'testing=123&moreTesting=1234',
+  urlParams: 'searchby=citywide&view=summary',
 };
 
 export default TopicCard;

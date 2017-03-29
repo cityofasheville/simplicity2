@@ -15,7 +15,7 @@ const renderLegend = payload => (
   <ul>
     {
       payload.map((entry, index) => (
-        <li key={index}><div style={{ backgroundColor: pieColors[index % pieColors.length], width: '15px', height: '15px', display: 'inline-block', marginRight: '5px' }}></div>{entry.name}: {entry.value}</li>
+        <li key={[entry.name, index].join('_')}><div style={{ backgroundColor: pieColors[index % pieColors.length], width: '15px', height: '15px', display: 'inline-block', marginRight: '5px' }}></div>{entry.name}: {entry.value}</li>
       ))
     }
   </ul>
@@ -34,7 +34,7 @@ const PieChart = props => (
           outerRadius={'50%'}
           fill={'#9C27B0'}
         >
-          {props.data.map((entry, index) => <Cell fill={pieColors[index % pieColors.length]} />)}
+          {props.data.map((entry, index) => <Cell key={['cell', index].join('_')} fill={pieColors[index % pieColors.length]} />)}
         </Pie>
         <Tooltip />
         <Legend verticalAlign={'bottom'} content={renderLegend(props.data)} className={styles.pieLegend} />

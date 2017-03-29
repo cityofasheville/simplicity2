@@ -4,13 +4,19 @@ import SpatialEventTopicFilters from '../spatial_event_topic_filters/SpatialEven
 import EmailDownload from '../../components/EmailDownload';
 import SpatialEventTopicList from '../spatial_event_topic_list/SpatialEventTopicList';
 
-const testData = [
+const testPieCrimeData = [
   { name: 'Aggravated assault', value: 123 },
   { name: 'Burglary', value: 1000 },
   { name: 'Larceny', value: 1500 },
   { name: 'Larceny of Motor Vehicle', value: 2500 },
   { name: 'Robbery', value: 750 },
   { name: 'Vandalism', value: 4000 },
+];
+
+const testPieDevelopmentData = [
+  { name: 'Planning Level I', value: 12345 },
+  { name: 'Planning Level II', value: 1000 },
+  { name: 'Planning Level III', value: 15000 },
 ];
 
 const testCrimeData = [
@@ -50,11 +56,11 @@ const SpatialEventTopicSummary = props => (
 
     <div className="row">
       <div id="summaryView" className="col-xs-12" style={{ height: '400px' }}>
-        <PieChart data={testData} />
+        <PieChart data={props.spatialEventTopic.toLowerCase() === 'crime' ? testPieCrimeData : testPieDevelopmentData} />
       </div>
 
       <div id="listView" hidden>
-        <SpatialEventTopicList spatialEventTopic={props.spatialEventTopic} listData={testCrimeData} />
+        <SpatialEventTopicList spatialEventTopic={props.spatialEventTopic} listData={props.spatialEventTopic.toLowerCase() === 'crime' ? testCrimeData : testPermitData} />
       </div>
 
       <div id="mapView" className="col-xs-12" hidden>

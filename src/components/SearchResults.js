@@ -3,7 +3,7 @@ import React from 'react';
 import SearchResultGroup from './SearchResultGroup';
 
 const SearchResults = props => (
-  <div className="search-results">
+  <div className="row">
     {
       props.results.map(resultGroup => (
         <SearchResultGroup

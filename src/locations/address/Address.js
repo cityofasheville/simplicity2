@@ -6,8 +6,8 @@ import InCityMessage from '../../components/InCityMessage';
 
 const renderZoning = zoning => (
   <div className="form-group">
-    <div style={{ 'font-weight': 'bold' }}>Zoning</div>
-    <div style={{ 'margin-left': '15px' }}>
+    <div style={{ fontWeight: 'bold' }}>Zoning</div>
+    <div style={{ marginLeft: '15px' }}>
       {zoning.map((types, i) => (
         <a key={['zoning', i].join('_')} target={'_blank'} href={types.href} title={types.type}>{types.type}{i < zoning.length - 1 && <span>,</span>} </a>
       ))}
@@ -27,7 +27,7 @@ const Address = props => (
       <div className="col-sm-6">
         <fieldset className="detailsFieldset">
           <InCityMessage inTheCity={props.inTheCity} />
-          <hr style={{ 'margin-top': '10px', 'margin-bottom': '10px' }} />
+          <hr style={{ marginTop: '10px', marginBottom: '10px' }} />
           <DetailsGrouping dataLabels={props.dataLabels.slice(0, 2)} dataValues={props.dataValues.slice(0, 2)} dataIcons={props.dataIcons.slice(0, 2)} />
           <div className="col-xs-12">
             {renderZoning(props.addressZoning)}
@@ -39,8 +39,8 @@ const Address = props => (
       <div className="col-sm-6">
         <div className="row">
           {props.topics.map((topic, i) => (
-            <div className="col-xs-6">
-              <TopicCard key={['topic', i].join('_')} topic={topic} />
+            <div className="col-xs-6" key={['topic', i]}>
+              <TopicCard topic={topic} urlParams={'searchby=address&view=summary'} />
             </div>
           ))}
         </div>

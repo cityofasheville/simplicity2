@@ -1,6 +1,7 @@
 import React from 'react';
 import SearchResult from './SearchResult';
-
+import styles from './searchResultGroup.css';
+import stylesResult from './searchResult.css';
 
 const renderSearchResults = (results, icon, resultsToShow) => (
   results.slice(0, resultsToShow).map(result => (
@@ -28,17 +29,21 @@ class SearchResultGroup extends React.Component {
 
   render() {
     return (
-      <div className="col-xs-12">
+      <div className={['col-xs-12', styles.searchResultGroup].join(' ')}>
         <h3>
-          <i className={['fa', this.props.icon, 'search-result-group-icon'].join(' ')}></i>
+          <i className={['fa', this.props.icon].join(' ')}></i>
           {this.props.label}
-          <span className="badge search-result-group-count">{this.props.count}</span>
+          <span className="badge">{this.props.count}</span>
         </h3>
         {renderSearchResults(this.props.results, this.props.icon, this.state.resultsToShow)}
-        <button onClick={this.show3More} className="col-xs-12 search-result more">
-          More
-          <i className="fa fa-chevron-down search-result-arrow-icon"></i>
-        </button>
+        <a onClick={this.show3More} className={stylesResult.searchResult}>
+          <div className="form-group">
+            <div className={['form-control', stylesResult.searchResultDiv].join(' ')}>
+              More
+              <i className={['fa fa-chevron-down pull-right', styles.searchResultArrowIcon].join(' ')}></i>
+            </div>
+          </div>
+        </a>
       </div>
     );
   }

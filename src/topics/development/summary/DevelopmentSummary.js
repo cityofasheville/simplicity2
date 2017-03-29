@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router';
 
+import SpatialEventTopicSummary from '../../../topics/spatial_event_topic_summary/SpatialEventTopicSummary';
+
 const DevelopmentSummary = props => (
   <div className="col-xs-12">
-    <h1>Development Summary</h1>
     <Link to="/topics/development/sla-dashboard">SLA Dashboard</Link>
-    { props.children }
+    <SpatialEventTopicSummary spatialEventTopic="Development" />
   </div>
 );
 

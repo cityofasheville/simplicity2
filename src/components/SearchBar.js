@@ -1,18 +1,23 @@
 import React from 'react';
+import SearchByEntities from './SearchByEntities';
 
 const SearchBar = props => (
   <div className="col-xs-12">
     <form onSubmit={event => event.preventDefault()}>
-      <input
-        type="text"
-        className="form-control search-bar"
-        defaultValue={props.text}
-        autoFocus
-        placeholder="Search for an address, location, name or ID..."
-        onKeyUp={props.onKeyUp}
-      />
-      <i className="fa fa-search fa-2x text-primary search-icon-in-search"></i>
-      <i className="fa fa-caret-down fa-2x text-primary icon-in-search"></i>
+      <p className="text-muted text-center lead">Discover city data about <strong>places</strong> in your community.</p>
+      <div className="input-group">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Enter a keyword..."
+          defaultValue={props.text}
+          onKeyUp={props.onKeyUp}
+        />
+        <span className="input-group-btn">
+          <button className="btn btn-primary" type="button"><i className="fa fa-search"></i></button>
+        </span>
+      </div>
+      <SearchByEntities />
     </form>
   </div>
 );

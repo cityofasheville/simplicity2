@@ -1,26 +1,31 @@
 import React from 'react';
 import { Link } from 'react-router';
-
+import SearchByEntities from './SearchByEntities';
 
 const SearchBarLink = props => (
   <div className="col-xs-12">
     <Link to="/search">
       <form onSubmit={event => event.preventDefault()}>
-        <input
-          type="text"
-          className="form-control search-bar"
-          placeholder="Search for an address, location, name or ID..."
-        />
-        <i className="fa fa-search fa-2x text-primary search-icon-in-search"></i>
-        <i className="fa fa-caret-down fa-2x text-primary icon-in-search"></i>
+        <p className="text-muted text-center lead">Discover city data about <strong>places</strong> in your community.</p>
+        <div className="input-group">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Enter a keyword..."
+            defaultValue={props.text}
+            onKeyUp={props.onKeyUp}
+          />
+          <span className="input-group-btn">
+            <button className="btn btn-primary" type="button"><i className="fa fa-search"></i></button>
+          </span>
+        </div>
       </form>
     </Link>
+    <SearchByEntities />
   </div>
 );
 
 SearchBarLink.propTypes = {};
-
-
 
 export default SearchBarLink;
 

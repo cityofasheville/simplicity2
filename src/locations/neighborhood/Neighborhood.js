@@ -14,8 +14,8 @@ const Neighborhood = props => (
       <div className="col-sm-6">
         <div className="row">
           {props.topics.map((topic, i) => (
-            <div className="col-xs-6">
-              <TopicCard key={['topic', i].join('_')} topic={topic} />
+            <div className="col-xs-6" key={['topic', i].join('_')}>
+              <TopicCard topic={topic} urlParams={'searchby=neighborhood&view=summary'} />
             </div>
           ))}
         </div>

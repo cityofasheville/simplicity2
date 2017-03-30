@@ -37,16 +37,16 @@ const SpatialEventTopicSummary = props => (
   <div>
     <div className="row">
       <h1 className="col-xs-6">{props.spatialEventTopic}</h1>
-      <div className="col-xs-6">
-        <EmailDownload />
-      </div>
     </div>
 
     <SpatialEventTopicFilters spatialEventTopic={props.spatialEventTopic} spatialType="address" spatialDescription="123 Main Street" />
 
     <div className="row">
       <div className="col-xs-12">
-        <div className="btn-group pull-right">
+        <div className="pull-left">
+          <EmailDownload />
+        </div>
+        <div className="btn-group pull-right" style={{ marginTop: '5px' }}>
           <button className="btn btn-primary">Summary</button>
           <button className="btn btn-primary">List view</button>
           <button className="btn btn-primary">Map view</button>

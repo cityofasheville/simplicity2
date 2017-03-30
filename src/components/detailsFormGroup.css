@@ -5,6 +5,10 @@
   margin-right: 5px;
 }
 
+.detailsFormGroup {
+  word-wrap: break-word;
+}
+
 .labelClass {
   font-weight: bold;
   display: inline-block;

@@ -6,7 +6,7 @@ const Street = props => (
   <div>
     <div className="row">
       <div className="col-sm-12">
-        <h1><button className="btn btn-primary pull-right">Back</button>{props.streetName}</h1>
+        <h1><button className="btn btn-primary pull-right">Back</button>{props.location.query.label}</h1>
         <h3>About this street</h3>
       </div>
     </div>
@@ -19,8 +19,8 @@ const Street = props => (
       <div className="col-sm-6">
         <div className="row">
           {props.topics.map((topic, i) => (
-            <div className="col-xs-6">
-              <TopicCard key={['topic', i].join('_')} topic={topic} />
+            <div className="col-xs-6" key={['topic', i].join('_')}>
+              <TopicCard topic={topic} entity="street" id={props.location.query.id} />
             </div>
           ))}
         </div>
@@ -36,7 +36,7 @@ const iconLinksDataShape = {
 };
 
 Street.propTypes = {
-  streetName: React.PropTypes.string,
+  location: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
   topics: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
   iconLinksData: React.PropTypes.shape(iconLinksDataShape).isRequired, // eslint-disable-line react/forbid-prop-types
 };
@@ -65,12 +65,12 @@ Street.defaultProps = {
       'Maintenance',
     ],
     hrefs: [
-      'http://www.ashevillenc.gov',
-      'http://www.ashevillenc.gov',
-      'http://www.ashevillenc.gov',
-      'http://www.ashevillenc.gov',
-      'http://www.ashevillenc.gov',
-      'http://www.ashevillenc.gov',
+      '/locations/address/addressList?entity=street&id=1234&label=Montford Ave, 28801&type=addresses',
+      '/locations/address/addressList?entity=street&id=1234&label=Montford Ave, 28801&type=residentMailing',
+      '/locations/address/addressList?entity=street&id=1234&label=Montford Ave, 28801&type=ownerAddresses',
+      '/locations/address/addressList?entity=street&id=1234&label=Montford Ave, 28801&type=ownerMailing',
+      '/locations/property/properties?entity=street&id=1234&label=Montford Ave, 28801',
+      '/topics/maintenance?entity=street&id=1234&label=Montford Ave, 28801',
     ],
   },
 };

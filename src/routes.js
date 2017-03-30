@@ -14,9 +14,12 @@ import Search from './containers/search/Search';
 // Locations
 import Locations from './locations/Locations';
 import Address from './locations/address/Address';
+import AddressList from './locations/address/AddressList';
 import Property from './locations/property/Property';
+import Properties from './locations/property/Properties';
 import Street from './locations/street/Street';
 import Neighborhood from './locations/neighborhood/Neighborhood';
+import Owner from './locations/owner/Owner';
 // Topics
 import Topics from './topics/Topics';
 import DevelopmentSummary from './topics/development/summary/DevelopmentSummary';
@@ -25,6 +28,7 @@ import DevelopmentSLADashboard from './topics/development/sla_dashboard/SLADashb
 import CrimeSummary from './topics/crime/summary/CrimeSummary';
 import BudgetSummary from './topics/budget/summary/BudgetSummary';
 import CrimeDetail from './topics/crime/detail/CrimeDetail';
+import Maintenance from './topics/maintenance/Maintenance';
 
 const Routes = props => (
   <ApolloProvider store={props.store} client={client} >
@@ -35,10 +39,17 @@ const Routes = props => (
         <Route path="my-simplicity" component={MySimpliCity}></Route>
         <Route path="locations">
           <IndexRoute component={Locations} />
-          <Route path="address" component={Address}></Route>
-          <Route path="property" component={Property}></Route>
+          <Route path="address">
+            <IndexRoute component={Address} />
+            <Route path="addressList" component={AddressList}></Route>
+          </Route>
+          <Route path="property">
+            <IndexRoute component={Property} />
+            <Route path="properties" component={Properties}></Route>
+          </Route>
           <Route path="street" component={Street}></Route>
           <Route path="neighborhood" component={Neighborhood}></Route>
+          <Route path="owner" component={Owner}></Route>
         </Route>
         <Route path="topics">
           <IndexRoute component={Topics} />
@@ -53,6 +64,9 @@ const Routes = props => (
           </Route>
           <Route path="budget">
             <IndexRoute component={BudgetSummary} />
+          </Route>
+          <Route path="maintenance">
+            <IndexRoute component={Maintenance} />
           </Route>
         </Route>
       </Route>

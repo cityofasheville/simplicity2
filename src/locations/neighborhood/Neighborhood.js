@@ -61,10 +61,11 @@ Neighborhood.defaultProps = {
       'Property owner mailing addresses',
     ],
     hrefs: [
-      'http://www.ashevillenc.gov',
-      'http://www.ashevillenc.gov',
-      'http://www.ashevillenc.gov',
-      'http://www.ashevillenc.gov',
+      '/locations/address/addressList?entity=neighborhood&id=Montford&label=Montford&type=addresses',
+      '/locations/address/addressList?entity=neighborhood&id=Montford&label=Montford&type=residentMailing',
+      '/locations/address/addressList?entity=neighborhood&id=Montford&label=Montford&type=ownerAddresses',
+      '/locations/address/addressList?entity=neighborhood&id=Montford&label=Montford&type=ownerMailing',
+      '/locations/property/properties?entity=neighborhood&id=Montford&label=Montford',
     ],
   },
 };

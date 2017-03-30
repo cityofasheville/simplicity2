@@ -1,5 +1,10 @@
 import React from 'react';
 import MaintenanceList from './MaintenanceList';
+import EmailDownload from '../../components/EmailDownload';
+
+const testFunc = (props) => {
+  console.log(props);
+};
 
 const testMaintenanceData = [
   {
@@ -19,20 +24,22 @@ const testMaintenanceData = [
   },
 ];
 
-const renderHeader = (type, text) => {
-  switch (type) {
+const renderHeader = (query) => {
+  switch (query.entity) {
     case 'address':
       return (
         <div>
-          <h1><button className="btn btn-primary pull-right">Back</button>{text}</h1>
-          <h3>Maintenance at this address</h3>
+          <h1><button className="btn btn-primary pull-right">Back</button>{query.label}</h1>
+          <h3 style={{ display: 'inline' }}>Maintenance at this address</h3>
+          <EmailDownload emailFunction={testFunc} downloadFunction={testFunc} args={query} />
         </div>
       );
     case 'street':
       return (
         <div>
-          <h1><button className="btn btn-primary pull-right">Back</button>{text}</h1>
-          <h3>Maintenance along this street</h3>
+          <h1><button className="btn btn-primary pull-right">Back</button>{query.label}</h1>
+          <h3 style={{ display: 'inline' }}>Maintenance along this street</h3>
+          <EmailDownload emailFunction={testFunc} downloadFunction={testFunc} args={query} />
         </div>
       );
     default:
@@ -44,7 +51,7 @@ const Maintenance = props => (
   <div>
     <div className="row">
       <div className="col-sm-12">
-        {renderHeader(props.entity, props.searchText)}
+        {renderHeader(props.location.query)}
       </div>
     </div>
     <div className="row">
@@ -54,13 +61,12 @@ const Maintenance = props => (
 );
 
 Maintenance.propTypes = {
-  entity: React.PropTypes.string,
-  searchText: React.PropTypes.string,
+  location: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  label: React.PropTypes.string,
 };
 
 Maintenance.defaultProps = {
-  entity: 'street',
-  searchText: 'Montford Ave, 28801',
+  location: { entity: 'street', label: 'Montford Ave, 28801' },
 };
 
 export default Maintenance;

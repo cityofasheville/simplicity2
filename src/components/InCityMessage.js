@@ -11,8 +11,8 @@ const InCityMessage = props => (
     }
     {!props.inTheCity &&
       <span className={styles.notInCity}>
-        <i className="fa fa-ban"></i>
-        <span>It&apos;s not in the city</span>
+        <i className="fa fa-bullseye"></i>
+        <span>It&apos;s outside of the city</span>
       </span>
     }
   </span>

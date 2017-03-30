@@ -14,6 +14,7 @@ import Search from './containers/search/Search';
 // Locations
 import Locations from './locations/Locations';
 import Address from './locations/address/Address';
+import AddressList from './locations/address/AddressList';
 import Property from './locations/property/Property';
 import Properties from './locations/property/Properties';
 import Street from './locations/street/Street';
@@ -38,9 +39,14 @@ const Routes = props => (
         <Route path="my-simplicity" component={MySimpliCity}></Route>
         <Route path="locations">
           <IndexRoute component={Locations} />
-          <Route path="address" component={Address}></Route>
-          <Route path="property" component={Property}></Route>
-          <Route path="properties" component={Properties}></Route>
+          <Route path="address">
+            <IndexRoute component={Address} />
+            <Route path="addressList" component={AddressList}></Route>
+          </Route>
+          <Route path="property">
+            <IndexRoute component={Property} />
+            <Route path="properties" component={Properties}></Route>
+          </Route>
           <Route path="street" component={Street}></Route>
           <Route path="neighborhood" component={Neighborhood}></Route>
           <Route path="owner" component={Owner}></Route>

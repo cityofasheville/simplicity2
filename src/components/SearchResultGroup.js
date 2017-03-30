@@ -22,7 +22,6 @@ class SearchResultGroup extends React.Component {
     super(props);
     this.state = { resultsToShow: 3, numResults: props.results.length };
     this.show3More = this.show3More.bind(this);
-    console.log(this.state);
   }
 
   show3More() {

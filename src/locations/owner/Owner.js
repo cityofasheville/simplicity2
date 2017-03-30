@@ -1,5 +1,10 @@
 import React from 'react';
+import EmailDownload from '../../components/EmailDownload';
 import PropertyList from '../property/PropertyList';
+
+const testFunc = (props) => {
+  console.log(props);
+};
 
 const testPropertyData = [
   {
@@ -19,12 +24,19 @@ const Owner = props => (
     <div className="row">
       <div className="col-sm-12">
         <h1><button className="btn btn-primary pull-right">Back</button>{props.location.query.label}</h1>
-        <h3>About this owner's properties</h3>
+        <h3>About this owner&apos;s properties</h3>
       </div>
     </div>
     <div className="row">
-      <PropertyList listData={testPropertyData} />
+      <div className="col-sm-12">
+        <div className="btn-group pull-right">
+          <button className="btn btn-primary active">List view</button>
+          <button className="btn btn-primary">Map view</button>
+        </div>
+        <EmailDownload emailFunction={testFunc} downloadFunction={testFunc} args={props.location.query} />
+      </div>
     </div>
+    <PropertyList listData={testPropertyData} />
   </div>
 );
 

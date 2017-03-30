@@ -3,7 +3,7 @@ import PropertyListItem from './PropertyListItem';
 import styles from '../../topics/spatial_event_topic_list/spatialEventTopicListStyles.css';
 
 const PropertyList = props => (
-  <div className={['col-sm-12', styles.topicSummaryList].join(' ')}>
+  <div className={styles.topicSummaryList}>
     {props.listData.map((itemData, i) => (
       <PropertyListItem key={['property', i].join('_')} itemData={itemData} />
     ))}

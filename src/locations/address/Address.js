@@ -102,10 +102,8 @@ Address.defaultProps = {
       'Maintenance',
     ],
     hrefs: [
-      'http://registerofdeeds.buncombecounty.org/external/LandRecords/protected/SrchBookPage.aspx?bAutoSearch=true&bk=1118&pg=0239&idx=DEE',
-      'http://www.buncombetax.org/PropertyCard.aspx',
-      'http://registerofdeeds.buncombecounty.org/external/LandRecords/protected/SrchBookPage.aspx?bAutoSearch=true&bk=0132&pg=0154&idx=ALL',
-      'https://www.google.com/maps?daddr=35.5955276076747,-82.5484059079659',
+      '/locations/property/properties',
+      '/topics/maintenance?entity=address',
     ],
   },
 };

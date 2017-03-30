@@ -20,7 +20,7 @@ const Street = props => (
         <div className="row">
           {props.topics.map((topic, i) => (
             <div className="col-xs-6" key={['topic', i].join('_')}>
-              <TopicCard topic={topic} entity="street" id={props.location.query.id} />
+              <TopicCard topic={topic} entity="street" id={props.location.query.id} label={props.location.query.label} />
             </div>
           ))}
         </div>

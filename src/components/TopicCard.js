@@ -15,10 +15,8 @@ const getTopicIcon = (topic) => {
   }
 };
 
-// TODO: add the link parameters
 const TopicCard = props => (
- // <Link to={[['/topics', props.topic].join('/'), props.urlParams].join('?')}>
-  <Link to={{ pathname: ['/topics', props.topic].join('/'), query: { entity: props.entity, view: 'summary', id: props.id } }}>
+  <Link to={{ pathname: ['/topics', props.topic].join('/'), query: { entity: props.entity, view: 'summary', id: props.id, label: props.label } }}>
     <div className={styles.topicCard}>
       <i className={[['fa fa-', getTopicIcon(props.topic)].join(''), 'fa-5x text-primary text-center'].join(' ')}></i>
       <div className="text-primary text-center">{props.topic}</div>
@@ -30,12 +28,14 @@ TopicCard.propTypes = {
   topic: React.PropTypes.string,
   entity: React.PropTypes.string,
   id: React.PropTypes.string,
+  label: React.PropTypes.string,
 };
 
 TopicCard.defaultProps = {
   topic: 'CRIME',
   entity: 'city',
   id: '',
+  label: '',
 };
 
 export default TopicCard;

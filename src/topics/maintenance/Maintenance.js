@@ -54,15 +54,12 @@ const Maintenance = props => (
         {renderHeader(props.location.query)}
       </div>
     </div>
-    <div className="row">
-      <MaintenanceList listData={testMaintenanceData} />
-    </div>
+    <MaintenanceList listData={testMaintenanceData} />
   </div>
 );
 
 Maintenance.propTypes = {
   location: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  label: React.PropTypes.string,
 };
 
 Maintenance.defaultProps = {

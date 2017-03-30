@@ -9,7 +9,7 @@ const renderLabel = (spatialType) => {
     case 'street':
       return 'along';
     default:
-      return 'of';
+      return 'in';
   }
 };
 

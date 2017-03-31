@@ -1,6 +1,5 @@
 import React from 'react';
 import Select from '../../components/Select';
-import MultiSelect from '../../components/MultiSelect';
 import styles from './spatialEventTopicFilters.css';
 import SpatialEventTopicLocationInfo from './SpatialEventTopicLocationInfo';
 import SpatialEventTopicCategoryFilters from './SpatialEventTopicCategoryFilters';
@@ -32,7 +31,6 @@ const SpatialEventTopicFilters = props => (
           <div className="form-group">
             <label htmlFor="time" className="col-sm-2 control-label">during</label>
             <div className="col-sm-10">
-              <MultiSelect />
               <Select options={timeOptions} name="time" id="time" value="2" />
             </div>
           </div>

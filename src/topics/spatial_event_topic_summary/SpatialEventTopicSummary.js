@@ -39,7 +39,7 @@ const SpatialEventTopicSummary = props => (
       <div className="col-sm-12">
         <h1>
           <button className="btn btn-primary pull-right">Back</button>
-          {props.spatialEventTopic}
+          {props.spatialEventTopic.charAt(0).toUpperCase() + props.spatialEventTopic.slice(1)}
         </h1>
       </div>
     </div>
@@ -61,11 +61,11 @@ const SpatialEventTopicSummary = props => (
 
     <div className="row">
       <div id="summaryView" className="col-xs-12" style={{ height: '400px' }}>
-        <PieChart data={props.spatialEventTopic.toLowerCase() === 'crime' ? testPieCrimeData : testPieDevelopmentData} />
+        <PieChart data={props.spatialEventTopic === 'crime' ? testPieCrimeData : testPieDevelopmentData} />
       </div>
 
       <div id="listView" hidden>
-        <SpatialEventTopicList spatialEventTopic={props.spatialEventTopic} listData={props.spatialEventTopic.toLowerCase() === 'crime' ? testCrimeData : testPermitData} />
+        <SpatialEventTopicList spatialEventTopic={props.spatialEventTopic.toLowerCase()} listData={props.spatialEventTopic === 'crime' ? testCrimeData : testPermitData} />
       </div>
 
       <div id="mapView" className="col-xs-12" hidden>

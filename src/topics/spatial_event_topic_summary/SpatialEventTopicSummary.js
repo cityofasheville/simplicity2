@@ -36,10 +36,15 @@ const testPermitData = [
 const SpatialEventTopicSummary = props => (
   <div>
     <div className="row">
-      <h1 className="col-xs-6">{props.spatialEventTopic}</h1>
+      <div className="col-sm-12">
+        <h1>
+          <button className="btn btn-primary pull-right">Back</button>
+          {props.spatialEventTopic.charAt(0).toUpperCase() + props.spatialEventTopic.slice(1)}
+        </h1>
+      </div>
     </div>
 
-    <SpatialEventTopicFilters spatialEventTopic={props.spatialEventTopic} spatialType="address" spatialDescription="123 Main Street" />
+    <SpatialEventTopicFilters spatialEventTopic={props.spatialEventTopic} spatialType={props.query.entity} spatialDescription={props.query.label} />
 
     <div className="row">
       <div className="col-xs-12">
@@ -56,11 +61,11 @@ const SpatialEventTopicSummary = props => (
 
     <div className="row">
       <div id="summaryView" className="col-xs-12" style={{ height: '400px' }}>
-        <PieChart data={props.spatialEventTopic.toLowerCase() === 'crime' ? testPieCrimeData : testPieDevelopmentData} />
+        <PieChart data={props.spatialEventTopic === 'crime' ? testPieCrimeData : testPieDevelopmentData} />
       </div>
 
       <div id="listView" hidden>
-        <SpatialEventTopicList spatialEventTopic={props.spatialEventTopic} listData={props.spatialEventTopic.toLowerCase() === 'crime' ? testCrimeData : testPermitData} />
+        <SpatialEventTopicList spatialEventTopic={props.spatialEventTopic.toLowerCase()} listData={props.spatialEventTopic === 'crime' ? testCrimeData : testPermitData} />
       </div>
 
       <div id="mapView" className="col-xs-12" hidden>
@@ -72,6 +77,12 @@ const SpatialEventTopicSummary = props => (
 
 SpatialEventTopicSummary.propTypes = {
   spatialEventTopic: React.PropTypes.string.isRequired,
+  query: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
+};
+
+SpatialEventTopicSummary.defaultProps = {
+  spatialEventTopic: 'crime',
+  query: { entity: 'address', label: '123 Main street' },
 };
 
 export default SpatialEventTopicSummary;

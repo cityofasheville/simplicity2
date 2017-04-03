@@ -1,0 +1,79 @@
+.react-select-menu {
+  background-color: #fff;
+  border: 1px solid rgba(0,0,255,0.38);
+  padding-left: 0px;
+  div[role="option"] {
+    padding-left: 18px;
+  }
+  div[role="option"]:hover {
+    color: #fff;
+    background-color: #2196F3;
+  }
+  .isSelected {
+    color: red;
+  }
+}
+
+.multiSelect {
+  button {
+    width: 100%;
+    background: transparent;
+    border: none;
+    height: auto;
+    min-height: 42px;
+    text-align: left;
+    padding-left: 18px;
+  }
+  button:focus {
+    border: 1px solid #232436;
+    border-radius: 2px;
+  }
+  button:after {
+    content: '';
+    float: right;
+    margin-top: 16px;
+    margin-right: -32px;
+    border-top: 6px solid #7b8a8b;
+    border-left: 3px solid transparent;
+    border-right: 3px solid transparent;
+  }
+  &.form-control {
+    padding: 0;
+    height: auto;
+    margin-bottom: 10px;
+  }
+  &.form-control:last-of-type {
+    margin-bottom: 0px;
+  }
+  &.form-control:focus {
+    border: none;
+  }
+}
+
+.react-select-option__checkbox {
+  display: inline-block;
+}
+
+.react-select-option__label {
+  display: inline-block;
+}
+
+.selectedMultiOption {
+  display: inline-block;
+  background-color: #E3F2FD;
+  border: 1px solid #c2d7e7;
+  border-radius: 2px;
+  margin-right: 8px;
+  margin-top: 6px;
+  margin-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.multiSelectRefresh {
+  float: right;
+  margin-right:20px;
+  margin-top:10px;
+}

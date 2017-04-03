@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 import SearchResult from './SearchResult';
 import styles from './searchResultGroup.css';
 import stylesResult from './searchResult.css';
@@ -38,14 +39,14 @@ class SearchResultGroup extends React.Component {
         </h3>
         {renderSearchResults(this.props.results, this.props.icon, this.props.label, this.state.resultsToShow)}
         {this.state.resultsToShow < this.state.numResults &&
-          <a onClick={this.show3More} className={stylesResult.searchResult}>
+          <Link onClick={this.show3More} className={stylesResult.searchResult}>
             <div className="form-group">
               <div className={['form-control', stylesResult.searchResultDiv].join(' ')}>
                 More
                 <i className={['fa fa-chevron-down pull-right', styles.searchResultArrowIcon].join(' ')}></i>
               </div>
             </div>
-          </a>
+          </Link>
         }
       </div>
     );

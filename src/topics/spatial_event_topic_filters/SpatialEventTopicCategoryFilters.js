@@ -1,42 +1,82 @@
 import React from 'react';
+import MultiSelect from '../../components/MultiSelect';
 
-const getCategories = (spatialEventTopic) => {
+const crimeCategorySelects = [
+  {
+    options: [
+      { value: 'Aggravated assault', display: 'Aggravated assault' },
+      { value: 'Burglary', display: 'Burglary' },
+      { value: 'Larceny', display: 'Larceny' },
+      { value: 'Larceny of a Motor Vehicle', display: 'Larceny of a Motor Vehicle' },
+      { value: 'Robbery', display: 'Robbery' },
+      { value: 'Vandalism', display: 'Vandalism' },
+    ],
+    values: ['Aggravated assault', 'Burglary', 'Larceny', 'Larceny of a Motor Vehicle', 'Robbery', 'Vandalism'],
+    placeholder: 'All crimes',
+    id: 'crimes',
+    name: 'crimes',
+    allowNoneSelected: false,
+  },
+];
+
+const developmentCategorySelects = [
+  {
+    options: [
+      { value: 'Planning Level I', display: 'Planning Level I' },
+      { value: 'Planning Level II', display: 'Planning Level II' },
+    ],
+    values: ['Planning Level I', 'Planning Level II'],
+    placeholder: 'All planning levels',
+    id: 'development_planning_level',
+    name: 'development_planning_level',
+    allowNoneSelected: false,
+  },
+  {
+    options: [
+      { value: 'Commercial', display: 'Commercial' },
+      { value: 'Residential', display: 'Residential' },
+      { value: 'Historical', display: 'Historical' },
+    ],
+    values: ['Commercial', 'Residential', 'Historical'],
+    placeholder: 'All planning types',
+    id: 'development_types',
+    name: 'development_types',
+    allowNoneSelected: false,
+  },
+];
+
+const renderCategories = (spatialEventTopic) => {
   switch (spatialEventTopic) {
-    case 'Crime':
-      return ['Aggravated assault', 'Burglary', 'Larceny', 'Larceny of Motor Vehicle', 'Robbery', 'Vandalism'];
+    case 'crime':
+      return (
+        <div>
+          {
+            crimeCategorySelects.map((select, i) => (
+              <MultiSelect key={select.id === undefined ? i : select.id} options={select.options} values={select.values} placeholder={select.placeholder} allowNoneSelected={select.allowNoneSelected} id={select.id} name={select.name} />
+            ))
+          }
+        </div>
+      );
+    case 'development':
+      return (
+        <div>
+          {
+            developmentCategorySelects.map((select, i) => (
+              <MultiSelect key={select.id === undefined ? i : select.id} options={select.options} values={select.values} placeholder={select.placeholder} allowNoneSelected={select.allowNoneSelected} id={select.id} name={select.name} />
+            ))
+          }
+        </div>
+      );        
     default:
       return [];
   }
 };
 
-const renderCategories = (spatialEventTopic) => {
-  const categories = getCategories(spatialEventTopic);
-  return categories.map((category, i) => (
-    <div className="checkbox" key={i}>
-      <label htmlFor={category}><input type="checkbox" value={i} name={category} defaultChecked />{category}</label>
-    </div>
-  ));
-};
-
 const SpatialEventTopicCategoryFilters = props => (
-  <div className="row">
-    <label htmlFor="categoriesPanel" className="control-label col-sm-2">view</label>
+  <div className="form-group">
+    <label htmlFor="MultiSelects" className="col-sm-2 control-label">view</label>
     <div className="col-sm-10">
-      <div className="panel-group">
-        <div className="panel panel-default" name="categoriesPanel">
-          <div className="panel-heading">
-            <h4 className="panel-title">
-              <a data-toggle="collapse" href="#collapse1"> All crimes</a>
-              <i className="fa fa-chevron fa-fw pull-right" ></i>
-            </h4>
-          </div>
-          <div id="collapse1" className="panel-collapse collapse">
-            <div className="panel-body">
-              {renderCategories(props.spatialEventTopic)}
-            </div>
-          </div>
-        </div>
-      </div>
+      {renderCategories(props.spatialEventTopic.toLowerCase())}
     </div>
   </div>
 );

@@ -17,7 +17,7 @@ const Homepage = props => (
     <div className="row">
       {props.topics.map((topic, i) => (
         <div className="col-xs-4" key={['topic', i].join('_')}>
-          <TopicCard topic={topic} entity="city" />
+          <TopicCard topic={topic} entity="city" label="City of Asheville" />
         </div>
       ))}
     </div>

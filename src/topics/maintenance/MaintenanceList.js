@@ -3,7 +3,7 @@ import MaintenanceListItem from './MaintenanceListItem';
 import styles from '../../topics/spatial_event_topic_list/spatialEventTopicListStyles.css';
 
 const MaintenanceList = props => (
-  <div className={['col-sm-12', styles.topicSummaryList].join(' ')}>
+  <div className={styles.topicSummaryList}>
     {props.listData.map((itemData, i) => (
       <MaintenanceListItem key={['property', i].join('_')} itemData={itemData} />
     ))}

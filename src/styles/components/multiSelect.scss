@@ -30,9 +30,9 @@
   }
   button:after {
     content: '';
-    position: absolute;
-    top: 22px;
-    right: 23px;
+    float: right;
+    margin-top: 16px;
+    margin-right: -32px;
     border-top: 6px solid #7b8a8b;
     border-left: 3px solid transparent;
     border-right: 3px solid transparent;
@@ -40,6 +40,10 @@
   &.form-control {
     padding: 0;
     height: auto;
+    margin-bottom: 10px;
+  }
+  &.form-control:last-of-type {
+    margin-bottom: 0px;
   }
   &.form-control:focus {
     border: none;
@@ -69,7 +73,7 @@
 }
 
 .multiSelectRefresh {
-  position: absolute;
-  right: 40px;
-  top: 15px;
+  float: right;
+  margin-right:20px;
+  margin-top:10px;
 }

@@ -2,6 +2,8 @@ import React from 'react';
 import { Select, Trigger, OptionList, Option, utils } from 'selectly/lib/Selectly';
 const { getToggledValues } = utils;
 
+// inspired by http://codepen.io/souporserious/pen/vGRZQL
+
 const CheckboxOption = props => (
   <Option className="react-select-option" value={props.value}>
     <input

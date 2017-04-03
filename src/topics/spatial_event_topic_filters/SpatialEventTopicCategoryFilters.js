@@ -22,17 +22,25 @@ const crimeCategorySelects = [
 const developmentCategorySelects = [
   {
     options: [
-      { value: 'Aggravated assault', display: 'Residential' },
-      { value: 'Burglary', display: 'Burglary' },
-      { value: 'Larceny', display: 'Larceny' },
-      { value: 'Larceny of a Motor Vehicle', display: 'Larceny of a Motor Vehicle' },
-      { value: 'Robbery', display: 'Robbery' },
-      { value: 'Vandalism', display: 'Vandalism' },
+      { value: 'Planning Level I', display: 'Planning Level I' },
+      { value: 'Planning Level II', display: 'Planning Level II' },
     ],
-    values: ['Aggravated assault', 'Burglary', 'Larceny', 'Larceny of a Motor Vehicle', 'Robbery', 'Vandalism'],
-    placeholder: 'All crimes',
-    id: 'crimes',
-    name: 'crimes',
+    values: ['Planning Level I', 'Planning Level II'],
+    placeholder: 'All planning levels',
+    id: 'development_planning_level',
+    name: 'development_planning_level',
+    allowNoneSelected: false,
+  },
+  {
+    options: [
+      { value: 'Commercial', display: 'Commercial' },
+      { value: 'Residential', display: 'Residential' },
+      { value: 'Historical', display: 'Historical' },
+    ],
+    values: ['Commercial', 'Residential', 'Historical'],
+    placeholder: 'All planning types',
+    id: 'development_types',
+    name: 'development_types',
     allowNoneSelected: false,
   },
 ];
@@ -49,6 +57,16 @@ const renderCategories = (spatialEventTopic) => {
           }
         </div>
       );
+    case 'development':
+      return (
+        <div>
+          {
+            developmentCategorySelects.map((select, i) => (
+              <MultiSelect key={select.id === undefined ? i : select.id} options={select.options} values={select.values} placeholder={select.placeholder} allowNoneSelected={select.allowNoneSelected} id={select.id} name={select.name} />
+            ))
+          }
+        </div>
+      );        
     default:
       return [];
   }
@@ -56,9 +74,9 @@ const renderCategories = (spatialEventTopic) => {
 
 const SpatialEventTopicCategoryFilters = props => (
   <div className="form-group">
-    <label htmlFor="MultiSelects" className="col-sm-2 control-label">View</label>
+    <label htmlFor="MultiSelects" className="col-sm-2 control-label">view</label>
     <div className="col-sm-10">
-      {renderCategories(props.spatialEventTopic)}
+      {renderCategories(props.spatialEventTopic.toLowerCase())}
     </div>
   </div>
 );

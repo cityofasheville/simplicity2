@@ -43,6 +43,8 @@
   },
   "dependencies": {
     "apollo-client": "^0.5.25",
+    "d3-drag": "^1.0.4",
+    "d3-sankey": "^0.4.2",
     "firebase": "^3.6.4",
     "firebaseui": "^1.0.0",
     "graphql-tag": "^1.1.2",

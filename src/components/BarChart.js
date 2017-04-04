@@ -33,7 +33,7 @@ BarChart.propTypes = {
   data: React.PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   barDataKeys: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
   xAxisDataKey: React.PropTypes.string.isRequired,
-  tickFormatter: React.PropTypes.string,
+  tickFormatter: React.PropTypes.func,
   height: React.PropTypes.number,
   stacked: React.PropTypes.bool,
 };

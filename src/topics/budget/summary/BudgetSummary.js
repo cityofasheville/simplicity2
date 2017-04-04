@@ -2,6 +2,7 @@ import React from 'react';
 import Treemap from '../../../components/Treemap';
 import AreaChart from '../../../components/AreaChart';
 import BarChart from '../../../components/BarChart';
+import Sankey from '../../../components/Sankey';
 import DetailsTable from '../../../components/DetailsTable';
 import Select from '../../../components/Select';
 
@@ -232,6 +233,15 @@ const BudgetSummary = props => (
           Click a section of the treemap below to see more details
         </div>
         <Treemap data={data} diveDeeper={testFunc} />
+      </div>
+    </div>
+    <hr />
+    <div className="row">
+      <div className="col-sm-12">
+        <div className="text-muted lead">
+          Cash flow diagram
+        </div>
+        <Sankey />
       </div>
     </div>
   </div>

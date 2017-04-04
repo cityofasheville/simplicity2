@@ -16,7 +16,7 @@ const DetailsTable = (props) => {
       }
       <div className={['row'].join(' ')}>
         <div className="col-xs-12">
-          <div className={['form-group', styles.headerRow].join(' ')}>
+          <div className={['row', styles.headerRow].join(' ')}>
             {props.columns.map((columnData, i) => (
               <div key={['header', i].join('_')} className={[['col-xs-', colWidth].join(''), styles.columnHeader].join(' ')}>
                 {columnData.title}

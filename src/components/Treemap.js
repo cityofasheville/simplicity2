@@ -2,6 +2,7 @@ import React from 'react';
 import { ResponsiveContainer, Treemap as RechartsTreemap } from 'recharts';
 
 const COLORS = ['#9C27B0', '#03A9F4', '#FFC107', '#b71c1c', '#4CAF50', '#E91E63', '#9E9E9E'];
+const differenceCOLORS = ['#660000', '#006600'];
 
 const getDollars = (value) => {
   if (value > 1000000) {
@@ -12,8 +13,20 @@ const getDollars = (value) => {
   return ['$', value.toLocaleString()].join('');
 };
 
+const toHex = value => (
+  value.toString(16).length === 1 ? ['0', value.toString(16)].join('') : value.toString(16)
+);
+
+const getFill = (delta) => {
+  const fillBase = delta > 0 ? differenceCOLORS[0] : differenceCOLORS[1];
+  const r = delta >= 0 ? Math.ceil(parseInt(fillBase.substring(1, 3), 16) * Math.abs(delta * 2.55)) : fillBase.substring(1, 3);
+  const g = delta < 0 ? Math.ceil(parseInt(fillBase.substring(3, 5), 16) * Math.abs(delta * 2.55)) : fillBase.substring(3, 5);
+  const b = fillBase.substring(5, 7);
+  return ['#', delta > 0 ? toHex(r > 255 ? 255 : r) : r, delta < 0 ? toHex(g > 255 ? 255 : g) : g, b].join('');
+};
+
 const CustomTreemap = (props) => {
-  const { root, depth, x, y, width, height, index, colors, name, amount, diveDeeper } = props;
+  const { root, depth, x, y, width, height, index, colors, name, amount, delta, diveDeeper, differenceColors } = props;
 
   return (
     <g>
@@ -24,7 +37,7 @@ const CustomTreemap = (props) => {
         height={height}
         style={{
           cursor: 'pointer',
-          fill: depth < 2 ? colors[Math.floor((index / root.children.length) * 6)] : 'none',
+          fill: (depth < 2 && differenceColors) ? getFill(delta) : (depth < 2 ? colors[Math.floor(index % root.children.length)] : 'none'), // eslint-disable-line no-nested-ternary
           stroke: '#fff',
           strokeWidth: 2 / (depth + 1e-10),
           strokeOpacity: 1 / (depth + 1e-10),
@@ -75,9 +88,9 @@ const Treemap = props => (
         dataKey="size"
         ratio={4 / 3}
         stroke="#fff"
-        fill="#8884d8"
+        fill="#000"
         isAnimationActive={false}
-        content={<CustomTreemap colors={COLORS} diveDeeper={props.diveDeeper} />}
+        content={<CustomTreemap colors={COLORS} diveDeeper={props.diveDeeper} differenceColors={props.differenceColors} />}
       />
     </ResponsiveContainer>
   </div>
@@ -87,12 +100,14 @@ Treemap.propTypes = {
   height: React.PropTypes.number,
   data: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
   diveDeeper: React.PropTypes.func,
+  differenceColors: React.PropTypes.bool,
 };
 
 Treemap.defaultProps = {
   height: 450,
   data: [],
   diveDeeper: undefined,
+  differenceColors: false,
 };
 
 export default Treemap;

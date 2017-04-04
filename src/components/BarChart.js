@@ -11,17 +11,17 @@ const renderTitle = (title) => {
 };
 
 const BarChart = props => (
-  <div style={{ height: '100%' }}>
+  <div style={{ height: props.height }}>
     {renderTitle(props.chartTitle)}
     <ResponsiveContainer>
       <RechartsBarChart data={props.data}>
         <XAxis dataKey={props.xAxisDataKey} />
-        <YAxis />
+        <YAxis tickFormatter={props.tickFormatter !== undefined ? props.tickFormatter : null} />
         <CartesianGrid strokeDasharray="3 3" />
         <Tooltip />
         <Legend />
         {props.barDataKeys.map((barDataKey, i) => (
-          <Bar key={barDataKey} dataKey={barDataKey} fill={barColors[i % barColors.length]} />
+          <Bar key={barDataKey} dataKey={barDataKey} fill={barColors[i % barColors.length]} stackId={props.stacked ? 1 : i} />
         ))}
       </RechartsBarChart>
     </ResponsiveContainer>
@@ -33,6 +33,18 @@ BarChart.propTypes = {
   data: React.PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   barDataKeys: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
   xAxisDataKey: React.PropTypes.string.isRequired,
+  tickFormatter: React.PropTypes.string,
+  height: React.PropTypes.number,
+  stacked: React.PropTypes.bool,
+};
+
+BarChart.defaultProps = {
+  data: [],
+  barDataKeys: [],
+  xAxisDataKey: '',
+  tickFormater: null,
+  height: 450,
+  stacked: false,
 };
 
 export default BarChart;

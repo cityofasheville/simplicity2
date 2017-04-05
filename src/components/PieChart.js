@@ -22,22 +22,27 @@ const renderLegend = payload => (
 );
 
 const PieChart = props => (
-  <div style={{ height: '100%' }}>
+  <div style={{ height: props.height }}>
     {renderTitle(props.chartTitle)}
     <ResponsiveContainer>
       <RechartsPieChart>
         <Pie
           data={props.data}
-          cx={'35%'}
+          cx={'50%'}
           cy={'40%'}
-          label
+          label={props.label}
           outerRadius={'50%'}
           fill={'#9C27B0'}
         >
           {props.data.map((entry, index) => <Cell key={['cell', index].join('_')} fill={pieColors[index % pieColors.length]} />)}
         </Pie>
         <Tooltip />
-        <Legend verticalAlign={'bottom'} content={renderLegend(props.data)} className={styles.pieLegend} />
+        {props.defaultLegend &&
+          <Legend legentType="square" />
+        }
+        {!props.defaultLegend &&
+          <Legend verticalAlign={'bottom'} content={renderLegend(props.data)} className={styles.pieLegend} />
+        }
       </RechartsPieChart>
     </ResponsiveContainer>
   </div>
@@ -46,6 +51,16 @@ const PieChart = props => (
 PieChart.propTypes = {
   chartTitle: React.PropTypes.string,
   data: React.PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  height: React.PropTypes.number,
+  label: React.PropTypes.bool,
+  defaultLegend: React.PropTypes.bool,
+};
+
+PieChart.defaultProps = {
+  data: [],
+  height: 400,
+  label: true,
+  defaultLegend: false,
 };
 
 export default PieChart;

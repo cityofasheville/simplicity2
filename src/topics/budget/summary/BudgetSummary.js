@@ -1,10 +1,21 @@
 import React from 'react';
+import 'react-table/react-table.css';
 import Treemap from '../../../components/Treemap';
 import AreaChart from '../../../components/AreaChart';
 import BarChart from '../../../components/BarChart';
+import PieChart from '../../../components/PieChart';
 import Sankey from '../../../components/Sankey';
 import DetailsTable from '../../../components/DetailsTable';
+import SimpleReactTable from '../../../components/SimpleReactTable';
 import Select from '../../../components/Select';
+
+const pieData = [
+  { name: 'Salaries & wages', value: 61574371 },
+  { name: 'Operating costs', value: 46337004 },
+  { name: 'Fringe benefits', value: 24973691 },
+  { name: 'Capital outlay', value: 16463056 },
+  { name: 'Debt service', value: 12145694 },
+];
 
 const data = [
   {
@@ -221,6 +232,28 @@ const BudgetSummary = props => (
     <div className="row">
       <div className="col-sm-12">
         <div className="text-muted lead">
+          Click a piece of the Pie Chart to zoom to that budget category
+        </div>
+      </div>
+      <div className="col-sm-6">
+        <PieChart data={pieData} label={false} defaultLegend />
+      </div>
+      <div className="col-sm-6">
+        <div className="form-group">
+          <label htmlFor="years" className="control-label-inline">Details for</label>
+          <Select id={years.id} name={years.name} options={years.options} value={years.value} />
+        </div>
+        <div className="form-group" style={{ marginTop: '15px' }}>
+          <fieldset className="detailsFieldset">
+            <DetailsTable columns={detailsColumns} data={detailsData} />
+          </fieldset>
+        </div>
+      </div>
+    </div>
+    <hr />
+    <div className="row">
+      <div className="col-sm-12">
+        <div className="text-muted lead">
           Click a section of the treemap below to see more details
         </div>
         <Treemap data={data} diveDeeper={testFunc} differenceColors />
@@ -242,6 +275,14 @@ const BudgetSummary = props => (
           Cash flow diagram
         </div>
         <Sankey />
+      </div>
+    </div>
+    <div className="row">
+      <div className="col-sm-12">
+        <div className="text-muted lead">
+          Expandable Table (only first two rows work for this demo)
+        </div>
+        <SimpleReactTable />
       </div>
     </div>
   </div>

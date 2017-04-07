@@ -61,6 +61,14 @@ a {
   }
 }
 
+button a {
+  color: #fff;
+  &:hover,
+  &:focus {
+    color: #fff;
+    text-decoration: none;
+  }
+}
 
 // Figures
 //

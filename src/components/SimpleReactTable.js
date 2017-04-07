@@ -2,13 +2,18 @@ import React from 'react';
 import ReactTable from 'react-table';
 
 const dummyData = [
-  { serviceArea: 'Public Safety', Actual_2013_14: '$42,668,751', Actual_2014_15: '$45,564,007', Budget_2015_16: '$45,569,606', Proposed_2016_17: '$47,944,730', id: 0 },
-  { serviceArea: 'Environment & Transportation', Actual_2013_14: '$13,994,542', Actual_2014_15: '$15,077,898', Budget_2015_16: '$14,974,276', Proposed_2016_17: '$16,062,353', id: 1 },
-  { serviceArea: 'General Government', Actual_2013_14: '$12,847,324 ', Actual_2014_15: '$18,107,163', Budget_2015_16: '$16,156,931', Proposed_2016_17: '$19,406,449', id: 2 },
-  { serviceArea: 'Culture & Recreation', Actual_2013_14: '$9,596,690', Actual_2014_15: '$10,184,678', Budget_2015_16: '$10,955,585', Proposed_2016_17: '$11,334,452', id: 3 },
-  { serviceArea: 'Capital Pay-Go/Debt', Actual_2013_14: '$8,057,714', Actual_2014_15: '$9,138,02', Budget_2015_16: '$9,086,878', Proposed_2016_17: '$10,132,171', id: 4 },
-  { serviceArea: 'Community Development', Actual_2013_14: '$4,930,139', Actual_2014_15: '$4,682,745', Budget_2015_16: '$5,405,351', Proposed_2016_17: '5,822,511', id: 5 },
-  { serviceArea: 'Total General Fund', Actual_2013_14: '$92,095,160', Actual_2014_15: '$102,754,511', Budget_2015_16: '$103,148,627', Proposed_2016_17: '110,702,666', id: 6 },
+  { serviceArea: 'Police', Actual_2013_14: '$25,668,751', Actual_2014_15: '$25,564,007', Budget_2015_16: '$25,569,606', Proposed_2016_17: '$25,555,000', id: 0 },
+  { serviceArea: 'Fire', Actual_2013_14: '$21,994,542', Actual_2014_15: '$21,077,898', Budget_2015_16: '$21,974,276', Proposed_2016_17: '$21,944,000', id: 1 },
+  { serviceArea: 'Parks & Recreation', Actual_2013_14: '$12,847,324 ', Actual_2014_15: '$18,107,163', Budget_2015_16: '$16,156,931', Proposed_2016_17: '$19,406,449', id: 2 },
+  { serviceArea: 'Finance & Management', Actual_2013_14: '$9,596,690', Actual_2014_15: '$10,184,678', Budget_2015_16: '$10,955,585', Proposed_2016_17: '$11,334,452', id: 3 },
+  { serviceArea: 'Community & Economic Development', Actual_2013_14: '$8,057,714', Actual_2014_15: '$9,138,02', Budget_2015_16: '$9,086,878', Proposed_2016_17: '$10,132,171', id: 4 },
+  { serviceArea: 'Public Works', Actual_2013_14: '$4,930,139', Actual_2014_15: '$4,682,745', Budget_2015_16: '$5,405,351', Proposed_2016_17: '5,822,511', id: 5 },
+  { serviceArea: 'Capital Projects & Sustainability', Actual_2013_14: '$92,095,160', Actual_2014_15: '$102,754,511', Budget_2015_16: '$103,148,627', Proposed_2016_17: '110,702,666', id: 6 },
+  { serviceArea: 'Human Resources', Actual_2013_14: '$92,095,160', Actual_2014_15: '$102,754,511', Budget_2015_16: '$103,148,627', Proposed_2016_17: '110,702,666', id: 6 },
+  { serviceArea: 'City Attorney', Actual_2013_14: '$92,095,160', Actual_2014_15: '$102,754,511', Budget_2015_16: '$103,148,627', Proposed_2016_17: '110,702,666', id: 6 },
+  { serviceArea: 'Transportation', Actual_2013_14: '$92,095,160', Actual_2014_15: '$102,754,511', Budget_2015_16: '$103,148,627', Proposed_2016_17: '110,702,666', id: 6 },
+  { serviceArea: 'Planning & Urban Design', Actual_2013_14: '$92,095,160', Actual_2014_15: '$102,754,511', Budget_2015_16: '$103,148,627', Proposed_2016_17: '110,702,666', id: 6 },
+  { serviceArea: 'Development Services', Actual_2013_14: '$92,095,160', Actual_2014_15: '$102,754,511', Budget_2015_16: '$103,148,627', Proposed_2016_17: '110,702,666', id: 6 },
 ];
 
 const dummyData2 = [

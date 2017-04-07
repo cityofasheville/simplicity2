@@ -29,7 +29,7 @@ const DetailsTable = (props) => {
         <div key={i} className={['col-xs-', colWidth].join('')}>
           {props.data.map((dataValue, j) => (
             <div key={[i, j].join('_')} className={['form-group', styles.columnData].join(' ')}>
-              <div>
+              <div style={props.lastRowBold && j === props.data.length - 1 ? { fontWeight: 'bold' } : {}}>
                 {dataValue[columnData.name]}
               </div>
             </div>
@@ -47,6 +47,7 @@ DetailsTable.propTypes = {
   title: React.PropTypes.string,
   columns: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
   data: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
+  lastRowBold: React.PropTypes.bool,
 };
 
 DetailsTable.defaultProps = {
@@ -65,6 +66,7 @@ DetailsTable.defaultProps = {
     { value_type: 'Tax value', amount: '$0' },
     { value_type: 'Total market value', amount: '$827,500' },
   ],
+  lastRowBold: false,
 };
 
 export default DetailsTable;

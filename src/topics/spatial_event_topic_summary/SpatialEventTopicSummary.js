@@ -60,7 +60,7 @@ const SpatialEventTopicSummary = props => (
     </div>
 
     <div className="row">
-      <div id="summaryView" className="col-xs-12" style={{ height: '400px' }}>
+      <div id="summaryView" className="col-xs-12">
         <PieChart data={props.spatialEventTopic === 'crime' ? testPieCrimeData : testPieDevelopmentData} />
       </div>
 

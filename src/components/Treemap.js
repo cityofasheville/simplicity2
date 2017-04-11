@@ -79,7 +79,7 @@ const CustomTreemap = (props) => {
         height={height}
         style={{
           cursor: 'pointer',
-          fill: (depth < 2 && differenceColors) ? getFill(delta) : (depth < 2 ? colors[Math.floor(index % root.children.length)] : 'none'), // eslint-disable-line no-nested-ternary
+          fill: (depth < 2 && differenceColors) ? getFill(delta) : (depth < 2 ? COLORS[Math.floor(index % root.children.length)] : 'none'), // eslint-disable-line no-nested-ternary
           stroke: '#000',
           strokeWidth: 1 / (depth + 1e-10),
           strokeOpacity: 1 / (depth + 1e-10),
@@ -142,7 +142,7 @@ class Treemap extends React.Component {
   render() {
     return (
       <div style={{ height: this.props.height }} onClick={this.toggleLabels}>
-        <button className="button btn-success pull-right" id="toggleLabels" style={{ border: '0px', borderRadius: '3px' }}>{this.state.showingLabels === true ? 'Hide labels' : 'Show labels'}</button>
+        <button className="button btn-primary pull-right" id="toggleLabels" style={{ border: '0px', borderRadius: '3px' }}>{this.state.showingLabels === true ? 'Hide labels' : 'Show labels'}</button>
         <ResponsiveContainer>
           <RechartsTreemap
             data={this.props.data}

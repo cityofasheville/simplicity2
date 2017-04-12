@@ -47,27 +47,27 @@ const searchJSON = [
       {
         id: '24208',
         type: 'address',
-        label: '100 Main Street, 28804',
+        label: '64 MURDOCK AVE, 28801',
       },
       {
         id: '24209',
         type: 'address',
-        label: '50 Haywood Ave, 28801',
+        label: '41 DONNA DR, 28801',
       },
       {
         id: '24210',
         type: 'address',
-        label: '16 Wall St, 28801',
+        label: '44 MARLOWE DR, 28801',
       },
       {
-        id: '24211',
+        id: '83867',
         type: 'address',
-        label: '53 Clingman Ave, 28801',
+        label: '1 West ST, 28787',
       },
       {
         id: '24212',
         type: 'address',
-        label: '19 Lexington Ave, 28801',
+        label: '42 Edwin PL, 28801',
       },
     ],
   },

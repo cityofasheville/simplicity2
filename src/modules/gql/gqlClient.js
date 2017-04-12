@@ -1,7 +1,7 @@
 import ApolloClient, { createNetworkInterface } from 'apollo-client';
 
 
-const SERVER_URL = 'http://localhost:8080/graphql';
+const SERVER_URL = 'http://coa-api1.ashevillenc.gov:5001/graphql';
 
 const networkInterface = createNetworkInterface({ uri: SERVER_URL });
 

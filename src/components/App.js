@@ -4,10 +4,18 @@ import Navbar from './Navbar';
 
 import AuthProviderModal from '../modules/auth/authProviderModal';
 
+const displayNavbar = (hideNavbar) => {
+  if (hideNavbar !== 'true') {
+    return (<Navbar />);
+  }
+  return '';
+};
 
 const App = props => (
   <div className="">
-    <Navbar />
+    {
+      displayNavbar(props.location.query.hideNavbar) // eslint-disable-line react/prop-types
+    }
     <div className="container">
       { props.children }
     </div>

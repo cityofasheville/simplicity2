@@ -1,12 +1,14 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import SearchByEntity from './SearchByEntity';
+import { toggleSearchByEntity } from '../containers/searchByEntitiesActions';
 import styles from './searchByEntities.css';
 
 const SearchByEntities = props => (
   <ul className={styles.searchEntitiesUL}>
     {props.entities.map((entity, i) => (
       <li key={['entity', i].join('_')} className={entity.checked ? 'text-primary' : styles.unchecked}>
-        <SearchByEntity entity={entity} />
+        <SearchByEntity entity={entity} onClick={props.toggleEntity} />
       </li>
     ))}
   </ul>
@@ -19,6 +21,7 @@ const entityDataShape = {
 
 SearchByEntities.propTypes = {
   entities: React.PropTypes.arrayOf(React.PropTypes.shape(entityDataShape)),
+  toggleEntity: React.PropTypes.func,
 };
 
 SearchByEntities.defaultProps = {
@@ -32,4 +35,18 @@ SearchByEntities.defaultProps = {
   ],
 };
 
-export default SearchByEntities;
+const mapStateToProps = state => (
+  {
+    entities: state.searchByEntities.entities,
+  }
+);
+
+const mapDispatchToProps = dispatch => (
+  {
+    toggleEntity: entityType => (
+      dispatch(toggleSearchByEntity(entityType))
+    ),
+  }
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchByEntities);

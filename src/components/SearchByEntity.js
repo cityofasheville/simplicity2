@@ -1,5 +1,4 @@
 import React from 'react';
-import Checkbox from './Checkbox';
 import styles from './searchByEntities.css';
 
 const getIcon = (entityType) => {
@@ -21,36 +20,18 @@ const getIcon = (entityType) => {
   }
 };
 
-class SearchByEntity extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = { checked: props.entity.checked };
-    this.entity = props.entity;
-    this.reviseChecked = this.reviseChecked.bind(this);
-  }
-
-  reviseChecked(checkedState) {
-    this.setState({
-      checked: checkedState,
-    });
-  }
-
-  render() {
-    return (
-      <div>
-        <Checkbox label={this.entity.entityType} value={this.entity.entityType} checked={this.state.checked} onChangeCallback={this.reviseChecked} />
-        <span className="fa-stack fa-lg">
-          <i className={this.state.checked === true ? 'fa fa-circle fa-stack-2x text-primary' : ['fa fa-circle fa-stack-2x', styles.unchecked].join(' ')}></i>
-          <i className={['fa fa-stack-1x fa-inverse fa-', getIcon(this.entity.entityType)].join('')}></i>
-        </span>
-        <span className={this.state.checked === true ? ['text-primary', styles.entityDescription].join(' ') : styles.entityDescriptionUnchecked}>
-          {this.entity.entityType}
-        </span>
-      </div>
-    );
-  }
-}
+const SearchByEntity = props => (
+  <div onClick={() => props.onClick(props.entity.entityType)}>
+    <input type="checkbox" label={props.entity.entityType} value={props.entity.entityType} checked={props.entity.checked} readOnly />
+    <span className="fa-stack fa-lg">
+      <i className={props.entity.checked === true ? 'fa fa-circle fa-stack-2x text-primary' : ['fa fa-circle fa-stack-2x', styles.unchecked].join(' ')}></i>
+      <i className={['fa fa-stack-1x fa-inverse fa-', getIcon(props.entity.entityType)].join('')}></i>
+    </span>
+    <span className={props.entity.checked === true ? ['text-primary', styles.entityDescription].join(' ') : styles.entityDescriptionUnchecked}>
+      {props.entity.entityType}
+    </span>
+  </div>
+);
 
 const entityDataShape = {
   entityType: React.PropTypes.string,
@@ -59,6 +40,8 @@ const entityDataShape = {
 
 SearchByEntity.propTypes = {
   entity: React.PropTypes.shape(entityDataShape).isRequired,
+  onClick: React.PropTypes.func,
 };
 
 export default SearchByEntity;
+

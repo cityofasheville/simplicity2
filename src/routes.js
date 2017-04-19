@@ -30,13 +30,7 @@ import CrimeDetail from './topics/crime/detail/CrimeDetail';
 import Maintenance from './topics/maintenance/Maintenance';
 // Budget
 import BudgetSummary from './topics/budget/summary/BudgetSummary';
-import BudgetSummaryDetails from './topics/budget/summary/BudgetSummaryDetails';
-// for stand-alone budget iframings
-import BudgetDetailsTable from './topics/budget/summary/BudgetDetailsTable';
-import BudgetDetailsTreemap from './topics/budget/summary/BudgetDetailsTreemap';
-import SummaryUse from './topics/budget/summary/SummaryUse';
-import SummaryDepartments from './topics/budget/summary/SummaryDepartments';
-import SummaryCashFlow from './topics/budget/summary/SummaryCashFlow';
+import BudgetDetailsContainer from './containers/BudgetDetailsContainer';
 
 const Routes = props => (
   <ApolloProvider store={props.store} client={client} >
@@ -72,12 +66,12 @@ const Routes = props => (
           </Route>
           <Route path="budget">
             <IndexRoute component={BudgetSummary} />
-            <Route path="details" component={BudgetSummaryDetails}></Route>
-            <Route path="summaryUse" component={SummaryUse}></Route>
-            <Route path="summaryDepartments" component={SummaryDepartments}></Route>
-            <Route path="summaryCashFlow" component={SummaryCashFlow}></Route>
-            <Route path="detailsTreemap" component={BudgetDetailsTreemap}></Route>
-            <Route path="detailsTable" component={BudgetDetailsTable}></Route>
+            <Route path="details" component={BudgetDetailsContainer}></Route>
+            <Route path="summaryUse" component={BudgetDetailsContainer}></Route>
+            <Route path="summaryDepartments" component={BudgetDetailsContainer}></Route>
+            <Route path="summaryCashFlow" component={BudgetDetailsContainer}></Route>
+            <Route path="detailsTreemap" component={BudgetDetailsContainer}></Route>
+            <Route path="detailsTable" component={BudgetDetailsContainer}></Route>
           </Route>
           <Route path="maintenance">
             <IndexRoute component={Maintenance} />

@@ -34,7 +34,7 @@ const BudgetSummaryDetails = props => (
         </h1>
       </div>
     </div>
-    <BudgetDetailsTreemap diveDeeper={testFunc} categoryType="department" />
+    <BudgetDetailsTreemap categoryType="department" {...props} />
     <hr style={{ marginTop: '60px' }}></hr>
     <BudgetDetailsTable />
   </div>

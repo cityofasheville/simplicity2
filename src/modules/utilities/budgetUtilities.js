@@ -1,6 +1,6 @@
 import tree from 'data-tree';
 
-const last4Years = [
+const last4Yrs = [
   2015,
   2016,
   2017,
@@ -18,14 +18,34 @@ const levelNames = [
   'function_name',
   'department_name',
   'division_name',
-  'object_name',
+  'account_name',
 ];
 
-const printTree = (aTree) => {
-  aTree.traverser().traverseBFS(node => (
-    console.log(node.data())
-  ));
+const calculateDelta = (proposed, oneYearAgo) => {
+  if (proposed === 0) {
+    if (oneYearAgo > 0) {
+      return -1;
+    }
+    if (oneYearAgo < 0) {
+      return 1;
+    }
+    return 0;
+  }
+  if (oneYearAgo === 0) {
+    if (proposed > 0) {
+      return 1;
+    }
+    if (proposed < 0) {
+      return -1;
+    }
+    return 0;
+  }
+  return (proposed - oneYearAgo) / proposed;
 };
+
+const exportForDetails = aTree => (
+  aTree.export(data => (Object.assign({}, data, { delta: calculateDelta(data.proposed, data.oneYearAgo) })))
+);
 
 const searchChildrenForKey = (aKey, aTreeNode) => {
   const children = aTreeNode.childNodes();
@@ -37,40 +57,42 @@ const searchChildrenForKey = (aKey, aTreeNode) => {
   return null;
 };
 
-export const buildTrees = (data) => {
-  const expenseTree = tree.create();
-  const revenueTree = tree.create();
-  let theTree = revenueTree;
-  expenseTree.insert({ key: 'root' });
-  revenueTree.insert({ key: 'root' });
+export const buildTrees = (data, last4Years = last4Yrs) => {
+  const exTree = tree.create();
+  const revTree = tree.create();
+  let theTree = revTree;
+  exTree.insert({ key: 'root' });
+  revTree.insert({ key: 'root' });
   for (let i = 0; i < data.length; i += 1) {
     const yearIndex = last4Years.indexOf(data[i].year);
     if (yearIndex > -1) {
-      theTree = data[i].account_type === 'E' ? expenseTree : revenueTree;
+      theTree = data[i].account_type === 'E' ? exTree : revTree;
       let curNode = theTree.rootNode();
       let curParent = theTree.rootNode();
       for (let j = 0; j < levels.length; j += 1) {
         curNode = searchChildrenForKey(data[i][levels[j]], curParent);
-        let curPath = '';
+        let curPath = 'root';
         for (let k = 0; k <= j; k += 1) {
           curPath = [curPath, data[i][levels[k]]].join('-');
         }
-        curPath = curPath.slice(1);
         if (curNode === null) {
-          curNode = theTree.insertToNode(curParent, { key: data[i][levels[j]], path: curPath, [levels[j]]: data[i][levels[j]], [levelNames[j]]: data[i][levelNames[j]], threeYearsAgo: 0, twoYearsAgo: 0, oneYearAgo: 0, proposed: 0 });
+          curNode = theTree.insertToNode(curParent, { key: data[i][levels[j]], path: curPath, [levels[j]]: data[i][levels[j]], name: data[i][levelNames[j]], threeYearsAgo: 0, twoYearsAgo: 0, oneYearAgo: 0, proposed: 0, size: 0, amount: 0, account_type: data[i].account_type });
         }
         curParent = curNode;
         if (yearIndex === 3) {
-          curNode.data(Object.assign({}, curNode.data(), { proposed: curNode.data().proposed + data[i].budget }));
+          curNode.data(Object.assign({}, curNode.data(), { proposed: curNode.data().proposed + data[i].budget }, { size: curNode.data().size + data[i].budget }, { amount: curNode.data().amount + data[i].budget }));
         } else if (yearIndex === 2) {
-          curNode.data(Object.assign({}, curNode.data(), { oneYearAgo: curNode.data().oneYearAgo + (data[i].actual || data[i].budget) }));
+          curNode.data(Object.assign({}, curNode.data(), { oneYearAgo: curNode.data().oneYearAgo + data[i].actual })); // but until the last year is actually complete...need budget (?)
         } else if (yearIndex === 1) {
-          curNode.data(Object.assign({}, curNode.data(), { twoYearsAgo: curNode.data().twoYearsAgo + (data[i].actual || data[i].budget) }));
-        } else {
-          curNode.data(Object.assign({}, curNode.data(), { threeYearsAgo: curNode.data().threeYearsAgo + (data[i].actual || data[i].budget) }));
+          curNode.data(Object.assign({}, curNode.data(), { twoYearsAgo: curNode.data().twoYearsAgo + data[i].actual }));
+        } else if (yearIndex === 0) {
+          curNode.data(Object.assign({}, curNode.data(), { threeYearsAgo: curNode.data().threeYearsAgo + data[i].actual }));
         }
       }
     }
   }
-  printTree(expenseTree, revenueTree);
+  return {
+    expenseTree: exportForDetails(exTree),
+    revenueTree: exportForDetails(revTree),
+  };
 };

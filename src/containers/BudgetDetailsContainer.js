@@ -1,31 +1,32 @@
 import React from 'react';
 import { graphql } from 'react-apollo';
+import { connect } from 'react-redux';
 import gql from 'graphql-tag';
 import BudgetDetailsTable from '../topics/budget/summary/BudgetDetailsTable'
 import BudgetDetailsTreemap from '../topics/budget/summary/BudgetDetailsTreemap'
 import BudgetSummaryDetails from '../topics/budget/summary/BudgetSummaryDetails'
-import { buildTrees } from '../modules/utilities/budgetUtilities';
+import { buildBudgetTrees } from './budgetActions';
 
 const renderSubComponent = (props) => {
-  switch (props.location.pathName) {
+  switch (props.location.pathname) { // eslint-disable-line react/prop-types
     case '/topics/budget/detailsTreemap':
       return (<BudgetDetailsTreemap {...props} />);
     case '/topics/budget/detailsTable':
-      return (<BudgetDetailsTable {...props} />)
+      return (<BudgetDetailsTable {...props} />);
     default:
       return (<BudgetSummaryDetails {...props} />);
   }
 };
 
 const BudgetDetailsContainer = (props) => {
-  if (props.data.loading) {
+  if (props.data.loading) { // eslint-disable-line react/prop-types
     return <p>Loading...</p>;
   }
-  if (props.data.error) {
-    return <p>{props.data.error.message}</p>;
+  if (props.data.error) { // eslint-disable-line react/prop-types
+    return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
   }
 
-  buildTrees(props.data.gl_budget_history_plus_proposed);
+  props.buildBudgetTrees(props.data.gl_budget_history_plus_proposed); // eslint-disable-line react/prop-types
   return (
     <div>
       {renderSubComponent(props)}
@@ -37,29 +38,27 @@ const glBudgetHistoryPlusProposedQuery = gql`
   query glBudgetHistoryPlusPropsedQuery {
     gl_budget_history_plus_proposed {
         account_type,
-        fund_id,
         func_id,
         dept_id,
         div_id,
-        cost_id,
         obj_id,
-        org_id,
-        proj_id,
         function_name,
         department_name,
         division_name,
-        object_name,
-        organization_name,
         year,
         actual,
         budget,
-        fund_name,
-        costcenter_name,
-        is_proposed,
-        full_account_id,
         account_name,
     }
   }
 `;
 
-export default graphql(glBudgetHistoryPlusProposedQuery, {})(BudgetDetailsContainer);
+const BudgetDetailsContainerGQL = graphql(glBudgetHistoryPlusProposedQuery, {})(BudgetDetailsContainer);
+export default connect(
+  null,
+  dispatch => ({
+    buildBudgetTrees: queryData => (
+      dispatch(buildBudgetTrees(queryData))
+    ),
+  }),
+)(BudgetDetailsContainerGQL);

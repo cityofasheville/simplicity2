@@ -84,7 +84,7 @@ const CustomTreemap = (props) => {
           strokeWidth: 1 / (depth + 1e-10),
           strokeOpacity: 1 / (depth + 1e-10),
         }}
-        onClick={diveDeeper !== undefined ? () => diveDeeper(props) : null}
+        onClick={diveDeeper !== undefined && depth === 1 ? () => diveDeeper(props) : null}
       />
       {
         depth === 1 && showingLabels ?
@@ -163,6 +163,8 @@ Treemap.propTypes = {
   height: React.PropTypes.number,
   data: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
   showingLabels: React.PropTypes.bool,
+  differenceColors: React.PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
+  diveDeeper: React.PropTypes.func, // eslint-disable-line react/no-unused-prop-types
 };
 
 Treemap.defaultProps = {

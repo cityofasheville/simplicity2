@@ -56,11 +56,13 @@ const getFill = (delta) => {
   if (delta > 0) {
     h = 0;
     s = 100;
-    l = Math.ceil(Math.abs(delta) * 100) > 100 ? 50 : ((100 - (Math.abs(delta) * 100)) + 50) / 2;
+    l = Math.ceil(Math.abs(delta) * 100) > 100 ? 25 : (((100 - (Math.abs(delta) * 100)) * 75) / 100) + 25;
+    // l = Math.ceil(Math.abs(delta) * 100) > 100 ? 50 : ((100 - (Math.abs(delta) * 100)) + 50) / 2;
   } else if (delta < 0) {
     h = 240;
     s = 100;
-    l = Math.ceil(Math.abs(delta) * 100) > 100 ? 50 : ((100 - (Math.abs(delta) * 100)) + 50) / 2;
+    l = Math.ceil(Math.abs(delta) * 100) > 100 ? 25 : (((100 - (Math.abs(delta) * 100)) * 75) / 100) + 25;
+    // l = Math.ceil(Math.abs(delta) * 100) > 100 ? 50 : ((100 - (Math.abs(delta) * 100)) + 50) / 2;
   }
   const rgbArray = hsl2rgb(h, s, l);
   return ['rgb(', rgbArray[0], ',', rgbArray[1], ',', rgbArray[2], ')'].join('');
@@ -84,7 +86,7 @@ const CustomTreemap = (props) => {
           strokeWidth: 1 / (depth + 1e-10),
           strokeOpacity: 1 / (depth + 1e-10),
         }}
-        onClick={diveDeeper !== undefined ? () => diveDeeper(props) : null}
+        onClick={diveDeeper !== undefined && depth === 1 ? () => diveDeeper(props) : null}
       />
       {
         depth === 1 && showingLabels ?
@@ -142,7 +144,7 @@ class Treemap extends React.Component {
   render() {
     return (
       <div style={{ height: this.props.height }} onClick={this.toggleLabels}>
-        <button className="button btn-primary pull-right" id="toggleLabels" style={{ border: '0px', borderRadius: '3px' }}>{this.state.showingLabels === true ? 'Hide labels' : 'Show labels'}</button>
+        <button className="btn btn-primary btn-xs pull-right" id="toggleLabels">{this.state.showingLabels === true ? 'Hide labels' : 'Show labels'}</button>
         <ResponsiveContainer>
           <RechartsTreemap
             data={this.props.data}
@@ -163,6 +165,8 @@ Treemap.propTypes = {
   height: React.PropTypes.number,
   data: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
   showingLabels: React.PropTypes.bool,
+  differenceColors: React.PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
+  diveDeeper: React.PropTypes.func, // eslint-disable-line react/no-unused-prop-types
 };
 
 Treemap.defaultProps = {

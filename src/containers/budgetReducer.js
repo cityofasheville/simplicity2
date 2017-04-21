@@ -1,4 +1,4 @@
-import { BUILD_TREES, UPDATE_NODE_PATH } from './budgetConstants';
+import { BUILD_TREES } from './budgetConstants';
 import { buildTrees } from '../modules/utilities/budgetUtilities';
 
 const initialState = {

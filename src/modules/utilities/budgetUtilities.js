@@ -21,30 +21,34 @@ const levelNames = [
   'account_name',
 ];
 
-const calculateDelta = (proposed, oneYearAgo) => {
+const calculateDelta = (proposed, oneYearAgo, accountType) => {
+  let multiplier = 1; // so flip colors if revenue (unless that is going to be confusing...?)
+  if (accountType === 'R') {
+    multiplier = -1;
+  }
   if (proposed === 0) {
     if (oneYearAgo > 0) {
-      return -1;
+      return -1 * multiplier;
     }
     if (oneYearAgo < 0) {
-      return 1;
+      return 1 * multiplier;
     }
     return 0;
   }
   if (oneYearAgo === 0) {
     if (proposed > 0) {
-      return 1;
+      return 1 * multiplier;
     }
     if (proposed < 0) {
-      return -1;
+      return -1 * multiplier;
     }
     return 0;
   }
-  return (proposed - oneYearAgo) / proposed;
+  return ((proposed - oneYearAgo) / proposed) * multiplier;
 };
 
 const exportForDetails = aTree => (
-  aTree.export(data => (Object.assign({}, data, { delta: calculateDelta(data.proposed, data.oneYearAgo) })))
+  aTree.export(data => (Object.assign({}, data, { delta: calculateDelta(data.proposed, data.oneYearAgo, data.account_type) })))
 );
 
 const searchChildrenForKey = (aKey, aTreeNode) => {

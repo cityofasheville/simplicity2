@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { browserHistory } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import Treemap from '../../../components/Treemap';
 // import { updateNodePath } from '../../../containers/budgetActions';
 
@@ -79,30 +79,50 @@ const findTop = (data, path) => {
 };
 
 const BudgetDetailsTreemap = props => (
-  <div className="row">
-    <div className="col-sm-12">
-      <h3>Treemap of {props.expenditureOrRevenue}</h3>
-      <div style={{ marginBottom: '15px' }}>
-        {getExplanatoryText(props.categoryType)}<br />
-        Click a rectangle in the treemap to go to a deeper level
+  <div>
+    <div className="row">
+      <div className="col-sm-12">
+        <h3>
+          Treemap of {props.location.query.mode || 'expenditures'}
+        </h3>
       </div>
-      <div className="btn-group pull-left" style={{ marginBottom: '3px' }}>
-        <button className={getButtonClass(props.categoryType, 'use')}>Use</button>
-        <button className={getButtonClass(props.categoryType, 'department')}>Departments</button>
+    </div>
+    <div className="row">
+      <div className="col-sm-12">
+        <div style={{ marginBottom: '15px' }}>
+          {getExplanatoryText(props.categoryType)}<br />
+          Click a rectangle in the treemap to go to a deeper level
+        </div>
       </div>
-      <div className="btn-group pull-left" style={{ marginLeft: '3px' }}>
-        <button className="btn btn-primary btn-xs" onClick={props.jumpUp ? () => props.jumpUp(props) : null}><i className="fa fa-arrow-up"></i></button>
+    </div>
+    <div className="row">
+      <div className="col-sm-12">
+        <div className="btn-group pull-left">
+          <Link to={{ pathname: props.location.pathname, query: { entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, mode: 'expenditures', hideNavbar: props.location.query.hideNavbar } }}>
+            <button className={props.location.query.mode !== 'revenue' ? 'btn btn-primary btn-xs active' : 'btn btn-primary btn-xs'} style={{ borderTopRightRadius: '0px', borderBottomRightRadius: '0px' }}>Expenditures</button>
+          </Link>
+          <Link to={{ pathname: props.location.pathname, query: { entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, mode: 'revenue', hideNavbar: props.location.query.hideNavbar } }}>
+            <button className={props.location.query.mode === 'revenue' ? 'btn btn-primary btn-xs active' : 'btn btn-primary btn-xs'} style={{ borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px' }}>Revenue</button>
+          </Link>
+        </div>
+        <div className="btn-group pull-left" style={{ display: 'none' }} >
+          <button className={getButtonClass(props.categoryType, 'use')}>Use</button>
+          <button className={getButtonClass(props.categoryType, 'department')}>Departments</button>
+        </div>
+        <div className="btn-group pull-right" style={{ marginLeft: '3px', marginBottom: '3px' }}>
+          <button className="btn btn-primary btn-xs" onClick={props.jumpUp ? () => props.jumpUp(props) : null}><i className="fa fa-arrow-up"></i></button>
+        </div>
+        <Treemap data={props.location.query.mode === 'expenditures' || props.location.query.mode === undefined ? findTop(props.expenseTree, props.location.query.nodePath || 'root') : findTop(props.revenueTree, props.location.query.nodePath || 'root')} diveDeeper={props.diveDeeper} differenceColors history={browserHistory} location={props.location} />
       </div>
-      <Treemap data={props.location.query.mode === 'expenditures' ? findTop(props.expenseTree, props.location.query.nodePath || 'root') : findTop(props.revenueTree, props.location.query.nodePath || 'root')} diveDeeper={props.diveDeeper} differenceColors history={browserHistory} location={props.location} />
     </div>
   </div>
 );
 
 BudgetDetailsTreemap.propTypes = {
   categoryType: React.PropTypes.string,
-  expenditureOrRevenue: React.PropTypes.string,
   expenseTree: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
   revenueTree: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  location: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
   diveDeeper: React.PropTypes.func,
   jumpUp: React.PropTypes.func,
   // expensePath: React.PropTypes.string,
@@ -110,8 +130,7 @@ BudgetDetailsTreemap.propTypes = {
 };
 
 BudgetDetailsTreemap.defaultProps = {
-  categoryType: 'use',
-  expenditureOrRevenue: 'expenditures',
+  categoryType: 'department',
   expenseTree: { amount: 0, size: 0, name: 'no data', children: [] },
   revenueTree: { amount: 0, size: 0, name: 'no data', children: [] },
   diveDeeper: goDeeper,

@@ -54,14 +54,14 @@ const getFill = (delta) => {
   let s = 0;
   let l = 100;
   if (delta > 0) {
-    h = 0;
+    h = 300; // 0;
     s = 100;
-    l = Math.ceil(Math.abs(delta) * 100) > 100 ? 25 : (((100 - (Math.abs(delta) * 100)) * 75) / 100) + 25;
+    l = Math.ceil(Math.abs(delta) * 100) > 100 ? 45 : (((100 - (Math.abs(delta) * 100)) * 55) / 100) + 45;
     // l = Math.ceil(Math.abs(delta) * 100) > 100 ? 50 : ((100 - (Math.abs(delta) * 100)) + 50) / 2;
   } else if (delta < 0) {
-    h = 240;
+    h = 36; // 240;
     s = 100;
-    l = Math.ceil(Math.abs(delta) * 100) > 100 ? 25 : (((100 - (Math.abs(delta) * 100)) * 75) / 100) + 25;
+    l = Math.ceil(Math.abs(delta) * 100) > 100 ? 45 : (((100 - (Math.abs(delta) * 100)) * 55) / 100) + 45;
     // l = Math.ceil(Math.abs(delta) * 100) > 100 ? 50 : ((100 - (Math.abs(delta) * 100)) + 50) / 2;
   }
   const rgbArray = hsl2rgb(h, s, l);
@@ -71,25 +71,25 @@ const getFill = (delta) => {
 const CustomTreemap = (props) => {
   const { root, depth, x, y, width, height, index, colors, name, amount, delta, diveDeeper, differenceColors, showingLabels } = props;
 
-  return (
-    <g>
-      {depth === 1 && <title>{[name, getDollars(amount)].join(' ')}</title>}
-      <rect
-        x={x}
-        y={y}
-        width={width}
-        height={height}
-        style={{
-          cursor: 'pointer',
-          fill: (depth < 2 && differenceColors) ? getFill(delta) : (depth < 2 ? COLORS[Math.floor(index % root.children.length)] : 'none'), // eslint-disable-line no-nested-ternary
-          stroke: '#000',
-          strokeWidth: 1 / (depth + 1e-10),
-          strokeOpacity: 1 / (depth + 1e-10),
-        }}
-        onClick={diveDeeper !== undefined && depth === 1 ? () => diveDeeper(props) : null}
-      />
-      {
-        depth === 1 && showingLabels ?
+  if (depth === 1) {
+    return (
+      <g>
+        <title>{[name, getDollars(amount)].join(' ')}</title>
+        <rect
+          x={x}
+          y={y}
+          width={width}
+          height={height}
+          style={{
+            cursor: 'pointer',
+            fill: differenceColors ? getFill(delta) : COLORS[Math.floor(index % root.children.length)],
+            stroke: '#000',
+            strokeWidth: 1 / (depth + 1e-10),
+            strokeOpacity: 1 / (depth + 1e-10),
+          }}
+          onClick={diveDeeper !== undefined && depth === 1 ? () => diveDeeper(props) : null}
+        />
+        { showingLabels ?
           <foreignObject width={width} height={'20px'} x={x + 4} y={y + 2}>
             <span
               style={{ fontWeight: 'bold', fontSize: '14px', wordWrap: 'break-word', color: 'yellow', textShadow: '1px 1px 5px black' }}
@@ -104,9 +104,11 @@ const CustomTreemap = (props) => {
             </span>
           </foreignObject>
         : null
-      }
-    </g>
-  );
+        }
+      </g>
+    );
+  }
+  return null;
 };
 
 CustomTreemap.propTypes = {
@@ -149,7 +151,6 @@ class Treemap extends React.Component {
           <RechartsTreemap
             data={this.props.data}
             dataKey="size"
-            ratio={4 / 3}
             stroke="#fff"
             fill="#000"
             isAnimationActive={false}

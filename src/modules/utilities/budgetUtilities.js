@@ -21,35 +21,38 @@ const levelNames = [
   'account_name',
 ];
 
-const calculateDelta = (proposed, oneYearAgo, accountType) => {
-  let multiplier = 1; // so flip colors if revenue (unless that is going to be confusing...?)
-  if (accountType === 'R') {
-    multiplier = -1;
+const calculateDeltaPercent = (proposed, oneYearAgo) => {
+  if (oneYearAgo === 0 && proposed > 0) {
+    return 'n/a';
   }
-  if (proposed === 0) {
-    if (oneYearAgo > 0) {
-      return -1 * multiplier;
-    }
-    if (oneYearAgo < 0) {
-      return 1 * multiplier;
-    }
-    return 0;
+  if ((proposed > 0 && oneYearAgo < 0) || (proposed < 0 && oneYearAgo > 0)) {
+    return 'n/a';
   }
-  if (oneYearAgo === 0) {
-    if (proposed > 0) {
-      return 1 * multiplier;
-    }
-    if (proposed < 0) {
-      return -1 * multiplier;
-    }
-    return 0;
+  if (proposed === oneYearAgo) {
+    return '+/-0.00%';
   }
-  return ((proposed - oneYearAgo) / proposed) * multiplier;
+  const percentChange = proposed === 0 ? -1 : ((proposed - oneYearAgo) / proposed);
+  if (percentChange < 0) {
+    return [(percentChange * 100).toFixed(2), '%'].join('');
+  }
+  return ['+', (percentChange * 100).toFixed(2), '%'].join('');
 };
 
-const exportForDetails = aTree => (
-  aTree.export(data => (Object.assign({}, data, { delta: calculateDelta(data.proposed, data.oneYearAgo, data.account_type) })))
-);
+const convertDelta = (flattenedTree) => {
+  for (let i = 0; i < flattenedTree.children.length; i += 1) {
+    const maxDelta = Math.max.apply(Math, flattenedTree.children.map(child => Math.abs(child.delta))); // eslint-disable-line
+    let factor = maxDelta === 0 ? 0 : 1 / maxDelta;
+    factor = flattenedTree.children[i].account_type === 'R' ? factor * -1 : factor;
+    flattenedTree.children[i].delta *= factor; // eslint-disable-line no-param-reassign
+    convertDelta(flattenedTree.children[i]);
+  }
+};
+
+const exportForDetails = (aTree) => {
+  const flattened = aTree.export(data => (Object.assign({}, data, { delta: data.proposed - data.oneYearAgo }, { deltaPercent: calculateDeltaPercent(data.proposed, data.oneYearAgo) })));
+  convertDelta(flattened);
+  return flattened;
+};
 
 const searchChildrenForKey = (aKey, aTreeNode) => {
   const children = aTreeNode.childNodes();

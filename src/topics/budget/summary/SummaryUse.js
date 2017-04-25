@@ -1,32 +1,27 @@
 import React from 'react';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
+import { connect } from 'react-redux';
 import BudgetSummaryBarChart from './BudgetSummaryBarChart';
+import { buildSummaryUseData } from '../../../containers/budgetActions';
 
-const areaData = {
-  dataKeys: [
-    'Salaries & Wages',
-    'Operating Costs',
-    'Fringe Benefits',
-    'Capital Outlay',
-    'Debt Service',
-    'test1',
-    'test2',
-  ],
-  dataValues: [
-    { year: '2013', 'Salaries & Wages': 58000000, 'Operating Costs': 44000000, 'Fringe Benefits': 24000000, 'Capital Outlay': 16463056, 'Debt Service': 12145694 },
-    { year: '2014', 'Salaries & Wages': 59000000, 'Operating Costs': 44123456, 'Fringe Benefits': 23000000, 'Capital Outlay': 16463056, 'Debt Service': 12145694 },
-    { year: '2015', 'Salaries & Wages': 59312345, 'Operating Costs': 48000000, 'Fringe Benefits': 23412345, 'Capital Outlay': 14500000, 'Debt Service': 12145694 },
-    { year: '2016', 'Salaries & Wages': 60003234, 'Operating Costs': 42123456, 'Fringe Benefits': 27000000, 'Capital Outlay': 12000000, 'Debt Service': 12145694 },
-    { year: '2017', 'Salaries & Wages': 61574371, 'Operating Costs': 46337004, 'Fringe Benefits': 24973691, 'Capital Outlay': 16463056, 'Debt Service': 10145694, test1: 7000000, test2: 10000000 },
-  ],
-};
+const SummaryUse = (props) => {
+  if (props.data.loading) { // eslint-disable-line react/prop-types
+    return <p>Loading...</p>;
+  }
+  if (props.data.error) { // eslint-disable-line react/prop-types
+    return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
+  }
 
-const SummaryUse = props => (
-  <div className="row">
-    <div className="col-sm-12">
-      <BudgetSummaryBarChart categoryType={'use'} data={areaData} />
+  props.buildSummaryUseData(props.data.gl_budget_summary); // eslint-disable-line react/prop-types
+  return (
+    <div className="row">
+      <div className="col-sm-12">
+        <BudgetSummaryBarChart categoryType={'use'} {...props} />
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 SummaryUse.propTypes = {
   data: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
@@ -36,4 +31,24 @@ SummaryUse.defaultProps = {
   data: {},
 };
 
-export default SummaryUse;
+const glBudgetSummaryUseQuery = gql`
+  query glBudgetSummaryUseQuery {
+    gl_budget_summary(breakdown: "use", maxCategories: 5) {
+        account_type,
+        category_name,
+        total_budget,
+        total_actual,
+        year,
+    }
+  }
+`;
+
+const SummaryUseGQL = graphql(glBudgetSummaryUseQuery, {})(SummaryUse);
+export default connect(
+  null,
+  dispatch => ({
+    buildSummaryUseData: queryData => (
+      dispatch(buildSummaryUseData(queryData))
+    ),
+  }),
+)(SummaryUseGQL);

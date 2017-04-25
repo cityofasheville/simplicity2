@@ -2,18 +2,15 @@ import React from 'react';
 import { ResponsiveContainer, BarChart as RechartsBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
 const colorSchemes = [
+  ['#920000', '#924900', '#db6d00', '#24ff24', '#000000', '#ffb6db', '#004949', '#b66dff', '#006ddb', '#ff6db6'], // colorblind 'safe'
+  ['#490092', '#006ddb', '#b66dff', '#6db6ff', '#bgdbff', '#ff6db6', '#004949', '#924900', '#920000', '#db6d00'], // colorblind 'safe'
   ['#9C27B0', '#03A9F4', '#FFC107', '#4CAF50', '#E91E63', '#795548', '#9E9E9E'],
   ['#FF5722', '#CDDC39', '#009688', '#FF80AB', '#3F51B5', '#FFEE58', '#37474F'],
 ];
 
-const getDollars = (value) => {
-  if (value > 1000000) {
-    return ['$', (value / 1000000).toLocaleString(), ' M'].join('');
-  } else if (value > 1000) {
-    return ['$', (value / 1000).toLocaleString(), ' k'].join('');
-  }
-  return ['$', value.toLocaleString()].join('');
-};
+const getDollars = value => (
+  [value < 0 ? '-$' : '$', Math.abs(value).toLocaleString()].join('')
+);
 
 const getColorScheme = index => (
   index < colorSchemes.length && index >= 0 ? colorSchemes[index] : colorSchemes[0]
@@ -32,12 +29,12 @@ const BarChart = props => (
     <ResponsiveContainer>
       <RechartsBarChart data={props.data}>
         <XAxis dataKey={props.xAxisDataKey} />
-        <YAxis tickFormatter={props.tickFormatter !== undefined ? props.tickFormatter : null} />
+        <YAxis tickFormatter={props.tickFormatter !== undefined ? props.tickFormatter : null} domain={['dataMin', 'dataMax + 25000000']} />
         <CartesianGrid strokeDasharray="3 3" />
         <Tooltip formatter={props.dollars ? getDollars : null} />
         <Legend />
         {props.barDataKeys.map((barDataKey, i) => (
-          <Bar key={barDataKey} dataKey={barDataKey} fill={getColorScheme(props.colorScheme)[i % getColorScheme(props.colorScheme).length]} stackId={props.stacked ? 1 : i} />
+          <Bar key={barDataKey} dataKey={barDataKey} fill={getColorScheme(props.colorScheme)[i % getColorScheme(props.colorScheme).length]} stackId={props.stacked ? 1 : i} animationDuration={50} />
         ))}
       </RechartsBarChart>
     </ResponsiveContainer>

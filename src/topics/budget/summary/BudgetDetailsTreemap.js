@@ -141,8 +141,8 @@ BudgetDetailsTreemap.defaultProps = {
 
 const mapStateToProps = state => (
   {
-    expenseTree: state.budget.expenseTree,
-    revenueTree: state.budget.revenueTree,
+    expenseTree: state.budget.expenseTreeForTreemap,
+    revenueTree: state.budget.revenueTreeForTreemap,
     // expensePath: state.budget.expensePath,
     // revenuePath: state.budget.revenuePath,
   }

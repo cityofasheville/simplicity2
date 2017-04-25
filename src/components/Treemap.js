@@ -12,6 +12,10 @@ const getDollars = (value) => {
   return ['$', value.toLocaleString()].join('');
 };
 
+const getDollarsForTooltips = value => (
+  [value < 0 ? '-$' : '$', Math.abs(value).toLocaleString()].join('')
+);
+
 // http://www.codingforums.com/javascript-programming/11156-convert-hsl-rgb-using-js.html
 function hsl2rgb(h, sOrig, lOrig) {
   let m1;
@@ -54,15 +58,13 @@ const getFill = (delta) => {
   let s = 0;
   let l = 100;
   if (delta > 0) {
-    h = 300; // 0;
+    h = 300; // 240; // 0;
     s = 100;
     l = Math.ceil(Math.abs(delta) * 100) > 100 ? 45 : (((100 - (Math.abs(delta) * 100)) * 55) / 100) + 45;
-    // l = Math.ceil(Math.abs(delta) * 100) > 100 ? 50 : ((100 - (Math.abs(delta) * 100)) + 50) / 2;
   } else if (delta < 0) {
     h = 36; // 240;
     s = 100;
     l = Math.ceil(Math.abs(delta) * 100) > 100 ? 45 : (((100 - (Math.abs(delta) * 100)) * 55) / 100) + 45;
-    // l = Math.ceil(Math.abs(delta) * 100) > 100 ? 50 : ((100 - (Math.abs(delta) * 100)) + 50) / 2;
   }
   const rgbArray = hsl2rgb(h, s, l);
   return ['rgb(', rgbArray[0], ',', rgbArray[1], ',', rgbArray[2], ')'].join('');
@@ -74,7 +76,7 @@ const CustomTreemap = (props) => {
   if (depth === 1) {
     return (
       <g>
-        <title>{[name, getDollars(amount)].join(' ')}</title>
+        <title>{[name, getDollarsForTooltips(amount)].join(' ')}</title>
         <rect
           x={x}
           y={y}
@@ -154,6 +156,7 @@ class Treemap extends React.Component {
             stroke="#fff"
             fill="#000"
             isAnimationActive={false}
+            animationDuration={200}
             content={<CustomTreemap {...this.props} showingLabels={this.state.showingLabels} />}
           />
         </ResponsiveContainer>

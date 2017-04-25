@@ -7,6 +7,7 @@ const last4Yrs = [
   2018,
 ];
 
+// levels for use in the Treemap
 const levels = [
   'func_id',
   'dept_id',
@@ -14,6 +15,7 @@ const levels = [
   'obj_id',
 ];
 
+// level names for use in the Treemap
 const levelNames = [
   'function_name',
   'department_name',
@@ -21,36 +23,52 @@ const levelNames = [
   'account_name',
 ];
 
-const calculateDelta = (proposed, oneYearAgo, accountType) => {
-  let multiplier = 1; // so flip colors if revenue (unless that is going to be confusing...?)
-  if (accountType === 'R') {
-    multiplier = -1;
+// this function calculates the delta percent that will be shown in the details Table
+const calculateDeltaPercent = (proposed, oneYearAgo) => {
+  if (oneYearAgo === 0 && proposed > 0) {
+    return 'n/a';
   }
-  if (proposed === 0) {
-    if (oneYearAgo > 0) {
-      return -1 * multiplier;
-    }
-    if (oneYearAgo < 0) {
-      return 1 * multiplier;
-    }
-    return 0;
+  if ((proposed > 0 && oneYearAgo < 0) || (proposed < 0 && oneYearAgo > 0)) {
+    return 'n/a';
   }
-  if (oneYearAgo === 0) {
-    if (proposed > 0) {
-      return 1 * multiplier;
-    }
-    if (proposed < 0) {
-      return -1 * multiplier;
-    }
-    return 0;
+  if (proposed === oneYearAgo) {
+    return '0.00%';
   }
-  return ((proposed - oneYearAgo) / proposed) * multiplier;
+  const percentChange = proposed === 0 ? -1 : ((proposed - oneYearAgo) / proposed);
+  if (percentChange < 0) {
+    return [(percentChange * 100).toFixed(2), '%'].join('');
+  }
+  return ['+', (percentChange * 100).toFixed(2), '%'].join('');
 };
 
-const exportForDetails = aTree => (
-  aTree.export(data => (Object.assign({}, data, { delta: calculateDelta(data.proposed, data.oneYearAgo, data.account_type) })))
-);
+// this function generates a delta value between 0 and 1 based on the factor so that the
+// area that received the lion's share of the total increase/decrease at that level will
+// be colored accordingly
+const convertDelta = (flattenedTree) => {
+  for (let i = 0; i < flattenedTree.children.length; i += 1) {
+    const maxDelta = Math.max.apply(Math, flattenedTree.children.map(child => Math.abs(child.delta))); // eslint-disable-line
+    let factor = maxDelta === 0 ? 0 : 1 / maxDelta;
+    factor = flattenedTree.children[i].account_type === 'R' ? factor * -1 : factor;
+    flattenedTree.children[i].delta *= factor; // eslint-disable-line no-param-reassign
+    convertDelta(flattenedTree.children[i]);
+  }
+};
 
+// flatten the tree and export for use by the budget Treemap
+const exportForDetails = (aTree) => {
+  const flattened = aTree.export(data => (Object.assign({}, data, { delta: data.proposed - data.oneYearAgo }, { deltaPercent: calculateDeltaPercent(data.proposed, data.oneYearAgo) })));
+  convertDelta(flattened);
+  return flattened;
+};
+
+const removeZerosFromFlattened = (flattenedTree) => {
+  flattenedTree.children = flattenedTree.children.filter(child => (child.amount !== 0)); // eslint-disable-line no-param-reassign
+  for (let i = 0; i < flattenedTree.children.length; i += 1) {
+    removeZerosFromFlattened(flattenedTree.children[i]);
+  }
+};
+
+// helper function to build the tree for the Treemap
 const searchChildrenForKey = (aKey, aTreeNode) => {
   const children = aTreeNode.childNodes();
   for (let i = 0; i < children.length; i += 1) {
@@ -61,6 +79,7 @@ const searchChildrenForKey = (aKey, aTreeNode) => {
   return null;
 };
 
+// builds two trees, one for revenue and one for expense, based on the passed in data
 export const buildTrees = (data, last4Years = last4Yrs) => {
   const exTree = tree.create();
   const revTree = tree.create();
@@ -95,8 +114,96 @@ export const buildTrees = (data, last4Years = last4Yrs) => {
       }
     }
   }
+  const exTreeForTreemap = exportForDetails(exTree);
+  const revTreeForTreemap = exportForDetails(revTree);
+  removeZerosFromFlattened(exTreeForTreemap);
+  removeZerosFromFlattened(revTreeForTreemap);
   return {
     expenseTree: exportForDetails(exTree),
     revenueTree: exportForDetails(revTree),
+    expenseTreeForTreemap: exTreeForTreemap,
+    revenueTreeForTreemap: revTreeForTreemap,
   };
+};
+
+// helper function to create list of all potential summary keys found for summary data
+const createSummaryKeys = (data) => {
+  const keys = [];
+  let keyAlreadyPresent;
+  for (let i = 0; i < data.length; i += 1) {
+    if (data[i].account_type === 'E') { // only care about 'E' for now
+      keyAlreadyPresent = false;
+      for (let j = 0; j < keys.length; j += 1) {
+        if (keys[j] === data[i].category_name) {
+          keyAlreadyPresent = true;
+          break;
+        }
+      }
+      if (!keyAlreadyPresent) {
+        keys.push(data[i].category_name);
+      }
+    }
+  }
+  return keys;
+};
+
+// helper function to create list of all potential values for summary data
+const createSummaryValues = (data) => {
+  const values = [];
+  let yearAlreadyPresent;
+  for (let i = 0; i < data.length; i += 1) {
+    if (data[i].account_type === 'E') { // only care about 'E' for now
+      yearAlreadyPresent = false;
+      for (let j = 0; j < values.length; j += 1) {
+        if (values[j].year === data[i].year) {
+          values[j][data[i].category_name] = data[i].total_actual !== null ? data[i].total_actual : data[i].total_budget;
+          yearAlreadyPresent = true;
+          break;
+        }
+      }
+      if (!yearAlreadyPresent) {
+        values.push({ year: data[i].year, [data[i].category_name]: data[i].total_actual !== null ? data[i].total_actual : data[i].total_budget });
+      }
+    }
+  }
+  values.sort((a, b) => (
+    ((a.year < b.year) ? -1 : ((a.year > b.year) ? 1 : 0)) // eslint-disable-line
+  ));
+  return values;
+};
+
+// this function converts the results of the query into the form that the recharts barchart can handle
+// must have an object with dataKeys (list of string keys), and dataValues (object with one value for each key from dataKeys, and a year)
+export const buildSummaryData = (data) => {
+  const summaryData = { dataKeys: createSummaryKeys(data), dataValues: createSummaryValues(data) };
+  // const keysToOtherize = []; // keys not shared across all years must be moved to "Other" for barchart
+  // for (let i = 0; i < summaryData.dataKeys.length; i += 1) {
+  //   for (let j = 0; j < summaryData.dataValues.length; j += 1) {
+  //     if (!(summaryData.dataKeys[i] in summaryData.dataValues[j])) {
+  //       keysToOtherize.push(summaryData.dataKeys[i]);
+  //       break;
+  //     }
+  //   }
+  // }
+
+  // for (let i = 0; i < summaryData.dataValues.length; i += 1) {
+  //   for (let j = 0; j < keysToOtherize.length; j += 1) {
+  //     if (keysToOtherize[j] in summaryData.dataValues[i]) {
+  //       if ('Other' in summaryData.dataValues[i]) {
+  //         summaryData.dataValues[i].Other += summaryData.dataValues[i][keysToOtherize[j]];
+  //       } else {
+  //         summaryData.dataValues[i].Other = summaryData.dataValues[i][keysToOtherize[j]];
+  //       }
+  //       delete summaryData.dataValues[i][keysToOtherize[j]];
+  //     }
+  //   }
+  // }
+
+  // for (let i = 0; i < keysToOtherize.length; i += 1) {
+  //   const index = summaryData.dataKeys.indexOf(keysToOtherize[i]);
+  //   if (index > -1) {
+  //     summaryData.dataKeys.splice(index, 1);
+  //   }
+  // }
+  return summaryData;
 };

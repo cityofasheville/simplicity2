@@ -31,6 +31,8 @@ import Maintenance from './topics/maintenance/Maintenance';
 // Budget
 import BudgetSummary from './topics/budget/summary/BudgetSummary';
 import BudgetDetailsContainer from './containers/BudgetDetailsContainer';
+import SummaryDepartments from './topics/budget/summary/SummaryDepartments';
+import SummaryUse from './topics/budget/summary/SummaryUse';
 
 const Routes = props => (
   <ApolloProvider store={props.store} client={client} >
@@ -67,8 +69,8 @@ const Routes = props => (
           <Route path="budget">
             <IndexRoute component={BudgetSummary} />
             <Route path="details" component={BudgetDetailsContainer}></Route>
-            <Route path="summaryUse" component={BudgetDetailsContainer}></Route>
-            <Route path="summaryDepartments" component={BudgetDetailsContainer}></Route>
+            <Route path="summaryUse" component={SummaryUse}></Route>
+            <Route path="summaryDepartments" component={SummaryDepartments}></Route>
             <Route path="summaryCashFlow" component={BudgetDetailsContainer}></Route>
             <Route path="detailsTreemap" component={BudgetDetailsContainer}></Route>
             <Route path="detailsTable" component={BudgetDetailsContainer}></Route>

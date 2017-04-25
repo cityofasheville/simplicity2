@@ -11,19 +11,14 @@ const last4Years = [
 ];
 
 const getDollars = (value) => {
-  if (value > 1000000) {
-    return ['$', (value / 1000000).toLocaleString(), ' M'].join('');
-  } else if (value > 1000) {
-    return ['$', (value / 1000).toLocaleString(), ' k'].join('');
-  }
-  return ['$', value.toLocaleString()].join('');
-};
-
-const getPercent = (value) => {
-  if (value < 0) {
-    return [(value * 100).toFixed(2), '%'].join('');
-  }
-  return ['+', (value * 100).toFixed(2), '%'].join('');
+  const initialSymbols = value < 0 ? '-$' : '$';
+  return [initialSymbols, Math.abs(value).toLocaleString()].join('');
+  // if (value > 1000000) {
+  //   return [initialSymbols, (Math.abs(value) / 1000000).toLocaleString(), ' M'].join('');
+  // } else if (value > 1000) {
+  //   return [initialSymbols, (Math.abs(value) / 1000).toLocaleString(), ' k'].join('');
+  // }
+  // return [initialSymbols, (Math.abs(value)).toLocaleString()].join('');
 };
 
 const getDataColumns = (level) => {
@@ -52,27 +47,31 @@ const getDataColumns = (level) => {
       accessor: 'threeYearsAgo',
       render: props => getDollars(props.value),
       minWidth: 60,
+      style: { textAlign: 'right' },
     }, {
       header: last4Years[1],
       accessor: 'twoYearsAgo',
       render: props => getDollars(props.value),
       minWidth: 60,
+      style: { textAlign: 'right' },
     }, {
       header: last4Years[2],
       accessor: 'oneYearAgo',
       render: props => getDollars(props.value),
       minWidth: 60,
+      style: { textAlign: 'right' },
     }, {
-      header: last4Years[2],
+      header: last4Years[3],
       accessor: 'proposed',
       render: props => getDollars(props.value),
       minWidth: 60,
+      style: { textAlign: 'right' },
     },
     {
       header: 'Change from past year',
-      accessor: 'delta',
-      render: props => getPercent(props.value),
+      accessor: 'deltaPercent',
       minWidth: 70,
+      style: { textAlign: 'right' },
     },
   ];
   return dataColumns;

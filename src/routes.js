@@ -37,7 +37,7 @@ import SummaryUse from './topics/budget/summary/SummaryUse';
 const Routes = props => (
   <ApolloProvider store={props.store} client={client} >
     <Router history={browserHistory}>
-      <Route path={process.env.NODE_ENV === 'production' ? '/simplicity2/' : '/'} component={App}>
+      <Route path="/" component={App}>
         <IndexRoute component={Home} />
         <Route path="search" component={Search}></Route>
         <Route path="my-simplicity" component={MySimpliCity}></Route>

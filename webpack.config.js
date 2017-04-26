@@ -9,7 +9,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, 'docs'),
     filename: '[name].bundle.js',
-    publicPath: '/',
+    publicPath: '/simplicity2/',
   },
   module: {
     loaders: [
@@ -44,9 +44,9 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, 'src', 'index.html')
+      template: path.join(__dirname, 'src', 'index.html'),
     }),
-    new ExtractTextPlugin('boostrap.css'),
+    new ExtractTextPlugin('bootstrap.css'),
   ],
 };
 

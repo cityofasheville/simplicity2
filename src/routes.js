@@ -1,6 +1,6 @@
 import React from 'react';
 // import { Provider } from 'react-redux';
-import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 import { ApolloProvider } from 'react-apollo';
 
 // GraphQL Client
@@ -36,7 +36,7 @@ import SummaryUse from './topics/budget/summary/SummaryUse';
 
 const Routes = props => (
   <ApolloProvider store={props.store} client={client} >
-    <Router history={browserHistory}>
+    <Router history={hashHistory}>
       <Route path="/" component={App}>
         <IndexRoute component={Home} />
         <Route path="search" component={Search}></Route>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link, browserHistory } from 'react-router';
+import { Link, hashHistory } from 'react-router';
 import Treemap from '../../../components/Treemap';
 // import { updateNodePath } from '../../../containers/budgetActions';
 
@@ -56,7 +56,7 @@ const goUp = (props) => {
     curNodePathInfo = curNodePathInfo.slice(0, curNodePathInfo.length - 1).join('-');
     newURL = [newURL, 'nodePath=', curNodePathInfo].join('');
   }
-  browserHistory.push(newURL);
+  hashHistory.push(newURL);
 };
 
 const findTop = (data, path) => {
@@ -112,7 +112,7 @@ const BudgetDetailsTreemap = props => (
         <div className="btn-group pull-right" style={{ marginLeft: '3px', marginBottom: '3px' }}>
           <button className="btn btn-primary btn-xs" onClick={props.jumpUp ? () => props.jumpUp(props) : null}><i className="fa fa-arrow-up"></i></button>
         </div>
-        <Treemap data={props.location.query.mode === 'expenditures' || props.location.query.mode === undefined ? findTop(props.expenseTree, props.location.query.nodePath || 'root') : findTop(props.revenueTree, props.location.query.nodePath || 'root')} diveDeeper={props.diveDeeper} differenceColors history={browserHistory} location={props.location} />
+        <Treemap data={props.location.query.mode === 'expenditures' || props.location.query.mode === undefined ? findTop(props.expenseTree, props.location.query.nodePath || 'root') : findTop(props.revenueTree, props.location.query.nodePath || 'root')} diveDeeper={props.diveDeeper} differenceColors history={hashHistory} location={props.location} />
       </div>
     </div>
   </div>

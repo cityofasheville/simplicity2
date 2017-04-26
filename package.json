@@ -6,7 +6,7 @@
   "scripts": {
     "start": "webpack-dev-server --port 3000 --content-base docs/ --history-api-fallback",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --optimize-minimize --config webpack.config.js --define process.env.NODE_ENV='production'"
+    "build": "webpack --optimize-minimize --config webpack.config.js"
   },
   "repository": {
     "type": "git",

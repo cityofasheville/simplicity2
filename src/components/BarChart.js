@@ -2,8 +2,8 @@ import React from 'react';
 import { ResponsiveContainer, BarChart as RechartsBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
 const colorSchemes = [
-  ['#920000', '#924900', '#db6d00', '#24ff24', '#000000', '#ffb6db', '#004949', '#b66dff', '#006ddb', '#ff6db6'], // colorblind 'safe'
-  ['#490092', '#006ddb', '#b66dff', '#6db6ff', '#bgdbff', '#ff6db6', '#004949', '#924900', '#920000', '#db6d00'], // colorblind 'safe'
+  ['#920000', '#DB6D00', '#24FF24', '#924900', '#B6DBFF', '#006DDB', '#6DB6FF', '#B66DFF', '#490092', '#004949', '#FF6DB6', '#009292', '#FFBDDB', '#000000'], // colorblind 'safe'
+  ['#000000', '#FFBDDB', '#009292', '#FF6DB6', '#004949', '#490092', '#B66DFF', '#6DB6FF', '#006DDB', '#B6DBFF', '#924900', '#24FF24', '#DB6D00', '#920000'], // colorblind 'safe'
   ['#9C27B0', '#03A9F4', '#FFC107', '#4CAF50', '#E91E63', '#795548', '#9E9E9E'],
   ['#FF5722', '#CDDC39', '#009688', '#FF80AB', '#3F51B5', '#FFEE58', '#37474F'],
 ];

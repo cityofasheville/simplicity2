@@ -2,7 +2,7 @@ import React from 'react';
 import { ResponsiveContainer, PieChart as RechartsPieChart, Pie, Tooltip, Legend, Cell } from 'recharts';
 import styles from './pieChartStyles.css';
 
-const pieColors = ['#9C27B0', '#03A9F4', '#FFC107', '#4CAF50', '#E91E63', '#795548', '#9E9E9E'];
+const pieColors = ['#490092', '#FFBDDB', '#009292', '#FF6DB6', '#004949', '#B66DFF', '#6DB6FF', '#000000', '#006DDB', '#B6DBFF', '#924900', '#24FF24', '#DB6D00', '#920000']; // colorblind 'safe'
 
 const renderTitle = (title) => {
   if (title === undefined) {

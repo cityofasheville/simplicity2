@@ -1,14 +1,15 @@
 import React from 'react';
+import { Link } from 'react-router';
 import styles from './detailsIconLinkFormGroup.css';
 
 const DetailsIconLinkFormGroup = props => (
   <div>
-    <a href={props.href} title={props.title}>
+    <Link to={props.href} title={props.title}>
       <div className={['form-group', styles.detailsIconLinkFormGroup].join(' ')}>
         <i className={['fa fa-', props.icon].join('')}></i>
         <div className={styles.labelClass}>{props.label}</div>
       </div>
-    </a>
+    </Link>
   </div>
 );
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
+import 'babel-polyfill';
 import { initAuth } from './modules/auth/';
 
 // Import Redux Store

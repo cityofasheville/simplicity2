@@ -43,7 +43,8 @@
     "webpack-dev-server": "^1.16.2"
   },
   "dependencies": {
-    "apollo-client": "^0.5.25",
+    "apollo-client": "^1.1.1",
+    "babel-polyfill": "^6.23.0",
     "d3-drag": "^1.0.4",
     "d3-sankey": "^0.4.2",
     "data-tree": "^1.2.4",
@@ -51,7 +52,7 @@
     "firebaseui": "^1.0.0",
     "graphql-tag": "^1.1.2",
     "react": "^15.4.1",
-    "react-apollo": "^0.7.2",
+    "react-apollo": "^1.1.2",
     "react-dom": "^15.4.1",
     "react-redux": "^5.0.1",
     "react-router": "^3.0.0",

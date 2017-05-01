@@ -1,10 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { Link, hashHistory } from 'react-router';
 import styles from './detailsIconLinkFormGroup.css';
+
+const redirectToHref = href => (
+  hashHistory.push(href)
+);
 
 const DetailsIconLinkFormGroup = props => (
   <div>
-    <Link to={props.href} title={props.title}>
+    <Link onClick={() => (redirectToHref(props.href))} title={props.title}>
       <div className={['form-group', styles.detailsIconLinkFormGroup].join(' ')}>
         <i className={['fa fa-', props.icon].join('')}></i>
         <div className={styles.labelClass}>{props.label}</div>

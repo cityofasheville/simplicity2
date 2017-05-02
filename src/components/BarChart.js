@@ -46,7 +46,7 @@ const BarChart = props => (
           <Bar key={barDataKey} dataKey={barDataKey} fill={getColorScheme(props.colorScheme)[i % getColorScheme(props.colorScheme).length]} stackId={props.stacked ? 1 : i} animationDuration={50} />
         ))}
         {props.referenceArea &&
-          <XAxis type="number" xAxisId={1} domain={[0, 1000]} dataKey={props.xAxisDataKey2} hide />
+          <XAxis type="number" xAxisId={1} domain={[0, 1000]} dataKey={props.xReferenceAxisDataKey} hide />
         }
         {props.referenceArea && props.referenceAreaLabels.map((text, i) => (
           <ReferenceArea key={['referenceArea', i].join('_')} xAxisId={1} x1={i === 0 ? 0 : props.referenceAreaExes[i - 1]} x2={props.referenceAreaExes[i] || ((i * 250) - 250)} stroke="black" fill={referenceColorScheme[i % referenceColorScheme.length]} strokeOpacity={0.3} label={<CustomizedLabel text={text} />} />
@@ -65,11 +65,11 @@ BarChart.propTypes = {
   yTickFormatter: React.PropTypes.func,
   xTickFormatter: React.PropTypes.func,
   height: React.PropTypes.number,
-  stacked: React.PropTypes.bool,
+  stacked: React.PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
   dollars: React.PropTypes.bool,
   colorScheme: React.PropTypes.number, // eslint-disable-line react/no-unused-prop-types
   referenceArea: React.PropTypes.bool,
-  referenceLabels: React.PropTypes.arrayOf(React.PropTypes.string),
+  referenceAreaLabels: React.PropTypes.arrayOf(React.PropTypes.string),
   referenceAreaExes: React.PropTypes.arrayOf(React.PropTypes.number),
 };
 
@@ -85,7 +85,7 @@ BarChart.defaultProps = {
   dollars: false,
   colorScheme: 0,
   referenceArea: false,
-  referenceLabels: [],
+  referenceAreaLabels: [],
   referenceAreaExes: [],
 };
 

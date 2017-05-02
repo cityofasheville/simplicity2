@@ -52,6 +52,7 @@ const BudgetSummaryBarChart = props => (
 BudgetSummaryBarChart.propTypes = {
   categoryType: React.PropTypes.string,
   colorScheme: React.PropTypes.number,
+  summaryData: React.PropTypes.object, // eslint-disable-line
 };
 
 BudgetSummaryBarChart.defaultProps = {

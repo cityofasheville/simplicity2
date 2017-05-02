@@ -177,34 +177,5 @@ const createSummaryValues = (data) => {
 // must have an object with dataKeys (list of string keys), and dataValues (object with one value for each key from dataKeys, and a year)
 export const buildSummaryData = (data) => {
   const summaryData = { dataKeys: createSummaryKeys(data), dataValues: createSummaryValues(data) };
-  // const keysToOtherize = []; // keys not shared across all years must be moved to "Other" for barchart
-  // for (let i = 0; i < summaryData.dataKeys.length; i += 1) {
-  //   for (let j = 0; j < summaryData.dataValues.length; j += 1) {
-  //     if (!(summaryData.dataKeys[i] in summaryData.dataValues[j])) {
-  //       keysToOtherize.push(summaryData.dataKeys[i]);
-  //       break;
-  //     }
-  //   }
-  // }
-
-  // for (let i = 0; i < summaryData.dataValues.length; i += 1) {
-  //   for (let j = 0; j < keysToOtherize.length; j += 1) {
-  //     if (keysToOtherize[j] in summaryData.dataValues[i]) {
-  //       if ('Other' in summaryData.dataValues[i]) {
-  //         summaryData.dataValues[i].Other += summaryData.dataValues[i][keysToOtherize[j]];
-  //       } else {
-  //         summaryData.dataValues[i].Other = summaryData.dataValues[i][keysToOtherize[j]];
-  //       }
-  //       delete summaryData.dataValues[i][keysToOtherize[j]];
-  //     }
-  //   }
-  // }
-
-  // for (let i = 0; i < keysToOtherize.length; i += 1) {
-  //   const index = summaryData.dataKeys.indexOf(keysToOtherize[i]);
-  //   if (index > -1) {
-  //     summaryData.dataKeys.splice(index, 1);
-  //   }
-  // }
   return summaryData;
 };

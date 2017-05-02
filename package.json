@@ -48,6 +48,7 @@
     "d3-drag": "^1.0.4",
     "d3-sankey": "^0.4.2",
     "data-tree": "^1.2.4",
+    "detect-browser": "^1.7.0",
     "firebase": "^3.6.4",
     "firebaseui": "^1.0.0",
     "graphql-tag": "^1.1.2",

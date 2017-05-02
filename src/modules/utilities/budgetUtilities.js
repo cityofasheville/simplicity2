@@ -106,7 +106,7 @@ export const buildTrees = (data, last4Years = last4Yrs) => {
         if (yearIndex === 3) {
           curNode.data(objectAssign({}, curNode.data(), { proposed: curNode.data().proposed + data[i].budget }, { size: curNode.data().size + data[i].budget }, { amount: curNode.data().amount + data[i].budget }));
         } else if (yearIndex === 2) {
-          curNode.data(objectAssign({}, curNode.data(), { oneYearAgo: curNode.data().oneYearAgo + data[i].actual })); // but until the last year is actually complete...need budget (?)
+          curNode.data(objectAssign({}, curNode.data(), { oneYearAgo: curNode.data().oneYearAgo + data[i].budget })); // but until the last year is actually complete...need budget (?)
         } else if (yearIndex === 1) {
           curNode.data(objectAssign({}, curNode.data(), { twoYearsAgo: curNode.data().twoYearsAgo + data[i].actual }));
         } else if (yearIndex === 0) {
@@ -157,13 +157,13 @@ const createSummaryValues = (data) => {
       yearAlreadyPresent = false;
       for (let j = 0; j < values.length; j += 1) {
         if (values[j].year === data[i].year) {
-          values[j][data[i].category_name] = data[i].total_actual !== null ? data[i].total_actual : data[i].total_budget;
+          values[j][data[i].category_name] = [2, 3].indexOf(last4Yrs.indexOf(values[j].year)) > -1 ? data[i].total_budget : data[i].total_actual;
           yearAlreadyPresent = true;
           break;
         }
       }
       if (!yearAlreadyPresent) {
-        values.push({ year: data[i].year, [data[i].category_name]: data[i].total_actual !== null ? data[i].total_actual : data[i].total_budget });
+        values.push({ year: data[i].year, [data[i].category_name]: [2, 3].indexOf(last4Yrs.indexOf(data[i].year)) > -1 ? data[i].total_budget : data[i].total_actual, yearAxisNumeric: (1000 * last4Yrs.indexOf(data[i].year)) / 4 });
       }
     }
   }

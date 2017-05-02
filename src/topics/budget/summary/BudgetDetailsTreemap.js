@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link, hashHistory } from 'react-router';
 import Treemap from '../../../components/Treemap';
 // import { updateNodePath } from '../../../containers/budgetActions';
+const browser = require('detect-browser');
 
 const getExplanatoryText = (categoryType) => {
   switch (categoryType) {
@@ -112,7 +113,10 @@ const BudgetDetailsTreemap = props => (
         <div className="btn-group pull-right" style={{ marginLeft: '3px', marginBottom: '3px' }}>
           <button className="btn btn-primary btn-xs" onClick={props.jumpUp ? () => props.jumpUp(props) : null}><i className="fa fa-arrow-up"></i></button>
         </div>
-        <Treemap data={props.location.query.mode === 'expenditures' || props.location.query.mode === undefined ? findTop(props.expenseTree, props.location.query.nodePath || 'root') : findTop(props.revenueTree, props.location.query.nodePath || 'root')} diveDeeper={props.diveDeeper} differenceColors history={hashHistory} location={props.location} />
+        {browser.name === 'ie' && <div className="col-sm-12 alert-danger">Internet Explorer does not support the TREE MAP visualization. Please explore the budget details via the Details Table, or view this page in Chrome or Firefox.</div>}
+        {browser.name !== 'ie' &&
+          <Treemap data={props.location.query.mode === 'expenditures' || props.location.query.mode === undefined ? findTop(props.expenseTree, props.location.query.nodePath || 'root') : findTop(props.revenueTree, props.location.query.nodePath || 'root')} diveDeeper={props.diveDeeper} differenceColors history={hashHistory} location={props.location} />
+        }
       </div>
     </div>
   </div>

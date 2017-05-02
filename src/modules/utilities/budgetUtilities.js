@@ -1,4 +1,5 @@
 import tree from 'data-tree';
+const objectAssign = require('object-assign');
 
 const last4Yrs = [
   2015,
@@ -56,7 +57,7 @@ const convertDelta = (flattenedTree) => {
 
 // flatten the tree and export for use by the budget Treemap
 const exportForDetails = (aTree) => {
-  const flattened = aTree.export(data => (Object.assign({}, data, { delta: data.proposed - data.oneYearAgo }, { deltaPercent: calculateDeltaPercent(data.proposed, data.oneYearAgo) })));
+  const flattened = aTree.export(data => (objectAssign({}, data, { delta: data.proposed - data.oneYearAgo }, { deltaPercent: calculateDeltaPercent(data.proposed, data.oneYearAgo) })));
   convertDelta(flattened);
   return flattened;
 };
@@ -103,13 +104,13 @@ export const buildTrees = (data, last4Years = last4Yrs) => {
         }
         curParent = curNode;
         if (yearIndex === 3) {
-          curNode.data(Object.assign({}, curNode.data(), { proposed: curNode.data().proposed + data[i].budget }, { size: curNode.data().size + data[i].budget }, { amount: curNode.data().amount + data[i].budget }));
+          curNode.data(objectAssign({}, curNode.data(), { proposed: curNode.data().proposed + data[i].budget }, { size: curNode.data().size + data[i].budget }, { amount: curNode.data().amount + data[i].budget }));
         } else if (yearIndex === 2) {
-          curNode.data(Object.assign({}, curNode.data(), { oneYearAgo: curNode.data().oneYearAgo + data[i].actual })); // but until the last year is actually complete...need budget (?)
+          curNode.data(objectAssign({}, curNode.data(), { oneYearAgo: curNode.data().oneYearAgo + data[i].actual })); // but until the last year is actually complete...need budget (?)
         } else if (yearIndex === 1) {
-          curNode.data(Object.assign({}, curNode.data(), { twoYearsAgo: curNode.data().twoYearsAgo + data[i].actual }));
+          curNode.data(objectAssign({}, curNode.data(), { twoYearsAgo: curNode.data().twoYearsAgo + data[i].actual }));
         } else if (yearIndex === 0) {
-          curNode.data(Object.assign({}, curNode.data(), { threeYearsAgo: curNode.data().threeYearsAgo + data[i].actual }));
+          curNode.data(objectAssign({}, curNode.data(), { threeYearsAgo: curNode.data().threeYearsAgo + data[i].actual }));
         }
       }
     }

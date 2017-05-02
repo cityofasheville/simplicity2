@@ -1,4 +1,5 @@
 import { TOGGLE_SEARCH_BY_ENTITY } from './searchByEntitiesConstants';
+const objectAssign = require('object-assign');
 
 const initialState = {
   entities: [
@@ -19,7 +20,7 @@ const searchByEntities = (state = initialState, action) => {
           if (entity.entityType !== action.entityType) {
             return entity;
           }
-          return Object.assign({}, { entityType: entity.entityType, checked: !entity.checked });
+          return objectAssign({}, { entityType: entity.entityType, checked: !entity.checked });
         }) };
     default:
       return state;

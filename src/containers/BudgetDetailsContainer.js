@@ -2,9 +2,9 @@ import React from 'react';
 import { graphql } from 'react-apollo';
 import { connect } from 'react-redux';
 import gql from 'graphql-tag';
-import BudgetDetailsTable from '../topics/budget/summary/BudgetDetailsTable'
-import BudgetDetailsTreemap from '../topics/budget/summary/BudgetDetailsTreemap'
-import BudgetSummaryDetails from '../topics/budget/summary/BudgetSummaryDetails'
+import BudgetDetailsTable from '../topics/budget/summary/BudgetDetailsTable';
+import BudgetDetailsTreemap from '../topics/budget/summary/BudgetDetailsTreemap';
+import BudgetSummaryDetails from '../topics/budget/summary/BudgetSummaryDetails';
 import { buildBudgetTrees } from './budgetActions';
 
 const renderSubComponent = (props) => {

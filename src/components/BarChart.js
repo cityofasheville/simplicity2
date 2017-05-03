@@ -2,15 +2,20 @@ import React from 'react';
 import { ResponsiveContainer, BarChart as RechartsBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ReferenceArea } from 'recharts';
 
 const colorSchemes = [
+  ['#8e0152', '#e6f5d0', '#c51b7d', '#b8e186', '#de77ae', '#7fbc41', '#f1b6da', '#4d9221', '#fde0ef', '#276419', '#f7f7f7'], // color brewer diverging 11 pink-green
+  ['#40004b', '#d9f0d3', '#762a83', '#a6dba0', '#9970ab', '#5aae61', '#c2a5cf', '#1b7837', '#e7d4e8', '#00441b', '#f7f7f7'], // color brewer diverging 11 purple-green
+  ['#543005', '#c7eae5', '#8c510a', '#80cdc1', '#bf812d', '#35978f', '#dfc27d', '#01665e', '#f6e8c3', '#003c30', '#f5f5f5'], // color brewer diverging 11 brown-blue
+  ['#67001f', '#d1e5f0', '#b2182b', '#92c5de', '#d6604d', '#4393c3', '#f4a582', '#2166ac', '#fddbc7', '#053061', '#f7f7f7'], // color brewer diverging 11 red-blue
+  ['#7f3b08', '#d8daeb', '#b35806', '#b2abd2', '#e08214', '#8073ac', '#fdb863', '#542788', '#fee0b6', '#2d004b', '#f7f7f7'], // color brewer diverging 11 orange-purple
   ['#deebf7', '#c6dbef', '#9ecae1', '#6baed6', '#4292c6', '#2171b5', '#08519c', '#08306b', '#e5f5e0', '#c7e9c0', '#a1d99b', '#74c476', '#41ab5d', '#238b45', '#006d2c', '#00441b'], // color brewer single hue blue - single hue green
   ['#e5f5e0', '#c7e9c0', '#a1d99b', '#74c476', '#41ab5d', '#238b45', '#006d2c', '#00441b', '#deebf7', '#c6dbef', '#9ecae1', '#6baed6', '#4292c6', '#2171b5', '#08519c', '#08306b'], // color brewer single hue blue - single hue green
-  ['#920000', '#DB6D00', '#24FF24', '#924900', '#B6DBFF', '#006DDB', '#6DB6FF', '#B66DFF', '#490092', '#004949', '#FF6DB6', '#009292', '#FFBDDB', '#000000'], // colorblind 'safe'
-  ['#000000', '#FFBDDB', '#009292', '#FF6DB6', '#004949', '#490092', '#B66DFF', '#6DB6FF', '#006DDB', '#B6DBFF', '#924900', '#24FF24', '#DB6D00', '#920000'], // colorblind 'safe'
+  ['#920000', '#DB6D00', '#24FF24', '#924900', '#B6DBFF', '#006DDB', '#6DB6FF', '#B66DFF', '#490092', '#004949', '#FF6DB6', '#009292', '#FFBDDB', '#000000'], // bright colors 1 colorblind 'safe'
+  ['#000000', '#FFBDDB', '#009292', '#FF6DB6', '#004949', '#490092', '#B66DFF', '#6DB6FF', '#006DDB', '#B6DBFF', '#924900', '#24FF24', '#DB6D00', '#920000'], // bright colors 2 colorblind 'safe'
   ['#004987', '#4077a5', '#a6bfd5', '#aaad00', '#bfc240', '#e1e2a6'], // city of asheville branding colors, colorblind 'safe'
 ];
 
 const referenceColorScheme = [
-  '#fff7ec', '#fee8c8', '#fdd49e',
+  '#fcfcfc', '#f0f0f0', '#d9d9d9',
 ];
 
 const getDollars = value => (
@@ -29,7 +34,7 @@ const renderTitle = (title) => {
 };
 
 const CustomizedLabel = labelProps => (
-  <g className="recharts-reference-area-label"><text stroke="none" fill="black" x="0" y="20" className="recharts-text" textAnchor="middle"><tspan x={labelProps.x} dy="0em">{labelProps.text}</tspan></text></g>
+  <g className="recharts-reference-area-label">{labelProps.text.map((text, i) =><text key={['labelText', i].join('_')} stroke="none" fill="black" x="0" y={20 * (i + 1)} className="recharts-text" textAnchor="middle"><tspan x={labelProps.x} dy="0em">{text}</tspan></text>)}</g>
 );
 
 const BarChart = props => (
@@ -38,7 +43,7 @@ const BarChart = props => (
     <ResponsiveContainer>
       <RechartsBarChart data={props.data}>
         <XAxis dataKey={props.xAxisDataKey} tickFormatter={props.xTickFormatter !== undefined ? props.xTickFormatter : null} />
-        <YAxis tickFormatter={props.yTickFormatter !== undefined ? props.yTickFormatter : null} domain={['dataMin', 'dataMax + 25000000']} />
+        <YAxis tickFormatter={props.yTickFormatter !== undefined ? props.yTickFormatter : null} domain={['dataMin', 'dataMax + 50000000']} />
         <CartesianGrid strokeDasharray="3 3" />
         <Tooltip formatter={props.dollars ? getDollars : null} />
         <Legend />
@@ -69,7 +74,7 @@ BarChart.propTypes = {
   dollars: React.PropTypes.bool,
   colorScheme: React.PropTypes.number, // eslint-disable-line react/no-unused-prop-types
   referenceArea: React.PropTypes.bool,
-  referenceAreaLabels: React.PropTypes.arrayOf(React.PropTypes.string),
+  referenceAreaLabels: React.PropTypes.arrayOf(React.PropTypes.array),
   referenceAreaExes: React.PropTypes.arrayOf(React.PropTypes.number),
 };
 

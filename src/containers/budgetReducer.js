@@ -1,5 +1,5 @@
-import { BUILD_TREES, BUILD_SUMMARY_USE_DATA, BUILD_SUMMARY_DEPT_DATA } from './budgetConstants';
-import { buildTrees, buildSummaryData } from '../modules/utilities/budgetUtilities';
+import { BUILD_TREES, BUILD_SUMMARY_USE_DATA, BUILD_SUMMARY_DEPT_DATA, BUILD_CASH_FLOW_DATA } from './budgetConstants';
+import { buildTrees, buildSummaryData, buildCashFlowData } from '../modules/utilities/budgetUtilities';
 const objectAssign = require('object-assign');
 
 const initialState = {
@@ -9,6 +9,7 @@ const initialState = {
   revenueTreeForTreemap: {},
   summaryUseData: {},
   summaryDeptData: {},
+  cashFlowData: {},
   // expensePath: 'root',
   // revenuePath: 'root',
 };
@@ -33,6 +34,13 @@ const budget = (state = initialState, action) => {
       if (Object.keys(state.summaryDeptData).length === 0) {
         const newSummaryDeptData = buildSummaryData(action.queryData);
         return objectAssign({}, state, { summaryDeptData: newSummaryDeptData });
+      }
+      return state;
+    }
+    case BUILD_CASH_FLOW_DATA: {
+      if (Object.keys(state.cashFlowData).length === 0) {
+        const newCashFlowData = buildCashFlowData(action.queryData);
+        return objectAssign({}, state, { cashFlowData: newCashFlowData });
       }
       return state;
     }

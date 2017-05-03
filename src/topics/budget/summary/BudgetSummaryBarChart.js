@@ -44,7 +44,7 @@ const BudgetSummaryBarChart = props => (
       {getExplanatoryText(props.categoryType)}
     </p>
     <div className="col-sm-12">
-      <BarChart data={props.summaryData.dataValues} referenceArea xAxisDataKey="year" xReferenceAxisDataKey="yearAxisNumeric" referenceAreaLabels={['Actual', 'Adopted', 'Proposed']} referenceAreaExes={[500, 750, 1000]} barDataKeys={props.summaryData.dataKeys} yTickFormatter={getDollars} xTickFormatter={getYearSpanFromSingleYear} stacked dollars colorScheme={props.colorScheme} />
+      <BarChart data={props.summaryData.dataValues} referenceArea xAxisDataKey="year" xReferenceAxisDataKey="yearAxisNumeric" referenceAreaLabels={[['Actual', 'Spent'], ['Adopted', 'Budget'], ['Proposed', 'Budget']]} referenceAreaExes={[500, 750, 1000]} barDataKeys={props.summaryData.dataKeys} yTickFormatter={getDollars} xTickFormatter={getYearSpanFromSingleYear} stacked dollars colorScheme={props.colorScheme} />
     </div>
   </div>
 );

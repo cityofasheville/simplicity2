@@ -1,17 +1,32 @@
 import React from 'react';
+import { graphql, compose } from 'react-apollo';
+import gql from 'graphql-tag';
+import { connect } from 'react-redux';
 import Sankey from '../../../components/Sankey';
+import { buildCashFlowData } from '../../../containers/budgetActions';
 
-const SummaryCashFlow = props => (
-  <div className="row">
-    <div className="col-sm-12">
-      <h3>Cash flow diagram: Revenues to expenditures</h3>
-      <div style={{ marginBottom: '15px' }}>
-        Some explanatory text here describing something important to the users that is relevant to know, that we want to communicate to them about this particular chart.
+const SummaryCashFlow = (props) => {
+  if (props.data.loading) { // eslint-disable-line react/prop-types
+    return <p>Loading...</p>;
+  }
+  if (props.data.error) { // eslint-disable-line react/prop-types
+    return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
+  }
+
+  props.buildCashFlowData(props.data); // eslint-disable-line react/prop-types
+
+  return (
+    <div className="row">
+      <div className="col-sm-12">
+        <h3>Cash flow diagram: Revenues to expenditures</h3>
+        <div style={{ marginBottom: '15px' }}>
+          Some explanatory text here describing something important to the users that is relevant to know, that we want to communicate to them about this particular chart.
+        </div>
+        <Sankey />
       </div>
-      <Sankey />
     </div>
-  </div>
-);
+  );
+};
 
 const nameShape = {
   name: React.PropTypes.string,
@@ -28,4 +43,37 @@ SummaryCashFlow.propTypes = {
   links: React.PropTypes.arrayOf(React.PropTypes.shape(linkShape)),
 };
 
-export default SummaryCashFlow;
+const glBudgetCashFlowQuery = gql`
+  query glBudgetCashFlowQuery {
+    glBudgetCashFlowExpenses: gl_budget_cash_flow(accountType: "E") {
+        account_type,
+        dept_id,
+        department_name,
+        fund_id,
+        fund_name,
+        budget,
+        year,
+    },
+    glBudgetCashFlowRevenues: gl_budget_cash_flow(accountType: "R") {
+        account_type,
+        charcode,
+        charcode_name,
+        fund_id,
+        fund_name,
+        budget,
+        year,
+    }
+  }
+`;
+
+const SummaryCashFlowGQL = graphql(glBudgetCashFlowQuery, {})(SummaryCashFlow);
+
+export default connect(
+  null,
+  dispatch => ({
+    buildCashFlowData: queryData => (
+      dispatch(buildCashFlowData(queryData))
+    ),
+  }),
+)(SummaryCashFlowGQL);
+

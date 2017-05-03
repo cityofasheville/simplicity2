@@ -179,3 +179,25 @@ export const buildSummaryData = (data) => {
   const summaryData = { dataKeys: createSummaryKeys(data), dataValues: createSummaryValues(data) };
   return summaryData;
 };
+
+// this function converts the results of the cash flow query into the form that the Sankey.js component can handle
+export const buildCashFlowData = (data) => {
+  let sankeyNodes = data.glBudgetCashFlowExpenses.concat(data.glBudgetCashFlowRevenues);
+  sankeyNodes = sankeyNodes.map(item => (objectAssign({}, item, { name: item.charcode_name || item.department_name })));
+  const funds = [];
+  const fundNodes = [];
+  for (let i = 0; i < sankeyNodes.length; i += 1) {
+    if (funds.indexOf(sankeyNodes[i].fund_id) < 0) {
+      funds.push(sankeyNodes[i].fund_id);
+      fundNodes.push({ name: sankeyNodes[i].fund_name, fund_id: sankeyNodes[i].fund_id, account_type: 'Fund' });
+    }
+  }
+  sankeyNodes = sankeyNodes.concat(fundNodes);
+  // const links = [];
+  // for (let i = 0; i < sankeyNodes.length; i += 1) {
+    // if expense, find the fund_node and create a link from fund node to the current expense node
+    // if revenue, find the fund_node and create a link from the current revenue node to the fund node
+  // }
+  // console.log(sankeyNodes);
+  return sankeyNodes;
+};

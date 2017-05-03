@@ -1,8 +1,8 @@
 import React from 'react';
-import { graphql, compose } from 'react-apollo';
+import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { connect } from 'react-redux';
-import Sankey from '../../../components/Sankey';
+import BudgetSankey from './BudgetSankey';
 import { buildCashFlowData } from '../../../containers/budgetActions';
 
 const SummaryCashFlow = (props) => {
@@ -22,7 +22,7 @@ const SummaryCashFlow = (props) => {
         <div style={{ marginBottom: '15px' }}>
           Some explanatory text here describing something important to the users that is relevant to know, that we want to communicate to them about this particular chart.
         </div>
-        <Sankey />
+        <BudgetSankey />
       </div>
     </div>
   );

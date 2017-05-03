@@ -182,22 +182,47 @@ export const buildSummaryData = (data) => {
 
 // this function converts the results of the cash flow query into the form that the Sankey.js component can handle
 export const buildCashFlowData = (data) => {
-  let sankeyNodes = data.glBudgetCashFlowExpenses.concat(data.glBudgetCashFlowRevenues);
-  sankeyNodes = sankeyNodes.map(item => (objectAssign({}, item, { name: item.charcode_name || item.department_name })));
-  const funds = [];
+  const fundNames = [];
   const fundNodes = [];
-  for (let i = 0; i < sankeyNodes.length; i += 1) {
-    if (funds.indexOf(sankeyNodes[i].fund_id) < 0) {
-      funds.push(sankeyNodes[i].fund_id);
-      fundNodes.push({ name: sankeyNodes[i].fund_name, fund_id: sankeyNodes[i].fund_id, account_type: 'Fund' });
+  let sankeyNodes = [];
+  const sankeyLinks = [];
+  const charcodeNames = []; // TODO replace with category names
+  const departmentNames = [];
+  const revenueNodes = [];
+  const expenseNodes = [];
+  let allExpenseRevenueRows = data.glBudgetCashFlowExpenses.concat(data.glBudgetCashFlowRevenues);
+  allExpenseRevenueRows = allExpenseRevenueRows.map(item => (objectAssign({}, item, { name: item.charcode_name || item.department_name })));
+  // group expenses, revenues, and funds into their department, charcode (TODO: category), and funds - because the nodes are only one per
+  // fund_name, category, and fund
+  for (let i = 0; i < allExpenseRevenueRows.length; i += 1) {
+    if (fundNames.indexOf(allExpenseRevenueRows[i].fund_name) < 0) {
+      fundNames.push(allExpenseRevenueRows[i].fund_name);
+      fundNodes.push({ name: allExpenseRevenueRows[i].fund_name });
+    }
+    if (allExpenseRevenueRows[i].account_type === 'R') {
+      if (charcodeNames.indexOf(allExpenseRevenueRows[i].name) < 0) {
+        charcodeNames.push(allExpenseRevenueRows[i].name);
+        revenueNodes.push({ name: allExpenseRevenueRows[i].name });
+      }
+    } else if (departmentNames.indexOf(allExpenseRevenueRows[i].name) < 0) {
+      departmentNames.push(allExpenseRevenueRows[i].name);
+      expenseNodes.push({ name: allExpenseRevenueRows[i].name });
     }
   }
-  sankeyNodes = sankeyNodes.concat(fundNodes);
-  // const links = [];
-  // for (let i = 0; i < sankeyNodes.length; i += 1) {
-    // if expense, find the fund_node and create a link from fund node to the current expense node
-    // if revenue, find the fund_node and create a link from the current revenue node to the fund node
-  // }
-  // console.log(sankeyNodes);
-  return sankeyNodes;
+  // now go through and create links -- which assumes in the end there will only be one array of nodes, consisting of the revenues, expenses
+  // and fund nodes combined. therefore to calculate the indices we have to add an offset since we haven't combined them yet
+  const revenueOffset = 0;
+  const fundsOffset = revenueNodes.length;
+  const expensesOffset = revenueNodes.length + fundNodes.length;
+  for (let i = 0; i < allExpenseRevenueRows.length; i += 1) {
+    if (allExpenseRevenueRows[i].account_type === 'R') {
+      // link is source index, target index, and value
+      sankeyLinks.push({ source: charcodeNames.indexOf(allExpenseRevenueRows[i].name) + revenueOffset, target: fundNames.indexOf(allExpenseRevenueRows[i].fund_name) + fundsOffset, value: allExpenseRevenueRows[i].budget });
+    } else {
+      sankeyLinks.push({ source: fundNames.indexOf(allExpenseRevenueRows[i].fund_name) + fundsOffset, target: departmentNames.indexOf(allExpenseRevenueRows[i].name) + expensesOffset, value: allExpenseRevenueRows[i].budget });
+    }
+  }
+  // combine the revenues, funds, expenses nodes into one array
+  sankeyNodes = revenueNodes.concat(fundNodes).concat(expenseNodes);
+  return { sankeyNodes, sankeyLinks };
 };

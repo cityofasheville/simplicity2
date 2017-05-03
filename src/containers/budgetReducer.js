@@ -40,7 +40,7 @@ const budget = (state = initialState, action) => {
     case BUILD_CASH_FLOW_DATA: {
       if (Object.keys(state.cashFlowData).length === 0) {
         const newCashFlowData = buildCashFlowData(action.queryData);
-        return objectAssign({}, state, { cashFlowData: newCashFlowData });
+        return objectAssign({}, state, { cashFlowData: { nodes: newCashFlowData.sankeyNodes, links: newCashFlowData.sankeyLinks } });
       }
       return state;
     }

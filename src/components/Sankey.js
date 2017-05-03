@@ -307,6 +307,7 @@ class Sankey extends React.Component {
       </g>
     ));
 
+
     const nodes = graph.nodes.map((node, i) => (
       <g key={['node', i].join('_')} className={styles.node} transform={['translate(', node.x, ',', node.y, ')'].join('')}>
         <rect height={node.dy} width={sankeyChart.nodeWidth()} fill={color(i)} stroke="black">

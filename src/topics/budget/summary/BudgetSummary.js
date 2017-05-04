@@ -9,7 +9,7 @@ const BudgetSummary = props => (
     <div className="row">
       <div className="col-sm-12">
         <h1>
-          Budget
+          Proposed Budget 2017-18
           <div className="btn-group pull-right" style={{ marginLeft: '10px' }}>
             <Link to={{ pathname: '/topics/budget', query: { entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, hideNavbar: props.location.query.hideNavbar } }}>
               <button className="btn btn-primary active" style={{ borderTopRightRadius: '0px', borderBottomRightRadius: '0px' }}>Summary</button>

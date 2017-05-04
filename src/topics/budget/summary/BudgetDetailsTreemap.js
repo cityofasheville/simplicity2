@@ -79,6 +79,23 @@ const findTop = (data, path) => {
   return ((curNode.children === undefined || curNode.children.length === 0) ? prevNode.children : curNode.children);
 };
 
+const renderBreadcrumb = (data, path) => {
+  const nodes = path.split('-');
+  if (nodes.length === 1) {
+    return null;
+  }
+  let curNode = data;
+  for (let i = 0; i < nodes.length; i += 1) {
+    for (let j = 0; j < curNode.children.length; j += 1) {
+      if (curNode.children[j].key === nodes[i]) {
+        curNode = curNode.children[j];
+        break;
+      }
+    }
+  }
+  return (<div className="pull-left">{curNode.breadcrumbPath.slice(5)}</div>);
+};
+
 const BudgetDetailsTreemap = props => (
   <div>
     <div className="row">
@@ -98,7 +115,7 @@ const BudgetDetailsTreemap = props => (
     </div>
     <div className="row">
       <div className="col-sm-12">
-        <div className="btn-group pull-left">
+        <div className="btn-group pull-left" style={{ marginRight: '10px' }}>
           <Link to={{ pathname: props.location.pathname, query: { entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, mode: 'expenditures', hideNavbar: props.location.query.hideNavbar } }}>
             <button className={props.location.query.mode !== 'revenue' ? 'btn btn-primary btn-xs active' : 'btn btn-primary btn-xs'} style={{ borderTopRightRadius: '0px', borderBottomRightRadius: '0px' }}>Expenditures</button>
           </Link>
@@ -106,6 +123,7 @@ const BudgetDetailsTreemap = props => (
             <button className={props.location.query.mode === 'revenue' ? 'btn btn-primary btn-xs active' : 'btn btn-primary btn-xs'} style={{ borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px' }}>Revenue</button>
           </Link>
         </div>
+        {props.location.query.mode === 'expenditures' || props.location.query.mode === undefined ? renderBreadcrumb(props.expenseTree, props.location.query.nodePath || 'root') : renderBreadcrumb(props.revenueTree, props.location.query.nodePath || 'root')}
         <div className="btn-group pull-left" style={{ display: 'none' }} >
           <button className={getButtonClass(props.categoryType, 'use')}>Use</button>
           <button className={getButtonClass(props.categoryType, 'department')}>Departments</button>

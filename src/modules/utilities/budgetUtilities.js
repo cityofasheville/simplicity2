@@ -96,11 +96,13 @@ export const buildTrees = (data, last4Years = last4Yrs) => {
       for (let j = 0; j < levels.length; j += 1) {
         curNode = searchChildrenForKey(data[i][levels[j]], curParent);
         let curPath = 'root';
+        let breadCrumbPath = 'root';
         for (let k = 0; k <= j; k += 1) {
           curPath = [curPath, data[i][levels[k]]].join('-');
+          breadCrumbPath = [breadCrumbPath, data[i][levelNames[k]]].join('>');
         }
         if (curNode === null) {
-          curNode = theTree.insertToNode(curParent, { key: data[i][levels[j]], path: curPath, [levels[j]]: data[i][levels[j]], name: data[i][levelNames[j]], threeYearsAgo: 0, twoYearsAgo: 0, oneYearAgo: 0, proposed: 0, size: 0, amount: 0, account_type: data[i].account_type });
+          curNode = theTree.insertToNode(curParent, { key: data[i][levels[j]], path: curPath, breadcrumbPath: breadCrumbPath, [levels[j]]: data[i][levels[j]], name: data[i][levelNames[j]], threeYearsAgo: 0, twoYearsAgo: 0, oneYearAgo: 0, proposed: 0, size: 0, amount: 0, account_type: data[i].account_type });
         }
         curParent = curNode;
         if (yearIndex === 3) {

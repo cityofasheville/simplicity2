@@ -192,7 +192,28 @@ export const buildCashFlowData = (data) => {
   const expenseNodes = [];
   let allExpenseRevenueRows = data.glBudgetCashFlowExpenses.concat(data.glBudgetCashFlowRevenues);
   let linkAlreadyExists = false;
-  allExpenseRevenueRows = allExpenseRevenueRows.map(item => (objectAssign({}, item, { name: item.charcode_name || item.department_name })));
+  const fundsToInclude = ['1100', '6100', '6200', '6260', '6240', '6220', '6500'];
+  const fundDisplayNames = ['General Fund', 'Water Resources', 'Parking Services', 'US Cellular Center', 'Stormwater', 'Street Cut', 'Transit Services'];
+  const managementAndSupportDepts = ['Legal Department', 'Human Resources Department', 'Information Technology Dept.', 'Administration Services Dept', 'Finance Department', 'General Services Department'];
+  const communityAndResidentDepts = ['Development Services Dept.', 'Economic Development Departmen', 'Planning & Development Dept', 'Capital Project Management Dep'];
+  const convertFundNameToDisplayName = (fundId) => {
+    const fundIndex = fundsToInclude.indexOf(fundId);
+    return fundIndex === -1 ? 'Other' : fundDisplayNames[fundIndex];
+  };
+  const convertDeptNameToDisplayName = (deptName) => {
+    switch (deptName) {
+      case 'Non-Departmental Department':
+        return 'Nondepartmental/Capital Program';
+      default:
+        return deptName;
+    }
+  };
+  allExpenseRevenueRows = allExpenseRevenueRows.filter(item => (fundsToInclude.indexOf(item.fund_id) > -1)).map((item) => {
+    if (item.account_type === 'E') {
+      return objectAssign({}, item, { name: managementAndSupportDepts.indexOf(item.department_name) > -1 ? 'Management & Support Services' : (communityAndResidentDepts.indexOf(item.department_name) > -1 ? 'Other Community & Resident Services' : convertDeptNameToDisplayName(item.department_name)), fund_name: convertFundNameToDisplayName(item.fund_id) }); // eslint-disable-line
+    }
+    return objectAssign({}, item, { name: item.charcode_name, fund_name: convertFundNameToDisplayName(item.fund_id) });
+  });
   // group expenses, revenues, and funds into their department, charcode (TODO: category), and funds - because the nodes are only one per
   // fund_name, category, and fund
   for (let i = 0; i < allExpenseRevenueRows.length; i += 1) {
@@ -220,7 +241,6 @@ export const buildCashFlowData = (data) => {
     if (allExpenseRevenueRows[i].account_type === 'R') {
       // link is source index, target index, and value
       // must find if there is already a link from the source to the target, and if so, then just add the value to the sum instead of pushing
-      // TODO find link
       for (let j = 0; j < sankeyLinks.length; j += 1) {
         if (sankeyLinks[j].source === charcodeNames.indexOf(allExpenseRevenueRows[i].name) + revenueOffset && sankeyLinks[j].target === fundNames.indexOf(allExpenseRevenueRows[i].fund_name) + fundsOffset) {
           sankeyLinks[j].value += Math.trunc(allExpenseRevenueRows[i].budget);

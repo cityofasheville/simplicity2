@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Sankey from '../../../components/Sankey';
 
 const BudgetSankey = props => (
-  <Sankey nodes={props.nodes} links={props.links} height={750} />
+  <Sankey nodes={props.nodes} links={props.links} />
 );
 
 const nameShape = {

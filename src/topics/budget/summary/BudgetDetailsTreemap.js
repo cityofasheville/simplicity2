@@ -61,6 +61,7 @@ const goUp = (props) => {
 };
 
 const findTop = (data, path) => {
+  console.log(data);
   const nodes = path.split('-');
   if (nodes.length === 1) {
     return data.children;

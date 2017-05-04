@@ -34,7 +34,7 @@ const renderTitle = (title) => {
 };
 
 const CustomizedLabel = labelProps => (
-  <g className="recharts-reference-area-label">{labelProps.text.map((text, i) =><text key={['labelText', i].join('_')} stroke="none" fill="black" x="0" y={20 * (i + 1)} className="recharts-text" textAnchor="middle"><tspan x={labelProps.x} dy="0em">{text}</tspan></text>)}</g>
+  <g className="recharts-reference-area-label">{labelProps.text.map((text, i) => <text key={['labelText', i].join('_')} stroke="none" fill="black" x="0" y={20 * (i + 1)} className="recharts-text" textAnchor="middle"><tspan x={labelProps.x} dy="0em">{text}</tspan></text>)}</g>
 );
 
 const BarChart = props => (

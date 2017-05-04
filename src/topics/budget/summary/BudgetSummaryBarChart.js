@@ -11,10 +11,6 @@ const getDollars = (value) => {
   return [value < 0 ? '-$' : '$', Math.abs(value).toFixed(0).toLocaleString()].join('');
 };
 
-const getYearSpanFromSingleYear = year => (
-  [year - 1, year.toString().slice(2)].join('-')
-);
-
 const getExplanatoryText = (categoryType) => {
   switch (categoryType) {
     case 'use':
@@ -44,7 +40,7 @@ const BudgetSummaryBarChart = props => (
       {getExplanatoryText(props.categoryType)}
     </p>
     <div className="col-sm-12">
-      <BarChart data={props.summaryData.dataValues} referenceArea xAxisDataKey="year" xReferenceAxisDataKey="yearAxisNumeric" referenceAreaLabels={[['Actual', 'Spent'], ['Adopted', 'Budget'], ['Proposed', 'Budget']]} referenceAreaExes={[500, 750, 1000]} barDataKeys={props.summaryData.dataKeys} yTickFormatter={getDollars} xTickFormatter={getYearSpanFromSingleYear} stacked dollars colorScheme={props.colorScheme} />
+      <BarChart data={props.summaryData.dataValues} referenceArea xAxisDataKey="display_year" xReferenceAxisDataKey="yearAxisNumeric" referenceAreaLabels={[['Actual', 'Spent'], ['Adopted', 'Budget'], ['Proposed', 'Budget']]} referenceAreaExes={[500, 750, 1000]} barDataKeys={props.summaryData.dataKeys} yTickFormatter={getDollars} stacked dollars colorScheme={props.colorScheme} />
     </div>
   </div>
 );

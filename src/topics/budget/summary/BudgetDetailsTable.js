@@ -10,6 +10,13 @@ const last4Years = [
   2018,
 ];
 
+const last4YrBudgetTypes = [
+  'Actual',
+  'Actual',
+  'Adopted',
+  'Proposed',
+];
+
 const getDollars = (value) => {
   const initialSymbols = value < 0 ? '-$' : '$';
   return [initialSymbols, Math.abs(value).toLocaleString()].join('');
@@ -20,6 +27,15 @@ const getDollars = (value) => {
   // }
   // return [initialSymbols, (Math.abs(value)).toLocaleString()].join('');
 };
+
+const getYearHeader = year => (
+  <div>
+    { last4Years.indexOf(year) > -1 &&
+      <div>{last4YrBudgetTypes[last4Years.indexOf(year)]}</div>
+    }
+    {[year - 1, year.toString().slice(2)].join('-')}
+  </div>
+);
 
 const getDataColumns = (level) => {
   const theHeader = () => {
@@ -43,25 +59,25 @@ const getDataColumns = (level) => {
       width: level === 3 ? 300 - (34 * 2) : 300 - (34 * level),
     },
     {
-      header: last4Years[0],
+      header: getYearHeader(last4Years[0]),
       accessor: 'threeYearsAgo',
       render: props => getDollars(props.value),
       minWidth: 60,
       style: { textAlign: 'right' },
     }, {
-      header: last4Years[1],
+      header: getYearHeader(last4Years[1]),
       accessor: 'twoYearsAgo',
       render: props => getDollars(props.value),
       minWidth: 60,
       style: { textAlign: 'right' },
     }, {
-      header: last4Years[2],
+      header: getYearHeader(last4Years[2]),
       accessor: 'oneYearAgo',
       render: props => getDollars(props.value),
       minWidth: 60,
       style: { textAlign: 'right' },
     }, {
-      header: last4Years[3],
+      header: getYearHeader(last4Years[3]),
       accessor: 'proposed',
       render: props => getDollars(props.value),
       minWidth: 60,

@@ -104,13 +104,13 @@ export const buildTrees = (data, last4Years = last4Yrs) => {
         }
         curParent = curNode;
         if (yearIndex === 3) {
-          curNode.data(objectAssign({}, curNode.data(), { proposed: curNode.data().proposed + data[i].budget }, { size: curNode.data().size + data[i].budget }, { amount: curNode.data().amount + data[i].budget }));
+          curNode.data(objectAssign({}, curNode.data(), { proposed: curNode.data().proposed + Math.trunc(data[i].budget) }, { size: curNode.data().size + Math.trunc(data[i].budget) }, { amount: curNode.data().amount + Math.trunc(data[i].budget) }));
         } else if (yearIndex === 2) {
-          curNode.data(objectAssign({}, curNode.data(), { oneYearAgo: curNode.data().oneYearAgo + data[i].budget })); // but until the last year is actually complete...need budget (?)
+          curNode.data(objectAssign({}, curNode.data(), { oneYearAgo: curNode.data().oneYearAgo + Math.trunc(data[i].budget) })); // but until the last year is actually complete...need budget (?)
         } else if (yearIndex === 1) {
-          curNode.data(objectAssign({}, curNode.data(), { twoYearsAgo: curNode.data().twoYearsAgo + data[i].actual }));
+          curNode.data(objectAssign({}, curNode.data(), { twoYearsAgo: curNode.data().twoYearsAgo + Math.trunc(data[i].actual) }));
         } else if (yearIndex === 0) {
-          curNode.data(objectAssign({}, curNode.data(), { threeYearsAgo: curNode.data().threeYearsAgo + data[i].actual }));
+          curNode.data(objectAssign({}, curNode.data(), { threeYearsAgo: curNode.data().threeYearsAgo + Math.trunc(data[i].actual) }));
         }
       }
     }
@@ -157,13 +157,13 @@ const createSummaryValues = (data) => {
       yearAlreadyPresent = false;
       for (let j = 0; j < values.length; j += 1) {
         if (values[j].year === data[i].year) {
-          values[j][data[i].category_name] = [2, 3].indexOf(last4Yrs.indexOf(values[j].year)) > -1 ? data[i].total_budget : data[i].total_actual;
+          values[j][data[i].category_name] = [2, 3].indexOf(last4Yrs.indexOf(values[j].year)) > -1 ? Math.trunc(data[i].total_budget) : Math.trunc(data[i].total_actual);
           yearAlreadyPresent = true;
           break;
         }
       }
       if (!yearAlreadyPresent) {
-        values.push({ year: data[i].year, [data[i].category_name]: [2, 3].indexOf(last4Yrs.indexOf(data[i].year)) > -1 ? data[i].total_budget : data[i].total_actual, yearAxisNumeric: (1000 * last4Yrs.indexOf(data[i].year)) / 4 });
+        values.push({ year: data[i].year, display_year: [data[i].year - 1, data[i].year.toString().slice(2)].join('-'), [data[i].category_name]: [2, 3].indexOf(last4Yrs.indexOf(data[i].year)) > -1 ? Math.trunc(data[i].total_budget) : Math.trunc(data[i].total_actual), yearAxisNumeric: (1000 * last4Yrs.indexOf(data[i].year)) / 4 });
       }
     }
   }
@@ -191,6 +191,7 @@ export const buildCashFlowData = (data) => {
   const revenueNodes = [];
   const expenseNodes = [];
   let allExpenseRevenueRows = data.glBudgetCashFlowExpenses.concat(data.glBudgetCashFlowRevenues);
+  let linkAlreadyExists = false;
   allExpenseRevenueRows = allExpenseRevenueRows.map(item => (objectAssign({}, item, { name: item.charcode_name || item.department_name })));
   // group expenses, revenues, and funds into their department, charcode (TODO: category), and funds - because the nodes are only one per
   // fund_name, category, and fund
@@ -215,11 +216,32 @@ export const buildCashFlowData = (data) => {
   const fundsOffset = revenueNodes.length;
   const expensesOffset = revenueNodes.length + fundNodes.length;
   for (let i = 0; i < allExpenseRevenueRows.length; i += 1) {
+    linkAlreadyExists = false;
     if (allExpenseRevenueRows[i].account_type === 'R') {
       // link is source index, target index, and value
-      sankeyLinks.push({ source: charcodeNames.indexOf(allExpenseRevenueRows[i].name) + revenueOffset, target: fundNames.indexOf(allExpenseRevenueRows[i].fund_name) + fundsOffset, value: allExpenseRevenueRows[i].budget });
+      // must find if there is already a link from the source to the target, and if so, then just add the value to the sum instead of pushing
+      // TODO find link
+      for (let j = 0; j < sankeyLinks.length; j += 1) {
+        if (sankeyLinks[j].source === charcodeNames.indexOf(allExpenseRevenueRows[i].name) + revenueOffset && sankeyLinks[j].target === fundNames.indexOf(allExpenseRevenueRows[i].fund_name) + fundsOffset) {
+          sankeyLinks[j].value += Math.trunc(allExpenseRevenueRows[i].budget);
+          linkAlreadyExists = true;
+          break;
+        }
+      }
+      if (!linkAlreadyExists) {
+        sankeyLinks.push({ source: charcodeNames.indexOf(allExpenseRevenueRows[i].name) + revenueOffset, target: fundNames.indexOf(allExpenseRevenueRows[i].fund_name) + fundsOffset, value: Math.trunc(allExpenseRevenueRows[i].budget) });
+      }
     } else {
-      sankeyLinks.push({ source: fundNames.indexOf(allExpenseRevenueRows[i].fund_name) + fundsOffset, target: departmentNames.indexOf(allExpenseRevenueRows[i].name) + expensesOffset, value: allExpenseRevenueRows[i].budget });
+      for (let j = 0; j < sankeyLinks.length; j += 1) {
+        if (sankeyLinks[j].source === fundNames.indexOf(allExpenseRevenueRows[i].fund_name) + fundsOffset && sankeyLinks[j].target === departmentNames.indexOf(allExpenseRevenueRows[i].name) + expensesOffset) {
+          sankeyLinks[j].value += Math.trunc(allExpenseRevenueRows[i].budget);
+          linkAlreadyExists = true;
+          break;
+        }
+      }
+      if (!linkAlreadyExists) {
+        sankeyLinks.push({ source: fundNames.indexOf(allExpenseRevenueRows[i].fund_name) + fundsOffset, target: departmentNames.indexOf(allExpenseRevenueRows[i].name) + expensesOffset, value: Math.trunc(allExpenseRevenueRows[i].budget) });
+      }
     }
   }
   // combine the revenues, funds, expenses nodes into one array

@@ -9,20 +9,37 @@ const last4Yrs = [
 ];
 
 // levels for use in the Treemap
-const levels = [
-  'func_id',
+const expenseLevels = [
+  'budget_section_id',
   'dept_id',
   'div_id',
   'obj_id',
 ];
 
 // level names for use in the Treemap
-const levelNames = [
-  'function_name',
+const expenseLevelNames = [
+  'budget_section_name',
   'department_name',
   'division_name',
   'account_name',
 ];
+
+// levels for use in the Treemap
+const revenueLevels = [
+  'category_id',
+  'dept_id',
+  'div_id',
+  'obj_id',
+];
+
+// level names for use in the Treemap
+const revenueLevelNames = [
+  'category_name',
+  'department_name',
+  'division_name',
+  'account_name',
+];
+
 
 // this function calculates the delta percent that will be shown in the details Table
 const calculateDeltaPercent = (proposed, oneYearAgo) => {
@@ -85,24 +102,28 @@ export const buildTrees = (data, last4Years = last4Yrs) => {
   const exTree = tree.create();
   const revTree = tree.create();
   let theTree = revTree;
+  let theLevels = expenseLevels;
+  let theLevelNames = expenseLevelNames;
   exTree.insert({ key: 'root' });
   revTree.insert({ key: 'root' });
   for (let i = 0; i < data.length; i += 1) {
     const yearIndex = last4Years.indexOf(data[i].year);
     if (yearIndex > -1) {
       theTree = data[i].account_type === 'E' ? exTree : revTree;
+      theLevels = data[i].account_type === 'E' ? expenseLevels : revenueLevels;
+      theLevelNames = data[i].account_type === 'E' ? expenseLevelNames : revenueLevelNames;
       let curNode = theTree.rootNode();
       let curParent = theTree.rootNode();
-      for (let j = 0; j < levels.length; j += 1) {
-        curNode = searchChildrenForKey(data[i][levels[j]], curParent);
+      for (let j = 0; j < theLevels.length; j += 1) {
+        curNode = searchChildrenForKey(data[i][theLevels[j]], curParent);
         let curPath = 'root';
         let breadCrumbPath = 'root';
         for (let k = 0; k <= j; k += 1) {
-          curPath = [curPath, data[i][levels[k]]].join('-');
-          breadCrumbPath = [breadCrumbPath, data[i][levelNames[k]]].join('>');
+          curPath = [curPath, data[i][theLevels[k]]].join('-');
+          breadCrumbPath = [breadCrumbPath, data[i][theLevelNames[k]]].join('>');
         }
         if (curNode === null) {
-          curNode = theTree.insertToNode(curParent, { key: data[i][levels[j]], path: curPath, breadcrumbPath: breadCrumbPath, [levels[j]]: data[i][levels[j]], name: data[i][levelNames[j]], threeYearsAgo: 0, twoYearsAgo: 0, oneYearAgo: 0, proposed: 0, size: 0, amount: 0, account_type: data[i].account_type });
+          curNode = theTree.insertToNode(curParent, { key: data[i][theLevels[j]], path: curPath, breadcrumbPath: breadCrumbPath, [theLevels[j]]: data[i][theLevels[j]], name: data[i][theLevelNames[j]], threeYearsAgo: 0, twoYearsAgo: 0, oneYearAgo: 0, proposed: 0, size: 0, amount: 0, account_type: data[i].account_type });
         }
         curParent = curNode;
         if (yearIndex === 3) {
@@ -188,7 +209,7 @@ export const buildCashFlowData = (data) => {
   const fundNodes = [];
   let sankeyNodes = [];
   const sankeyLinks = [];
-  const charcodeNames = []; // TODO replace with category names
+  const categoryNames = [];
   const departmentNames = [];
   const revenueNodes = [];
   const expenseNodes = [];
@@ -214,9 +235,9 @@ export const buildCashFlowData = (data) => {
     if (item.account_type === 'E') {
       return objectAssign({}, item, { name: managementAndSupportDepts.indexOf(item.department_name) > -1 ? 'Management & Support Services' : (communityAndResidentDepts.indexOf(item.department_name) > -1 ? 'Other Community & Resident Services' : convertDeptNameToDisplayName(item.department_name)), fund_name: convertFundNameToDisplayName(item.fund_id) }); // eslint-disable-line
     }
-    return objectAssign({}, item, { name: item.charcode_name, fund_name: convertFundNameToDisplayName(item.fund_id) });
+    return objectAssign({}, item, { name: item.category_name, fund_name: convertFundNameToDisplayName(item.fund_id) });
   });
-  // group expenses, revenues, and funds into their department, charcode (TODO: category), and funds - because the nodes are only one per
+  // group expenses, revenues, and funds into their department, category, and funds - because the nodes are only one per
   // fund_name, category, and fund
   for (let i = 0; i < allExpenseRevenueRows.length; i += 1) {
     if (fundNames.indexOf(allExpenseRevenueRows[i].fund_name) < 0) {
@@ -224,8 +245,8 @@ export const buildCashFlowData = (data) => {
       fundNodes.push({ name: allExpenseRevenueRows[i].fund_name });
     }
     if (allExpenseRevenueRows[i].account_type === 'R') {
-      if (charcodeNames.indexOf(allExpenseRevenueRows[i].name) < 0) {
-        charcodeNames.push(allExpenseRevenueRows[i].name);
+      if (categoryNames.indexOf(allExpenseRevenueRows[i].name) < 0) {
+        categoryNames.push(allExpenseRevenueRows[i].name);
         revenueNodes.push({ name: allExpenseRevenueRows[i].name });
       }
     } else if (departmentNames.indexOf(allExpenseRevenueRows[i].name) < 0) {
@@ -244,14 +265,14 @@ export const buildCashFlowData = (data) => {
       // link is source index, target index, and value
       // must find if there is already a link from the source to the target, and if so, then just add the value to the sum instead of pushing
       for (let j = 0; j < sankeyLinks.length; j += 1) {
-        if (sankeyLinks[j].source === charcodeNames.indexOf(allExpenseRevenueRows[i].name) + revenueOffset && sankeyLinks[j].target === fundNames.indexOf(allExpenseRevenueRows[i].fund_name) + fundsOffset) {
+        if (sankeyLinks[j].source === categoryNames.indexOf(allExpenseRevenueRows[i].name) + revenueOffset && sankeyLinks[j].target === fundNames.indexOf(allExpenseRevenueRows[i].fund_name) + fundsOffset) {
           sankeyLinks[j].value += Math.trunc(allExpenseRevenueRows[i].budget);
           linkAlreadyExists = true;
           break;
         }
       }
       if (!linkAlreadyExists) {
-        sankeyLinks.push({ source: charcodeNames.indexOf(allExpenseRevenueRows[i].name) + revenueOffset, target: fundNames.indexOf(allExpenseRevenueRows[i].fund_name) + fundsOffset, value: Math.trunc(allExpenseRevenueRows[i].budget) });
+        sankeyLinks.push({ source: categoryNames.indexOf(allExpenseRevenueRows[i].name) + revenueOffset, target: fundNames.indexOf(allExpenseRevenueRows[i].fund_name) + fundsOffset, value: Math.trunc(allExpenseRevenueRows[i].budget) });
       }
     } else {
       for (let j = 0; j < sankeyLinks.length; j += 1) {

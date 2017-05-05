@@ -37,11 +37,14 @@ const getYearHeader = year => (
   </div>
 );
 
-const getDataColumns = (level) => {
+const getDataColumns = (level, expenseOrRevenue) => {
   const theHeader = () => {
     switch (level) {
       case 0:
-        return 'Function';
+        if (expenseOrRevenue === 'expenditures') {
+          return 'Budget Section';
+        }
+        return 'Budget Category';
       case 1:
         return 'Department';
       case 2:
@@ -49,7 +52,7 @@ const getDataColumns = (level) => {
       case 3:
         return 'Account';
       default:
-        return 'Category';
+        return 'Grouping';
     }
   };
   const dataColumns = [
@@ -123,28 +126,28 @@ const BudgetDetailsTable = (props) => {
         <div className="col-sm-12">
           <ReactTable
             data={dataForTable}
-            columns={getDataColumns(0)}
+            columns={getDataColumns(0, props.location.query.mode)}
             defaultPageSize={dataForTable.length}
             showPagination={false}
             SubComponent={innerRow1 => (
               <div style={{ paddingLeft: '34px' }}>
                 <ReactTable
                   data={dataForTable[innerRow1.index].children}
-                  columns={getDataColumns(1)}
+                  columns={getDataColumns(1, props.location.query.mode)}
                   defaultPageSize={dataForTable[innerRow1.index].children.length}
                   showPagination={false}
                   SubComponent={innerRow2 => (
                     <div style={{ paddingLeft: '34px' }}>
                       <ReactTable
                         data={dataForTable[innerRow1.index].children[innerRow2.index].children}
-                        columns={getDataColumns(2)}
+                        columns={getDataColumns(2, props.location.query.mode)}
                         defaultPageSize={dataForTable[innerRow1.index].children[innerRow2.index].children.length}
                         showPagination={false}
                         SubComponent={innerRow3 => (
                           <div style={{ paddingLeft: '34px' }}>
                             <ReactTable
                               data={dataForTable[innerRow1.index].children[innerRow2.index].children[innerRow3.index].children}
-                              columns={getDataColumns(3)}
+                              columns={getDataColumns(3, props.location.query.mode)}
                               defaultPageSize={dataForTable[innerRow1.index].children[innerRow2.index].children[innerRow3.index].children.length}
                               showPagination={false}
                             />

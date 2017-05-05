@@ -56,8 +56,8 @@ const glBudgetCashFlowQuery = gql`
     },
     glBudgetCashFlowRevenues: gl_budget_cash_flow(accountType: "R") {
         account_type,
-        charcode,
-        charcode_name,
+        category_id,
+        category_name,
         fund_id,
         fund_name,
         budget,

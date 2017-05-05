@@ -49,6 +49,10 @@ const glBudgetHistoryPlusProposedQuery = gql`
         actual,
         budget,
         account_name,
+        category_name,
+        category_id,
+        budget_section_name,
+        budget_section_id
     }
   }
 `;

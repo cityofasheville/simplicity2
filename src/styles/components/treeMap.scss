@@ -1,3 +1,11 @@
 .recharts-responsive-container {
   clear: both;
 };
+
+.treeMapBreadcrumb {
+  cursor: pointer;
+};
+
+.treeMapBreadcrumb::hover {
+  color: blue;
+};

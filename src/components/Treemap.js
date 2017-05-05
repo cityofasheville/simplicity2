@@ -58,7 +58,7 @@ const getFill = (delta) => {
   let s = 0;
   let l = 100;
   if (delta > 0) {
-    h = 300; // 240; // 0;
+    h = 240; // 300; // 240; // 0;
     s = 100;
     l = Math.ceil(Math.abs(delta) * 100) > 100 ? 45 : (((100 - (Math.abs(delta) * 100)) * 55) / 100) + 45;
   } else if (delta < 0) {

@@ -7,6 +7,12 @@ $bootstrap-sass-asset-helper: false !default;
 //== Colors
 //
 //## Gray and brand colors for use across Bootstrap.
+$coa-darkBlue: #004987;
+$coa-medBlue: #4077a5;
+$coa-lightBlue: #a6bfd5;
+$coa-darkGreen: #aaad00;
+$coa-medGreen: #bfc240;
+$coa-lightGreen: #e1e2a6;
 
 $gray-base:              #000 !default;
 $gray-darker:            lighten($gray-base, 13.5%) !default; // #222
@@ -22,7 +28,6 @@ $brand-success:         #18BC9C !default;
 $brand-info:            #3498DB !default;
 $brand-warning:         #F39C12 !default;
 $brand-danger:          #E74C3C !default;
-
 
 //== Scaffolding
 //

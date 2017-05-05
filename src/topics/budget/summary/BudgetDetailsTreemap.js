@@ -87,7 +87,7 @@ const renderBreadcrumb = (tree, props) => {
   const path = props.location.query.nodePath || 'root';
   const nodes = path.split('-');
   if (nodes.length === 1) {
-    return (<div className="pull-left"><span className="treeMapBreadcrumb" onClick={props.jumpUp ? () => props.jumpUp(props) : null}>Treemap level: Top </span></div>);
+    return (<div className="pull-left treeMapBreadcrumb"><span>Top</span></div>);
   }
   let curNode = tree;
   for (let i = 0; i < nodes.length; i += 1) {
@@ -100,11 +100,14 @@ const renderBreadcrumb = (tree, props) => {
   }
   const levels = curNode.breadcrumbPath.slice(5).split('>');
   return (
-    <div className="pull-left">
-      <span className="treeMapBreadcrumb" onClick={props.jumpUp ? () => props.jumpUp(props) : null}>Treemap level: Top </span>
-      {levels.map((level) => {
+    <div className="pull-left treeMapBreadcrumb">
+      <span className="treeMapBreadcrumbLink" onClick={props.jumpUp ? () => props.jumpUp(props, levels.length) : null}>Top</span><span> &gt; </span>
+      {levels.map((level, index) => {
         return (
-          <span className="treeMapBreadcrumb" key={['breadcrumbLevel', levels.indexOf(level)].join('_')} onClick={props.jumpUp ? () => props.jumpUp(props, levels.length - levels.indexOf(level) - 1) : null}>{level}   </span>
+          <div style={{ display: 'inline-block' }}>
+            <span className={index < levels.length - 1 ? 'treeMapBreadcrumbLink' : ''} key={['breadcrumbLevel', index].join('_')} onClick={props.jumpUp ? () => props.jumpUp(props, levels.length - index - 1) : null}>{level}</span>
+            {index < levels.length - 1 && <span> &gt;&nbsp;</span>}
+          </div>
         );
       })}
     </div>
@@ -133,21 +136,21 @@ const BudgetDetailsTreemap = (props) => {
       </div>
       <div className="row">
         <div className="col-sm-12">
-          <div className="btn-group pull-left" style={{ marginRight: '10px' }}>
-            <Link to={{ pathname: props.location.pathname, query: { entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, mode: 'expenditures', hideNavbar: props.location.query.hideNavbar } }}>
-              <button className={props.location.query.mode !== 'revenue' ? 'btn btn-primary btn-xs active' : 'btn btn-primary btn-xs'} style={{ borderTopRightRadius: '0px', borderBottomRightRadius: '0px' }}>Expenditures</button>
-            </Link>
-            <Link to={{ pathname: props.location.pathname, query: { entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, mode: 'revenue', hideNavbar: props.location.query.hideNavbar } }}>
-              <button className={props.location.query.mode === 'revenue' ? 'btn btn-primary btn-xs active' : 'btn btn-primary btn-xs'} style={{ borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px' }}>Revenue</button>
-            </Link>
+          <div className="btn-group pull-left" style={{ marginRight: '3px', marginBottom: '3px' }}>
+            <button className="btn btn-primary btn-xs" onClick={props.jumpUp ? () => props.jumpUp(props) : null} disabled={props.location.query.nodePath === 'root' || props.location.query.nodePath === undefined}><i className="fa fa-arrow-up"></i></button>
           </div>
           {renderBreadcrumb(myTree, props)}
           <div className="btn-group pull-left" style={{ display: 'none' }} >
             <button className={getButtonClass(props.categoryType, 'use')}>Use</button>
             <button className={getButtonClass(props.categoryType, 'department')}>Departments</button>
           </div>
-          <div className="btn-group pull-right" style={{ marginLeft: '3px', marginBottom: '3px' }}>
-            <button className="btn btn-primary btn-xs" onClick={props.jumpUp ? () => props.jumpUp(props) : null}><i className="fa fa-arrow-up"></i></button>
+          <div className="btn-group pull-right" style={{ marginLeft: '10px' }}>
+            <Link to={{ pathname: props.location.pathname, query: { entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, mode: 'expenditures', hideNavbar: props.location.query.hideNavbar } }}>
+              <button className={props.location.query.mode !== 'revenue' ? 'btn btn-primary btn-xs active' : 'btn btn-primary btn-xs'} style={{ borderTopRightRadius: '0px', borderBottomRightRadius: '0px' }}>Expenditures</button>
+            </Link>
+            <Link to={{ pathname: props.location.pathname, query: { entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, mode: 'revenue', hideNavbar: props.location.query.hideNavbar } }}>
+              <button className={props.location.query.mode === 'revenue' ? 'btn btn-primary btn-xs active' : 'btn btn-primary btn-xs'} style={{ borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px' }}>Revenue</button>
+            </Link>
           </div>
           {browser.name === 'ie' && <div className="col-sm-12 alert-danger">Internet Explorer does not support the TREE MAP visualization. Please explore the budget details via the Details Table, or view this page in Chrome or Firefox.</div>}
           {browser.name !== 'ie' &&

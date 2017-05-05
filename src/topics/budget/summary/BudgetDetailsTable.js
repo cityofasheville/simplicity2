@@ -112,7 +112,7 @@ const BudgetDetailsTable = (props) => {
       </div>
       <div className="row">
         <div className="col-sm-12">
-          <div className="btn-group pull-left" style={{ marginBottom: '3px' }}>
+          <div className="btn-group pull-right" style={{ marginBottom: '3px' }}>
             <Link to={{ pathname: props.location.pathname, query: { entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, mode: 'expenditures', hideNavbar: props.location.query.hideNavbar } }}>
               <button className={props.location.query.mode !== 'revenue' ? 'btn btn-primary btn-xs active' : 'btn btn-primary btn-xs'} style={{ borderTopRightRadius: '0px', borderBottomRightRadius: '0px' }}>Expenditures</button>
             </Link>

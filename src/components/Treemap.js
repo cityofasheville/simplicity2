@@ -148,7 +148,6 @@ class Treemap extends React.Component {
   render() {
     return (
       <div style={{ height: this.props.height }} onClick={this.toggleLabels}>
-        <button className="btn btn-primary btn-xs pull-right" id="toggleLabels">{this.state.showingLabels === true ? 'Hide labels' : 'Show labels'}</button>
         <ResponsiveContainer>
           <RechartsTreemap
             data={this.props.data}
@@ -160,6 +159,7 @@ class Treemap extends React.Component {
             content={<CustomTreemap {...this.props} showingLabels={this.state.showingLabels} />}
           />
         </ResponsiveContainer>
+        <button className="btn btn-primary btn-xs pull-right" style={{ marginTop: '3px' }} id="toggleLabels">{this.state.showingLabels === true ? 'Hide labels' : 'Show labels'}</button>
       </div>
     );
   }

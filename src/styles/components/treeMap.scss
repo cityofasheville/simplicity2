@@ -3,9 +3,15 @@
 };
 
 .treeMapBreadcrumb {
+  color: $coa-medBlue;
+  font-style: italic;
+}
+
+.treeMapBreadcrumbLink {
   cursor: pointer;
+  text-decoration: underline;
 };
 
-.treeMapBreadcrumb::hover {
-  color: blue;
+.treeMapBreadcrumbLink:hover {
+  text-decoration: none;
 };

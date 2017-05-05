@@ -21,7 +21,7 @@ const BudgetSummaryDetails = props => (
       </div>
     </div>
     <BudgetDetailsTreemap categoryType="department" {...props} />
-    <hr style={{ marginTop: '60px' }}></hr>
+    <hr style={{ marginTop: '20px' }}></hr>
     <BudgetDetailsTable {...props} />
   </div>
 );

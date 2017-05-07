@@ -127,17 +127,20 @@ export const buildTrees = (data, last4Years = last4Yrs) => {
         }
         curParent = curNode;
         if (yearIndex === 3) {
-          curNode.data(objectAssign({}, curNode.data(), { proposed: curNode.data().proposed + Math.trunc(data[i].budget) }, { size: curNode.data().size + Math.trunc(data[i].budget) }, { amount: curNode.data().amount + Math.trunc(data[i].budget) }));
+          curNode.data(objectAssign({}, curNode.data(), { proposed: curNode.data().proposed + data[i].budget }, { size: curNode.data().size + data[i].budget }, { amount: curNode.data().amount + data[i].budget }));
         } else if (yearIndex === 2) {
-          curNode.data(objectAssign({}, curNode.data(), { oneYearAgo: curNode.data().oneYearAgo + Math.trunc(data[i].budget) })); // but until the last year is actually complete...need budget (?)
+          curNode.data(objectAssign({}, curNode.data(), { oneYearAgo: curNode.data().oneYearAgo + data[i].budget })); // but until the last year is actually complete...need budget (?)
         } else if (yearIndex === 1) {
-          curNode.data(objectAssign({}, curNode.data(), { twoYearsAgo: curNode.data().twoYearsAgo + Math.trunc(data[i].actual) }));
+          curNode.data(objectAssign({}, curNode.data(), { twoYearsAgo: curNode.data().twoYearsAgo + data[i].actual }));
         } else if (yearIndex === 0) {
-          curNode.data(objectAssign({}, curNode.data(), { threeYearsAgo: curNode.data().threeYearsAgo + Math.trunc(data[i].actual) }));
+          curNode.data(objectAssign({}, curNode.data(), { threeYearsAgo: curNode.data().threeYearsAgo + data[i].actual }));
         }
       }
     }
   }
+  roundTree(exTree.rootNode());
+  roundTree(revTree.rootNode());
+
   const exTreeForTreemap = exportForDetails(exTree);
   const revTreeForTreemap = exportForDetails(revTree);
   removeZerosFromFlattened(exTreeForTreemap);
@@ -148,6 +151,19 @@ export const buildTrees = (data, last4Years = last4Yrs) => {
     expenseTreeForTreemap: exTreeForTreemap,
     revenueTreeForTreemap: revTreeForTreemap,
   };
+};
+
+const roundTree = (node) => {
+  node.data(objectAssign({},
+                         node.data(),
+                         { proposed: Math.round(node.data().proposed) },
+                         { size: Math.round(node.data().size) },
+                         { amount: Math.round(node.data().amount) },
+                         { oneYearAgo: Math.round(node.data().oneYearAgo) },
+                         { twoYearsAgo: Math.round(node.data().twoYearsAgo) },
+                         { threeYearsAgo: Math.round(node.data().threeYearsAgo) },
+                        ));
+  node.childNodes().forEach(c => roundTree(c));
 };
 
 // helper function to create list of all potential summary keys found for summary data

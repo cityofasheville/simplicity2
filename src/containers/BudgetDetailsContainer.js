@@ -5,6 +5,7 @@ import gql from 'graphql-tag';
 import BudgetDetailsTable from '../topics/budget/summary/BudgetDetailsTable';
 import BudgetDetailsTreemap from '../topics/budget/summary/BudgetDetailsTreemap';
 import BudgetSummaryDetails from '../topics/budget/summary/BudgetSummaryDetails';
+import LoadingAnimation from '../components/LoadingAnimation';
 import { buildBudgetTrees } from './budgetActions';
 
 const renderSubComponent = (props) => {
@@ -20,7 +21,9 @@ const renderSubComponent = (props) => {
 
 const BudgetDetailsContainer = (props) => {
   if (props.data.loading) { // eslint-disable-line react/prop-types
-    return <p>Loading...</p>;
+    return (
+      <LoadingAnimation message="Loading...Thank you for your patience. The full budget data can take several moments to load"/>
+    );
   }
   if (props.data.error) { // eslint-disable-line react/prop-types
     return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types

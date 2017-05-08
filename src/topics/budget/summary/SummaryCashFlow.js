@@ -3,11 +3,12 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { connect } from 'react-redux';
 import BudgetSankey from './BudgetSankey';
+import LoadingAnimation from '../../../components/LoadingAnimation';
 import { buildCashFlowData } from '../../../containers/budgetActions';
 
 const SummaryCashFlow = (props) => {
   if (props.data.loading) { // eslint-disable-line react/prop-types
-    return <p>Loading...</p>;
+    return <LoadingAnimation />;
   }
   if (props.data.error) { // eslint-disable-line react/prop-types
     return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types

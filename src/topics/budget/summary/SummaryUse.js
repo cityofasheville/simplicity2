@@ -3,11 +3,12 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { connect } from 'react-redux';
 import BudgetSummaryBarChart from './BudgetSummaryBarChart';
+import LoadingAnimation from '../../../components/LoadingAnimation';
 import { buildSummaryUseData } from '../../../containers/budgetActions';
 
 const SummaryUse = (props) => {
   if (props.data.loading) { // eslint-disable-line react/prop-types
-    return <p>Loading...</p>;
+    return <LoadingAnimation size="small" />;
   }
   if (props.data.error) { // eslint-disable-line react/prop-types
     return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types

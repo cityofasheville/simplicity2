@@ -18,6 +18,9 @@ const BudgetSummaryDetails = props => (
             </Link>
           </div>
         </h1>
+        <div className="pull-left">
+          <a href="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=27587" target="_blank">Full budget document</a>
+        </div>
       </div>
     </div>
     <BudgetDetailsTreemap categoryType="department" {...props} />

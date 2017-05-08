@@ -5,17 +5,6 @@ import Treemap from '../../../components/Treemap';
 // import { updateNodePath } from '../../../containers/budgetActions';
 const browser = require('detect-browser');
 
-const getExplanatoryText = (categoryType) => {
-  switch (categoryType) {
-    case 'use':
-      return 'Some explanatory text here describing the use treemap';
-    case 'department':
-      return 'Some explanatory text here describing the department treemap';
-    default:
-      return 'Some explanatory text goes here';
-  }
-};
-
 const getButtonClass = (categoryType, buttonName) => {
   if (
     (categoryType === 'use' && buttonName === 'use') ||
@@ -129,8 +118,7 @@ const BudgetDetailsTreemap = (props) => {
       <div className="row">
         <div className="col-sm-12">
           <div style={{ marginBottom: '15px' }}>
-            {getExplanatoryText(props.categoryType)}<br />
-            Click a rectangle in the treemap to go to a deeper level
+            In the treemap visualization below, the area of each rectangle is proportional to the amount of money represented for that category, whereas the color shows the change from last year. White represents no change, deeper blue represents increased spending/decreased revenue, and deeper orange represents increased revenue/decreased spending. Click a rectangle to see detailed breakdown for that category or mouse over it to see the total amount and label.
           </div>
         </div>
       </div>

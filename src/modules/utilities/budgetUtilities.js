@@ -196,13 +196,13 @@ const createSummaryValues = (data) => {
       yearAlreadyPresent = false;
       for (let j = 0; j < values.length; j += 1) {
         if (values[j].year === data[i].year) {
-          values[j][data[i].category_name] = [2, 3].indexOf(last4Yrs.indexOf(values[j].year)) > -1 ? Math.trunc(data[i].total_budget) : Math.trunc(data[i].total_actual);
+          values[j][data[i].category_name] = [2, 3].indexOf(last4Yrs.indexOf(values[j].year)) > -1 ? Math.round(data[i].total_budget) : Math.round(data[i].total_actual);
           yearAlreadyPresent = true;
           break;
         }
       }
       if (!yearAlreadyPresent) {
-        values.push({ year: data[i].year, display_year: [data[i].year - 1, data[i].year.toString().slice(2)].join('-'), [data[i].category_name]: [2, 3].indexOf(last4Yrs.indexOf(data[i].year)) > -1 ? Math.trunc(data[i].total_budget) : Math.trunc(data[i].total_actual), yearAxisNumeric: (1000 * last4Yrs.indexOf(data[i].year)) / 4 });
+        values.push({ year: data[i].year, display_year: [data[i].year - 1, data[i].year.toString().slice(2)].join('-'), [data[i].category_name]: [2, 3].indexOf(last4Yrs.indexOf(data[i].year)) > -1 ? Math.round(data[i].total_budget) : Math.round(data[i].total_actual), yearAxisNumeric: (1000 * last4Yrs.indexOf(data[i].year)) / 4 });
       }
     }
   }
@@ -282,28 +282,29 @@ export const buildCashFlowData = (data) => {
       // must find if there is already a link from the source to the target, and if so, then just add the value to the sum instead of pushing
       for (let j = 0; j < sankeyLinks.length; j += 1) {
         if (sankeyLinks[j].source === categoryNames.indexOf(allExpenseRevenueRows[i].name) + revenueOffset && sankeyLinks[j].target === fundNames.indexOf(allExpenseRevenueRows[i].fund_name) + fundsOffset) {
-          sankeyLinks[j].value += Math.trunc(allExpenseRevenueRows[i].budget);
+          sankeyLinks[j].value += allExpenseRevenueRows[i].budget;
           linkAlreadyExists = true;
           break;
         }
       }
       if (!linkAlreadyExists) {
-        sankeyLinks.push({ source: categoryNames.indexOf(allExpenseRevenueRows[i].name) + revenueOffset, target: fundNames.indexOf(allExpenseRevenueRows[i].fund_name) + fundsOffset, value: Math.trunc(allExpenseRevenueRows[i].budget) });
+        sankeyLinks.push({ source: categoryNames.indexOf(allExpenseRevenueRows[i].name) + revenueOffset, target: fundNames.indexOf(allExpenseRevenueRows[i].fund_name) + fundsOffset, value: allExpenseRevenueRows[i].budget });
       }
     } else {
       for (let j = 0; j < sankeyLinks.length; j += 1) {
         if (sankeyLinks[j].source === fundNames.indexOf(allExpenseRevenueRows[i].fund_name) + fundsOffset && sankeyLinks[j].target === departmentNames.indexOf(allExpenseRevenueRows[i].name) + expensesOffset) {
-          sankeyLinks[j].value += Math.trunc(allExpenseRevenueRows[i].budget);
+          sankeyLinks[j].value += allExpenseRevenueRows[i].budget;
           linkAlreadyExists = true;
           break;
         }
       }
       if (!linkAlreadyExists) {
-        sankeyLinks.push({ source: fundNames.indexOf(allExpenseRevenueRows[i].fund_name) + fundsOffset, target: departmentNames.indexOf(allExpenseRevenueRows[i].name) + expensesOffset, value: Math.trunc(allExpenseRevenueRows[i].budget) });
+        sankeyLinks.push({ source: fundNames.indexOf(allExpenseRevenueRows[i].fund_name) + fundsOffset, target: departmentNames.indexOf(allExpenseRevenueRows[i].name) + expensesOffset, value: allExpenseRevenueRows[i].budget });
       }
     }
   }
   // combine the revenues, funds, expenses nodes into one array
   sankeyNodes = revenueNodes.concat(fundNodes).concat(expenseNodes);
+  sankeyNodes = sankeyNodes.map(node => (objectAssign({}, node, { value: Math.round(node.value) })));
   return { sankeyNodes, sankeyLinks };
 };

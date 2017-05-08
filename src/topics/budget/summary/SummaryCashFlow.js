@@ -20,7 +20,7 @@ const SummaryCashFlow = (props) => {
       <div className="col-sm-12">
         <h3>Cash flow diagram: Revenues to expenditures</h3>
         <div style={{ marginBottom: '5px' }}>
-          Some explanatory text here describing something important to the users that is relevant to know, that we want to communicate to them about this particular chart.
+          The chart below shows how revenue flows through the City’s key funds to the various departments. The thickness of each flow is proportional to the amount of money represented. Mouse over the rectangles and flows to see actual amounts.
         </div>
         <BudgetSankey />
       </div>

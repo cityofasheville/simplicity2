@@ -20,12 +20,6 @@ const last4YrBudgetTypes = [
 const getDollars = (value) => {
   const initialSymbols = value < 0 ? '-$' : '$';
   return [initialSymbols, Math.abs(value).toLocaleString()].join('');
-  // if (value > 1000000) {
-  //   return [initialSymbols, (Math.abs(value) / 1000000).toLocaleString(), ' M'].join('');
-  // } else if (value > 1000) {
-  //   return [initialSymbols, (Math.abs(value) / 1000).toLocaleString(), ' k'].join('');
-  // }
-  // return [initialSymbols, (Math.abs(value)).toLocaleString()].join('');
 };
 
 const getYearHeader = year => (
@@ -105,8 +99,7 @@ const BudgetDetailsTable = (props) => {
         <div className="col-sm-12">
           <h3>Table of {props.location.query.mode || 'expenditures'}</h3>
           <div style={{ marginBottom: '15px' }}>
-            Some explanatory text here describing something important to the users that is relevant to know, that we want to communicate to them about this particular chart.<br />
-            Click the triangles at left to expand rows for more detail.
+            You may explore the full dataset in the table below, or download here [download coming soon]. Click the triangles at left to expand rows for more detail.
           </div>
         </div>
       </div>

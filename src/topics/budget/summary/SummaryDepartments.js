@@ -33,7 +33,7 @@ SummaryDepartments.defaultProps = {
 
 const glBudgetSummaryDeptQuery = gql`
   query glBudgetSummaryDeptQuery {
-    gl_budget_summary(breakdown: "dept", maxCategories: 5) {
+    gl_budget_summary(breakdown: "dept", maxCategories: 7) {
         account_type,
         category_name,
         total_budget,

@@ -2,12 +2,17 @@ import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import ReactTable from 'react-table';
+import Collapsible from 'react-collapsible';
 
 const last4Years = [
   2015,
   2016,
   2017,
   2018,
+];
+
+const tableNotes = [
+  'The Internal Audit Division was moved from the Finance Department to the Administration Services Department mid-year, so the 2016-17 Adopted Budget numbers for those department do not match the Original Budget numbers in the budget document.',
 ];
 
 const last4YrBudgetTypes = [
@@ -117,6 +122,15 @@ const BudgetDetailsTable = (props) => {
       </div>
       <div className="row">
         <div className="col-sm-12">
+          <Collapsible trigger="Notes">
+            {props.notes.map((item, index) => (
+              <p key={['notes', index].join('_')}>{item}</p>
+            ))}
+          </Collapsible>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-sm-12">
           <ReactTable
             data={dataForTable}
             columns={getDataColumns(0, props.location.query.mode)}
@@ -166,10 +180,12 @@ BudgetDetailsTable.propTypes = {
   location: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
   expenseTree: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
   revenueTree: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  notes: React.PropTypes.arrayOf(React.PropTypes.string),
 };
 
 BudgetDetailsTable.defaultProps = {
   data: [],
+  notes: tableNotes,
 };
 
 const mapStateToProps = state => (

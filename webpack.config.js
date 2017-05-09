@@ -1,53 +1,80 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 
+const extractSass = new ExtractTextPlugin({
+  filename: '[name].[contenthash].css',
+  disable: process.env.NODE_ENV === 'development',
+});
+
 module.exports = {
-  devtool: 'cheap-module-eval-source-map',
-  entry: path.join(__dirname, 'src', 'app.js'),
+  context: path.resolve(__dirname),
+  devtool: 'source-map',
+  entry: {
+    app: path.join(__dirname, 'src', 'app.js'),
+  },
   output: {
-    path: path.join(__dirname, 'docs'),
-    filename: '[name].bundle.js',
-    publicPath: '/simplicity2/',
+    path: path.resolve(__dirname, 'docs'),
+    filename: '[name].[chunkhash].bundle.js',
+    publicPath: '/',
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js$/,
         include: /src/,
-        loader: 'babel-loader',
+        use: {
+          loader: 'babel-loader',
+        },
       },
       {
         test: /\.scss$/,
+        use: extractSass.extract({
+          use: [{
+            loader: 'css-loader',
+          }, {
+            loader: 'sass-loader',
+          }],
+          // use style-loader in development
+          fallback: 'style-loader',
+        }),
+      },
+      {
+        test: /\.css$/,
         exclude: /node_modules/,
-        loader: ExtractTextPlugin.extract('css?sourceMap!sass?sourceMap'),
-      },
-      {
-        test: /\.css$/,
-        loader: 'style-loader',
-      },
-      {
-        test: /\.css$/,
-        loader: 'css-loader',
-        query: {
-          modules: true,
-          localIdentName: '[name]__[local]___[hash:base64:5]',
-        },
+        use: ExtractTextPlugin.extract({
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                modules: true,
+                localIdentName: '[path][name]__[local]--[hash:base64:5]',
+              },
+            },
+          ],
+        }),
       },
     ],
   },
   devServer: {
-    contentBase: path.join(__dirname, 'dist'),
+    contentBase: path.join(__dirname, 'docs'),
     inline: true,
     stats: 'errors-only',
   },
   plugins: [
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks: module => (
+        // this assumes your vendor imports exist in the node_modules directory
+        module.context && module.context.indexOf('node_modules') !== -1
+      ),
+    }),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, 'src', 'index.html'),
     }),
-    new ExtractTextPlugin('bootstrap.css'),
+    extractSass,
+    new ExtractTextPlugin('styles.css'),
   ],
 };
-
-

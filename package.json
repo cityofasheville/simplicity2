@@ -4,7 +4,7 @@
   "description": "Version 2 of SimpliCity",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --port 3000 --content-base docs/ --history-api-fallback",
+    "start": "webpack-dev-server --port 3000 --content-base dist/ --history-api-fallback",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --optimize-minimize --config webpack.config.js"
   },
@@ -54,6 +54,7 @@
     "graphql-tag": "^2.0.0",
     "react": "^15.4.1",
     "react-apollo": "^1.2.0",
+    "react-collapsible": "^1.4.0",
     "react-dom": "^15.4.1",
     "react-redux": "^5.0.1",
     "react-router": "^3.0.0",

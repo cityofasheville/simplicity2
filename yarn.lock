@@ -275,7 +275,7 @@ babel-code-frame@^6.11.0, babel-code-frame@^6.16.0, babel-code-frame@^6.22.0:
     esutils "^2.0.2"
     js-tokens "^3.0.0"
 
-babel-core@^6.21.0, babel-core@^6.24.1:
+babel-core@^6.24.1:
   version "6.24.1"
   resolved "https://registry.yarnpkg.com/babel-core/-/babel-core-6.24.1.tgz#8c428564dce1e1f41fb337ec34f4c3b022b5ad83"
   dependencies:
@@ -2339,10 +2339,6 @@ graphql-anywhere@^3.0.0, graphql-anywhere@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/graphql-anywhere/-/graphql-anywhere-3.0.1.tgz#73531db861174c8f212eafb9f8e84944b38b4e5a"
 
-graphql-tag@^1.1.2:
-  version "1.3.2"
-  resolved "https://registry.yarnpkg.com/graphql-tag/-/graphql-tag-1.3.2.tgz#7abb3a8fd9f3415d07163314ed237061c785b759"
-
 graphql-tag@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/graphql-tag/-/graphql-tag-2.0.0.tgz#f3efe3b4d64f33bfe8479ae06a461c9d72f2a6fe"
@@ -4092,6 +4088,10 @@ react-aria@^0.8.2:
     no-scroll "^2.0.0"
     scroll-into-view "^1.7.3"
     upper-case-first "^1.1.2"
+
+react-collapsible@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/react-collapsible/-/react-collapsible-1.4.0.tgz#76571edc09877a3f3d1b2298d6c9ccee9421935e"
 
 "react-dom@0.14.x || 15.* || ^15.0.0 || ^16.0.0-alpha", react-dom@^15.4.1:
   version "15.5.4"

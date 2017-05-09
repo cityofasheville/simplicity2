@@ -70,7 +70,7 @@ Street.defaultProps = {
       '/locations/address/addressList?entity=street&id=1234&label=Montford Ave, 28801&type=ownerAddresses',
       '/locations/address/addressList?entity=street&id=1234&label=Montford Ave, 28801&type=ownerMailing',
       '/locations/property/properties?entity=street&id=1234&label=Montford Ave, 28801',
-      '/topics/maintenance?entity=street&id=1234&label=Montford Ave, 28801',
+      '/maintenance?entity=street&id=1234&label=Montford Ave, 28801',
     ],
   },
 };

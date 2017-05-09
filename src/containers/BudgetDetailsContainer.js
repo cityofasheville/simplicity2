@@ -10,9 +10,9 @@ import { buildBudgetTrees } from './budgetActions';
 
 const renderSubComponent = (props) => {
   switch (props.location.pathname) { // eslint-disable-line react/prop-types
-    case '/topics/budget/detailsTreemap':
+    case '/budget/detailsTreemap':
       return (<BudgetDetailsTreemap {...props} />);
-    case '/topics/budget/detailsTable':
+    case '/budget/detailsTable':
       return (<BudgetDetailsTable {...props} />);
     default:
       return (<BudgetSummaryDetails {...props} />);

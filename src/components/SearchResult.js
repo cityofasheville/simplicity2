@@ -13,9 +13,9 @@ const getLink = (type, id, label) => {
     case 'neighborhood':
       return `/locations/neighborhood?label=${label}&id=${id}`;
     case 'permit':
-      return `/topics/development/detail?label=${label}&id=${id}`;
+      return `/development/detail?label=${label}&id=${id}`;
     case 'crime':
-      return `/topics/crime/detail?label=${label}&id=${id}`;
+      return `/crime/detail?label=${label}&id=${id}`;
     case 'owner':
       return `/locations/owner?label=${label}&id=${id}`;
     default:

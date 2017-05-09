@@ -65,8 +65,7 @@ const calculateDeltaPercent = (proposed, oneYearAgo) => {
 const convertDelta = (flattenedTree) => {
   for (let i = 0; i < flattenedTree.children.length; i += 1) {
     const maxDelta = Math.max.apply(Math, flattenedTree.children.map(child => Math.abs(child.delta))); // eslint-disable-line
-    let factor = maxDelta === 0 ? 0 : 1 / maxDelta;
-    factor = flattenedTree.children[i].account_type === 'R' ? factor * -1 : factor;
+    const factor = maxDelta === 0 ? 0 : 1 / maxDelta;
     flattenedTree.children[i].delta *= factor; // eslint-disable-line no-param-reassign
     convertDelta(flattenedTree.children[i]);
   }

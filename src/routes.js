@@ -1,6 +1,6 @@
 import React from 'react';
 // import { Provider } from 'react-redux';
-import { Router, Route, IndexRoute, hashHistory } from 'react-router';
+import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import { ApolloProvider } from 'react-apollo';
 
 // GraphQL Client
@@ -36,7 +36,7 @@ import SummaryUse from './topics/budget/summary/SummaryUse';
 
 const Routes = props => (
   <ApolloProvider store={props.store} client={client} >
-    <Router history={hashHistory}>
+    <Router history={browserHistory}>
       <Route path="/" component={App}>
         <IndexRoute component={Home} />
         <Route path="search" component={Search}></Route>
@@ -55,29 +55,27 @@ const Routes = props => (
           <Route path="neighborhood" component={Neighborhood}></Route>
           <Route path="owner" component={Owner}></Route>
         </Route>
-        <Route path="topics">
-          <IndexRoute component={Topics} />
-          <Route path="development">
-            <IndexRoute component={DevelopmentSummary} />
-            <Route path="detail" component={DevelopmentDetail}></Route>
-            <Route path="sla-dashboard" component={DevelopmentSLADashboard}></Route>
-          </Route>
-          <Route path="crime">
-            <IndexRoute component={CrimeSummary} />
-            <Route path="detail" component={CrimeDetail}></Route>
-          </Route>
-          <Route path="budget">
-            <IndexRoute component={BudgetSummary} />
-            <Route path="details" component={BudgetDetailsContainer}></Route>
-            <Route path="summaryUse" component={SummaryUse}></Route>
-            <Route path="summaryDepartments" component={SummaryDepartments}></Route>
-            <Route path="summaryCashFlow" component={BudgetDetailsContainer}></Route>
-            <Route path="detailsTreemap" component={BudgetDetailsContainer}></Route>
-            <Route path="detailsTable" component={BudgetDetailsContainer}></Route>
-          </Route>
-          <Route path="maintenance">
-            <IndexRoute component={Maintenance} />
-          </Route>
+        <Route path="topics" component={Topics} />
+        <Route path="development">
+          <IndexRoute component={DevelopmentSummary} />
+          <Route path="detail" component={DevelopmentDetail}></Route>
+          <Route path="sla-dashboard" component={DevelopmentSLADashboard}></Route>
+        </Route>
+        <Route path="crime">
+          <IndexRoute component={CrimeSummary} />
+          <Route path="detail" component={CrimeDetail}></Route>
+        </Route>
+        <Route path="budget">
+          <IndexRoute component={BudgetSummary} />
+          <Route path="details" component={BudgetDetailsContainer}></Route>
+          <Route path="summaryUse" component={SummaryUse}></Route>
+          <Route path="summaryDepartments" component={SummaryDepartments}></Route>
+          <Route path="summaryCashFlow" component={BudgetDetailsContainer}></Route>
+          <Route path="detailsTreemap" component={BudgetDetailsContainer}></Route>
+          <Route path="detailsTable" component={BudgetDetailsContainer}></Route>
+        </Route>
+        <Route path="maintenance">
+          <IndexRoute component={Maintenance} />
         </Route>
       </Route>
     </Router>

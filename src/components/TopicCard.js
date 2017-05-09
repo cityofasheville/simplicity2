@@ -16,7 +16,7 @@ const getTopicIcon = (topic) => {
 };
 
 const TopicCard = props => (
-  <Link to={{ pathname: ['/topics', props.topic].join('/'), query: { entity: props.entity, view: 'summary', id: props.id, label: props.label } }}>
+  <Link to={{ pathname: props.topic, query: { entity: props.entity, view: 'summary', id: props.id, label: props.label } }}>
     <div className={styles.topicCard}>
       <i className={[['fa fa-', getTopicIcon(props.topic)].join(''), 'fa-5x text-primary text-center'].join(' ')}></i>
       <div className="text-primary text-center">{props.topic}</div>

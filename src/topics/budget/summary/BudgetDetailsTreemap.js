@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link, hashHistory } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import Treemap from '../../../components/Treemap';
 // import { updateNodePath } from '../../../containers/budgetActions';
 const browser = require('detect-browser');
@@ -50,7 +50,7 @@ const goUp = (props, numLevels) => {
     curNodePathInfo = curNodePathInfo.slice(0, curNodePathInfo.length - stepsUp).join('-');
     newURL = [newURL, 'nodePath=', curNodePathInfo].join('');
   }
-  hashHistory.push(newURL);
+  browserHistory.push(newURL);
 };
 
 const findTop = (data, path) => {
@@ -118,7 +118,7 @@ const BudgetDetailsTreemap = (props) => {
       <div className="row">
         <div className="col-sm-12">
           <div style={{ marginBottom: '15px' }}>
-            In the treemap visualization below, the area of each rectangle is proportional to the amount of money represented for that category, whereas the color shows the change from last year. White represents no change, deeper blue represents increased spending/decreased revenue, and deeper orange represents increased revenue/decreased spending. Click a rectangle to see detailed breakdown for that category or mouse over it to see the total amount and label.
+            In the treemap below, the size and color of the rectangles represent important information about the 2017-2018 budget. The size of each rectangle is proportional to the amount of money budgeted for that category. The color of the rectangle shows the change from last year’s budget. Increases are shown in blue, decreases are orange, and white shows no change. The deeper the color, the larger the change. Click a rectangle to see a detailed breakdown for that category, or mouse over it to see the description and total amount.
           </div>
         </div>
       </div>
@@ -142,7 +142,7 @@ const BudgetDetailsTreemap = (props) => {
           </div>
           {browser.name === 'ie' && <div className="col-sm-12 alert-danger">Internet Explorer does not support the TREE MAP visualization. Please explore the budget details via the Details Table, or view this page in Chrome or Firefox.</div>}
           {browser.name !== 'ie' &&
-            <Treemap data={findTop(myTree, props.location.query.nodePath || 'root')} diveDeeper={props.diveDeeper} differenceColors history={hashHistory} location={props.location} />
+            <Treemap data={findTop(myTree, props.location.query.nodePath || 'root')} diveDeeper={props.diveDeeper} differenceColors history={browserHistory} location={props.location} />
           }
         </div>
       </div>

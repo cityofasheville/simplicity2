@@ -24,7 +24,7 @@ const Topics = props => (
           <div className="row text-center">
             <i className="fa fa-building-o fa-5x text-primary" aria-hidden="true"></i>
           </div>
-          <Link to="/topics/development"><h2 className="text-primary text-center">DEVELOPMENT</h2></Link>
+          <Link to="/development"><h2 className="text-primary text-center">DEVELOPMENT</h2></Link>
           <hr />
         </div>
       </div>

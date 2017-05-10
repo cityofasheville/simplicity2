@@ -19,6 +19,8 @@ class Sankey extends React.Component {
     this.state = {
       nodes: props.nodes,
       links: props.links,
+      nodeTitles: props.nodes.map(() => ({ showing: false, x: 0, y: 0 })),
+      linkTitles: props.links.map(() => ({ showing: false, x: 0, y: 0 })),
     };
   }
 
@@ -26,7 +28,35 @@ class Sankey extends React.Component {
     this.setState({
       nodes: nextProps.nodes,
       links: nextProps.links,
+      nodeTitles: nextProps.nodes.map(() => ({ showing: false, x: 0, y: 0 })),
+      linkTitles: nextProps.links.map(() => ({ showing: false, x: 0, y: 0 })),
     });
+  }
+
+  toggleTitle(ev) {
+    console.log(ev.target.getAttribute('data-link') === null, ev.target.getAttribute('data-node') === null);
+    if (ev.target.getAttribute('data-link') !== null) {
+      const index = parseInt(ev.target.getAttribute('data-link'), 10);
+      this.setState({ linkTitles: this.state.linkTitles.map((item, i) => {
+        if (index === i) {
+          return Object.assign({}, { showing: true, x: ev.clientX - window.document.getElementById('sankeySVG').getBoundingClientRect().left, y: ev.clientY - window.document.getElementById('sankeySVG').getBoundingClientRect().top });
+        }
+        return Object.assign({}, { showing: false, x: 0, y: 0 });
+      }),
+        nodeTitles: this.state.nodeTitles.map(() => (Object.assign({}, { showing: false, x: 0, y: 0 }))) });
+    } else if (ev.target.getAttribute('data-node') !== null) {
+      const index = parseInt(ev.target.getAttribute('data-node'), 10);
+      this.setState({ nodeTitles: this.state.nodeTitles.map((item, i) => {
+        if (index === i) {
+          return Object.assign({}, { showing: true, x: ev.clientX - window.document.getElementById('sankeySVG').getBoundingClientRect().left, y: ev.clientY - window.document.getElementById('sankeySVG').getBoundingClientRect().top });
+        }
+        return Object.assign({}, { showing: false, x: 0, y: 0 });
+      }),
+        linkTitles: this.state.linkTitles.map(() => (Object.assign({}, { showing: false, x: 0, y: 0 }))) });
+    } else {
+      this.setState({ nodeTitles: this.state.nodeTitles.map(() => (Object.assign({}, { showing: false, x: 0, y: 0 }))),
+        linkTitles: this.state.linkTitles.map(() => (Object.assign({}, { showing: false, x: 0, y: 0 }))) });
+    }
   }
 
   render() {
@@ -64,21 +94,27 @@ class Sankey extends React.Component {
 
     const links = graph.links.map((link, i) => (
       <g key={['link', i].join('_')}>
-        <path className={styles.link} d={path(link)} style={{ strokeWidth: Math.max(1, link.dy) }}>
+        <path className={styles.link} d={path(link)} style={{ strokeWidth: Math.max(1, link.dy) }} data-link={i}>
           <title>{[link.source.name, ' → ', link.target.name, ': $', newFormat(link.value)].join('')}</title>
         </path>
+        <text x={this.state.linkTitles[i].x} y={this.state.linkTitles[i].y} textAnchor={'middle'} hidden={!this.state.linkTitles[i].showing}>{[link.source.name, ' → ', link.target.name, ': $', newFormat(link.value)].join('')}</text> :
       </g>
     ));
 
-
     const nodes = graph.nodes.map((node, i) => (
-      <g key={['node', i].join('_')} className={styles.node} transform={['translate(', node.x, ',', node.y, ')'].join('')}>
-        <rect height={node.dy} width={sankeyChart.nodeWidth()} fill={color[i % color.length]} stroke="black">
-          <title>{[node.name, '\n', newFormat(node.value)].join('')}</title>
-        </rect>
+      <g key={['node', i].join('_')}>
+        <g className={styles.node} transform={['translate(', node.x, ',', node.y, ')'].join('')}>
+          <rect height={node.dy} width={sankeyChart.nodeWidth()} fill={color[i % color.length]} stroke="black" data-node={i}>
+            <title>{[node.name, '\n$', newFormat(node.value)].join('')}</title>
+          </rect>
+          { (node.x >= width / 2) ?
+            <text x={-6} y={node.dy / 2} dy={'.35em'} textAnchor={'end'} >{node.name}</text> :
+            <text x={6 + sankeyChart.nodeWidth()} y={node.dy / 2} dy={'.35em'} textAnchor={'start'} >{node.name}</text>
+          }
+        </g>
         { (node.x >= width / 2) ?
-          <text x={-6} y={node.dy / 2} dy={'.35em'} textAnchor={'end'} >{node.name}</text> :
-          <text x={6 + sankeyChart.nodeWidth()} y={node.dy / 2} dy={'.35em'} textAnchor={'start'} >{node.name}</text>
+          <text x={this.state.nodeTitles[i].x} y={this.state.nodeTitles[i].y} textAnchor={'end'} hidden={!this.state.nodeTitles[i].showing}>{['$', newFormat(node.value)].join('')}</text> :
+          <text x={this.state.nodeTitles[i].x} y={this.state.nodeTitles[i].y} textAnchor={'start'} hidden={!this.state.nodeTitles[i].showing}>{['$', newFormat(node.value)].join('')}</text>
         }
       </g>
     ));
@@ -86,7 +122,7 @@ class Sankey extends React.Component {
     // JSX rendering return if didn't rely on faux-dom
     // ------------------------------------------------------------------------
     return (
-      <svg width={width + margin.left + margin.right} height={height + margin.top + margin.bottom}>
+      <svg width={width + margin.left + margin.right} height={height + margin.top + margin.bottom} onClick={ev => (this.toggleTitle(ev))} id="sankeySVG">
         <g transform={['translate(', margin.left, ',', margin.top, ')'].join('')}>
           {links}
           {nodes}

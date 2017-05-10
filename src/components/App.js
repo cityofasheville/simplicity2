@@ -5,7 +5,7 @@ import Navbar from './Navbar';
 import AuthProviderModal from '../modules/auth/authProviderModal';
 
 const displayNavbar = (hideNavbar) => {
-  if (hideNavbar !== 'true' && window.location.href.indexOf('dashboards') < 0) {
+  if (window.location.href.indexOf('dashboards') < 0 && hideNavbar !== 'true') {
     return (<Navbar />);
   }
   return '';

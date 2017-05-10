@@ -91,14 +91,18 @@ const CustomTreemap = (props) => {
           }}
           onClick={diveDeeper !== undefined && depth === 1 ? () => diveDeeper(props) : null}
         />
-        { showingLabels ?
+        { showingLabels && (width * height > 500) && (width > 75 && height > 40) ?
           <foreignObject width={width} height={'20px'} x={x + 4} y={y + 2}>
             <span
               style={{ fontWeight: 'bold', fontSize: '14px', wordWrap: 'break-word', color: 'yellow', textShadow: '1px 1px 5px black' }}
             >
               {getDollars(amount)}
             </span>
-            <br />
+          </foreignObject>
+        : null
+        }
+        { showingLabels && (width * height > 500) && (width > 75 && height > 40) ?
+          <foreignObject width={width} height={'20px'} x={x + 4} y={y + 23}>
             <span
               style={{ fontWeight: 'bold', fontSize: '14px', wordWrap: 'break-word', color: 'yellow', textShadow: '1px 1px 5px black' }}
             >

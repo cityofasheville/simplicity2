@@ -96,6 +96,19 @@ const searchChildrenForKey = (aKey, aTreeNode) => {
   return null;
 };
 
+// helper function to insert copies of leaf nodes below themselves (in the flattened tree)
+const insertLeafCopies = (flattenedTree) => {
+  if (flattenedTree.children.length === 0) {
+    const splitBreadcrumbPath = flattenedTree.breadcrumbPath.split('>');
+    const splitPath = flattenedTree.path.split('-');
+    flattenedTree.children = [objectAssign({}, flattenedTree, { breadcrumbPath: [flattenedTree.breadcrumbPath, splitBreadcrumbPath[splitBreadcrumbPath.length - 1]].join('>') }, { path: [flattenedTree.path, splitPath[splitPath.length - 1]].join('-') })]; // eslint-disable-linesplitBreadcrumbPath
+  } else {
+    for (let i = 0; i < flattenedTree.children.length; i += 1) {
+      insertLeafCopies(flattenedTree.children[i]);
+    }
+  }
+};
+
 // builds two trees, one for revenue and one for expense, based on the passed in data
 export const buildTrees = (data, last4Years = last4Yrs) => {
   const exTree = tree.create();
@@ -139,9 +152,10 @@ export const buildTrees = (data, last4Years = last4Yrs) => {
   }
   roundTree(exTree.rootNode());
   roundTree(revTree.rootNode());
-
   const exTreeForTreemap = exportForDetails(exTree);
   const revTreeForTreemap = exportForDetails(revTree);
+  insertLeafCopies(exTreeForTreemap);
+  insertLeafCopies(revTreeForTreemap);
   removeZerosFromFlattened(exTreeForTreemap);
   removeZerosFromFlattened(revTreeForTreemap);
   return {

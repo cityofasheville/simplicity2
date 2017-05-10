@@ -40,7 +40,7 @@ LoadingAnimation.propTypes = {
 LoadingAnimation.defaultProps = {
   name: 'large',
   message: 'Loading...',
-  marginTop: '15px;',
+  marginTop: '15px',
 };
 
 export default LoadingAnimation;

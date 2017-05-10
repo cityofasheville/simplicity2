@@ -16,8 +16,8 @@ const getButtonClass = (categoryType, buttonName) => {
 
 const goDeeper = (props) => {
   let curPath = props.path;
-  if (props.path.split('-').length > 4) {
-    curPath = props.path.split('-').slice(0, 4).join('-');
+  if (props.path.split('-').length > 5) {
+    curPath = props.path.split('-').slice(0, 5).join('-');
   }
   let newURL = [props.location.pathname, '?',
     Object.entries(props.location.query).map(([key, value]) => {
@@ -93,8 +93,8 @@ const renderBreadcrumb = (tree, props) => {
       <span className="treeMapBreadcrumbLink" onClick={props.jumpUp ? () => props.jumpUp(props, levels.length) : null}>Top</span><span> &gt; </span>
       {levels.map((level, index) => {
         return (
-          <div style={{ display: 'inline-block' }}>
-            <span className={index < levels.length - 1 ? 'treeMapBreadcrumbLink' : ''} key={['breadcrumbLevel', index].join('_')} onClick={props.jumpUp ? () => props.jumpUp(props, levels.length - index - 1) : null}>{level}</span>
+          <div key={['breadcrumbLevel', index].join('_')} style={{ display: 'inline-block' }}>
+            <span className={index < levels.length - 1 ? 'treeMapBreadcrumbLink' : ''} onClick={props.jumpUp ? () => props.jumpUp(props, levels.length - index - 1) : null}>{level}</span>
             {index < levels.length - 1 && <span> &gt;&nbsp;</span>}
           </div>
         );

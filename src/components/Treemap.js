@@ -98,7 +98,11 @@ const CustomTreemap = (props) => {
             >
               {getDollars(amount)}
             </span>
-            <br />
+          </foreignObject>
+        : null
+        }
+        { showingLabels ?
+          <foreignObject width={width} height={'20px'} x={x + 4} y={y + 23}>
             <span
               style={{ fontWeight: 'bold', fontSize: '14px', wordWrap: 'break-word', color: 'yellow', textShadow: '1px 1px 5px black' }}
             >

@@ -19,7 +19,6 @@ const budget = (state = initialState, action) => {
     case BUILD_TREES: {
       if (Object.keys(state.expenseTree).length === 0 || Object.keys(state.revenueTree).length === 0) {
         const trees = buildTrees(action.queryData);
-        console.log(trees);
         return objectAssign({}, state, { expenseTree: trees.expenseTree }, { revenueTree: trees.revenueTree }, { expenseTreeForTreemap: trees.expenseTreeForTreemap }, { revenueTreeForTreemap: trees.revenueTreeForTreemap });
       }
       return state;

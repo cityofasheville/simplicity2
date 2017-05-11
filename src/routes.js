@@ -34,9 +34,23 @@ import BudgetDetailsContainer from './containers/BudgetDetailsContainer';
 import SummaryDepartments from './topics/budget/summary/SummaryDepartments';
 import SummaryUse from './topics/budget/summary/SummaryUse';
 
+// Google Analytics
+const ReactGA = require('react-ga');
+
+let logPageView = () => {
+  ReactGA.set({ page: window.location.pathname });
+  ReactGA.pageview(window.location.pathname);
+};
+
+if (window.location.href.indexOf('dashboards.ashevillenc.gov') > -1) {
+  ReactGA.initialize('UA-16340971-12');
+} else {
+  logPageView = null;
+}  // later add an else for SimpliCity2
+
 const Routes = props => (
   <ApolloProvider store={props.store} client={client} >
-    <Router history={browserHistory}>
+    <Router history={browserHistory} onUpdate={logPageView === null ? null : () => logPageView()}>
       <Route path="/" component={App}>
         <IndexRoute component={Home} />
         <Route path="search" component={Search}></Route>

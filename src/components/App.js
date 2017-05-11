@@ -5,7 +5,7 @@ import Navbar from './Navbar';
 import AuthProviderModal from '../modules/auth/authProviderModal';
 
 const displayNavbar = (hideNavbar) => {
-  if (window.location.href.indexOf('dashboards') < 0 && hideNavbar !== 'true') {
+  if (window.location.href.indexOf('dashboards.ashevillenc.gov') < 0 && hideNavbar !== 'true') {
     return (<Navbar />);
   }
   return '';

@@ -34,7 +34,6 @@ class Sankey extends React.Component {
   }
 
   toggleTitle(ev) {
-    console.log(ev.target.getAttribute('data-link') === null, ev.target.getAttribute('data-node') === null);
     if (ev.target.getAttribute('data-link') !== null) {
       const index = parseInt(ev.target.getAttribute('data-link'), 10);
       this.setState({ linkTitles: this.state.linkTitles.map((item, i) => {

@@ -4,35 +4,35 @@ import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import { ApolloProvider } from 'react-apollo';
 
 // GraphQL Client
-import { client } from './modules/gql/gqlClient';
+import { client } from './gql/gqlClient';
 
 // Routed components
-import App from './components/App';
-import Home from './components/Home';
-import MySimpliCity from './components/MySimpliCity';
-import Search from './containers/search/Search';
+import App from './App/App';
+import Home from './App/Home';
+import MySimpliCity from './App/MySimpliCity';
+import Search from './App/search/Search';
 // Locations
-import Locations from './locations/Locations';
-import Address from './locations/address/Address';
-import AddressList from './locations/address/AddressList';
-import Property from './locations/property/Property';
-import Properties from './locations/property/Properties';
-import Street from './locations/street/Street';
-import Neighborhood from './locations/neighborhood/Neighborhood';
-import Owner from './locations/owner/Owner';
+import Locations from './App/Locations';
+import Address from './App/address/Address';
+import AddressList from './App/address/AddressList';
+import Property from './App/property/Property';
+import Properties from './App/property/Properties';
+import Street from './App/street/Street';
+import Neighborhood from './App/neighborhood/Neighborhood';
+import Owner from './App/owner/Owner';
 // Topics
-import Topics from './topics/Topics';
-import DevelopmentSummary from './topics/development/summary/DevelopmentSummary';
-import DevelopmentDetail from './topics/development/detail/DevelopmentDetail';
-import DevelopmentSLADashboard from './topics/development/sla_dashboard/SLADashboard';
-import CrimeSummary from './topics/crime/summary/CrimeSummary';
-import CrimeDetail from './topics/crime/detail/CrimeDetail';
-import Maintenance from './topics/maintenance/Maintenance';
+import Topics from './App/Topics';
+import DevelopmentSummary from './App/development/DevelopmentSummary';
+import DevelopmentDetail from './App/development/DevelopmentDetail';
+import DevelopmentSLADashboard from './App/sla_dashboard/SLADashboard';
+import CrimeSummary from './App/crime/CrimeSummary';
+import CrimeDetail from './App/crime/CrimeDetail';
+import Maintenance from './App/maintenance/Maintenance';
 // Budget
-import BudgetSummary from './topics/budget/summary/BudgetSummary';
-import BudgetDetailsContainer from './containers/BudgetDetailsContainer';
-import SummaryDepartments from './topics/budget/summary/SummaryDepartments';
-import SummaryUse from './topics/budget/summary/SummaryUse';
+import BudgetSummary from './App/budget/BudgetSummary';
+import BudgetDetailsContainer from './App/budget/BudgetDetailsContainer';
+import SummaryDepartments from './App/budget/SummaryDepartments';
+import SummaryUse from './App/budget/SummaryUse';
 
 // Google Analytics
 const ReactGA = require('react-ga');

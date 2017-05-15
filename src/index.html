@@ -5,8 +5,14 @@
     <meta charset="utf-8">
     <!-- Make the page mobile compatible -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>SimpliCity II</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <script type="text/javascript">
+      if (window.location.href.indexOf('dashboards.ashevillenc.gov') > -1) {
+        document.title = 'Dashboards';
+      } else {
+        document.title = 'SimpliCity II';
+      }
+    </script>
     <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/1.0.0/firebaseui.css" />
   </head>
   <body>

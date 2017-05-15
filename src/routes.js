@@ -4,35 +4,35 @@ import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import { ApolloProvider } from 'react-apollo';
 
 // GraphQL Client
-import { client } from './modules/gql/gqlClient';
+import { client } from './utilities/gqlClient';
 
 // Routed components
-import App from './components/App';
-import Home from './components/Home';
-import MySimpliCity from './components/MySimpliCity';
-import Search from './containers/search/Search';
+import App from './app/App';
+import Home from './app/Home';
+import MySimpliCity from './app/MySimpliCity';
+import Search from './app/search/Search';
 // Locations
-import Locations from './locations/Locations';
-import Address from './locations/address/Address';
-import AddressList from './locations/address/AddressList';
-import Property from './locations/property/Property';
-import Properties from './locations/property/Properties';
-import Street from './locations/street/Street';
-import Neighborhood from './locations/neighborhood/Neighborhood';
-import Owner from './locations/owner/Owner';
+import Locations from './app/Locations';
+import Address from './app/address/Address';
+import AddressList from './app/address/AddressList';
+import Property from './app/property/Property';
+import Properties from './app/property/Properties';
+import Street from './app/street/Street';
+import Neighborhood from './app/neighborhood/Neighborhood';
+import Owner from './app/owner/Owner';
 // Topics
-import Topics from './topics/Topics';
-import DevelopmentSummary from './topics/development/summary/DevelopmentSummary';
-import DevelopmentDetail from './topics/development/detail/DevelopmentDetail';
-import DevelopmentSLADashboard from './topics/development/sla_dashboard/SLADashboard';
-import CrimeSummary from './topics/crime/summary/CrimeSummary';
-import CrimeDetail from './topics/crime/detail/CrimeDetail';
-import Maintenance from './topics/maintenance/Maintenance';
+import Topics from './app/Topics';
+import DevelopmentSummary from './app/development/DevelopmentSummary';
+import DevelopmentDetail from './app/development/DevelopmentDetail';
+import DevelopmentSLADashboard from './app/sla_dashboard/SLADashboard';
+import CrimeSummary from './app/crime/CrimeSummary';
+import CrimeDetail from './app/crime/CrimeDetail';
+import Maintenance from './app/maintenance/Maintenance';
 // Budget
-import BudgetSummary from './topics/budget/summary/BudgetSummary';
-import BudgetDetailsContainer from './containers/BudgetDetailsContainer';
-import SummaryDepartments from './topics/budget/summary/SummaryDepartments';
-import SummaryUse from './topics/budget/summary/SummaryUse';
+import BudgetSummary from './app/budget/BudgetSummary';
+import BudgetDetailsContainer from './app/budget/BudgetDetailsContainer';
+import SummaryDepartments from './app/budget/SummaryDepartments';
+import SummaryUse from './app/budget/SummaryUse';
 
 // Google Analytics
 const ReactGA = require('react-ga');
@@ -55,20 +55,18 @@ const Routes = props => (
         <IndexRoute component={Home} />
         <Route path="search" component={Search}></Route>
         <Route path="my-simplicity" component={MySimpliCity}></Route>
-        <Route path="locations">
-          <IndexRoute component={Locations} />
-          <Route path="address">
-            <IndexRoute component={Address} />
-            <Route path="addressList" component={AddressList}></Route>
-          </Route>
-          <Route path="property">
-            <IndexRoute component={Property} />
-            <Route path="properties" component={Properties}></Route>
-          </Route>
-          <Route path="street" component={Street}></Route>
-          <Route path="neighborhood" component={Neighborhood}></Route>
-          <Route path="owner" component={Owner}></Route>
+        <Route path="locations" component={Locations} />
+        <Route path="address">
+          <IndexRoute component={Address} />
+          <Route path="addressList" component={AddressList}></Route>
         </Route>
+        <Route path="property">
+          <IndexRoute component={Property} />
+          <Route path="properties" component={Properties}></Route>
+        </Route>
+        <Route path="street" component={Street}></Route>
+        <Route path="neighborhood" component={Neighborhood}></Route>
+        <Route path="owner" component={Owner}></Route>
         <Route path="topics" component={Topics} />
         <Route path="development">
           <IndexRoute component={DevelopmentSummary} />

@@ -1,0 +1,54 @@
+.searchEntitiesUL {
+  list-style: none;
+  text-align: right;
+  padding-left: 0px;
+}
+
+.searchEntitiesUL li {
+  font-size: 0.8em;
+  display: inline-block;
+  text-align: center;
+  margin-right: 5px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.searchEntitiesUL input[type="checkbox"] {
+  vertical-align: top;
+}
+
+.searchEntitiesUL input[type="checkbox"]:before {
+  top: 2px;
+  left: 5px;
+  width: 5px;
+  height: 11px;
+}
+
+.searchEntitiesUL input[type="checkbox"]:checked:after {
+    background-color: #4579B3;
+    border-color: #4579B3;
+}
+
+.searchEntitiesUL input[type="checkbox"]:after {
+  width: 14px;
+  height: 14px;
+  margin-top: 2px;
+  margin-right: 0px;
+  border: 1px solid #999;
+  border-radius: 1px;
+}
+
+.entityDescription {
+  display: block;
+  padding-left: 10px;
+}
+
+.unchecked {
+  color: #999;
+}
+
+.entityDescriptionUnchecked {
+  display: block;
+  padding-left: 10px;
+  color: #999;
+}

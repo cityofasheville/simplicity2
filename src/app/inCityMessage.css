@@ -1,0 +1,21 @@
+.inCity {
+  font-style: italic;
+  font-size: 2em;
+  margin-left: 0px;
+  color:#18BC9C;
+}
+
+.notInCity {
+  font-style: italic;
+  font-size: 2em;
+  margin-left: 0px;
+  color: #F39C12;
+}
+
+.inCityMessage {
+  margin-left: 15px;
+}
+
+.inCityMessage i {
+  margin-right: 5px;
+}

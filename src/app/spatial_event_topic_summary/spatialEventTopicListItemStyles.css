@@ -1,0 +1,55 @@
+.topicSummaryListItem {
+  border:1px solid #ecf0f1;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+}
+
+.topicSummaryListItem i {
+  padding-left: 10px;
+}
+
+.topicSummaryListItem label {
+  margin-bottom: 0px;
+}
+
+.titleRow {
+  background-color: rgba(236, 240, 241, 0.24);
+  border-bottom: 1px solid #ecf0f1;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+}
+
+.addressRow {
+  margin-bottom: 6px;
+}
+
+.linkRow {
+  margin-top: 6px;
+}
+
+.categoryTitle {
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+/*@media screen and (max-width: 767px) {
+  .titleRow {
+    text-align: center;
+  }
+}*/
+
+.columnTitle {
+  color: #545e5f;
+  font-weight: normal;
+}
+
+.columnValue {
+  font-weight: normal;
+}
+
+.flexRow {
+  display: flex;
+  flex-wrap: wrap;
+}

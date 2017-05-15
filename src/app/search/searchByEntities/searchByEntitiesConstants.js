@@ -1,0 +1,1 @@
+export const TOGGLE_SEARCH_BY_ENTITY = 'simplicity/TOGGLE_SEARCH_BY_ENTITY';

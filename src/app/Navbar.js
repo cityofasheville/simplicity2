@@ -46,6 +46,9 @@ export default class Navbar extends React.Component { // eslint-disable-line rea
                 <span className="icon-bar"></span>
               </button>
               <IndexLink to="/" className="navbar-brand">SimpliCity</IndexLink>
+              {window.location.href.indexOf('dashboards.ashevillenc.gov') === -1 &&
+                <div style={{ color: 'orange', fontStyle: 'italic' }} className="navbar-brand">Pre-Beta</div>
+              }
             </div>
             <div className={[this.state.navbarCollapse, 'navbar-collapse'].join(' ')}>
               <ul className="nav navbar-nav navbar-right">
@@ -56,6 +59,9 @@ export default class Navbar extends React.Component { // eslint-disable-line rea
               </ul>
             </div>
           </div>
+          {window.location.href.indexOf('dashboards.ashevillenc.gov') === -1 &&
+            <a href="https://docs.google.com/a/ashevillenc.gov/forms/d/e/1FAIpQLSdjNwOmoDY3PjQOVreeSL07zgI8otIIPWjY7BnejWMAjci8-w/viewform?c=0&w=1" style={{ color: 'orange', marginLeft: '15px', fontStyle: 'italic' }}>Click here to give feedback or sign up for user testing</a>
+          }
         </nav>
       </div>
     );

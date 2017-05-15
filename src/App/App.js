@@ -2,7 +2,7 @@ import React from 'react';
 import Navbar from './Navbar';
 
 
-import AuthProviderModal from '../auth/authProviderModal';
+import AuthProviderModal from '../utilities/auth/authProviderModal';
 
 const displayNavbar = (hideNavbar) => {
   if (window.location.href.indexOf('dashboards.ashevillenc.gov') < 0 && hideNavbar !== 'true') {

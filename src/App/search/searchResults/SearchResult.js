@@ -5,19 +5,19 @@ import styles from './searchResult.css';
 const getLink = (type, id, label) => {
   switch (type) {
     case 'address':
-      return `/locations/address?label=${label}&id=${id}`;
+      return `/address?label=${label}&id=${id}`;
     case 'property':
-      return `/locations/property?label=${label}&id=${id}`;
+      return `/property?label=${label}&id=${id}`;
     case 'street':
-      return `/locations/street?label=${label}&id=${id}`;
+      return `/street?label=${label}&id=${id}`;
     case 'neighborhood':
-      return `/locations/neighborhood?label=${label}&id=${id}`;
+      return `/neighborhood?label=${label}&id=${id}`;
     case 'permit':
       return `/development/detail?label=${label}&id=${id}`;
     case 'crime':
       return `/crime/detail?label=${label}&id=${id}`;
     case 'owner':
-      return `/locations/owner?label=${label}&id=${id}`;
+      return `/owner?label=${label}&id=${id}`;
     default:
       return '/';
   }

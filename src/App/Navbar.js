@@ -1,7 +1,7 @@
 import React from 'react';
 import { IndexLink, Link } from 'react-router';
 
-import AuthControl from '../auth/authControl';
+import AuthControl from '../utilities/auth/authControl';
 
 
 export default class Navbar extends React.Component { // eslint-disable-line react/prefer-stateless-function

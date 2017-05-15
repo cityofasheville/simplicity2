@@ -66,7 +66,7 @@ const Address = (props) => {
               {renderZoning()}
             </div>
             <DetailsGrouping dataLabels={['Owner']} dataValues={['TEST OWNER NAME and test owner address']} dataIcons={['user']} />
-            <DetailsIconLinkGrouping dataLabels={['Property', 'Maintenance']} dataTitles={['Property', 'Maintenance']} dataHrefs={['/locations/property/properties', '/maintenance?entity=address']} dataIcons={['home', 'road']} />
+            <DetailsIconLinkGrouping dataLabels={['Property', 'Maintenance']} dataTitles={['Property', 'Maintenance']} dataHrefs={['/property/properties', '/maintenance?entity=address']} dataIcons={['home', 'road']} />
           </fieldset>
         </div>
         <div className="col-sm-6">

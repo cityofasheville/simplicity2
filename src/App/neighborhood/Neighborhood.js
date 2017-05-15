@@ -61,11 +61,11 @@ Neighborhood.defaultProps = {
       'Property owner mailing addresses',
     ],
     hrefs: [
-      '/locations/address/addressList?entity=neighborhood&id=Montford&label=Montford&type=addresses',
-      '/locations/address/addressList?entity=neighborhood&id=Montford&label=Montford&type=residentMailing',
-      '/locations/address/addressList?entity=neighborhood&id=Montford&label=Montford&type=ownerAddresses',
-      '/locations/address/addressList?entity=neighborhood&id=Montford&label=Montford&type=ownerMailing',
-      '/locations/property/properties?entity=neighborhood&id=Montford&label=Montford',
+      '/address/addressList?entity=neighborhood&id=Montford&label=Montford&type=addresses',
+      '/address/addressList?entity=neighborhood&id=Montford&label=Montford&type=residentMailing',
+      '/address/addressList?entity=neighborhood&id=Montford&label=Montford&type=ownerAddresses',
+      '/address/addressList?entity=neighborhood&id=Montford&label=Montford&type=ownerMailing',
+      '/property/properties?entity=neighborhood&id=Montford&label=Montford',
     ],
   },
 };

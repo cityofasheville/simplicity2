@@ -18,4 +18,4 @@ This project is licensed under the MIT license. For more information see the [li
 
 ## Acknowledgments
 
-SimpliCity was originally developed by [Cameron Carlyle](https://github.com/carlyleec) and [Dave Michelson](https://github.com/daveism).
+The first SimpliCity, which is the inspiration for SimpliCity 2, was originally developed by [Cameron Carlyle](https://github.com/carlyleec) and [Dave Michelson](https://github.com/daveism).

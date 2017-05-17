@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Link, browserHistory } from 'react-router';
 import Treemap from '../../shared/visualization/Treemap';
 // import { updateNodePath } from '../../../containers/budgetActions';
-const browser = require('detect-browser');
 
 const getButtonClass = (categoryType, buttonName) => {
   if (
@@ -140,10 +139,7 @@ const BudgetDetailsTreemap = (props) => {
               <button className={props.location.query.mode === 'revenue' ? 'btn btn-primary btn-xs active' : 'btn btn-primary btn-xs'} style={{ borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px' }}>Revenue</button>
             </Link>
           </div>
-          {browser.name === 'ie' && <div className="col-sm-12 alert-danger">Internet Explorer does not support the TREE MAP visualization. Please explore the budget details via the Details Table, or view this page in Chrome or Firefox.</div>}
-          {browser.name !== 'ie' &&
-            <Treemap data={findTop(myTree, props.location.query.nodePath || 'root')} diveDeeper={props.diveDeeper} differenceColors history={browserHistory} location={props.location} />
-          }
+          <Treemap data={findTop(myTree, props.location.query.nodePath || 'root')} diveDeeper=  {props.diveDeeper} differenceColors history={browserHistory} location={props.location} />
         </div>
       </div>
     </div>

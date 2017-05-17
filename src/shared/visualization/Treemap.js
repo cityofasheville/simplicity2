@@ -70,45 +70,55 @@ const getFill = (delta) => {
   return ['rgb(', rgbArray[0], ',', rgbArray[1], ',', rgbArray[2], ')'].join('');
 };
 
+const getTopLevelOnly = (data) => (
+  data.map(item => (Object.assign({}, item, { children: null })))
+);
+
+const nameText = (name, x, y, delta, maxLength) => {
+  const numChars = name.length;
+  const words = name.split(' ');
+  const lines = [''];
+  let thisLineLength = 0;
+  const fill =  delta < 0.5 ? "black" : "white";
+  for (let i = 0; i < words.length; i += 1) {
+    if (thisLineLength + words[i].length + 1 <= maxLength) {
+      lines[lines.length-1] = lines[lines.length-1] + ' ' + words[i];
+      thisLineLength += words[i].length + 1;
+    } else {
+      lines.push(words[i]);
+      thisLineLength = words[i].length;
+    }
+  }
+  return (
+    <text x={x + 4} y={y + 17} fill={fill} stroke="none" style={{ fontWeight: 'bold' }}>
+      {lines.map((word, index) => (<tspan key={[name, 'line', index].join('_')} dy={16} x={x + 4}>{word}</tspan>))}
+    </text>
+  );
+};
+
 const CustomTreemap = (props) => {
   const { root, depth, x, y, width, height, index, colors, name, amount, delta, diveDeeper, differenceColors, showingLabels } = props;
 
   if (depth === 1) {
+    console.log(getFill(delta), name, delta);
+    const myD = ['M ', x, ' ', y, ' h ', width, ' v ', height, ' h -', width, ' Z'].join('');
     return (
       <g>
         <title>{[name, getDollarsForTooltips(amount)].join(' ')}</title>
-        <rect
-          x={x}
-          y={y}
-          width={width}
-          height={height}
+        <path className="recharts-rectangle" d={myD} onClick={diveDeeper !== undefined && depth === 1 ? () => diveDeeper(props) : null}
           style={{
             cursor: 'pointer',
             fill: differenceColors ? getFill(delta) : COLORS[Math.floor(index % root.children.length)],
             stroke: '#000',
-            strokeWidth: 1 / (depth + 1e-10),
-            strokeOpacity: 1 / (depth + 1e-10),
-          }}
-          onClick={diveDeeper !== undefined && depth === 1 ? () => diveDeeper(props) : null}
-        />
+          }} />
         { showingLabels && (width * height > 500) && (width > 75 && height > 40) ?
-          <foreignObject width={width} height={'20px'} x={x + 4} y={y + 2}>
-            <span
-              style={{ fontWeight: 'bold', fontSize: '14px', wordWrap: 'break-word', color: 'yellow', textShadow: '1px 1px 5px black' }}
-            >
-              {getDollars(amount)}
-            </span>
-          </foreignObject>
+          <text x={x + 4} y={y + 16} fill={delta < 0.5 ? "black" : "white"} stroke="none" style={{ fontWeight: 'bold' }}>
+            {getDollars(amount)}
+          </text>
         : null
         }
         { showingLabels && (width * height > 500) && (width > 75 && height > 40) ?
-          <foreignObject width={width} height={'20px'} x={x + 4} y={y + 23}>
-            <span
-              style={{ fontWeight: 'bold', fontSize: '14px', wordWrap: 'break-word', color: 'yellow', textShadow: '1px 1px 5px black' }}
-            >
-              {name}
-            </span>
-          </foreignObject>
+          nameText(name, x, y, delta, parseInt(width / 8))
         : null
         }
       </g>
@@ -154,7 +164,7 @@ class Treemap extends React.Component {
       <div style={{ height: this.props.height }} onClick={this.toggleLabels}>
         <ResponsiveContainer>
           <RechartsTreemap
-            data={this.props.data}
+            data={getTopLevelOnly(this.props.data)}
             dataKey="size"
             stroke="#fff"
             fill="#000"

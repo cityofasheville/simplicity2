@@ -19,7 +19,7 @@
     "city",
     "data"
   ],
-  "author": "ccarlyle@ashevillenc.gov, ejackson.ashevillenc.gov",
+  "author": "fruiz@ashevillenc.gov, ejackson.ashevillenc.gov",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/cityofasheville/simplicity2/issues"
@@ -50,7 +50,6 @@
     "d3-drag": "^1.0.4",
     "d3-sankey": "^0.4.2",
     "data-tree": "^1.2.4",
-    "detect-browser": "^1.7.0",
     "firebase": "^3.6.4",
     "firebaseui": "^1.0.0",
     "graphql-tag": "^2.0.0",

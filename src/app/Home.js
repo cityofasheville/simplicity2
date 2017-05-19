@@ -10,8 +10,7 @@ const Homepage = props => (
     </div>
     <div className="row">
       <div className="col-xs-12">
-        <p className="text-muted text-center lead">or</p>
-        <p className="text-muted text-center lead">View citywide <strong>topic</strong> summaries about your community.</p>
+        <h1>View citywide <strong>topic</strong> summaries about your community.</h1>
       </div>
     </div>
     <div className="row">

@@ -2,15 +2,16 @@
   margin-bottom: 15px;
 }
 
-.searchResultGroup h3 {
+.searchResultGroup h2 {
   margin-top: 0px;
+  font-size: 26px;
+  color: #4077a5;
 }
 
-.searchResultGroup h3 > i {
+.searchResultGroup h2 > i {
   margin-right: 8px;
 }
 
-.searchResultGroup h3 span {
+.searchResultGroup h2 span {
   margin-left: 8px;
-  background-color: #999;
 }

@@ -104,7 +104,7 @@ const BudgetDetailsTable = (props) => {
         <div className="col-sm-12">
           <h3>Table of {props.location.query.mode || 'expenditures'}</h3>
           <div style={{ marginBottom: '15px' }}>
-            You may explore the full dataset in the table below, or <a href="http://data.ashevillenc.gov/datasets?q=budget&sort_by=relevance" target="_blank">download here</a>. Click the triangles at left to expand rows for more detail.
+            You may explore the full dataset in the table below, or <a className="inText" href="http://data.ashevillenc.gov/datasets?q=budget&sort_by=relevance" target="_blank">download here</a>. Click the triangles at left to expand rows for more detail.
           </div>
         </div>
       </div>

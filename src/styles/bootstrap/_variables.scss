@@ -16,15 +16,15 @@ $coa-lightGreen: #e1e2a6;
 
 $gray-base:              #000 !default;
 $gray-darker:            lighten($gray-base, 13.5%) !default; // #222
-$gray-dark:              #7b8a8b !default;   // #333
+$gray-dark:              #222 !default;   // #333
 $gray:                   #95a5a6 !default; // #555
 $gray-light:             #b4bcc2 !default;   // #999
 $gray-lighter:           #ecf0f1 !default; // #eee
 
-$brand-primary:         #4579B3 !default;
+$brand-primary:         $coa-medBlue !default; // #4579B3 !default;
 $brand-secondary:       darken($brand-primary, 20%) !default;
 $brand-tertiary:        lighten($brand-primary, 10%) ! default;
-$brand-success:         #18BC9C !default;
+$brand-success:         #11866f !default;
 $brand-info:            #3498DB !default;
 $brand-warning:         #F39C12 !default;
 $brand-danger:          #E74C3C !default;
@@ -43,7 +43,7 @@ $link-color:            $brand-primary !default;
 //** Link hover color set via `darken()` function.
 $link-hover-color:      darken($brand-primary, 10%) !default;
 //** Link hover decoration.
-$link-hover-decoration: none !default;
+$link-hover-decoration: underline !default;
 
 
 //== Typography
@@ -199,7 +199,7 @@ $input-border-radius-small:      $border-radius-small !default;
 $input-border-focus:             $brand-primary !default;
 
 //** Placeholder text color
-$input-color-placeholder:        #acb6c0 !default;
+$input-color-placeholder:        #777 !default; // #acb6c0 !default;
 
 //** Default `.form-control` height
 $input-height-base:              ($line-height-computed + ($padding-base-vertical * 2) + 4) !default;
@@ -360,16 +360,16 @@ $navbar-padding-horizontal:        floor(($grid-gutter-width / 2)) !default;
 $navbar-padding-vertical:          (($navbar-height - $line-height-computed) / 2) !default;
 $navbar-collapse-max-height:       340px !default;
 
-$navbar-default-color:             $brand-primary !default;
+$navbar-default-color:             $link-color !default; // $brand-primary !default;
 $navbar-default-bg:                #fff !default;
 $navbar-default-border:            transparent !default;
 
 // Navbar links
-$navbar-default-link-color:                $brand-primary !default;
-$navbar-default-link-hover-color:          $brand-secondary !default;
+$navbar-default-link-color:                $coa-medBlue !default; // $brand-primary !default;
+$navbar-default-link-hover-color:          $coa-medBlue !default; // $brand-secondary !default;
 $navbar-default-link-hover-bg:             transparent !default;
 $navbar-default-link-active-color:         $brand-tertiary !default;
-$navbar-default-link-active-bg:            darken($navbar-default-bg, 10%) !default;
+$navbar-default-link-active-bg:            $gray-lighter !default; // darken($navbar-default-bg, 10%) !default;
 $navbar-default-link-disabled-color:       #ccc !default;
 $navbar-default-link-disabled-bg:          transparent !default;
 

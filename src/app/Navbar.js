@@ -47,7 +47,7 @@ export default class Navbar extends React.Component { // eslint-disable-line rea
               </button>
               <IndexLink to="/" className="navbar-brand">SimpliCity</IndexLink>
               {window.location.href.indexOf('dashboards.ashevillenc.gov') === -1 &&
-                <div style={{ color: 'orange', fontStyle: 'italic' }} className="navbar-brand">Pre-Beta</div>
+                <div style={{ color: '#bf1bbf', fontStyle: 'italic', float: 'left', fontSize: '19px', height: '60px', padding: '19.5px 15px', lineHeight: '1' }}>Pre-Beta</div>
               }
             </div>
             <div className={[this.state.navbarCollapse, 'navbar-collapse'].join(' ')}>
@@ -60,7 +60,7 @@ export default class Navbar extends React.Component { // eslint-disable-line rea
             </div>
           </div>
           {window.location.href.indexOf('dashboards.ashevillenc.gov') === -1 &&
-            <a href="https://docs.google.com/a/ashevillenc.gov/forms/d/e/1FAIpQLSdjNwOmoDY3PjQOVreeSL07zgI8otIIPWjY7BnejWMAjci8-w/viewform?c=0&w=1" target="_blank" style={{ color: 'orange', marginLeft: '15px', fontStyle: 'italic' }}>Click here to give feedback or sign up for user testing</a>
+            <a href="https://docs.google.com/a/ashevillenc.gov/forms/d/e/1FAIpQLSdjNwOmoDY3PjQOVreeSL07zgI8otIIPWjY7BnejWMAjci8-w/viewform?c=0&w=1" target="_blank" style={{ color: '#bf1bbf', marginLeft: '15px', fontStyle: 'italic' }}>Click here to give feedback or sign up for user testing</a>
           }
         </nav>
       </div>

@@ -21,25 +21,56 @@ const renderSearchResults = (results, icon, label, resultsToShow) => (
 class SearchResultGroup extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { resultsToShow: 3, numResults: props.results.length };
+    this.state = { resultsToShow: 3, numResults: props.results.length, focusedIndex: -1 };
     this.show3More = this.show3More.bind(this);
   }
 
-  show3More() {
+  componentDidUpdate() {
+    console.log('rying to focus', this.focusedItem);
+    this.focusedItem.focus();
+  }
+
+  show3More(ev) {
+    if (ev.nativeEvent.screenX === 0 &&
+      ev.nativeEvent.screenY === 0 &&
+      ev.nativeEvent.clientX === 0 &&
+      ev.nativeEvent.clientY === 0
+    ) {
+      // then "click" activated by enter key
+      this.setState({ focusedIndex: this.state.resultsToShow });
+    } else {
+      this.setState({ focusedIndex: -1 });
+    }
     this.setState({ resultsToShow: this.state.resultsToShow += 3 });
   }
 
+  // the javascript:void(0) is for screenreaders/letting link be tabbable without href
   render() {
     return (
       <div className={['col-xs-12', styles.searchResultGroup].join(' ')}>
-        <h3>
+        <h2>
           <i className={['fa', this.props.icon].join(' ')}></i>
           {this.props.label}
+          <span className="offscreen">Number of results</span>
           <span className="badge">{this.props.count}</span>
-        </h3>
-        {renderSearchResults(this.props.results, this.props.icon, this.props.label, this.state.resultsToShow)}
+        </h2>
+        {/*{renderSearchResults(this.props.results, this.props.icon, this.props.label, this.state.resultsToShow)}*/}
+        {
+          this.props.results.slice(0, this.state.resultsToShow).map((result, index) => (
+            <SearchResult
+              key={result.id}
+              id={result.id}
+              type={result.type}
+              icon={this.props.icon}
+              label={result.label}
+              ref={this.state.focusedIndex === index ? (focusedItem) => { this.focusedItem = focusedItem; console.log(focusedItem); } : null}
+            >
+              {result.label}
+            </SearchResult>
+          ))
+        }
         {this.state.resultsToShow < this.state.numResults &&
-          <Link onClick={this.show3More} className={stylesResult.searchResult}>
+          <Link onClick={this.show3More} to="javascript:void(0)" className={stylesResult.searchResult}>
             <div className="form-group">
               <div className={['form-control', stylesResult.searchResultDiv].join(' ')}>
                 More

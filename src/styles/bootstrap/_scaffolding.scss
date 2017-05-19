@@ -54,10 +54,17 @@ a {
   &:focus {
     color: $link-hover-color;
     text-decoration: $link-hover-decoration;
+    div {
+      text-decoration: $link-hover-decoration;
+    }
   }
 
   &:focus {
     @include tab-focus;
+  }
+
+  &.inText {
+    color: #3e5fe4;
   }
 }
 

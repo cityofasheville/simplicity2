@@ -23,17 +23,32 @@ const getLink = (type, id, label) => {
   }
 };
 
-const SearchResult = props => (
-  <Link to={getLink(props.type, props.id, props.label)} className={styles.searchResult}>
-    <div className={['form-group', styles.searchResultFormGroup].join(' ')}>
-      <div className={['form-control', styles.searchResultDiv].join(' ')}>
-        <i className={['fa', props.icon, styles.searchResultIcon].join(' ')}></i>
-        {props.children}
-        <i className={['fa fa-chevron-right pull-right', styles.searchResultArrowIcon].join(' ')}></i>
-      </div>
-    </div>
-  </Link>
-);
+class SearchResult extends React.Component { // eslint-disable-line
+  constructor(props) {
+    super(props);
+    this.focus = this.focus.bind(this);
+  }
+
+  focus() {
+    this.link.focus();
+  }
+
+  // must be class not stateless component for the ref in SearchResultsGroup to work
+  // also can't use the Link react router element or the focus() will not work
+  render() {
+    return (
+      <a href={getLink(this.props.type, this.props.id, this.props.label)} className={styles.searchResult} ref={(link) => { this.link = link; }}>
+        <div className={['form-group', styles.searchResultFormGroup].join(' ')}>
+          <div className={['form-control', styles.searchResultDiv].join(' ')}>
+            <i className={['fa', this.props.icon, styles.searchResultIcon].join(' ')}></i>
+            {this.props.children}
+            <i className={['fa fa-chevron-right pull-right', styles.searchResultArrowIcon].join(' ')}></i>
+          </div>
+        </div>
+      </a>
+    );
+  }
+}
 
 SearchResult.propTypes = {
   children: React.PropTypes.node,

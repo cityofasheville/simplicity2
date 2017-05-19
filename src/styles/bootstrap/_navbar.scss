@@ -402,6 +402,9 @@
       color: $navbar-default-brand-hover-color;
       background-color: $navbar-default-brand-hover-bg;
     }
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   .navbar-text {
@@ -416,6 +419,9 @@
       &:focus {
         color: $navbar-default-link-hover-color;
         background-color: $navbar-default-link-hover-bg;
+      }
+      &:hover {
+        text-decoration: underline;
       }
     }
     > .active > a {

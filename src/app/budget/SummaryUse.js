@@ -14,7 +14,7 @@ const SummaryUse = (props) => {
     return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
   }
 
-  props.buildSummaryUseData(props.data.gl_budget_summary); // eslint-disable-line react/prop-types
+  props.buildSummaryUseData(props.data.budgetSummary); // eslint-disable-line react/prop-types
   return (
     <div className="row">
       <div className="col-sm-12">
@@ -32,9 +32,9 @@ SummaryUse.defaultProps = {
   data: {},
 };
 
-const glBudgetSummaryUseQuery = gql`
-  query glBudgetSummaryUseQuery {
-    gl_budget_summary(breakdown: "use", maxCategories: 5) {
+const budgetSummaryUseQuery = gql`
+  query budgetSummaryUseQuery {
+    budgetSummary(breakdown: "use", maxCategories: 5) {
         account_type,
         category_name,
         total_budget,
@@ -44,7 +44,7 @@ const glBudgetSummaryUseQuery = gql`
   }
 `;
 
-const SummaryUseGQL = graphql(glBudgetSummaryUseQuery, {})(SummaryUse);
+const SummaryUseGQL = graphql(budgetSummaryUseQuery, {})(SummaryUse);
 export default connect(
   null,
   dispatch => ({

@@ -29,7 +29,7 @@ const BudgetDetailsContainer = (props) => {
     return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
   }
 
-  props.buildBudgetTrees(props.data.gl_budget_history_plus_proposed); // eslint-disable-line react/prop-types
+  props.buildBudgetTrees(props.data.budgetHistory); // eslint-disable-line react/prop-types
   return (
     <div>
       {renderSubComponent(props)}
@@ -37,9 +37,9 @@ const BudgetDetailsContainer = (props) => {
   );
 };
 
-const glBudgetHistoryPlusProposedQuery = gql`
-  query glBudgetHistoryPlusPropsedQuery {
-    gl_budget_history_plus_proposed {
+const budgetHistoryQuery = gql`
+  query budgetHistoryQuery {
+    budgetHistory {
         account_type,
         func_id,
         dept_id,
@@ -60,7 +60,7 @@ const glBudgetHistoryPlusProposedQuery = gql`
   }
 `;
 
-const BudgetDetailsContainerGQL = graphql(glBudgetHistoryPlusProposedQuery, {})(BudgetDetailsContainer);
+const BudgetDetailsContainerGQL = graphql(budgetHistoryQuery, {})(BudgetDetailsContainer);
 export default connect(
   null,
   dispatch => ({

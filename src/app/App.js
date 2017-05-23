@@ -13,10 +13,11 @@ const displayNavbar = (hideNavbar) => {
 
 const App = props => (
   <div className="">
+    <div id="skip"><a href="#content">Skip to Main Content</a></div>
     {
       displayNavbar(props.location.query.hideNavbar) // eslint-disable-line react/prop-types
     }
-    <div className="container">
+    <div className="container" id="content">
       { props.children }
     </div>
     <AuthProviderModal />

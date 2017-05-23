@@ -16,6 +16,7 @@ class Sankey extends React.Component {
 
     this.width = props.width;
     this.height = props.height;
+    this.altText = props.altText;
     this.state = {
       nodes: props.nodes,
       links: props.links,
@@ -121,7 +122,7 @@ class Sankey extends React.Component {
     // JSX rendering return if didn't rely on faux-dom
     // ------------------------------------------------------------------------
     return (
-      <svg width={width + margin.left + margin.right} height={height + margin.top + margin.bottom} onClick={ev => (this.toggleTitle(ev))} id="sankeySVG">
+      <svg alt={this.altText} width={width + margin.left + margin.right} height={height + margin.top + margin.bottom} onClick={ev => (this.toggleTitle(ev))} id="sankeySVG">
         <g transform={['translate(', margin.left, ',', margin.top, ')'].join('')}>
           {links}
           {nodes}
@@ -146,6 +147,7 @@ Sankey.propTypes = {
   links: React.PropTypes.arrayOf(React.PropTypes.shape(linkShape)),
   height: React.PropTypes.number,
   width: React.PropTypes.number,
+  altText: React.PropTypes.string,
 };
 
 Sankey.defaultProps = {
@@ -153,6 +155,7 @@ Sankey.defaultProps = {
   links: [],
   height: 600,
   width: 1150,
+  altText: 'Sankey diagram',
 };
 
 export default Sankey;

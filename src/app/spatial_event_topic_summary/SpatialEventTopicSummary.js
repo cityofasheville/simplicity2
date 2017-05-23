@@ -61,7 +61,7 @@ const SpatialEventTopicSummary = props => (
 
     <div className="row">
       <div id="summaryView" className="col-xs-12">
-        <PieChart data={props.spatialEventTopic === 'crime' ? testPieCrimeData : testPieDevelopmentData} />
+        <PieChart data={props.spatialEventTopic === 'crime' ? testPieCrimeData : testPieDevelopmentData} altText={[props.spatialEventTopic, 'pie chart'].join(' ')} />
       </div>
 
       <div id="listView" hidden>

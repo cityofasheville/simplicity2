@@ -23,7 +23,7 @@ const SummaryCashFlow = (props) => {
         <div style={{ marginBottom: '5px' }}>
           The chart below shows how revenue flows through the City’s key funds to the various departments. The thickness of each flow is proportional to the amount of money represented. Mouse over the rectangles and flows to see actual amounts.
         </div>
-        <BudgetSankey />
+        <BudgetSankey altText="Cash flow diagram" />
       </div>
     </div>
   );

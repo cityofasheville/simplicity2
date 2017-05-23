@@ -22,7 +22,7 @@ const renderLegend = payload => (
 );
 
 const PieChart = props => (
-  <div style={{ height: props.height }}>
+  <div style={{ height: props.height }} alt={props.altText}>
     {renderTitle(props.chartTitle)}
     <ResponsiveContainer>
       <RechartsPieChart>
@@ -54,6 +54,7 @@ PieChart.propTypes = {
   height: React.PropTypes.number,
   label: React.PropTypes.bool,
   defaultLegend: React.PropTypes.bool,
+  altText: React.PropTypes.string,
 };
 
 PieChart.defaultProps = {
@@ -61,6 +62,7 @@ PieChart.defaultProps = {
   height: 400,
   label: true,
   defaultLegend: false,
+  altText: 'Pie chart',
 };
 
 export default PieChart;

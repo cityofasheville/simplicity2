@@ -38,7 +38,7 @@ const CustomizedLabel = labelProps => (
 );
 
 const BarChart = props => (
-  <div style={{ height: props.height }}>
+  <div style={{ height: props.height }} alt={props.altText}>
     {renderTitle(props.chartTitle)}
     <ResponsiveContainer>
       <RechartsBarChart data={props.data}>
@@ -63,6 +63,7 @@ const BarChart = props => (
 
 BarChart.propTypes = {
   chartTitle: React.PropTypes.string,
+  altText: React.PropTypes.string,
   data: React.PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   barDataKeys: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
   xAxisDataKey: React.PropTypes.string.isRequired,
@@ -79,6 +80,7 @@ BarChart.propTypes = {
 };
 
 BarChart.defaultProps = {
+  altText: 'Bar chart',
   data: [],
   barDataKeys: [],
   xReferenceAxisDataKey: '',

@@ -131,45 +131,47 @@ const BudgetDetailsTable = (props) => {
       </div>
       <div className="row">
         <div className="col-sm-12">
-          <ReactTable
-            data={dataForTable}
-            columns={getDataColumns(0, props.location.query.mode)}
-            defaultPageSize={dataForTable.length}
-            showPagination={false}
-            SubComponent={innerRow1 => (
-              <div style={{ paddingLeft: '34px' }}>
-                <ReactTable
-                  data={dataForTable[innerRow1.index].children}
-                  columns={getDataColumns(1, props.location.query.mode)}
-                  defaultPageSize={dataForTable[innerRow1.index].children.length}
-                  showPagination={false}
-                  SubComponent={innerRow2 => (
-                    <div style={{ paddingLeft: '34px' }}>
-                      <ReactTable
-                        data={dataForTable[innerRow1.index].children[innerRow2.index].children}
-                        columns={getDataColumns(2, props.location.query.mode)}
-                        defaultPageSize={dataForTable[innerRow1.index].children[innerRow2.index].children.length}
-                        showPagination={false}
-                        SubComponent={innerRow3 => (
-                          <div style={{ paddingLeft: '34px' }}>
-                            <ReactTable
-                              data={dataForTable[innerRow1.index].children[innerRow2.index].children[innerRow3.index].children}
-                              columns={getDataColumns(3, props.location.query.mode)}
-                              defaultPageSize={dataForTable[innerRow1.index].children[innerRow2.index].children[innerRow3.index].children.length}
-                              showPagination={false}
-                            />
-                          </div>
-                          )
-                        }
-                      />
-                    </div>
-                    )
-                  }
-                />
-              </div>
-              )
-            }
-          />
+          <div alt={['Tsbler of', (props.location.query.mode || 'expenditures')].join(' ')}>
+            <ReactTable
+              data={dataForTable}
+              columns={getDataColumns(0, props.location.query.mode)}
+              defaultPageSize={dataForTable.length}
+              showPagination={false}
+              SubComponent={innerRow1 => (
+                <div style={{ paddingLeft: '34px' }}>
+                  <ReactTable
+                    data={dataForTable[innerRow1.index].children}
+                    columns={getDataColumns(1, props.location.query.mode)}
+                    defaultPageSize={dataForTable[innerRow1.index].children.length}
+                    showPagination={false}
+                    SubComponent={innerRow2 => (
+                      <div style={{ paddingLeft: '34px' }}>
+                        <ReactTable
+                          data={dataForTable[innerRow1.index].children[innerRow2.index].children}
+                          columns={getDataColumns(2, props.location.query.mode)}
+                          defaultPageSize={dataForTable[innerRow1.index].children[innerRow2.index].children.length}
+                          showPagination={false}
+                          SubComponent={innerRow3 => (
+                            <div style={{ paddingLeft: '34px' }}>
+                              <ReactTable
+                                data={dataForTable[innerRow1.index].children[innerRow2.index].children[innerRow3.index].children}
+                                columns={getDataColumns(3, props.location.query.mode)}
+                                defaultPageSize={dataForTable[innerRow1.index].children[innerRow2.index].children[innerRow3.index].children.length}
+                                showPagination={false}
+                              />
+                            </div>
+                            )
+                          }
+                        />
+                      </div>
+                      )
+                    }
+                  />
+                </div>
+                )
+              }
+            />
+          </div>
         </div>
       </div>
     </div>

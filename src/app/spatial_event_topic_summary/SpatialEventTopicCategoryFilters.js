@@ -52,7 +52,10 @@ const renderCategories = (spatialEventTopic) => {
         <div>
           {
             crimeCategorySelects.map((select, i) => (
-              <MultiSelect key={select.id === undefined ? i : select.id} options={select.options} values={select.values} placeholder={select.placeholder} allowNoneSelected={select.allowNoneSelected} id={select.id} name={select.name} />
+              <div>
+                <label htmlFor={select.name} className="offscreen">view</label>
+                <MultiSelect key={select.id === undefined ? i : select.id} options={select.options} values={select.values} placeholder={select.placeholder} allowNoneSelected={select.allowNoneSelected} id={select.id} name={select.name} />
+              </div>
             ))
           }
         </div>
@@ -62,7 +65,10 @@ const renderCategories = (spatialEventTopic) => {
         <div>
           {
             developmentCategorySelects.map((select, i) => (
-              <MultiSelect key={select.id === undefined ? i : select.id} options={select.options} values={select.values} placeholder={select.placeholder} allowNoneSelected={select.allowNoneSelected} id={select.id} name={select.name} />
+              <div>
+                <label htmlFor={select.id === undefined ? i : select.id} className="offscreen">view</label>
+                <MultiSelect key={select.id === undefined ? i : select.id} options={select.options} values={select.values} placeholder={select.placeholder} allowNoneSelected={select.allowNoneSelected} id={select.id} name={select.name} />
+              </div>
             ))
           }
         </div>

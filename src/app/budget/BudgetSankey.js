@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Sankey from '../../shared/visualization/Sankey';
 
 const BudgetSankey = props => (
-  <Sankey nodes={props.nodes} links={props.links} />
+  <Sankey nodes={props.nodes} links={props.links} altText={props.altText} />
 );
 
 const nameShape = {
@@ -19,6 +19,11 @@ const linkShape = {
 BudgetSankey.propTypes = {
   nodes: React.PropTypes.arrayOf(React.PropTypes.shape(nameShape)),
   links: React.PropTypes.arrayOf(React.PropTypes.shape(linkShape)),
+  altText: React.PropTypes.string,
+};
+
+BudgetSankey.defaultProps = {
+  altText: 'Flow diagram',
 };
 
 const mapStateToProps = state => (

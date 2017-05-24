@@ -1,7 +1,7 @@
 import React from 'react';
+import DetailsTable from '../../shared/DetailsTable';
 import DetailsGrouping from '../../shared/DetailsGrouping';
 import DetailsIconLinkGrouping from '../../shared/DetailsIconLinkGrouping';
-import DetailsTable from '../../shared/DetailsTable';
 
 const renderZoning = propertyZoning => (
   <div className="form-group">
@@ -118,8 +118,14 @@ Property.defaultProps = {
     ],
   },
   tableColumns: [
-    { title: 'Value Type', name: 'value_type' },
-    { title: 'Amount', name: 'amount' },
+    {
+      header: 'Value Type',
+      accessor: 'value_type',
+    },
+    {
+      header: 'Amount',
+      accessor: 'amount',
+    },
   ],
   tableData: [
     { value_type: 'Building value', amount: '$682,100' },

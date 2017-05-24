@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactTable from 'react-table';
 import styles from './detailsTable.css';
 
 const DetailsTable = (props) => {
@@ -16,26 +17,15 @@ const DetailsTable = (props) => {
       }
       <div className={['row'].join(' ')}>
         <div className="col-xs-12">
-          <div className={['row', styles.headerRow].join(' ')}>
-            {props.columns.map((columnData, i) => (
-              <div key={['header', i].join('_')} className={[['col-xs-', colWidth].join(''), styles.columnHeader].join(' ')}>
-                {columnData.title}
-              </div>
-            ))}
-          </div>
+          <ReactTable
+            data={props.data}
+            columns={props.columns}
+            defaultPageSize={props.data.length}
+            showPagination={false}
+            style={{ marginRight: '10px', marginLeft: '10px' }}
+          />
         </div>
       </div>
-      {props.columns.map((columnData, i) => (
-        <div key={i} className={['col-xs-', colWidth].join('')}>
-          {props.data.map((dataValue, j) => (
-            <div key={[i, j].join('_')} className={['form-group', styles.columnData].join(' ')}>
-              <div style={props.lastRowBold && j === props.data.length - 1 ? { fontWeight: 'bold' } : {}}>
-                {dataValue[columnData.name]}
-              </div>
-            </div>
-          ))}
-        </div>
-      ))}
     </div>
   );
 };

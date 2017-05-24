@@ -46,7 +46,7 @@ SummaryCashFlow.propTypes = {
 
 const glBudgetCashFlowQuery = gql`
   query glBudgetCashFlowQuery {
-    glBudgetCashFlowExpenses: gl_budget_cash_flow(accountType: "E") {
+    glBudgetCashFlowExpenses: budgetCashFlow(accountType: "E") {
         account_type,
         dept_id,
         department_name,
@@ -55,7 +55,7 @@ const glBudgetCashFlowQuery = gql`
         budget,
         year,
     },
-    glBudgetCashFlowRevenues: gl_budget_cash_flow(accountType: "R") {
+    glBudgetCashFlowRevenues: budgetCashFlow(accountType: "R") {
         account_type,
         category_id,
         category_name,

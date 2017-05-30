@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import DetailsFormGroup from './DetailsFormGroup';
 import styles from './detailsGrouping.css';
 
@@ -44,14 +45,14 @@ const DetailsGrouping = (props) => {
 };
 
 DetailsGrouping.propTypes = {
-  hasTitle: React.PropTypes.bool,
-  hasTitleIcon: React.PropTypes.bool,
-  titleIcon: React.PropTypes.string,
-  title: React.PropTypes.string,
-  colWidth: React.PropTypes.number,
-  dataLabels: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
-  dataValues: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
-  dataIcons: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
+  hasTitle: PropTypes.bool,
+  hasTitleIcon: PropTypes.bool,
+  titleIcon: PropTypes.string,
+  title: PropTypes.string,
+  colWidth: PropTypes.number,
+  dataLabels: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+  dataValues: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+  dataIcons: PropTypes.array, // eslint-disable-line react/forbid-prop-types
 };
 
 DetailsGrouping.defaultProps = {

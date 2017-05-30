@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { connect } from 'react-redux';
@@ -27,21 +28,6 @@ const SummaryCashFlow = (props) => {
       </div>
     </div>
   );
-};
-
-const nameShape = {
-  name: React.PropTypes.string,
-};
-
-const linkShape = {
-  source: React.PropTypes.number,
-  target: React.PropTypes.number,
-  value: React.PropTypes.number,
-};
-
-SummaryCashFlow.propTypes = {
-  nodes: React.PropTypes.arrayOf(React.PropTypes.shape(nameShape)),
-  links: React.PropTypes.arrayOf(React.PropTypes.shape(linkShape)),
 };
 
 const glBudgetCashFlowQuery = gql`

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import DetailsGrouping from '../../shared/DetailsGrouping';
 
 const DevelopmentDetail = props => (
@@ -27,25 +28,25 @@ const DevelopmentDetail = props => (
 );
 
 const permitDataShape = {
-  'Permit #': React.PropTypes.string,
-  'Permit type': React.PropTypes.string,
-  'Permit group': React.PropTypes.string,
-  Status: React.PropTypes.string,
-  'Applicant name': React.PropTypes.string,
-  'Applied date': React.PropTypes.date,
-  'Permit subtype': React.PropTypes.string,
-  'Permit category': React.PropTypes.string,
-  'Updated date': React.PropTypes.date,
-  Contractor: React.PropTypes.string,
-  'License #': React.PropTypes.string,
+  'Permit #': PropTypes.string,
+  'Permit type': PropTypes.string,
+  'Permit group': PropTypes.string,
+  Status: PropTypes.string,
+  'Applicant name': PropTypes.string,
+  'Applied date': PropTypes.date,
+  'Permit subtype': PropTypes.string,
+  'Permit category': PropTypes.string,
+  'Updated date': PropTypes.date,
+  Contractor: PropTypes.string,
+  'License #': PropTypes.string,
 };
 
 DevelopmentDetail.propTypes = {
-  PermitDescription: React.PropTypes.string,
-  PermitName: React.PropTypes.string,
-  PermitAddress: React.PropTypes.string,
-  data: React.PropTypes.shape(permitDataShape).isRequired, // eslint-disable-line react/forbid-prop-types
-  comments: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
+  PermitDescription: PropTypes.string,
+  PermitName: PropTypes.string,
+  PermitAddress: PropTypes.string,
+  data: PropTypes.shape(permitDataShape).isRequired, // eslint-disable-line react/forbid-prop-types
+  comments: PropTypes.array, // eslint-disable-line react/forbid-prop-types
 };
 
 // TODO - this is temporary dummy data

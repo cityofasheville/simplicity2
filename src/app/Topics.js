@@ -1,8 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-
-
-
 
 const Topics = props => (
   <div className="container">
@@ -33,7 +31,7 @@ const Topics = props => (
 );
 
 Topics.propTypes = {
-  children: React.PropTypes.node,
+  children: PropTypes.node,
 };
 
 export default Topics;

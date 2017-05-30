@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styles from './searchByEntities.css';
 
 const getIcon = (entityType) => {
@@ -34,13 +35,13 @@ const SearchByEntity = props => (
 );
 
 const entityDataShape = {
-  entityType: React.PropTypes.string,
-  checked: React.PropTypes.bool,
+  entityType: PropTypes.string,
+  checked: PropTypes.bool,
 };
 
 SearchByEntity.propTypes = {
-  entity: React.PropTypes.shape(entityDataShape).isRequired,
-  onClick: React.PropTypes.func,
+  entity: PropTypes.shape(entityDataShape).isRequired,
+  onClick: PropTypes.func,
 };
 
 export default SearchByEntity;

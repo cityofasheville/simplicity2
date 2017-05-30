@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const EmailDownload = props => (
   <div style={{ marginTop: '5px' }}>
@@ -12,9 +13,9 @@ const EmailDownload = props => (
 );
 
 EmailDownload.propTypes = {
-  emailFunction: React.PropTypes.func,
-  downloadFunction: React.PropTypes.func,
-  args: React.PropTypes.object,  // eslint-disable-line react/forbid-prop-types
+  emailFunction: PropTypes.func,
+  downloadFunction: PropTypes.func,
+  args: PropTypes.object,  // eslint-disable-line react/forbid-prop-types
 };
 
 export default EmailDownload;

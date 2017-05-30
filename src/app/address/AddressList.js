@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import EmailDownload from '../../shared/EmailDownload';
 import styles from './addressList.css';
 
@@ -70,13 +71,13 @@ const AddressList = props => (
 );
 
 const addressDataShape = {
-  name: React.PropTypes.string,
-  address: React.PropTypes.string,
+  name: PropTypes.string,
+  address: PropTypes.string,
 };
 
 AddressList.propTypes = {
-  location: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  listData: React.PropTypes.arrayOf(React.PropTypes.shape(addressDataShape)),
+  location: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  listData: PropTypes.arrayOf(PropTypes.shape(addressDataShape)),
 };
 
 // TODO - this is temporary dummy data

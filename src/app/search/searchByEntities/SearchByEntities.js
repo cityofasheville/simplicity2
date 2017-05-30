@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import SearchByEntity from './SearchByEntity';
 import { toggleSearchByEntity } from './searchByEntitiesActions';
@@ -18,13 +19,13 @@ const SearchByEntities = props => (
 );
 
 const entityDataShape = {
-  entityType: React.PropTypes.string,
-  checked: React.PropTypes.bool,
+  entityType: PropTypes.string,
+  checked: PropTypes.bool,
 };
 
 SearchByEntities.propTypes = {
-  entities: React.PropTypes.arrayOf(React.PropTypes.shape(entityDataShape)),
-  toggleEntity: React.PropTypes.func,
+  entities: PropTypes.arrayOf(PropTypes.shape(entityDataShape)),
+  toggleEntity: PropTypes.func,
 };
 
 SearchByEntities.defaultProps = {

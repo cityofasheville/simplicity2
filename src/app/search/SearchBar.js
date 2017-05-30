@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import SearchByEntities from './searchByEntities/SearchByEntities';
 
 const SearchBar = props => (
@@ -26,8 +27,8 @@ const SearchBar = props => (
 );
 
 SearchBar.propTypes = {
-  text: React.PropTypes.string,
-  onKeyUp: React.PropTypes.func,
+  text: PropTypes.string,
+  onKeyUp: PropTypes.func,
 };
 
 

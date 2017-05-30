@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import MultiSelect from '../../shared/MultiSelect';
 
 const crimeCategorySelects = [
@@ -52,9 +53,9 @@ const renderCategories = (spatialEventTopic) => {
         <div>
           {
             crimeCategorySelects.map((select, i) => (
-              <div>
-                <label htmlFor={select.name} className="offscreen">view</label>
-                <MultiSelect key={select.id === undefined ? i : select.id} options={select.options} values={select.values} placeholder={select.placeholder} allowNoneSelected={select.allowNoneSelected} id={select.id} name={select.name} />
+              <div key={select.id === undefined ? i : select.id}>
+                <label htmlFor={select.id === undefined ? i : select.id} className="offscreen">view</label>
+                <MultiSelect options={select.options} values={select.values} placeholder={select.placeholder} allowNoneSelected={select.allowNoneSelected} id={select.id} name={select.name} />
               </div>
             ))
           }
@@ -65,9 +66,9 @@ const renderCategories = (spatialEventTopic) => {
         <div>
           {
             developmentCategorySelects.map((select, i) => (
-              <div>
-                <label htmlFor={select.id === undefined ? i : select.id} className="offscreen">view</label>
-                <MultiSelect key={select.id === undefined ? i : select.id} options={select.options} values={select.values} placeholder={select.placeholder} allowNoneSelected={select.allowNoneSelected} id={select.id} name={select.name} />
+              <div key={select.id === undefined ? i : select.id} >
+                <label htmlFor={select.id} className="offscreen">view</label>
+                <MultiSelect options={select.options} values={select.values} placeholder={select.placeholder} allowNoneSelected={select.allowNoneSelected} id={select.id} name={select.name} />
               </div>
             ))
           }
@@ -88,7 +89,7 @@ const SpatialEventTopicCategoryFilters = props => (
 );
 
 SpatialEventTopicCategoryFilters.propTypes = {
-  spatialEventTopic: React.PropTypes.string.isRequired,
+  spatialEventTopic: PropTypes.string.isRequired,
 };
 
 export default SpatialEventTopicCategoryFilters;

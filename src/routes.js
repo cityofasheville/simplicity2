@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 // import { Provider } from 'react-redux';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import { ApolloProvider } from 'react-apollo';
@@ -96,7 +97,7 @@ const Routes = props => (
 
 Routes.propTypes = {
   /* eslint-disable */
-  store: React.PropTypes.object.isRequired, 
+  store: PropTypes.object.isRequired, 
 };
 
 export default Routes;

@@ -1,6 +1,7 @@
 // http://stackoverflow.com/questions/35623656/how-can-i-display-a-modal-dialog-in-redux-that-performs-asynchronous-actions/35641680
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { closeModal } from './modalActions';
@@ -39,9 +40,9 @@ const Modal = (props) => {
 };
 
 Modal.propTypes = {
-  onClick: React.PropTypes.func,
-  children: React.PropTypes.node,
-  open: React.PropTypes.bool,
+  onClick: PropTypes.func,
+  children: PropTypes.node,
+  open: PropTypes.bool,
 };
 
 const mapStateToProps = (state, ownProps) => (

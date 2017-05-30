@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import PieChart from '../../shared/visualization/PieChart';
 import SpatialEventTopicFilters from '../spatial_event_topic_summary/SpatialEventTopicFilters';
 import EmailDownload from '../../shared/EmailDownload';
@@ -76,8 +77,8 @@ const SpatialEventTopicSummary = props => (
 );
 
 SpatialEventTopicSummary.propTypes = {
-  spatialEventTopic: React.PropTypes.string.isRequired,
-  query: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  spatialEventTopic: PropTypes.string.isRequired,
+  query: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 };
 
 SpatialEventTopicSummary.defaultProps = {

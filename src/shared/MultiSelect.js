@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Select, Trigger, OptionList, Option, utils } from 'selectly/lib/Selectly';
 const { getToggledValues } = utils;
 
@@ -20,9 +21,9 @@ const CheckboxOption = props => (
 );
 
 CheckboxOption.propTypes = {
-  value: React.PropTypes.string,
-  isChecked: React.PropTypes.bool,
-  children: React.PropTypes.node,
+  value: PropTypes.string,
+  isChecked: PropTypes.bool,
+  children: PropTypes.node,
 };
 
 class MultiSelect extends React.Component {
@@ -84,17 +85,17 @@ class MultiSelect extends React.Component {
 }
 
 const optionShape = {
-  value: React.PropTypes.string,
-  display: React.PropTypes.string,
+  value: PropTypes.string,
+  display: PropTypes.string,
 };
 
 MultiSelect.propTypes = {
-  options: React.PropTypes.arrayOf(React.PropTypes.shape(optionShape)),
-  values: React.PropTypes.arrayOf(React.PropTypes.string),
-  name: React.PropTypes.string,
-  id: React.PropTypes.string,
-  placeholder: React.PropTypes.string,
-  allowNoneSelected: React.PropTypes.bool,
+  options: PropTypes.arrayOf(PropTypes.shape(optionShape)),
+  values: PropTypes.arrayOf(PropTypes.string),
+  name: PropTypes.string,
+  id: PropTypes.string,
+  placeholder: PropTypes.string,
+  allowNoneSelected: PropTypes.bool,
 };
 
 MultiSelect.defaultProps = {

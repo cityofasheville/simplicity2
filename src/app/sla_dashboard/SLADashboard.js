@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 
 import { query } from './SLADashboardQueries';
@@ -11,8 +12,8 @@ const DevelopmentSLADashboard = (props) => {
 };
 
 DevelopmentSLADashboard.propTypes = {
-  data: React.PropTypes.object,
-  dispatch: React.PropTypes.func,
+  data: PropTypes.object,
+  dispatch: PropTypes.func,
 };
 
 

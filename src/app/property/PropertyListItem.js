@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import styles from '../spatial_event_topic_summary/spatialEventTopicListItemStyles.css';
 
@@ -36,13 +37,13 @@ const PropertyListItem = (props) => {
 };
 
 const itemDataShape = {
-  PropertyName: React.PropTypes.string,
-  CivicAddressID: React.PropTypes.string,
-  PIN: React.PropTypes.date,
+  PropertyName: PropTypes.string,
+  CivicAddressID: PropTypes.string,
+  PIN: PropTypes.date,
 };
 
 PropertyListItem.propTypes = {
-  itemData: React.PropTypes.shape(itemDataShape).isRequired,
+  itemData: PropTypes.shape(itemDataShape).isRequired,
 };
 
 export default PropertyListItem;

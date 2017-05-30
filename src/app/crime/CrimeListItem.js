@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styles from '../spatial_event_topic_summary/spatialEventTopicListItemStyles.css';
 
 const CrimeListItem = (props) => {
@@ -44,12 +45,12 @@ const CrimeListItem = (props) => {
 };
 
 CrimeListItem.propTypes = {
-  itemData: React.PropTypes.shape({
-    crime: React.PropTypes.string,
-    location: React.PropTypes.location,
-    date: React.PropTypes.date,
-    caseNumber: React.PropTypes.string,
-    lawBeat: React.PropTypes.string,
+  itemData: PropTypes.shape({
+    crime: PropTypes.string,
+    location: PropTypes.location,
+    date: PropTypes.date,
+    caseNumber: PropTypes.string,
+    lawBeat: PropTypes.string,
   }).isRequired,
 };
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link, browserHistory } from 'react-router';
 import Treemap from '../../shared/visualization/Treemap';
@@ -147,14 +148,14 @@ const BudgetDetailsTreemap = (props) => {
 };
 
 BudgetDetailsTreemap.propTypes = {
-  categoryType: React.PropTypes.string,
-  expenseTree: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  revenueTree: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  location: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  diveDeeper: React.PropTypes.func,
-  jumpUp: React.PropTypes.func,
-  // expensePath: React.PropTypes.string,
-  // revenuePath: React.PropTypes.string,
+  categoryType: PropTypes.string,
+  expenseTree: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  revenueTree: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  location: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  diveDeeper: PropTypes.func,
+  jumpUp: PropTypes.func,
+  // expensePath: PropTypes.string,
+  // revenuePath: PropTypes.string,
 };
 
 BudgetDetailsTreemap.defaultProps = {

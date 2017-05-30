@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { ResponsiveContainer, BarChart as RechartsBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ReferenceArea } from 'recharts';
 
 const colorSchemes = [
@@ -62,21 +63,21 @@ const BarChart = props => (
 );
 
 BarChart.propTypes = {
-  chartTitle: React.PropTypes.string,
-  altText: React.PropTypes.string,
-  data: React.PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  barDataKeys: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
-  xAxisDataKey: React.PropTypes.string.isRequired,
-  xReferenceAxisDataKey: React.PropTypes.string,
-  yTickFormatter: React.PropTypes.func,
-  xTickFormatter: React.PropTypes.func,
-  height: React.PropTypes.number,
-  stacked: React.PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
-  dollars: React.PropTypes.bool,
-  colorScheme: React.PropTypes.number, // eslint-disable-line react/no-unused-prop-types
-  referenceArea: React.PropTypes.bool,
-  referenceAreaLabels: React.PropTypes.arrayOf(React.PropTypes.array),
-  referenceAreaExes: React.PropTypes.arrayOf(React.PropTypes.number),
+  chartTitle: PropTypes.string,
+  altText: PropTypes.string,
+  data: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  barDataKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
+  xAxisDataKey: PropTypes.string.isRequired,
+  xReferenceAxisDataKey: PropTypes.string,
+  yTickFormatter: PropTypes.func,
+  xTickFormatter: PropTypes.func,
+  height: PropTypes.number,
+  stacked: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
+  dollars: PropTypes.bool,
+  colorScheme: PropTypes.number, // eslint-disable-line react/no-unused-prop-types
+  referenceArea: PropTypes.bool,
+  referenceAreaLabels: PropTypes.arrayOf(PropTypes.array),
+  referenceAreaExes: PropTypes.arrayOf(PropTypes.number),
 };
 
 BarChart.defaultProps = {

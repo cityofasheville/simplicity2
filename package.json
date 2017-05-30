@@ -53,6 +53,7 @@
     "firebase": "^3.6.4",
     "firebaseui": "^1.0.0",
     "graphql-tag": "^2.0.0",
+    "prop-types": "^15.5.10",
     "react": "^15.4.1",
     "react-apollo": "^1.2.0",
     "react-collapsible": "^1.4.0",

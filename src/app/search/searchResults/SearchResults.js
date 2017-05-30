@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import SearchResultGroup from './SearchResultGroup';
 
@@ -19,14 +20,14 @@ const SearchResults = props => (
 );
 
 const resultsShape = {
-  label: React.PropTypes.string,
-  icon: React.PropTypes.string,
-  results: React.PropTypes.array,
+  label: PropTypes.string,
+  icon: PropTypes.string,
+  results: PropTypes.array,
 };
 
 
 SearchResults.propTypes = {
-  results: React.PropTypes.arrayOf(React.PropTypes.shape(resultsShape)),
+  results: PropTypes.arrayOf(PropTypes.shape(resultsShape)),
 };
 
 export default SearchResults;

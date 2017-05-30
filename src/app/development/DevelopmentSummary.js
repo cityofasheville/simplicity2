@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 
 import SpatialEventTopicSummary from '../spatial_event_topic_summary/SpatialEventTopicSummary';
@@ -11,7 +12,7 @@ const DevelopmentSummary = props => (
 );
 
 DevelopmentSummary.propTypes = {
-  location: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  location: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 };
 
 DevelopmentSummary.defaultProps = {

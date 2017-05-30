@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import DetailsIconLinkFormGroup from './DetailsIconLinkFormGroup';
 
 const DetailsIconLinkGrouping = (props) => {
@@ -29,11 +30,11 @@ const DetailsIconLinkGrouping = (props) => {
 };
 
 DetailsIconLinkGrouping.propTypes = {
-  colWidth: React.PropTypes.number,
-  dataLabels: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
-  dataIcons: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
-  dataHrefs: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
-  dataTitles: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
+  colWidth: PropTypes.number,
+  dataLabels: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+  dataIcons: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+  dataHrefs: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+  dataTitles: PropTypes.array, // eslint-disable-line react/forbid-prop-types
 };
 
 DetailsIconLinkGrouping.defaultProps = {

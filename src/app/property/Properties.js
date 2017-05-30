@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import EmailDownload from '../../shared/EmailDownload';
 import PropertyList from './PropertyList';
 
@@ -48,7 +49,7 @@ const Properties = props => (
 );
 
 Properties.propTypes = {
-  location: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  location: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 };
 
 export default Properties;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styles from './inCityMessage.css';
 
 const InCityMessage = props => (
@@ -19,7 +20,7 @@ const InCityMessage = props => (
 );
 
 InCityMessage.propTypes = {
-  inTheCity: React.PropTypes.bool,
+  inTheCity: PropTypes.bool,
 };
 
 InCityMessage.defaultProps = {

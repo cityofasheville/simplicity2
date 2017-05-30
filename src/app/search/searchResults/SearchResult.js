@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import styles from './searchResult.css';
 
@@ -51,11 +52,11 @@ class SearchResult extends React.Component { // eslint-disable-line
 }
 
 SearchResult.propTypes = {
-  children: React.PropTypes.node,
-  icon: React.PropTypes.string,
-  type: React.PropTypes.string,
-  id: React.PropTypes.string,
-  label: React.PropTypes.string,
+  children: PropTypes.node,
+  icon: PropTypes.string,
+  type: PropTypes.string,
+  id: PropTypes.string,
+  label: PropTypes.string,
 };
 
 export default SearchResult;

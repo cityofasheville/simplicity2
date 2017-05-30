@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styles from '../spatial_event_topic_summary/spatialEventTopicListItemStyles.css';
 
 const getAuthoritySite = (authority) => {
@@ -45,13 +46,13 @@ const MaintenanceListItem = (props) => {
 };
 
 const itemDataShape = {
-  AuthorityName: React.PropTypes.string,
-  CenterlineID: React.PropTypes.string,
-  Street: React.PropTypes.string,
+  AuthorityName: PropTypes.string,
+  CenterlineID: PropTypes.string,
+  Street: PropTypes.string,
 };
 
 MaintenanceListItem.propTypes = {
-  itemData: React.PropTypes.shape(itemDataShape).isRequired,
+  itemData: PropTypes.shape(itemDataShape).isRequired,
 };
 
 export default MaintenanceListItem;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import SummaryUse from './SummaryUse';
 import SummaryDepartments from './SummaryDepartments';
@@ -38,7 +39,7 @@ const BudgetSummary = props => (
 );
 
 BudgetSummary.propTypes = {
-  location: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  location: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 };
 
 export default BudgetSummary;

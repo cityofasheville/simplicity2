@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { ResponsiveContainer, Treemap as RechartsTreemap } from 'recharts';
 
 const COLORS = ['#9C27B0', '#03A9F4', '#FFC107', '#b71c1c', '#4CAF50', '#E91E63', '#9E9E9E'];
@@ -127,18 +128,18 @@ const CustomTreemap = (props) => {
 };
 
 CustomTreemap.propTypes = {
-  root: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  depth: React.PropTypes.number,
-  x: React.PropTypes.number,
-  y: React.PropTypes.number,
-  width: React.PropTypes.number,
-  height: React.PropTypes.number,
-  index: React.PropTypes.number,
-  colors: React.PropTypes.arrayOf(React.PropTypes.string),
-  name: React.PropTypes.string,
-  amount: React.PropTypes.number,
-  diveDeeper: React.PropTypes.func,
-  showingLabels: React.PropTypes.bool,
+  root: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  depth: PropTypes.number,
+  x: PropTypes.number,
+  y: PropTypes.number,
+  width: PropTypes.number,
+  height: PropTypes.number,
+  index: PropTypes.number,
+  colors: PropTypes.arrayOf(PropTypes.string),
+  name: PropTypes.string,
+  amount: PropTypes.number,
+  diveDeeper: PropTypes.func,
+  showingLabels: PropTypes.bool,
 };
 
 class Treemap extends React.Component {
@@ -180,12 +181,12 @@ class Treemap extends React.Component {
 }
 
 Treemap.propTypes = {
-  height: React.PropTypes.number,
-  data: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
-  showingLabels: React.PropTypes.bool,
-  differenceColors: React.PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
-  diveDeeper: React.PropTypes.func, // eslint-disable-line react/no-unused-prop-types
-  altText: React.PropTypes.string, // eslint-disable-line react/no-unused-prop-types
+  height: PropTypes.number,
+  data: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+  showingLabels: PropTypes.bool,
+  differenceColors: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
+  diveDeeper: PropTypes.func, // eslint-disable-line react/no-unused-prop-types
+  altText: PropTypes.string, // eslint-disable-line react/no-unused-prop-types
 };
 
 Treemap.defaultProps = {

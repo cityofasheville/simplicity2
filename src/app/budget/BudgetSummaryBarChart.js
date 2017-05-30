@@ -70,7 +70,7 @@ class BudgetSummaryBarChart extends React.Component {
         <div className="row">
           <div className="col-xs-10 col-xs-offset-2">
             <br />
-            <a href="javascript:void(0);" className="text-center" onClick={() => this.toggleLongDesc()}>
+            <a href="javascript:void(0);" className="text-center inText" onClick={() => this.toggleLongDesc()}>
               {this.state.showingLongDesc ? 'Hide' : 'Show'} spending {getTitle(this.props.categoryType)} bar chart summary
             </a>
             <div hidden={!this.state.showingLongDesc}>

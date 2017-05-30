@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styles from './detailsFormGroup.css';
 
 const DetailsFormGroup = props => (
@@ -12,11 +13,11 @@ const DetailsFormGroup = props => (
 );
 
 DetailsFormGroup.propTypes = {
-  hasIcon: React.PropTypes.bool,
-  hasLabel: React.PropTypes.bool,
-  label: React.PropTypes.string,
-  value: React.PropTypes.string,
-  icon: React.PropTypes.string,
+  hasIcon: PropTypes.bool,
+  hasLabel: PropTypes.bool,
+  label: PropTypes.string,
+  value: PropTypes.string,
+  icon: PropTypes.string,
 };
 
 DetailsFormGroup.defaultProps = {

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import BarChart from '../../shared/visualization/BarChart';
 
@@ -84,10 +85,10 @@ class BudgetSummaryBarChart extends React.Component {
 }
 
 BudgetSummaryBarChart.propTypes = {
-  categoryType: React.PropTypes.string,
-  colorScheme: React.PropTypes.number,
-  summaryData: React.PropTypes.object, // eslint-disable-line
-  showLongDesc: React.PropTypes.bool, // eslint-disable-line
+  categoryType: PropTypes.string,
+  colorScheme: PropTypes.number,
+  summaryData: PropTypes.object, // eslint-disable-line
+  showLongDesc: PropTypes.bool, // eslint-disable-line
 };
 
 BudgetSummaryBarChart.defaultProps = {

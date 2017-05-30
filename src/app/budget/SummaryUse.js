@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { connect } from 'react-redux';
@@ -25,7 +26,7 @@ const SummaryUse = (props) => {
 };
 
 SummaryUse.propTypes = {
-  data: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  data: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 };
 
 SummaryUse.defaultProps = {

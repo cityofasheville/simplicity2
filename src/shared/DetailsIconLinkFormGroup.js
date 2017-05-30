@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import styles from './detailsIconLinkFormGroup.css';
 
@@ -14,10 +15,10 @@ const DetailsIconLinkFormGroup = props => (
 );
 
 DetailsIconLinkFormGroup.propTypes = {
-  label: React.PropTypes.string,
-  icon: React.PropTypes.string,
-  href: React.PropTypes.string,
-  title: React.PropTypes.string,
+  label: PropTypes.string,
+  icon: PropTypes.string,
+  href: PropTypes.string,
+  title: PropTypes.string,
 };
 
 DetailsIconLinkFormGroup.defaultProps = {

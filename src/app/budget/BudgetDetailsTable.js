@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import ReactTable from 'react-table';
@@ -179,10 +180,10 @@ const BudgetDetailsTable = (props) => {
 };
 
 BudgetDetailsTable.propTypes = {
-  location: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  expenseTree: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  revenueTree: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  notes: React.PropTypes.arrayOf(React.PropTypes.string),
+  location: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  expenseTree: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  revenueTree: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  notes: PropTypes.arrayOf(PropTypes.string),
 };
 
 BudgetDetailsTable.defaultProps = {

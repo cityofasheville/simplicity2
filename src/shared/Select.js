@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class Select extends React.Component {
   constructor(props) {
@@ -30,15 +31,15 @@ class Select extends React.Component {
 }
 
 const optionShape = {
-  value: React.PropTypes.string,
-  display: React.PropTypes.string,
+  value: PropTypes.string,
+  display: PropTypes.string,
 };
 
 Select.propTypes = {
-  options: React.PropTypes.arrayOf(React.PropTypes.shape(optionShape)),
-  value: React.PropTypes.string,
-  name: React.PropTypes.string,
-  id: React.PropTypes.string,
+  options: PropTypes.arrayOf(PropTypes.shape(optionShape)),
+  value: PropTypes.string,
+  name: PropTypes.string,
+  id: PropTypes.string,
 };
 
 export default Select;

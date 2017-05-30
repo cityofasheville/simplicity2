@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const LoadingAnimation = (props) => {
   switch (props.size) {
@@ -32,9 +33,9 @@ const LoadingAnimation = (props) => {
 };
 
 LoadingAnimation.propTypes = {
-  size: React.PropTypes.string,
-  message: React.PropTypes.string,
-  marginTop: React.PropTypes.string,
+  size: PropTypes.string,
+  message: PropTypes.string,
+  marginTop: PropTypes.string,
 };
 
 LoadingAnimation.defaultProps = {

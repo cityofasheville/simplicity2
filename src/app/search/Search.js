@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import SearchBar from './SearchBar';
@@ -138,8 +139,8 @@ class Search extends React.Component {
 
 
 Search.propTypes = {
-  text: React.PropTypes.string,
-  onKeyUp: React.PropTypes.func,
+  text: PropTypes.string,
+  onKeyUp: PropTypes.func,
 };
 
 const mapStateToProps = (state, ownProps) => (

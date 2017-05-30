@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import SpatialEventTopicSummary from '../spatial_event_topic_summary/SpatialEventTopicSummary';
 
 const CrimeSummary = props => (
@@ -8,7 +9,7 @@ const CrimeSummary = props => (
 );
 
 CrimeSummary.propTypes = {
-  location: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  location: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 };
 
 CrimeSummary.defaultProps = {

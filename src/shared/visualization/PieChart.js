@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { ResponsiveContainer, PieChart as RechartsPieChart, Pie, Tooltip, Legend, Cell } from 'recharts';
 import styles from './pieChartStyles.css';
 
@@ -50,13 +51,13 @@ const PieChart = props => (
 );
 
 PieChart.propTypes = {
-  chartTitle: React.PropTypes.string,
-  data: React.PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  height: React.PropTypes.number,
-  label: React.PropTypes.bool,
-  defaultLegend: React.PropTypes.bool,
-  altText: React.PropTypes.string,
-  doughnut: React.PropTypes.bool,
+  chartTitle: PropTypes.string,
+  data: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  height: PropTypes.number,
+  label: PropTypes.bool,
+  defaultLegend: PropTypes.bool,
+  altText: PropTypes.string,
+  doughnut: PropTypes.bool,
 };
 
 PieChart.defaultProps = {

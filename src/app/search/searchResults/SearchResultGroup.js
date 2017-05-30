@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import SearchResult from './SearchResult';
 import styles from './searchResultGroup.css';
@@ -85,16 +86,16 @@ class SearchResultGroup extends React.Component {
 }
 
 const resultsShape = {
-  id: React.PropTypes.string,
-  type: React.PropTypes.string,
-  label: React.PropTypes.string,
+  id: PropTypes.string,
+  type: PropTypes.string,
+  label: PropTypes.string,
 };
 
 SearchResultGroup.propTypes = {
-  label: React.PropTypes.string,
-  count: React.PropTypes.number,
-  icon: React.PropTypes.string,
-  results: React.PropTypes.arrayOf(React.PropTypes.shape(resultsShape)),
+  label: PropTypes.string,
+  count: PropTypes.number,
+  icon: PropTypes.string,
+  results: PropTypes.arrayOf(PropTypes.shape(resultsShape)),
 };
 
 export default SearchResultGroup;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import SearchBar from './search/SearchBarLink'; // temporarily using the link version
 import TopicCard from '../shared/TopicCard';
@@ -24,7 +25,7 @@ const Homepage = props => (
 );
 
 Homepage.propTypes = {
-  topics: React.PropTypes.arrayOf(React.PropTypes.string),
+  topics: PropTypes.arrayOf(PropTypes.string),
 };
 
 Homepage.defaultProps = {

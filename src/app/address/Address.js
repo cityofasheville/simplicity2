@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import DetailsGrouping from '../../shared/DetailsGrouping';
@@ -84,15 +85,15 @@ const Address = (props) => {
 };
 
 const dataShape = {
-  address: React.PropTypes.string,
-  zipcode: React.PropTypes.string,
-  city: React.PropTypes.string,
-  truckday: React.PropTypes.string,
+  address: PropTypes.string,
+  zipcode: PropTypes.string,
+  city: PropTypes.string,
+  truckday: PropTypes.string,
 };
 
 Address.propTypes = {
-  data: React.PropTypes.shape(dataShape).isRequired,
-  location: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  data: PropTypes.shape(dataShape).isRequired,
+  location: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 };
 
 Address.defaultProps = {

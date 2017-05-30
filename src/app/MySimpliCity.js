@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const MySimpliCity = props => (
   <div className="">
@@ -8,7 +9,7 @@ const MySimpliCity = props => (
 );
 
 MySimpliCity.propTypes = {
-  children: React.PropTypes.node,
+  children: PropTypes.node,
 };
 
 export default MySimpliCity;

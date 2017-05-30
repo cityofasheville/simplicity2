@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styles from '../spatial_event_topic_summary/spatialEventTopicListItemStyles.css';
 
 
@@ -51,22 +52,22 @@ const DevelopmentListItem = (props) => {
 };
 
 const itemDataShape = {
-  PermitType: React.PropTypes.string,
-  PermitSubtype: React.PropTypes.string,
-  AppliedDate: React.PropTypes.date,
-  UpdatedDate: React.PropTypes.date,
-  PermitNum: React.PropTypes.string,
-  PermitCategory: React.PropTypes.string,
-  Address: React.PropTypes.string,
-  PermitGroup: React.PropTypes.string,
-  PermitName: React.PropTypes.string,
-  CurrentStatus: React.PropTypes.string,
-  LicenseNumber: React.PropTypes.string,
-  Contractor: React.PropTypes.string,
+  PermitType: PropTypes.string,
+  PermitSubtype: PropTypes.string,
+  AppliedDate: PropTypes.date,
+  UpdatedDate: PropTypes.date,
+  PermitNum: PropTypes.string,
+  PermitCategory: PropTypes.string,
+  Address: PropTypes.string,
+  PermitGroup: PropTypes.string,
+  PermitName: PropTypes.string,
+  CurrentStatus: PropTypes.string,
+  LicenseNumber: PropTypes.string,
+  Contractor: PropTypes.string,
 };
 
 DevelopmentListItem.propTypes = {
-  itemData: React.PropTypes.shape(itemDataShape).isRequired,
+  itemData: PropTypes.shape(itemDataShape).isRequired,
 };
 
 export default DevelopmentListItem;

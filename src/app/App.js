@@ -1,6 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Navbar from './Navbar';
-
 
 import AuthProviderModal from '../utilities/auth/authProviderModal';
 
@@ -25,7 +25,7 @@ const App = props => (
 );
 
 App.propTypes = {
-  children: React.PropTypes.node,
+  children: PropTypes.node,
 };
 
 export default App;

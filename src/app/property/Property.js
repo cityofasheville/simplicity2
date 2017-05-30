@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import DetailsTable from '../../shared/DetailsTable';
 import DetailsGrouping from '../../shared/DetailsGrouping';
 import DetailsIconLinkGrouping from '../../shared/DetailsIconLinkGrouping';
@@ -54,30 +55,30 @@ const Property = props => (
 );
 
 const propertyDataShape = {
-  'Civic address ID': React.PropTypes.string,
-  Neighborhood: React.PropTypes.string,
-  'Tax exempt': React.PropTypes.string,
-  'Pin #': React.PropTypes.string,
-  'Appraisal area': React.PropTypes.string,
-  Acreage: React.PropTypes.string,
-  'Zoning overlay': React.PropTypes.string,
+  'Civic address ID': PropTypes.string,
+  Neighborhood: PropTypes.string,
+  'Tax exempt': PropTypes.string,
+  'Pin #': PropTypes.string,
+  'Appraisal area': PropTypes.string,
+  Acreage: PropTypes.string,
+  'Zoning overlay': PropTypes.string,
 };
 
 const iconLinksDataShape = {
-  icons: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
-  labels: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
-  hrefs: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
+  icons: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+  labels: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+  hrefs: PropTypes.array, // eslint-disable-line react/forbid-prop-types
 };
 
 Property.propTypes = {
-  location: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  propertyAddress: React.PropTypes.string,
-  propertyDetails: React.PropTypes.shape(propertyDataShape).isRequired, // eslint-disable-line react/forbid-prop-types
-  ownerData: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
-  tableColumns: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
-  tableData: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
-  propertyZoning: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
-  iconLinksData: React.PropTypes.shape(iconLinksDataShape).isRequired, // eslint-disable-line react/forbid-prop-types
+  location: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  propertyAddress: PropTypes.string,
+  propertyDetails: PropTypes.shape(propertyDataShape).isRequired, // eslint-disable-line react/forbid-prop-types
+  ownerData: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+  tableColumns: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+  tableData: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+  propertyZoning: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+  iconLinksData: PropTypes.shape(iconLinksDataShape).isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 // TODO - this is temporary dummy data

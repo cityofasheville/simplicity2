@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import MaintenanceListItem from './MaintenanceListItem';
 import styles from '../spatial_event_topic_summary/spatialEventTopicListStyles.css';
 
@@ -11,13 +12,13 @@ const MaintenanceList = props => (
 );
 
 const itemDataShape = {
-  AuthorityName: React.PropTypes.string,
-  CenterlineID: React.PropTypes.string,
-  Street: React.PropTypes.string,
+  AuthorityName: PropTypes.string,
+  CenterlineID: PropTypes.string,
+  Street: PropTypes.string,
 };
 
 MaintenanceList.propTypes = {
-  listData: React.PropTypes.arrayOf(React.PropTypes.shape(itemDataShape)).isRequired,
+  listData: PropTypes.arrayOf(PropTypes.shape(itemDataShape)).isRequired,
 };
 
 export default MaintenanceList;

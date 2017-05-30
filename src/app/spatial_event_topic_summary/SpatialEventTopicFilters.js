@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Select from '../../shared/Select';
 import styles from './spatialEventTopicFilters.css';
 import SpatialEventTopicLocationInfo from './SpatialEventTopicLocationInfo';
@@ -48,9 +49,9 @@ const SpatialEventTopicFilters = props => (
 );
 
 SpatialEventTopicFilters.propTypes = {
-  spatialEventTopic: React.PropTypes.string.isRequired,
-  spatialType: React.PropTypes.string.isRequired,
-  spatialDescription: React.PropTypes.string.isRequired,
+  spatialEventTopic: PropTypes.string.isRequired,
+  spatialType: PropTypes.string.isRequired,
+  spatialDescription: PropTypes.string.isRequired,
 };
 
 export default SpatialEventTopicFilters;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import CrimeListItem from '../crime/CrimeListItem';
 import DevelopmentListItem from '../development/DevelopmentListItem';
 import styles from './spatialEventTopicListItemStyles.css';
@@ -11,8 +12,8 @@ const SpatialEventTopicListItem = props => (
 );
 
 SpatialEventTopicListItem.propTypes = {
-  spatialEventTopic: React.PropTypes.string.isRequired,
-  itemData: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  spatialEventTopic: PropTypes.string.isRequired,
+  itemData: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 };
 
 export default SpatialEventTopicListItem;

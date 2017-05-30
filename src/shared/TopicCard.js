@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import styles from './topicCard.css';
 
@@ -25,10 +26,10 @@ const TopicCard = props => (
 );
 
 TopicCard.propTypes = {
-  topic: React.PropTypes.string,
-  entity: React.PropTypes.string,
-  id: React.PropTypes.string,
-  label: React.PropTypes.string,
+  topic: PropTypes.string,
+  entity: PropTypes.string,
+  id: PropTypes.string,
+  label: PropTypes.string,
 };
 
 TopicCard.defaultProps = {

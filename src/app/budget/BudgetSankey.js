@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Sankey from '../../shared/visualization/Sankey';
 
@@ -7,19 +8,19 @@ const BudgetSankey = props => (
 );
 
 const nameShape = {
-  name: React.PropTypes.string,
+  name: PropTypes.string,
 };
 
 const linkShape = {
-  source: React.PropTypes.number,
-  target: React.PropTypes.number,
-  value: React.PropTypes.number,
+  source: PropTypes.number,
+  target: PropTypes.number,
+  value: PropTypes.number,
 };
 
 BudgetSankey.propTypes = {
-  nodes: React.PropTypes.arrayOf(React.PropTypes.shape(nameShape)),
-  links: React.PropTypes.arrayOf(React.PropTypes.shape(linkShape)),
-  altText: React.PropTypes.string,
+  nodes: PropTypes.arrayOf(PropTypes.shape(nameShape)),
+  links: PropTypes.arrayOf(PropTypes.shape(linkShape)),
+  altText: PropTypes.string,
 };
 
 BudgetSankey.defaultProps = {

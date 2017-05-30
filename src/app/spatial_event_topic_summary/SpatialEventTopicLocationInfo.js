@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const renderLabel = (spatialType) => {
   switch (spatialType) {
@@ -25,8 +26,8 @@ const SpatialEventTopicLocationInfo = props => (
 );
 
 SpatialEventTopicLocationInfo.propTypes = {
-  spatialType: React.PropTypes.string.isRequired,
-  spatialDescription: React.PropTypes.string.isRequired,
+  spatialType: PropTypes.string.isRequired,
+  spatialDescription: PropTypes.string.isRequired,
 };
 
 export default SpatialEventTopicLocationInfo;

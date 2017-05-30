@@ -1,6 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
 
 import { authControlDropdownClicked, loginLinkClicked } from './authActions';
 
@@ -30,9 +30,9 @@ const AuthControl = (props) => {
 };
 
 AuthControl.propTypes = {
-  dispatch: React.PropTypes.func,
-  user: React.PropTypes.object,
-  open: React.PropTypes.bool,
+  dispatch: PropTypes.func,
+  user: PropTypes.object,
+  open: PropTypes.bool,
 };
 
 const mapStateToProps = state => (

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 // import { drag } from 'd3-drag';
 import { format } from 'd3-format';
 import { scaleOrdinal, schemeCategory20 } from 'd3-scale';
@@ -133,21 +134,21 @@ class Sankey extends React.Component {
 }
 
 const nameShape = {
-  name: React.PropTypes.string,
+  name: PropTypes.string,
 };
 
 const linkShape = {
-  source: React.PropTypes.number,
-  target: React.PropTypes.number,
-  value: React.PropTypes.number,
+  source: PropTypes.number,
+  target: PropTypes.number,
+  value: PropTypes.number,
 };
 
 Sankey.propTypes = {
-  nodes: React.PropTypes.arrayOf(React.PropTypes.shape(nameShape)),
-  links: React.PropTypes.arrayOf(React.PropTypes.shape(linkShape)),
-  height: React.PropTypes.number,
-  width: React.PropTypes.number,
-  altText: React.PropTypes.string,
+  nodes: PropTypes.arrayOf(PropTypes.shape(nameShape)),
+  links: PropTypes.arrayOf(PropTypes.shape(linkShape)),
+  height: PropTypes.number,
+  width: PropTypes.number,
+  altText: PropTypes.string,
 };
 
 Sankey.defaultProps = {

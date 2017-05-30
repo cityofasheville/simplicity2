@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import ReactTable from 'react-table';
 import styles from './detailsTable.css';
 
@@ -31,13 +32,12 @@ const DetailsTable = (props) => {
 };
 
 DetailsTable.propTypes = {
-  hasTitle: React.PropTypes.bool,
-  hasTitleIcon: React.PropTypes.bool,
-  titleIcon: React.PropTypes.string,
-  title: React.PropTypes.string,
-  columns: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
-  data: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
-  lastRowBold: React.PropTypes.bool,
+  hasTitle: PropTypes.bool,
+  hasTitleIcon: PropTypes.bool,
+  titleIcon: PropTypes.string,
+  title: PropTypes.string,
+  columns: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+  data: PropTypes.array, // eslint-disable-line react/forbid-prop-types
 };
 
 DetailsTable.defaultProps = {

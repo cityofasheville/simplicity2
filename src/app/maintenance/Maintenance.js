@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import MaintenanceList from './MaintenanceList';
 import EmailDownload from '../../shared/EmailDownload';
 
@@ -59,7 +60,7 @@ const Maintenance = props => (
 );
 
 Maintenance.propTypes = {
-  location: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  location: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 };
 
 Maintenance.defaultProps = {

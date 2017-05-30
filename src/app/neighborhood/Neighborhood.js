@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import DetailsIconLinkGrouping from '../../shared/DetailsIconLinkGrouping';
 import TopicCard from '../../shared/TopicCard';
 
@@ -30,15 +31,15 @@ const Neighborhood = props => (
 );
 
 const iconLinksDataShape = {
-  icons: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
-  labels: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
-  hrefs: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
+  icons: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+  labels: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+  hrefs: PropTypes.array, // eslint-disable-line react/forbid-prop-types
 };
 
 Neighborhood.propTypes = {
-  location: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  topics: React.PropTypes.array, // eslint-disable-line react/forbid-prop-types
-  iconLinksData: React.PropTypes.shape(iconLinksDataShape).isRequired, // eslint-disable-line react/forbid-prop-types
+  location: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  topics: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+  iconLinksData: PropTypes.shape(iconLinksDataShape).isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 // TODO - this is temporary dummy data

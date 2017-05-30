@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { ResponsiveContainer, AreaChart as RechartsAreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
 const COLORS = ['#9C27B0', '#03A9F4', '#FFC107', '#b71c1c', '#4CAF50', '#E91E63', '#9E9E9E'];
@@ -42,9 +43,9 @@ const AreaChart = props => (
 );
 
 AreaChart.propTypes = {
-  height: React.PropTypes.number,
-  data: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  diveDeeper: React.PropTypes.func,
+  height: PropTypes.number,
+  data: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  diveDeeper: PropTypes.func,
 };
 
 AreaChart.defaultProps = {

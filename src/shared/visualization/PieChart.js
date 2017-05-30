@@ -33,6 +33,7 @@ const PieChart = props => (
           label={props.label}
           outerRadius={'50%'}
           fill={'#9C27B0'}
+          innerRadius={props.doughnut ? 40 : 0}
         >
           {props.data.map((entry, index) => <Cell key={['cell', index].join('_')} fill={pieColors[index % pieColors.length]} />)}
         </Pie>
@@ -55,6 +56,7 @@ PieChart.propTypes = {
   label: React.PropTypes.bool,
   defaultLegend: React.PropTypes.bool,
   altText: React.PropTypes.string,
+  doughnut: React.PropTypes.bool,
 };
 
 PieChart.defaultProps = {
@@ -63,6 +65,7 @@ PieChart.defaultProps = {
   label: true,
   defaultLegend: false,
   altText: 'Pie chart',
+  doughnut: false,
 };
 
 export default PieChart;

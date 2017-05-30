@@ -139,7 +139,7 @@ const BudgetDetailsTreemap = (props) => {
               <button className={props.location.query.mode === 'revenue' ? 'btn btn-primary btn-xs active' : 'btn btn-primary btn-xs'} style={{ borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px' }}>Revenue</button>
             </Link>
           </div>
-          <Treemap data={findTop(myTree, props.location.query.nodePath || 'root')} diveDeeper=  {props.diveDeeper} differenceColors history={browserHistory} location={props.location} />
+          <Treemap data={findTop(myTree, props.location.query.nodePath || 'root')} altText={['Treemap of', (props.location.query.mode || 'expenditures')].join(' ')} diveDeeper={props.diveDeeper} differenceColors history={browserHistory} location={props.location} />
         </div>
       </div>
     </div>

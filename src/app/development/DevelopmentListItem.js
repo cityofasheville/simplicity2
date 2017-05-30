@@ -42,7 +42,7 @@ const DevelopmentListItem = (props) => {
         </div>
         <div className={['row', styles.linkRow].join(' ')}>
           <div className="col-sm-12">
-            <div className="pull-right"><a title="See permit details"><i className="fa fa-align-justify"></i> Details</a></div><div className="pull-right"> <a title="View crime in map"><i className="fa fa-map-o"></i> Map</a></div>
+            <div className="pull-right"><a title="View permit details"><i className="fa fa-align-justify"></i> Details</a></div><div className="pull-right"> <a title="View crime in map"><i className="fa fa-map-o"></i> Map</a></div>
           </div>
         </div>
       </div>

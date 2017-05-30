@@ -104,7 +104,7 @@ const BudgetDetailsTable = (props) => {
         <div className="col-sm-12">
           <h3>Table of {props.location.query.mode || 'expenditures'}</h3>
           <div style={{ marginBottom: '15px' }}>
-            You may explore the full dataset in the table below, or <a href="http://data.ashevillenc.gov/datasets?q=budget&sort_by=relevance" target="_blank">download here</a>. Click the triangles at left to expand rows for more detail.
+            You may explore the full dataset in the table below, or <a className="inText" href="http://data.ashevillenc.gov/datasets?q=budget&sort_by=relevance" target="_blank">download here</a>. Click the triangles at left to expand rows for more detail.
           </div>
         </div>
       </div>
@@ -131,45 +131,47 @@ const BudgetDetailsTable = (props) => {
       </div>
       <div className="row">
         <div className="col-sm-12">
-          <ReactTable
-            data={dataForTable}
-            columns={getDataColumns(0, props.location.query.mode)}
-            defaultPageSize={dataForTable.length}
-            showPagination={false}
-            SubComponent={innerRow1 => (
-              <div style={{ paddingLeft: '34px' }}>
-                <ReactTable
-                  data={dataForTable[innerRow1.index].children}
-                  columns={getDataColumns(1, props.location.query.mode)}
-                  defaultPageSize={dataForTable[innerRow1.index].children.length}
-                  showPagination={false}
-                  SubComponent={innerRow2 => (
-                    <div style={{ paddingLeft: '34px' }}>
-                      <ReactTable
-                        data={dataForTable[innerRow1.index].children[innerRow2.index].children}
-                        columns={getDataColumns(2, props.location.query.mode)}
-                        defaultPageSize={dataForTable[innerRow1.index].children[innerRow2.index].children.length}
-                        showPagination={false}
-                        SubComponent={innerRow3 => (
-                          <div style={{ paddingLeft: '34px' }}>
-                            <ReactTable
-                              data={dataForTable[innerRow1.index].children[innerRow2.index].children[innerRow3.index].children}
-                              columns={getDataColumns(3, props.location.query.mode)}
-                              defaultPageSize={dataForTable[innerRow1.index].children[innerRow2.index].children[innerRow3.index].children.length}
-                              showPagination={false}
-                            />
-                          </div>
-                          )
-                        }
-                      />
-                    </div>
-                    )
-                  }
-                />
-              </div>
-              )
-            }
-          />
+          <div alt={['Tsbler of', (props.location.query.mode || 'expenditures')].join(' ')}>
+            <ReactTable
+              data={dataForTable}
+              columns={getDataColumns(0, props.location.query.mode)}
+              defaultPageSize={dataForTable.length}
+              showPagination={false}
+              SubComponent={innerRow1 => (
+                <div style={{ paddingLeft: '34px' }}>
+                  <ReactTable
+                    data={dataForTable[innerRow1.index].children}
+                    columns={getDataColumns(1, props.location.query.mode)}
+                    defaultPageSize={dataForTable[innerRow1.index].children.length}
+                    showPagination={false}
+                    SubComponent={innerRow2 => (
+                      <div style={{ paddingLeft: '34px' }}>
+                        <ReactTable
+                          data={dataForTable[innerRow1.index].children[innerRow2.index].children}
+                          columns={getDataColumns(2, props.location.query.mode)}
+                          defaultPageSize={dataForTable[innerRow1.index].children[innerRow2.index].children.length}
+                          showPagination={false}
+                          SubComponent={innerRow3 => (
+                            <div style={{ paddingLeft: '34px' }}>
+                              <ReactTable
+                                data={dataForTable[innerRow1.index].children[innerRow2.index].children[innerRow3.index].children}
+                                columns={getDataColumns(3, props.location.query.mode)}
+                                defaultPageSize={dataForTable[innerRow1.index].children[innerRow2.index].children[innerRow3.index].children.length}
+                                showPagination={false}
+                              />
+                            </div>
+                            )
+                          }
+                        />
+                      </div>
+                      )
+                    }
+                  />
+                </div>
+                )
+              }
+            />
+          </div>
         </div>
       </div>
     </div>

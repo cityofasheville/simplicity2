@@ -54,12 +54,34 @@ a {
   &:focus {
     color: $link-hover-color;
     text-decoration: $link-hover-decoration;
+    div {
+      text-decoration: $link-hover-decoration;
+    }
   }
 
   &:focus {
     @include tab-focus;
   }
+
+  &.inText {
+    color: #3e5fe4;
+  }
 }
+
+#skip a { 
+  position:absolute; 
+  left:-10000px; 
+  top:auto; 
+  width:1px; 
+  height:1px; 
+  overflow:hidden;
+} 
+ 
+#skip a:focus { 
+  position:static; 
+  width:auto; 
+  height:auto; 
+} 
 
 button a {
   color: #fff;

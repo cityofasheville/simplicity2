@@ -59,7 +59,7 @@ class MultiSelect extends React.Component {
   render() {
     const { defaultValue, currentValues } = this.state;
     return (
-      <div className="form-control multiSelect">
+      <div className="form-control multiSelect" name={this.name}>
         <Select
           multiple
           onChange={this.handleChange}

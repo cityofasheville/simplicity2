@@ -12,6 +12,11 @@ const Neighborhood = props => (
     </div>
     <div className="row">
       <div className="col-sm-6">
+        <fieldset className="detailsFieldset">
+          <DetailsIconLinkGrouping dataLabels={props.iconLinksData.labels} dataTitles={props.iconLinksData.labels} dataHrefs={props.iconLinksData.hrefs} dataIcons={props.iconLinksData.icons} colWidth={12} />
+        </fieldset>
+      </div>
+      <div className="col-sm-6">
         <div className="row">
           {props.topics.map((topic, i) => (
             <div className="col-xs-6" key={['topic', i].join('_')}>
@@ -19,11 +24,6 @@ const Neighborhood = props => (
             </div>
           ))}
         </div>
-      </div>
-      <div className="col-sm-6">
-        <fieldset className="detailsFieldset">
-          <DetailsIconLinkGrouping dataLabels={props.iconLinksData.labels} dataTitles={props.iconLinksData.labels} dataHrefs={props.iconLinksData.hrefs} dataIcons={props.iconLinksData.icons} colWidth={12} />
-        </fieldset>
       </div>
     </div>
   </div>

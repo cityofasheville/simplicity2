@@ -22,7 +22,7 @@ const getIcon = (entityType) => {
 
 const SearchByEntity = props => (
   <div onClick={() => props.onClick(props.entity.entityType)}>
-    <input type="checkbox" label={props.entity.entityType} value={props.entity.entityType} checked={props.entity.checked} readOnly />
+    <input type="checkbox" aria-label={props.entity.entityType} label={props.entity.entityType} value={props.entity.entityType} checked={props.entity.checked} readOnly />
     <span className="fa-stack fa-lg">
       <i className={props.entity.checked === true ? 'fa fa-circle fa-stack-2x text-primary' : ['fa fa-circle fa-stack-2x', styles.unchecked].join(' ')}></i>
       <i className={['fa fa-stack-1x fa-inverse fa-', getIcon(props.entity.entityType)].join('')}></i>

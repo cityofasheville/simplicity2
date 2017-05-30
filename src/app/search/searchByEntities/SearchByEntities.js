@@ -5,13 +5,16 @@ import { toggleSearchByEntity } from './searchByEntitiesActions';
 import styles from './searchByEntities.css';
 
 const SearchByEntities = props => (
-  <ul className={styles.searchEntitiesUL}>
-    {props.entities.map((entity, i) => (
-      <li key={['entity', i].join('_')} className={entity.checked ? 'text-primary' : styles.unchecked}>
-        <SearchByEntity entity={entity} onClick={props.toggleEntity} />
-      </li>
-    ))}
-  </ul>
+  <div>
+    <span className="offscreen">Entities to search by</span>
+    <ul className={styles.searchEntitiesUL}>
+      {props.entities.map((entity, i) => (
+        <li key={['entity', i].join('_')} className={entity.checked ? 'text-primary' : styles.unchecked}>
+          <SearchByEntity entity={entity} onClick={props.toggleEntity} />
+        </li>
+      ))}
+    </ul>
+  </div>
 );
 
 const entityDataShape = {

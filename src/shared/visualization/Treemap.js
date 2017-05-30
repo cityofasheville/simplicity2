@@ -100,7 +100,6 @@ const CustomTreemap = (props) => {
   const { root, depth, x, y, width, height, index, colors, name, amount, delta, diveDeeper, differenceColors, showingLabels } = props;
 
   if (depth === 1) {
-    console.log(getFill(delta), name, delta);
     const myD = ['M ', x, ' ', y, ' h ', width, ' v ', height, ' h -', width, ' Z'].join('');
     return (
       <g>
@@ -149,6 +148,7 @@ class Treemap extends React.Component {
       showingLabels: props.showingLabels,
     };
     this.toggleLabels = this.toggleLabels.bind(this);
+    this.altText = props.altText;
   }
 
   toggleLabels(event) {
@@ -161,7 +161,7 @@ class Treemap extends React.Component {
 
   render() {
     return (
-      <div style={{ height: this.props.height }} onClick={this.toggleLabels}>
+      <div style={{ height: this.props.height }} onClick={this.toggleLabels} alt={this.altText}>
         <ResponsiveContainer>
           <RechartsTreemap
             data={getTopLevelOnly(this.props.data)}
@@ -185,6 +185,7 @@ Treemap.propTypes = {
   showingLabels: React.PropTypes.bool,
   differenceColors: React.PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
   diveDeeper: React.PropTypes.func, // eslint-disable-line react/no-unused-prop-types
+  altText: React.PropTypes.string, // eslint-disable-line react/no-unused-prop-types
 };
 
 Treemap.defaultProps = {
@@ -193,6 +194,7 @@ Treemap.defaultProps = {
   diveDeeper: undefined,
   differenceColors: false,
   showingLabels: true,
+  altText: 'Treemap',
 };
 
 export default Treemap;

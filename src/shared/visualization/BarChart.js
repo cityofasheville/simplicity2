@@ -13,6 +13,7 @@ const colorSchemes = [
   ['#920000', '#DB6D00', '#24FF24', '#924900', '#B6DBFF', '#006DDB', '#6DB6FF', '#B66DFF', '#490092', '#004949', '#FF6DB6', '#009292', '#FFBDDB', '#000000'], // bright colors 1 colorblind 'safe'
   ['#000000', '#FFBDDB', '#009292', '#FF6DB6', '#004949', '#490092', '#B66DFF', '#6DB6FF', '#006DDB', '#B6DBFF', '#924900', '#24FF24', '#DB6D00', '#920000'], // bright colors 2 colorblind 'safe'
   ['#004987', '#4077a5', '#a6bfd5', '#aaad00', '#bfc240', '#e1e2a6'], // city of asheville branding colors, colorblind 'safe'
+  ['#9EACE1', '#4292C6', '#08519C', '#fc9272', '#ef3b2c', '#a50f15'], // three blue, three red, colorblind 'safe'
 ];
 
 const referenceColorScheme = [
@@ -44,7 +45,7 @@ const BarChart = props => (
     <ResponsiveContainer>
       <RechartsBarChart data={props.data}>
         <XAxis dataKey={props.xAxisDataKey} tickFormatter={props.xTickFormatter !== undefined ? props.xTickFormatter : null} />
-        <YAxis tickFormatter={props.yTickFormatter !== undefined ? props.yTickFormatter : null} domain={['dataMin', 'dataMax + 50000000']} />
+        <YAxis tickFormatter={props.yTickFormatter !== undefined ? props.yTickFormatter : null} domain={props.domain} />
         <CartesianGrid strokeDasharray="3 3" />
         <Tooltip formatter={props.dollars ? getDollars : null} />
         <Legend />
@@ -78,6 +79,7 @@ BarChart.propTypes = {
   referenceArea: PropTypes.bool,
   referenceAreaLabels: PropTypes.arrayOf(PropTypes.array),
   referenceAreaExes: PropTypes.arrayOf(PropTypes.number),
+  domain: PropTypes.array, //eslint-disable-line
 };
 
 BarChart.defaultProps = {
@@ -95,6 +97,7 @@ BarChart.defaultProps = {
   referenceArea: false,
   referenceAreaLabels: [],
   referenceAreaExes: [],
+  domain: [0, 'auto'],
 };
 
 export default BarChart;

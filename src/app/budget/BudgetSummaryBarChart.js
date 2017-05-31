@@ -64,7 +64,7 @@ class BudgetSummaryBarChart extends React.Component {
         </div>
         <div className="row">
           <div className="col-sm-12">
-            <BarChart data={this.props.summaryData.dataValues} referenceArea xAxisDataKey="display_year" xReferenceAxisDataKey="yearAxisNumeric" referenceAreaLabels={[['Actual', 'Spent'], ['Adopted', 'Budget'], ['Proposed', 'Budget']]} referenceAreaExes={[500, 750, 1000]} barDataKeys={this.props.summaryData.dataKeys} yTickFormatter={getDollars} stacked dollars colorScheme={this.props.colorScheme} altText={['Spending by', this.props.categoryType, 'bar chart'].join(' ')} />
+            <BarChart data={this.props.summaryData.dataValues} referenceArea xAxisDataKey="display_year" xReferenceAxisDataKey="yearAxisNumeric" referenceAreaLabels={[['Actual', 'Spent'], ['Adopted', 'Budget'], ['Proposed', 'Budget']]} referenceAreaExes={[500, 750, 1000]} barDataKeys={this.props.summaryData.dataKeys} yTickFormatter={getDollars} stacked dollars colorScheme={this.props.colorScheme} domain={['dataMin', 'dataMax + 50000000']} altText={['Spending by', this.props.categoryType, 'bar chart'].join(' ')} />
             <span className="pull-right" style={{ fontSize: '12px' }}>Barchart totals exclude interfund transfers</span>
           </div>
         </div>

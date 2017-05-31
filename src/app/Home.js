@@ -33,6 +33,7 @@ Homepage.defaultProps = {
     'CRIME',
     'DEVELOPMENT',
     'BUDGET',
+    'HOMELESSNESS',
   ],
 };
 

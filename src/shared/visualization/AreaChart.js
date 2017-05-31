@@ -27,16 +27,16 @@ const AreaChart = props => (
   <div style={{ height: props.height }}>
     <ResponsiveContainer>
       <RechartsAreaChart
-        data={props.data.dataValues}
+        data={props.data}
       >
-        <XAxis dataKey="year" />
-        <YAxis tickFormatter={getDollars} />
+        <XAxis dataKey={props.xAxisDataKey} />
+        <YAxis tickFormatter={props.dollars ? getDollars : null} />
         <CartesianGrid strokeDasharray="3 3" />
-        <Tooltip formatter={getDollars} />
-        {props.data.dataKeys.map((area, i) => (
-          <Area key={['area', i].join('_')} type="monotone" dataKey={props.data.dataKeys[i]} stackId={1} fill={COLORS[i % COLORS.length]} stroke={COLORS[i % COLORS.length]} fillOpacity={1} onClick={props.diveDeeper !== undefined ? () => props.diveDeeper(props.data.dataKeys[i]) : null} style={{ cursor: 'pointer' }} />
+        <Tooltip formatter={props.dollars ? getDollars : null} />
+        {props.dataKeys.map((area, i) => (
+          <Area key={['area', i].join('_')} type="monotone" dataKey={props.dataKeys[i]} stackId={1} fill={COLORS[i % COLORS.length]} stroke={COLORS[i % COLORS.length]} fillOpacity={1} onClick={props.diveDeeper !== undefined ? () => props.diveDeeper(props.dataKeys[i]) : null} style={{ cursor: 'pointer' }} />
         ))}
-        <Legend verticalAlign="bottom" content={renderLegend(props.data.dataKeys)} />
+        <Legend verticalAlign="bottom" content={renderLegend(props.dataKeys)} />
       </RechartsAreaChart>
     </ResponsiveContainer>
   </div>
@@ -44,14 +44,20 @@ const AreaChart = props => (
 
 AreaChart.propTypes = {
   height: PropTypes.number,
-  data: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  data: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+  dataKeys: PropTypes.arrayOf(PropTypes.string),
   diveDeeper: PropTypes.func,
+  dollars: PropTypes.bool,
+  xAxisDataKey: PropTypes.string,
 };
 
 AreaChart.defaultProps = {
   height: 450,
   data: [],
+  dataKeys: [],
   diveDeeper: undefined,
+  dollars: false,
+  xAxisDataKey: 'year',
 };
 
 export default AreaChart;

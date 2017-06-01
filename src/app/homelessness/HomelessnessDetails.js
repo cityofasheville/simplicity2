@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
+import HomelessnessDataCompleteness from './HomelessnessDataCompleteness';
 
 const HomelessnessDetails = props => (
   <div>
@@ -20,6 +21,15 @@ const HomelessnessDetails = props => (
         <div className="pull-left">
           <a className="inText" href="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=27777" target="_blank">Five year strategic plan on homelessness in Buncombe county</a>
         </div>
+      </div>
+    </div>
+    <div className="row">
+      <div className="col-sm-12">
+        <h3>Data Completeness Report Card</h3>
+        <p>
+          Explanatory text about what data completeness is, how it is evaluated, and what it means.
+        </p>
+        <HomelessnessDataCompleteness />
       </div>
     </div>
   </div>

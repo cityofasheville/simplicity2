@@ -13,7 +13,7 @@ const dataKeys = [
 // todo get this data from graphql
 const enrollmentData = [
   {
-    Date: 'Jan-08',
+    Date: '1/2008',
     'Emergency Shelter': 131,
     'Homelessness Prevention': 0,
     'Permanent Housing': 97,
@@ -22,7 +22,7 @@ const enrollmentData = [
     Total: 284,
   },
   {
-    Date: 'Feb-08',
+    Date: '2/2008',
     'Emergency Shelter': 136,
     'Homelessness Prevention': 0,
     'Permanent Housing': 97,
@@ -31,7 +31,7 @@ const enrollmentData = [
     Total: 306,
   },
   {
-    Date: 'Mar-08',
+    Date: '3/2008',
     'Emergency Shelter': 154,
     'Homelessness Prevention': 0,
     'Permanent Housing': 94,
@@ -40,7 +40,7 @@ const enrollmentData = [
     Total: 341,
   },
   {
-    Date: 'Apr-08',
+    Date: '4/2008',
     'Emergency Shelter': 145,
     'Homelessness Prevention': 0,
     'Permanent Housing': 96,
@@ -49,7 +49,7 @@ const enrollmentData = [
     Total: 349,
   },
   {
-    Date: 'May-08',
+    Date: '5/2008',
     'Emergency Shelter': 127,
     'Homelessness Prevention': 0,
     'Permanent Housing': 99,
@@ -58,7 +58,7 @@ const enrollmentData = [
     Total: 355,
   },
   {
-    Date: 'Jun-08',
+    Date: '6/2008',
     'Emergency Shelter': 131,
     'Homelessness Prevention': 0,
     'Permanent Housing': 102,
@@ -67,7 +67,7 @@ const enrollmentData = [
     Total: 386,
   },
   {
-    Date: 'Jul-08',
+    Date: '7/2008',
     'Emergency Shelter': 119,
     'Homelessness Prevention': 0,
     'Permanent Housing': 111,
@@ -76,7 +76,7 @@ const enrollmentData = [
     Total: 401,
   },
   {
-    Date: 'Aug-08',
+    Date: '8/2008',
     'Emergency Shelter': 122,
     'Homelessness Prevention': 0,
     'Permanent Housing': 111,
@@ -85,7 +85,7 @@ const enrollmentData = [
     Total: 406,
   },
   {
-    Date: 'Sep-08',
+    Date: '9/2008',
     'Emergency Shelter': 124,
     'Homelessness Prevention': 0,
     'Permanent Housing': 115,
@@ -94,7 +94,7 @@ const enrollmentData = [
     Total: 425,
   },
   {
-    Date: 'Oct-08',
+    Date: '10/2008',
     'Emergency Shelter': 126,
     'Homelessness Prevention': 0,
     'Permanent Housing': 127,
@@ -103,7 +103,7 @@ const enrollmentData = [
     Total: 460,
   },
   {
-    Date: 'Nov-08',
+    Date: '11/2008',
     'Emergency Shelter': 144,
     'Homelessness Prevention': 0,
     'Permanent Housing': 133,
@@ -112,7 +112,7 @@ const enrollmentData = [
     Total: 485,
   },
   {
-    Date: 'Dec-08',
+    Date: '12/2008',
     'Emergency Shelter': 147,
     'Homelessness Prevention': 0,
     'Permanent Housing': 140,
@@ -121,7 +121,7 @@ const enrollmentData = [
     Total: 499,
   },
   {
-    Date: 'Jan-09',
+    Date: '1/2009',
     'Emergency Shelter': 168,
     'Homelessness Prevention': 0,
     'Permanent Housing': 143,
@@ -130,7 +130,7 @@ const enrollmentData = [
     Total: 526,
   },
   {
-    Date: 'Feb-09',
+    Date: '2/2009',
     'Emergency Shelter': 128,
     'Homelessness Prevention': 0,
     'Permanent Housing': 146,
@@ -139,7 +139,7 @@ const enrollmentData = [
     Total: 497,
   },
   {
-    Date: 'Mar-09',
+    Date: '3/2009',
     'Emergency Shelter': 108,
     'Homelessness Prevention': 0,
     'Permanent Housing': 156,
@@ -148,7 +148,7 @@ const enrollmentData = [
     Total: 490,
   },
   {
-    Date: 'Apr-09',
+    Date: '4/2009',
     'Emergency Shelter': 109,
     'Homelessness Prevention': 0,
     'Permanent Housing': 159,
@@ -157,7 +157,7 @@ const enrollmentData = [
     Total: 489,
   },
   {
-    Date: 'May-09',
+    Date: '5/2009',
     'Emergency Shelter': 129,
     'Homelessness Prevention': 0,
     'Permanent Housing': 164,
@@ -166,7 +166,7 @@ const enrollmentData = [
     Total: 519,
   },
   {
-    Date: 'Jun-09',
+    Date: '6/2009',
     'Emergency Shelter': 124,
     'Homelessness Prevention': 0,
     'Permanent Housing': 176,
@@ -175,7 +175,7 @@ const enrollmentData = [
     Total: 540,
   },
   {
-    Date: 'Jul-09',
+    Date: '7/2009',
     'Emergency Shelter': 115,
     'Homelessness Prevention': 0,
     'Permanent Housing': 200,
@@ -184,7 +184,7 @@ const enrollmentData = [
     Total: 559,
   },
   {
-    Date: 'Aug-09',
+    Date: '8/2009',
     'Emergency Shelter': 105,
     'Homelessness Prevention': 0,
     'Permanent Housing': 218,
@@ -193,7 +193,7 @@ const enrollmentData = [
     Total: 580,
   },
   {
-    Date: 'Sep-09',
+    Date: '9/2009',
     'Emergency Shelter': 97,
     'Homelessness Prevention': 0,
     'Permanent Housing': 219,
@@ -202,7 +202,7 @@ const enrollmentData = [
     Total: 558,
   },
   {
-    Date: 'Oct-09',
+    Date: '10/2009',
     'Emergency Shelter': 121,
     'Homelessness Prevention': 0,
     'Permanent Housing': 237,
@@ -211,7 +211,7 @@ const enrollmentData = [
     Total: 602,
   },
   {
-    Date: 'Nov-09',
+    Date: '11/2009',
     'Emergency Shelter': 117,
     'Homelessness Prevention': 0,
     'Permanent Housing': 247,
@@ -220,7 +220,7 @@ const enrollmentData = [
     Total: 609,
   },
   {
-    Date: 'Dec-09',
+    Date: '12/2009',
     'Emergency Shelter': 122,
     'Homelessness Prevention': 0,
     'Permanent Housing': 269,
@@ -229,7 +229,7 @@ const enrollmentData = [
     Total: 628,
   },
   {
-    Date: 'Jan-10',
+    Date: '1/2010',
     'Emergency Shelter': 111,
     'Homelessness Prevention': 0,
     'Permanent Housing': 286,
@@ -238,7 +238,7 @@ const enrollmentData = [
     Total: 618,
   },
   {
-    Date: 'Feb-10',
+    Date: '2/2010',
     'Emergency Shelter': 121,
     'Homelessness Prevention': 0,
     'Permanent Housing': 294,
@@ -247,7 +247,7 @@ const enrollmentData = [
     Total: 642,
   },
   {
-    Date: 'Mar-10',
+    Date: '3/2010',
     'Emergency Shelter': 125,
     'Homelessness Prevention': 0,
     'Permanent Housing': 295,
@@ -256,7 +256,7 @@ const enrollmentData = [
     Total: 642,
   },
   {
-    Date: 'Apr-10',
+    Date: '4/2010',
     'Emergency Shelter': 119,
     'Homelessness Prevention': 0,
     'Permanent Housing': 303,
@@ -265,7 +265,7 @@ const enrollmentData = [
     Total: 652,
   },
   {
-    Date: 'May-10',
+    Date: '5/2010',
     'Emergency Shelter': 105,
     'Homelessness Prevention': 0,
     'Permanent Housing': 304,
@@ -274,7 +274,7 @@ const enrollmentData = [
     Total: 627,
   },
   {
-    Date: 'Jun-10',
+    Date: '6/2010',
     'Emergency Shelter': 93,
     'Homelessness Prevention': 0,
     'Permanent Housing': 321,
@@ -283,7 +283,7 @@ const enrollmentData = [
     Total: 628,
   },
   {
-    Date: 'Jul-10',
+    Date: '7/2010',
     'Emergency Shelter': 134,
     'Homelessness Prevention': 0,
     'Permanent Housing': 312,
@@ -292,7 +292,7 @@ const enrollmentData = [
     Total: 671,
   },
   {
-    Date: 'Aug-10',
+    Date: '8/2010',
     'Emergency Shelter': 153,
     'Homelessness Prevention': 0,
     'Permanent Housing': 313,
@@ -301,7 +301,7 @@ const enrollmentData = [
     Total: 700,
   },
   {
-    Date: 'Sep-10',
+    Date: '9/2010',
     'Emergency Shelter': 147,
     'Homelessness Prevention': 0,
     'Permanent Housing': 320,
@@ -310,7 +310,7 @@ const enrollmentData = [
     Total: 698,
   },
   {
-    Date: 'Oct-10',
+    Date: '10/2010',
     'Emergency Shelter': 133,
     'Homelessness Prevention': 0,
     'Permanent Housing': 333,
@@ -319,7 +319,7 @@ const enrollmentData = [
     Total: 702,
   },
   {
-    Date: 'Nov-10',
+    Date: '11/2010',
     'Emergency Shelter': 125,
     'Homelessness Prevention': 1,
     'Permanent Housing': 340,
@@ -328,7 +328,7 @@ const enrollmentData = [
     Total: 686,
   },
   {
-    Date: 'Dec-10',
+    Date: '12/2010',
     'Emergency Shelter': 130,
     'Homelessness Prevention': 1,
     'Permanent Housing': 348,
@@ -337,7 +337,7 @@ const enrollmentData = [
     Total: 699,
   },
   {
-    Date: 'Jan-11',
+    Date: '1/2011',
     'Emergency Shelter': 122,
     'Homelessness Prevention': 1,
     'Permanent Housing': 360,
@@ -346,7 +346,7 @@ const enrollmentData = [
     Total: 701,
   },
   {
-    Date: 'Feb-11',
+    Date: '2/2011',
     'Emergency Shelter': 118,
     'Homelessness Prevention': 1,
     'Permanent Housing': 366,
@@ -355,7 +355,7 @@ const enrollmentData = [
     Total: 707,
   },
   {
-    Date: 'Mar-11',
+    Date: '3/2011',
     'Emergency Shelter': 138,
     'Homelessness Prevention': 7,
     'Permanent Housing': 375,
@@ -364,7 +364,7 @@ const enrollmentData = [
     Total: 756,
   },
   {
-    Date: 'Apr-11',
+    Date: '4/2011',
     'Emergency Shelter': 146,
     'Homelessness Prevention': 7,
     'Permanent Housing': 383,
@@ -373,7 +373,7 @@ const enrollmentData = [
     Total: 775,
   },
   {
-    Date: 'May-11',
+    Date: '5/2011',
     'Emergency Shelter': 148,
     'Homelessness Prevention': 11,
     'Permanent Housing': 382,
@@ -382,7 +382,7 @@ const enrollmentData = [
     Total: 797,
   },
   {
-    Date: 'Jun-11',
+    Date: '6/2011',
     'Emergency Shelter': 145,
     'Homelessness Prevention': 14,
     'Permanent Housing': 386,
@@ -391,7 +391,7 @@ const enrollmentData = [
     Total: 800,
   },
   {
-    Date: 'Jul-11',
+    Date: '7/2011',
     'Emergency Shelter': 183,
     'Homelessness Prevention': 14,
     'Permanent Housing': 393,
@@ -400,7 +400,7 @@ const enrollmentData = [
     Total: 850,
   },
   {
-    Date: 'Aug-11',
+    Date: '8/2011',
     'Emergency Shelter': 194,
     'Homelessness Prevention': 28,
     'Permanent Housing': 398,
@@ -409,7 +409,7 @@ const enrollmentData = [
     Total: 882,
   },
   {
-    Date: 'Sep-11',
+    Date: '9/2011',
     'Emergency Shelter': 191,
     'Homelessness Prevention': 41,
     'Permanent Housing': 415,
@@ -418,7 +418,7 @@ const enrollmentData = [
     Total: 913,
   },
   {
-    Date: 'Oct-11',
+    Date: '10/2011',
     'Emergency Shelter': 177,
     'Homelessness Prevention': 62,
     'Permanent Housing': 425,
@@ -427,7 +427,7 @@ const enrollmentData = [
     Total: 928,
   },
   {
-    Date: 'Nov-11',
+    Date: '11/2011',
     'Emergency Shelter': 197,
     'Homelessness Prevention': 74,
     'Permanent Housing': 421,
@@ -436,7 +436,7 @@ const enrollmentData = [
     Total: 957,
   },
   {
-    Date: 'Dec-11',
+    Date: '12/2011',
     'Emergency Shelter': 188,
     'Homelessness Prevention': 85,
     'Permanent Housing': 429,
@@ -445,7 +445,7 @@ const enrollmentData = [
     Total: 975,
   },
   {
-    Date: 'Jan-12',
+    Date: '1/2012',
     'Emergency Shelter': 167,
     'Homelessness Prevention': 101,
     'Permanent Housing': 436,
@@ -454,7 +454,7 @@ const enrollmentData = [
     Total: 960,
   },
   {
-    Date: 'Feb-12',
+    Date: '2/2012',
     'Emergency Shelter': 199,
     'Homelessness Prevention': 111,
     'Permanent Housing': 455,
@@ -463,7 +463,7 @@ const enrollmentData = [
     Total: 1028,
   },
   {
-    Date: 'Mar-12',
+    Date: '3/2012',
     'Emergency Shelter': 226,
     'Homelessness Prevention': 115,
     'Permanent Housing': 482,
@@ -472,7 +472,7 @@ const enrollmentData = [
     Total: 1069,
   },
   {
-    Date: 'Apr-12',
+    Date: '4/2012',
     'Emergency Shelter': 181,
     'Homelessness Prevention': 116,
     'Permanent Housing': 516,
@@ -481,7 +481,7 @@ const enrollmentData = [
     Total: 1068,
   },
   {
-    Date: 'May-12',
+    Date: '5/2012',
     'Emergency Shelter': 168,
     'Homelessness Prevention': 123,
     'Permanent Housing': 523,
@@ -490,7 +490,7 @@ const enrollmentData = [
     Total: 1076,
   },
   {
-    Date: 'Jun-12',
+    Date: '6/2012',
     'Emergency Shelter': 174,
     'Homelessness Prevention': 126,
     'Permanent Housing': 537,
@@ -499,7 +499,7 @@ const enrollmentData = [
     Total: 1103,
   },
   {
-    Date: 'Jul-12',
+    Date: '7/2012',
     'Emergency Shelter': 178,
     'Homelessness Prevention': 112,
     'Permanent Housing': 553,
@@ -508,7 +508,7 @@ const enrollmentData = [
     Total: 1122,
   },
   {
-    Date: 'Aug-12',
+    Date: '8/2012',
     'Emergency Shelter': 154,
     'Homelessness Prevention': 99,
     'Permanent Housing': 565,
@@ -517,7 +517,7 @@ const enrollmentData = [
     Total: 1111,
   },
   {
-    Date: 'Sep-12',
+    Date: '9/2012',
     'Emergency Shelter': 152,
     'Homelessness Prevention': 89,
     'Permanent Housing': 567,
@@ -526,7 +526,7 @@ const enrollmentData = [
     Total: 1091,
   },
   {
-    Date: 'Oct-12',
+    Date: '10/2012',
     'Emergency Shelter': 171,
     'Homelessness Prevention': 115,
     'Permanent Housing': 592,
@@ -535,7 +535,7 @@ const enrollmentData = [
     Total: 1184,
   },
   {
-    Date: 'Nov-12',
+    Date: '11/2012',
     'Emergency Shelter': 219,
     'Homelessness Prevention': 114,
     'Permanent Housing': 607,
@@ -544,7 +544,7 @@ const enrollmentData = [
     Total: 1262,
   },
   {
-    Date: 'Dec-12',
+    Date: '12/2012',
     'Emergency Shelter': 234,
     'Homelessness Prevention': 101,
     'Permanent Housing': 618,
@@ -553,7 +553,7 @@ const enrollmentData = [
     Total: 1280,
   },
   {
-    Date: 'Jan-13',
+    Date: '1/2013',
     'Emergency Shelter': 364,
     'Homelessness Prevention': 93,
     'Permanent Housing': 629,
@@ -562,7 +562,7 @@ const enrollmentData = [
     Total: 1405,
   },
   {
-    Date: 'Feb-13',
+    Date: '2/2013',
     'Emergency Shelter': 391,
     'Homelessness Prevention': 85,
     'Permanent Housing': 633,
@@ -571,7 +571,7 @@ const enrollmentData = [
     Total: 1417,
   },
   {
-    Date: 'Mar-13',
+    Date: '3/2013',
     'Emergency Shelter': 455,
     'Homelessness Prevention': 77,
     'Permanent Housing': 636,
@@ -580,7 +580,7 @@ const enrollmentData = [
     Total: 1525,
   },
   {
-    Date: 'Apr-13',
+    Date: '4/2013',
     'Emergency Shelter': 375,
     'Homelessness Prevention': 87,
     'Permanent Housing': 649,
@@ -589,7 +589,7 @@ const enrollmentData = [
     Total: 1512,
   },
   {
-    Date: 'May-13',
+    Date: '5/2013',
     'Emergency Shelter': 401,
     'Homelessness Prevention': 71,
     'Permanent Housing': 653,
@@ -598,7 +598,7 @@ const enrollmentData = [
     Total: 1570,
   },
   {
-    Date: 'Jun-13',
+    Date: '6/2013',
     'Emergency Shelter': 414,
     'Homelessness Prevention': 45,
     'Permanent Housing': 658,
@@ -607,7 +607,7 @@ const enrollmentData = [
     Total: 1614,
   },
   {
-    Date: 'Jul-13',
+    Date: '7/2013',
     'Emergency Shelter': 461,
     'Homelessness Prevention': 42,
     'Permanent Housing': 676,
@@ -616,7 +616,7 @@ const enrollmentData = [
     Total: 1667,
   },
   {
-    Date: 'Aug-13',
+    Date: '8/2013',
     'Emergency Shelter': 429,
     'Homelessness Prevention': 38,
     'Permanent Housing': 684,
@@ -625,7 +625,7 @@ const enrollmentData = [
     Total: 1616,
   },
   {
-    Date: 'Sep-13',
+    Date: '9/2013',
     'Emergency Shelter': 214,
     'Homelessness Prevention': 34,
     'Permanent Housing': 701,
@@ -634,7 +634,7 @@ const enrollmentData = [
     Total: 1380,
   },
   {
-    Date: 'Oct-13',
+    Date: '10/2013',
     'Emergency Shelter': 267,
     'Homelessness Prevention': 35,
     'Permanent Housing': 654,
@@ -643,7 +643,7 @@ const enrollmentData = [
     Total: 1403,
   },
   {
-    Date: 'Nov-13',
+    Date: '11/2013',
     'Emergency Shelter': 322,
     'Homelessness Prevention': 25,
     'Permanent Housing': 656,
@@ -652,7 +652,7 @@ const enrollmentData = [
     Total: 1465,
   },
   {
-    Date: 'Dec-13',
+    Date: '12/2013',
     'Emergency Shelter': 345,
     'Homelessness Prevention': 44,
     'Permanent Housing': 671,
@@ -661,7 +661,7 @@ const enrollmentData = [
     Total: 1521,
   },
   {
-    Date: 'Jan-14',
+    Date: '1/2014',
     'Emergency Shelter': 284,
     'Homelessness Prevention': 38,
     'Permanent Housing': 708,
@@ -670,7 +670,7 @@ const enrollmentData = [
     Total: 1494,
   },
   {
-    Date: 'Feb-14',
+    Date: '2/2014',
     'Emergency Shelter': 266,
     'Homelessness Prevention': 32,
     'Permanent Housing': 696,
@@ -679,7 +679,7 @@ const enrollmentData = [
     Total: 1406,
   },
   {
-    Date: 'Mar-14',
+    Date: '3/2014',
     'Emergency Shelter': 311,
     'Homelessness Prevention': 32,
     'Permanent Housing': 698,
@@ -688,7 +688,7 @@ const enrollmentData = [
     Total: 1490,
   },
   {
-    Date: 'Apr-14',
+    Date: '4/2014',
     'Emergency Shelter': 210,
     'Homelessness Prevention': 19,
     'Permanent Housing': 719,
@@ -697,7 +697,7 @@ const enrollmentData = [
     Total: 1408,
   },
   {
-    Date: 'May-14',
+    Date: '5/2014',
     'Emergency Shelter': 202,
     'Homelessness Prevention': 14,
     'Permanent Housing': 713,
@@ -706,7 +706,7 @@ const enrollmentData = [
     Total: 1362,
   },
   {
-    Date: 'Jun-14',
+    Date: '6/2014',
     'Emergency Shelter': 177,
     'Homelessness Prevention': 16,
     'Permanent Housing': 722,
@@ -715,7 +715,7 @@ const enrollmentData = [
     Total: 1328,
   },
   {
-    Date: 'Jul-14',
+    Date: '7/2014',
     'Emergency Shelter': 134,
     'Homelessness Prevention': 7,
     'Permanent Housing': 697,
@@ -724,7 +724,7 @@ const enrollmentData = [
     Total: 1261,
   },
   {
-    Date: 'Aug-14',
+    Date: '8/2014',
     'Emergency Shelter': 124,
     'Homelessness Prevention': 7,
     'Permanent Housing': 702,
@@ -733,7 +733,7 @@ const enrollmentData = [
     Total: 1262,
   },
   {
-    Date: 'Sep-14',
+    Date: '9/2014',
     'Emergency Shelter': 116,
     'Homelessness Prevention': 11,
     'Permanent Housing': 709,
@@ -742,7 +742,7 @@ const enrollmentData = [
     Total: 1241,
   },
   {
-    Date: 'Oct-14',
+    Date: '10/2014',
     'Emergency Shelter': 118,
     'Homelessness Prevention': 16,
     'Permanent Housing': 687,
@@ -751,7 +751,7 @@ const enrollmentData = [
     Total: 1230,
   },
   {
-    Date: 'Nov-14',
+    Date: '11/2014',
     'Emergency Shelter': 173,
     'Homelessness Prevention': 12,
     'Permanent Housing': 680,
@@ -760,7 +760,7 @@ const enrollmentData = [
     Total: 1279,
   },
   {
-    Date: 'Dec-14',
+    Date: '12/2014',
     'Emergency Shelter': 193,
     'Homelessness Prevention': 11,
     'Permanent Housing': 668,
@@ -769,7 +769,7 @@ const enrollmentData = [
     Total: 1270,
   },
   {
-    Date: 'Jan-15',
+    Date: '1/2015',
     'Emergency Shelter': 293,
     'Homelessness Prevention': 14,
     'Permanent Housing': 655,
@@ -778,7 +778,7 @@ const enrollmentData = [
     Total: 1349,
   },
   {
-    Date: 'Feb-15',
+    Date: '2/2015',
     'Emergency Shelter': 247,
     'Homelessness Prevention': 20,
     'Permanent Housing': 652,
@@ -787,7 +787,7 @@ const enrollmentData = [
     Total: 1310,
   },
   {
-    Date: 'Mar-15',
+    Date: '3/2015',
     'Emergency Shelter': 173,
     'Homelessness Prevention': 21,
     'Permanent Housing': 629,
@@ -796,7 +796,7 @@ const enrollmentData = [
     Total: 1186,
   },
   {
-    Date: 'Apr-15',
+    Date: '4/2015',
     'Emergency Shelter': 131,
     'Homelessness Prevention': 18,
     'Permanent Housing': 625,
@@ -805,7 +805,7 @@ const enrollmentData = [
     Total: 1160,
   },
   {
-    Date: 'May-15',
+    Date: '5/2015',
     'Emergency Shelter': 122,
     'Homelessness Prevention': 13,
     'Permanent Housing': 633,
@@ -814,7 +814,7 @@ const enrollmentData = [
     Total: 1167,
   },
   {
-    Date: 'Jun-15',
+    Date: '6/2015',
     'Emergency Shelter': 131,
     'Homelessness Prevention': 15,
     'Permanent Housing': 633,
@@ -823,7 +823,7 @@ const enrollmentData = [
     Total: 1187,
   },
   {
-    Date: 'Jul-15',
+    Date: '7/2015',
     'Emergency Shelter': 127,
     'Homelessness Prevention': 16,
     'Permanent Housing': 636,
@@ -832,7 +832,7 @@ const enrollmentData = [
     Total: 1209,
   },
   {
-    Date: 'Aug-15',
+    Date: '8/2015',
     'Emergency Shelter': 116,
     'Homelessness Prevention': 22,
     'Permanent Housing': 619,
@@ -841,7 +841,7 @@ const enrollmentData = [
     Total: 1224,
   },
   {
-    Date: 'Sep-15',
+    Date: '9/2015',
     'Emergency Shelter': 111,
     'Homelessness Prevention': 25,
     'Permanent Housing': 621,
@@ -850,7 +850,7 @@ const enrollmentData = [
     Total: 1254,
   },
   {
-    Date: 'Oct-15',
+    Date: '10/2015',
     'Emergency Shelter': 122,
     'Homelessness Prevention': 34,
     'Permanent Housing': 633,
@@ -859,7 +859,7 @@ const enrollmentData = [
     Total: 1310,
   },
   {
-    Date: 'Nov-15',
+    Date: '11/2015',
     'Emergency Shelter': 119,
     'Homelessness Prevention': 30,
     'Permanent Housing': 627,
@@ -868,7 +868,7 @@ const enrollmentData = [
     Total: 1330,
   },
   {
-    Date: 'Dec-15',
+    Date: '12/2015',
     'Emergency Shelter': 134,
     'Homelessness Prevention': 28,
     'Permanent Housing': 633,
@@ -877,7 +877,7 @@ const enrollmentData = [
     Total: 1365,
   },
   {
-    Date: 'Jan-16',
+    Date: '1/2016',
     'Emergency Shelter': 223,
     'Homelessness Prevention': 31,
     'Permanent Housing': 629,
@@ -886,7 +886,7 @@ const enrollmentData = [
     Total: 1470,
   },
   {
-    Date: 'Feb-16',
+    Date: '2/2016',
     'Emergency Shelter': 198,
     'Homelessness Prevention': 28,
     'Permanent Housing': 629,
@@ -895,7 +895,7 @@ const enrollmentData = [
     Total: 1453,
   },
   {
-    Date: 'Mar-16',
+    Date: '3/2016',
     'Emergency Shelter': 154,
     'Homelessness Prevention': 31,
     'Permanent Housing': 630,
@@ -904,7 +904,7 @@ const enrollmentData = [
     Total: 1411,
   },
   {
-    Date: 'Apr-16',
+    Date: '4/2016',
     'Emergency Shelter': 130,
     'Homelessness Prevention': 26,
     'Permanent Housing': 631,
@@ -913,7 +913,7 @@ const enrollmentData = [
     Total: 1396,
   },
   {
-    Date: 'May-16',
+    Date: '5/2016',
     'Emergency Shelter': 128,
     'Homelessness Prevention': 15,
     'Permanent Housing': 632,
@@ -922,7 +922,7 @@ const enrollmentData = [
     Total: 1376,
   },
   {
-    Date: 'Jun-16',
+    Date: '6/2016',
     'Emergency Shelter': 115,
     'Homelessness Prevention': 24,
     'Permanent Housing': 636,
@@ -931,7 +931,7 @@ const enrollmentData = [
     Total: 1368,
   },
   {
-    Date: 'Jul-16',
+    Date: '7/2016',
     'Emergency Shelter': 105,
     'Homelessness Prevention': 22,
     'Permanent Housing': 619,
@@ -940,7 +940,7 @@ const enrollmentData = [
     Total: 1349,
   },
   {
-    Date: 'Aug-16',
+    Date: '8/2016',
     'Emergency Shelter': 134,
     'Homelessness Prevention': 29,
     'Permanent Housing': 612,
@@ -949,7 +949,7 @@ const enrollmentData = [
     Total: 1339,
   },
   {
-    Date: 'Sep-16',
+    Date: '9/2016',
     'Emergency Shelter': 103,
     'Homelessness Prevention': 17,
     'Permanent Housing': 604,
@@ -958,7 +958,7 @@ const enrollmentData = [
     Total: 1247,
   },
   {
-    Date: 'Oct-16',
+    Date: '10/2016',
     'Emergency Shelter': 108,
     'Homelessness Prevention': 19,
     'Permanent Housing': 591,
@@ -967,7 +967,7 @@ const enrollmentData = [
     Total: 1224,
   },
   {
-    Date: 'Nov-16',
+    Date: '11/2016',
     'Emergency Shelter': 125,
     'Homelessness Prevention': 26,
     'Permanent Housing': 593,
@@ -976,7 +976,7 @@ const enrollmentData = [
     Total: 1283,
   },
   {
-    Date: 'Dec-16',
+    Date: '12/2016',
     'Emergency Shelter': 133,
     'Homelessness Prevention': 25,
     'Permanent Housing': 587,
@@ -985,7 +985,7 @@ const enrollmentData = [
     Total: 1257,
   },
   {
-    Date: 'Jan-17',
+    Date: '1/2017',
     'Emergency Shelter': 150,
     'Homelessness Prevention': 19,
     'Permanent Housing': 591,
@@ -994,7 +994,7 @@ const enrollmentData = [
     Total: 1240,
   },
   {
-    Date: 'Feb-17',
+    Date: '2/2017',
     'Emergency Shelter': 159,
     'Homelessness Prevention': 20,
     'Permanent Housing': 614,
@@ -1003,7 +1003,7 @@ const enrollmentData = [
     Total: 1291,
   },
   {
-    Date: 'Mar-17',
+    Date: '3/2017',
     'Emergency Shelter': 167,
     'Homelessness Prevention': 24,
     'Permanent Housing': 604,
@@ -1041,7 +1041,7 @@ class HomelessnessEnrollment extends React.Component {
         </div>
         <div className="row">
           <div className="col-sm-12">
-            <AreaChart data={this.props.summaryData} xAxisDataKey="Date" dataKeys={dataKeys} altText={'Area chart of HMIS enrollments'} />
+            <AreaChart data={this.props.summaryData} xAxisDataKey="Date" dataKeys={dataKeys} altText={'Area chart of HMIS enrollments'} colorScheme={1} />
           </div>
         </div>
         <div className="row">

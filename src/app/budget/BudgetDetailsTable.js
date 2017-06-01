@@ -132,7 +132,7 @@ const BudgetDetailsTable = (props) => {
       </div>
       <div className="row">
         <div className="col-sm-12">
-          <div alt={['Tsbler of', (props.location.query.mode || 'expenditures')].join(' ')}>
+          <div alt={['Table of', (props.location.query.mode || 'expenditures')].join(' ')}>
             <ReactTable
               data={dataForTable}
               columns={getDataColumns(0, props.location.query.mode)}

@@ -13,7 +13,7 @@ const renderTitle = (title) => {
 };
 
 const renderLegend = payload => (
-  <ul>
+  <ul style={{ marginBottom: '30px' }}>
     {
       payload.map((entry, index) => (
         <li key={[entry.name, index].join('_')}><div style={{ backgroundColor: pieColors[index % pieColors.length], width: '15px', height: '15px', display: 'inline-block', marginRight: '5px' }}></div>{entry.name}: {entry.value}</li>

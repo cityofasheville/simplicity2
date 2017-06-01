@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { ResponsiveContainer, BarChart as RechartsBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ReferenceArea } from 'recharts';
 
 const colorSchemes = [
-  ['#8e0152', '#e6f5d0', '#c51b7d', '#b8e186', '#de77ae', '#7fbc41', '#f1b6da', '#4d9221', '#fde0ef', '#276419', '#f7f7f7'], // color brewer diverging 11 pink-green
-  ['#40004b', '#d9f0d3', '#762a83', '#a6dba0', '#9970ab', '#5aae61', '#c2a5cf', '#1b7837', '#e7d4e8', '#00441b', '#f7f7f7'], // color brewer diverging 11 purple-green
+  ['#8e0152', '#b8e186', '#c51b7d', '#4d9221', '#de77ae', '#7fbc41', '#f1b6da', '#e6f5d0', '#fde0ef', '#276419', '#f7f7f7'], // color brewer diverging 11 pink-green
+  ['#40004b', '#a6dba0', '#762a83', '#1b7837', '#9970ab', '#5aae61', '#c2a5cf', '#d9f0d3', '#e7d4e8', '#00441b', '#f7f7f7'], // color brewer diverging 11 purple-green
   ['#543005', '#c7eae5', '#8c510a', '#80cdc1', '#bf812d', '#35978f', '#dfc27d', '#01665e', '#f6e8c3', '#003c30', '#f5f5f5'], // color brewer diverging 11 brown-blue
   ['#67001f', '#d1e5f0', '#b2182b', '#92c5de', '#d6604d', '#4393c3', '#f4a582', '#2166ac', '#fddbc7', '#053061', '#f7f7f7'], // color brewer diverging 11 red-blue
   ['#7f3b08', '#d8daeb', '#b35806', '#b2abd2', '#e08214', '#8073ac', '#fdb863', '#542788', '#fee0b6', '#2d004b', '#f7f7f7'], // color brewer diverging 11 orange-purple

@@ -4,7 +4,8 @@ import { Link } from 'react-router';
 import HomelessnessPITSummary from './HomelessnessPITSummary';
 import HomelessnessEnrollment from './HomelessnessEnrollment';
 import HomelessnessTargetPops from './HomelessnessTargetPops';
-import HomelessnessLivingSituation from './HomelessnessLivingSituation';
+import HomelessnessVeterans from './HomelessnessVeterans';
+import HomelessnessVeteransExits from './HomelessnessVeteransExits';
 
 const HomelessnessSummary = props => (
   <div>
@@ -31,47 +32,40 @@ const HomelessnessSummary = props => (
     <div className="row">
       <div className="col-sm-12">
         <p>
-          There could be an introductory paragraph here about the homelessness intiative work, and a quick overview of homelessness challenges, or how performance is measured/evaluated.
+          Text Block 1: Introductory paragraph/s (short) here about the five year strategic plan, and a quick overview of homelessness challenges, or how performance is measured/evaluated. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text.
         </p>
       </div>
     </div>
     <div className="row">
       <div className="col-sm-12">
-        <h3>Point-in-Time Counts</h3>
-        <p>
-          We could add some explanatory / introductory text here, like what the PIT is and when it is done, why it is important, so that users can better understand the visualization. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text.
-        </p>
         <HomelessnessPITSummary />
       </div>
     </div>
     <hr />
     <div className="row">
       <div className="col-sm-12">
-        <h3>Homelessness over the last 12 years by living situation</h3>
-        <p>
-          We could add some explanatory text here. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text.
-        </p>
-        <HomelessnessLivingSituation />
+        <HomelessnessEnrollment />
       </div>
     </div>
     <hr />
     <div className="row">
       <div className="col-sm-12">
-        <h3>Homelessness over the last 12 years: Target Populations</h3>
-        <p>
-          We could add some explanatory text here, like what are the target populations, why are these the target populations, etc. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text.
-        </p>
         <HomelessnessTargetPops />
       </div>
     </div>
-    <hr />
     <div className="row">
       <div className="col-sm-12">
-        <h3>HMIS</h3>
+        <HomelessnessVeterans />
+        <HomelessnessVeteransExits />
+      </div>
+    </div>
+    <div className="row">
+      <div className="col-sm-12">
+        <h3>Flow Diagram</h3>
         <p>
-          We could add some explanatory text here, like what the HMIS, what are HMIS enrollments, what the change over time tells us, etc. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text.
+         Text Block 6: Describe how entry and exit determined? Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text.
         </p>
-        <HomelessnessEnrollment />
+        TODO: Flow diagram of entrance points to exit points. Should this section go adjacent to the HMIS enrollments section??
       </div>
     </div>
   </div>

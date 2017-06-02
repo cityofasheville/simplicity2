@@ -5,9 +5,9 @@ import AreaChart from '../../shared/visualization/AreaChart';
 const dataKeys = [
   'Emergency Shelter',
   'Homelessness Prevention',
-  'Permanent Housing',
   'Rapid Re-Housing',
   'Transitional housing',
+  'Permanent Housing',
 ];
 
 // todo get this data from graphql
@@ -1034,6 +1034,10 @@ class HomelessnessEnrollment extends React.Component {
   render() {
     return (
       <div>
+        <h3>Homelessness Program Enrollments</h3>
+        <p>
+          Text Block 3: We could add some explanatory text here, like what the HMIS, what are HMIS enrollments, what the change over time tells us, etc. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text.
+        </p>
         <div className="row">
           <div className="col-xs-9 col-xs-offset-2">
             <h3 className="text-center">HMIS Enrollments</h3>
@@ -1041,7 +1045,7 @@ class HomelessnessEnrollment extends React.Component {
         </div>
         <div className="row">
           <div className="col-sm-12">
-            <AreaChart data={this.props.summaryData} xAxisDataKey="Date" dataKeys={dataKeys} altText={'Area chart of HMIS enrollments'} colorScheme={1} />
+            <AreaChart data={this.props.summaryData} xAxisDataKey="Date" dataKeys={dataKeys} altText={'Area chart of HMIS enrollments'} colorScheme="purple_green_diverging" />
           </div>
         </div>
         <div className="row">

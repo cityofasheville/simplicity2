@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import BarChart from '../../shared/visualization/BarChart';
 
 const dataKeys = [
+  'All sheltered people',
+  'All unsheltered people',
   'Sheltered: with at least one adult and one child',
   'Sheltered: with only children',
   'Sheltered: without children',
@@ -14,9 +16,32 @@ const dataKeys = [
 // todo get this data from graphql
 const PITdata = [
   {
+    date: '2005',
+    'All sheltered people': 418,
+    'All unsheltered people': 84,
+  },
+  {
+    date: '2006',
+    'All sheltered people': 399,
+    'All unsheltered people': 199,
+  },
+  {
+    date: '2007',
+    'All sheltered people': 448,
+    'All unsheltered people': 187,
+  },
+  {
+    date: '2008',
+    'All sheltered people': 429,
+    'All unsheltered people': 80,
+  },
+  {
+    date: '2009',
+    'All sheltered people': 426,
+    'All unsheltered people': 92,
+  },
+  {
     date: '2010',
-    'All sheltered people': 462,
-    'All unsheltered people': 54,
     'Sheltered: with at least one adult and one child': 101,
     'Sheltered: with only children': 0,
     'Sheltered: without children': 361,
@@ -26,8 +51,6 @@ const PITdata = [
   },
   {
     date: '2011',
-    'All sheltered people': 452,
-    'All unsheltered people': 62,
     'Sheltered: with at least one adult and one child': 61,
     'Sheltered: with only children': 10,
     'Sheltered: without children': 381,
@@ -37,8 +60,6 @@ const PITdata = [
   },
   {
     date: '2012',
-    'All sheltered people': 478,
-    'All unsheltered people': 82,
     'Sheltered: with at least one adult and one child': 94,
     'Sheltered: with only children': 9,
     'Sheltered: without children': 375,
@@ -48,8 +69,6 @@ const PITdata = [
   },
   {
     date: '2013',
-    'All sheltered people': 513,
-    'All unsheltered people': 57,
     'Sheltered: with at least one adult and one child': 92,
     'Sheltered: with only children': 4,
     'Sheltered: without children': 417,
@@ -59,8 +78,6 @@ const PITdata = [
   },
   {
     date: '2014',
-    'All sheltered people': 465,
-    'All unsheltered people': 65,
     'Sheltered: with at least one adult and one child': 52,
     'Sheltered: with only children': 5,
     'Sheltered: without children': 408,
@@ -70,8 +87,6 @@ const PITdata = [
   },
   {
     date: '2015',
-    'All sheltered people': 488,
-    'All unsheltered people': 74,
     'Sheltered: with at least one adult and one child': 52,
     'Sheltered: with only children': 8,
     'Sheltered: without children': 426,
@@ -81,8 +96,6 @@ const PITdata = [
   },
   {
     date: '2016',
-    'All sheltered people': 437,
-    'All unsheltered people': 72,
     'Sheltered: with at least one adult and one child': 37,
     'Sheltered: with only children': 5,
     'Sheltered: without children': 395,
@@ -113,6 +126,10 @@ class HomelessnessPITSummary extends React.Component {
   render() {
     return (
       <div>
+        <h3>Point-in-Time Counts</h3>
+        <p>
+          Text Block 2: Text about what the PIT is and when it is done, why it is important, so that users can better understand the visualization. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text.
+        </p>
         <div className="row">
           <div className="col-xs-9 col-xs-offset-2">
             <h3 className="text-center">Point-in-Time counts of people who are homeless</h3>
@@ -120,7 +137,7 @@ class HomelessnessPITSummary extends React.Component {
         </div>
         <div className="row">
           <div className="col-sm-12">
-            <BarChart data={this.props.summaryData} xAxisDataKey="date" barDataKeys={dataKeys} stacked colorScheme={10} altText={'Bar chart of point-in-time counts of people who are homeless'} />
+            <BarChart data={this.props.summaryData} xAxisDataKey="date" barDataKeys={dataKeys} stacked colorScheme="blue_red_grouped" altText={'Bar chart of point-in-time counts of people who are homeless'} />
           </div>
         </div>
         <div className="row">

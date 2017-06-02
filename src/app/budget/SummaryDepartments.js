@@ -19,7 +19,7 @@ const SummaryDepartments = (props) => {
   return (
     <div className="row">
       <div className="col-sm-12">
-        <BudgetSummaryBarChart categoryType={'department'} colorScheme={1} {...props} />
+        <BudgetSummaryBarChart categoryType={'department'} colorScheme="purple_green_diverging" {...props} />
       </div>
     </div>
   );

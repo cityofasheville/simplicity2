@@ -141,7 +141,7 @@ class HomelessnessVeteransExits extends React.Component {
         </div>
         <div className="row">
           <div className="col-sm-12">
-            <BarChart data={this.props.summaryData} xAxisDataKey="month" barDataKeys={dataKeys} stacked colorScheme="purple_green_diverging" altText={'Bar chart of veteran exits from homelessness'} />
+            <BarChart data={this.props.summaryData} mainAxisDataKey="month" barDataKeys={dataKeys} stacked colorScheme="purple_green_diverging" altText={'Bar chart of veteran exits from homelessness'} />
           </div>
         </div>
         <div className="row">

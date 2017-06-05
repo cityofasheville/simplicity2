@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import HomelessnessPITSummary from './HomelessnessPITSummary';
+import HomelessnessCounts from './HomelessnessCounts';
+import HomelessnessDemographics from './HomelessnessDemographics';
 import HomelessnessEnrollment from './HomelessnessEnrollment';
-import HomelessnessTargetPops from './HomelessnessTargetPops';
-import HomelessnessVeterans from './HomelessnessVeterans';
-import HomelessnessVeteransExits from './HomelessnessVeteransExits';
 
 const HomelessnessSummary = props => (
   <div>
@@ -16,6 +14,9 @@ const HomelessnessSummary = props => (
           <div className="btn-group pull-right" style={{ marginLeft: '10px' }}>
             <Link to={{ pathname: '/homelessness', query: { entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, hideNavbar: props.location.query.hideNavbar } }}>
               <button className="btn btn-primary active" style={{ borderTopRightRadius: '0px', borderBottomRightRadius: '0px' }}>Summary</button>
+            </Link>
+            <Link to={{ pathname: '/homelessness/veterans', query: { entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, hideNavbar: props.location.query.hideNavbar } }}>
+              <button className="btn btn-primary" style={{ borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px' }}>Veterans</button>
             </Link>
             <Link to={{ pathname: '/homelessness/details', query: { entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, hideNavbar: props.location.query.hideNavbar } }}>
               <button className="btn btn-primary" style={{ borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px' }}>Details</button>
@@ -31,14 +32,12 @@ const HomelessnessSummary = props => (
     </div>
     <div className="row">
       <div className="col-sm-12">
-        <p>
-          Text Block 1: Introductory paragraph/s (short) here about the five year strategic plan, and a quick overview of homelessness challenges, or how performance is measured/evaluated. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text.
-        </p>
+        <HomelessnessCounts />
       </div>
-    </div>
+    </div>    
     <div className="row">
       <div className="col-sm-12">
-        <HomelessnessPITSummary />
+        <HomelessnessDemographics />
       </div>
     </div>
     <hr />
@@ -48,17 +47,6 @@ const HomelessnessSummary = props => (
       </div>
     </div>
     <hr />
-    <div className="row">
-      <div className="col-sm-12">
-        <HomelessnessTargetPops />
-      </div>
-    </div>
-    <div className="row">
-      <div className="col-sm-12">
-        <HomelessnessVeterans />
-        <HomelessnessVeteransExits />
-      </div>
-    </div>
     <div className="row">
       <div className="col-sm-12">
         <h3>Flow Diagram</h3>

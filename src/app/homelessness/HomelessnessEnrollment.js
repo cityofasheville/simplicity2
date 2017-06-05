@@ -1045,7 +1045,7 @@ class HomelessnessEnrollment extends React.Component {
         </div>
         <div className="row">
           <div className="col-sm-12">
-            <AreaChart data={this.props.summaryData} xAxisDataKey="Date" dataKeys={dataKeys} altText={'Area chart of HMIS enrollments'} colorScheme="purple_green_diverging" />
+            <AreaChart data={this.props.summaryData} mainAxisDataKey="Date" dataKeys={dataKeys} altText={'Area chart of HMIS enrollments'} colorScheme="purple_green_diverging" />
           </div>
         </div>
         <div className="row">

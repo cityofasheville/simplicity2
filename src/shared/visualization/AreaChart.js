@@ -28,14 +28,14 @@ const AreaChart = props => (
       <RechartsAreaChart
         data={props.data}
       >
-        <XAxis dataKey={props.xAxisDataKey} />
+        <XAxis dataKey={props.mainAxisDataKey} />
         <YAxis tickFormatter={props.dollars ? getDollars : null} />
         <CartesianGrid strokeDasharray="3 3" />
         <Tooltip formatter={props.dollars ? getDollars : null} />
         {props.dataKeys.map((area, i) => (
           <Area key={['area', i].join('_')} type="monotone" dataKey={props.dataKeys[i]} stackId={1} fill={colorSchemes[props.colorScheme][i % colorSchemes[props.colorScheme].length]} stroke={colorSchemes[props.colorScheme][i % colorSchemes[props.colorScheme].length]} fillOpacity={1} onClick={props.diveDeeper !== undefined ? () => props.diveDeeper(props.dataKeys[i]) : null} style={{ cursor: 'pointer' }} />
         ))}
-        <Legend />
+        <Legend iconType="square" />
       </RechartsAreaChart>
     </ResponsiveContainer>
   </div>
@@ -47,7 +47,7 @@ AreaChart.propTypes = {
   dataKeys: PropTypes.arrayOf(PropTypes.string),
   diveDeeper: PropTypes.func,
   dollars: PropTypes.bool,
-  xAxisDataKey: PropTypes.string,
+  mainAxisDataKey: PropTypes.string,
   colorScheme: PropTypes.string,
 };
 
@@ -57,7 +57,7 @@ AreaChart.defaultProps = {
   dataKeys: [],
   diveDeeper: undefined,
   dollars: false,
-  xAxisDataKey: 'year',
+  mainAxisDataKey: 'year',
   colorScheme: 'pink_green_diverging',
 };
 

@@ -25,11 +25,16 @@ class BarChartContainer extends React.Component {
       <div>
         <h4>{this.props.chartTitle}</h4>
         <p>
-          {this.props.chartText}
+          {this.props.chartText.isArray &&
+            this.props.chartText.map((textChunk, index) => (<span key={index}>{textChunk}</span>))
+          }
+          {!this.props.chartText.isArray &&
+            this.props.chartText
+          }
         </p>
         <div className="row">
           <div className="col-sm-12">
-            <BarChart data={this.props.data} layout={this.props.layout} mainAxisDataKey={this.props.mainAxisDataKey} legendHeight={this.props.legendHeight} barDataKeys={this.props.dataKeys} stacked colorScheme={this.props.colorScheme} altText={this.props.altText} domain={this.props.domain} />
+            <BarChart data={this.props.data} layout={this.props.layout} mainAxisDataKey={this.props.mainAxisDataKey} legendHeight={this.props.legendHeight} barDataKeys={this.props.dataKeys} stacked={this.props.stacked} colorScheme={this.props.colorScheme} altText={this.props.altText} domain={this.props.domain} barGap={this.props.barGap} />
           </div>
         </div>
         <div className="row">
@@ -57,9 +62,11 @@ BarChartContainer.propTypes = {
   altText: PropTypes.string,
   legendHeight: PropTypes.number,
   domain: PropTypes.array, // eslint-disable-line
-  chartText: PropTypes.string,
+  chartText: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   colorScheme: PropTypes.string,
   mainAxisDataKey: PropTypes.string,
+  stacked: PropTypes.bool,
+  barGap: PropTypes.number,
 };
 
 BarChartContainer.defaultProps = {
@@ -71,6 +78,8 @@ BarChartContainer.defaultProps = {
   domain: [0, 'auto'],
   chartText: '',
   colorScheme: 'pink_green_diverging',
+  stacked: false,
+  barGap: 4,
 };
 
 export default BarChartContainer;

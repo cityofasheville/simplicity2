@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import BarChart from '../../shared/visualization/BarChart';
+import BarChartContainer from '../../shared/visualization/BarChartContainer';
 
 // todo get this data from graphql
 const dataKeys = [
@@ -11,7 +11,7 @@ const dataKeys = [
   'Missing in Action',
 ];
 
-const data = [
+const exitData = [
   {
     month: '4/2016',
     'Rapid Re-Housing': 3,
@@ -110,55 +110,9 @@ const data = [
   },
 ];
 
-const getLongDesc = data => (
-  <div>
-    TODO: Create long description
-  </div>
+const HomelessnessVeteransExits = props => (
+  <BarChartContainer chartTitle="Veteran Exits from Homelessness" chartText="Intro about Veteran Exits from Homelessness" mainAxisDataKey="month" dataKeys={dataKeys} colorScheme="purple_green_diverging" data={props.data} stacked altText="Bar chart of veteran exits from homelessness" />
 );
-
-class HomelessnessVeteransExits extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { showingLongDesc: this.showLongDesc };
-  }
-
-  toggleLongDesc() {
-    this.setState({
-      showingLongDesc: !this.state.showingLongDesc,
-    });
-  }
-
-  render() {
-    return (
-      <div>
-        <p>
-          Text Block 5.5: Intro for veteran exists graph (should this graph be on the summary page or more of a detail view?). Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text.
-        </p>
-        <div className="row">
-          <div className="col-xs-9 col-xs-offset-2">
-            <h3 className="text-center">Veteran Exits from Homelessness</h3>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-sm-12">
-            <BarChart data={this.props.summaryData} mainAxisDataKey="month" barDataKeys={dataKeys} stacked colorScheme="purple_green_diverging" altText={'Bar chart of veteran exits from homelessness'} />
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-xs-10 col-xs-offset-2">
-            <br />
-            <a href="javascript:void(0);" className="text-center inText" onClick={() => this.toggleLongDesc()}>
-              {this.state.showingLongDesc ? 'Hide' : 'Show'} Veteran exits from homelessness bar chart summary
-            </a>
-            <div hidden={!this.state.showingLongDesc}>
-              {getLongDesc(this.props.summaryData)}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-}
 
 const dataShape = {
   Year: PropTypes.string,
@@ -168,12 +122,12 @@ const dataShape = {
 };
 
 HomelessnessVeteransExits.propTypes = {
-  summaryData: PropTypes.arrayOf(PropTypes.shape(dataShape)),
+  data: PropTypes.arrayOf(PropTypes.shape(dataShape)),
   showLongDesc: PropTypes.bool, // eslint-disable-line
 };
 
 HomelessnessVeteransExits.defaultProps = {
-  summaryData: data,
+  data: exitData,
   showLongDesc: false,
 };
 

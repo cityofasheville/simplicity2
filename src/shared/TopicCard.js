@@ -11,6 +11,8 @@ const getTopicIcon = (topic) => {
       return 'building-o';
     case 'BUDGET':
       return 'usd';
+    case 'HOMELESSNESS':
+      return 'hotel';
     default:
       return 'university';
   }

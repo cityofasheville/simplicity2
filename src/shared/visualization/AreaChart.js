@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ResponsiveContainer, AreaChart as RechartsAreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-
-const COLORS = ['#9C27B0', '#03A9F4', '#FFC107', '#b71c1c', '#4CAF50', '#E91E63', '#9E9E9E'];
+import { colorSchemes } from './colorSchemes';
 
 const getDollars = (value) => {
   if (value > 1000000) {
@@ -13,7 +12,7 @@ const getDollars = (value) => {
   return ['$', value.toLocaleString()].join('');
 };
 
-const renderLegend = payload => (
+/*const renderLegend = payload => (
   <ul style={{ listStyle: 'none' }}>
     {
       payload.map((entry, index) => (
@@ -21,22 +20,22 @@ const renderLegend = payload => (
       ))
     }
   </ul>
-);
+);*/
 
 const AreaChart = props => (
   <div style={{ height: props.height }}>
     <ResponsiveContainer>
       <RechartsAreaChart
-        data={props.data.dataValues}
+        data={props.data}
       >
-        <XAxis dataKey="year" />
-        <YAxis tickFormatter={getDollars} />
+        <XAxis dataKey={props.mainAxisDataKey} />
+        <YAxis tickFormatter={props.dollars ? getDollars : null} />
         <CartesianGrid strokeDasharray="3 3" />
-        <Tooltip formatter={getDollars} />
-        {props.data.dataKeys.map((area, i) => (
-          <Area key={['area', i].join('_')} type="monotone" dataKey={props.data.dataKeys[i]} stackId={1} fill={COLORS[i % COLORS.length]} stroke={COLORS[i % COLORS.length]} fillOpacity={1} onClick={props.diveDeeper !== undefined ? () => props.diveDeeper(props.data.dataKeys[i]) : null} style={{ cursor: 'pointer' }} />
+        <Tooltip formatter={props.dollars ? getDollars : null} />
+        {props.dataKeys.map((area, i) => (
+          <Area key={['area', i].join('_')} type="monotone" dataKey={props.dataKeys[i]} stackId={1} fill={colorSchemes[props.colorScheme][i % colorSchemes[props.colorScheme].length]} stroke={colorSchemes[props.colorScheme][i % colorSchemes[props.colorScheme].length]} fillOpacity={1} onClick={props.diveDeeper !== undefined ? () => props.diveDeeper(props.dataKeys[i]) : null} style={{ cursor: 'pointer' }} />
         ))}
-        <Legend verticalAlign="bottom" content={renderLegend(props.data.dataKeys)} />
+        <Legend iconType="square" />
       </RechartsAreaChart>
     </ResponsiveContainer>
   </div>
@@ -44,14 +43,22 @@ const AreaChart = props => (
 
 AreaChart.propTypes = {
   height: PropTypes.number,
-  data: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  data: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+  dataKeys: PropTypes.arrayOf(PropTypes.string),
   diveDeeper: PropTypes.func,
+  dollars: PropTypes.bool,
+  mainAxisDataKey: PropTypes.string,
+  colorScheme: PropTypes.string,
 };
 
 AreaChart.defaultProps = {
   height: 450,
   data: [],
+  dataKeys: [],
   diveDeeper: undefined,
+  dollars: false,
+  mainAxisDataKey: 'year',
+  colorScheme: 'pink_green_diverging',
 };
 
 export default AreaChart;

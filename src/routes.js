@@ -34,6 +34,9 @@ import BudgetSummary from './app/budget/BudgetSummary';
 import BudgetDetailsContainer from './app/budget/BudgetDetailsContainer';
 import SummaryDepartments from './app/budget/SummaryDepartments';
 import SummaryUse from './app/budget/SummaryUse';
+// Homelessness
+import HomelessnessSummary from './app/homelessness/HomelessnessSummary';
+import HomelessnessVeterans from './app/homelessness/HomelessnessVeterans';
 
 // Google Analytics
 const ReactGA = require('react-ga');
@@ -86,6 +89,10 @@ const Routes = props => (
           <Route path="summaryCashFlow" component={BudgetDetailsContainer}></Route>
           <Route path="detailsTreemap" component={BudgetDetailsContainer}></Route>
           <Route path="detailsTable" component={BudgetDetailsContainer}></Route>
+        </Route>
+        <Route path="homelessness">
+          <IndexRoute component={HomelessnessSummary} />
+          <Route path="veterans" component={HomelessnessVeterans}></Route>
         </Route>
         <Route path="maintenance">
           <IndexRoute component={Maintenance} />

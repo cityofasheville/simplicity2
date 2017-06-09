@@ -64,13 +64,12 @@ class BudgetSummaryBarChart extends React.Component {
         </div>
         <div className="row">
           <div className="col-sm-12">
-            <BarChart data={this.props.summaryData.dataValues} referenceArea xAxisDataKey="display_year" xReferenceAxisDataKey="yearAxisNumeric" referenceAreaLabels={[['Actual', 'Spent'], ['Adopted', 'Budget'], ['Proposed', 'Budget']]} referenceAreaExes={[500, 750, 1000]} barDataKeys={this.props.summaryData.dataKeys} yTickFormatter={getDollars} stacked dollars colorScheme={this.props.colorScheme} altText={['Spending by', this.props.categoryType, 'bar chart'].join(' ')} />
-            <span className="pull-right" style={{ fontSize: '12px' }}>Barchart totals exclude interfund transfers</span>
+            <BarChart data={this.props.summaryData.dataValues} legendHeight={115} referenceArea mainAxisDataKey="display_year" mainReferenceAxisDataKey="yearAxisNumeric" referenceAreaLabels={[['Actual', 'Spent'], ['Adopted', 'Budget'], ['Proposed', 'Budget']]} referenceAreaExes={[500, 750, 1000]} barDataKeys={this.props.summaryData.dataKeys} secondaryTickFormatter={getDollars} stacked toolTipFormatter={getDollarsLong} colorScheme={this.props.colorScheme} domain={['dataMin', 'dataMax + 50000000']} altText={['Spending by', this.props.categoryType, 'bar chart'].join(' ')} />
           </div>
+          <span className="pull-right" style={{ fontSize: '12px' }}>Barchart totals exclude interfund transfers</span>
         </div>
         <div className="row">
           <div className="col-xs-10 col-xs-offset-2">
-            <br />
             <a href="javascript:void(0);" className="text-center inText" onClick={() => this.toggleLongDesc()}>
               {this.state.showingLongDesc ? 'Hide' : 'Show'} spending {getTitle(this.props.categoryType)} bar chart summary
             </a>
@@ -86,14 +85,14 @@ class BudgetSummaryBarChart extends React.Component {
 
 BudgetSummaryBarChart.propTypes = {
   categoryType: PropTypes.string,
-  colorScheme: PropTypes.number,
+  colorScheme: PropTypes.string,
   summaryData: PropTypes.object, // eslint-disable-line
   showLongDesc: PropTypes.bool, // eslint-disable-line
 };
 
 BudgetSummaryBarChart.defaultProps = {
   categoryType: 'use',
-  colorScheme: 0,
+  colorScheme: 'pink_green_diverging',
   showLongDesc: false,
 };
 

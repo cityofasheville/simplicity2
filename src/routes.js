@@ -36,7 +36,6 @@ import SummaryDepartments from './app/budget/SummaryDepartments';
 import SummaryUse from './app/budget/SummaryUse';
 // Homelessness
 import HomelessnessSummary from './app/homelessness/HomelessnessSummary';
-import HomelessnessDetails from './app/homelessness/HomelessnessDetails';
 import HomelessnessVeterans from './app/homelessness/HomelessnessVeterans';
 
 // Google Analytics
@@ -93,7 +92,6 @@ const Routes = props => (
         </Route>
         <Route path="homelessness">
           <IndexRoute component={HomelessnessSummary} />
-          <Route path="details" component={HomelessnessDetails}></Route>
           <Route path="veterans" component={HomelessnessVeterans}></Route>
         </Route>
         <Route path="maintenance">

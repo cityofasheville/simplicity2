@@ -4,7 +4,6 @@ import { Link } from 'react-router';
 import { ResponsiveContainer, ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import BarChartContainer from '../../shared/visualization/BarChartContainer';
 import { colorSchemes } from '../../shared/visualization/colorSchemes';
-import InflowOutflowAnimation from '../../shared/visualization/InflowOutflowAnimation';
 
 const dataKeys = [
   'Incoming',
@@ -154,9 +153,6 @@ class HomelessnessVeterans extends React.Component {
                 <Link to={{ pathname: '/homelessness/veterans', query: { entity: this.props.location.query.entity, id: this.props.location.query.id, label: this.props.location.query.label, hideNavbar: this.props.location.query.hideNavbar } }}>
                   <button className="btn btn-primary active" style={{ borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px', borderTopRightRadius: '0px', borderBottomRightRadius: '0px' }}>Veterans</button>
                 </Link>
-                <Link to={{ pathname: '/homelessness/details', query: { entity: this.props.location.query.entity, id: this.props.location.query.id, label: this.props.location.query.label, hideNavbar: this.props.location.query.hideNavbar } }}>
-                  <button className="btn btn-primary" style={{ borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px' }}>Details</button>
-                </Link>
               </div>
               Ending Veteran Homelessness
             </h1>
@@ -183,15 +179,15 @@ class HomelessnessVeterans extends React.Component {
               <ResponsiveContainer>
                 <ComposedChart data={this.props.summaryData} barGap="-77%">
                   <XAxis dataKey="month" />
-                  <YAxis domain={['datamin', 200]} />
+                  <YAxis domain={['datamin', 'dataMax + 50']} />
                   <CartesianGrid strokeDasharray="3 3" />
                   <Tooltip />
                   <Legend />
                   {dataKeys.map((barDataKey, i) => (
-                    <Bar key={barDataKey} dataKey={barDataKey} fill={colorSchemes.pink_green_diverging[i % colorSchemes.pink_green_diverging.length]} animationDuration={50} />
+                    <Bar key={barDataKey} dataKey={barDataKey} fill={colorSchemes.bright_colors_2[i % colorSchemes.pink_green_diverging.length]} animationDuration={50} />
                   ))}
-                  <Line dataKey="Remaining to be housed" stroke="blue" dot={{ stroke: 'blue', strokeWidth: 3 }} fill="white" />
-                  <Line dataKey="Net change" stroke="black" fill="white" dot={{ stroke: 'black', strokeWidth: 3 }} />
+                  <Line dataKey="Remaining to be housed" stroke="blue" strokeWidth={3} dot={{ stroke: 'blue', strokeWidth: 5, r: 5 }} fill="white" />
+                  <Line dataKey="Net change" stroke="black" fill="white" strokeWidth={3} dot={{ stroke: 'black', strokeWidth: 5, r: 5 }} />
                 </ComposedChart>
               </ResponsiveContainer>
             </div>
@@ -212,8 +208,9 @@ class HomelessnessVeterans extends React.Component {
           <div className="col-sm-12">
             <hr />
             <h3>How long does it take to house veterans?</h3>
-            <p>Some intro text here about the 90 days and functional zero goal.</p>
-            <BarChartContainer layout="vertical" barGap={0} chartTitle="Average days from identification to positive exit" chartText="Brief chart explanation here" mainAxisDataKey="month" dataKeys={this.props.daysToExitKeys} colorScheme="purple_green_diverging" data={this.props.daysToExitData} altText="Bar chart of average days from identification to positive exit" />
+            <p>The City of Asheville and Buncombe County are striving to achieve &quot;functional zero&quot; for veteran homelessness, as defined for NC 501, Asheville-Buncombe Continuum of Care. Functional zero would be achieved when every newly identified homeless Veteran in Asheville-Buncombe is connected with an appropriate housing intervention within 30 days and is permanently housed within 90 days after signing a Declaration of Housing Preference form, unless the Veteran elects to enter a long term service intensive transitional housing program (SITH).
+            </p>
+            <BarChartContainer layout="vertical" barGap={0} chartTitle="Average days from identification to positive exit" chartText="The red bars in the chart below representing Non-SITH programs are those which help us evaluate how close to functional zero we are. The blue, SITH, bars represent those veterans who choose to enter long term service intensive transitional housing programs." mainAxisDataKey="month" dataKeys={this.props.daysToExitKeys} colorScheme="bright_colors" data={this.props.daysToExitData} altText="Bar chart of average days from identification to positive exit" />
             {/*<InflowOutflowAnimation value={50} riseAnimation />*/}
           </div>
         </div>

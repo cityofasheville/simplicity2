@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ResponsiveContainer, PieChart as RechartsPieChart, Pie, Tooltip, Legend, Cell } from 'recharts';
+import { colorSchemes } from './colorSchemes';
 import styles from './pieChartStyles.css';
 
-const pieColors = ['#490092', '#FFBDDB', '#009292', '#FF6DB6', '#004949', '#B66DFF', '#6DB6FF', '#000000', '#006DDB', '#B6DBFF', '#924900', '#24FF24', '#DB6D00', '#920000']; // colorblind 'safe'
+const pieColors = colorSchemes.bright_colors_2;
 
 const renderTitle = (title) => {
   if (title === undefined) {

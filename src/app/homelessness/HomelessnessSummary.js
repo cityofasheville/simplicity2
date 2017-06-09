@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import HomelessnessCounts from './HomelessnessCounts';
 import HomelessnessDemographics from './HomelessnessDemographics';
+import HomelessnessEnrollment from './HomelessnessEnrollment';
 
 const HomelessnessSummary = props => (
   <div>
@@ -15,9 +16,6 @@ const HomelessnessSummary = props => (
             </Link>
             <Link to={{ pathname: '/homelessness/veterans', query: { entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, hideNavbar: props.location.query.hideNavbar } }}>
               <button className="btn btn-primary" style={{ borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px', borderTopRightRadius: '0px', borderBottomRightRadius: '0px' }}>Veterans</button>
-            </Link>
-            <Link to={{ pathname: '/homelessness/details', query: { entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, hideNavbar: props.location.query.hideNavbar } }}>
-              <button className="btn btn-primary" style={{ borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px' }}>Details</button>
             </Link>
           </div>
           Homelessness in Asheville / Buncombe County
@@ -33,11 +31,17 @@ const HomelessnessSummary = props => (
       <div className="col-sm-12">
         <HomelessnessCounts />
       </div>
-    </div>  
-    <hr />  
+    </div>
+    <hr />
     <div className="row">
       <div className="col-sm-12">
         <HomelessnessDemographics />
+      </div>
+    </div>
+    <hr />
+    <div className="row">
+      <div className="col-sm-12">
+        <HomelessnessEnrollment />
       </div>
     </div>
   </div>

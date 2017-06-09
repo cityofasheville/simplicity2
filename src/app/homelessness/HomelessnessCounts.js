@@ -227,10 +227,10 @@ const HomelessnessCounts = props => (
     </div>
     <div className="row">
       <div className="col-sm-6">
-        <BarChartContainer chartTitle="Point-in-Time Counts" chartText={PITText} layout="vertical" mainAxisDataKey="date" legendHeight={70} dataKeys={props.PITkeys} colorScheme="purple_green_diverging" data={props.PITdata} stacked altText="Bar chart of point-in-time counts of people who are homeless" domain={[0, 1500]} />
+        <BarChartContainer chartTitle="Point-in-Time Counts" chartText={PITText} layout="vertical" mainAxisDataKey="date" legendHeight={70} dataKeys={props.PITkeys} colorScheme="bright_colors" data={props.PITdata} stacked altText="Bar chart of point-in-time counts of people who are homeless" domain={[0, 1500]} />
       </div>
       <div className="col-sm-6">
-        <BarChartContainer chartTitle="Homeless program enrollments" chartText={enrollmentsText} layout="vertical" mainAxisDataKey="Year" legendHeight={70} dataKeys={props.enrollmentKeys} data={props.enrollmentData} stacked altText="Bar chart of average monthly counts of persons enrolled in housing support programs in the City of Asheville and Buncombe County" domain={[0, 'dataMax']} />
+        <BarChartContainer chartTitle="Homeless program enrollments" chartText={enrollmentsText} layout="vertical" mainAxisDataKey="Year" legendHeight={70} dataKeys={props.enrollmentKeys} data={props.enrollmentData} stacked altText="Bar chart of average monthly counts of persons enrolled in housing support programs in the City of Asheville and Buncombe County" domain={[0, 'dataMax']} colorScheme="bright_colors_2" />
       </div>
     </div>
   </div>

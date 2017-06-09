@@ -2,9 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import BarChart from '../../shared/visualization/BarChart';
 
-const getLongDesc = data => (
+const getLongDesc = (data, dataKeys, mainAxisKey, valueFormatter) => (
   <div>
-    TODO: Create long description
+    {data.map((value, index) => (
+      <div key={[value[mainAxisKey], index].join('_')}>
+        <p>{value[mainAxisKey]}<br />
+          {dataKeys.map(key => (
+            <span key={[value[mainAxisKey], key].join('_')}>{key}: {valueFormatter !== null ? valueFormatter(value[key]) : value[key]}<br /></span>
+          ))}
+        </p>
+      </div>
+    ))}
   </div>
 );
 
@@ -34,7 +42,7 @@ class BarChartContainer extends React.Component {
         </p>
         <div className="row">
           <div className="col-sm-12">
-            <BarChart data={this.props.data} layout={this.props.layout} mainAxisDataKey={this.props.mainAxisDataKey} legendHeight={this.props.legendHeight} barDataKeys={this.props.dataKeys} stacked={this.props.stacked} colorScheme={this.props.colorScheme} altText={this.props.altText} domain={this.props.domain} barGap={this.props.barGap} />
+            <BarChart data={this.props.data} layout={this.props.layout} mainAxisDataKey={this.props.mainAxisDataKey} legendHeight={this.props.legendHeight} barDataKeys={this.props.dataKeys} stacked={this.props.stacked} colorScheme={this.props.colorScheme} altText={this.props.altText} domain={this.props.domain} barGap={this.props.barGap} toolTipFormatter={this.props.toolTipFormatter} />
           </div>
         </div>
         <div className="row">
@@ -44,7 +52,7 @@ class BarChartContainer extends React.Component {
               {this.state.showingLongDesc ? 'Hide' : 'Show'} {this.props.chartTitle} bar chart summary
             </a>
             <div hidden={!this.state.showingLongDesc}>
-              {getLongDesc(this.props.data)}
+              {getLongDesc(this.props.data, this.props.dataKeys, this.props.mainAxisDataKey, this.props.toolTipFormatter)}
             </div>
           </div>
         </div>
@@ -67,6 +75,7 @@ BarChartContainer.propTypes = {
   mainAxisDataKey: PropTypes.string,
   stacked: PropTypes.bool,
   barGap: PropTypes.number,
+  toolTipFormatter: PropTypes.func,
 };
 
 BarChartContainer.defaultProps = {
@@ -80,6 +89,7 @@ BarChartContainer.defaultProps = {
   colorScheme: 'pink_green_diverging',
   stacked: false,
   barGap: 4,
+  toolTipFormatter: null,
 };
 
 export default BarChartContainer;

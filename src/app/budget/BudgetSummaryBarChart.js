@@ -12,7 +12,7 @@ const getDollars = (value) => {
   return [value < 0 ? '-$' : '$', Math.abs(value).toFixed(0).toLocaleString()].join('');
 };
 
-const getDollarsLong = (value) => (
+const getDollarsLong = value => (
   [value < 0 ? '-$' : '$', Math.abs(value).toLocaleString()].join('')
 );
 

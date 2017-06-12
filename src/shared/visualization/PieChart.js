@@ -4,7 +4,7 @@ import { ResponsiveContainer, PieChart as RechartsPieChart, Pie, Tooltip, Legend
 import { colorSchemes } from './colorSchemes';
 import styles from './pieChartStyles.css';
 
-const pieColors = colorSchemes.bright_colors_2;
+const pieColors = colorSchemes.bright_colors;
 
 const renderTitle = (title) => {
   if (title === undefined) {
@@ -44,7 +44,7 @@ const PieChart = props => (
           <Legend legentType="square" />
         }
         {!props.defaultLegend &&
-          <Legend verticalAlign={'bottom'} content={renderLegend(props.data)} className={styles.pieLegend} />
+          <Legend verticalAlign={'bottom'} content={props.defaultLegend ? null : renderLegend(props.data)} className={styles.pieLegend} />
         }
       </RechartsPieChart>
     </ResponsiveContainer>
@@ -59,6 +59,8 @@ PieChart.propTypes = {
   defaultLegend: PropTypes.bool,
   altText: PropTypes.string,
   doughnut: PropTypes.bool,
+  defaultLegend: PropTypes.bool,
+  colorScheme: PropTypes.string,
 };
 
 PieChart.defaultProps = {
@@ -68,6 +70,8 @@ PieChart.defaultProps = {
   defaultLegend: false,
   altText: 'Pie chart',
   doughnut: false,
+  defaultLegend: false,
+  colorScheme: 'bright_colors',
 };
 
 export default PieChart;

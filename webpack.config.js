@@ -30,6 +30,10 @@ module.exports = {
         },
       },
       {
+        test: /\.(png|jpg)$/,
+        loader: 'url-loader?limit=25000',
+      },
+      {
         test: /\.scss$/,
         use: extractSass.extract({
           use: [{

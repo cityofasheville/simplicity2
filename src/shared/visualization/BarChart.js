@@ -16,17 +16,17 @@ const CustomizedLabel = labelProps => (
 
 const BarChart = props => (
   <div style={{ height: props.height }} alt={props.altText}>
-    {renderTitle(props.chartTitle)}
+    {props.chartTitle !== null && renderTitle(props.chartTitle)}
     <ResponsiveContainer>
       <RechartsBarChart data={props.data} barGap={props.barGap} layout={props.layout}>
         {props.layout === 'horizontal' &&
-          <XAxis dataKey={props.mainAxisDataKey} tickFormatter={props.mainTickFormatter !== undefined ? props.mainTickFormatter : null} />
+          <XAxis dataKey={props.mainAxisDataKey} hide={props.hidePrimaryAxis} tickFormatter={props.mainTickFormatter !== undefined ? props.mainTickFormatter : null} />
         }
         {props.layout === 'horizontal' &&
-          <YAxis tickFormatter={props.secondaryTickFormatter !== undefined ? props.secondaryTickFormatter : null} domain={props.domain} />
+          <YAxis tickFormatter={props.secondaryTickFormatter !== undefined ? props.secondaryTickFormatter : null} width={props.yAxisWidth} domain={props.domain} />
         }
         {props.layout === 'vertical' &&
-          <YAxis dataKey={props.mainAxisDataKey} type="category" tickFormatter={props.mainTickFormatter !== undefined ? props.mainTickFormatter : null} />
+          <YAxis dataKey={props.mainAxisDataKey} hide={props.hidePrimaryAxis} type="category" tickFormatter={props.mainTickFormatter !== undefined ? props.mainTickFormatter : null} width={props.yAxisWidth} />
         }
         {props.layout === 'vertical' &&
           <XAxis type="number" tickFormatter={props.secondaryTickFormatter !== undefined ? props.secondaryTickFormatter : null} domain={props.domain} />
@@ -56,6 +56,7 @@ BarChart.propTypes = {
   mainAxisDataKey: PropTypes.string.isRequired,
   mainReferenceAxisDataKey: PropTypes.string,
   secondaryTickFormatter: PropTypes.func,
+  hidePrimaryAxis: PropTypes.bool,
   mainTickFormatter: PropTypes.func,
   height: PropTypes.number,
   stacked: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
@@ -69,6 +70,7 @@ BarChart.propTypes = {
   barGap: PropTypes.number,
   legendHeight: PropTypes.number,
   layout: PropTypes.string,
+  yAxisWidth: PropTypes.number,
 };
 
 BarChart.defaultProps = {
@@ -90,6 +92,9 @@ BarChart.defaultProps = {
   toolTipFormatter: null,
   barGap: 4,
   layout: 'horizontal',
+  legendHeight: 35,
+  hidePrimaryAxis: false,
+  yAxisWidth: 60,
 };
 
 export default BarChart;

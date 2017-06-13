@@ -59,7 +59,7 @@ class BudgetSummaryBarChart extends React.Component {
       <div>
         <div className="row">
           <div className="col-xs-9 col-xs-offset-2">
-            <h3 className="text-center">Spending {getTitle(this.categoryType)}</h3>
+            <h4 className="text-center">Spending {getTitle(this.props.categoryType)}</h4>
           </div>
         </div>
         <div className="row">

@@ -30,15 +30,27 @@ const dataColumns = [
   },
 ];
 
-const BondDetailsTable = (props) => (
+const getColumns = (type, subType) => {
+  if (type === 'Transportation') {
+    return [{
+      header: subType,
+      columns: dataColumns,
+    }];
+  }
+  return [{
+    header: type,
+    columns: dataColumns,
+  }];
+};
+
+const BondDetailsTable = props => (
   <div>
     <div className="row">
       <div className="col-sm-12">
-        <h4>{props.title} bond projects & statuses</h4>
-        <div alt={['Table of', props.title, 'bond project statuses'].join(' ')}>
+        <div alt={['Table of', props.type, props.subType || '', 'bond project statuses'].join(' ')} style={{ marginTop: '10px' }}>
           <ReactTable
             data={props.data}
-            columns={dataColumns}
+            columns={getColumns(props.type, props.subType)}
             pageSize={props.data.length}
             showPagination={false}
             SubComponent={row => (
@@ -52,5 +64,11 @@ const BondDetailsTable = (props) => (
     </div>
   </div>
 );
+
+BondDetailsTable.propTypes = {
+  type: PropTypes.string,
+  subType: PropTypes.string,
+  data: PropTypes.array, // eslint-disable-line
+};
 
 export default BondDetailsTable;

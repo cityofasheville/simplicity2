@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link, browserHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 import { RadioGroup, Radio } from 'react-radio-group';
 import Treemap from '../../shared/visualization/Treemap';
 // import { updateNodePath } from '../../../containers/budgetActions';
@@ -133,10 +133,14 @@ const BudgetDetailsTreemap = (props) => {
             <button className={getButtonClass(props.categoryType, 'use')}>Use</button>
             <button className={getButtonClass(props.categoryType, 'department')}>Departments</button>
           </div>
-          <div className="btn-group pull-right" style={{ marginLeft: '10px' }}>
+          <div className="radioGroup pull-right" style={{ marginLeft: '10px' }}>
             <RadioGroup name="treemapRadios" selectedValue={props.location.query.mode} onChange={props.radioCallback}>
-              <Radio value="expenditures" />Expenditures
-              <Radio value="revenue" />Revenue
+              <label>
+                <Radio value="expenditures" />Expenditures
+              </label>
+              <label>
+                <Radio value="revenue" />Revenue
+              </label>
             </RadioGroup>
           </div>
           <Treemap data={findTop(myTree, props.location.query.nodePath || 'root')} altText={['Treemap of', (props.location.query.mode || 'expenditures')].join(' ')} diveDeeper={props.diveDeeper} differenceColors history={browserHistory} location={props.location} />

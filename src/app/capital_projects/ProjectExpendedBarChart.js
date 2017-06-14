@@ -19,17 +19,27 @@ const getDollarsLong = value => (
 const ProjectExpendedBarChart = props => (
   <div>
     {props.type === 'Transportation' &&
-      <div className="pull-right">
-        <RadioGroup name="barChartRadios" selectedValue={props.subType} onChange={props.radioCallback}>
-          <Radio value="Road Resurfacing and Sidewalk Improvements" />Road & Sidewalk Improvements
-          <Radio value="New Sidewalks and Greenways" />New Sidewalks & Greenways
-          <Radio value="Pedestrian Safety" />Pedestrian Safety
-        </RadioGroup>
+      <div className="row">
+        <div className="col-sm-12">
+          <div className="pull-right radioGroup">
+            <RadioGroup name="barChartRadios" selectedValue={props.subType} onChange={props.radioCallback}>
+              <label>
+                <Radio value="Road Resurfacing and Sidewalk Improvements" />Road & Sidewalk Improvements
+              </label>
+              <label>
+                <Radio value="New Sidewalks and Greenways" />New Sidewalks & Greenways
+              </label>
+              <label>
+                <Radio value="Pedestrian Safety" />Pedestrian Safety
+              </label>
+            </RadioGroup>
+          </div>
+        </div>
       </div>}
     <div className="row">
       <div className="col-sm-12">
         <div style={{ clear: 'both' }}>
-          <BarChartContainer data={props.data} layout="vertical" secondaryTickFormatter={getDollars} toolTipFormatter={getDollarsLong} mainAxisDataKey="name" dataKeys={['Remaining funds', 'Expended funds']} colorScheme="bright_colors_2" altText={[props.type, 'bond project funds expended by project'].join(' ')} stacked yAxisWidth={200} />
+          <BarChartContainer data={props.data} layout="vertical" secondaryTickFormatter={getDollars} toolTipFormatter={getDollarsLong} mainAxisDataKey="name" dataKeys={['Remaining funds', 'Expended funds']} colorScheme="bright_colors_2" altText={[props.type, 'bond project funds expended by project'].join(' ')} stacked yAxisWidth={200} barGap={10} height={500} />
         </div>
       </div>
     </div>

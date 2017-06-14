@@ -28,6 +28,11 @@
   }
 }
 
+.radioGroup div > label {
+  font-weight: normal;
+  cursor: pointer;
+}
+
 // Add hover effects, but only for links
 a.label {
   &:hover,

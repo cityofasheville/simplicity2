@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { browserHistory } from 'react-router';
 import BondDetailsTable from './BondDetailsTable';
+import HousingTimeline from './HousingTimeline';
 import BarChartContainer from '../../shared/visualization/BarChartContainer';
 import ProjectExpendedBarChart from './ProjectExpendedBarChart';
 
@@ -54,11 +55,8 @@ const testData = {
     { phase: 'Completed', 'Number of projects': 0 },
   ],
   Housing: [
-    { phase: 'Project formation', 'Number of projects': 100 },
-    { phase: 'Design', 'Number of projects': 0 },
-    { phase: 'Planning', 'Number of projects': 0 },
-    { phase: 'Construction', 'Number of projects': 0 },
-    { phase: 'Completed', 'Number of projects': 0 },
+    { phase: 'Planning', 'Number of projects': 1 },
+    { phase: 'Ongoing', 'Number of projects': 1 },
   ],
 };
 
@@ -67,6 +65,25 @@ const testExpenditureData = {
   Parks: [{ name: 'Parks bonds funding', allocated: 17000000, 'Expended funds': 5000000, 'Remaining funds': 17000000 }],
   Housing: [{ name: 'Housing bonds funding', allocated: 25000000, 'Expended funds': 0, 'Remaining funds': 25000000 }],
 };
+
+const testHousingData = [
+  {
+    name: 'Repurposing of CO Land',
+    zip: '28801',
+    phase: 'Planning',
+    total: 15000000,
+    'Expended funds': 0,
+    'Remaining funds': 15000000,
+  },
+  {
+    name: 'Affordable Housing',
+    zip: 'Citywide',
+    phase: 'Ongoing',
+    total: 10000000,
+    'Expended funds': 0,
+    'Remaining funds': 10000000,
+  },
+];
 
 const testParksData = [
   {
@@ -398,7 +415,7 @@ const testTransportationData = {
       'Remaining funds': 62500,
     },
     {
-      name: 'Ped accessible Crossing - Sweeten Cr Rd',
+      name: 'Ped Accessible Crossing - Sweeten Cr Rd',
       zip: '28803',
       phase: 'Planning',
       construction_start: 'TBD',
@@ -503,8 +520,11 @@ const BondDetails = (props) => {
           <h3>How much has been spent on each project?</h3>
           {props.location.query.type === 'Transportation' &&
             <ProjectExpendedBarChart type={props.location.query.type} subType={props.location.query.subType || 'Road Resurfacing and Sidewalk Improvements'} radioCallback={refreshLocation} data={testTransportationData[props.location.query.subType || 'Road Resurfacing and Sidewalk Improvements']} />}
-          {props.location.query.type !== 'Transportation' &&
-            <ProjectExpendedBarChart type={props.location.query.type} subType="" radioCallback={refreshLocation} data={testParksData} />
+          {props.location.query.type === 'Parks' &&
+            <ProjectExpendedBarChart type={props.location.query.type} subType="" data={testParksData} />
+          }
+          {props.location.query.type === 'Housing' &&
+            <ProjectExpendedBarChart type={props.location.query.type} subType="" data={testHousingData} />
           }
         </div>
       </div>
@@ -512,11 +532,13 @@ const BondDetails = (props) => {
       <div className="row">
         <div className="col-sm-12">
           <h3>Project details</h3>
-          <p>TODO: the project names are too long...can we a) abbreviate the project type somehow? b) switch street to come first? c) use an icon to symbolize type of project, and then provide a key for those? e.g.: <i className="fa fa-road"></i><i className="fa fa-wheelchair-alt"></i> &mdash;&gt; Road resurfacing and sidewalk improvements <i className="fa fa-wheelchair-alt"></i><i className="fa fa-plus"> &mdash;&gt; New sidewalk</i><i className="fa fa-pagelines"></i> &mdash;&gt; greenway</p>
           {props.location.query.type === 'Transportation' &&
             <BondDetailsTable data={testTransportationData[props.location.query.subType || 'Road Resurfacing and Sidewalk Improvements']} type={props.location.query.type} subType={props.location.query.subType || 'Road Resurfacing and Sidewalk Improvements'} radioCallback={refreshLocation} />}
-          {props.location.query.type !== 'Transportation' &&
+          {props.location.query.type === 'Parks' &&
             <BondDetailsTable data={testParksData} type={props.location.query.type} subType="" radioCallback={refreshLocation} />}
+          {props.location.query.type === 'Housing' &&
+            <HousingTimeline />
+          }
         </div>
       </div>
     </div>

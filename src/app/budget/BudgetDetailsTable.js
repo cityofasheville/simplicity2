@@ -115,10 +115,14 @@ const BudgetDetailsTable = (props) => {
       </div>
       <div className="row">
         <div className="col-sm-12">
-          <div className="btn-group pull-right" style={{ marginBottom: '3px' }}>
+          <div className="radioGroup pull-right" style={{ marginBottom: '3px' }}>
             <RadioGroup name="tableRadios" selectedValue={props.location.query.mode} onChange={props.radioCallback}>
-              <Radio value="expenditures" />Expenditures
-              <Radio value="revenue" />Revenue
+              <label>
+                <Radio value="expenditures" />Expenditures
+              </label>
+              <label>
+                <Radio value="revenue" />Revenue
+              </label>
             </RadioGroup>
           </div>
         </div>

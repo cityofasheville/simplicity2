@@ -7,27 +7,27 @@ const dataColumns = [
   {
     header: 'Project',
     accessor: 'name',
-    minWidth: 300,
+    minWidth: 425,
   },
   {
-    header: 'Zip code',
+    header: (<div>Zip<br />code</div>),
     accessor: 'zip',
-    minWidth: 110,
+    minWidth: 90,
   },
   {
-    header: 'Current phase',
+    header: (<div>Current<br />phase</div>),
     accessor: 'phase',
-    minWidth: 122,
+    minWidth: 90,
   },
   {
-    header: 'Construction start',
+    header: (<div>Construction<br />start</div>),
     accessor: 'construction_start',
-    minWidth: 130,
+    minWidth: 100,
   },
   {
-    header: 'Total bond funding',
+    header: (<div>Total<br />bond funding</div>),
     accessor: 'total',
-    minWidth: 130,
+    minWidth: 110,
   },
 ];
 
@@ -44,19 +44,25 @@ const getColumns = (type, subType) => {
   }];
 };
 
-const filterComponent = () => (
-  <input type="text"></input>
-);
-
 const BondDetailsTable = props => (
   <div>
     {props.type === 'Transportation' &&
-      <div className="pull-right">
-        <RadioGroup name="tableRadios" selectedValue={props.subType} onChange={props.radioCallback}>
-          <Radio value="Road Resurfacing and Sidewalk Improvements" />Road & Sidewalk Improvements
-          <Radio value="New Sidewalks and Greenways" />New Sidewalks & Greenways
-          <Radio value="Pedestrian Safety" />Pedestrian Safety
-        </RadioGroup>
+      <div className="row">
+        <div className="col-sm-12">
+          <div className="pull-right radioGroup">
+            <RadioGroup name="tableRadios" selectedValue={props.subType} onChange={props.radioCallback}>
+              <label>
+                <Radio value="Road Resurfacing and Sidewalk Improvements" />Road & Sidewalk Improvements
+              </label>
+              <label>
+                <Radio value="New Sidewalks and Greenways" />New Sidewalks & Greenways
+              </label>
+              <label>
+                <Radio value="Pedestrian Safety" />Pedestrian Safety
+              </label>
+            </RadioGroup>
+          </div>
+        </div>
       </div>}
     <div className="row">
       <div className="col-sm-12">

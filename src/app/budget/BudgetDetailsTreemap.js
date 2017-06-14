@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link, browserHistory } from 'react-router';
+import { RadioGroup, Radio } from 'react-radio-group';
 import Treemap from '../../shared/visualization/Treemap';
 // import { updateNodePath } from '../../../containers/budgetActions';
 
@@ -133,12 +134,10 @@ const BudgetDetailsTreemap = (props) => {
             <button className={getButtonClass(props.categoryType, 'department')}>Departments</button>
           </div>
           <div className="btn-group pull-right" style={{ marginLeft: '10px' }}>
-            <Link to={{ pathname: props.location.pathname, query: { entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, mode: 'expenditures', hideNavbar: props.location.query.hideNavbar } }}>
-              <button className={props.location.query.mode !== 'revenue' ? 'btn btn-primary btn-xs active' : 'btn btn-primary btn-xs'} style={{ borderTopRightRadius: '0px', borderBottomRightRadius: '0px' }}>Expenditures</button>
-            </Link>
-            <Link to={{ pathname: props.location.pathname, query: { entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, mode: 'revenue', hideNavbar: props.location.query.hideNavbar } }}>
-              <button className={props.location.query.mode === 'revenue' ? 'btn btn-primary btn-xs active' : 'btn btn-primary btn-xs'} style={{ borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px' }}>Revenue</button>
-            </Link>
+            <RadioGroup name="treemapRadios" selectedValue={props.location.query.mode} onChange={props.radioCallback}>
+              <Radio value="expenditures" />Expenditures
+              <Radio value="revenue" />Revenue
+            </RadioGroup>
           </div>
           <Treemap data={findTop(myTree, props.location.query.nodePath || 'root')} altText={['Treemap of', (props.location.query.mode || 'expenditures')].join(' ')} diveDeeper={props.diveDeeper} differenceColors history={browserHistory} location={props.location} />
         </div>
@@ -154,6 +153,7 @@ BudgetDetailsTreemap.propTypes = {
   location: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   diveDeeper: PropTypes.func,
   jumpUp: PropTypes.func,
+  radioCallback: PropTypes.func,
   // expensePath: PropTypes.string,
   // revenuePath: PropTypes.string,
 };

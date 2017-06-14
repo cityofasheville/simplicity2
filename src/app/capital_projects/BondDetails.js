@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link, browserHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 import BondDetailsTable from './BondDetailsTable';
 import BarChartContainer from '../../shared/visualization/BarChartContainer';
-import RadioButtonGroup from '../../shared/RadioButtonGroup';
+import ProjectExpendedBarChart from './ProjectExpendedBarChart';
 
 const getIconPath = (type) => {
   switch (type) {
@@ -60,6 +60,12 @@ const testData = {
     { phase: 'Construction', 'Number of projects': 0 },
     { phase: 'Completed', 'Number of projects': 0 },
   ],
+};
+
+const testExpenditureData = {
+  Transportation: [{ name: 'Transportation bonds funding', allocated: 32000000, 'Expended funds': 0, 'Remaining funds': 32000000 }],
+  Parks: [{ name: 'Parks bonds funding', allocated: 17000000, 'Expended funds': 5000000, 'Remaining funds': 17000000 }],
+  Housing: [{ name: 'Housing bonds funding', allocated: 25000000, 'Expended funds': 0, 'Remaining funds': 25000000 }],
 };
 
 const testParksData = [
@@ -464,82 +470,58 @@ const testTransportationData = {
   ],
 };
 
-const refreshLocation = (value) => {
-  browserHistory.push(['/capital_projects/details?type=Transportation&subType=', value].join(''));
-};
+const BondDetails = (props) => {
+  const refreshLocation = (value) => {
+    browserHistory.push([props.location.pathname, '?type=Transportation&subType=', value].join(''));
+  };
 
-const renderSubTypeButtons = subType => (
-  <div className="pull-right">
-    <RadioButtonGroup radios={[{ name: 'Road & Sidewalk Improvements', value: 'Road Resurfacing and Sidewalk Improvements' }, { name: 'New Sidewalks & Greenways', value: 'New Sidewalks and Greenways' }, { name: 'Pedestrian safety', value: 'Pedestrian Safety' }]} selected={subType} inline onClickCallback={refreshLocation} />
-  </div>
-);
-
-const renderTables = (type, subType) => {
-  if (type === 'Transportation') {
-    return (
-      <div>
-        {renderSubTypeButtons(subType)}
-        <BondDetailsTable data={testTransportationData[subType]} type={type} subType={subType} />
+  return (
+    <div>
+      <div className="row">
+        <div className="col-sm-12">
+          <img alt={[props.location.query.type, 'bonds', 'icon'].join(' ')} src={getIconPath(props.location.query.type)} style={{ width: '100px', float: 'left', marginRight: '10px' }}></img>
+          <h1>{props.location.query.type} bonds overall</h1>
+        </div>
       </div>
-    );
-  }
-  if (type === 'Parks') {
-    return (<BondDetailsTable data={testParksData} type={type} subType={subType} />);
-  }
-  return '';
-};
-
-const testExpenditureData = {
-  Transportation: [{ name: 'Transportation bonds funding', allocated: 32000000, 'Expended funds': 0, 'Remaining funds': 32000000 }],
-  Parks: [{ name: 'Parks bonds funding', allocated: 17000000, 'Expended funds': 5000000, 'Remaining funds': 17000000 }],
-  Housing: [{ name: 'Housing bonds funding', allocated: 25000000, 'Expended funds': 0, 'Remaining funds': 25000000 }],
-};
-
-const BondDetails = props => (
-  <div>
-    <div className="row">
-      <div className="col-sm-12">
-        <img alt={[props.location.query.type, 'bonds', 'icon'].join(' ')} src={getIconPath(props.location.query.type)} style={{ width: '100px', float: 'left', marginRight: '10px' }}></img>
-        <h1>{props.location.query.type} bonds overall</h1>
+      <div className="row">
+        <div className="col-sm-12">
+          <p><br />{getBondText(props.location.query.type)}</p>
+        </div>
       </div>
-    </div>
-    <div className="row">
-      <div className="col-sm-12">
-        <p><br />{getBondText(props.location.query.type)}</p>
+      <div className="row">
+        <div className="col-sm-6">
+          <BarChartContainer data={testExpenditureData[props.location.query.type]} layout="vertical" secondaryTickFormatter={getDollars} toolTipFormatter={getDollarsLong} mainAxisDataKey="name" dataKeys={['Remaining funds', 'Expended funds']} chartTitle={[props.location.query.type, 'bond funds expended'].join(' ')} colorScheme="bright_colors_2" altText={[props.location.query.type, 'bond project funds expended'].join(' ')} hidePrimaryAxis domain={['dataMin', 32000000]} stacked />
+        </div>
+        <div className="col-sm-6">
+          <BarChartContainer data={testData[props.location.query.type]} mainAxisDataKey="phase" dataKeys={['Number of projects']} chartTitle={[props.location.query.type, 'bond project phases'].join(' ')} colorScheme="bright_colors" altText={[props.location.query.type, 'bond project phases bar chart'].join(' ')} />
+        </div>
       </div>
-    </div>
-    <div className="row">
-      <div className="col-sm-6">
-        <BarChartContainer data={testExpenditureData[props.location.query.type]} layout="vertical" secondaryTickFormatter={getDollars} toolTipFormatter={getDollarsLong} mainAxisDataKey="name" dataKeys={['Remaining funds', 'Expended funds']} chartTitle={[props.location.query.type, 'bond funds expended'].join(' ')} colorScheme="bright_colors_2" altText={[props.location.query.type, 'bond project funds expended'].join(' ')} hidePrimaryAxis domain={['dataMin', 32000000]} stacked />
+      <hr />
+      <div className="row">
+        <div className="col-sm-12">
+          <h1>{props.location.query.type} bonds {props.location.query.type === 'Transportation' && <span>by project category</span>}</h1>
+          <h3>How much has been spent on each project?</h3>
+          {props.location.query.type === 'Transportation' &&
+            <ProjectExpendedBarChart type={props.location.query.type} subType={props.location.query.subType || 'Road Resurfacing and Sidewalk Improvements'} radioCallback={refreshLocation} data={testTransportationData[props.location.query.subType || 'Road Resurfacing and Sidewalk Improvements']} />}
+          {props.location.query.type !== 'Transportation' &&
+            <ProjectExpendedBarChart type={props.location.query.type} subType="" radioCallback={refreshLocation} data={testParksData} />
+          }
+        </div>
       </div>
-      <div className="col-sm-6">
-        <BarChartContainer data={testData[props.location.query.type]} mainAxisDataKey="phase" dataKeys={['Number of projects']} chartTitle={[props.location.query.type, 'bond project phases'].join(' ')} colorScheme="bright_colors" altText={[props.location.query.type, 'bond project phases bar chart'].join(' ')} />
-      </div>
-    </div>
-    <hr />
-    <div className="row">
-      <div className="col-sm-12">
-        <h1>{props.location.query.type} bonds {props.location.query.type === 'Transportation' && <span>by project category</span>}</h1>
-        <h3>How much has been spent on each project?</h3>
-        {props.location.query.type === 'Transportation' && renderSubTypeButtons(props.location.query.subType || 'Road Resurfacing and Sidewalk Improvements')}
-        <div style={{ clear: 'both' }}>
-          <BarChartContainer data={props.location.query.type === 'Parks' ? testParksData : testTransportationData[props.location.query.subType || 'Road Resurfacing and Sidewalk Improvements']} layout="vertical" secondaryTickFormatter={getDollars} toolTipFormatter={getDollarsLong} mainAxisDataKey="name" dataKeys={['Remaining funds', 'Expended funds']} colorScheme="bright_colors_2" altText={[props.location.query.type, 'bond project funds expended by project'].join(' ')} stacked yAxisWidth={200} />
+      <hr />
+      <div className="row">
+        <div className="col-sm-12">
+          <h3>Project details</h3>
+          <p>TODO: the project names are too long...can we a) abbreviate the project type somehow? b) switch street to come first? c) use an icon to symbolize type of project, and then provide a key for those? e.g.: <i className="fa fa-road"></i><i className="fa fa-wheelchair-alt"></i> &mdash;&gt; Road resurfacing and sidewalk improvements <i className="fa fa-wheelchair-alt"></i><i className="fa fa-plus"> &mdash;&gt; New sidewalk</i><i className="fa fa-pagelines"></i> &mdash;&gt; greenway</p>
+          {props.location.query.type === 'Transportation' &&
+            <BondDetailsTable data={testTransportationData[props.location.query.subType || 'Road Resurfacing and Sidewalk Improvements']} type={props.location.query.type} subType={props.location.query.subType || 'Road Resurfacing and Sidewalk Improvements'} radioCallback={refreshLocation} />}
+          {props.location.query.type !== 'Transportation' &&
+            <BondDetailsTable data={testParksData} type={props.location.query.type} subType="" radioCallback={refreshLocation} />}
         </div>
       </div>
     </div>
-    <hr />
-    <div className="row">
-      <div className="col-sm-12">
-        <h3>Project details</h3>
-        <p>TODO: the project names are too long...can we a) abbreviate the project type somehow? b) switch street to come first? c) use an icon to symbolize type of project, and then provide a key for those? e.g.: <i className="fa fa-road"></i><i className="fa fa-wheelchair-alt"></i> &mdash;&gt; Road resurfacing and sidewalk improvements <i className="fa fa-wheelchair-alt"></i><i className="fa fa-plus"> &mdash;&gt; New sidewalk</i><i className="fa fa-pagelines"></i> &mdash;&gt; greenway</p>
-        {props.location.query.type === 'Transportation' &&
-          renderTables(props.location.query.type, props.location.query.subType || 'Road Resurfacing and Sidewalk Improvements')}
-        {props.location.query.type !== 'Transportation' &&
-          renderTables(props.location.query.type, '')}
-      </div>
-    </div>
-  </div>
-);
+  )
+};
 
 BondDetails.propTypes = {
   type: PropTypes.string,

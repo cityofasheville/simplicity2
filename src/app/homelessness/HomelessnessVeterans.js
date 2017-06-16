@@ -171,9 +171,9 @@ class HomelessnessVeterans extends React.Component {
         </div>
         <div className="row">
           <div className="col-sm-12">
-            <h4>Incoming and outgoing veterans</h4>
+            <h4>Incoming and outgoing Veterans</h4>
             <p>
-              Every month, a new group of veterans come into services while others exit. More explanation here.
+              Every month, a new group of Veterans come into services while others exit. More explanation here.
             </p>
             <div style={{ height: 450 }}>
               <ResponsiveContainer>
@@ -208,10 +208,16 @@ class HomelessnessVeterans extends React.Component {
           <div className="col-sm-12">
             <hr />
             <h3>How long does it take to house veterans?</h3>
-            <p>The City of Asheville and Buncombe County are striving to achieve &quot;functional zero&quot; for veteran homelessness, as defined for NC 501, Asheville-Buncombe Continuum of Care. Functional zero would be achieved when every newly identified homeless Veteran in Asheville-Buncombe is connected with an appropriate housing intervention within 30 days and is permanently housed within 90 days after signing a Declaration of Housing Preference form, unless the Veteran elects to enter a long term service intensive transitional housing program (SITH).
-            </p>
-            <BarChartContainer layout="vertical" barGap={0} chartTitle="Average days from identification to positive exit" chartText="The red bars in the chart below representing Non-SITH programs are those which help us evaluate how close to functional zero we are. The blue, SITH, bars represent those veterans who choose to enter long term service intensive transitional housing programs." mainAxisDataKey="month" dataKeys={this.props.daysToExitKeys} colorScheme="bright_colors" data={this.props.daysToExitData} altText="Bar chart of average days from identification to positive exit" />
+            <p>The City of Asheville and Buncombe County are striving to achieve &quot;functional zero&quot; for veteran homelessness, as defined for NC 501, Asheville-Buncombe Continuum of Care. Functional zero would be achieved when every newly identified homeless Veteran in Asheville-Buncombe is connected with an appropriate housing intervention within 30 days and is permanently housed within 90 days after signing a Declaration of Housing Preference form, unless the Veteran elects to enter a long term service intensive transitional housing program (SITH). We connect newly identified homeless Veterans who wish to be connected with a housing intervention within two weeks. The below charts show how many days to positive exit from homelessness.</p>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-sm-6">
+            <BarChartContainer layout="vertical" chartTitle="Average days from identification to positive exit: non-SITH" mainAxisDataKey="month" dataKeys={['Non-SITH']} colorScheme="bright_colors" data={this.props.daysToExitData} altText="Bar chart of average days from identification to positive exit: non-SITH" domain={[0, 380]} referenceLine referenceX={90} referenceLineLabel="90 days" />
             {/*<InflowOutflowAnimation value={50} riseAnimation />*/}
+          </div>
+          <div className="col-sm-6">
+            <BarChartContainer layout="vertical" chartTitle="Average days from identification to positive exit: SITH" mainAxisDataKey="month" dataKeys={['SITH']} colorScheme="bright_colors_2" data={this.props.daysToExitData} altText="Bar chart of average days from identification to positive exit: SITH" />
           </div>
         </div>
       </div>

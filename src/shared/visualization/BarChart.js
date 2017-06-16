@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ResponsiveContainer, BarChart as RechartsBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ReferenceArea } from 'recharts';
+import { ResponsiveContainer, BarChart as RechartsBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ReferenceArea, ReferenceLine } from 'recharts';
 import { colorSchemes, referenceColorScheme } from './colorSchemes';
 
 const renderTitle = (title) => {
@@ -43,6 +43,9 @@ const BarChart = props => (
         {props.referenceArea && props.referenceAreaLabels.map((text, i) => (
           <ReferenceArea key={['referenceArea', i].join('_')} xAxisId={1} x1={i === 0 ? 0 : props.referenceAreaExes[i - 1]} x2={props.referenceAreaExes[i] || ((i * 250) - 250)} stroke="black" fill={referenceColorScheme[i % referenceColorScheme.length]} strokeOpacity={0.3} label={<CustomizedLabel text={text} />} />
         ))}
+        {props.referenceLine && props.referenceX &&
+          <ReferenceLine x={props.referenceX} label={props.referenceLineLabel || null} stroke={props.referenceLineColor} strokeWidth={2} isFront />
+        }
       </RechartsBarChart>
     </ResponsiveContainer>
   </div>
@@ -65,6 +68,10 @@ BarChart.propTypes = {
   referenceArea: PropTypes.bool,
   referenceAreaLabels: PropTypes.arrayOf(PropTypes.array),
   referenceAreaExes: PropTypes.arrayOf(PropTypes.number),
+  referenceLine: PropTypes.bool,
+  referenceLineColor: PropTypes.string,
+  referenceLinLabel: PropTypes.string,
+  referenceLineX: PropTypes.number,
   domain: PropTypes.array, // eslint-disable-line,
   toolTipFormatter: PropTypes.func,
   barGap: PropTypes.number,
@@ -86,6 +93,7 @@ BarChart.defaultProps = {
   dollars: false,
   colorScheme: 'pink_green_diverging',
   referenceArea: false,
+  referenceLineColor: 'black',
   referenceAreaLabels: [],
   referenceAreaExes: [],
   domain: [0, 'auto'],

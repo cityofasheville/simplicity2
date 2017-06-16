@@ -1035,10 +1035,8 @@ class HomelessnessEnrollment extends React.Component {
     return (
       <div>
         <h3>Homeless program enrollments: a closer look</h3>
-        <p>Brief description here of the programs and what they are</p>
-        <h4>Homelessness Program Enrollments</h4>
         <p>
-          Text Block 3: We could add some explanatory text here, like what the HMIS, what are HMIS enrollments, what the change over time tells us, etc. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text.
+          There are several types of temporary or permanent housing options for people experiencing homelessness or at imminent risk of homelessness in Buncombe County. These options are part of the homelessness system in our community. The below chart shows monthly enrollments in these programs.
         </p>
         <div className="row">
           <div className="col-sm-12">
@@ -1054,6 +1052,46 @@ class HomelessnessEnrollment extends React.Component {
             <div hidden={!this.state.showingLongDesc}>
               {getLongDesc(this.props.summaryData)}
             </div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-sm-12">
+            <p>
+              <ul>
+                <li>
+                  <div>
+                    <strong>Emergency Shelter</strong>
+                  </div>
+                  <div>
+                    a facility that’s primary purpose is to provide temporary shelter for the general homeless population or those that serve a specific client base such as Domestic Violence victims or youth under 18 years of age.
+                  </div>
+                </li>
+                <li>
+                  <div>
+                    <strong>Transitional Housing</strong>
+                  </div>
+                  <div>
+                    housing projects that are designed to provide temporary housing and appropriate supportive services to homeless persons like Veterans or persons with substance abuse disorders to facilitate movement to independent living within 24 months.
+                  </div>
+                </li>
+                <li>
+                  <div>
+                    <strong>Rapid Re-Housing (RRH)</strong>
+                  </div>
+                  <div>
+                    provides for short-and/or medium term rental assistance to help a homeless individual or family or a household that is at imminent risk of homelessness (Homelessness Prevention) move into housing or stabilize their existing housing quickly and achieve housing stability and self-sufficiency in that housing.
+                  </div>
+                </li>
+                <li>
+                  <div>
+                    <strong>Permanent Supportive Housing (PSH)</strong>
+                  </div>
+                  <div>
+                    describes housing that is coupled with voluntary supportive services that are appropriate to the level of need and preferences of residents on a long-term basis. Subsidies and services may be long or short term in duration. PSH is usually appropriate and/or mandated by HUD for persons that are chronically homeless, have severe service needs and a disability.
+                  </div>
+                </li>
+              </ul>
+            </p>
           </div>
         </div>
       </div>

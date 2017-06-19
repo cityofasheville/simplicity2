@@ -16,87 +16,89 @@ const data = [
   {
     month: '4/2016',
     Incoming: 40,
-    'Remaining to be housed': 213,
+    'Remaining to be housed': 103,
     Outgoing: -27,
     'Net change': 13,
   },
   {
     month: '5/2016',
     Incoming: 45,
-    'Remaining to be housed': 218,
+    'Remaining to be housed': 124,
     Outgoing: -30,
     'Net change': 5,
   },
   {
     month: '6/2016',
     Incoming: 42,
-    'Remaining to be housed': 216,
+    'Remaining to be housed': 126,
     Outgoing: -44,
     'Net change': -2,
   },
   {
     month: '7/2016',
     Incoming: 32,
-    'Remaining to be housed': 217,
+    'Remaining to be housed': 117,
     Outgoing: -31,
     'Net change': 1,
   },
   {
     month: '8/2016',
     Incoming: 35,
-    'Remaining to be housed': 219,
+    'Remaining to be housed': 112,
     Outgoing: -33,
     'Net change': 2,
   },
   {
     month: '9/2016',
     Incoming: 38,
-    'Remaining to be housed': 221,
+    'Remaining to be housed': 105,
     Outgoing: -35,
     'Net change': 3,
   },
   {
     month: '10/2016',
     Incoming: 40,
-    'Remaining to be housed': 220,
+    'Remaining to be housed': 108,
     Outgoing: -41,
     'Net change': -1,
   },
   {
     month: '11/2016',
     Incoming: 39,
-    'Remaining to be housed': 209,
+    'Remaining to be housed': 105,
     Outgoing: -50,
     'Net change': -11,
   },
   {
     month: '12/2016',
     Incoming: 32,
-    'Remaining to be housed': 204,
+    'Remaining to be housed': 84,
     Outgoing: -37,
     'Net change': -5,
   },
   {
     month: '1/2017',
     Incoming: 35,
-    'Remaining to be housed': 208,
+    'Remaining to be housed': 100,
     Outgoing: -31,
     'Net change': 4,
   },
   {
     month: '2/2017',
     Incoming: 25,
-    'Remaining to be housed': 192,
+    'Remaining to be housed': 89,
     Outgoing: -41,
     'Net change': -16,
   },
   {
     month: '3/2017',
     Incoming: 30,
-    'Remaining to be housed': 198,
+    'Remaining to be housed': 95,
     Outgoing: -24,
     'Net change': 6,
   },
+  // { month: 4/2017, 'Remaining to be housed': 96, },
+  // { month: 5/2017, 'Remaining to be housed': 99 },
 ];
 
 const days_exit_keys = [
@@ -213,7 +215,7 @@ class HomelessnessVeterans extends React.Component {
         </div>
         <div className="row">
           <div className="col-sm-6">
-            <BarChartContainer layout="vertical" chartTitle="Average days from identification to positive exit: non-SITH" mainAxisDataKey="month" dataKeys={['Non-SITH']} colorScheme="bright_colors" data={this.props.daysToExitData} altText="Bar chart of average days from identification to positive exit: non-SITH" domain={[0, 380]} referenceLine referenceX={90} referenceLineLabel="90 days" />
+            <BarChartContainer layout="vertical" chartTitle="Average days from identification to positive exit: non-SITH" mainAxisDataKey="month" dataKeys={['Non-SITH']} colorScheme="bright_colors" data={this.props.daysToExitData} altText="Bar chart of average days from identification to positive exit: non-SITH" domain={[0, 380]} referenceLine referenceX={90} referenceLineLabel="90 days" margin={{ top: 15, left: 10, right: 0, bottom: 0 }}/>
             {/*<InflowOutflowAnimation value={50} riseAnimation />*/}
           </div>
           <div className="col-sm-6">

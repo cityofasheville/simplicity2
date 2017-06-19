@@ -38,7 +38,7 @@ const HomelessnessSummary = props => (
       <div className="col-sm-12">
         <h3>What is being done about homelessness?</h3>
         <p>
-          The Homeless Initiative Advisory Committee (HIAC), a joint committee of the City of Asheville and Buncombe County in North Carolina, completed a Five Year Strategic Plan on Homelessness for the Buncombe County Continuum of Care (NC-501) following a year of intensive planning and collaboration throughout the entire community. The City of Asheville and Buncombe County unanimously voted to adopt the Asheville-Buncombe Homeless Initiative Advisory Committee’s <a className="inText" href="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=27777" target="_blank">Five Year Strategic Plan on homelessness in Buncombe County</a> in the spring of 2017. Our 5-year strategic plan targets the two largest sub-populations in Buncombe County: homeless Veterans and those defined as chronically homeless by HUD.
+          The Homeless Initiative Advisory Committee (HIAC), a joint committee of the City of Asheville and Buncombe County in North Carolina, completed a Five Year Strategic Plan on Homelessness for the Buncombe County Continuum of Care (NC-501) following a year of intensive planning and collaboration throughout the entire community. The City of Asheville and Buncombe County unanimously voted to adopt the Asheville-Buncombe Homeless Initiative Advisory Committee’s <a className="inText" href="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=27777" target="_blank">Five Year Strategic Plan on homelessness in Buncombe County</a> in the spring of 2017.
         </p>
       </div>
     </div>

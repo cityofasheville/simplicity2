@@ -18,7 +18,7 @@ const BarChart = props => (
   <div style={{ height: props.height }} alt={props.altText}>
     {props.chartTitle !== null && renderTitle(props.chartTitle)}
     <ResponsiveContainer>
-      <RechartsBarChart data={props.data} barGap={props.barGap} layout={props.layout}>
+      <RechartsBarChart data={props.data} barGap={props.barGap} layout={props.layout} margin={props.margin}>
         {props.layout === 'horizontal' &&
           <XAxis dataKey={props.mainAxisDataKey} hide={props.hidePrimaryAxis} tickFormatter={props.mainTickFormatter !== undefined ? props.mainTickFormatter : null} />
         }
@@ -78,6 +78,7 @@ BarChart.propTypes = {
   legendHeight: PropTypes.number,
   layout: PropTypes.string,
   yAxisWidth: PropTypes.number,
+  margin: PropTypes.object,
 };
 
 BarChart.defaultProps = {
@@ -103,6 +104,7 @@ BarChart.defaultProps = {
   legendHeight: 35,
   hidePrimaryAxis: false,
   yAxisWidth: 60,
+  margin: { top: 0, left: 10, bottom: 0, right: 0 },
 };
 
 export default BarChart;

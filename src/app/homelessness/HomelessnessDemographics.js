@@ -182,7 +182,7 @@ class HomelessnessDemographics extends React.Component {
           <div className="col-sm-12">
             <h3>Who is homeless?</h3>
             <p>
-              The charts below represents a breakdown of the major demographic groups experiencing homelessness in Buncombe County. Our community is unusual for its high concentration of homeless Veterans, while we have fewer than average families with children compared to other cities in NC. Addressing the challenges of homelessness effectively requires understanding the particular needs of particular subpopulations.
+              Our community is unusual for its high concentration of homeless Veterans, while we have fewer than average families with children compared to other cities in NC. Addressing the challenges of homelessness effectively requires understanding the particular needs of particular subpopulations. Our <a className="inText" href="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=27777" target="_blank">Five Year Strategic Plan</a> targets the two largest sub-populations in Buncombe County: homeless Veterans and those defined as chronically homeless by HUD.
               <br />
               <a href="javascript:void(0);" className="text-center inText" onClick={() => this.toggleDefinition()}>
                 {this.state.showingDefinition ? 'Hide' : 'Show'} chronically homeless definition

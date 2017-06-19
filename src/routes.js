@@ -34,6 +34,9 @@ import BudgetSummary from './app/budget/BudgetSummary';
 import BudgetDetailsContainer from './app/budget/BudgetDetailsContainer';
 import SummaryDepartments from './app/budget/SummaryDepartments';
 import SummaryUse from './app/budget/SummaryUse';
+// Capital Projects
+import CapitalProjectsSummary from './app/capital_projects/CapitalProjectsSummary';
+import BondDetails from './app/capital_projects/BondDetails';
 // Homelessness
 import HomelessnessSummary from './app/homelessness/HomelessnessSummary';
 import HomelessnessVeterans from './app/homelessness/HomelessnessVeterans';
@@ -72,15 +75,6 @@ const Routes = props => (
         <Route path="neighborhood" component={Neighborhood}></Route>
         <Route path="owner" component={Owner}></Route>
         <Route path="topics" component={Topics} />
-        <Route path="development">
-          <IndexRoute component={DevelopmentSummary} />
-          <Route path="detail" component={DevelopmentDetail}></Route>
-          <Route path="sla-dashboard" component={DevelopmentSLADashboard}></Route>
-        </Route>
-        <Route path="crime">
-          <IndexRoute component={CrimeSummary} />
-          <Route path="detail" component={CrimeDetail}></Route>
-        </Route>
         <Route path="budget">
           <IndexRoute component={BudgetSummary} />
           <Route path="details" component={BudgetDetailsContainer}></Route>
@@ -89,6 +83,19 @@ const Routes = props => (
           <Route path="summaryCashFlow" component={BudgetDetailsContainer}></Route>
           <Route path="detailsTreemap" component={BudgetDetailsContainer}></Route>
           <Route path="detailsTable" component={BudgetDetailsContainer}></Route>
+        </Route>
+        <Route path="capital_projects">
+          <IndexRoute component={CapitalProjectsSummary} />
+          <Route path="details" component={BondDetails}></Route>
+        </Route>
+        <Route path="crime">
+          <IndexRoute component={CrimeSummary} />
+          <Route path="detail" component={CrimeDetail}></Route>
+        </Route>
+        <Route path="development">
+          <IndexRoute component={DevelopmentSummary} />
+          <Route path="detail" component={DevelopmentDetail}></Route>
+          <Route path="sla-dashboard" component={DevelopmentSLADashboard}></Route>
         </Route>
         <Route path="homelessness">
           <IndexRoute component={HomelessnessSummary} />

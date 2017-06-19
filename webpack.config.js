@@ -30,6 +30,10 @@ module.exports = {
         },
       },
       {
+        test: /\.(png|jpg)$/,
+        loader: 'url-loader?limit=25000',
+      },
+      {
         test: /\.scss$/,
         use: extractSass.extract({
           use: [{
@@ -43,7 +47,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        exclude: /node_modules/,
+        // exclude: /node_modules/,
         use: ExtractTextPlugin.extract({
           use: [
             {

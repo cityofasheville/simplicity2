@@ -182,14 +182,14 @@ class HomelessnessDemographics extends React.Component {
           <div className="col-sm-12">
             <h3>Who is homeless?</h3>
             <p>
-              The charts below present a breakdown of the major demographic groups experiencing homelessness in Buncombe County. Our area is unusual for its high concentration of homeless veterans, while we have fewer than average families with children compared to other cities in NC. Addressing the challenges of homelessness effectively requires understanding the particular needs of particular subpopulations. Our 5-year strategic plan targets the two largest groups in Buncombe County: homeless veterans and those classified as chronically homeless.&nbsp;
+              Our community is unusual for its high concentration of homeless Veterans, while we have fewer than average families with children compared to other cities in NC. Addressing the challenges of homelessness effectively requires understanding the particular needs of particular subpopulations. Our <a className="inText" href="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=27777" target="_blank">Five Year Strategic Plan</a> targets the two largest sub-populations in Buncombe County: homeless Veterans and those defined as chronically homeless by HUD.
               <br />
               <a href="javascript:void(0);" className="text-center inText" onClick={() => this.toggleDefinition()}>
                 {this.state.showingDefinition ? 'Hide' : 'Show'} chronically homeless definition
               </a>
               <span hidden={!this.state.showingDefinition}>
                 <br />
-                <strong>Chronically Homeless</strong>: As defined by the McKinney-Vento Homeless Assistance Act (42 U.S.C. 11360(9)), is who: 1) lives in a place not meant for human habitation, a safe haven, or in an emergency shelter; and 2) Has been homeless and living as described continuously for at least 12 months or on at least four separate occasions in the last 3 years, as long as the combined occasions equal at least 12 months.
+                <strong>Chronically Homeless</strong>: As defined since January 15, 2016, a person who is chronically homeless is one who lives in a place not meant for human habitation or in an emergency shelter and has been homeless as described continuously for at least 12 months or on at least four separate occasions in the last 3 years meets that description, as long as the combined occasions total at least 12 months and have a disability (42 U.S.C. 11360(9)). In the past 10 years, there have been several changes to the definition of chronically homeless by HUD.
               </span>
             </p>
           </div>

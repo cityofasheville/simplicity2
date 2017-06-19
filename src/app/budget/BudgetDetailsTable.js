@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import ReactTable from 'react-table';
 import Collapsible from 'react-collapsible';
+import { RadioGroup, Radio } from 'react-radio-group';
 
 const last4Years = [
   2015,
@@ -35,6 +35,10 @@ const getYearHeader = year => (
     }
     {[year - 1, year.toString().slice(2)].join('-')}
   </div>
+);
+
+const getChangeHeader = () => (
+  <div>Change from <br /> past year</div>
 );
 
 const getDataColumns = (level, expenseOrRevenue) => {
@@ -87,9 +91,9 @@ const getDataColumns = (level, expenseOrRevenue) => {
       style: { textAlign: 'right' },
     },
     {
-      header: 'Change from past year',
+      header: getChangeHeader(),
       accessor: 'deltaPercent',
-      minWidth: 70,
+      minWidth: 95,
       style: { textAlign: 'right' },
     },
   ];
@@ -111,13 +115,15 @@ const BudgetDetailsTable = (props) => {
       </div>
       <div className="row">
         <div className="col-sm-12">
-          <div className="btn-group pull-right" style={{ marginBottom: '3px' }}>
-            <Link to={{ pathname: props.location.pathname, query: { entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, mode: 'expenditures', hideNavbar: props.location.query.hideNavbar } }}>
-              <button className={props.location.query.mode !== 'revenue' ? 'btn btn-primary btn-xs active' : 'btn btn-primary btn-xs'} style={{ borderTopRightRadius: '0px', borderBottomRightRadius: '0px' }}>Expenditures</button>
-            </Link>
-            <Link to={{ pathname: props.location.pathname, query: { entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, mode: 'revenue', hideNavbar: props.location.query.hideNavbar } }}>
-              <button className={props.location.query.mode === 'revenue' ? 'btn btn-primary btn-xs active' : 'btn btn-primary btn-xs'} style={{ borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px' }}>Revenue</button>
-            </Link>
+          <div className="radioGroup pull-right" style={{ marginBottom: '3px' }}>
+            <RadioGroup name="tableRadios" selectedValue={props.location.query.mode} onChange={props.radioCallback}>
+              <label>
+                <Radio value="expenditures" />Expenditures
+              </label>
+              <label>
+                <Radio value="revenue" />Revenue
+              </label>
+            </RadioGroup>
           </div>
         </div>
       </div>
@@ -136,7 +142,7 @@ const BudgetDetailsTable = (props) => {
             <ReactTable
               data={dataForTable}
               columns={getDataColumns(0, props.location.query.mode)}
-              defaultPageSize={dataForTable.length}
+              pageSize={dataForTable.length}
               showPagination={false}
               SubComponent={innerRow1 => (
                 <div style={{ paddingLeft: '34px' }}>
@@ -184,6 +190,7 @@ BudgetDetailsTable.propTypes = {
   expenseTree: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   revenueTree: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   notes: PropTypes.arrayOf(PropTypes.string),
+  radioCallback: PropTypes.func,
 };
 
 BudgetDetailsTable.defaultProps = {

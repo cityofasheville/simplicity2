@@ -19,7 +19,7 @@ const SummaryUse = (props) => {
   return (
     <div className="row">
       <div className="col-sm-12">
-        <BudgetSummaryBarChart categoryType={'use'} {...props} />
+        <BudgetSummaryBarChart categoryType="use" {...props} />
       </div>
     </div>
   );

@@ -121,9 +121,7 @@ const PIT_data = [
 
 const enrollment_keys = [
   'Emergency Shelter',
-  'Homelessness Prevention',
-  'Permanent Supportive Housing',
-  'Rapid Re-Housing',
+  'Housing Programs',
   'Transitional Housing',
 ];
 
@@ -131,6 +129,7 @@ const enrollment_data = [
   {
     Year: 2008,
     'Emergency Shelter': 134,
+    'Housing Programs': 113,
     'Homelessness Prevention': 0,
     'Permanent Supportive Housing': 110,
     'Rapid Re-Housing': 3,
@@ -140,6 +139,7 @@ const enrollment_data = [
   {
     Year: 2009,
     'Emergency Shelter': 120,
+    'Housing Programs': 198,
     'Homelessness Prevention': 0,
     'Permanent Supportive Housing': 195,
     'Rapid Re-Housing': 3,
@@ -149,6 +149,7 @@ const enrollment_data = [
   {
     Year: 2010,
     'Emergency Shelter': 125,
+    'Housing Programs': 4,
     'Homelessness Prevention': 0,
     'Permanent Supportive Housing': 4,
     'Rapid Re-Housing': 4,
@@ -158,6 +159,7 @@ const enrollment_data = [
   {
     Year: 2011,
     'Emergency Shelter': 162,
+    'Housing Programs': 429,
     'Homelessness Prevention': 29,
     'Permanent Supportive Housing': 394,
     'Rapid Re-Housing': 6,
@@ -167,6 +169,7 @@ const enrollment_data = [
   {
     Year: 2012,
     'Emergency Shelter': 185,
+    'Housing Programs': 675,
     'Homelessness Prevention': 110,
     'Permanent Supportive Housing': 538,
     'Rapid Re-Housing': 27,
@@ -176,6 +179,7 @@ const enrollment_data = [
   {
     Year: 2013,
     'Emergency Shelter': 370,
+    'Housing Programs': 928,
     'Homelessness Prevention': 56,
     'Permanent Supportive Housing': 700,
     'Rapid Re-Housing': 172,
@@ -185,6 +189,7 @@ const enrollment_data = [
   {
     Year: 2014,
     'Emergency Shelter': 192,
+    'Housing Programs': 902,
     'Homelessness Prevention': 18,
     'Permanent Supportive Housing': 700,
     'Rapid Re-Housing': 184,
@@ -194,6 +199,7 @@ const enrollment_data = [
   {
     Year: 2015,
     'Emergency Shelter': 152,
+    'Housing Programs': 855,
     'Homelessness Prevention': 21,
     'Permanent Supportive Housing': 633,
     'Rapid Re-Housing': 201,
@@ -203,6 +209,7 @@ const enrollment_data = [
   {
     Year: 2016,
     'Emergency Shelter': 138,
+    'Housing Programs': 939,
     'Homelessness Prevention': 24,
     'Permanent Supportive Housing': 616,
     'Rapid Re-Housing': 299,
@@ -211,26 +218,22 @@ const enrollment_data = [
   },
 ];
 
-const PITText = ['This chart shows the an ', <a key="PIT_link" href="https://www.hudexchange.info/programs/hdx/guides/pit-hic/#general-pit-guides-and-tools" target="_blank" title="Annual count definition and procedures">annual count</a>, ' of homeless persons who are sheltered in emergency shelter, transitional housing, and Safe Havens on a single night, conducted during the last week of January.'];
-
-const enrollmentsText = ['This chart shows average monthly counts of persons enrolled in housing support programs in the City of Asheville and Buncombe County.', <br key="br_1"></br>, <br key="br_2"></br>];
-
 const HomelessnessCounts = props => (
   <div>
     <div className="row">
       <div className="col-sm-12">
         <h3>How many people are homeless in Asheville?</h3>
         <p>
-          Estimating how many people are homeless is complicated since it is always changing. Each month new people either become homeless or arrive in Asheville while others transition into housing through our homeless support programs. The charts below show these two different sides: the point-in-time count on the left is a one-night estimate of homeless persons each January, while the graph at right shows the average number of people actively receiving housing support.
+          Estimating how many people are homeless is complicated since it is always changing. Each day new people either become homeless or arrive in Buncombe County while others transition into housing through our homeless support programs. The charts below show these two different sides: the <a className="inText" key="PIT_link" href="https://www.hudexchange.info/programs/hdx/guides/pit-hic/#general-pit-guides-and-tools" target="_blank" title="Annual point-in-time count definition and procedures">annual Point-in-Time (PIT) count</a> Point-in-Time (PIT) count is a one-night estimate of homeless persons conducted each January, while the graph of homeless program enrollments shows the average number of people actively receiving housing support in Buncombe County either through emergency shelter, transitional housing, a housing subsidy or permanent supportive housing.
         </p>
       </div>
     </div>
     <div className="row">
       <div className="col-sm-6">
-        <BarChartContainer chartTitle="Point-in-Time Counts" chartText={PITText} layout="vertical" mainAxisDataKey="date" legendHeight={70} dataKeys={props.PITkeys} colorScheme="bright_colors" data={props.PITdata} stacked altText="Bar chart of point-in-time counts of people who are homeless" domain={[0, 1500]} />
+        <BarChartContainer chartTitle="Point-in-Time Counts" layout="vertical" mainAxisDataKey="date" legendHeight={70} dataKeys={props.PITkeys} colorScheme="bright_colors" data={props.PITdata} stacked altText="Bar chart of point-in-time counts of people who are homeless" domain={[0, 1500]} />
       </div>
       <div className="col-sm-6">
-        <BarChartContainer chartTitle="Homeless program enrollments" chartText={enrollmentsText} layout="vertical" mainAxisDataKey="Year" legendHeight={70} dataKeys={props.enrollmentKeys} data={props.enrollmentData} stacked altText="Bar chart of average monthly counts of persons enrolled in housing support programs in the City of Asheville and Buncombe County" domain={[0, 'dataMax']} colorScheme="bright_colors_2" />
+        <BarChartContainer chartTitle="Homeless program enrollments" layout="vertical" mainAxisDataKey="Year" legendHeight={70} dataKeys={props.enrollmentKeys} data={props.enrollmentData} stacked altText="Bar chart of average monthly counts of persons enrolled in housing support programs in the City of Asheville and Buncombe County" domain={[0, 'dataMax']} colorScheme="bright_colors_2" />
       </div>
     </div>
   </div>

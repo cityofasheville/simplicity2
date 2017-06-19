@@ -42,7 +42,7 @@ class BarChartContainer extends React.Component {
         </p>
         <div className="row">
           <div className="col-sm-12">
-            <BarChart data={this.props.data} layout={this.props.layout} mainAxisDataKey={this.props.mainAxisDataKey} legendHeight={this.props.legendHeight} barDataKeys={this.props.dataKeys} stacked={this.props.stacked} colorScheme={this.props.colorScheme} altText={this.props.altText} domain={this.props.domain} barGap={this.props.barGap} toolTipFormatter={this.props.toolTipFormatter} />
+            <BarChart barDataKeys={this.props.dataKeys} {...this.props} chartTitle={null} />
           </div>
         </div>
         <div className="row">
@@ -64,31 +64,15 @@ class BarChartContainer extends React.Component {
 BarChartContainer.propTypes = {
   data: PropTypes.array, // eslint-disable-line
   dataKeys: PropTypes.arrayOf(PropTypes.string),
-  showLongDesc: PropTypes.bool, // eslint-disable-line
-  chartTitle: PropTypes.string,
-  layout: PropTypes.string,
-  altText: PropTypes.string,
-  legendHeight: PropTypes.number,
-  domain: PropTypes.array, // eslint-disable-line
   chartText: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-  colorScheme: PropTypes.string,
-  mainAxisDataKey: PropTypes.string,
-  stacked: PropTypes.bool,
-  barGap: PropTypes.number,
-  toolTipFormatter: PropTypes.func,
+  chartTitle: PropTypes.string,
 };
 
 BarChartContainer.defaultProps = {
   data: [],
   dataKeys: [],
-  showLongDesc: false,
-  layout: 'horizontal',
-  altText: 'Bar chart',
-  domain: [0, 'auto'],
   chartText: '',
-  colorScheme: 'pink_green_diverging',
-  stacked: false,
-  barGap: 4,
+  chartTitle: '',
   toolTipFormatter: null,
 };
 

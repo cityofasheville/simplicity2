@@ -53,20 +53,24 @@
     "d3-timer": "^1.0.6",
     "d3-transition": "^1.1.0",
     "data-tree": "^1.2.4",
+    "file-loader": "^0.11.2",
     "firebase": "^3.6.4",
     "firebaseui": "^1.0.0",
     "graphql-tag": "^2.0.0",
     "prop-types": "^15.5.10",
     "react": "^15.4.1",
     "react-apollo": "^1.2.0",
+    "react-calendar-timeline": "^0.14.0",
     "react-collapsible": "^1.4.0",
     "react-dom": "^15.4.1",
     "react-ga": "^2.2.0",
+    "react-radio-group": "^3.0.2",
     "react-redux": "^5.0.1",
     "react-router": "^3.0.0",
     "react-table": "^5.4.1",
     "recharts": "^0.20.8",
     "redux": "^3.6.0",
-    "selectly": "^0.5.0"
+    "selectly": "^0.5.0",
+    "url-loader": "^0.5.8"
   }
 }

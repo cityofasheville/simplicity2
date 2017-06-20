@@ -4,6 +4,8 @@ import PieChart from '../../shared/visualization/PieChart';
 import SpatialEventTopicFilters from '../spatial_event_topic_summary/SpatialEventTopicFilters';
 import EmailDownload from '../../shared/EmailDownload';
 import SpatialEventTopicList from '../spatial_event_topic_summary/SpatialEventTopicList';
+import ButtonGroup from '../../shared/ButtonGroup';
+import LinkButton from '../../shared/LinkButton';
 
 const testPieCrimeData = [
   { name: 'Aggravated assault', value: 123 },
@@ -50,26 +52,26 @@ const SpatialEventTopicSummary = props => (
     <div className="row">
       <div className="col-xs-12">
         <div className="pull-left">
-          <EmailDownload />
+          <EmailDownload emailFunction={() => (console.log('email!'))} downloadFunction={() => (console.log('Download!'))} />
         </div>
-        <div className="btn-group pull-right" style={{ marginTop: '5px' }}>
-          <button className="btn btn-primary">Summary</button>
-          <button className="btn btn-primary">List view</button>
-          <button className="btn btn-primary">Map view</button>
-        </div>
+        <ButtonGroup>
+          <LinkButton pathname={['/', props.spatialEventTopic].join('')} query={{ entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, hideNavbar: props.location.query.hideNavbar, view: 'summary' }} positionInGroup="left" text="Summary" active={props.location.query.view === 'summary'} />
+          <LinkButton pathname={['/', props.spatialEventTopic].join('')} query={{ entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, hideNavbar: props.location.query.hideNavbar, view: 'list' }} active={props.location.query.view === 'list'} positionInGroup="middle" text="List view" />
+          <LinkButton pathname={['/', props.spatialEventTopic].join('')} query={{ entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, hideNavbar: props.location.query.hideNavbar, view: 'map' }} active={props.location.query.view === 'map'} positionInGroup="right" text="Map view" />
+        </ButtonGroup>
       </div>
     </div>
 
     <div className="row">
-      <div id="summaryView" className="col-xs-12">
+      <div id="summaryView" className="col-xs-12" hidden={props.location.query.view !== 'summary'}>
         <PieChart data={props.spatialEventTopic === 'crime' ? testPieCrimeData : testPieDevelopmentData} altText={[props.spatialEventTopic, 'pie chart'].join(' ')} />
       </div>
 
-      <div id="listView" hidden>
+      <div id="listView" hidden={props.location.query.view !== 'list'}>
         <SpatialEventTopicList spatialEventTopic={props.spatialEventTopic.toLowerCase()} listData={props.spatialEventTopic === 'crime' ? testCrimeData : testPermitData} />
       </div>
 
-      <div id="mapView" className="col-xs-12" hidden>
+      <div id="mapView" className="col-xs-12" hidden={props.location.query.view !== 'map'}>
         Map view
       </div>
     </div>
@@ -78,6 +80,7 @@ const SpatialEventTopicSummary = props => (
 
 SpatialEventTopicSummary.propTypes = {
   spatialEventTopic: PropTypes.string.isRequired,
+  location: PropTypes.object, // eslint-disable-line
   query: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 };
 

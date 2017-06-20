@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
 import { ResponsiveContainer, ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import BarChartContainer from '../../shared/visualization/BarChartContainer';
 import { colorSchemes } from '../../shared/visualization/colorSchemes';
+import PageHeader from '../../shared/PageHeader';
+import ButtonGroup from '../../shared/ButtonGroup';
+import LinkButton from '../../shared/LinkButton';
 
 const dataKeys = [
   'Incoming',
@@ -145,24 +147,12 @@ class HomelessnessVeterans extends React.Component {
   render() {
     return (
       <div>
-        <div className="row">
-          <div className="col-sm-12">
-            <h1>
-              <div className="btn-group pull-right" style={{ marginLeft: '10px' }}>
-                <Link to={{ pathname: '/homelessness', query: { entity: this.props.location.query.entity, id: this.props.location.query.id, label: this.props.location.query.label, hideNavbar: this.props.location.query.hideNavbar } }}>
-                  <button className="btn btn-primary" style={{ borderTopRightRadius: '0px', borderBottomRightRadius: '0px' }}>Summary</button>
-                </Link>
-                <Link to={{ pathname: '/homelessness/veterans', query: { entity: this.props.location.query.entity, id: this.props.location.query.id, label: this.props.location.query.label, hideNavbar: this.props.location.query.hideNavbar } }}>
-                  <button className="btn btn-primary active" style={{ borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px', borderTopRightRadius: '0px', borderBottomRightRadius: '0px' }}>Veterans</button>
-                </Link>
-              </div>
-              Ending Veteran Homelessness
-            </h1>
-            <div className="pull-left">
-              <a className="inText" href="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=27777" target="_blank">Five year strategic plan on homelessness in Buncombe county</a>
-            </div>
-          </div>
-        </div>
+        <PageHeader h1="Ending Veteran Homelessness" dataLinkPath="/homelessness/data" externalLink="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=27777" externalLinkText="Five year strategic plan on homelessness in Buncombe county">
+          <ButtonGroup>
+            <LinkButton pathname="/homelessness" query={{ entity: this.props.location.query.entity, id: this.props.location.query.id, label: this.props.location.query.label, hideNavbar: this.props.location.query.hideNavbar }} positionInGroup="left" text="Summary" />
+            <LinkButton pathname="/homelessness/veterans" query={{ entity: this.props.location.query.entity, id: this.props.location.query.id, label: this.props.location.query.label, hideNavbar: this.props.location.query.hideNavbar }} positionInGroup="right" text="Veterans" active />
+          </ButtonGroup>
+        </PageHeader>
         <div className="row">
           <div className="col-sm-12">
             <h3>How are homeless veterans being helped?</h3>

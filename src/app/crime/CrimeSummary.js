@@ -4,7 +4,7 @@ import SpatialEventTopicSummary from '../spatial_event_topic_summary/SpatialEven
 
 const CrimeSummary = props => (
   <div className="col-xs-12">
-    <SpatialEventTopicSummary spatialEventTopic="crime" query={props.location.query} />
+    <SpatialEventTopicSummary spatialEventTopic="crime" {...props} />
   </div>
 );
 

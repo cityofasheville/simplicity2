@@ -6,7 +6,7 @@ import styles from './spatialEventTopicListItemStyles.css';
 
 const SpatialEventTopicListItem = props => (
   <div className={['row', styles.topicSummaryListItem].join(' ')}>
-    {props.spatialEventTopic === 'Crime' ? <CrimeListItem itemData={props.itemData} />
+    {props.spatialEventTopic === 'crime' ? <CrimeListItem itemData={props.itemData} />
       : <DevelopmentListItem itemData={props.itemData} />}
   </div>
 );

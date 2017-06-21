@@ -104,8 +104,13 @@ const renderBreadcrumb = (tree, props) => {
   );
 };
 
+
 const BudgetDetailsTreemap = (props) => {
   const myTree = props.location.query.mode === 'expenditures' || props.location.query.mode === undefined ? props.expenseTree : props.revenueTree;
+
+  const refreshLocation = (value) => {
+    browserHistory.push([props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&label=', props.location.query.label, '&mode=', value, '&hideNavbar=', props.location.query.hideNavbar].join(''));
+  };
 
   return (
     <div>
@@ -134,7 +139,7 @@ const BudgetDetailsTreemap = (props) => {
             <button className={getButtonClass(props.categoryType, 'department')}>Departments</button>
           </div>
           <div className="radioGroup pull-right" style={{ marginLeft: '10px' }}>
-            <RadioGroup name="treemapRadios" selectedValue={props.location.query.mode} onChange={props.radioCallback}>
+            <RadioGroup name="treemapRadios" selectedValue={props.location.query.mode || 'expenditures'} onChange={refreshLocation}>
               <label>
                 <Radio value="expenditures" />Expenditures
               </label>
@@ -157,7 +162,6 @@ BudgetDetailsTreemap.propTypes = {
   location: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   diveDeeper: PropTypes.func,
   jumpUp: PropTypes.func,
-  radioCallback: PropTypes.func,
   // expensePath: PropTypes.string,
   // revenuePath: PropTypes.string,
 };

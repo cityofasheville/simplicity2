@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import ReactTable from 'react-table';
 import Collapsible from 'react-collapsible';
@@ -103,6 +104,10 @@ const getDataColumns = (level, expenseOrRevenue) => {
 const BudgetDetailsTable = (props) => {
   const dataForTable = props.location.query.mode === 'expenditures' || props.location.query.mode === undefined ? props.expenseTree.children : props.revenueTree.children;
 
+  const refreshLocation = (value) => {
+    browserHistory.push([props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&label=', props.location.query.label, '&mode=', value, '&hideNavbar=', props.location.query.hideNavbar].join(''));
+  };
+
   return (
     <div>
       <div className="row">
@@ -116,7 +121,7 @@ const BudgetDetailsTable = (props) => {
       <div className="row">
         <div className="col-sm-12">
           <div className="radioGroup pull-right" style={{ marginBottom: '3px' }}>
-            <RadioGroup name="tableRadios" selectedValue={props.location.query.mode} onChange={props.radioCallback}>
+            <RadioGroup name="tableRadios" selectedValue={props.location.query.mode || 'expenditures'} onChange={refreshLocation}>
               <label>
                 <Radio value="expenditures" />Expenditures
               </label>
@@ -190,7 +195,6 @@ BudgetDetailsTable.propTypes = {
   expenseTree: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   revenueTree: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   notes: PropTypes.arrayOf(PropTypes.string),
-  radioCallback: PropTypes.func,
 };
 
 BudgetDetailsTable.defaultProps = {

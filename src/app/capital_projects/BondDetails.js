@@ -5,6 +5,9 @@ import BondDetailsTable from './BondDetailsTable';
 import HousingTimeline from './HousingTimeline';
 import BarChartContainer from '../../shared/visualization/BarChartContainer';
 import ProjectExpendedBarChart from './ProjectExpendedBarChart';
+import PageHeader from '../../shared/PageHeader';
+import ButtonGroup from '../../shared/ButtonGroup';
+import LinkButton from '../../shared/LinkButton';
 
 const getIconPath = (type) => {
   switch (type) {
@@ -494,12 +497,11 @@ const BondDetails = (props) => {
 
   return (
     <div>
-      <div className="row">
-        <div className="col-sm-12">
-          <img alt={[props.location.query.type, 'bonds', 'icon'].join(' ')} src={getIconPath(props.location.query.type)} style={{ width: '100px', float: 'left', marginRight: '10px' }}></img>
-          <h1>{props.location.query.type} bonds overall</h1>
-        </div>
-      </div>
+      <PageHeader h1={[props.location.query.type, 'bonds overall'].join(' ')} image={getIconPath(props.location.query.type)} dataPathLink="/capital_projects/data" dataLinkPath="/capital_projects/bondsData">
+        <ButtonGroup>
+          <LinkButton pathname="/capital_projects" text="Back to Capital Projects" />
+        </ButtonGroup>
+      </PageHeader>
       <div className="row">
         <div className="col-sm-12">
           <p><br />{getBondText(props.location.query.type)}</p>

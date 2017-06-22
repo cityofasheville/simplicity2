@@ -90,7 +90,7 @@ const testHousingData = [
 
 const testParksData = [
   {
-    name: 'Bill Field Improvements & Lighting',
+    name: 'Bill Fields & Lighting',
     zip: 'Citywide',
     phase: 'Planning',
     construction_start: 'Summer 18',
@@ -120,7 +120,7 @@ const testParksData = [
     'Remaining funds': 4075000,
   },
   {
-    name: 'Montford Complex Improvements',
+    name: 'Montford Complex',
     zip: '28801',
     phase: 'Design',
     construction_start: 'Spring 18',
@@ -130,7 +130,7 @@ const testParksData = [
     'Remaining funds': 1700000,
   },
   {
-    name: 'Outdoor Court Improvements',
+    name: 'Outdoor Courts',
     zip: 'Citywide',
     phase: 'Planning',
     construction_start: 'Spring 18',
@@ -140,7 +140,7 @@ const testParksData = [
     'Remaining funds': 1015000,
   },
   {
-    name: 'Playground Improvements',
+    name: 'Playgrounds',
     zip: 'Citywide',
     phase: 'Design',
     construction_start: 'Spring 18',
@@ -150,7 +150,7 @@ const testParksData = [
     'Remaining funds': 1015000,
   },
   {
-    name: 'Richmond Hill Park Improvments',
+    name: 'Richmond Hill Park',
     zip: '28806',
     phase: 'Planning',
     construction_start: 'Spring 19',
@@ -246,7 +246,7 @@ const testTransportationData = {
       'Remaining funds': 1000000,
     },
     {
-      name: 'New Sidewalk - Airport Rd',
+      name: 'Airport Rd Sidewalk',
       zip: '28704',
       phase: 'Planning',
       construction_start: 'Spring 18',
@@ -256,7 +256,7 @@ const testTransportationData = {
       'Remaining funds': 572500,
     },
     {
-      name: 'New Sidewalk - Gerber Rd',
+      name: 'Gerber Rd Sidewalk',
       zip: '28803',
       phase: 'Planning',
       construction_start: 'Summer 20',
@@ -266,7 +266,7 @@ const testTransportationData = {
       'Remaining funds': 357000,
     },
     {
-      name: 'New Sidewalk - Hill St',
+      name: 'Hill St Sidewalk',
       zip: '28801',
       phase: 'Planning',
       construction_start: 'Spring 18',
@@ -276,7 +276,7 @@ const testTransportationData = {
       'Remaining funds': 468000,
     },
     {
-      name: 'New Sidewalk - Johnston Blvd',
+      name: 'Johnston Blvd Sidewalk',
       zip: '28806',
       phase: 'Planning',
       construction_start: 'Summer 19',
@@ -286,7 +286,7 @@ const testTransportationData = {
       'Remaining funds': 1372000,
     },
     {
-      name: 'New Sidewalk - Mills Gap',
+      name: 'Mills Gap Sidewalk',
       zip: '28803',
       phase: 'Planning',
       construction_start: 'Summer 20',
@@ -296,7 +296,7 @@ const testTransportationData = {
       'Remaining funds': 128000,
     },
     {
-      name: 'New Sidewalk - New Haw Creek Rd',
+      name: 'New Haw Creek Rd Sidewalk',
       zip: '28805',
       phase: 'Planning',
       construction_start: 'Summer 19',
@@ -306,7 +306,7 @@ const testTransportationData = {
       'Remaining funds': 1120000,
     },
     {
-      name: 'New Sidewalk - Onteora Rd',
+      name: 'Onteora Rd Sidewalk',
       zip: '28803',
       phase: 'Planning',
       construction_start: 'Summer 19',
@@ -316,7 +316,7 @@ const testTransportationData = {
       'Remaining funds': 588000,
     },
     {
-      name: 'New Sidewalk - Overlook Rd',
+      name: 'Overlook Rd Sidewalk',
       zip: '28803',
       phase: 'Planning',
       construction_start: 'Summer 19',
@@ -326,7 +326,7 @@ const testTransportationData = {
       'Remaining funds': 213000,
     },
     {
-      name: 'New Sidewalk - Patton Ave Gaps',
+      name: 'Patton Ave Sidewalks',
       zip: '28806',
       phase: 'Planning',
       construction_start: 'Summer 21',
@@ -336,7 +336,7 @@ const testTransportationData = {
       'Remaining funds': 616000,
     },
     {
-      name: 'New Sidewalk - Swannanoa River Rd',
+      name: 'Swannanoa River Rd Sidewalk',
       zip: '28805',
       phase: 'Planning',
       construction_start: 'Summer 19',
@@ -346,7 +346,7 @@ const testTransportationData = {
       'Remaining funds': 765000,
     },
     {
-      name: 'New Sidewalk, Sidewalk Rehab, and Resurfacing - Brooklyn Rd',
+      name: 'Brooklyn Rd Improvements',
       zip: '28803',
       phase: 'Planning',
       construction_start: 'Summer 19',

@@ -1,31 +1,57 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactTable from 'react-table';
+import FaCircle from 'react-icons/lib/fa/circle';
 import { RadioGroup, Radio } from 'react-radio-group';
+
+const getStageNumber = (stage) => {
+  switch (stage) {
+    case 'Planning':
+      return 1;
+    case 'Design':
+      return 2;
+    case 'Construction':
+      return 3;
+    case 'Completed':
+      return 4;
+    default:
+      return 0;
+  }
+};
 
 const dataColumns = [
   {
-    header: 'Project',
+    Header: 'Project',
     accessor: 'name',
     minWidth: 425,
   },
   {
-    header: (<div>Zip<br />code</div>),
+    Header: (<div>Zip<br />code</div>),
     accessor: 'zip',
     minWidth: 90,
   },
   {
-    header: (<div>Current<br />phase</div>),
+    Header: (<div>Current<br />phase</div>),
     accessor: 'phase',
-    minWidth: 90,
+    minWidth: 120,
+    Cell: row => (
+      <span>
+        {[1, 2, 3, 4].map(index => (
+          <FaCircle key={['circle', index].join('_')} color={getStageNumber(row.value) >= index ? '#57d500' : '#ecf0f1'} style={{ marginRight: '5px' }} />
+        ))}
+        <span style={{ marginLeft: '5px' }}>
+          {row.value}
+        </span>
+      </span>
+    ),
   },
   {
-    header: (<div>Construction<br />start</div>),
+    Header: (<div>Construction<br />start</div>),
     accessor: 'construction_start',
     minWidth: 100,
   },
   {
-    header: (<div>Total<br />bond funding</div>),
+    Header: (<div>Total<br />bond funding</div>),
     accessor: 'total',
     minWidth: 110,
   },
@@ -34,12 +60,12 @@ const dataColumns = [
 const getColumns = (type, subType) => {
   if (type === 'Transportation') {
     return [{
-      header: subType,
+      Header: subType,
       columns: dataColumns,
     }];
   }
   return [{
-    header: type,
+    Header: type,
     columns: dataColumns,
   }];
 };
@@ -74,7 +100,7 @@ const BondDetailsTable = props => (
             showPagination={false}
             SubComponent={row => (
               <div style={{ paddingLeft: '34px' }}>
-                {row.row.description}
+                {row.original.description}
               </div>
             )}
           />

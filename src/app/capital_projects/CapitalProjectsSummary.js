@@ -29,7 +29,7 @@ const CapitalProjectsSummary = props => (
     <div className="row">
       <div className="col-sm-12">
         <h2>Capital Improvement Program (CIP)</h2>
-        <p>Add section here</p>
+        <p>Details about the city&apos;s Capital Improvement Program coming soon!</p>
       </div>
     </div>
   </div>

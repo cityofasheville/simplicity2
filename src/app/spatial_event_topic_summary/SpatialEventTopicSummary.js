@@ -55,9 +55,9 @@ const SpatialEventTopicSummary = props => (
           <EmailDownload emailFunction={() => (console.log('email!'))} downloadFunction={() => (console.log('Download!'))} />
         </div>
         <ButtonGroup>
-          <LinkButton pathname={['/', props.spatialEventTopic].join('')} query={{ entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, hideNavbar: props.location.query.hideNavbar, view: 'summary' }} positionInGroup="left" text="Summary" active={props.location.query.view === 'summary'} />
-          <LinkButton pathname={['/', props.spatialEventTopic].join('')} query={{ entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, hideNavbar: props.location.query.hideNavbar, view: 'list' }} active={props.location.query.view === 'list'} positionInGroup="middle" text="List view" />
-          <LinkButton pathname={['/', props.spatialEventTopic].join('')} query={{ entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, hideNavbar: props.location.query.hideNavbar, view: 'map' }} active={props.location.query.view === 'map'} positionInGroup="right" text="Map view" />
+          <LinkButton pathname={['/', props.spatialEventTopic].join('')} query={{ entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, hideNavbar: props.location.query.hideNavbar, view: 'summary' }} positionInGroup="left" active={props.location.query.view === 'summary'}>Summary</LinkButton>
+          <LinkButton pathname={['/', props.spatialEventTopic].join('')} query={{ entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, hideNavbar: props.location.query.hideNavbar, view: 'list' }} active={props.location.query.view === 'list'} positionInGroup="middle">List view</LinkButton>
+          <LinkButton pathname={['/', props.spatialEventTopic].join('')} query={{ entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, hideNavbar: props.location.query.hideNavbar, view: 'map' }} active={props.location.query.view === 'map'} positionInGroup="right">Map view</LinkButton>
         </ButtonGroup>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { IndexLink, Link } from 'react-router';
-
+import FaSearch from 'react-icons/lib/fa/search';
 import AuthControl from '../utilities/auth/authControl';
 
 
@@ -54,7 +54,7 @@ export default class Navbar extends React.Component { // eslint-disable-line rea
               <ul className="nav navbar-nav navbar-right">
                 <li><Link to="/my-simplicity" activeClassName="active">My SimpliCity</Link></li>
                 <li><Link to="/topics" activeClassName="active">Topics</Link></li>
-                <li><a href="/search"><i className="fa fa-search"></i></a></li>
+                <li><a href="/search"><FaSearch /></a></li>
                 <AuthControl />
               </ul>
             </div>

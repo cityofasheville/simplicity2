@@ -149,8 +149,8 @@ class HomelessnessVeterans extends React.Component {
       <div>
         <PageHeader h1="Ending Veteran Homelessness" dataLinkPath="/homelessness/data" externalLink="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=27777" externalLinkText="Five year strategic plan on homelessness in Buncombe county">
           <ButtonGroup>
-            <LinkButton pathname="/homelessness" query={{ entity: this.props.location.query.entity, id: this.props.location.query.id, label: this.props.location.query.label, hideNavbar: this.props.location.query.hideNavbar }} positionInGroup="left" text="Summary" />
-            <LinkButton pathname="/homelessness/veterans" query={{ entity: this.props.location.query.entity, id: this.props.location.query.id, label: this.props.location.query.label, hideNavbar: this.props.location.query.hideNavbar }} positionInGroup="right" text="Veterans" active />
+            <LinkButton pathname="/homelessness" query={{ entity: this.props.location.query.entity, id: this.props.location.query.id, label: this.props.location.query.label, hideNavbar: this.props.location.query.hideNavbar }} positionInGroup="left">Summary</LinkButton>
+            <LinkButton pathname="/homelessness/veterans" query={{ entity: this.props.location.query.entity, id: this.props.location.query.id, label: this.props.location.query.label, hideNavbar: this.props.location.query.hideNavbar }} positionInGroup="right" active>Veterans</LinkButton>
           </ButtonGroup>
         </PageHeader>
         <div className="row">

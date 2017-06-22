@@ -8,7 +8,7 @@ const BondsData = () => (
   <div>
     <PageHeader h1="Understand the bonds data">
       <ButtonGroup>
-        <Button onClick={browserHistory.goBack} text="Back"></Button>
+        <Button onClick={browserHistory.goBack}>Back</Button>
       </ButtonGroup>
     </PageHeader>
     <div className="row">

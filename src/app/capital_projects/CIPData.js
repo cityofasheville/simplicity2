@@ -8,7 +8,7 @@ const CIPData = () => (
   <div>
     <PageHeader h1="Understand the Capital Improvement Program (CIP) data">
       <ButtonGroup>
-        <Button onClick={browserHistory.goBack} text="Back"></Button>
+        <Button onClick={browserHistory.goBack}>Back</Button>
       </ButtonGroup>
     </PageHeader>
     <div className="row">

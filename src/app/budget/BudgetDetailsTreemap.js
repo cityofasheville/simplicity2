@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { RadioGroup, Radio } from 'react-radio-group';
+import FaArrowUp from 'react-icons/lib/fa/arrow-up';
 import Treemap from '../../shared/visualization/Treemap';
 // import { updateNodePath } from '../../../containers/budgetActions';
 
@@ -131,7 +132,7 @@ const BudgetDetailsTreemap = (props) => {
       <div className="row">
         <div className="col-sm-12">
           <div className="btn-group pull-left" style={{ marginRight: '3px', marginBottom: '3px' }}>
-            <button className="btn btn-primary btn-xs" onClick={props.jumpUp ? () => props.jumpUp(props) : null} disabled={props.location.query.nodePath === 'root' || props.location.query.nodePath === undefined}><i className="fa fa-arrow-up"></i></button>
+            <button className="btn btn-primary btn-xs" onClick={props.jumpUp ? () => props.jumpUp(props) : null} disabled={props.location.query.nodePath === 'root' || props.location.query.nodePath === undefined}><FaArrowUp size={16} /></button>
           </div>
           {renderBreadcrumb(myTree, props)}
           <div className="btn-group pull-left" style={{ display: 'none' }} >

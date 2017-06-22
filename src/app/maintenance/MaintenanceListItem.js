@@ -1,5 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import FaExclamationTriangle from 'react-icons/lib/fa/exclamation-triangle';
+import FaInfoCircle from 'react-icons/lib/fa/info-circle';
+import FaMapO from 'react-icons/lib/fa/map-o';
 import styles from '../spatial_event_topic_summary/spatialEventTopicListItemStyles.css';
 
 const getAuthoritySite = (authority) => {
@@ -37,7 +40,7 @@ const MaintenanceListItem = (props) => {
         </div>
         <div className={['row', styles.linkRow].join(' ')}>
           <div className="col-sm-12">
-            <div className="pull-right"><a title="Report an issue"><i className="fa fa-exclamation-triangle"></i> Report an issue</a></div><div className="pull-right"> <a title="View directions to property in Google maps" href={getAuthoritySite(props.itemData.AuthorityName)} target="_blank"><i className="fa fa-info-circle"></i> Authority website</a></div><div className="pull-right"> <a title="View centerline in map"><i className="fa fa-map-o"></i> Map</a></div>
+            <div className="pull-right"><a title="Report an issue" style={{ marginLeft: '7px' }}><FaExclamationTriangle size={20} /> Report an issue</a></div><div className="pull-right"> <a title="View directions to property in Google maps" href={getAuthoritySite(props.itemData.AuthorityName)} target="_blank" style={{ marginLeft: '7px' }}><FaInfoCircle size={20} /> Authority website</a></div><div className="pull-right"> <a title="View centerline in map"><FaMapO size={20} /> Map</a></div>
           </div>
         </div>
       </div>

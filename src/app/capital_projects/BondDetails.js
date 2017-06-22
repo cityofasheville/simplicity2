@@ -499,7 +499,7 @@ const BondDetails = (props) => {
     <div>
       <PageHeader h1={[props.location.query.type, 'bonds overall'].join(' ')} image={getIconPath(props.location.query.type)} dataPathLink="/capital_projects/data" dataLinkPath="/capital_projects/bondsData">
         <ButtonGroup>
-          <LinkButton pathname="/capital_projects" text="Back to Capital Projects" />
+          <LinkButton pathname="/capital_projects">Back to Capital Projects</LinkButton>
         </ButtonGroup>
       </PageHeader>
       <div className="row">

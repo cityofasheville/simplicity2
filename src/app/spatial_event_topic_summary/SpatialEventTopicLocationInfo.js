@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import FaSearch from 'react-icons/lib/fa/search';
 
 const renderLabel = (spatialType) => {
   switch (spatialType) {
@@ -19,7 +20,7 @@ const SpatialEventTopicLocationInfo = props => (
     <label htmlFor="extent" className="col-sm-2 control-label">{renderLabel(props.spatialType)}</label>
     <div className="col-sm-10">
       <div className="form-control-static" style={{ display: 'block' }}>{props.spatialDescription}
-        <span className="pull-right"><a title="Change location"><i className="fa fa-search"></i> Change location</a></span>
+        <span className="pull-right"><a title="Change location"><FaSearch /> Change location</a></span>
       </div>
     </div>
   </div>

@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import FaMapO from 'react-icons/lib/fa/map-o';
+import FaAlignJustify from 'react-icons/lib/fa/align-justify';
 import styles from '../spatial_event_topic_summary/spatialEventTopicListItemStyles.css';
 
 
@@ -43,7 +45,7 @@ const DevelopmentListItem = (props) => {
         </div>
         <div className={['row', styles.linkRow].join(' ')}>
           <div className="col-sm-12">
-            <div className="pull-right"><a title="View permit details"><i className="fa fa-align-justify"></i> Details</a></div><div className="pull-right"> <a title="View crime in map"><i className="fa fa-map-o"></i> Map</a></div>
+            <div className="pull-right"><a title="View permit details" style={{ marginLeft: '7px' }}><FaAlignJustify size={20} /> Details</a></div><div className="pull-right"><a title="View in map"><FaMapO size={20} /> Map</a></div>
           </div>
         </div>
       </div>

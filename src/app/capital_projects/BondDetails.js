@@ -4,6 +4,7 @@ import { browserHistory } from 'react-router';
 import BondDetailsTable from './BondDetailsTable';
 import HousingTimeline from './HousingTimeline';
 import BarChartContainer from '../../shared/visualization/BarChartContainer';
+import PieChart from '../../shared/visualization/PieChart';
 import ProjectExpendedBarChart from './ProjectExpendedBarChart';
 import PageHeader from '../../shared/PageHeader';
 import ButtonGroup from '../../shared/ButtonGroup';
@@ -60,6 +61,25 @@ const testData = {
   Housing: [
     { phase: 'Planning', 'Number of projects': 1 },
     { phase: 'Ongoing', 'Number of projects': 1 },
+  ],
+};
+
+const testPieData = {
+  Transportation: [
+    { name: 'Planning', value: 26 },
+    { name: 'Design', value: 5 },
+    { name: 'Construction', value: 0 },
+    { name: 'Completed', value: 0 },
+  ],
+  Parks: [
+    { name: 'Planning', value: 7 },
+    { name: 'Design', value: 2 },
+    { name: 'Construction', value: 0 },
+    { name: 'Completed', value: 0 },
+  ],
+  Housing: [
+    { name: 'Planning', value: 1 },
+    { name: 'Ongoing', value: 1 },
   ],
 };
 
@@ -174,7 +194,7 @@ const testParksData = [
 const testTransportationData = {
   'Road Resurfacing and Sidewalk Improvements': [
     {
-      name: 'Sidewalk Improvements - Vermont Ave',
+      name: 'Vermont Ave Improvements',
       zip: '28806',
       phase: 'Planning',
       construction_start: 'Summer 19',
@@ -184,7 +204,7 @@ const testTransportationData = {
       'Remaining funds': 748000,
     },
     {
-      name: 'Sidewalk Improvements - Haywood St.',
+      name: 'Haywood St Improvements',
       zip: '28801',
       phase: 'Planning',
       construction_start: 'Spring 19',
@@ -194,7 +214,7 @@ const testTransportationData = {
       'Remaining funds': 815000,
     },
     {
-      name: 'Sidewalk Improvements - Fulton St',
+      name: 'Fulton St Improvements',
       zip: '28801',
       phase: 'Planning',
       construction_start: 'Spring 19',
@@ -204,7 +224,7 @@ const testTransportationData = {
       'Remaining funds': 252000,
     },
     {
-      name: 'Road Resurfacing and Sidewalk Improvements 2019',
+      name: 'Road Improvements 2019',
       zip: 'Citywide',
       phase: 'Planning',
       construction_start: 'Summer 19',
@@ -214,7 +234,7 @@ const testTransportationData = {
       'Remaining funds': 5610000,
     },
     {
-      name: 'Road Resurfacing and Sidewalk Improvements 2018',
+      name: 'Road Improvements 2018',
       zip: 'Citywide',
       phase: 'Planning',
       construction_start: 'Summer 18',
@@ -224,7 +244,7 @@ const testTransportationData = {
       'Remaining funds': 4929000,
     },
     {
-      name: 'Road Resurfacing and Sidewalk Improvements 2017',
+      name: 'Road Improvements 2017',
       zip: 'Citywide',
       phase: 'Planning',
       construction_start: 'Summer 17',
@@ -398,7 +418,7 @@ const testTransportationData = {
       'Remaining funds': 135000,
     },
     {
-      name: 'Ped Accessible Crossing - Patton Ave at Haywood Rd',
+      name: 'Patton Ave at Haywood Rd Crossing',
       zip: '28806',
       phase: 'Planning',
       construction_start: 'TBD',
@@ -408,7 +428,7 @@ const testTransportationData = {
       'Remaining funds': 62500,
     },
     {
-      name: 'Ped Accessible Crossing - Patton and Florida',
+      name: 'Patton & Florida Crossing',
       zip: '28806',
       phase: 'Planning',
       construction_start: 'TBD',
@@ -418,7 +438,7 @@ const testTransportationData = {
       'Remaining funds': 62500,
     },
     {
-      name: 'Ped Accessible Crossing - Sweeten Cr Rd',
+      name: 'Sweeten Cr Rd Crossing',
       zip: '28803',
       phase: 'Planning',
       construction_start: 'TBD',
@@ -428,7 +448,7 @@ const testTransportationData = {
       'Remaining funds': 62500,
     },
     {
-      name: 'Signal - Patton and Asheland',
+      name: 'Patton & Asheland Signal',
       zip: '28801',
       phase: 'Design',
       construction_start: 'Summer 17',
@@ -438,7 +458,7 @@ const testTransportationData = {
       'Remaining funds': 187500,
     },
     {
-      name: 'Signal - Patton at Lexington',
+      name: 'Patton at Lexington Signal',
       zip: '28801',
       phase: 'Design',
       construction_start: 'Summer 17',
@@ -448,7 +468,7 @@ const testTransportationData = {
       'Remaining funds': 187500,
     },
     {
-      name: 'Signal - Patton at N/S French Broad',
+      name: 'Patton at N/S French Broad Signal',
       zip: '28801',
       phase: 'Design',
       construction_start: 'Summer 17',
@@ -458,7 +478,7 @@ const testTransportationData = {
       'Remaining funds': 187500,
     },
     {
-      name: 'Signal - Patton at Otis',
+      name: 'Patton at Otis Signal',
       zip: '28801',
       phase: 'Design',
       construction_start: 'Summer 17',
@@ -497,28 +517,49 @@ const BondDetails = (props) => {
 
   return (
     <div>
-      <PageHeader h1={[props.location.query.type, 'bonds overall'].join(' ')} image={getIconPath(props.location.query.type)} dataPathLink="/capital_projects/data" dataLinkPath="/capital_projects/bondsData">
+      <PageHeader h1={[props.location.query.type, 'bonds'].join(' ')} image={getIconPath(props.location.query.type)} dataPathLink="/capital_projects/data" dataLinkPath="/capital_projects/bondsData">
         <ButtonGroup>
           <LinkButton pathname="/capital_projects">Back to Capital Projects</LinkButton>
         </ButtonGroup>
       </PageHeader>
       <div className="row">
         <div className="col-sm-12">
-          <p><br />{getBondText(props.location.query.type)}</p>
-        </div>
-      </div>
-      <div className="row">
-        <div className="col-sm-6">
-          <BarChartContainer data={testExpenditureData[props.location.query.type]} layout="vertical" secondaryTickFormatter={getDollars} toolTipFormatter={getDollarsLong} mainAxisDataKey="name" dataKeys={['Remaining funds', 'Expended funds']} chartTitle={[props.location.query.type, 'bond funds expended'].join(' ')} colorScheme="bright_colors_2" altText={[props.location.query.type, 'bond project funds expended'].join(' ')} hidePrimaryAxis domain={['dataMin', 32000000]} stacked />
-        </div>
-        <div className="col-sm-6">
-          <BarChartContainer data={testData[props.location.query.type]} mainAxisDataKey="phase" dataKeys={['Number of projects']} chartTitle={[props.location.query.type, 'bond project phases'].join(' ')} colorScheme="bright_colors" altText={[props.location.query.type, 'bond project phases bar chart'].join(' ')} />
+          <div className="row">
+            <div className="col-sm-6 text-primary">
+              <div style={{ fontSize: '30px' }}>Total Bond Funding: $--M</div>
+              <div style={{ fontSize: '30px' }}>Spent: $--M</div>
+              {/*<BarChartContainer data={testExpenditureData[props.location.query.type]} layout="vertical" secondaryTickFormatter={getDollars} toolTipFormatter={getDollarsLong} mainAxisDataKey="name" dataKeys={['Remaining funds', 'Expended funds']} colorScheme="bright_colors_2" altText={[props.location.query.type, 'bond project funds expended'].join(' ')} hidePrimaryAxis domain={['dataMin', 32000000]} stacked height={80} hideSummary hideLegend/>*/}
+            </div>
+            <div className="col-sm-6">
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-sm-6">
+              <p style={{ paddingTop: '30px' }}>{getBondText(props.location.query.type)}</p>
+            </div>
+            <div className="col-sm-6">
+              <PieChart data={testPieData[props.location.query.type]} height={130} label={false} defaultLegend endAngle={180} innerRadius={40} outerRadius={80} cy="70%" toolTipFormatter={(value) => ([value, 'projects'].join(' '))}/>
+              {/*<BarChartContainer data={testData[props.location.query.type]} mainAxisDataKey="phase" dataKeys={['Number of projects']} colorScheme="bright_colors" altText={[props.location.query.type, 'bond project phases bar chart'].join(' ')} height={100} />*/}
+            </div>
+          </div>
         </div>
       </div>
       <hr />
       <div className="row">
         <div className="col-sm-12">
-          <h1>{props.location.query.type} bonds {props.location.query.type === 'Transportation' && <span>by project category</span>}</h1>
+          <h3>{props.location.query.type} Project details {props.location.query.type === 'Transportation' && <span>by category</span>}</h3>
+          {props.location.query.type === 'Transportation' &&
+            <BondDetailsTable data={testTransportationData[props.location.query.subType || 'Road Resurfacing and Sidewalk Improvements']} type={props.location.query.type} subType={props.location.query.subType || 'Road Resurfacing and Sidewalk Improvements'} radioCallback={refreshLocation} />}
+          {props.location.query.type === 'Parks' &&
+            <BondDetailsTable data={testParksData} type={props.location.query.type} subType="" radioCallback={refreshLocation} />}
+          {props.location.query.type === 'Housing' &&
+            <HousingTimeline />
+          }
+        </div>
+      </div>
+      <hr />
+      <div className="row">
+        <div className="col-sm-12">
           <h3>How much has been spent on each project?</h3>
           {props.location.query.type === 'Transportation' &&
             <ProjectExpendedBarChart type={props.location.query.type} subType={props.location.query.subType || 'Road Resurfacing and Sidewalk Improvements'} radioCallback={refreshLocation} data={testTransportationData[props.location.query.subType || 'Road Resurfacing and Sidewalk Improvements']} />}
@@ -527,19 +568,6 @@ const BondDetails = (props) => {
           }
           {props.location.query.type === 'Housing' &&
             <ProjectExpendedBarChart type={props.location.query.type} subType="" data={testHousingData} />
-          }
-        </div>
-      </div>
-      <hr />
-      <div className="row">
-        <div className="col-sm-12">
-          <h3>Project details</h3>
-          {props.location.query.type === 'Transportation' &&
-            <BondDetailsTable data={testTransportationData[props.location.query.subType || 'Road Resurfacing and Sidewalk Improvements']} type={props.location.query.type} subType={props.location.query.subType || 'Road Resurfacing and Sidewalk Improvements'} radioCallback={refreshLocation} />}
-          {props.location.query.type === 'Parks' &&
-            <BondDetailsTable data={testParksData} type={props.location.query.type} subType="" radioCallback={refreshLocation} />}
-          {props.location.query.type === 'Housing' &&
-            <HousingTimeline />
           }
         </div>
       </div>

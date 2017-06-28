@@ -33,7 +33,9 @@ const BarChart = props => (
         }
         <CartesianGrid strokeDasharray="3 3" />
         <Tooltip formatter={props.toolTipFormatter} />
-        <Legend height={props.legendHeight} />
+        {!props.hideLegend &&
+          <Legend height={props.legendHeight} />
+        }
         {props.barDataKeys.map((barDataKey, i) => (
           <Bar key={barDataKey} dataKey={barDataKey} fill={colorSchemes[props.colorScheme][i % colorSchemes[props.colorScheme].length]} stackId={props.stacked ? 1 : i} animationDuration={50} />
         ))}
@@ -79,6 +81,7 @@ BarChart.propTypes = {
   layout: PropTypes.string,
   yAxisWidth: PropTypes.number,
   margin: PropTypes.object,
+  hideLegend: PropTypes.bool,
 };
 
 BarChart.defaultProps = {
@@ -105,6 +108,7 @@ BarChart.defaultProps = {
   hidePrimaryAxis: false,
   yAxisWidth: 60,
   margin: { top: 0, left: 10, bottom: 0, right: 0 },
+  hideLegend: false,
 };
 
 export default BarChart;

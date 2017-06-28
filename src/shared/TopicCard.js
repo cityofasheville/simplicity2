@@ -1,24 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import FaShield from 'react-icons/lib/fa/shield';
 import FaBuildingO from 'react-icons/lib/fa/building-o';
-import FaDollar from 'react-icons/lib/fa/dollar';
 import FaBed from 'react-icons/lib/fa/bed';
 import FaBank from 'react-icons/lib/fa/bank';
 import MdNowWidgets from 'react-icons/lib/md/now-widgets';
 import MdLocationCity from 'react-icons/lib/md/location-city';
 import TiChartBarOutline from 'react-icons/lib/ti/chart-bar-outline';
 import styles from './topicCard.css';
+import Icon from './Icon';
+import { ICONPATHS } from './iconConstants';
 
 const getTopicIcon = (topic) => {
   switch (topic) {
     case 'CRIME':
-      return (<FaShield size={75} />);
+      return (<Icon icon={ICONPATHS.SHIELD} size={75} />)
+      //return (<FaShield size={75} />);
     case 'DEVELOPMENT':
-      return (<FaBuildingO size={75} />);
+      return (<Icon icon={ICONPATHS.OFFICE} size={75} />)
     case 'BUDGET':
-      return (<FaDollar size={75} />);
+      return (<Icon icon={ICONPATHS.COIN_DOLLAR} size={75} />)
     case 'HOMELESSNESS':
       return (<FaBed size={75} />);
     case 'CAPITAL_PROJECTS':

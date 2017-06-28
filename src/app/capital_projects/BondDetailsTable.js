@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ReactTable from 'react-table';
 import FaCircle from 'react-icons/lib/fa/circle';
 import { RadioGroup, Radio } from 'react-radio-group';
+import ProjectDetails from './ProjectDetails';
 
 const getStageNumber = (stage) => {
   switch (stage) {
@@ -36,19 +37,20 @@ const dataColumns = [
   {
     Header: 'Project',
     accessor: 'name',
-    minWidth: 425,
   },
   {
     Header: (<div>Zip<br />code</div>),
     accessor: 'zip',
-    minWidth: 90,
+    maxWidth: 120,
+    headerClassName: 'hidden-sm hidden-xs',
+    className: 'hidden-sm hidden-xs',
   },
   {
     Header: (<div>Current<br />phase</div>),
     accessor: 'phase',
-    minWidth: 120,
+    maxWidth: 225,
     Cell: row => (
-      <span>
+      <span style={{ whiteSpace: 'normal' }}>
         <FaCircle color={getStageNumber(row.value) >= 1 ? phaseColor(1) : '#ecf0f1'} style={{ marginRight: '5px' }} />
         <FaCircle color={getStageNumber(row.value) >= 2 ? phaseColor(2) : '#ecf0f1'} style={{ marginRight: '5px' }} />
         <FaCircle color={getStageNumber(row.value) >= 3 ? phaseColor(3) : '#ecf0f1'} style={{ marginRight: '5px' }} />
@@ -62,12 +64,16 @@ const dataColumns = [
   {
     Header: (<div>Construction<br />start</div>),
     accessor: 'construction_start',
-    minWidth: 100,
+    maxWidth: 100,
+    headerClassName: 'hidden-xs',
+    className: 'hidden-xs',
   },
   {
     Header: (<div>Total<br />bond funding</div>),
     accessor: 'total',
-    minWidth: 110,
+    maxWidth: 150,
+    headerClassName: 'hidden-sm hidden-xs',
+    className: 'hidden-sm hidden-xs',
   },
 ];
 
@@ -114,7 +120,7 @@ const BondDetailsTable = props => (
             showPagination={false}
             SubComponent={row => (
               <div style={{ paddingLeft: '34px' }}>
-                {row.original.description}
+                <ProjectDetails description={row.original.description} />
               </div>
             )}
           />

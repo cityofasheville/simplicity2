@@ -25,9 +25,10 @@ Topics.propTypes = {
 
 Topics.defaultProps = {
   topics: [
+    'BUDGET',
+    'CAPITAL_PROJECTS',
     'CRIME',
     'DEVELOPMENT',
-    'BUDGET',
     // 'HOMELESSNESS',
   ],
 };

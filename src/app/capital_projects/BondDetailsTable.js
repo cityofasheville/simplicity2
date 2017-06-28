@@ -19,6 +19,19 @@ const getStageNumber = (stage) => {
   }
 };
 
+const phaseColor = (phaseNumber) => {
+  switch (phaseNumber) {
+    case 1:
+      return '#9C27B0';
+    case 2:
+      return '#03A9F4';
+    case 3:
+      return '#FF5722';
+    default:
+      return '#57d500';
+  }
+};
+
 const dataColumns = [
   {
     Header: 'Project',
@@ -36,10 +49,11 @@ const dataColumns = [
     minWidth: 120,
     Cell: row => (
       <span>
-        {[1, 2, 3, 4].map(index => (
-          <FaCircle key={['circle', index].join('_')} color={getStageNumber(row.value) >= index ? '#57d500' : '#ecf0f1'} style={{ marginRight: '5px' }} />
-        ))}
-        <span style={{ marginLeft: '5px' }}>
+        <FaCircle color={getStageNumber(row.value) >= 1 ? phaseColor(1) : '#ecf0f1'} style={{ marginRight: '5px' }} />
+        <FaCircle color={getStageNumber(row.value) >= 2 ? phaseColor(2) : '#ecf0f1'} style={{ marginRight: '5px' }} />
+        <FaCircle color={getStageNumber(row.value) >= 3 ? phaseColor(3) : '#ecf0f1'} style={{ marginRight: '5px' }} />
+        <FaCircle color={getStageNumber(row.value) >= 4 ? phaseColor(4) : '#ecf0f1'} style={{ marginRight: '5px' }} />
+        <span style={{ marginLeft: '5px', color: phaseColor(getStageNumber(row.value)) }}>
           {row.value}
         </span>
       </span>

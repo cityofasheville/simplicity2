@@ -9,6 +9,9 @@ const PageHeader = props => (
         <img alt={props.imageAlt} src={props.image} style={{ width: '100px', float: 'left', marginRight: '10px' }} />
       }
       <h1>
+        {props.icon &&
+          <span style={{ marginRight: '5px' }}>{props.icon}</span>
+        }
         {props.children}
         {props.h1}
       </h1>
@@ -42,6 +45,7 @@ PageHeader.propTypes = {
   dataLinkPath: PropTypes.string,
   image: PropTypes.string,
   imageAlt: PropTypes.string,
+  icon: PropTypes.node,
 };
 
 PageHeader.defaultProps = {

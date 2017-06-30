@@ -79,7 +79,7 @@ const Routes = props => (
         <Route path="street" component={Street}></Route>
         <Route path="neighborhood" component={Neighborhood}></Route>
         <Route path="owner" component={Owner}></Route>
-        <Route path="topics" component={Topics} />
+        <Route path="dashboards" component={Topics} />
         <Route path="budget">
           <IndexRoute component={BudgetSummary} />
           <Route path="details" component={BudgetDetailsContainer}></Route>

@@ -65,7 +65,7 @@ export default class Navbar extends React.Component { // eslint-disable-line rea
             <div className={[this.state.navbarCollapse, 'navbar-collapse'].join(' ')}>
               <ul className="nav navbar-nav navbar-right">
                 <li><Link to="/my-simplicity" activeClassName="active">My SimpliCity</Link></li>
-                <li><Link to="/topics" activeClassName="active">Topics</Link></li>
+                <li><Link to="/dashboards" activeClassName="active">Dashboards</Link></li>
                 <li><a href="/search"><Icon path={IM_SEARCH} size={16} /></a></li>
                 <AuthControl />
               </ul>

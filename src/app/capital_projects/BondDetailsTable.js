@@ -128,8 +128,8 @@ const BondDetailsTable = props => (
             pageSize={props.data.length}
             showPagination={false}
             SubComponent={row => (
-              <div style={{ paddingLeft: '34px' }}>
-                <ProjectDetails description={row.original.description} />
+              <div style={{ paddingLeft: '34px', paddingRight: '34px', paddingBottom: '15px', backgroundColor: '#f6fcff', borderRadius: '3px' }}>
+                <ProjectDetails {...row.original} />
               </div>
             )}
           />

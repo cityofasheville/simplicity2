@@ -6,10 +6,12 @@ import HomelessnessEnrollment from './HomelessnessEnrollment';
 import PageHeader from '../../shared/PageHeader';
 import ButtonGroup from '../../shared/ButtonGroup';
 import LinkButton from '../../shared/LinkButton';
+import Icon from '../../shared/Icon';
+import { IM_BED } from '../../shared/iconConstants';
 
 const HomelessnessSummary = props => (
   <div>
-    <PageHeader h1="Homelessness in Asheville / Buncombe County" dataLinkPath="/homelessness/data" externalLink="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=27777" externalLinkText="Five year strategic plan on homelessness in Buncombe county">
+    <PageHeader h1="Homelessness in Asheville / Buncombe County" dataLinkPath="/homelessness/data" externalLink="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=27777" externalLinkText="Five year strategic plan on homelessness in Buncombe county" icon={<Icon path={IM_BED} size={35} />}>
       <ButtonGroup>
         <LinkButton pathname="/homelessness" query={{ entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, hideNavbar: props.location.query.hideNavbar }} active positionInGroup="left">Summary</LinkButton>
         <LinkButton pathname="/homelessness/veterans" query={{ entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, hideNavbar: props.location.query.hideNavbar }} positionInGroup="right">Veterans</LinkButton>

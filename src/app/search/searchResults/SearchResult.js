@@ -1,13 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import FaMapMarker from 'react-icons/lib/fa/map-marker';
-import FaHome from 'react-icons/lib/fa/home';
-import FaRoad from 'react-icons/lib/fa/road';
-import FaBuildingO from 'react-icons/lib/fa/building-o';
-import FaShield from 'react-icons/lib/fa/shield';
-import FaUser from 'react-icons/lib/fa/user';
-import FaQuestion from 'react-icons/lib/fa/question';
-import FaChevronRight from 'react-icons/lib/fa/chevron-right';
+import Icon from '../../../shared/Icon';
+import { IM_SHIELD3, IM_OFFICE, IM_ROAD, IM_USER, IM_USERS, IM_LOCATION, IM_HOME2, IM_QUESTION, IM_ARROW_RIGHT2 } from '../../../shared/iconConstants';
 import styles from './searchResult.css';
 
 const getLink = (type, id, label) => {
@@ -34,21 +28,21 @@ const getLink = (type, id, label) => {
 const getIcon = (type) => {
   switch (type) {
     case 'address':
-      return (<FaMapMarker size={26} style={{ marginRight: '5px' }} />);
+      return (<span style={{ marginRight: '5px' }}><Icon path={IM_LOCATION} size={26} /></span>);
     case 'property':
-      return (<FaHome size={26} style={{ marginRight: '5px' }} />);
+      return (<span style={{ marginRight: '5px' }}><Icon path={IM_HOME2} size={26} /></span>);
     case 'street':
-      return (<FaRoad size={26} style={{ marginRight: '5px' }} />);
+      return (<span style={{ marginRight: '5px' }}><Icon path={IM_ROAD} size={26} /></span>);
     case 'neighborhood':
-      return (<i className={['fa', 'fa-users', styles.searchResultIcon].join(' ')}></i>);
+      return (<span style={{ marginRight: '5px' }}><Icon path={IM_USERS} size={26} /></span>);
     case 'permit':
-      return (<FaBuildingO size={26} style={{ marginRight: '5px' }} />);
+      return (<span style={{ marginRight: '5px' }}><Icon path={IM_OFFICE} size={26} /></span>);
     case 'crime':
-      return (<FaShield size={26} style={{ marginRight: '5px' }} />);
+      return (<span style={{ marginRight: '5px' }}><Icon path={IM_SHIELD3} size={26} /></span>);
     case 'owner':
-      return (<FaUser size={26} style={{ marginRight: '5px' }} />);
+      return (<span style={{ marginRight: '5px' }}><Icon path={IM_USER} size={26} /></span>);
     default:
-      return (<FaQuestion size={26} style={{ marginRight: '5px' }} />);
+      return (<span style={{ marginRight: '5px' }}><Icon path={IM_QUESTION} size={26} /></span>);
   }
 };
 
@@ -71,7 +65,7 @@ class SearchResult extends React.Component { // eslint-disable-line
           <div className={['form-control', styles.searchResultDiv].join(' ')}>
             {getIcon(this.props.type)}
             {this.props.children}
-            <div className="pull-right"><FaChevronRight size={26} /></div>
+            <div className="pull-right"><Icon path={IM_ARROW_RIGHT2} size={26} /></div>
           </div>
         </div>
       </a>

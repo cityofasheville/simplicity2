@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Navbar from './Navbar';
+import CityInfoBar from './CityInfoBar';
 
 import AuthProviderModal from '../utilities/auth/authProviderModal';
 
@@ -8,7 +9,7 @@ const displayNavbar = (hideNavbar) => {
   if (window.location.href.indexOf('dashboards.ashevillenc.gov') < 0 && hideNavbar !== 'true') {
     return (<Navbar />);
   }
-  return '';
+  return (<CityInfoBar />);
 };
 
 const App = props => (

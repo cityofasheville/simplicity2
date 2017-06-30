@@ -19,6 +19,7 @@ const SearchByEntities = props => (
 );
 
 const entityDataShape = {
+  label: PropTypes.String,
   entityType: PropTypes.string,
   checked: PropTypes.bool,
 };
@@ -30,12 +31,12 @@ SearchByEntities.propTypes = {
 
 SearchByEntities.defaultProps = {
   entities: [
-    { entityType: 'Neighborhoods', checked: true },
-    { entityType: 'Streets', checked: true },
-    { entityType: 'Addresses', checked: true },
-    { entityType: 'Owners', checked: true },
-    { entityType: 'Google places', checked: true },
-    { entityType: 'Properties', checked: true },
+    { label: 'Neighborhoods', type: 'neighborhood', checked: true },
+    { label: 'Streets', type: 'street', checked: true },
+    { label: 'Addresses', type: 'address', checked: true },
+    { label: 'Owners', type: 'owner', checked: true },
+    { label: 'Google places', type: 'google', checked: true },
+    { label: 'Properties', type: 'property', checked: true },
   ],
 };
 

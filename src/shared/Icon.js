@@ -23,17 +23,20 @@ const Icon = props => {
       preserveAspectRatio='xMidYMid meet'
     >
       <g>
-        <path
-          style={styles.path}
-          d={props.icon}
-        ></path>
+        {props.path.split(',').map((path, index) =>
+          <path
+            key={['path', index].join('_')}
+            style={styles.path}
+            d={path}
+          ></path>
+        )}
       </g>
     </svg>
   );
 };
 
 Icon.propTypes = {
-  icon: PropTypes.string.isRequired,
+  path: PropTypes.string.isRequired,
   size: PropTypes.number,
   color: PropTypes.string,
 };

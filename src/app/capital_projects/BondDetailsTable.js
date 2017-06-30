@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactTable from 'react-table';
-import FaCircle from 'react-icons/lib/fa/circle';
 import { RadioGroup, Radio } from 'react-radio-group';
 import ProjectDetails from './ProjectDetails';
+import Icon from '../../shared/Icon';
+import { IM_CIRCLE2 } from '../../shared/iconConstants.js';
 
 const getStageNumber = (stage) => {
   switch (stage) {
@@ -51,10 +52,18 @@ const dataColumns = [
     maxWidth: 225,
     Cell: row => (
       <span style={{ whiteSpace: 'normal' }}>
-        <FaCircle color={getStageNumber(row.value) >= 1 ? phaseColor(1) : '#ecf0f1'} style={{ marginRight: '5px' }} />
-        <FaCircle color={getStageNumber(row.value) >= 2 ? phaseColor(2) : '#ecf0f1'} style={{ marginRight: '5px' }} />
-        <FaCircle color={getStageNumber(row.value) >= 3 ? phaseColor(3) : '#ecf0f1'} style={{ marginRight: '5px' }} />
-        <FaCircle color={getStageNumber(row.value) >= 4 ? phaseColor(4) : '#ecf0f1'} style={{ marginRight: '5px' }} />
+        <span style={{ marginRight: '5px' }}>
+          <Icon path={IM_CIRCLE2} color={getStageNumber(row.value) >= 1 ? phaseColor(1) : '#ecf0f1'} />
+        </span>
+        <span style={{ marginRight: '5px' }}>
+          <Icon path={IM_CIRCLE2}  color={getStageNumber(row.value) >= 2 ? phaseColor(2) : '#ecf0f1'} />
+        </span>
+        <span style={{ marginRight: '5px' }}>
+          <Icon path={IM_CIRCLE2}  color={getStageNumber(row.value) >= 3 ? phaseColor(3) : '#ecf0f1'} />
+        </span>
+        <span style={{ marginRight: '5px' }}>
+          <Icon path={IM_CIRCLE2} color={getStageNumber(row.value) >= 4 ? phaseColor(4) : '#ecf0f1'} style={{ marginRight: '5px' }} />
+        </span>
         <span style={{ marginLeft: '5px', color: phaseColor(getStageNumber(row.value)) }}>
           {row.value}
         </span>

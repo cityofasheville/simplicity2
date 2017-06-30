@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
-import FaSearch from 'react-icons/lib/fa/search';
+import Icon from '../../shared/Icon';
+import { IM_SEARCH } from '../../shared/iconConstants';
 import SearchByEntities from './searchByEntities/SearchByEntities';
 
 const SearchBarLink = props => (
@@ -17,7 +18,7 @@ const SearchBarLink = props => (
             onKeyUp={props.onKeyUp}
           />
           <span className="input-group-btn">
-            <button className="btn btn-primary" type="button" aria-label="search"><FaSearch /></button>
+            <button className="btn btn-primary" type="button" aria-label="search"><Icon path={IM_SEARCH} size={16} /></button>
           </span>
         </div>
       </form>

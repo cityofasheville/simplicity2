@@ -1,20 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import FaBank from 'react-icons/lib/fa/bank';
-import FaBullseye from 'react-icons/lib/fa/bullseye';
+import Icon from '../shared/Icon';
+import { IM_LIBRARY2, IM_TARGET } from '../shared/iconConstants';
 import styles from './inCityMessage.css';
 
 const InCityMessage = props => (
   <span className={styles.inCityMessage}>
     {props.inTheCity &&
       <span className={styles.inCity}>
-        <FaBank size={33} />
+        <Icon path={IM_LIBRARY2} size={33} />
         <span> It&apos;s in the city</span>
       </span>
     }
     {!props.inTheCity &&
       <span className={styles.notInCity}>
-        <FaBullseye size={33} />
+        <Icon path={IM_TARGET} size={33} />
         <span>It&apos;s outside of the city</span>
       </span>
     }

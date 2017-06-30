@@ -3,12 +3,12 @@ const objectAssign = require('object-assign');
 
 const initialState = {
   entities: [
-    { entityType: 'Neighborhoods', checked: true },
-    { entityType: 'Streets', checked: true },
-    { entityType: 'Addresses', checked: true },
-    { entityType: 'Owners', checked: true },
-    { entityType: 'Google places', checked: true },
-    { entityType: 'Properties', checked: true },
+    { label: 'Neighborhoods', type: 'neighborhood', checked: true },
+    { label: 'Streets', type: 'street', checked: true },
+    { label: 'Addresses', type: 'address', checked: true },
+    { label: 'Owners', type: 'owner', checked: true },
+    { label: 'Google places', type: 'google', checked: true },
+    { label: 'Properties', type: 'property', checked: true },
   ],
 };
 
@@ -17,10 +17,10 @@ const searchByEntities = (state = initialState, action) => {
     case TOGGLE_SEARCH_BY_ENTITY:
       return {
         entities: state.entities.map((entity) => {
-          if (entity.entityType !== action.entityType) {
+          if (entity.type !== action.entityType) {
             return entity;
           }
-          return objectAssign({}, { entityType: entity.entityType, checked: !entity.checked });
+          return objectAssign({}, {label: entity.label, type: entity.type, checked: !entity.checked });
         }) };
     default:
       return state;

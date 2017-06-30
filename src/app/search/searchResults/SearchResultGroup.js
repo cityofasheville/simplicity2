@@ -1,14 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import FaMapMarker from 'react-icons/lib/fa/map-marker';
-import FaHome from 'react-icons/lib/fa/home';
-import FaRoad from 'react-icons/lib/fa/road';
-import FaBuildingO from 'react-icons/lib/fa/building-o';
-import FaShield from 'react-icons/lib/fa/shield';
-import FaUser from 'react-icons/lib/fa/user';
-import FaQuestion from 'react-icons/lib/fa/question';
-import FaChevronDown from 'react-icons/lib/fa/chevron-down';
+import Icon from '../../../shared/Icon';
+import { IM_SHIELD3, IM_OFFICE, IM_ROAD, IM_USER, IM_USERS, IM_LOCATION, IM_HOME2, IM_QUESTION, IM_ARROW_RIGHT2, IM_ARROW_DOWN2 } from '../../../shared/iconConstants';
 import SearchResult from './SearchResult';
 import styles from './searchResultGroup.css';
 import stylesResult from './searchResult.css';
@@ -24,24 +18,24 @@ class SearchResultGroup extends React.Component {
     this.focusedItem.focus();
   }
 
-  getIcon(icon) {
-    switch (icon) {
-      case 'fa-map-marker':
-        return (<FaMapMarker size={26} style={{ marginRight: '5px' }} />);
-      case 'fa-home':
-        return (<FaHome size={26} style={{ marginRight: '5px' }} />);
-      case 'fa-road':
-        return (<FaRoad size={26} style={{ marginRight: '5px' }} />);
-      case 'fa-users':
-        return (<i className={['fa', 'fa-users', styles.searchResultIcon].join(' ')}></i>);
-      case 'fa-building-o':
-        return (<FaBuildingO size={26} style={{ marginRight: '5px' }} />);
-      case 'fa-shield':
-        return (<FaShield size={26} style={{ marginRight: '5px' }} />);
-      case 'fa-user':
-        return (<FaUser size={26} style={{ marginRight: '5px' }} />);
+  getIcon(type) {
+    switch (type) {
+      case 'address':
+        return (<span style={{ marginRight: '5px' }}><Icon path={IM_LOCATION} size={26} /></span>);
+      case 'property':
+        return (<span style={{ marginRight: '5px' }}><Icon path={IM_HOME2} size={26} /></span>);
+      case 'street':
+        return (<span style={{ marginRight: '5px' }}><Icon path={IM_ROAD} size={26} /></span>);
+      case 'neighborhood':
+        return (<span style={{ marginRight: '5px' }}><Icon path={IM_USERS} size={26} /></span>);
+      case 'permit':
+        return (<span style={{ marginRight: '5px' }}><Icon path={IM_OFFICE} size={26} /></span>);
+      case 'crime':
+        return (<span style={{ marginRight: '5px' }}><Icon path={IM_SHIELD3} size={26} /></span>);
+      case 'owner':
+        return (<span style={{ marginRight: '5px' }}><Icon path={IM_USER} size={26} /></span>);
       default:
-        return (<FaQuestion size={26} style={{ marginRight: '5px' }} />);
+        return (<span style={{ marginRight: '5px' }}><Icon path={IM_QUESTION} size={26} /></span>);
     }
   }
 
@@ -64,7 +58,7 @@ class SearchResultGroup extends React.Component {
     return (
       <div className={['col-xs-12', styles.searchResultGroup].join(' ')}>
         <h2>
-          {this.getIcon(this.props.icon)}
+          {this.getIcon(this.props.type)}
           {this.props.label}
           <span className="offscreen">Number of results</span>
           <span className="badge">{this.props.count}</span>
@@ -87,7 +81,7 @@ class SearchResultGroup extends React.Component {
             <div className="form-group">
               <div className={['form-control', stylesResult.searchResultDiv].join(' ')}>
                 More
-                <div className="pull-right"><FaChevronDown size={26} /></div>
+                <div className="pull-right"><Icon path={IM_ARROW_DOWN2} size={26} /></div>
               </div>
             </div>
           </Link>
@@ -106,7 +100,7 @@ const resultsShape = {
 SearchResultGroup.propTypes = {
   label: PropTypes.string,
   count: PropTypes.number,
-  icon: PropTypes.string,
+  type: PropTypes.string,
   results: PropTypes.arrayOf(PropTypes.shape(resultsShape)),
 };
 

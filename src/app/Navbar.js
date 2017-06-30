@@ -1,8 +1,8 @@
 import React from 'react';
 import { IndexLink, Link } from 'react-router';
-import FaSearch from 'react-icons/lib/fa/search';
+import Icon from '../shared/Icon';
+import { IM_SEARCH } from '../shared/iconConstants';
 import AuthControl from '../utilities/auth/authControl';
-
 
 export default class Navbar extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -36,8 +36,11 @@ export default class Navbar extends React.Component { // eslint-disable-line rea
   render() {
     return (
       <div style={{ display: this.state.navbarDisplay }}>
-        <nav className="navbar navbar-default">
+        <nav className="navbar navbar-default" style={{ backgroundColor: '#f6fcff'}}>
           <div className="container-fluid">
+            <div className="pull-left" style={{ marginRight: '5px', marginTop: '5px', marginBottom: '5px' }}>
+              <a href="http://www.ashevillenc.gov" target="_blank"><img src={require('./citylogo-flatblue.png')} width="80px" height="80px" alt="City of Asheville logo"></img></a>
+            </div>
             <div className="navbar-header">
               <button type="button" className="navbar-toggle collapsed" onClick={this.toggleNavbarCollapse} aria-expanded="false">
                 <span className="sr-only">Toggle navigation</span>
@@ -45,23 +48,29 @@ export default class Navbar extends React.Component { // eslint-disable-line rea
                 <span className="icon-bar"></span>
                 <span className="icon-bar"></span>
               </button>
-              <IndexLink to="/" className="navbar-brand">SimpliCity</IndexLink>
+              <div className="pull-left">
+                <IndexLink to="/" className="navbar-brand" style={{ fontSize: '30px', marginBottom: '-10px' }}>SimpliCity</IndexLink>
+                <br />
+                <a href="http://www.ashevillenc.gov" target="_blank" style={{ fontSize: '12px', fontStyle: 'italic' }}>City of Asheville, NC</a>
+              </div>
               {window.location.href.indexOf('dashboards.ashevillenc.gov') === -1 &&
-                <div style={{ color: '#bf1bbf', fontStyle: 'italic', float: 'left', fontSize: '19px', height: '60px', padding: '19.5px 15px', lineHeight: '1' }}>Pre-Beta</div>
+                <div style={{ color: '#bf1bbf', fontStyle: 'italic', float: 'left', fontSize: '19px', height: '60px', padding: '19.5px 15px', lineHeight: '1' }}>
+                  Pre-Beta
+                  <br />
+                  <a href="https://docs.google.com/a/ashevillenc.gov/forms/d/e/1FAIpQLSdjNwOmoDY3PjQOVreeSL07zgI8otIIPWjY7BnejWMAjci8-w/viewform?c=0&w=1" target="_blank" style={{ color: '#bf1bbf', fontStyle: 'italic', fontSize: '16px' }}>Click here to give feedback or sign up for user testing</a>
+
+                </div>
               }
             </div>
             <div className={[this.state.navbarCollapse, 'navbar-collapse'].join(' ')}>
               <ul className="nav navbar-nav navbar-right">
                 <li><Link to="/my-simplicity" activeClassName="active">My SimpliCity</Link></li>
                 <li><Link to="/topics" activeClassName="active">Topics</Link></li>
-                <li><a href="/search"><FaSearch /></a></li>
+                <li><a href="/search"><Icon path={IM_SEARCH} size={16} /></a></li>
                 <AuthControl />
               </ul>
             </div>
           </div>
-          {window.location.href.indexOf('dashboards.ashevillenc.gov') === -1 &&
-            <a href="https://docs.google.com/a/ashevillenc.gov/forms/d/e/1FAIpQLSdjNwOmoDY3PjQOVreeSL07zgI8otIIPWjY7BnejWMAjci8-w/viewform?c=0&w=1" target="_blank" style={{ color: '#bf1bbf', marginLeft: '15px', fontStyle: 'italic' }}>Click here to give feedback or sign up for user testing</a>
-          }
         </nav>
       </div>
     );

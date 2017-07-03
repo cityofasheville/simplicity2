@@ -714,7 +714,7 @@ babel-register@^6.24.1:
     mkdirp "^0.5.1"
     source-map-support "^0.4.2"
 
-babel-runtime@^6.18.0, babel-runtime@^6.22.0, babel-runtime@^6.6.1:
+babel-runtime@^6.18.0, babel-runtime@^6.22.0, babel-runtime@^6.23.0, babel-runtime@^6.6.1:
   version "6.23.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.23.0.tgz#0a9489f144de70efb3ce4300accdb329e2fc543b"
   dependencies:
@@ -3042,6 +3042,10 @@ lcid@^1.0.0:
   dependencies:
     invert-kv "^1.0.0"
 
+leaflet@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.1.0.tgz#63246715cfc783dca6798b843a250e8e6fd84918"
+
 levn@^0.3.0, levn@~0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/levn/-/levn-0.3.0.tgz#3b09924edf9f083c0490fdd4c0bc4421e04764ee"
@@ -4199,6 +4203,14 @@ react-json-tree@^0.10.9:
     babel-runtime "^6.6.1"
     prop-types "^15.5.8"
     react-base16-styling "^0.5.1"
+
+react-leaflet@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/react-leaflet/-/react-leaflet-1.4.0.tgz#45b0d1ca2fe8fff91c3e023cfe4eab0783416491"
+  dependencies:
+    babel-runtime "^6.23.0"
+    lodash "^4.0.0"
+    warning "^3.0.0"
 
 react-measure@^1.4.6:
   version "1.4.7"

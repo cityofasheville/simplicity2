@@ -24,9 +24,9 @@ const getStageNumber = (stage) => {
 const phaseColor = (phaseNumber) => {
   switch (phaseNumber) {
     case 1:
-      return '#9C27B0';
+      return '#f844ff';
     case 2:
-      return '#03A9F4';
+      return '#44cdff';
     case 3:
       return '#FF5722';
     default:
@@ -73,7 +73,7 @@ const dataColumns = [
   {
     Header: (<div>Construction<br />start</div>),
     accessor: 'construction_start',
-    maxWidth: 100,
+    maxWidth: 110,
     headerClassName: 'hidden-xs',
     className: 'hidden-xs',
   },
@@ -127,9 +127,19 @@ const BondDetailsTable = props => (
             columns={getColumns(props.type, props.subType)}
             pageSize={props.data.length}
             showPagination={false}
+            getTrProps={(state, rowInfo, column) => {
+              return {
+                style: {
+                  background: (Object.keys(state.expanded).includes(rowInfo.index.toString()) && state.expanded[rowInfo.index]) ? '#4077a5': 'none',
+                  color: (Object.keys(state.expanded).includes(rowInfo.index.toString()) && state.expanded[rowInfo.index]) ? '#fff': '',
+                  fontWeight: (Object.keys(state.expanded).includes(rowInfo.index.toString()) && state.expanded[rowInfo.index]) ? 'bold': 'normal',
+                  fontSize: (Object.keys(state.expanded).includes(rowInfo.index.toString()) && state.expanded[rowInfo.index]) ? '1.2em': '1em',
+                }
+              }
+            }}
             SubComponent={row => (
               <div style={{ paddingLeft: '34px', paddingRight: '34px', paddingBottom: '15px', backgroundColor: '#f6fcff', borderRadius: '3px' }}>
-                <ProjectDetails {...row.original} />
+                <ProjectDetails {...row.original} hideTitle />
               </div>
             )}
           />

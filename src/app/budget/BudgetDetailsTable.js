@@ -62,37 +62,37 @@ const getDataColumns = (level, expenseOrRevenue) => {
   };
   const dataColumns = [
     {
-      header: theHeader,
+      Header: theHeader,
       accessor: 'name',
       width: level === 3 ? 300 - (34 * 2) : 300 - (34 * level),
     },
     {
-      header: getYearHeader(last4Years[0]),
+      Header: getYearHeader(last4Years[0]),
       accessor: 'threeYearsAgo',
-      render: props => getDollars(props.value),
+      Cell: props => getDollars(props.value),
       minWidth: 95,
       style: { textAlign: 'right' },
     }, {
-      header: getYearHeader(last4Years[1]),
+      Header: getYearHeader(last4Years[1]),
       accessor: 'twoYearsAgo',
-      render: props => getDollars(props.value),
+      Cell: props => getDollars(props.value),
       minWidth: 95,
       style: { textAlign: 'right' },
     }, {
-      header: getYearHeader(last4Years[2]),
+      Header: getYearHeader(last4Years[2]),
       accessor: 'oneYearAgo',
-      render: props => getDollars(props.value),
+      Cell: props => getDollars(props.value),
       minWidth: 95,
       style: { textAlign: 'right' },
     }, {
-      header: getYearHeader(last4Years[3]),
+      Header: getYearHeader(last4Years[3]),
       accessor: 'proposed',
-      render: props => getDollars(props.value),
+      Cell: props => getDollars(props.value),
       minWidth: 95,
       style: { textAlign: 'right' },
     },
     {
-      header: getChangeHeader(),
+      Header: getChangeHeader(),
       accessor: 'deltaPercent',
       minWidth: 95,
       style: { textAlign: 'right' },

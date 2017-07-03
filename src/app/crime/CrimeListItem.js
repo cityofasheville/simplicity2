@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Icon from '../../shared/Icon';
+import { IM_MAP5 } from '../../shared/iconConstants';
 import styles from '../spatial_event_topic_summary/spatialEventTopicListItemStyles.css';
 
 const CrimeListItem = (props) => {
@@ -36,7 +38,7 @@ const CrimeListItem = (props) => {
         </div>
         <div className={['row', styles.linkRow].join(' ')}>
           <div className="col-sm-12">
-            <div className="pull-right"> <a title="View crime in map"><i className="fa fa-map-o"></i> Map</a></div>
+            <div className="pull-right"> <a title="View crime in map"><Icon path={IM_MAP5} size={20} /> Map</a></div>
           </div>
         </div>
       </div>

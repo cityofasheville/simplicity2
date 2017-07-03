@@ -1,37 +1,36 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
+import TopicCard from '../shared/TopicCard';
 
 const Topics = props => (
-  <div className="container">
-    <div className="col-md-12">
-      <div className="col-xs-12">
-        <h4 className="text-primary">TOPICS</h4>
+  <div>
+    <div className="row">
+      <div className="col-sm-12">
+        <h1>View citywide topic <strong>dashboards</strong> about your community.</h1>
       </div>
-      <div className="col-md-4">
-        <div className="col-xs-12 topic-tile">
-          <div className="row text-center">
-            <i className="fa fa-shield fa-5x text-primary" aria-hidden="true"></i>
-          </div>
-          <h2 className="text-primary text-center">CRIME</h2>
-          <hr />
+    </div>
+    <div className="row">
+      {props.topics.map((topic, i) => (
+        <div className="col-xs-4" key={['topic', i].join('_')}>
+          <TopicCard topic={topic} entity="city" label="City of Asheville" />
         </div>
-      </div>
-      <div className="col-md-4">
-        <div className="col-xs-12 topic-tile">
-          <div className="row text-center">
-            <i className="fa fa-building-o fa-5x text-primary" aria-hidden="true"></i>
-          </div>
-          <Link to="/development"><h2 className="text-primary text-center">DEVELOPMENT</h2></Link>
-          <hr />
-        </div>
-      </div>
+      ))}
     </div>
   </div>
 );
 
 Topics.propTypes = {
-  children: PropTypes.node,
+  topics: PropTypes.arrayOf(PropTypes.string),
+};
+
+Topics.defaultProps = {
+  topics: [
+    'BUDGET',
+    'CAPITAL_PROJECTS',
+    'CRIME',
+    'DEVELOPMENT',
+    // 'HOMELESSNESS',
+  ],
 };
 
 export default Topics;

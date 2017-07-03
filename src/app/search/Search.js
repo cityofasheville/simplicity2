@@ -11,7 +11,7 @@ import { searchKeyUp } from './searchActions';
 const searchJSON = [
   {
     label: 'Neighborhoods',
-    icon: 'fa-users',
+    type: 'neighborhood',
     results: [
       {
         id: 'Montford',
@@ -22,7 +22,7 @@ const searchJSON = [
   },
   {
     label: 'Streets',
-    icon: 'fa-road',
+    type: 'street',
     results: [
       {
         id: '9639856365,9639859244,9639952037,9639945921,9639947555,9649041105,9649040073,9649034433,9649035188,9649028801,9649120433,9649121245,9649113917,9649114812,9649116429,9649118163,9649109985',
@@ -38,7 +38,7 @@ const searchJSON = [
   },
   {
     label: 'Addresses',
-    icon: 'fa-map-marker',
+    type: 'address',
     results: [
       {
         id: '24207',
@@ -74,7 +74,7 @@ const searchJSON = [
   },
   {
     label: 'Properties',
-    icon: 'fa-home',
+    type: 'property',
     results: [
       {
         id: '9999242070000',
@@ -110,7 +110,7 @@ const searchJSON = [
   },
   {
     label: 'Owners',
-    icon: 'fa-user',
+    type: 'owner',
     results: [
       {
         id: '9999242070000',

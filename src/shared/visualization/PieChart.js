@@ -30,16 +30,19 @@ const PieChart = props => (
       <RechartsPieChart>
         <Pie
           data={props.data}
-          cx={'50%'}
-          cy={'40%'}
+          cx={props.cx}
+          cy={props.cy}
+          startAngle={props.startAngle}
+          endAngle={props.endAngle}
+          paddingAngle={props.paddingAngle}
           label={props.label}
-          outerRadius={'50%'}
+          outerRadius={props.outerRadius}
           fill={'#9C27B0'}
-          innerRadius={props.doughnut ? 40 : 0}
+          innerRadius={props.doughnut ? 40 : props.innerRadius}
         >
           {props.data.map((entry, index) => <Cell key={['cell', index].join('_')} fill={pieColors[index % pieColors.length]} />)}
         </Pie>
-        <Tooltip />
+        <Tooltip formatter={props.toolTipFormatter} />
         {props.defaultLegend &&
           <Legend legentType="square" />
         }
@@ -61,6 +64,14 @@ PieChart.propTypes = {
   doughnut: PropTypes.bool,
   defaultLegend: PropTypes.bool,
   colorScheme: PropTypes.string,
+  startAngle: PropTypes.number,
+  endAngle: PropTypes.number,
+  paddingAngle: PropTypes.number,
+  innerRadius: PropTypes.number,
+  outerRadius: PropTypes.number,
+  cx: PropTypes.string,
+  cy: PropTypes.string,
+  toolTipFormatter: PropTypes.func,
 };
 
 PieChart.defaultProps = {
@@ -72,6 +83,14 @@ PieChart.defaultProps = {
   doughnut: false,
   defaultLegend: false,
   colorScheme: 'bright_colors',
+  startAngle: 0,
+  endAngle: 360,
+  paddingAngle: 0,
+  innerRadius: 0,
+  outerRadius: 100,
+  cx: '50%',
+  cy: '40%',
+  toolTipFormatter: null,
 };
 
 export default PieChart;

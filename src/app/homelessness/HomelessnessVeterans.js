@@ -6,6 +6,9 @@ import { colorSchemes } from '../../shared/visualization/colorSchemes';
 import PageHeader from '../../shared/PageHeader';
 import ButtonGroup from '../../shared/ButtonGroup';
 import LinkButton from '../../shared/LinkButton';
+import AreaChart from '../../shared/visualization/AreaChart';
+import Icon from '../../shared/Icon';
+import { IM_BED } from '../../shared/iconConstants';
 
 const dataKeys = [
   'Incoming',
@@ -126,6 +129,33 @@ const days_exit_data = [
   },
 ];
 
+const programKeys = [
+  "Unsheltered",
+  "Emergency Shelter",
+  "Intake",
+  "Other",
+  "MIA",
+]
+
+const programData = [
+  {
+    month: '04/2017',
+    Unsheltered: 26,
+    'Emergency Shelter': 8,
+    Intake: 24,
+    Other: 9,
+    MIA: 7,
+  },
+  {
+    month: '05/2017',
+    Unsheltered: 27,
+    'Emergency Shelter': 7,
+    Intake: 16,
+    Other: 10,
+    MIA: 16,
+  },
+]
+
 const getLongDesc = data => (
   <div>
     TODO: Create long description
@@ -147,10 +177,10 @@ class HomelessnessVeterans extends React.Component {
   render() {
     return (
       <div>
-        <PageHeader h1="Ending Veteran Homelessness" dataLinkPath="/homelessness/data" externalLink="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=27777" externalLinkText="Five year strategic plan on homelessness in Buncombe county">
+        <PageHeader h1="Ending Veteran Homelessness" dataLinkPath="/homelessness/data" externalLink="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=27777" externalLinkText="Five year strategic plan on homelessness in Buncombe county" icon={<Icon path={IM_BED} size={35} />}>
           <ButtonGroup>
-            <LinkButton pathname="/homelessness" query={{ entity: this.props.location.query.entity, id: this.props.location.query.id, label: this.props.location.query.label, hideNavbar: this.props.location.query.hideNavbar }} positionInGroup="left" text="Summary" />
-            <LinkButton pathname="/homelessness/veterans" query={{ entity: this.props.location.query.entity, id: this.props.location.query.id, label: this.props.location.query.label, hideNavbar: this.props.location.query.hideNavbar }} positionInGroup="right" text="Veterans" active />
+            <LinkButton pathname="/homelessness" query={{ entity: this.props.location.query.entity, id: this.props.location.query.id, label: this.props.location.query.label, hideNavbar: this.props.location.query.hideNavbar }} positionInGroup="left">Summary</LinkButton>
+            <LinkButton pathname="/homelessness/veterans" query={{ entity: this.props.location.query.entity, id: this.props.location.query.id, label: this.props.location.query.label, hideNavbar: this.props.location.query.hideNavbar }} positionInGroup="right" active>Veterans</LinkButton>
           </ButtonGroup>
         </PageHeader>
         <div className="row">
@@ -171,14 +201,13 @@ class HomelessnessVeterans extends React.Component {
               <ResponsiveContainer>
                 <ComposedChart data={this.props.summaryData} barGap="-77%">
                   <XAxis dataKey="month" />
-                  <YAxis domain={['datamin', 'dataMax + 50']} />
+                  <YAxis />
                   <CartesianGrid strokeDasharray="3 3" />
                   <Tooltip />
                   <Legend />
                   {dataKeys.map((barDataKey, i) => (
                     <Bar key={barDataKey} dataKey={barDataKey} fill={colorSchemes.bright_colors_2[i % colorSchemes.pink_green_diverging.length]} animationDuration={50} />
                   ))}
-                  <Line dataKey="Remaining to be housed" stroke="blue" strokeWidth={3} dot={{ stroke: 'blue', strokeWidth: 5, r: 5 }} fill="white" />
                   <Line dataKey="Net change" stroke="black" fill="white" strokeWidth={3} dot={{ stroke: 'black', strokeWidth: 5, r: 5 }} />
                 </ComposedChart>
               </ResponsiveContainer>
@@ -200,7 +229,7 @@ class HomelessnessVeterans extends React.Component {
           <div className="col-sm-12">
             <hr />
             <h3>How long does it take to house veterans?</h3>
-            <p>The City of Asheville and Buncombe County are striving to achieve &quot;functional zero&quot; for veteran homelessness, as defined for NC 501, Asheville-Buncombe Continuum of Care. Functional zero would be achieved when every newly identified homeless Veteran in Asheville-Buncombe is connected with an appropriate housing intervention within 30 days and is permanently housed within 90 days after signing a Declaration of Housing Preference form, unless the Veteran elects to enter a long term service intensive transitional housing program (SITH). We connect newly identified homeless Veterans who wish to be connected with a housing intervention within two weeks. The below charts show how many days to positive exit from homelessness.</p>
+            <p>The City of Asheville and Buncombe County are striving to achieve &quot;functional zero&quot; for veteran homelessness, as defined for NC 501, Asheville-Buncombe Continuum of Care. Functional zero would be achieved when every newly identified homeless Veteran in Asheville-Buncombe is connected with an appropriate housing intervention within 30 days and is permanently housed within 90 days after signing a Declaration of Housing Preference form, unless the Veteran elects to enter a long term service intensive transitional housing program (SITH). Veterans who choose to enter SITH programs can remain in those programs for up to two years. We connect newly identified homeless Veterans who wish to be connected with a housing intervention within two weeks. The below charts show how many days to positive exit from homelessness.</p>
           </div>
         </div>
         <div className="row">
@@ -210,6 +239,14 @@ class HomelessnessVeterans extends React.Component {
           </div>
           <div className="col-sm-6">
             <BarChartContainer layout="vertical" chartTitle="Average days from identification to positive exit: SITH" mainAxisDataKey="month" dataKeys={['SITH']} colorScheme="bright_colors_2" data={this.props.daysToExitData} altText="Bar chart of average days from identification to positive exit: SITH" />
+          </div>
+        </div>
+        <hr />
+        <div className="row">
+          <div className="col-sm-12">
+            <h3>Housing program enrollments: Veterans</h3>
+            <p>Put in area chart</p>
+            <AreaChart data={programData} mainAxisDataKey="month" dataKeys={programKeys} altText={'Area chart of Veteran housing enrollments'} colorScheme="bright_colors_2" />
           </div>
         </div>
       </div>

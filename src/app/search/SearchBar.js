@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Icon from '../../shared/Icon';
+import { IM_SEARCH } from '../../shared/iconConstants';
 import SearchByEntities from './searchByEntities/SearchByEntities';
 
 const SearchBar = props => (
@@ -18,7 +20,7 @@ const SearchBar = props => (
           name="searchBox"
         />
         <span className="input-group-btn">
-          <button className="btn btn-primary" type="button" aria-label="search"><i className="fa fa-search"></i></button>
+          <button className="btn btn-primary" type="button" aria-label="search"><Icon path={IM_SEARCH} size={16} /></button>
         </span>
       </div>
       <SearchByEntities />

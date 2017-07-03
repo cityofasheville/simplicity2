@@ -120,11 +120,11 @@ Property.defaultProps = {
   },
   tableColumns: [
     {
-      header: 'Value Type',
+      Header: 'Value Type',
       accessor: 'value_type',
     },
     {
-      header: 'Amount',
+      Header: 'Amount',
       accessor: 'amount',
     },
   ],

@@ -28,18 +28,14 @@ const getButtonStyle = (positionInGroup) => {
 
 const Button = props => (
   <button className={getButtonClass(props.size, props.type, props.active)} style={getButtonStyle(props.positionInGroup)} onClick={props.onClick} >
-    {props.icon &&
-      <i className={['fa fa-', props.icon].join('')}>&nbsp;</i>
-    }
-    {props.text}
+    {props.children}
   </button>
 );
 
 Button.propTypes = {
   size: PropTypes.string,
   type: PropTypes.string,
-  text: PropTypes.string,
-  icon: PropTypes.string,
+  children: PropTypes.node,
   onClick: PropTypes.func,
   active: PropTypes.bool,
   positionInGroup: PropTypes.string,
@@ -48,7 +44,6 @@ Button.propTypes = {
 Button.defaultProps = {
   size: 'regular',
   type: 'primary',
-  text: 'button',
   active: false,
   positionInGroup: null, // left, middle, right
   onClick: null,

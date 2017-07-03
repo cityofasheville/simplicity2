@@ -45,17 +45,19 @@ class BarChartContainer extends React.Component {
             <BarChart barDataKeys={this.props.dataKeys} {...this.props} chartTitle={null} />
           </div>
         </div>
-        <div className="row">
-          <div className="col-xs-10 col-xs-offset-2">
-            <br />
-            <a href="javascript:void(0);" className="text-center inText" onClick={() => this.toggleLongDesc()}>
-              {this.state.showingLongDesc ? 'Hide' : 'Show'} {this.props.chartTitle} bar chart summary
-            </a>
-            <div hidden={!this.state.showingLongDesc}>
-              {getLongDesc(this.props.data, this.props.dataKeys, this.props.mainAxisDataKey, this.props.toolTipFormatter)}
+        {!this.props.hideSummary && 
+          <div className="row">
+            <div className="col-xs-10 col-xs-offset-2">
+              <br />
+              <a href="javascript:void(0);" className="text-center inText" onClick={() => this.toggleLongDesc()}>
+                {this.state.showingLongDesc ? 'Hide' : 'Show'} {this.props.chartTitle} bar chart summary
+              </a>
+              <div hidden={!this.state.showingLongDesc}>
+                {getLongDesc(this.props.data, this.props.dataKeys, this.props.mainAxisDataKey, this.props.toolTipFormatter)}
+              </div>
             </div>
           </div>
-        </div>
+        }
       </div>
     );
   }
@@ -66,6 +68,7 @@ BarChartContainer.propTypes = {
   dataKeys: PropTypes.arrayOf(PropTypes.string),
   chartText: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   chartTitle: PropTypes.string,
+  hideSummary: PropTypes.bool,
 };
 
 BarChartContainer.defaultProps = {
@@ -74,6 +77,7 @@ BarChartContainer.defaultProps = {
   chartText: '',
   chartTitle: '',
   toolTipFormatter: null,
+  hideSummary: false,
 };
 
 export default BarChartContainer;

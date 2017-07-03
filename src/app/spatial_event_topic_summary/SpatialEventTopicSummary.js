@@ -1,11 +1,16 @@
 import React from 'react';
+import { browserHistory } from 'react-router';
 import PropTypes from 'prop-types';
 import PieChart from '../../shared/visualization/PieChart';
 import SpatialEventTopicFilters from '../spatial_event_topic_summary/SpatialEventTopicFilters';
 import EmailDownload from '../../shared/EmailDownload';
 import SpatialEventTopicList from '../spatial_event_topic_summary/SpatialEventTopicList';
+import Icon from '../../shared/Icon';
+import { IM_SHIELD3, IM_OFFICE } from '../../shared/iconConstants';
+import PageHeader from '../../shared/PageHeader';
 import ButtonGroup from '../../shared/ButtonGroup';
 import LinkButton from '../../shared/LinkButton';
+import Button from '../../shared/Button';
 
 const testPieCrimeData = [
   { name: 'Aggravated assault', value: 123 },
@@ -36,17 +41,22 @@ const testPermitData = [
   { PermitName: 'Riverridge condos', PermitType: 'Residential', PermitSubType: 'Permit subtype', AppliedDate: '01/01/2001', PermitNum: '1234567879', PermitCategory: 'permit category', Address: '12 Main Street, 23456', PermitGroup: 'Residential', UpdatedDate: '02/02/2001', CurrentStatus: 'Issued', LicenseNumber: '1234A-123', Contractor: 'Bob Jones' },
 ];
 
+const getIcon = (topic) => {
+  switch (topic) {
+    case 'crime':
+      return <Icon path={IM_SHIELD3} size={35} />
+    case 'Development':
+      return <Icon path={IM_OFFICE} size={30} />
+  }
+}
+
 const SpatialEventTopicSummary = props => (
   <div>
-    <div className="row">
-      <div className="col-sm-12">
-        <h1>
-          <button className="btn btn-primary pull-right">Back</button>
-          {props.spatialEventTopic.charAt(0).toUpperCase() + props.spatialEventTopic.slice(1)}
-        </h1>
-      </div>
-    </div>
-
+    <PageHeader h1={props.spatialEventTopic.charAt(0).toUpperCase() + props.spatialEventTopic.slice(1)} icon={getIcon(props.spatialEventTopic)}>
+      <ButtonGroup>
+        <Button onClick={browserHistory.goBack}>Back</Button>
+      </ButtonGroup>
+    </PageHeader>
     <SpatialEventTopicFilters spatialEventTopic={props.spatialEventTopic} spatialType={props.query.entity} spatialDescription={props.query.label} />
 
     <div className="row">
@@ -55,9 +65,9 @@ const SpatialEventTopicSummary = props => (
           <EmailDownload emailFunction={() => (console.log('email!'))} downloadFunction={() => (console.log('Download!'))} />
         </div>
         <ButtonGroup>
-          <LinkButton pathname={['/', props.spatialEventTopic].join('')} query={{ entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, hideNavbar: props.location.query.hideNavbar, view: 'summary' }} positionInGroup="left" text="Summary" active={props.location.query.view === 'summary'} />
-          <LinkButton pathname={['/', props.spatialEventTopic].join('')} query={{ entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, hideNavbar: props.location.query.hideNavbar, view: 'list' }} active={props.location.query.view === 'list'} positionInGroup="middle" text="List view" />
-          <LinkButton pathname={['/', props.spatialEventTopic].join('')} query={{ entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, hideNavbar: props.location.query.hideNavbar, view: 'map' }} active={props.location.query.view === 'map'} positionInGroup="right" text="Map view" />
+          <LinkButton pathname={['/', props.spatialEventTopic].join('')} query={{ entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, hideNavbar: props.location.query.hideNavbar, view: 'summary' }} positionInGroup="left" active={props.location.query.view === 'summary'}>Summary</LinkButton>
+          <LinkButton pathname={['/', props.spatialEventTopic].join('')} query={{ entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, hideNavbar: props.location.query.hideNavbar, view: 'list' }} active={props.location.query.view === 'list'} positionInGroup="middle">List view</LinkButton>
+          <LinkButton pathname={['/', props.spatialEventTopic].join('')} query={{ entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, hideNavbar: props.location.query.hideNavbar, view: 'map' }} active={props.location.query.view === 'map'} positionInGroup="right">Map view</LinkButton>
         </ButtonGroup>
       </div>
     </div>

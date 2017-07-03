@@ -11,7 +11,7 @@ const SearchResults = props => (
           key={resultGroup.label}
           label={resultGroup.label}
           count={resultGroup.results.length}
-          icon={resultGroup.icon}
+          type={resultGroup.type}
           results={resultGroup.results}
         />
       ))
@@ -21,7 +21,7 @@ const SearchResults = props => (
 
 const resultsShape = {
   label: PropTypes.string,
-  icon: PropTypes.string,
+  type: PropTypes.string,
   results: PropTypes.array,
 };
 

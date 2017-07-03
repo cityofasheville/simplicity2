@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
+import Icon from '../../../shared/Icon';
+import { IM_SHIELD3, IM_OFFICE, IM_ROAD, IM_USER, IM_USERS, IM_LOCATION, IM_HOME2, IM_QUESTION, IM_ARROW_RIGHT2 } from '../../../shared/iconConstants';
 import styles from './searchResult.css';
 
 const getLink = (type, id, label) => {
@@ -24,6 +25,27 @@ const getLink = (type, id, label) => {
   }
 };
 
+const getIcon = (type) => {
+  switch (type) {
+    case 'address':
+      return (<span style={{ marginRight: '5px' }}><Icon path={IM_LOCATION} size={26} /></span>);
+    case 'property':
+      return (<span style={{ marginRight: '5px' }}><Icon path={IM_HOME2} size={26} /></span>);
+    case 'street':
+      return (<span style={{ marginRight: '5px' }}><Icon path={IM_ROAD} size={26} /></span>);
+    case 'neighborhood':
+      return (<span style={{ marginRight: '5px' }}><Icon path={IM_USERS} size={26} /></span>);
+    case 'permit':
+      return (<span style={{ marginRight: '5px' }}><Icon path={IM_OFFICE} size={26} /></span>);
+    case 'crime':
+      return (<span style={{ marginRight: '5px' }}><Icon path={IM_SHIELD3} size={26} /></span>);
+    case 'owner':
+      return (<span style={{ marginRight: '5px' }}><Icon path={IM_USER} size={26} /></span>);
+    default:
+      return (<span style={{ marginRight: '5px' }}><Icon path={IM_QUESTION} size={26} /></span>);
+  }
+};
+
 class SearchResult extends React.Component { // eslint-disable-line
   constructor(props) {
     super(props);
@@ -41,9 +63,9 @@ class SearchResult extends React.Component { // eslint-disable-line
       <a href={getLink(this.props.type, this.props.id, this.props.label)} className={styles.searchResult} ref={(link) => { this.link = link; }}>
         <div className={['form-group', styles.searchResultFormGroup].join(' ')}>
           <div className={['form-control', styles.searchResultDiv].join(' ')}>
-            <i className={['fa', this.props.icon, styles.searchResultIcon].join(' ')}></i>
+            {getIcon(this.props.type)}
             {this.props.children}
-            <i className={['fa fa-chevron-right pull-right', styles.searchResultArrowIcon].join(' ')}></i>
+            <div className="pull-right"><Icon path={IM_ARROW_RIGHT2} size={26} /></div>
           </div>
         </div>
       </a>
@@ -53,7 +75,6 @@ class SearchResult extends React.Component { // eslint-disable-line
 
 SearchResult.propTypes = {
   children: PropTypes.node,
-  icon: PropTypes.string,
   type: PropTypes.string,
   id: PropTypes.string,
   label: PropTypes.string,

@@ -2,44 +2,99 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactTable from 'react-table';
 import { RadioGroup, Radio } from 'react-radio-group';
+import ProjectDetails from './ProjectDetails';
+import Icon from '../../shared/Icon';
+import { IM_CIRCLE2 } from '../../shared/iconConstants.js';
+
+const getStageNumber = (stage) => {
+  switch (stage) {
+    case 'Planning':
+      return 1;
+    case 'Design':
+      return 2;
+    case 'Construction':
+      return 3;
+    case 'Completed':
+      return 4;
+    default:
+      return 0;
+  }
+};
+
+const phaseColor = (phaseNumber) => {
+  switch (phaseNumber) {
+    case 1:
+      return '#9C27B0';
+    case 2:
+      return '#03A9F4';
+    case 3:
+      return '#FF5722';
+    default:
+      return '#57d500';
+  }
+};
 
 const dataColumns = [
   {
-    header: 'Project',
+    Header: 'Project',
     accessor: 'name',
-    minWidth: 425,
   },
   {
-    header: (<div>Zip<br />code</div>),
+    Header: (<div>Zip<br />code</div>),
     accessor: 'zip',
-    minWidth: 90,
+    maxWidth: 120,
+    headerClassName: 'hidden-sm hidden-xs',
+    className: 'hidden-sm hidden-xs',
   },
   {
-    header: (<div>Current<br />phase</div>),
+    Header: (<div>Current<br />phase</div>),
     accessor: 'phase',
-    minWidth: 90,
+    maxWidth: 225,
+    Cell: row => (
+      <span style={{ whiteSpace: 'normal' }}>
+        <span style={{ marginRight: '5px' }}>
+          <Icon path={IM_CIRCLE2} color={getStageNumber(row.value) >= 1 ? phaseColor(1) : '#ecf0f1'} />
+        </span>
+        <span style={{ marginRight: '5px' }}>
+          <Icon path={IM_CIRCLE2}  color={getStageNumber(row.value) >= 2 ? phaseColor(2) : '#ecf0f1'} />
+        </span>
+        <span style={{ marginRight: '5px' }}>
+          <Icon path={IM_CIRCLE2}  color={getStageNumber(row.value) >= 3 ? phaseColor(3) : '#ecf0f1'} />
+        </span>
+        <span style={{ marginRight: '5px' }}>
+          <Icon path={IM_CIRCLE2} color={getStageNumber(row.value) >= 4 ? phaseColor(4) : '#ecf0f1'} style={{ marginRight: '5px' }} />
+        </span>
+        <span style={{ marginLeft: '5px', color: phaseColor(getStageNumber(row.value)) }}>
+          {row.value}
+        </span>
+      </span>
+    ),
   },
   {
-    header: (<div>Construction<br />start</div>),
+    Header: (<div>Construction<br />start</div>),
     accessor: 'construction_start',
-    minWidth: 100,
+    maxWidth: 100,
+    headerClassName: 'hidden-xs',
+    className: 'hidden-xs',
   },
   {
-    header: (<div>Total<br />bond funding</div>),
+    Header: (<div>Total<br />bond funding</div>),
     accessor: 'total',
-    minWidth: 110,
+    maxWidth: 150,
+    headerClassName: 'hidden-sm hidden-xs',
+    className: 'hidden-sm hidden-xs',
   },
 ];
 
 const getColumns = (type, subType) => {
   if (type === 'Transportation') {
     return [{
-      header: subType,
+      Header: subType,
       columns: dataColumns,
     }];
   }
   return [{
-    header: type,
+    Header: type,
     columns: dataColumns,
   }];
 };
@@ -73,8 +128,8 @@ const BondDetailsTable = props => (
             pageSize={props.data.length}
             showPagination={false}
             SubComponent={row => (
-              <div style={{ paddingLeft: '34px' }}>
-                {row.row.description}
+              <div style={{ paddingLeft: '34px', paddingRight: '34px', paddingBottom: '15px', backgroundColor: '#f6fcff', borderRadius: '3px' }}>
+                <ProjectDetails {...row.original} />
               </div>
             )}
           />

@@ -12,16 +12,6 @@ const getDollars = (value) => {
   return ['$', value.toLocaleString()].join('');
 };
 
-/*const renderLegend = payload => (
-  <ul style={{ listStyle: 'none' }}>
-    {
-      payload.map((entry, index) => (
-        <li key={['legend', entry[index], index].join('_')} style={{ display: 'inline', marginRight: '10px' }}><div style={{ backgroundColor: COLORS[index % COLORS.length], width: '10px', height: '10px', display: 'inline-block', marginRight: '2px' }}></div>{entry}</li>
-      ))
-    }
-  </ul>
-);*/
-
 const AreaChart = props => (
   <div style={{ height: props.height }}>
     <ResponsiveContainer>

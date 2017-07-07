@@ -8,7 +8,7 @@ import { IM_BED } from '../../shared/iconConstants';
 
 const HomelessnessData = () => (
   <div>
-    <PageHeader h1="Understand the homelessness data" icon={<Icon path={IM_BED} size={35} />}>
+    <PageHeader h1="Understand the homelessness data" icon={<Icon path={IM_BED} size={50} />}>
       <ButtonGroup>
         <Button onClick={browserHistory.goBack}>Back</Button>
       </ButtonGroup>

@@ -8,7 +8,7 @@ import { IM_COIN_DOLLAR } from '../../shared/iconConstants'
 
 const BudgetData = () => (
   <div>
-    <PageHeader h1="Understand the budget data" icon={<Icon path={IM_COIN_DOLLAR} size={45} />}>
+    <PageHeader h1="Understand the budget data" icon={<Icon path={IM_COIN_DOLLAR} size={60} />}>
       <ButtonGroup>
         <Button onClick={browserHistory.goBack}>Back</Button>
       </ButtonGroup>

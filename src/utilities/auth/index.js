@@ -5,9 +5,8 @@ import { userLoggedIn, userLoggedOut, loginError, logoutError } from './authActi
 
 const authProviders = [
   firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-  firebase.auth.EmailAuthProvider.PROVIDER_ID,
+  //firebase.auth.EmailAuthProvider.PROVIDER_ID,
 ];
-
 
 const initializeFirebaseApp = (store) => {
   firebase.initializeApp({

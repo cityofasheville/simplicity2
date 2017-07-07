@@ -43,7 +43,12 @@ import BondsData from './app/capital_projects/BondsData';
 import CIPData from './app/capital_projects/CIPData';
 // Homelessness
 import HomelessnessSummary from './app/homelessness/HomelessnessSummary';
+import HomelessnessCounts from './app/homelessness/HomelessnessCounts';
+import HomelessnessDemographics from './app/homelessness/HomelessnessDemographics';
 import HomelessnessVeterans from './app/homelessness/HomelessnessVeterans';
+import HomelessnessVeteransInflowOutflow from './app/homelessness/HomelessnessVeteransInflowOutflow';
+import HomelessnessVeteransExitTime from './app/homelessness/HomelessnessVeteransExitTime';
+import HomelessnessEnrollment from './app/homelessness/HomelessnessEnrollment';
 import HomelessnessData from './app/homelessness/HomelessnessData';
 
 // Google Analytics
@@ -109,6 +114,11 @@ const Routes = props => (
           <IndexRoute component={HomelessnessSummary} />
           <Route path="veterans" component={HomelessnessVeterans}></Route>
           <Route path="data" component={HomelessnessData}></Route>
+          <Route path="veteranInflowOutflow" component={HomelessnessVeteransInflowOutflow}></Route>
+          <Route path="veteranExitTime" component={HomelessnessVeteransExitTime}></Route>
+          <Route path="counts" component={HomelessnessCounts}></Route>
+          <Route path="demographics" component={HomelessnessDemographics}></Route>
+          <Route path="enrollments" component={HomelessnessEnrollment}></Route>
         </Route>
         <Route path="maintenance">
           <IndexRoute component={Maintenance} />

@@ -108,11 +108,10 @@ const data = [
 ];
 
 const chronicKeys = [
-  'Unassigned',
+  'Declining',
   'SSVF',
   'HUD-VASH',
-  'GPD',
-  'SITH',
+  'Grant & Per Diem',
 ];
 
 const chronicData = [
@@ -120,59 +119,60 @@ const chronicData = [
     month: '05/2016',
     SSVF: 3,
     'HUD-VASH': 11,
-    GPD: 26,
+    'Grant & Per Diem': 26,
   },
   {
     month: '08/2016',
-    Unassigned: 1,
+    Declining: 1,
     SSVF: 3,
     'HUD-VASH': 11,
-    GPD: 22,
+    'Grant & Per Diem': 22,
   },
   {
     month: '09/2016',
-    Unassigned: 1,
+    Declining: 1,
     SSVF: 4,
     'HUD-VASH': 10,
-    SITH: 18,
+    'Grant & Per Diem': 18,
   },
   {
     month: '12/2016',
-    Unassigned: 2,
+    Declining: 2,
     SSVF: 5,
     'HUD-VASH': 10,
-    SITH: 28,
+    'Grant & Per Diem': 28,
   },
   {
     month: '02/2017',
-    Unassigned: 2,
+    Declining: 2,
     SSVF: 7,
     'HUD-VASH': 10,
-    SITH: 33,
+    'Grant & Per Diem': 33,
   },
   {
     month: '03/2017',
-    Unassigned: 1,
+    Declining: 1,
     SSVF: 5,
     'HUD-VASH': 10,
-    SITH: 35,
+    'Grant & Per Diem': 35,
   },
   {
     month: '04/2017',
-    Unassigned: 1,
+    Declining: 1,
     SSVF: 4,
     'HUD-VASH': 0,
-    SITH: 34,
-  }
+    'Grant & Per Diem': 34,
+  },
 ];
 
 const programKeys = [
-  "Unsheltered",
-  "Emergency Shelter",
-  "Intake",
-  "Other",
-  "MIA",
-]
+  'Unsheltered',
+  'Emergency Shelter',
+  'Emergency Shelter/Intake',
+  'Intake',
+  'Other',
+  'MIA',
+];
 
 const programData = [
   {
@@ -184,23 +184,24 @@ const programData = [
   },
   {
     month: '08/2016',
-    Unsheltered: 177,
+    Unsheltered: 56,
     'Emergency Shelter': 9,
     Other: 5,
     MIA: 23,
+    GPD: 177,
   },
   {
     month: '09/2016',
-    Unsheltered: 183,
+    Unsheltered: 49,
     'Emergency Shelter': 11,
     Other: 6,
     MIA: 19,
-    GPD: 49,
+    GPD: 183,
   },
   {
     month: '12/2016',
     Unsheltered: 21,
-    'ES/Intake': 21,
+    'Emergency Shelter/Intake': 21,
     Other: 10,
     MIA: 16,
     GPD: 175,
@@ -208,7 +209,7 @@ const programData = [
   {
     month: '02/2017',
     Unsheltered: 25,
-    'ES/Intake': 28,
+    'Emergency Shelter/Intake': 28,
     Other: 12,
     MIA: 8,
     GPD: 175,
@@ -216,7 +217,7 @@ const programData = [
   {
     month: '03/2017',
     Unsheltered: 23,
-    'ES/Intake': 25,
+    'Emergency Shelter/Intake': 25,
     Other: 8,
     MIA: 19,
     GPD: 177,
@@ -237,7 +238,7 @@ const programData = [
     Other: 10,
     MIA: 16,
   },
-]
+];
 
 const HomelessnessVeterans = (props) => (
   <div>

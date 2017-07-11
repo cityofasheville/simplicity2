@@ -159,7 +159,7 @@ const family_situation_data = [
   },
 ];
 
-const targetPopsText = ['This chart shows the breakdown among our primary demographic groupings.'];
+const targetPopsText = ['This chart shows the breakdown among the primary demographic groupings.'];
 
 const familyUnitsText = ['This chart shows homeless families and children compared to homeless adults.'];
 

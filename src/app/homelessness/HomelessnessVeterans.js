@@ -122,6 +122,13 @@ const chronicData = [
     'Grant & Per Diem': 26,
   },
   {
+    month: '07/2016',
+    Declining: 1,
+    SSVF: 1,
+    'HUD-VASH': 11,
+    'Grant & Per Diem': 22,
+  },
+  {
     month: '08/2016',
     Declining: 1,
     SSVF: 3,
@@ -136,11 +143,32 @@ const chronicData = [
     'Grant & Per Diem': 18,
   },
   {
+    month: '10/2016',
+    Declining: 1,
+    SSVF: 3,
+    'HUD-VASH': 10,
+    'Grant & Per Diem': 12.
+  },
+  {
+    month: '11/2016',
+    Declining: 2,
+    SSVF: 5,
+    'HUD-VASH': 10,
+    'Grant & Per Diem': 12,
+  },
+  {
     month: '12/2016',
     Declining: 2,
     SSVF: 5,
     'HUD-VASH': 10,
     'Grant & Per Diem': 28,
+  },
+  {
+    month: '01/2017',
+    Declining: 2,
+    SSVF: 2,
+    'HUD-VASH': 10,
+    'Grant & Per Diem': 38,
   },
   {
     month: '02/2017',
@@ -159,6 +187,13 @@ const chronicData = [
   {
     month: '04/2017',
     Declining: 1,
+    SSVF: 4,
+    'HUD-VASH': 0,
+    'Grant & Per Diem': 34,
+  },
+  {
+    month: '05/2017',
+    Declining: 2,
     SSVF: 4,
     'HUD-VASH': 0,
     'Grant & Per Diem': 34,
@@ -183,6 +218,14 @@ const programData = [
     GPD: 180,
   },
   {
+    month: '07/2016',
+    Unsheltered: 58,
+    'Emergency Shelter': 6,
+    Other: 3,
+    MIA: 31,
+    GPD: 180,
+  },
+  {
     month: '08/2016',
     Unsheltered: 56,
     'Emergency Shelter': 9,
@@ -199,12 +242,36 @@ const programData = [
     GPD: 183,
   },
   {
+    month: '10/2016',
+    Unsheltered: 48,
+    'Emergency Shelter': 10,
+    Other: 7,
+    MIA: 26,
+    GPD: 179,
+  },
+  {
+    month: '11/2016',
+    Unsheltered: 30,
+    'Emergency Shelter/Intake': 28,
+    Other: 16,
+    MIA: 12,
+    GPD: 179,
+  },
+  {
     month: '12/2016',
     Unsheltered: 21,
     'Emergency Shelter/Intake': 21,
     Other: 10,
     MIA: 16,
     GPD: 175,
+  },
+  {
+    month: '01/2017',
+    Unsheltered: 22,
+    'Emergency Shelter/Intake': 39,
+    Other: 15,
+    MIA: 7,
+    GPD: 170,
   },
   {
     month: '02/2017',
@@ -269,6 +336,19 @@ const HomelessnessVeterans = (props) => (
     <div className="row">
       <div className="col-sm-12">
         <AreaChartContainer chartTitle="Chronic Homeless Veteran Program Assignments" data={chronicData} mainAxisDataKey="month" dataKeys={chronicKeys} altText={'Area chart of Chronic Homeless Veteran Program Assignments'} colorScheme="bright_colors" />
+      </div>
+    </div>
+    <hr />
+    <div className="row">
+      <div className="col-sm-12">
+        <p><strong>Definitions:</strong><br />
+          <ul>
+            <li>HUD-VASH:<br /> A collaborative program between Housing and Urban Development (HUD) and the VA which combines HUD housing vouchers with VA supportive services to help Veterans who are homeless and their families find and sustain permanent housing. Through public housing authorities, HUD provides rental assistance vouchers for privately owned housing to Veterans who are eligible for VA health care services and are experiencing homelessness. VA case managers may connect these Veterans with support services such as health care, mental health treatment and substance use counseling to help them in their recovery process and with their ability to maintain housing in the community.<br /><br /></li>
+
+            <li>Grant and Per Diem:<br /> Since 1994, the VA's Homeless Providers Grant and Per Diem Program (GPD) has offered Veterans Affairs Health Care for Homeless Veterans (HCHV) Programs to community agencies providing services to homeless Veterans. The purpose of GPD is to promote the development and provision of supportive housing and/or supportive services with the goal of helping homeless Veterans achieve residential stability, increase their skill levels and/or income, and obtain greater self-determination. In 2017, the VA designated several program types within GPD: Healthcare to Home, Low Barrier, Clinical, Bridge Housing and Service-Intensive Transitional Housing (SITH). Whereas most GPD programs provide short lengths of stay in transitional housing facilities and provide rapid connections to permanent housing, SITH provides up to 24 months of transitional housing in which homeless Veterans are actively working with the assistance of appropriate services and supports to achieve permanent housing. In Buncombe County, Veterans are offered a choice at identification as to whether a housing intervention of SITH meets their needs.<br /><br /></li> 
+            <li>Supportive Services for Veteran Families (SSVF): <br />The Veteran Administration offers community-based grants through the Supportive Services for Veteran Families (SSVF) Program, which provides supportive services to very low-income Veteran families in or transitioning to permanent housing.  Funds are granted to private non-profit organizations and consumer cooperatives who assist very low-income Veteran families by providing a range of supportive services designed to promote housing stability.  Grantees provide eligible Veteran families with outreach, case management, and assistance in obtaining VA and other benefits to support housing stability.</li>
+          </ul>
+        </p>
       </div>
     </div>        
   </div>

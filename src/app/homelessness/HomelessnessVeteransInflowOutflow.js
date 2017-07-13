@@ -116,7 +116,7 @@ const getLongDesc = (data, dataKeys, mainAxisKey) => (
 class HomelessnessVeteransInflowOutflow extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { showingLongDesc: this.showLongDesc };
+    this.state = { showingLongDesc: this.showLongDesc, showingDefinitions: this.showingDefinitions };
   }
 
   toggleLongDesc() {
@@ -124,6 +124,12 @@ class HomelessnessVeteransInflowOutflow extends React.Component {
       showingLongDesc: !this.state.showingLongDesc,
     });
   }
+
+  toggleDefinitions() {
+    this.setState({
+      showingDefinitions: !this.state.showingDefinitions,
+    });
+  }  
 
   render() {
     return (
@@ -133,6 +139,26 @@ class HomelessnessVeteransInflowOutflow extends React.Component {
             <h4>Incoming and outgoing Veterans</h4>
             <p>
               There is an inflow and outflow of homeless Veterans in Buncombe County, and Veteran representation in the homeless community is considerably higher than other communities of similar size in the country. Our exceptional VA Medical Center, large service area and transitional housing availability contribute to this large number of homeless Veterans being attracted to this area. Each month homeless service providers identify new homeless Veterans in Buncombe County and each month various agencies assist homeless Veterans in exiting homelessness. An exit from homelessness in Buncombe County includes rental units, living with family and/or friends, long-term care facilities, and also leaving Buncombe County. 
+              <br />
+                <a href="javascript:void(0);" className="text-center inText" onClick={() => this.toggleDefinitions()}>
+                  {this.state.showingDefinitions ? 'Hide' : 'Show'} Definition of Veteran
+                </a>
+                <div hidden={!this.state.showingDefinitions}>
+                  <p>
+                    <ul>
+                      <li>
+                        <div>
+                          <strong>Veteran</strong>
+                        </div>
+                        <div>
+                          The Veteran Health Administration classifies a homeless Veteran by the following: (1) An individual or family who lacks a fixed, regular, and adequate nighttime residence; (2) An individual or family with a primary nighttime residence that is a public or private place not designed for or ordinarily used as a regular sleeping accommodation for human beings, including a car, park, abandoned building, bus or train station, airport, or camping ground; (3) An individual or family living in a supervised publicly or privately operated shelter designated to provide temporary living arrangements (including hotels and motels paid for by Federal, state, or local government programs for low-income individuals or by charitable organizations, congregate shelters, and transitional housing); (4) An individual who resided in a shelter or place not meant for human habitation and who is exiting an institution where the individual temporarily resided; (5) An individual or family who: (a) Will imminently lose their housing, including housing they own, rent, or live in without paying rent, are sharing with others, and rooms in hotels or motels not paid for by Federal, state, or local government programs for low-income individuals or by charitable organizations, as evidenced by: 1. A court order resulting from an eviction action that notifies the individual or family that they must leave within 14 days; 2. The individual or family having a primary nighttime residence that is a room in a hotel or motel and where they lack the resources necessary to reside there for more than 14 days; or 3. Credible evidence indicating that the owner or renter of the housing will not allow the individual or family to stay for more than 14 days, and any oral statement from an individual or family seeking homeless assistance that is found to be credible shall be considered credible evidence for purposes of this clause if the Veteran (b) has no subsequent residence identified and/or (c) lacks the resources or support networks needed to obtain other permanent housing.<br /><br />
+
+                          (6) Notwithstanding any other provision of this paragraph, VA shall consider to be homeless any individual or family who is fleeing, or is attempting to flee, domestic violence, dating violence, sexual assault, stalking, or other dangerous or life threatening conditions in the individual's or family's current housing situation, including where the health and safety of children are jeopardized, and who have no other residence and lack the resources or support networks to obtain other permanent housing.
+                        </div>
+                      </li>
+                    </ul>
+                  </p>
+                </div>
             </p>
             <div style={{ height: 450 }}>
               <ResponsiveContainer>

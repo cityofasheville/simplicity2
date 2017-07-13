@@ -47,6 +47,8 @@ import HomelessnessCounts from './app/homelessness/HomelessnessCounts';
 import HomelessnessDemographics from './app/homelessness/HomelessnessDemographics';
 import HomelessnessVeterans from './app/homelessness/HomelessnessVeterans';
 import HomelessnessVeteransInflowOutflow from './app/homelessness/HomelessnessVeteransInflowOutflow';
+import HomelessnessVeteransEnrollment from './app/homelessness/HomelessnessVeteransEnrollment';
+import HomelessnessVeteransChronicAssignments from './app/homelessness/HomelessnessVeteransChronicAssignments';
 import HomelessnessVeteransExitTime from './app/homelessness/HomelessnessVeteransExitTime';
 import HomelessnessEnrollment from './app/homelessness/HomelessnessEnrollment';
 import HomelessnessData from './app/homelessness/HomelessnessData';
@@ -114,6 +116,8 @@ const Routes = props => (
           <IndexRoute component={HomelessnessSummary} />
           <Route path="veterans" component={HomelessnessVeterans}></Route>
           <Route path="data" component={HomelessnessData}></Route>
+          <Route path="veteranEnrollments" component={HomelessnessVeteransEnrollment}></Route>
+          <Route path="veteranChronicAssignments" component={HomelessnessVeteransChronicAssignments}></Route>
           <Route path="veteranInflowOutflow" component={HomelessnessVeteransInflowOutflow}></Route>
           <Route path="veteranExitTime" component={HomelessnessVeteransExitTime}></Route>
           <Route path="counts" component={HomelessnessCounts}></Route>

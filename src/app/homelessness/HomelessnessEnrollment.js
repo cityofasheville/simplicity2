@@ -1094,12 +1094,12 @@ const dataShape = {
 
 HomelessnessEnrollment.propTypes = {
   summaryData: PropTypes.arrayOf(PropTypes.shape(dataShape)),
-  showLongDesc: PropTypes.bool, // eslint-disable-line
+  showingDefinitions: PropTypes.bool, // eslint-disable-line
 };
 
 HomelessnessEnrollment.defaultProps = {
   summaryData: enrollmentData,
-  showLongDesc: false,
+  showingDefinitions: false,
 };
 
 export default HomelessnessEnrollment;

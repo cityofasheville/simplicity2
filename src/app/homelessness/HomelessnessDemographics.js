@@ -91,7 +91,7 @@ const target_pop_data = [
 ];
 
 const family_situation_keys = [
-  'Without children',
+  'Adults without children',
   'Families and children',
 ];
 
@@ -100,62 +100,62 @@ const family_situation_data = [
   {
     date: '2005',
     'Families and children': 17,
-    'Without children': 449,
+    'Adults without children': 449,
   },
   {
     date: '2006',
     'Families and children': 31,
-    'Without children': 497,
+    'Adults without children': 497,
   },
   {
     date: '2007',
     'Families and children': 34,
-    'Without children': 542,
+    'Adults without children': 542,
   },
   {
     date: '2008',
     'Families and children': 34,
-    'Without children': 407,
+    'Adults without children': 407,
   },
   {
     date: '2009',
     'Families and children': 35,
-    'Without children': 432,
+    'Adults without children': 432,
   },
   {
     date: '2010',
     'Families and children': 40,
-    'Without children': 415,
+    'Adults without children': 415,
   },
   {
     date: '2011',
     'Families and children': 24,
-    'Without children':  437,
+    'Adults without children':  437,
   },
   {
     date: '2012',
     'Families and children': 27,
-    'Without children': 451,
+    'Adults without children': 451,
   },
   {
     date: '2013',
     'Families and children': 37,
-    'Without children': 471,
+    'Adults without children': 471,
   },
   {
     date: '2014',
     'Families and children': 25,
-    'Without children': 469,
+    'Adults without children': 469,
   },
   {
     date: '2015',
     'Families and children': 27,
-    'Without children': 502,
+    'Adults without children': 502,
   },
   {
     date: '2016',
     'Families and children': 21,
-    'Without children': 467,
+    'Adults without children': 467,
   },
 ];
 
@@ -182,21 +182,21 @@ class HomelessnessDemographics extends React.Component {
           <div className="col-sm-12">
             <h3>Who is homeless?</h3>
             <p>
-              Our community is unusual for its high concentration of homeless Veterans, while we have fewer than average families with children compared to other cities in NC. Addressing the challenges of homelessness effectively requires understanding the particular needs of particular subpopulations. Our <a className="inText" href="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=27777" target="_blank">Five Year Strategic Plan</a> targets the two largest sub-populations in Buncombe County: homeless Veterans and those defined as chronically homeless by HUD.
+              Our community is unusual for its high concentration of homeless Veterans, while we have fewer than average families with children compared to other cities in NC. Addressing the challenges of homelessness effectively requires understanding the particular needs of particular subpopulations. Our <a className="inText" href="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=27777" target="_blank">Five Year Strategic Plan</a> targets the two largest sub-populations in Buncombe County: homeless Veterans and those defined as chronically homeless by the US Department of Housing and Urban Development (HUD).
               <br />
               <a href="javascript:void(0);" className="text-center inText" onClick={() => this.toggleDefinition()}>
                 {this.state.showingDefinition ? 'Hide' : 'Show'} chronically homeless definition
               </a>
               <span hidden={!this.state.showingDefinition}>
                 <br />
-                <strong>Chronically Homeless</strong>: As defined since January 15, 2016, a person who is chronically homeless is one who lives in a place not meant for human habitation or in an emergency shelter and has been homeless as described continuously for at least 12 months or on at least four separate occasions in the last 3 years meets that description, as long as the combined occasions total at least 12 months and have a disability (42 U.S.C. 11360(9)). In the past 10 years, there have been several changes to the definition of chronically homeless by HUD.
+                <strong>Chronically Homeless</strong>: As defined since January 15, 2016, a person who is chronically homeless is one who lives in a place not meant for human habitation or in an emergency shelter and has been homeless as described continuously for at least 12 months or on at least four separate occasions in the last 3 years meets that description, as long as the combined occasions total at least 12 months and have a disability (42 U.S.C. 11360(9)). In the past 10 years, there have been several changes to the definition of chronically homeless by US Department of Housing and Urban Devlopment (HUD).
               </span>
             </p>
           </div>
         </div>
         <div className="row">
           <div className="col-sm-6">
-            <BarChartContainer chartTitle="Target populations" layout="vertical" chartText={targetPopsText} mainAxisDataKey="Year" legendHeight={20} dataKeys={this.props.targetPopKeys} colorScheme="bright_colors" data={this.props.targetPopData} stacked altText="Bar chart of homelessness in target populations" />
+            <BarChartContainer chartTitle="Focus populations" layout="vertical" chartText={targetPopsText} mainAxisDataKey="Year" legendHeight={20} dataKeys={this.props.targetPopKeys} colorScheme="bright_colors" data={this.props.targetPopData} stacked altText="Bar chart of homelessness in focus populations" />
           </div>
           <div className="col-sm-6">
             <BarChartContainer chartTitle="Family units" layout="vertical" chartText={familyUnitsText} mainAxisDataKey="date" legendHeight={20} dataKeys={this.props.familySituationKeys} colorScheme="bright_colors_2" data={this.props.familySituationData} stacked altText="Bar chart of homelessness by family situation" />
@@ -204,6 +204,8 @@ class HomelessnessDemographics extends React.Component {
         </div>
         <div className="row">
           <div className="col-sm-12">
+            <br />
+            The graphs on this page reflect the literally homeless as defined by HUD. The Public education systems operate under a different definition of homelessness that includes individuals who lack a fixed, regular, and adequate nighttime residence. This includes what is commonly referred to as ‘doubled-up’ – 2 or more families living in the same unit, often because of economic hardship. The public school systems track this data for the community and it can be viewed at the following links: <a href="http://www.ashevillecityschools.net/pages/Asheville_City_Schools/Student_Services/Education_for_Homeless_Childre" target="_blank" className="inText">Asheville City Schools homelessness information</a> and <a href="https://buncombeschools.org/cms/One.aspx?portalId=92531&pageId=255538" target="_blank" className="inText">Buncombe County Schools homelessness information</a>
           </div>
         </div>
       </div>
@@ -221,7 +223,7 @@ const targetPopDataShape = {
 const familySituationDataShape = {
   Year: PropTypes.number,
   'Families and children': PropTypes.number,
-  'Without children': PropTypes.number,
+  'Adults without children': PropTypes.number,
 };
 
 HomelessnessDemographics.propTypes = {

@@ -21,7 +21,7 @@ const last4YrBudgetTypes = [
   'Actual',
   'Actual',
   'Adopted',
-  'Proposed',
+  'Adopted',
 ];
 
 const getDollars = (value) => {

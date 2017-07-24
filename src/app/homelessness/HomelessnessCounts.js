@@ -149,9 +149,9 @@ const enrollment_data = [
   {
     Year: 2010,
     'Emergency Shelter': 125,
-    'Housing Programs': 4,
+    'Housing Programs': 318,
     'Homelessness Prevention': 0,
-    'Permanent Supportive Housing': 4,
+    'Permanent Supportive Housing': 314,
     'Rapid Re-Housing': 4,
     'Transitional Housing': 221,
     Total: 664,

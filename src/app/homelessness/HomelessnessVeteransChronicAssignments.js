@@ -110,11 +110,11 @@ class HomelessnessVeteransChronicAssignments extends React.Component {
   render() {
     return (
       <div>
-        <h3>Housing program enrollments: Veterans</h3>
+        <h3>Program enrollments: chronically homeless Veterans</h3>
           Short explanation of the below chart coming soon.
           <br />
           <a href="javascript:void(0);" className="text-center inText" onClick={() => this.toggleDefinitions()}>
-            {this.state.showingDefinitions ? 'Hide' : 'Show'} Homeless Program Assignment definitions
+            {this.state.showingDefinitions ? 'Hide' : 'Show'} program definitions
           </a>
           <div hidden={!this.state.showingDefinitions}>
             <p>
@@ -148,7 +148,7 @@ class HomelessnessVeteransChronicAssignments extends React.Component {
           </div>
         <div className="row">
           <div className="col-sm-12">
-            <AreaChartContainer chartTitle="Chronic Homeless Veteran Program Assignments" data={chronicData} mainAxisDataKey="month" dataKeys={chronicKeys} altText={'Area chart of Chronic Homeless Veteran Program Assignments'} colorScheme="bright_colors" />
+            <AreaChartContainer data={chronicData} mainAxisDataKey="month" dataKeys={chronicKeys} altText={'Area chart of Chronic Homeless Veteran Program Assignments'} colorScheme="bright_colors" />
           </div>
         </div>
       </div>

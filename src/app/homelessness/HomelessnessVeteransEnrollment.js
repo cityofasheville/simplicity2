@@ -124,11 +124,11 @@ class HomelessnessVeteransEnrollment extends React.Component {
   render() {
     return (
       <div>
-        <h3>Housing program enrollments: Veterans</h3>
+        <h3>Veterans on the by-name list</h3>
           Short explanation of this chart coming soon.
           <br />
           <a href="javascript:void(0);" className="text-center inText" onClick={() => this.toggleDefinitions()}>
-            {this.state.showingDefinitions ? 'Hide' : 'Show'} Homeless Program definitions
+            {this.state.showingDefinitions ? 'Hide' : 'Show'} by-name list definitions
           </a>
           <div hidden={!this.state.showingDefinitions}>
             <p>
@@ -165,12 +165,20 @@ class HomelessnessVeteransEnrollment extends React.Component {
                     If a Veteran on the active by-name list can no longer be located after repeated attempts, the Veteran’s status is then changed from “active” to “missing in action” and after 90 days or more, are then removed from the list for purposes of calculating these benchmarks. If the Veteran is located at a later date and is still experiencing homelessness, the date of the most recent contact becomes the new date of identification. 
                   </div>
                 </li>                              
+                <li>
+                  <div>
+                    <strong>NOTE:</strong>
+                  </div>
+                  <div>
+                    If it is determined that an individual on the active by-name list is not a Veteran, that individual is removed from the list and not included in this data.
+                  </div>
+                </li>
               </ul>
             </p>
           </div>
         <div className="row">
           <div className="col-sm-12">
-            <AreaChartContainer data={this.props.data} mainAxisDataKey="month" dataKeys={this.props.dataKeys} altText={'Area chart of Veteran homeless enrollments'} colorScheme="bright_colors_2" />
+            <AreaChartContainer data={this.props.data} mainAxisDataKey="month" dataKeys={this.props.dataKeys} altText={'Area chart of Veterans on the by-name list'} colorScheme="bright_colors_2" />
           </div>
         </div>
       </div>

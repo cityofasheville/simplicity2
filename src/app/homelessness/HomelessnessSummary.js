@@ -17,6 +17,15 @@ const HomelessnessSummary = props => (
         <LinkButton pathname="/homelessness/veterans" query={{ entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, hideNavbar: props.location.query.hideNavbar }} positionInGroup="right">Veterans</LinkButton>
       </ButtonGroup>
     </PageHeader>
+    <div className="row" style={{ marginTop: '15px' }}>
+      <div className="col-sm-12">
+        <a href="http://www.nc211.org" title="NC 211 homelessness resourses" target="_blank">
+          <div className="alert alert-warning" style={{ marginBottom: '0px' }}>
+            Are you homeless? Do you need help finding housing? Click here for resources.
+          </div>
+        </a>
+      </div>
+    </div>
     <div className="row">
       <div className="col-sm-12">
         <HomelessnessCounts />

@@ -240,3 +240,14 @@
   // Remove the top rounded corners here since there is a hard edge above the menu
   @include border-top-radius(0);
 }
+
+.footer {
+  position: fixed;
+  bottom: 0px;
+  margin-top: 20px;
+  padding-top: 12px;
+  width: 100%;
+  color: #606479;
+  border-top: 1px solid #e7eaff;
+  background-color: rgb(246, 252, 255);
+}

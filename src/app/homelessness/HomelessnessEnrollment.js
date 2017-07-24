@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import AreaChartContainer from '../../shared/visualization/AreaChartContainer';
 
 const dataKeys = [
-  'Emergency Shelter',
   'Homelessness Prevention',
-  'Rapid Re-Housing',
+  'Emergency Shelter',
   'Transitional housing',
+  'Rapid Re-Housing',
   'Permanent supportive housing',
 ];
 

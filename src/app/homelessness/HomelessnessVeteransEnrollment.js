@@ -162,7 +162,7 @@ class HomelessnessVeteransEnrollment extends React.Component {
                     <strong>MIA</strong>
                   </div>
                   <div>
-                    Definition needs to be added
+                    If a Veteran on the active by-name list can no longer be located after repeated attempts, the Veteran’s status is then changed from “active” to “missing in action” and after 90 days or more, are then removed from the list for purposes of calculating these benchmarks. If the Veteran is located at a later date and is still experiencing homelessness, the date of the most recent contact becomes the new date of identification. 
                   </div>
                 </li>                              
               </ul>

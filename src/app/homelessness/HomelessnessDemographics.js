@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router';
 import BarChartContainer from '../../shared/visualization/BarChartContainer';
 
 const target_pop_keys = [
@@ -192,6 +193,7 @@ class HomelessnessDemographics extends React.Component {
                 <strong>Chronically Homeless</strong>: As defined since January 15, 2016, a person who is chronically homeless is one who lives in a place not meant for human habitation or in an emergency shelter and has been homeless as described continuously for at least 12 months or on at least four separate occasions in the last 3 years meets that description, as long as the combined occasions total at least 12 months and have a disability (42 U.S.C. 11360(9)). In the past 10 years, there have been several changes to the definition of chronically homeless by US Department of Housing and Urban Devlopment (HUD).
               </span>
             </p>
+            <p>View the <Link to="/homelessness/veterans" className="inText">Veterans page</Link> to see detailed information about homeless Veterans.</p>
           </div>
         </div>
         <div className="row">
@@ -205,7 +207,10 @@ class HomelessnessDemographics extends React.Component {
         <div className="row">
           <div className="col-sm-12">
             <br />
-            The graphs on this page reflect the literally homeless as defined by HUD. The Public education systems operate under a different definition of homelessness that includes individuals who lack a fixed, regular, and adequate nighttime residence. This includes what is commonly referred to as ‘doubled-up’ – 2 or more families living in the same unit, often because of economic hardship. The public school systems track this data for the community and it can be viewed at the following links: <a href="http://www.ashevillecityschools.net/pages/Asheville_City_Schools/Student_Services/Education_for_Homeless_Childre" target="_blank" className="inText">Asheville City Schools homelessness information</a> and <a href="https://buncombeschools.org/cms/One.aspx?portalId=92531&pageId=255538" target="_blank" className="inText">Buncombe County Schools homelessness information</a>
+            <div className="alert alert-danger">
+              Note that it is possible for individuals to fall within multiple focus populations (e.g., a person might be a chronically homeless veteran with a family). Additionally, homeless single adults who are neither Veterans nor chronically homeless do not show up in the &quot;focus population&quot; chart. Therefore, the totals in the "focus populations" and "family units" barcharts will not be equal to each other.
+            </div>
+            The graphs on this page reflect the literally homeless as defined by HUD. The Public education systems operate under a different definition of homelessness that includes individuals who lack a fixed, regular, and adequate nighttime residence. This includes what is commonly referred to as ‘doubled-up’ – 2 or more families living in the same unit, often because of economic hardship. The public school systems track this data for the community and it can be viewed at the following links: <a href="http://www.ashevillecityschools.net/pages/Asheville_City_Schools/Student_Services/Education_for_Homeless_Childre" target="_blank" className="inText">Asheville City Schools homelessness information</a> and <a href="https://buncombeschools.org/cms/One.aspx?portalId=92531&pageId=255538" target="_blank" className="inText">Buncombe County Schools homelessness information</a>.
           </div>
         </div>
       </div>

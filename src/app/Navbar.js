@@ -32,11 +32,10 @@ export default class Navbar extends React.Component { // eslint-disable-line rea
     }
   }
 
-
   render() {
     return (
       <div style={{ display: this.state.navbarDisplay }}>
-        <nav className="navbar navbar-default" style={{ backgroundColor: '#f6fcff'}}>
+        <nav className="navbar navbar-default" style={{ backgroundColor: '#f6fcff', borderBottom: '1px solid #e7eaff'}}>
           <div className="container-fluid">
             <div className="pull-left" style={{ marginRight: '5px', marginTop: '5px', marginBottom: '5px' }}>
               <a href="http://www.ashevillenc.gov" target="_blank"><img src={require('./citylogo-flatblue.png')} width="80px" height="80px" alt="City of Asheville logo"></img></a>

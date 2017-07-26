@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { BarChart as RechartsBarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import CIPGeneralCard from './CIPGeneralCard';
 import { colorSchemes } from '../../shared/visualization/colorSchemes';
 
 const testData = {
@@ -29,6 +30,8 @@ const getIconPath = (type) => {
       return require('./transportationBondIcon.png'); // eslint-disable-line
     case 'Parks':
       return require('./parksBondIcon.png'); // eslint-disable-line
+    case 'General CIP':
+      return require('./TestLogo.png'); // eslint-disable-line
     default:
       return require('./housingBondIcon.png'); // eslint-disable-line
   }
@@ -36,27 +39,36 @@ const getIconPath = (type) => {
 
 const CapitalProjectsSummaryCard = props => (
   <div>
-    <div className="summaryCard" style={{ borderRadius: '5px', border: '1px solid #ffffff', backgroundColor: '#4077a5', marginBottom: '15px' }}>
+    <div className="summaryCard" style={{ borderRadius: '5px', border: props.selected ? '8px solid #16abe4' : '8px solid #ffffff', opacity: props.selected ? '1.0' : '0.75', backgroundColor: '#4077a5', marginBottom: '15px' }}>
       <img alt={[props.type, 'bonds', 'icon'].join(' ')} src={getIconPath(props.type)} style={{ width: '55%', display: 'block', margin: 'auto', backgroundColor: '#ffffff' }}></img>
-      <div style={{ backgroundColor: '#eeeeee', height: '180px', paddingTop: '15px', paddingRight: '8px', paddingLeft: '8px' }}>
-        <ResponsiveContainer>
-          <RechartsBarChart data={testData[props.type]} layout="vertical" alt="Bar chart of funds expended and funds remaining">
-            <YAxis dataKey="name" type="category" hide />
-            <XAxis tickFormatter={getDollars} domain={['dataMin', 32000000]} type="number" />
-            <Tooltip formatter={getDollarsLong} />
-            <Legend />
-            <Bar dataKey="Remaining funds" stackId="1" fill={colorSchemes.bright_colors_2[0]} />
-            <Bar dataKey="Expended funds" stackId="1" fill={colorSchemes.bright_colors_2[1]} />
-          </RechartsBarChart>
-        </ResponsiveContainer>
-      </div>
-      <div style={{ backgroundColor: '#eeeeee', paddingBottom: '10px', paddingTop: '15px' }}>
-        <div className="text-center">
-          <Link to={{ pathname: '/capital_projects/details', query: { type: props.type } }}>
-            <button className="btn btn-primary">{props.type} fund details</button>
-          </Link>
+      {props.type !== 'General CIP' ?
+        <div>
+          <div style={{ backgroundColor: props.selected ? '#d3f1ff' : '#eeeeee', height: '140px', paddingTop: '15px', paddingRight: '8px', paddingLeft: '8px' }}>
+            <ResponsiveContainer>
+              <RechartsBarChart data={testData[props.type]} layout="vertical" alt="Bar chart of funds expended and funds remaining">
+                <YAxis dataKey="name" type="category" hide />
+                <XAxis tickFormatter={getDollars} domain={['dataMin', 32000000]} type="number" />
+                <Tooltip formatter={getDollarsLong} />
+                <Legend />
+                <Bar dataKey="Remaining funds" stackId="1" fill={colorSchemes.bright_colors_2[0]} />
+                <Bar dataKey="Expended funds" stackId="1" fill={colorSchemes.bright_colors_2[1]} />
+              </RechartsBarChart>
+            </ResponsiveContainer>
+          </div>
+          <div style={{ backgroundColor: props.selected ? '#d3f1ff' : '#eeeeee', paddingBottom: '10px', paddingTop: '15px' }}>
+            <div className="text-center text-primary">
+              <input type="checkbox" aria-label={[props.type, 'projects'].join(' ')} label={[props.type, 'projects'].join(' ')} value={props.type} checked={props.selected} readOnly />
+              <span>{props.type} projects</span>
+            </div>
+          </div>
         </div>
-      </div>
+        :
+        <div>
+          <div style={{ backgroundColor: props.selected ? '#d3f1ff' : '#eeeeee', height: '185px', paddingTop: '15px', paddingRight: '8px', paddingLeft: '8px' }}>
+            <CIPGeneralCard />
+          </div>
+        </div>
+      }
     </div>
   </div>
 );
@@ -70,6 +82,11 @@ CapitalProjectsSummaryCard.propTypes = {
   type: PropTypes.string,
   data: PropTypes.arrayOf(PropTypes.shape(dataShape)),
   text: PropTypes.string,
+  selected: PropTypes.bool,
+};
+
+CapitalProjectsSummaryCard.defaultProps = {
+  selected: false,
 };
 
 export default CapitalProjectsSummaryCard;

@@ -12,7 +12,8 @@ export const colorSchemes = {
   bright_colors_3: ['#920000', '#DB6D00', '#24FF24', '#924900', '#B6DBFF', '#006DDB', '#6DB6FF', '#B66DFF', '#490092', '#004949', '#FF6DB6', '#009292', '#FFBDDB', '#000000'], // bright colors 3 colorblind 'safe'
   bright_colors_4: ['#000000', '#FFBDDB', '#009292', '#FF6DB6', '#004949', '#490092', '#B66DFF', '#6DB6FF', '#006DDB', '#B6DBFF', '#924900', '#24FF24', '#DB6D00', '#920000'], // bright colors 4 colorblind 'safe'
   coa_brand: ['#004987', '#4077a5', '#a6bfd5', '#aaad00', '#bfc240', '#e1e2a6'], // city of asheville branding colors, colorblind 'safe'
-  blue_red_grouped: ['#081d58', '#67000d', '#9EACE1', '#4292C6', '#08519C', '#fc9272', '#ef3b2c', '#a50f15'], // three blue, three red, colorblind 'safe'
+  blue_red_grouped: ['#081d58', '#67000d', '#9EACE1', '#4292C6', '#08519C', '#fc9272', '#ef3b2c', '#a50f15'], // three blue, three red, colorblind 'safe',
+  project_phases: ['#F844FF', '#44CDFF', '#FF5422', '#57D500', '#FFC107'],
 };
 
 export const referenceColorScheme = [

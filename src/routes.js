@@ -38,8 +38,7 @@ import SummaryCashFlow from './app/budget/SummaryCashFlow';
 import BudgetData from './app/budget/BudgetData';
 // Capital Projects
 import CapitalProjectsSummary from './app/capital_projects/CapitalProjectsSummary';
-import BondDetails from './app/capital_projects/BondDetails';
-import BondsData from './app/capital_projects/BondsData';
+import CategoryDetails from './app/capital_projects/CategoryDetails';
 import CIPData from './app/capital_projects/CIPData';
 // Homelessness
 import HomelessnessSummary from './app/homelessness/HomelessnessSummary';
@@ -99,9 +98,8 @@ const Routes = props => (
         </Route>
         <Route path="capital_projects">
           <IndexRoute component={CapitalProjectsSummary} />
-          <Route path="details" component={BondDetails}></Route>
-          <Route path="bondsData" component={BondsData}></Route>
-          <Route path="CIPData" component={CIPData}></Route>
+          <Route path="details" component={CategoryDetails}></Route>
+          <Route path="data" component={CIPData}></Route>
         </Route>
         <Route path="crime">
           <IndexRoute component={CrimeSummary} />

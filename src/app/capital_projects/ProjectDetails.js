@@ -14,14 +14,16 @@ const getIcon = (category) => {
 const getStageNumber = (stage) => {
   const newStage = stage.split(': ')[1];
   switch (stage) {
-    case 'Planning':
+    case 'Status: Planning':
       return 1;
-    case 'Design':
+    case 'Status: Design':
       return 2;
-    case 'Construction':
+    case 'Status: Construction':
       return 3;
-    case 'Completed':
+    case 'Status: Completed':
       return 4;
+    case 'Ongoing':
+      return 5;
     default:
       return 0;
   }
@@ -98,20 +100,22 @@ const ProjectDetails = (props) => (
             <div className="text-primary text-center" style={{ marginBottom: '5px' }}>
               <strong>Project phase</strong>
             </div>
-            <div className="col-xs-2">
+            <div className={props.Status === 'Ongoing' ? "col-xs-3" : "col-xs-2"}>
               <Icon path={IM_CIRCLE2} size={25} color={getStageNumber(props.Status) >= 1 ? phaseColor(1) : '#ecf0f1'} />
             </div>
-            <div className="col-xs-2">
+            <div className={props.Status === 'Ongoing' ? "col-xs-3" : "col-xs-2"}>
               <Icon path={IM_CIRCLE2} size={25}  color={getStageNumber(props.Status) >= 2 ? phaseColor(2) : '#ecf0f1'} />
             </div>
-            <div className="col-xs-2">
-              <Icon path={IM_CIRCLE2} size={25}  color={getStageNumber(props.Status) >= 3 ? phaseColor(3) : '#ecf0f1'} />
+            <div className={props.Status === 'Ongoing' ? "col-xs-3" : "col-xs-2"}>
+              <Icon path={IM_CIRCLE2} size={25}  color={props.Status === 'Ongoing' ? '#FFC107' : getStageNumber(props.Status) >= 3 ? phaseColor(3) : '#ecf0f1'} />
             </div>
-            <div className="col-xs-2">
-              <Icon path={IM_CIRCLE2} size={25} color={getStageNumber(props.Status) >= 4 ? phaseColor(4) : '#ecf0f1'} style={{ marginRight: '5px' }} />
-            </div>
-            <div className="col-xs-2" style={{ color: phaseColor(getStageNumber(props.Status)), fontWeight: 'bold' }}>
-              {props.Status.split(': ')[1]}
+            {props.Status !== 'Ongoing' &&
+              <div className="col-xs-2">
+                <Icon path={IM_CIRCLE2} size={25} color={getStageNumber(props.Status) >= 4 ? phaseColor(4) : '#ecf0f1'} style={{ marginRight: '5px' }} />
+              </div>
+            }
+            <div className="col-xs-2" style={{ color: props.Status === 'Ongoing' ? '#FFC107' : phaseColor(getStageNumber(props.Status)), fontWeight: 'bold' }}>
+              {props.Status === 'Ongoing' ? props.Status : props.Status.split(': ')[1]}
             </div>
           </div>
           <div className="row">

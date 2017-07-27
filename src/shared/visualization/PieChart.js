@@ -4,8 +4,6 @@ import { ResponsiveContainer, PieChart as RechartsPieChart, Pie, Tooltip, Legend
 import { colorSchemes } from './colorSchemes';
 import styles from './pieChartStyles.css';
 
-const pieColors = colorSchemes.bright_colors;
-
 const renderTitle = (title) => {
   if (title === undefined) {
     return '';
@@ -13,46 +11,48 @@ const renderTitle = (title) => {
   return (<h3>{title}</h3>);
 };
 
-const renderLegend = payload => (
-  <ul style={{ marginBottom: '30px' }}>
-    {
-      payload.map((entry, index) => (
-        <li key={[entry.name, index].join('_')}><div style={{ backgroundColor: pieColors[index % pieColors.length], width: '15px', height: '15px', display: 'inline-block', marginRight: '5px' }}></div>{entry.name}: {entry.value}</li>
-      ))
-    }
-  </ul>
-);
+const PieChart = props => {
+  const renderLegend = payload => (
+    <ul style={{ marginBottom: '30px' }}>
+      {
+        payload.map((entry, index) => (
+          <li key={[entry.name, index].join('_')}><div style={{ backgroundColor: colorSchemes[props.colorScheme][index % colorSchemes[props.colorScheme].length], width: '15px', height: '15px', display: 'inline-block', marginRight: '5px' }}></div>{entry.name}: {entry.value}</li>
+        ))
+      }
+    </ul>
+  );
 
-const PieChart = props => (
-  <div style={{ height: props.height }} alt={props.altText}>
-    {renderTitle(props.chartTitle)}
-    <ResponsiveContainer>
-      <RechartsPieChart>
-        <Pie
-          data={props.data}
-          cx={props.cx}
-          cy={props.cy}
-          startAngle={props.startAngle}
-          endAngle={props.endAngle}
-          paddingAngle={props.paddingAngle}
-          label={props.label}
-          outerRadius={props.outerRadius}
-          fill={'#9C27B0'}
-          innerRadius={props.doughnut ? 40 : props.innerRadius}
-        >
-          {props.data.map((entry, index) => <Cell key={['cell', index].join('_')} fill={pieColors[index % pieColors.length]} />)}
-        </Pie>
-        <Tooltip formatter={props.toolTipFormatter} />
-        {props.defaultLegend &&
-          <Legend legentType="square" />
-        }
-        {!props.defaultLegend &&
-          <Legend verticalAlign={'bottom'} content={props.defaultLegend ? null : renderLegend(props.data)} className={styles.pieLegend} />
-        }
-      </RechartsPieChart>
-    </ResponsiveContainer>
-  </div>
-);
+  return (
+    <div style={{ height: props.height }} alt={props.altText}>
+      {renderTitle(props.chartTitle)}
+      <ResponsiveContainer>
+        <RechartsPieChart>
+          <Pie
+            data={props.data}
+            cx={props.cx}
+            cy={props.cy}
+            startAngle={props.startAngle}
+            endAngle={props.endAngle}
+            paddingAngle={props.paddingAngle}
+            label={props.label}
+            outerRadius={props.outerRadius}
+            fill={'#9C27B0'}
+            innerRadius={props.doughnut ? 40 : props.innerRadius}
+          >
+            {props.data.map((entry, index) => <Cell key={['cell', index].join('_')} fill={colorSchemes[props.colorScheme][index % colorSchemes[props.colorScheme].length]} />)}
+          </Pie>
+          <Tooltip formatter={props.toolTipFormatter} />
+          {props.defaultLegend &&
+            <Legend legentType="square" />
+          }
+          {!props.defaultLegend &&
+            <Legend verticalAlign={'bottom'} content={props.defaultLegend ? null : renderLegend(props.data)} className={styles.pieLegend} />
+          }
+        </RechartsPieChart>
+      </ResponsiveContainer>
+    </div>
+  );
+};
 
 PieChart.propTypes = {
   chartTitle: PropTypes.string,

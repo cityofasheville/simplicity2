@@ -3002,3 +3002,59 @@ export const testProjectData = [
    'Bond Spent': 0
  }
 ];
+
+export const getPhasePieChartData = (projectData, categories) => {
+  let numInPlanning = 0;
+  let numInDesign = 0;
+  let numInConstruction = 0;
+  let numCompleted = 0;
+  let numOngoing = 0;
+
+  for (let project of projectData) {
+    if (categories.includes(project.Category)) {
+      switch(project.Status) {
+        case 'Status: Planning':
+          numInPlanning += 1;
+        case 'Status: Design':
+          numInDesign += 1;
+        case 'Status: Construction':
+          numInConstruction += 1;
+        case 'Status: Completed':
+          numCompleted += 1;
+        default:
+          numOngoing += 1;
+      }
+    }
+  }
+
+  const pieData = [];
+  if (numOngoing > 0) {
+    pieData.push({ name: 'Ongoing', value: numOngoing });
+  }
+  pieData.push({ name: 'Completed', value: numCompleted });
+  pieData.push({ name: 'Construction', value: numInConstruction });
+  pieData.push({ name: 'Design', value: numInDesign });
+  pieData.push({ name: 'Planning', value: numInPlanning });
+
+  return pieData;
+}
+
+export const getFundsAllocatedAndExpended = (projectData, categories) => {
+  let totalExpended = 0;
+  let totalAllocated = 0;
+
+  for (let project of projectData) {
+    if (categories.includes(project.Category)) {
+      if (project['Total Spent'].trim() !== '') {
+        let expended = project['Total Spent'].indexOf('$') === 0 ? project['Total Spent'].slice(1).split(',').join('') : project['Total Spent'].split(',').join('');
+        totalExpended += parseFloat(expended);
+      }
+      if (project['Total Project Funding (Budget Document)'].trim() !== '') {
+        let allocated = project['Total Project Funding (Budget Document)'].indexOf('$') === 0 ? project['Total Project Funding (Budget Document)'].slice(1).split(',').join('') : project['Total Project Funding (Budget Document)'].split(',').join('');
+        totalAllocated += parseFloat(allocated);
+      }
+    }
+  }
+
+  return [{allocated: parseInt(totalAllocated), 'Expended funds': parseInt(totalExpended), 'Remaining funds': parseInt(totalAllocated) - parseInt(totalExpended)}];
+}

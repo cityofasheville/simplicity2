@@ -6,13 +6,13 @@ const CIPFilter = props => (
   <div>
     <div className="row">
       <div className="col-sm-12">
-        <p>Click or tap on the project categories below to filter the projects displayed in the table</p>.
+        <p style={{ marginTop: '10px' }}>Click or tap on the project categories below to select/deselect the projects displayed to view</p>.
       </div>
     </div>
     <div className="row">
-      {props.types.map((type, index) => (
-        <div className="col-lg-3 col-sm-6" key={['SummaryCard', type, 'index'].join('_')}>
-          <CapitalProjectsSummaryCard type={type} selected={props.selected.includes(type)} />
+      {props.categories.map((category, index) => (
+        <div className="col-sm-3 col-xs-6" key={['SummaryCard', category, 'index'].join('_')}>
+          <CapitalProjectsSummaryCard category={category} selected={props.selected.includes(category)} />
         </div>
       ))}
     </div>
@@ -20,15 +20,13 @@ const CIPFilter = props => (
 );
 
 CIPFilter.propTypes = {
-  category: PropTypes.string,
   selected: PropTypes.arrayOf(PropTypes.string),
-  types: PropTypes.arrayOf(PropTypes.string),
+  categories: PropTypes.arrayOf(PropTypes.string),
 };
 
 CIPFilter.defaultProps = {
-  category: 'Bonds',
-  selected: ['Transportation', 'General CIP'],
-  types: ['Transportation', 'Parks', 'Housing', 'General CIP'],
+  selected: ['Bond - Transportation Program'],
+  categories: ['Bond - Transportation Program', 'Bond - Parks Program', 'Bond - Housing Program', 'General CIP'],
 }
 
 export default CIPFilter;

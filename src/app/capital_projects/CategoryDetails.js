@@ -61,7 +61,7 @@ const CategoryDetails = (props) => {
             <div className="col-sm-12 text-primary">
               <h3>Selected project categories:
                 <ButtonGroup>
-                  <LinkButton pathname="/capital_projects" query={Object.assign({}, props.location.query, {view: 'summary'})} positionInGroup="left" active={props.location.query.view === 'summary'}>Summary</LinkButton>
+                  <LinkButton pathname="/capital_projects" query={Object.assign({}, props.location.query, {view: 'summary'})} positionInGroup="left" active={props.location.query.view !== 'table'}>Summary</LinkButton>
                   <LinkButton pathname="/capital_projects" query={Object.assign({}, props.location.query, {view: 'table'})} active={props.location.query.view === 'table'} positionInGroup="right">Projects</LinkButton>
                 </ButtonGroup>
                 <br />

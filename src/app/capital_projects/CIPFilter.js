@@ -25,7 +25,7 @@ const CIPFilter = props => {
     <div>
       <div className="row">
         <div className="col-sm-12">
-          <p style={{ marginTop: '10px' }}>Click or tap on the project categories below to select/deselect the projects displayed to view</p>.
+          <p style={{ marginTop: '10px' }}>Click or tap on the project categories below to select/deselect the projects to view</p>.
         </div>
       </div>
       <div className="row">

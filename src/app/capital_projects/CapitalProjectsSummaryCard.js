@@ -37,7 +37,7 @@ const CapitalProjectsSummaryCard = props => {
   return (
     <div>
       <div className="summaryCard" style={{ borderRadius: '5px', border: props.selected ? '8px solid #16abe4' : '8px solid #ffffff', opacity: props.selected ? '1.0' : '0.75', backgroundColor: '#4077a5', marginBottom: '15px' }}>
-        <img className="hidden-xs" alt={[props.category, 'bonds', 'icon'].join(' ')} src={getIconPath(props.category)} style={{ width: '55%', display: 'block', margin: 'auto', backgroundColor: '#ffffff' }}></img>
+        <img className="hidden-xs" alt={[props.category, 'bonds', 'icon'].join(' ')} src={getIconPath(props.category)} style={{ opacity: props.selected ? '1.0' : '0.5', width: '55%', display: 'block', margin: 'auto', backgroundColor: '#ffffff' }}></img>
         <div style={{ backgroundColor: props.selected ? '#d3f1ff' : '#eeeeee', paddingTop: '15px' }}>
           <div className="text-center text-primary" style={{ minHeight: '45px' }}>
             <input type="checkbox" aria-label={[props.category, 'projects'].join(' ')} label={[props.category, 'projects'].join(' ')} value={props.category} checked={props.selected} readOnly />

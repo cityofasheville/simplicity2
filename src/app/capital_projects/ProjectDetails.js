@@ -62,43 +62,43 @@ const ProjectDetails = (props) => (
             <div className="col-xs-6">
               <div className="text-center" style={{ marginBottom: '10px' }}>
                 <div className="text-primary">
-                  <strong>Zip code</strong>
+                  Zip code
                 </div>
-                <div>
-                  {props['Zip Code'] || '?'}
+                <div >
+                  <strong>{props['Zip Code'] || '?'}</strong>
                 </div>
               </div>
               <div className="text-center" style={{ marginBottom: '10px' }}>
                 <div className="text-primary">
-                  <strong>Total bond funding</strong>
+                  Total bond funding
                 </div>
                 <div>
-                  {props['Total Project Funding (Budget Document)']}
+                  <strong>{props['Total Project Funding (Budget Document)']}</strong>
                 </div>
               </div>
             </div>
             <div className="col-xs-6">
               <div className="text-center" style={{ marginBottom: '10px' }}>
                 <div className="text-primary">
-                  <strong>Spent</strong>
+                  Spent
                 </div>
                 <div>
-                  {props['Total Spent'] || '$0'}
+                  <strong>{props['Total Spent'] || '$0'}</strong>
                 </div>
               </div>         
               <div className="text-center" style={{ marginBottom: '20px' }}>
                 <div className="text-primary">
-                  <strong>Construction start</strong>
+                  Construction start
                 </div>
                 <div>
-                  {props['Target Construction Start'] || '?'}
+                  <strong>{props['Target Construction Start'] || '?'}</strong>
                 </div>
               </div>
             </div>
           </div>
           <div className="row" style={{ marginBottom: '20px' }}>
             <div className="text-primary text-center" style={{ marginBottom: '5px' }}>
-              <strong>Project phase</strong>
+              Project phase
             </div>
             <div className={props.Status === 'Ongoing' ? "col-xs-3" : "col-xs-2"}>
               <Icon path={IM_CIRCLE2} size={25} color={getStageNumber(props.Status) >= 1 ? phaseColor(1) : '#ecf0f1'} />

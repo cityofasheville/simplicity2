@@ -9,7 +9,7 @@ import ProjectExpendedBarChart from './ProjectExpendedBarChart';
 import PageHeader from '../../shared/PageHeader';
 import ButtonGroup from '../../shared/ButtonGroup';
 import LinkButton from '../../shared/LinkButton';
-import { testProjectData, getPhasePieChartData, getFundsAllocatedAndExpended } from './cip_utilities';
+import { testProjectData, getPhasePieChartData, getFundsAllocatedAndExpended, shortCategory, filterProjects } from './cip_utilities';
 
 const getBondText = (type) => {
   switch (type) {
@@ -37,23 +37,9 @@ const getDollarsLong = value => (
   [value < 0 ? '-$' : '$', Math.abs(value).toLocaleString()].join('')
 );
 
-const shortCategory = (category) => {
-  switch (category) {
-    case 'Bond - Transportation Program':
-      return 'Transportation Bonds';
-    case 'Bond - Parks Program':
-      return 'Parks Bonds';
-    case 'Bond - Housing Program':
-      return 'Housing Bonds';
-    case 'General CIP':
-      return 'General CIP';
-    default:
-      return 'Project';
-  }
-}
-
 const CategoryDetails = (props) => {
   const pieData = getPhasePieChartData(testProjectData, props.categories);
+  const filteredProjects = filterProjects(testProjectData, props.categories);
   const fundingDetails = getFundsAllocatedAndExpended(testProjectData, props.categories);
   const getTitle = () => {
     let title = '';
@@ -75,8 +61,8 @@ const CategoryDetails = (props) => {
             <div className="col-sm-12 text-primary">
               <h3>Selected project categories:
                 <ButtonGroup>
-                  <LinkButton pathname="/capital_projects" query={{ hideNavbar: props.location.query.hideNavbar, view: 'summary' }} positionInGroup="left" active={props.location.query.view === 'summary'}>Summary</LinkButton>
-                  <LinkButton pathname="/capital_projects" query={{ hideNavbar: props.location.query.hideNavbar, view: 'table' }} active={props.location.query.view === 'table'} positionInGroup="right">Projects</LinkButton>
+                  <LinkButton pathname="/capital_projects" query={Object.assign({}, props.location.query, {view: 'summary'})} positionInGroup="left" active={props.location.query.view === 'summary'}>Summary</LinkButton>
+                  <LinkButton pathname="/capital_projects" query={Object.assign({}, props.location.query, {view: 'table'})} active={props.location.query.view === 'table'} positionInGroup="right">Projects</LinkButton>
                 </ButtonGroup>
                 <br />
                 <span style={{ fontSize: '18px' }}>{getTitle()}</span>
@@ -84,7 +70,7 @@ const CategoryDetails = (props) => {
             </div>
           </div>
           {props.location.query.view === 'table' ?
-            <ProjectsTable data={testProjectData} />
+            <ProjectsTable data={filteredProjects} />
           :
             <div>
               <div className="row">
@@ -101,6 +87,9 @@ const CategoryDetails = (props) => {
                   {props.categories.map((category, index) => (
                     <p key={['category text', category].join('_')}><span style={{ fontWeight: 'bold' }}>{shortCategory(category)}: </span> {getBondText(category)}</p>
                   ))}
+                  {props.categories.includes('General CIP') &&
+                    <p><span style={{ fontWeight: 'bold' }}>NOTE:</span> The funding for ongoing projects changes from time to time, so the total funding for General CIP projects will not match [the budget document? -- TODO: fix wording so that it makes sense and is accurate]</p>
+                  }
                 </div>
               </div>
             </div>

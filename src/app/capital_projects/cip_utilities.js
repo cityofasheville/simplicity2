@@ -3044,7 +3044,7 @@ export const getFundsAllocatedAndExpended = (projectData, categories) => {
   let totalAllocated = 0;
 
   for (let project of projectData) {
-    if (categories.includes(project.Category)) {
+    if ((project.Category.startsWith('CIP') && categories.includes('General CIP')) || categories.includes(project.Category)) {
       if (project['Total Spent'].trim() !== '') {
         let expended = project['Total Spent'].indexOf('$') === 0 ? project['Total Spent'].slice(1).split(',').join('') : project['Total Spent'].split(',').join('');
         totalExpended += parseFloat(expended);
@@ -3057,4 +3057,59 @@ export const getFundsAllocatedAndExpended = (projectData, categories) => {
   }
 
   return [{allocated: parseInt(totalAllocated), 'Expended funds': parseInt(totalExpended), 'Remaining funds': parseInt(totalAllocated) - parseInt(totalExpended)}];
+};
+
+export const filterProjects = (projects, categories) => {
+  const filteredProjects = [];
+  for (let project of projects) {
+    if (project.Category.startsWith('CIP') && categories.includes('General CIP')) {
+      filteredProjects.push(project);
+    } else if (categories.includes(project.Category)) {
+      filteredProjects.push(project);
+    }
+  }
+  return filteredProjects;
 }
+
+export const urlCategory = (category) => {
+  switch (category) {
+    case 'Bond - Transportation Program':
+      return 'transportation';
+    case 'Bond - Parks Program':
+      return 'parks';
+    case 'Bond - Housing Program':
+      return 'housing';
+    case 'General CIP':
+      return 'general_cip';
+    default:
+      return 'Project';
+  } 
+}
+
+export const shortCategory = (category) => {
+  switch (category) {
+    case 'Bond - Transportation Program':
+      return 'Transportation Bonds';
+    case 'Bond - Parks Program':
+      return 'Parks Bonds';
+    case 'Bond - Housing Program':
+      return 'Housing Bonds';
+    case 'General CIP':
+      return 'General CIP';
+    default:
+      return 'Project';
+  }
+};
+
+export const longCategory = (category) => {
+  switch (category.toLowerCase()) {
+    case 'transportation':
+      return 'Bond - Transportation Program';
+    case 'parks':
+      return 'Bond - Parks Program';
+    case 'housing':
+      return 'Bond - Housing Program';
+    case 'general_cip':
+      return 'General CIP';
+  }
+};

@@ -38,12 +38,18 @@ import SummaryCashFlow from './app/budget/SummaryCashFlow';
 import BudgetData from './app/budget/BudgetData';
 // Capital Projects
 import CapitalProjectsSummary from './app/capital_projects/CapitalProjectsSummary';
-import BondDetails from './app/capital_projects/BondDetails';
-import BondsData from './app/capital_projects/BondsData';
+import CategoryDetails from './app/capital_projects/CategoryDetails';
 import CIPData from './app/capital_projects/CIPData';
 // Homelessness
 import HomelessnessSummary from './app/homelessness/HomelessnessSummary';
+import HomelessnessCounts from './app/homelessness/HomelessnessCounts';
+import HomelessnessDemographics from './app/homelessness/HomelessnessDemographics';
 import HomelessnessVeterans from './app/homelessness/HomelessnessVeterans';
+import HomelessnessVeteransInflowOutflow from './app/homelessness/HomelessnessVeteransInflowOutflow';
+import HomelessnessVeteransEnrollment from './app/homelessness/HomelessnessVeteransEnrollment';
+import HomelessnessVeteransChronicAssignments from './app/homelessness/HomelessnessVeteransChronicAssignments';
+import HomelessnessVeteransExitTime from './app/homelessness/HomelessnessVeteransExitTime';
+import HomelessnessEnrollment from './app/homelessness/HomelessnessEnrollment';
 import HomelessnessData from './app/homelessness/HomelessnessData';
 
 // Google Analytics
@@ -92,9 +98,8 @@ const Routes = props => (
         </Route>
         <Route path="capital_projects">
           <IndexRoute component={CapitalProjectsSummary} />
-          <Route path="details" component={BondDetails}></Route>
-          <Route path="bondsData" component={BondsData}></Route>
-          <Route path="CIPData" component={CIPData}></Route>
+          <Route path="details" component={CategoryDetails}></Route>
+          <Route path="data" component={CIPData}></Route>
         </Route>
         <Route path="crime">
           <IndexRoute component={CrimeSummary} />
@@ -109,6 +114,13 @@ const Routes = props => (
           <IndexRoute component={HomelessnessSummary} />
           <Route path="veterans" component={HomelessnessVeterans}></Route>
           <Route path="data" component={HomelessnessData}></Route>
+          <Route path="veteranEnrollments" component={HomelessnessVeteransEnrollment}></Route>
+          <Route path="veteranChronicAssignments" component={HomelessnessVeteransChronicAssignments}></Route>
+          <Route path="veteranInflowOutflow" component={HomelessnessVeteransInflowOutflow}></Route>
+          <Route path="veteranExitTime" component={HomelessnessVeteransExitTime}></Route>
+          <Route path="counts" component={HomelessnessCounts}></Route>
+          <Route path="demographics" component={HomelessnessDemographics}></Route>
+          <Route path="enrollments" component={HomelessnessEnrollment}></Route>
         </Route>
         <Route path="maintenance">
           <IndexRoute component={Maintenance} />

@@ -3,12 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { BarChart as RechartsBarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { colorSchemes } from '../../shared/visualization/colorSchemes';
-
-const testData = {
-  Transportation: [{ name: 'Transportation bonds funding', allocated: 32000000, 'Expended funds': 0, 'Remaining funds': 32000000 }],
-  Parks: [{ name: 'Parks bonds funding', allocated: 17000000, 'Expended funds': 5000000, 'Remaining funds': 17000000 }],
-  Housing: [{ name: 'Housing bonds funding', allocated: 25000000, 'Expended funds': 0, 'Remaining funds': 25000000 }],
-};
+import { testProjectData, getFundsAllocatedAndExpended } from './cip_utilities'
 
 const getDollars = (value) => {
   if (Math.abs(value) > 1000000) {
@@ -23,53 +18,45 @@ const getDollarsLong = value => (
   [value < 0 ? '-$' : '$', Math.abs(value).toLocaleString()].join('')
 );
 
-const getIconPath = (type) => {
-  switch (type) {
-    case 'Transportation':
+const getIconPath = (category) => {
+  switch (category) {
+    case 'Bond - Transportation Program':
       return require('./transportationBondIcon.png'); // eslint-disable-line
-    case 'Parks':
+    case 'Bond - Parks Program':
       return require('./parksBondIcon.png'); // eslint-disable-line
-    default:
+    case 'Bond - Housing Program':
       return require('./housingBondIcon.png'); // eslint-disable-line
+    default:
+      return require('./citylogo-419x314.png'); // eslint-disable-line
   }
 };
 
-const CapitalProjectsSummaryCard = props => (
-  <div>
-    <div className="summaryCard" style={{ borderRadius: '5px', border: '1px solid #ffffff', backgroundColor: '#4077a5', marginBottom: '15px' }}>
-      <img alt={[props.type, 'bonds', 'icon'].join(' ')} src={getIconPath(props.type)} style={{ width: '55%', display: 'block', margin: 'auto', backgroundColor: '#ffffff' }}></img>
-      <div style={{ backgroundColor: '#eeeeee', height: '180px', paddingTop: '15px', paddingRight: '8px', paddingLeft: '8px' }}>
-        <ResponsiveContainer>
-          <RechartsBarChart data={testData[props.type]} layout="vertical" alt="Bar chart of funds expended and funds remaining">
-            <YAxis dataKey="name" type="category" hide />
-            <XAxis tickFormatter={getDollars} domain={['dataMin', 32000000]} type="number" />
-            <Tooltip formatter={getDollarsLong} />
-            <Legend />
-            <Bar dataKey="Remaining funds" stackId="1" fill={colorSchemes.bright_colors_2[0]} />
-            <Bar dataKey="Expended funds" stackId="1" fill={colorSchemes.bright_colors_2[1]} />
-          </RechartsBarChart>
-        </ResponsiveContainer>
-      </div>
-      <div style={{ backgroundColor: '#eeeeee', paddingBottom: '10px', paddingTop: '15px' }}>
-        <div className="text-center">
-          <Link to={{ pathname: '/capital_projects/details', query: { type: props.type } }}>
-            <button className="btn btn-primary">{props.type} fund details</button>
-          </Link>
+const CapitalProjectsSummaryCard = props => {
+  const barChartData = getFundsAllocatedAndExpended(testProjectData, props.category);
+
+  return (
+    <div>
+      <div className="summaryCard" style={{ borderRadius: '5px', border: props.selected ? '8px solid #16abe4' : '8px solid #ffffff', opacity: props.selected ? '1.0' : '0.75', backgroundColor: '#4077a5', marginBottom: '15px' }}>
+        <img className="hidden-xs" alt={[props.category, 'bonds', 'icon'].join(' ')} src={getIconPath(props.category)} style={{ opacity: props.selected ? '1.0' : '0.5', width: '55%', display: 'block', margin: 'auto', backgroundColor: '#ffffff' }}></img>
+        <div style={{ backgroundColor: props.selected ? '#d3f1ff' : '#eeeeee', paddingTop: '15px' }}>
+          <div className="text-center text-primary" style={{ minHeight: '45px' }}>
+            <input type="checkbox" aria-label={[props.category, 'projects'].join(' ')} label={[props.category, 'projects'].join(' ')} value={props.category} checked={props.selected} readOnly />
+            <span>{props.category.startsWith('Bond -') ? [props.category.split(' - ')[1].slice(0, -8), 'bond'].join(' ') : props.category} projects</span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-);
-
-const dataShape = {
-  'Total bond funding': PropTypes.number,
-  'Bond funds expended': PropTypes.number,
+  );
 };
 
 CapitalProjectsSummaryCard.propTypes = {
-  type: PropTypes.string,
-  data: PropTypes.arrayOf(PropTypes.shape(dataShape)),
+  category: PropTypes.string,
   text: PropTypes.string,
+  selected: PropTypes.bool,
+};
+
+CapitalProjectsSummaryCard.defaultProps = {
+  selected: false,
 };
 
 export default CapitalProjectsSummaryCard;

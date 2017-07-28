@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import AreaChart from '../../shared/visualization/AreaChart';
+import AreaChartContainer from '../../shared/visualization/AreaChartContainer';
 
 const dataKeys = [
-  'Emergency Shelter',
   'Homelessness Prevention',
-  'Rapid Re-Housing',
+  'Emergency Shelter',
   'Transitional housing',
+  'Rapid Re-Housing',
   'Permanent supportive housing',
 ];
 
@@ -1013,21 +1013,15 @@ const enrollmentData = [
   },
 ];
 
-const getLongDesc = data => (
-  <div>
-    TODO: Create long description
-  </div>
-);
-
 class HomelessnessEnrollment extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { showingLongDesc: this.showLongDesc };
+    this.state = { showingDefinitions: this.showingDefinitions };
   }
 
   toggleLongDesc() {
     this.setState({
-      showingLongDesc: !this.state.showingLongDesc,
+      showingDefinitions: !this.state.showingDefinitions,
     });
   }
 
@@ -1036,26 +1030,12 @@ class HomelessnessEnrollment extends React.Component {
       <div>
         <h3>Homeless program enrollments: a closer look</h3>
         <p>
-          There are several types of temporary or permanent housing options for people experiencing homelessness or at imminent risk of homelessness in Buncombe County. These options are part of the homelessness system in our community. The below chart shows monthly enrollments in these programs. See the definitions below the chart for more information about each program type.
-        </p>
-        <div className="row">
-          <div className="col-sm-12">
-            <AreaChart data={this.props.summaryData} mainAxisDataKey="Date" dataKeys={dataKeys} altText={'Area chart of HMIS enrollments'} colorScheme="bright_colors_2" />
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-xs-10 col-xs-offset-2">
-            <br />
-            <a href="javascript:void(0);" className="text-center inText" onClick={() => this.toggleLongDesc()}>
-              {this.state.showingLongDesc ? 'Hide' : 'Show'} HMIS Enrollments area chart summary
-            </a>
-            <div hidden={!this.state.showingLongDesc}>
-              {getLongDesc(this.props.summaryData)}
-            </div>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-sm-12">
+          There are several types of temporary or permanent housing options for people experiencing homelessness or at imminent risk of homelessness in Buncombe County. These options are part of the homelessness system in our community. The below chart shows monthly enrollments in these programs.
+          <br />
+          <a href="javascript:void(0);" className="text-center inText" onClick={() => this.toggleLongDesc()}>
+            {this.state.showingDefinitions ? 'Hide' : 'Show'} Program definitions
+          </a>
+          <div hidden={!this.state.showingDefinitions}>
             <ul>
               <li>
                 <div>
@@ -1091,6 +1071,11 @@ class HomelessnessEnrollment extends React.Component {
               </li>
             </ul>
           </div>
+        </p>
+        <div className="row">
+          <div className="col-sm-12">
+            <AreaChartContainer data={this.props.summaryData} mainAxisDataKey="Date" dataKeys={dataKeys} altText={'Area chart of HMIS enrollments'} colorScheme="bright_colors_2" />
+          </div>
         </div>
       </div>
     );
@@ -1109,12 +1094,12 @@ const dataShape = {
 
 HomelessnessEnrollment.propTypes = {
   summaryData: PropTypes.arrayOf(PropTypes.shape(dataShape)),
-  showLongDesc: PropTypes.bool, // eslint-disable-line
+  showingDefinitions: PropTypes.bool, // eslint-disable-line
 };
 
 HomelessnessEnrollment.defaultProps = {
   summaryData: enrollmentData,
-  showLongDesc: false,
+  showingDefinitions: false,
 };
 
 export default HomelessnessEnrollment;

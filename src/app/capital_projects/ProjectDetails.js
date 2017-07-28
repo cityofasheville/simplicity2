@@ -12,15 +12,18 @@ const getIcon = (category) => {
 };
 
 const getStageNumber = (stage) => {
+  const newStage = stage.split(': ')[1];
   switch (stage) {
-    case 'Planning':
+    case 'Status: Planning':
       return 1;
-    case 'Design':
+    case 'Status: Design':
       return 2;
-    case 'Construction':
+    case 'Status: Construction':
       return 3;
-    case 'Completed':
+    case 'Status: Completed':
       return 4;
+    case 'Ongoing':
+      return 5;
     default:
       return 0;
   }
@@ -39,16 +42,12 @@ const phaseColor = (phaseNumber) => {
   }
 };
 
-const getTestImage = () => (
-  require('./Traffic-light-red-light-jpg.jpg') // eslint-disable-line
-);
-
 const ProjectDetails = (props) => (
   <div className="row">
     <div className="col-sm-12">
       <div className="row" hidden={props.hideTitle}>
         <div className="col-sm-12">
-          <h4>{getIcon()} {props.name}</h4>
+          <h4>{getIcon()} {props['Project Name']}</h4>
         </div>
       </div>
       <div className="row" style={props.hideTitle ? { marginTop: '15px' } : null}>
@@ -63,68 +62,72 @@ const ProjectDetails = (props) => (
             <div className="col-xs-6">
               <div className="text-center" style={{ marginBottom: '10px' }}>
                 <div className="text-primary">
-                  <strong>Zip code</strong>
+                  Zip code
                 </div>
-                <div>
-                  {props.zip}
+                <div >
+                  <strong>{props['Zip Code'] || '?'}</strong>
                 </div>
               </div>
               <div className="text-center" style={{ marginBottom: '10px' }}>
                 <div className="text-primary">
-                  <strong>Total bond funding</strong>
+                  Approved Project Budget
                 </div>
                 <div>
-                  {props.total}
+                  <strong>{props['Total Project Funding (Budget Document)']}</strong>
                 </div>
               </div>
             </div>
             <div className="col-xs-6">
               <div className="text-center" style={{ marginBottom: '10px' }}>
                 <div className="text-primary">
-                  <strong>Spent</strong>
+                  Spent
                 </div>
                 <div>
-                  {props['Expended funds']}
+                  <strong>{props['Total Spent'] || '$0'}</strong>
                 </div>
               </div>         
               <div className="text-center" style={{ marginBottom: '20px' }}>
                 <div className="text-primary">
-                  <strong>Construction start</strong>
+                  Construction start
                 </div>
                 <div>
-                  {props.construction_start}
+                  <strong>{props['Target Construction Start'] || '?'}</strong>
                 </div>
               </div>
             </div>
           </div>
           <div className="row" style={{ marginBottom: '20px' }}>
             <div className="text-primary text-center" style={{ marginBottom: '5px' }}>
-              <strong>Project phase</strong>
+              Project phase
             </div>
-            <div className="col-xs-2">
-              <Icon path={IM_CIRCLE2} size={25} color={getStageNumber(props.phase) >= 1 ? phaseColor(1) : '#ecf0f1'} />
+            <div className={props.Status === 'Ongoing' ? "col-xs-3" : "col-xs-2"}>
+              <Icon path={IM_CIRCLE2} size={25} color={getStageNumber(props.Status) >= 1 ? phaseColor(1) : '#ecf0f1'} />
             </div>
-            <div className="col-xs-2">
-              <Icon path={IM_CIRCLE2} size={25}  color={getStageNumber(props.phase) >= 2 ? phaseColor(2) : '#ecf0f1'} />
+            <div className={props.Status === 'Ongoing' ? "col-xs-3" : "col-xs-2"}>
+              <Icon path={IM_CIRCLE2} size={25}  color={getStageNumber(props.Status) >= 2 ? phaseColor(2) : '#ecf0f1'} />
             </div>
-            <div className="col-xs-2">
-              <Icon path={IM_CIRCLE2} size={25}  color={getStageNumber(props.phase) >= 3 ? phaseColor(3) : '#ecf0f1'} />
+            <div className={props.Status === 'Ongoing' ? "col-xs-3" : "col-xs-2"}>
+              <Icon path={IM_CIRCLE2} size={25}  color={props.Status === 'Ongoing' ? '#FFC107' : getStageNumber(props.Status) >= 3 ? phaseColor(3) : '#ecf0f1'} />
             </div>
-            <div className="col-xs-2">
-              <Icon path={IM_CIRCLE2} size={25} color={getStageNumber(props.phase) >= 4 ? phaseColor(4) : '#ecf0f1'} style={{ marginRight: '5px' }} />
-            </div>
-            <div className="col-xs-2" style={{ color: phaseColor(getStageNumber(props.phase)), fontWeight: 'bold' }}>
-              {props.phase}
+            {props.Status !== 'Ongoing' &&
+              <div className="col-xs-2">
+                <Icon path={IM_CIRCLE2} size={25} color={getStageNumber(props.Status) >= 4 ? phaseColor(4) : '#ecf0f1'} style={{ marginRight: '5px' }} />
+              </div>
+            }
+            <div className="col-xs-2" style={{ color: props.Status === 'Ongoing' ? '#FFC107' : phaseColor(getStageNumber(props.Status)), fontWeight: 'bold' }}>
+              {props.Status === 'Ongoing' ? props.Status : props.Status.split(': ')[1]}
             </div>
           </div>
           <div className="row">
-            <div className="col-sm-12" style={{ marginBottom: '10px' }}>
-              {props.description}
+            <div className="col-sm-12" style={{ marginTop: '20px', marginBottom: '10px' }}>
+              {props['Project Description']}
             </div>
           </div>
         </div>
         <div className="col-sm-5">
           <Map center={[35.5951005, -82.5487476]} zoom={13} style={{ height: '230px', width: '100%', marginBottom: '15px' }}>
+            {/*<WMSTileLayer     url="http://services.arcgis.com/aJ16ENn1AaqdFlqx/arcgis/rest/services/CIP_Storymap/FeatureServer"
+            />*/}
             <TileLayer
               url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
               attribution="&copy: <a href='http://osm.org/copyright'>OpenStreetMap</a> constributors"
@@ -135,7 +138,9 @@ const ProjectDetails = (props) => (
               </Popup>
             </Marker>
           </Map>
-          <img className="img-responsive" src={getTestImage()} />
+          <a href={props['Photo URL']} target="_blank">
+            <img className="img-responsive" src={props['Photo URL']} />
+          </a>
         </div>
       </div>
     </div>

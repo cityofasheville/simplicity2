@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Navbar from './Navbar';
+import Footer from './Footer';
 import CityInfoBar from './CityInfoBar';
 
 import AuthProviderModal from '../utilities/auth/authProviderModal';
@@ -21,6 +22,7 @@ const App = props => (
     <div className="container" id="content">
       { props.children }
     </div>
+    <Footer />
     <AuthProviderModal />
   </div>
 );

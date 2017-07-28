@@ -2,6 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
+import Icon from '../../shared/Icon';
+import { IM_LOCATION } from '../../shared/iconConstants';
+import PageHeader from '../../shared/PageHeader';
+import ButtonGroup from '../../shared/ButtonGroup';
+import LinkButton from '../../shared/LinkButton';
 import DetailsGrouping from '../../shared/DetailsGrouping';
 import DetailsIconLinkGrouping from '../../shared/DetailsIconLinkGrouping';
 import TopicCard from '../../shared/TopicCard';
@@ -51,12 +56,11 @@ const Address = (props) => {
 
   return (
     <div>
-      <div className="row">
-        <div className="col-sm-12">
-          <h1><button className="btn btn-primary pull-right">Back</button>{props.data.mda_address.address}, {props.data.mda_address.zipcode}</h1>
-          <h3>About this address</h3>
-        </div>
-      </div>
+      <PageHeader h1={[props.data.mda_address.address, props.data.mda_address.zipcode].join(', ')} h3="About this address" icon={<Icon path={IM_LOCATION} size={50} />}>
+        <ButtonGroup>
+          <LinkButton pathname="/search" query={{ entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, hideNavbar: props.location.query.hideNavbar }}>Back</LinkButton>
+        </ButtonGroup>
+      </PageHeader>
       <div className="row">
         <div className="col-sm-6">
           <fieldset className="detailsFieldset">

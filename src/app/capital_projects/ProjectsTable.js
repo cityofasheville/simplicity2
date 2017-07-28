@@ -16,6 +16,8 @@ const getStageNumber = (stage) => {
       return 3;
     case 'Completed':
       return 4;
+    case 'Ongoing':
+      return 5;
     default:
       return 0;
   }
@@ -37,49 +39,53 @@ const phaseColor = (phaseNumber) => {
 const dataColumns = [
   {
     Header: 'Project',
-    accessor: 'name',
+    accessor: 'Display Name',
   },
   {
     Header: (<div>Zip<br />code</div>),
-    accessor: 'zip',
+    accessor: 'Zip Code',
     maxWidth: 120,
     headerClassName: 'hidden-sm hidden-xs',
     className: 'hidden-sm hidden-xs',
   },
   {
     Header: (<div>Current<br />phase</div>),
-    accessor: 'phase',
+    id: 'Status',
+    accessor: (project) => ( project.Status.indexOf('Status: ') > -1 ? project.Status.split(': ')[1] : project.Status),
     maxWidth: 225,
     Cell: row => (
       <span style={{ whiteSpace: 'normal' }}>
-        <span style={{ marginRight: '5px' }}>
+        <span style={{ marginRight: row.value !== 'Ongoing' ? '5px' : '12px' }}>
           <Icon path={IM_CIRCLE2} color={getStageNumber(row.value) >= 1 ? phaseColor(1) : '#ecf0f1'} />
         </span>
-        <span style={{ marginRight: '5px' }}>
+        <span style={{ marginRight: row.value !== 'Ongoing' ? '5px' : '12px' }}>
           <Icon path={IM_CIRCLE2}  color={getStageNumber(row.value) >= 2 ? phaseColor(2) : '#ecf0f1'} />
         </span>
-        <span style={{ marginRight: '5px' }}>
-          <Icon path={IM_CIRCLE2}  color={getStageNumber(row.value) >= 3 ? phaseColor(3) : '#ecf0f1'} />
+        <span style={{ marginRight: row.value !== 'Ongoing' ? '5px' : '12px' }}>
+          <Icon path={IM_CIRCLE2} color={row.value === 'Ongoing' ? 
+            '#FFC107' : getStageNumber(row.value) >= 3 ? phaseColor(3) : '#ecf0f1'} />
         </span>
-        <span style={{ marginRight: '5px' }}>
-          <Icon path={IM_CIRCLE2} color={getStageNumber(row.value) >= 4 ? phaseColor(4) : '#ecf0f1'} style={{ marginRight: '5px' }} />
-        </span>
-        <span style={{ marginLeft: '5px', color: phaseColor(getStageNumber(row.value)) }}>
+        {row.value !== 'Ongoing' &&
+          <span style={{ marginRight: '5px' }}>
+            <Icon path={IM_CIRCLE2} color={getStageNumber(row.value) >= 4 ? phaseColor(4) : '#ecf0f1'} style={{ marginRight: '5px' }} />
+          </span>
+        }
+        <span style={{ marginLeft: '5px', color: row.value === 'Ongoing' ? '#FFC107' : phaseColor(getStageNumber(row.value)) }}>
           {row.value}
         </span>
       </span>
     ),
   },
+  // {
+  //   Header: (<div>Construction<br />start</div>),
+  //   accessor: 'Target Construction Start',
+  //   maxWidth: 110,
+  //   headerClassName: 'hidden-xs',
+  //   className: 'hidden-xs',
+  // },
   {
-    Header: (<div>Construction<br />start</div>),
-    accessor: 'construction_start',
-    maxWidth: 110,
-    headerClassName: 'hidden-xs',
-    className: 'hidden-xs',
-  },
-  {
-    Header: (<div>Total<br />bond funding</div>),
-    accessor: 'total',
+    Header: (<div>Approved<br />project budget</div>),
+    accessor: 'Total Project Funding (Budget Document)',
     maxWidth: 150,
     headerClassName: 'hidden-sm hidden-xs',
     className: 'hidden-sm hidden-xs',
@@ -99,41 +105,28 @@ const getColumns = (type, subType) => {
   }];
 };
 
-const BondDetailsTable = props => (
+const ProjectsTable = props => (
   <div>
-    {props.type === 'Transportation' &&
-      <div className="row">
-        <div className="col-sm-12">
-          <div className="pull-right radioGroup">
-            <RadioGroup name="tableRadios" selectedValue={props.subType} onChange={props.radioCallback}>
-              <label>
-                <Radio value="Road Resurfacing and Sidewalk Improvements" />Road & Sidewalk Improvements
-              </label>
-              <label>
-                <Radio value="New Sidewalks and Greenways" />New Sidewalks & Greenways
-              </label>
-              <label>
-                <Radio value="Pedestrian Safety" />Pedestrian Safety
-              </label>
-            </RadioGroup>
-          </div>
-        </div>
-      </div>}
     <div className="row">
       <div className="col-sm-12">
         <div alt={['Table of', props.type, props.subType || '', 'bond project statuses'].join(' ')} style={{ marginTop: '10px' }}>
           <ReactTable
             data={props.data}
             columns={getColumns(props.type, props.subType)}
-            pageSize={props.data.length}
-            showPagination={false}
-            getTrProps={(state, rowInfo, column) => {
+            showPagination
+            defaultPageSize={20}
+            filterable
+            defaultFilterMethod={(filter, row, column) => {
+              const id = filter.pivotId || filter.id
+              return row[id] !== undefined ? String(row[id]).toLowerCase().startsWith(filter.value.toLowerCase()) : true
+            }}
+            getTrProps={(state, rowInfo) => {
               return {
                 style: {
-                  background: (Object.keys(state.expanded).includes(rowInfo.index.toString()) && state.expanded[rowInfo.index]) ? '#4077a5': 'none',
-                  color: (Object.keys(state.expanded).includes(rowInfo.index.toString()) && state.expanded[rowInfo.index]) ? '#fff': '',
-                  fontWeight: (Object.keys(state.expanded).includes(rowInfo.index.toString()) && state.expanded[rowInfo.index]) ? 'bold': 'normal',
-                  fontSize: (Object.keys(state.expanded).includes(rowInfo.index.toString()) && state.expanded[rowInfo.index]) ? '1.2em': '1em',
+                  background: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '#4077a5': 'none',
+                  color: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '#fff': '',
+                  fontWeight: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? 'bold': 'normal',
+                  fontSize: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '1.2em': '1em',
                 }
               }
             }}
@@ -149,11 +142,11 @@ const BondDetailsTable = props => (
   </div>
 );
 
-BondDetailsTable.propTypes = {
+ProjectsTable.propTypes = {
   type: PropTypes.string,
   subType: PropTypes.string,
   data: PropTypes.array, // eslint-disable-line
   radioCallback: PropTypes.func,
 };
 
-export default BondDetailsTable;
+export default ProjectsTable;

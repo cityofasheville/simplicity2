@@ -6,13 +6,12 @@ import PageHeader from '../../shared/PageHeader';
 import { testProjectData, longCategory } from './cip_utilities';
 
 const CapitalProjectsSummary = props => {
+  const selectedArr = [];
   const getSelected = () => {
-    //TODO: based on the url params figure out selections for filter
-    const selected = props.location.query.selected.split(',');
-    const selectedArr = [];
-    if (selected.length === 0) {
+    if (props.location.query.selected === undefined || props.location.query.selected.length === 0) {
       return ['Bond - Transportation Program', 'Bond - Parks Program', 'Bond - Housing Program', 'General CIP'];
     } else {
+      const selected = props.location.query.selected.split(',');
       for (let category of selected) {
         const longName = longCategory(category);
         if (!selectedArr.includes(longName)) {

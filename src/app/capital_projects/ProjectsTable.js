@@ -76,15 +76,15 @@ const dataColumns = [
       </span>
     ),
   },
+  // {
+  //   Header: (<div>Construction<br />start</div>),
+  //   accessor: 'Target Construction Start',
+  //   maxWidth: 110,
+  //   headerClassName: 'hidden-xs',
+  //   className: 'hidden-xs',
+  // },
   {
-    Header: (<div>Construction<br />start</div>),
-    accessor: 'Target Construction Start',
-    maxWidth: 110,
-    headerClassName: 'hidden-xs',
-    className: 'hidden-xs',
-  },
-  {
-    Header: (<div>Total<br />project funding</div>),
+    Header: (<div>Approved<br />project budget</div>),
     accessor: 'Total Project Funding (Budget Document)',
     maxWidth: 150,
     headerClassName: 'hidden-sm hidden-xs',

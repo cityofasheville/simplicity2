@@ -70,7 +70,7 @@ const ProjectDetails = (props) => (
               </div>
               <div className="text-center" style={{ marginBottom: '10px' }}>
                 <div className="text-primary">
-                  Total bond funding
+                  Approved Project Budget
                 </div>
                 <div>
                   <strong>{props['Total Project Funding (Budget Document)']}</strong>

@@ -38,6 +38,7 @@ const PieChart = props => {
             outerRadius={props.outerRadius}
             fill={'#9C27B0'}
             innerRadius={props.doughnut ? 40 : props.innerRadius}
+            isAnimationActive={false}
           >
             {props.data.map((entry, index) => <Cell key={['cell', index].join('_')} fill={colorSchemes[props.colorScheme][index % colorSchemes[props.colorScheme].length]} />)}
           </Pie>

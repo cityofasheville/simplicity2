@@ -38,9 +38,9 @@ const getDollarsLong = value => (
 );
 
 const CategoryDetails = (props) => {
-  const pieData = getPhasePieChartData(testProjectData, props.categories);
   const filteredProjects = filterProjects(testProjectData, props.categories);
-  const fundingDetails = getFundsAllocatedAndExpended(testProjectData, props.categories);
+  const pieData = getPhasePieChartData(filteredProjects, props.categories);
+  const fundingDetails = getFundsAllocatedAndExpended(filteredProjects, props.categories);
   const getTitle = () => {
     let title = '';
     for (let category of props.categories) {

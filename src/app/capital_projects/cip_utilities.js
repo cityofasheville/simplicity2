@@ -3011,16 +3011,20 @@ export const getPhasePieChartData = (projectData, categories) => {
   let numOngoing = 0;
 
   for (let project of projectData) {
-    if (categories.includes(project.Category)) {
+    if ((project.Category.startsWith('CIP') && categories.includes('General CIP')) || categories.includes(project.Category)) {
       switch(project.Status) {
         case 'Status: Planning':
           numInPlanning += 1;
+          break;
         case 'Status: Design':
           numInDesign += 1;
+          break;
         case 'Status: Construction':
           numInConstruction += 1;
+          break;
         case 'Status: Completed':
           numCompleted += 1;
+          break;
         default:
           numOngoing += 1;
       }

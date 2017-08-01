@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
+import ProjectMap from './ProjectMap';
 import Icon from '../../shared/Icon';
 import { IM_QUESTION, IM_MAP5, IM_SPHERE3, IM_CIRCLE2 } from '../../shared/iconConstants';
 
@@ -62,30 +62,30 @@ const ProjectDetails = (props) => (
             <div className="col-xs-6">
               <div className="text-center" style={{ marginBottom: '10px' }}>
                 <div className="text-primary">
+                  Current Project Budget
+                </div>
+                <div>
+                  <strong>{props['Total Project Funding (Budget Document)']}</strong>
+                </div>
+              </div>
+              <div className="text-center" style={{ marginBottom: '10px' }}>
+                <div className="text-primary">
+                  Spent
+                </div>
+                <div>
+                  <strong>{['$', parseInt(props['LTD Actuals']).toLocaleString()].join('')}</strong>
+                </div>
+              </div>         
+            </div>
+            <div className="col-xs-6">
+              <div className="text-center" style={{ marginBottom: '10px' }}>
+                <div className="text-primary">
                   Zip code
                 </div>
                 <div >
                   <strong>{props['Zip Code'] || '?'}</strong>
                 </div>
               </div>
-              <div className="text-center" style={{ marginBottom: '10px' }}>
-                <div className="text-primary">
-                  Approved Project Budget
-                </div>
-                <div>
-                  <strong>{props['Total Project Funding (Budget Document)']}</strong>
-                </div>
-              </div>
-            </div>
-            <div className="col-xs-6">
-              <div className="text-center" style={{ marginBottom: '10px' }}>
-                <div className="text-primary">
-                  Spent
-                </div>
-                <div>
-                  <strong>{props['Total Spent'] || '$0'}</strong>
-                </div>
-              </div>         
               <div className="text-center" style={{ marginBottom: '20px' }}>
                 <div className="text-primary">
                   Construction start
@@ -125,9 +125,8 @@ const ProjectDetails = (props) => (
           </div>
         </div>
         <div className="col-sm-5">
-          <Map center={[35.5951005, -82.5487476]} zoom={13} style={{ height: '230px', width: '100%', marginBottom: '15px' }}>
-            {/*<WMSTileLayer     url="http://services.arcgis.com/aJ16ENn1AaqdFlqx/arcgis/rest/services/CIP_Storymap/FeatureServer"
-            />*/}
+          <ProjectMap display_name={props['Display Name']} />
+          {/*<Map center={[35.5951005, -82.5487476]} zoom={13} style={{ height: '230px', width: '100%', marginBottom: '15px' }}>
             <TileLayer
               url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
               attribution="&copy: <a href='http://osm.org/copyright'>OpenStreetMap</a> constributors"
@@ -137,7 +136,7 @@ const ProjectDetails = (props) => (
                 <span>{props.name}</span>
               </Popup>
             </Marker>
-          </Map>
+          </Map>*/}
           <a href={props['Photo URL']} target="_blank">
             <img className="img-responsive" src={props['Photo URL']} />
           </a>

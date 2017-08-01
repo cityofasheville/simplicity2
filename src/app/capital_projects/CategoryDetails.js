@@ -18,9 +18,9 @@ const getBondText = (type) => {
     case 'Bond - Parks Program':
       return 'The $17 million for parks projects supports the completion of major improvements to five parks and recreation facilities; acquiring land for parks; and improving outdoor courts, playgrounds and ball field lighting throughout the city.';
     case 'Bond - Housing Program':
-      return 'TODO: get text for housing bonds';
+      return 'The $25 million for housing affordability provides additional support for the Housing Trust Fund and other programs that assist in creating diverse and affordable housing choices. It also enables the City to re-purpose city-owned land for development that supports housing affordability';
     default:
-      return 'TODO: get General CIP text';
+      return 'The City’s General CIP includes capital projects in affordable housing, parks & recreation, public safety, transportation & infrastructure, and general government. Projects are funded with a combination of general tax revenue, municipal debt and external grants or partnerships. Ongoing programs and regular maintenance projects may not be represented in this dashboard. For a complete list of general CIP projects, please view the adopted budget document.';
   }
 };
 
@@ -88,7 +88,7 @@ const CategoryDetails = (props) => {
                     <p key={['category text', category].join('_')}><span style={{ fontWeight: 'bold' }}>{shortCategory(category)}: </span> {getBondText(category)}</p>
                   ))}
                   {props.categories.includes('General CIP') &&
-                    <p><span style={{ fontWeight: 'bold' }}>NOTE:</span> The funding for ongoing projects changes from time to time, so the total funding for General CIP projects will not match [the budget document? -- TODO: fix wording so that it makes sense and is accurate]</p>
+                    <p><span style={{ fontStyle: 'italics' }}>Please note: Current project budgets include prior year funding and may change throughout the life of the project.</span></p>
                   }
                 </div>
               </div>

@@ -88,7 +88,7 @@ const CategoryDetails = (props) => {
                     <p key={['category text', category].join('_')}><span style={{ fontWeight: 'bold' }}>{shortCategory(category)}: </span> {getBondText(category)}</p>
                   ))}
                   {props.categories.includes('General CIP') &&
-                    <p><span style={{ fontStyle: 'italics' }}>Please note: Current project budgets include prior year funding and may change throughout the life of the project.</span></p>
+                    <p><span style={{ fontStyle: 'italic' }}>Please note: Current project budgets include prior year funding and may change throughout the life of the project.</span></p>
                   }
                 </div>
               </div>

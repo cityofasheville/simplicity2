@@ -140,6 +140,10 @@ aproba@^1.0.3:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/aproba/-/aproba-1.1.1.tgz#95d3600f07710aa0e9298c726ad5ecf2eacbabab"
 
+arcgis-to-geojson-utils@^1.0.1:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/arcgis-to-geojson-utils/-/arcgis-to-geojson-utils-1.0.2.tgz#412efad836ab7cbc5ae4698f44c7037c2d7fba8d"
+
 are-we-there-yet@~1.1.2:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/are-we-there-yet/-/are-we-there-yet-1.1.4.tgz#bb5dca382bb94f05e15194373d16fd3ba1ca110d"
@@ -1964,6 +1968,15 @@ esrecurse@^4.1.0:
     estraverse "~4.1.0"
     object-assign "^4.0.1"
 
+esri-leaflet@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/esri-leaflet/-/esri-leaflet-2.1.0.tgz#a22519d55b9de7644d8be4aed4b3e7a4f9c74294"
+  dependencies:
+    arcgis-to-geojson-utils "^1.0.1"
+    leaflet "~1.0.0"
+    leaflet-virtual-grid "^1.0.3"
+    tiny-binary-search "^1.0.2"
+
 estraverse@^4.0.0, estraverse@^4.1.1, estraverse@^4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/estraverse/-/estraverse-4.2.0.tgz#0dee3fed31fcd469618ce7342099fc1afa0bdb13"
@@ -3042,9 +3055,19 @@ lcid@^1.0.0:
   dependencies:
     invert-kv "^1.0.0"
 
-leaflet@^1.1.0:
+leaflet-virtual-grid@^1.0.3:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/leaflet-virtual-grid/-/leaflet-virtual-grid-1.0.4.tgz#66002854d94e81a307c790a22817bebc94f990c3"
+  dependencies:
+    leaflet "^1.0.0-rc.1"
+
+leaflet@^1.0.0-rc.1, leaflet@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.1.0.tgz#63246715cfc783dca6798b843a250e8e6fd84918"
+
+leaflet@~1.0.0:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.0.3.tgz#1f401b98b45c8192134c6c8d69686253805007c8"
 
 levn@^0.3.0, levn@~0.3.0:
   version "0.3.0"
@@ -5016,6 +5039,10 @@ timers-browserify@^2.0.2:
   resolved "https://registry.yarnpkg.com/timers-browserify/-/timers-browserify-2.0.2.tgz#ab4883cf597dcd50af211349a00fbca56ac86b86"
   dependencies:
     setimmediate "^1.0.4"
+
+tiny-binary-search@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/tiny-binary-search/-/tiny-binary-search-1.0.2.tgz#d4c5ccce5aba0b4caee21909193e4b94bab58f45"
 
 to-arraybuffer@^1.0.0:
   version "1.0.1"

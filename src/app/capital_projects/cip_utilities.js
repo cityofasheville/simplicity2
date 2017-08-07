@@ -3049,10 +3049,7 @@ export const getFundsAllocatedAndExpended = (projectData, categories) => {
 
   for (let project of projectData) {
     if ((project.Category.startsWith('CIP') && categories.includes('General CIP')) || categories.includes(project.Category)) {
-      if (project['Total Spent'].trim() !== '') {
-        let expended = project['Total Spent'].indexOf('$') === 0 ? project['Total Spent'].slice(1).split(',').join('') : project['Total Spent'].split(',').join('');
-        totalExpended += parseFloat(expended);
-      }
+      totalExpended += project['LTD Actuals'];
       if (project['Total Project Funding (Budget Document)'].trim() !== '') {
         let allocated = project['Total Project Funding (Budget Document)'].indexOf('$') === 0 ? project['Total Project Funding (Budget Document)'].slice(1).split(',').join('') : project['Total Project Funding (Budget Document)'].split(',').join('');
         totalAllocated += parseFloat(allocated);

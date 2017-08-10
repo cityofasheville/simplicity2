@@ -15,7 +15,6 @@ import { query } from './SLADashboardQueries';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 
 const DevelopmentSLADashboard = (props) => {
-  console.log(props);
   if (props.data.loading) { // eslint-disable-line react/prop-types
     return <LoadingAnimation />;
   }

@@ -52,16 +52,17 @@ const ProjectDetails = (props) => (
       </div>
       <div className="row" style={props.hideTitle ? { marginTop: '15px' } : null}>
         <div className="col-sm-7">
-          <div className="row">
-            <div className="col-sm-12" style={{ marginTop: '5px' }}>
-              <div className="pull-left" style={{ marginRight: '10px', marginBottom: '20px' }}> <a title="View project in story map"><Icon path={IM_SPHERE3} size={20} /> Project Website</a></div>
-              <div className="pull-left"> <a title="View project in story map"><Icon path={IM_MAP5} size={20} /> View in Story Map</a></div>
+          {props['Project Webpage (more information)'] !== '' &&
+            <div className="row">
+              <div className="col-sm-12" style={{ marginTop: '5px' }}>
+                <div className="pull-left" style={{ marginRight: '10px', marginBottom: '20px' }}> <a title="View project in story map" href={props['Project Webpage (more information)']} target="_blank"><Icon path={IM_SPHERE3} size={20} /> Project Website</a></div>
+              </div>
             </div>
-          </div>
+          }
           <div className="row">
             <div className="col-xs-6">
               <div className="text-center" style={{ marginBottom: '10px' }}>
-                <div className="text-primary">
+                <div style={{ color: '#676873' }}>
                   Current Project Budget
                 </div>
                 <div>
@@ -69,7 +70,7 @@ const ProjectDetails = (props) => (
                 </div>
               </div>
               <div className="text-center" style={{ marginBottom: '10px' }}>
-                <div className="text-primary">
+                <div style={{ color: '#676873' }}>
                   Spent
                 </div>
                 <div>
@@ -79,7 +80,7 @@ const ProjectDetails = (props) => (
             </div>
             <div className="col-xs-6">
               <div className="text-center" style={{ marginBottom: '10px' }}>
-                <div className="text-primary">
+                <div style={{ color: '#676873' }}>
                   Zip code
                 </div>
                 <div >
@@ -87,17 +88,17 @@ const ProjectDetails = (props) => (
                 </div>
               </div>
               <div className="text-center" style={{ marginBottom: '20px' }}>
-                <div className="text-primary">
-                  Construction start
+                <div style={{ color: '#676873' }}>
+                  Estimated Construction Timeframe
                 </div>
                 <div>
-                  <strong>{props['Target Construction Start'] || '?'}</strong>
+                  <strong>{props['Estimated Construction Timeframe'] || '?'}</strong>
                 </div>
               </div>
             </div>
           </div>
           <div className="row" style={{ marginBottom: '20px' }}>
-            <div className="text-primary text-center" style={{ marginBottom: '5px' }}>
+            <div className="text-center" style={{ marginBottom: '5px', color: '#676873' }}>
               Project phase
             </div>
             <div className={props.Status === 'Ongoing' ? "col-xs-3" : "col-xs-2"}>

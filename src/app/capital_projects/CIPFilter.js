@@ -25,7 +25,15 @@ const CIPFilter = props => {
     <div>
       <div className="row">
         <div className="col-sm-12">
-          <p style={{ marginTop: '10px' }}>Click or tap on the project categories below to select/deselect the projects to view</p>.
+          <p style={{ marginTop: '10px' }}>Click or tap on the project categories below to select/deselect the projects to view.</p>
+          <p>If you would like a map-based exploration, or wish to search by address, try the
+            <a href="http://arcg.is/Sy5KC" target="_blank" style={{ marginLeft: '5px' }} title="Click to visit Project Map">
+              <button className="btn btn-info btn-sm">
+                Project Map
+              </button>
+            </a>
+            .
+          </p>
         </div>
       </div>
       <div className="row">

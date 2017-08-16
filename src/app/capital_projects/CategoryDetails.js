@@ -18,9 +18,11 @@ const getBondText = (type) => {
     case 'Bond - Parks Program':
       return 'The $17 million for parks projects supports the completion of major improvements to five parks and recreation facilities; acquiring land for parks; and improving outdoor courts, playgrounds and ball field lighting throughout the city.';
     case 'Bond - Housing Program':
-      return 'The $25 million for housing affordability provides additional support for the Housing Trust Fund and other programs that assist in creating diverse and affordable housing choices. It also enables the City to re-purpose city-owned land for development that supports housing affordability';
-    default:
+      return 'The $25 million for housing affordability provides additional support for the Housing Trust Fund and other programs that assist in creating diverse and affordable housing choices. The funding will also be used for the development of affordable housing on key City-owned sites.';
+    case 'General Capital Improvement Program':
       return 'The City’s General CIP includes capital projects in affordable housing, parks & recreation, public safety, transportation & infrastructure, and general government. Projects are funded with a combination of general tax revenue, municipal debt and external grants or partnerships. Ongoing programs and regular maintenance projects may not be represented in this dashboard. For a complete list of general CIP projects, please view the adopted budget document.';
+    default:
+      return 'No categories are selected.'
   }
 };
 
@@ -49,7 +51,6 @@ const CategoryDetails = (props) => {
     if (title.endsWith(',')) {
       title = title.slice(0, -1);
     }
-    title = [title, 'projects'].join(' ');
     return title;
   }
 
@@ -87,7 +88,7 @@ const CategoryDetails = (props) => {
                   {props.categories.map((category, index) => (
                     <p key={['category text', category].join('_')}><span style={{ fontWeight: 'bold' }}>{shortCategory(category)}: </span> {getBondText(category)}</p>
                   ))}
-                  {props.categories.includes('General CIP') &&
+                  {props.categories.includes('General') &&
                     <p><span style={{ fontStyle: 'italic' }}>Please note: Current project budgets include prior year funding and may change throughout the life of the project.</span></p>
                   }
                 </div>
@@ -106,7 +107,7 @@ CategoryDetails.propTypes = {
 };
 
 CategoryDetails.defaultProps = {
-  categories: ['Bond - Transportation Program', 'Bond - Parks Program', 'Bond - Housing Program', 'General CIP']
+  categories: ['Bond - Transportation Program', 'Bond - Parks Program', 'Bond - Housing Program', 'General Capital Improvement Program']
 };
 
 export default CategoryDetails;

@@ -60,7 +60,7 @@ const ProjectDetails = (props) => (
             </div>
           }
           <div className="row">
-            <div className="col-xs-6">
+            <div className="col-xs-5">
               <div className="text-center" style={{ marginBottom: '10px' }}>
                 <div style={{ color: '#676873' }}>
                   Current Project Budget
@@ -69,16 +69,18 @@ const ProjectDetails = (props) => (
                   <strong>{props['Total Project Funding (Budget Document)']}</strong>
                 </div>
               </div>
-              <div className="text-center" style={{ marginBottom: '10px' }}>
-                <div style={{ color: '#676873' }}>
-                  Spent
-                </div>
-                <div>
-                  <strong>{['$', parseInt(props['LTD Actuals']).toLocaleString()].join('')}</strong>
-                </div>
-              </div>         
+              {props['Need PM Fields?'].toLowerCase() === 'yes' &&
+                <div className="text-center" style={{ marginBottom: '10px' }}>
+                  <div style={{ color: '#676873' }}>
+                    Spent
+                  </div>
+                  <div>
+                    <strong>{['$', parseInt(props['LTD Actuals']).toLocaleString()].join('')}</strong>
+                  </div>
+                </div>         
+              }
             </div>
-            <div className="col-xs-6">
+            <div className="col-xs-7">
               <div className="text-center" style={{ marginBottom: '10px' }}>
                 <div style={{ color: '#676873' }}>
                   Zip code
@@ -87,41 +89,62 @@ const ProjectDetails = (props) => (
                   <strong>{props['Zip Code'] || '?'}</strong>
                 </div>
               </div>
-              <div className="text-center" style={{ marginBottom: '20px' }}>
-                <div style={{ color: '#676873' }}>
-                  Estimated Construction Timeframe
+              {props['Need PM Fields?'].toLowerCase() === 'yes' &&
+                <div className="text-center" style={{ marginBottom: '20px' }}>
+                  <div style={{ color: '#676873' }}>
+                    Estimated Construction Timeframe
+                  </div>
+                  <div>
+                    <strong>{props['Estimated Construction Timeframe'] || '?'}</strong>
+                  </div>
                 </div>
-                <div>
-                  <strong>{props['Estimated Construction Timeframe'] || '?'}</strong>
-                </div>
-              </div>
+              }
             </div>
           </div>
-          <div className="row" style={{ marginBottom: '20px' }}>
-            <div className="text-center" style={{ marginBottom: '5px', color: '#676873' }}>
-              Project phase
-            </div>
-            <div className={props.Status === 'Ongoing' ? "col-xs-3" : "col-xs-2"}>
-              <Icon path={IM_CIRCLE2} size={25} color={getStageNumber(props.Status) >= 1 ? phaseColor(1) : '#ecf0f1'} />
-            </div>
-            <div className={props.Status === 'Ongoing' ? "col-xs-3" : "col-xs-2"}>
-              <Icon path={IM_CIRCLE2} size={25}  color={getStageNumber(props.Status) >= 2 ? phaseColor(2) : '#ecf0f1'} />
-            </div>
-            <div className={props.Status === 'Ongoing' ? "col-xs-3" : "col-xs-2"}>
-              <Icon path={IM_CIRCLE2} size={25}  color={props.Status === 'Ongoing' ? '#FFC107' : getStageNumber(props.Status) >= 3 ? phaseColor(3) : '#ecf0f1'} />
-            </div>
-            {props.Status !== 'Ongoing' &&
-              <div className="col-xs-2">
-                <Icon path={IM_CIRCLE2} size={25} color={getStageNumber(props.Status) >= 4 ? phaseColor(4) : '#ecf0f1'} style={{ marginRight: '5px' }} />
+          {props['Need PM Fields?'].toLowerCase() === 'yes' &&
+            <div className="row">
+              <div className="text-center" style={{ marginBottom: '5px', color: '#676873' }}>
+                Project phase
               </div>
-            }
-            <div className="col-xs-2" style={{ color: props.Status === 'Ongoing' ? '#FFC107' : phaseColor(getStageNumber(props.Status)), fontWeight: 'bold' }}>
-              {props.Status === 'Ongoing' ? props.Status : props.Status.split(': ')[1]}
+              <div className={props.Status === 'Ongoing' ? "col-xs-3" : "col-xs-2"}>
+                <Icon path={IM_CIRCLE2} size={25} color={getStageNumber(props.Status) >= 1 ? phaseColor(1) : '#ecf0f1'} />
+              </div>
+              <div className={props.Status === 'Ongoing' ? "col-xs-3" : "col-xs-2"}>
+                <Icon path={IM_CIRCLE2} size={25}  color={getStageNumber(props.Status) >= 2 ? phaseColor(2) : '#ecf0f1'} />
+              </div>
+              <div className={props.Status === 'Ongoing' ? "col-xs-3" : "col-xs-2"}>
+                <Icon path={IM_CIRCLE2} size={25}  color={props.Status === 'Ongoing' ? '#FFC107' : getStageNumber(props.Status) >= 3 ? phaseColor(3) : '#ecf0f1'} />
+              </div>
+              {props.Status !== 'Ongoing' &&
+                <div className="col-xs-2">
+                  <Icon path={IM_CIRCLE2} size={25} color={getStageNumber(props.Status) >= 4 ? phaseColor(4) : '#ecf0f1'} style={{ marginRight: '5px' }} />
+                </div>
+              }
+              <div className="col-xs-2" style={{ color: props.Status === 'Ongoing' ? '#FFC107' : phaseColor(getStageNumber(props.Status)), fontWeight: 'bold' }}>
+                {props.Status === 'Ongoing' ? props.Status : props.Status.split(': ')[1]}
+              </div>
             </div>
-          </div>
+          }
           <div className="row">
             <div className="col-sm-12" style={{ marginTop: '20px', marginBottom: '10px' }}>
+              <hr />
+              {props['Need PM Fields?'].toLowerCase() === 'no' &&
+                <div>
+                  <i>This project is not managed by the city, but City contributions form part of the project funding.</i>
+                  <hr />
+                </div>
+              }
               {props['Project Description']}
+              <hr />
+              <div>
+                <label for="contact">Project contact:&nbsp;</label><span name="contact">{props['COA Contact']}</span>
+              </div>
+              <div>
+                <label for="contact_phone">Contact phone:&nbsp;</label><span name="contact_phone">{props['Phone Number']}</span>
+              </div>
+              <div>
+                <label for="contact_email">Contact email:&nbsp;</label><span name="contact_email">{props['Email Address']}</span>
+              </div>
             </div>
           </div>
         </div>

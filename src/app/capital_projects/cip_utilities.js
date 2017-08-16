@@ -1929,7 +1929,7 @@ export const getPhasePieChartData = (projectData, categories) => {
   let numOngoing = 0;
 
   for (let project of projectData) {
-    if ((project.Category.startsWith('CIP') && categories.includes('General CIP')) || categories.includes(project.Category)) {
+    if ((project.Category.startsWith('CIP') && categories.includes('General Capital Improvement Program')) || categories.includes(project.Category)) {
       switch(project.Status) {
         case 'Status: Planning':
           numInPlanning += 1;
@@ -1966,7 +1966,7 @@ export const getFundsAllocatedAndExpended = (projectData, categories) => {
   let totalAllocated = 0;
 
   for (let project of projectData) {
-    if ((project.Category.startsWith('CIP') && categories.includes('General CIP')) || categories.includes(project.Category)) {
+    if ((project.Category.startsWith('CIP') && categories.includes('General Capital Improvement Program')) || categories.includes(project.Category)) {
       totalExpended += project['LTD Actuals'];
       if (project['Total Project Funding (Budget Document)'].trim() !== '') {
         let allocated = project['Total Project Funding (Budget Document)'].indexOf('$') === 0 ? project['Total Project Funding (Budget Document)'].slice(1).split(',').join('') : project['Total Project Funding (Budget Document)'].split(',').join('');
@@ -1981,7 +1981,7 @@ export const getFundsAllocatedAndExpended = (projectData, categories) => {
 export const filterProjects = (projects, categories) => {
   const filteredProjects = [];
   for (let project of projects) {
-    if (project.Category.startsWith('CIP') && categories.includes('General CIP')) {
+    if (project.Category.startsWith('CIP') && categories.includes('General Capital Improvement Program')) {
       filteredProjects.push(project);
     } else if (categories.includes(project.Category)) {
       filteredProjects.push(project);
@@ -1998,7 +1998,7 @@ export const urlCategory = (category) => {
       return 'parks';
     case 'Bond - Housing Program':
       return 'housing';
-    case 'General CIP':
+    case 'General Capital Improvement Program':
       return 'general_cip';
     default:
       return 'Project';
@@ -2013,8 +2013,8 @@ export const shortCategory = (category) => {
       return 'Parks Bonds';
     case 'Bond - Housing Program':
       return 'Housing Bonds';
-    case 'General CIP':
-      return 'General CIP';
+    case 'General Capital Improvement Program':
+      return 'General Capital Improvement Program';
     default:
       return 'Project';
   }
@@ -2029,6 +2029,6 @@ export const longCategory = (category) => {
     case 'housing':
       return 'Bond - Housing Program';
     case 'general_cip':
-      return 'General CIP';
+      return 'General Capital Improvement Program';
   }
 };

@@ -54,7 +54,7 @@ CIPFilter.propTypes = {
 
 CIPFilter.defaultProps = {
   selected: ['Bond - Transportation Program'],
-  categories: ['Bond - Transportation Program', 'Bond - Parks Program', 'Bond - Housing Program', 'General CIP'],
+  categories: ['General Capital Improvement Program', 'Bond - Transportation Program', 'Bond - Parks Program', 'Bond - Housing Program' ],
 }
 
 export default CIPFilter;

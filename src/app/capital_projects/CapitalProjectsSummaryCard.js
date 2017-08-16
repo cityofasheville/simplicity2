@@ -11,7 +11,7 @@ const CapitalProjectsSummaryCard = props => (
       <div style={{ backgroundColor: props.selected ? '#d3f1ff' : '#eeeeee', paddingTop: '15px' }}>
         <div className="text-center text-primary" style={{ minHeight: '45px' }}>
           <input type="checkbox" aria-label={[props.category, 'projects'].join(' ')} label={[props.category, 'projects'].join(' ')} value={props.category} checked={props.selected} readOnly />
-          <span>{props.category.startsWith('Bond -') ? [props.category.split(' - ')[1].slice(0, -8), 'bond'].join(' ') : props.category} projects</span>
+          <span>{props.category.startsWith('Bond -') ? [props.category.split(' - ')[1].slice(0, -8), 'bond'].join(' ') : props.category}</span>
         </div>
       </div>
     </div>

@@ -125,7 +125,11 @@ class HomelessnessVeteransEnrollment extends React.Component {
     return (
       <div>
         <h3>Veterans on the by-name list</h3>
-          Short explanation of this chart coming soon.
+        <p>
+          The Veteran By-Name List is a comprehensive list of homeless Veterans in the community that is populated through information from street and VA outreach, HMIS, community shelters, VA-funded programs including GPD providers, and any other provider who may work with Veterans experiencing homelessness. The list is updated regularly – in most cases, daily – in order to ensure it has the most up-to-date information.
+        </p>
+        <p>
+          A by-name is not a waiting list – Veterans on this list may already be accessing programs, waiting for a housing unit, have entered a transitional program, declined assistance or may self-resolve their homelessness. The by-name list is used at the Veteran Coordination Assessment meeting (V-CAM) which is a regular case conferencing meeting to determine where Veterans actually are in our homeless assistance system, who needs to be prioritized for services and/or housing and what barriers need to be removed to get them.
           <br />
           <a href="javascript:void(0);" className="text-center inText" onClick={() => this.toggleDefinitions()}>
             {this.state.showingDefinitions ? 'Hide' : 'Show'} by-name list definitions
@@ -154,7 +158,7 @@ class HomelessnessVeteransEnrollment extends React.Component {
                     <strong>Other</strong>
                   </div>
                   <div>
-                    Definition needs to be added
+                    This category covers Veterans that have been outreached, identified and placed on the by-name list but who may be temporarily in an institutional setting like an inpatient treatment center or hospital or detained in the local jail so they cannot be fully engaged in housing related services until current issue is resolved.
                   </div>
                 </li>
                 <li>
@@ -176,6 +180,7 @@ class HomelessnessVeteransEnrollment extends React.Component {
               </ul>
             </p>
           </div>
+        </p>
         <div className="row">
           <div className="col-sm-12">
             <AreaChartContainer data={this.props.data} mainAxisDataKey="month" dataKeys={this.props.dataKeys} altText={'Area chart of Veterans on the by-name list'} colorScheme="bright_colors_2" />

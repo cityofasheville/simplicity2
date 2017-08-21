@@ -18,6 +18,7 @@ class ProjectMap extends React.Component{
       if (featureCollection !== null && featureCollection.features.length > 0) {
         const features = L.geoJSON(featureCollection.features).addTo(map);
         const bounds = features.getBounds();
+        features.bindPopup((layer) => (L.Util.template('<p>{NAME}<br>LAT: {LAT}<br>LONG: {LONG}</p>', layer.feature.properties)));
         map.fitBounds(bounds);
       }
     });

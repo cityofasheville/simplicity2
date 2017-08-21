@@ -9,20 +9,22 @@ import ProjectExpendedBarChart from './ProjectExpendedBarChart';
 import PageHeader from '../../shared/PageHeader';
 import ButtonGroup from '../../shared/ButtonGroup';
 import LinkButton from '../../shared/LinkButton';
-import { testProjectData, getPhasePieChartData, getFundsAllocatedAndExpended, shortCategory, filterProjects } from './cip_utilities';
+import { testProjectData, getPhasePieChartData, getFundsAllocatedAndExpended, filterProjects } from './cip_utilities';
 
-const getBondText = (type) => {
+const getBondText = (type, mode) => {
   switch (type) {
-    case 'Bond - Transportation Program':
-      return 'The $32 million for transportation projects supports the completion of road resurfacing and sidewalk improvements; new sidewalk and greenway projects; and pedestrian safety projects such as bus shelters, accessible crossings, signals, and traffic calming.';
-    case 'Bond - Parks Program':
-      return 'The $17 million for parks projects supports the completion of major improvements to five parks and recreation facilities; acquiring land for parks; and improving outdoor courts, playgrounds and ball field lighting throughout the city.';
-    case 'Bond - Housing Program':
-      return 'The $25 million for housing affordability provides additional support for the Housing Trust Fund and other programs that assist in creating diverse and affordable housing choices. The funding will also be used for the development of affordable housing on key City-owned sites.';
-    case 'General Capital Improvement Program':
-      return 'The City’s General CIP includes capital projects in affordable housing, parks & recreation, public safety, transportation & infrastructure, and general government. Projects are funded with a combination of general tax revenue, municipal debt and external grants or partnerships. Ongoing programs and regular maintenance projects may not be represented in this dashboard. For a complete list of general CIP projects, please view the adopted budget document.';
+    case 'Transportation':
+      return 'Transportation projects are funded with a combination of general tax revenue, municipal debt and external grants or partnerships. The $32 million from the 2016 Bond referendum for transportation projects supports the completion of road resurfacing and sidewalk improvements; new sidewalk and greenway projects; and pedestrian safety projects such as bus shelters, accessible crossings, signals, and traffic calming.';
+    case 'Parks':
+      return 'Parks & recreation projects are funded with a combination of general tax revenue, municipal debt and external grants or partnerships. The $17 million from the 2016 Bond referendum for parks projects supports the completion of major improvements to five parks and recreation facilities; acquiring land for parks; and improving outdoor courts, playgrounds and ball field lighting throughout the city.';
+    case 'Housing':
+      return 'Projects relating to affordable housing are funded with a combination of general tax revenue, municipal debt and external grants or partnerships. The $25 million from the 2016 Bond referendum for housing affordability projects provides additional support for the Housing Trust Fund and other programs that assist in creating diverse and affordable housing choices. The funding will also be used for the development of affordable housing on key City-owned sites.';
+    case 'Public Safety':
+      return 'Public Safety summary';
+    case 'Other':
+      return 'Other summary';
     default:
-      return 'No categories are selected.'
+      return 'The City’s General CIP includes capital projects in affordable housing, parks & recreation, public safety, transportation & infrastructure, and general government. Projects are funded with a combination of general tax revenue, municipal debt and external grants or partnerships. Ongoing programs and regular maintenance projects may not be represented in this dashboard. For a complete list of general CIP projects, please view the adopted budget document.'
   }
 };
 
@@ -40,13 +42,20 @@ const getDollarsLong = value => (
 );
 
 const CategoryDetails = (props) => {
-  const filteredProjects = filterProjects(testProjectData, props.categories);
-  const pieData = getPhasePieChartData(filteredProjects, props.categories);
-  const fundingDetails = getFundsAllocatedAndExpended(filteredProjects, props.categories);
+  let actualCategories = Array.from(props.categories);
+  if (props.location.query.mode === 'bond') {
+    actualCategories = actualCategories.filter((cat) => (['Transportation', 'Parks', 'Housing'].includes(cat)));
+  }
+  const sortedCats = ['Transportation', 'Housing', 'Parks', 'Public Safety', 'Other'];
+  actualCategories.sort((a,b) => sortedCats.indexOf(a) > sortedCats.indexOf(b));
+
+  const filteredProjects = filterProjects(testProjectData, actualCategories, props.location.query.mode);
+  const pieData = getPhasePieChartData(filteredProjects, actualCategories, props.location.query.mode);
+  const fundingDetails = getFundsAllocatedAndExpended(filteredProjects, actualCategories, props.location.query.mode);
   const getTitle = () => {
     let title = '';
-    for (let category of props.categories) {
-      title = [title, ' ', shortCategory(category), ','].join('');
+    for (let category of actualCategories) {
+      title = [title, ' ', category, ','].join('');
     }
     if (title.endsWith(',')) {
       title = title.slice(0, -1);
@@ -85,11 +94,14 @@ const CategoryDetails = (props) => {
               </div>
               <div className="row">
                 <div className="col-sm-12">
-                  {props.categories.map((category, index) => (
-                    <p key={['category text', category].join('_')}><span style={{ fontWeight: 'bold' }}>{shortCategory(category)}: </span> {getBondText(category)}</p>
+                  {actualCategories.map((category, index) => (
+                    <p key={['category text', category].join('_')}><span style={{ fontWeight: 'bold' }}>{category}: </span> {getBondText(category, props.location.query.mode)}</p>
                   ))}
-                  {props.categories.includes('General') &&
-                    <p><span style={{ fontStyle: 'italic' }}>Please note: Current project budgets include prior year funding and may change throughout the life of the project.</span></p>
+                  {props.location.query.mode !== 'bond' &&
+                    <div>
+                      <p><span style={{ fontStyle: 'italic' }}>Please note: Current project budgets include prior year funding and may change throughout the life of the project.</span></p>
+                      <p><span style={{ fontStyle: 'italic' }}>Ongoing programs and regular maintenance projects may not be represented in this dashboard. For a complete list including ongoing and maintenance projects within the City's General CIP, please view the adopted <a className="inText" href="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=28348#page=146%20" target="_blank">FY 17-18 Annual Budget</a>.</span></p>
+                    </div>
                   }
                 </div>
               </div>
@@ -107,7 +119,7 @@ CategoryDetails.propTypes = {
 };
 
 CategoryDetails.defaultProps = {
-  categories: ['Bond - Transportation Program', 'Bond - Parks Program', 'Bond - Housing Program', 'General Capital Improvement Program']
+  categories: ['Housing', 'Transportation', 'Parks', 'Public Safety', 'Other'],
 };
 
 export default CategoryDetails;

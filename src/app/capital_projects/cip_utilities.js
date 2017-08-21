@@ -1921,7 +1921,7 @@ export const testProjectData = [
  }
 ];
 
-export const getPhasePieChartData = (projectData, categories) => {
+export const getPhasePieChartData = (projectData, categories, mode) => {
   let numInPlanning = 0;
   let numInDesign = 0;
   let numInConstruction = 0;
@@ -1929,22 +1929,26 @@ export const getPhasePieChartData = (projectData, categories) => {
   let numOngoing = 0;
 
   for (let project of projectData) {
-    if ((project.Category.startsWith('CIP') && categories.includes('General Capital Improvement Program')) || categories.includes(project.Category)) {
-      switch(project.Status) {
-        case 'Status: Planning':
-          numInPlanning += 1;
-          break;
-        case 'Status: Design':
-          numInDesign += 1;
-          break;
-        case 'Status: Construction':
-          numInConstruction += 1;
-          break;
-        case 'Status: Completed':
-          numCompleted += 1;
-          break;
-        default:
-          numOngoing += 1;
+    if (categories.includes(mapProjectToCategory(project, categories))) {
+      if (mode !== 'bond' ||
+        ( mode === 'bond' && ['Bond - Parks Program', 'Bond - Housing Program', 'Bond - Transportation Program'].includes(project.Category) )
+      ) {
+        switch(project.Status) {
+          case 'Status: Planning':
+            numInPlanning += 1;
+            break;
+          case 'Status: Design':
+            numInDesign += 1;
+            break;
+          case 'Status: Construction':
+            numInConstruction += 1;
+            break;
+          case 'Status: Completed':
+            numCompleted += 1;
+            break;
+          default:
+            numOngoing += 1;
+        }
       }
     }
   }
@@ -1961,16 +1965,41 @@ export const getPhasePieChartData = (projectData, categories) => {
   return pieData;
 }
 
-export const getFundsAllocatedAndExpended = (projectData, categories) => {
+export const mapProjectToCategory = (projectData, category) => {
+  switch (projectData.Category) {
+    case 'Bond - Parks Program':
+      return 'Parks';
+    case 'Bond - Transportation Program':
+      return 'Transportation';
+    case 'Bond - Housing Program':
+      return 'Housing';
+    case 'CIP - Transportation & Infrastructure':
+      return 'Transportation';
+    case 'CIP - Affordable Housing':
+      return 'Housing';
+    case 'CIP - Public Safety':
+      return 'Public Safety';
+    case 'CIP - Parks & Recreation':
+      return 'Parks';
+    default:
+      return 'Other';
+  }
+}
+
+export const getFundsAllocatedAndExpended = (projectData, categories, mode) => {
   let totalExpended = 0;
   let totalAllocated = 0;
 
   for (let project of projectData) {
-    if ((project.Category.startsWith('CIP') && categories.includes('General Capital Improvement Program')) || categories.includes(project.Category)) {
-      totalExpended += project['LTD Actuals'];
-      if (project['Total Project Funding (Budget Document)'].trim() !== '') {
-        let allocated = project['Total Project Funding (Budget Document)'].indexOf('$') === 0 ? project['Total Project Funding (Budget Document)'].slice(1).split(',').join('') : project['Total Project Funding (Budget Document)'].split(',').join('');
-        totalAllocated += parseFloat(allocated);
+    if (categories.includes(mapProjectToCategory(project, categories))) {
+      if (mode !== 'bond' ||
+        ( mode === 'bond' && ['Bond - Parks Program', 'Bond - Housing Program', 'Bond - Transportation Program'].includes(project.Category) )
+      ) {
+        totalExpended += project['LTD Actuals'];
+        if (project['Total Project Funding (Budget Document)'].trim() !== '') {
+          let allocated = project['Total Project Funding (Budget Document)'].indexOf('$') === 0 ? project['Total Project Funding (Budget Document)'].slice(1).split(',').join('') : project['Total Project Funding (Budget Document)'].split(',').join('');
+          totalAllocated += parseFloat(allocated);
+        }
       }
     }
   }
@@ -1978,13 +2007,17 @@ export const getFundsAllocatedAndExpended = (projectData, categories) => {
   return [{allocated: parseInt(totalAllocated), 'Expended funds': parseInt(totalExpended), 'Remaining funds': parseInt(totalAllocated) - parseInt(totalExpended)}];
 };
 
-export const filterProjects = (projects, categories) => {
+export const filterProjects = (projects, categories, mode) => {
   const filteredProjects = [];
   for (let project of projects) {
-    if (project.Category.startsWith('CIP') && categories.includes('General Capital Improvement Program')) {
-      filteredProjects.push(project);
-    } else if (categories.includes(project.Category)) {
-      filteredProjects.push(project);
+    if (categories.includes(mapProjectToCategory(project, categories))) {
+      if (mode === 'bond') {
+        if (['Bond - Parks Program', 'Bond - Housing Program', 'Bond - Transportation Program'].includes(project.Category)) {
+          filteredProjects.push(project);
+        }
+      } else {
+        filteredProjects.push(project);
+      }
     }
   }
   return filteredProjects;
@@ -1992,43 +2025,30 @@ export const filterProjects = (projects, categories) => {
 
 export const urlCategory = (category) => {
   switch (category) {
-    case 'Bond - Transportation Program':
+    case 'Transportation':
       return 'transportation';
-    case 'Bond - Parks Program':
+    case 'Parks':
       return 'parks';
-    case 'Bond - Housing Program':
+    case 'Housing':
       return 'housing';
-    case 'General Capital Improvement Program':
-      return 'general_cip';
+    case 'Public Safety':
+      return 'public_safety';
     default:
-      return 'Project';
+      return 'other';
   } 
 }
-
-export const shortCategory = (category) => {
-  switch (category) {
-    case 'Bond - Transportation Program':
-      return 'Transportation Bonds';
-    case 'Bond - Parks Program':
-      return 'Parks Bonds';
-    case 'Bond - Housing Program':
-      return 'Housing Bonds';
-    case 'General Capital Improvement Program':
-      return 'General Capital Improvement Program';
-    default:
-      return 'Project';
-  }
-};
 
 export const longCategory = (category) => {
   switch (category.toLowerCase()) {
     case 'transportation':
-      return 'Bond - Transportation Program';
+      return 'Transportation';
     case 'parks':
-      return 'Bond - Parks Program';
+      return 'Parks';
     case 'housing':
-      return 'Bond - Housing Program';
-    case 'general_cip':
-      return 'General Capital Improvement Program';
+      return 'Housing';
+    case 'public_safety':
+      return 'Public Safety';
+    default:
+      return 'Other';
   }
 };

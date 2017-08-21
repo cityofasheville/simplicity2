@@ -9,7 +9,7 @@ const CapitalProjectsSummary = props => {
   const selectedArr = [];
   const getSelected = () => {
     if (props.location.query.selected === undefined || props.location.query.selected.length === 0) {
-      return ['General Capital Improvement Program', 'Bond - Transportation Program', 'Bond - Parks Program', 'Bond - Housing Program'];
+      return ['Transportation', 'Housing', 'Parks', 'Public Safety', 'Other'];
     } else {
       const selected = props.location.query.selected.split(',');
       for (let category of selected) {

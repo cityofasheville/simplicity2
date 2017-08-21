@@ -137,19 +137,19 @@ const ProjectDetails = (props) => (
               {props['Project Description']}
               <hr />
               <div>
-                <label for="contact">Project contact:&nbsp;</label><span name="contact">{props['COA Contact']}</span>
+                <label htmlFor="contact">Project contact:&nbsp;</label><span name="contact">{props['COA Contact']}</span>
               </div>
               <div>
-                <label for="contact_phone">Contact phone:&nbsp;</label><span name="contact_phone">{props['Phone Number']}</span>
+                <label htmlFor="contact_phone">Contact phone:&nbsp;</label><span name="contact_phone">{props['Phone Number']}</span>
               </div>
               <div>
-                <label for="contact_email">Contact email:&nbsp;</label><span name="contact_email">{props['Email Address']}</span>
+                <label htmlFor="contact_email">Contact email:&nbsp;</label><span name="contact_email">{props['Email Address']}</span>
               </div>
             </div>
           </div>
         </div>
         <div className="col-sm-5">
-          <ProjectMap display_name={props['Display Name']} />
+          <ProjectMap name={props['Project']} />
           {/*<Map center={[35.5951005, -82.5487476]} zoom={13} style={{ height: '230px', width: '100%', marginBottom: '15px' }}>
             <TileLayer
               url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"

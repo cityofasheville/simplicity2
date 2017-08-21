@@ -84,7 +84,7 @@ const dataColumns = [
   //   className: 'hidden-xs',
   // },
   {
-    Header: (<div>Approved<br />project budget</div>),
+    Header: (<div>Current<br />project budget</div>),
     accessor: 'Total Project Funding (Budget Document)',
     maxWidth: 120,
     headerClassName: 'hidden-xs',

@@ -35,6 +35,10 @@
   }
 }
 
+.alert-sm {
+  padding: $alert-padding * 0.6;
+}
+
 // Dismissible alerts
 //
 // Expand the right padding and account for the close button's positioning.

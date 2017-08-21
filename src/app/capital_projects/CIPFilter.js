@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { browserHistory } from 'react-router';
+import Toggle from 'react-toggle';
 import { urlCategory, longCategory } from './cip_utilities';
 import CapitalProjectsSummaryCard from './CapitalProjectsSummaryCard';
 
@@ -21,19 +22,20 @@ const CIPFilter = props => {
     browserHistory.push([props.location.pathname, '?view=', props.location.query.view || 'summary', "&selected=", newSelected.join(','), '&hideNavbar=', props.location.query.hideNavbar].join(''));
   }
 
+  const toggleMode = () => {
+    browserHistory.push([props.location.pathname, '?view=', props.location.query.view || 'summary', '&selected=', props.location.query.selected, '&hideNavbar=', props.location.query.hideNavbar, '&mode=', props.location.query.mode === 'bond' ? 'all' : 'bond'].join(''));
+  }
+
   return (
     <div>
       <div className="row">
-        <div className="col-sm-12">
-          <p style={{ marginTop: '10px' }}>Click or tap on the project categories below to select/deselect the projects to view.</p>
-          <p>If you would like a map-based exploration, or wish to search by address, try the
-            <a href="http://arcg.is/Sy5KC" target="_blank" style={{ marginLeft: '5px' }} title="Click to visit Project Map">
-              <button className="btn btn-info btn-sm">
-                Project Map
-              </button>
-            </a>
-            .
-          </p>
+        <div className="col-sm-6">
+          <label>
+            <span style={{ fontSize: '26px', fontWeight: 'normal', marginRight: '10px', color: props.location.query.mode === 'bond' ? '#16abe4' : '#c5c5c5' }}>Include only bond projects</span>
+            <Toggle
+              defaultChecked={props.location.query.mode === 'bond'} 
+              onChange={toggleMode} />
+          </label>
         </div>
       </div>
       <div className="row">

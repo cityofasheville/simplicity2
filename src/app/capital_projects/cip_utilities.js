@@ -302,7 +302,7 @@ export const testProjectData = [
  {
    "GIS_ID": "B160037",
    "MUNIS Project Number": "",
-   "Project": "Affordable Housing Investments",
+   "Project": "Affordable Housing On City-Owned Property",
    "Display Name": "Affordable Housing Investments",
    "Location Details": "Citywide",
    "Zip Code": "Citywide",

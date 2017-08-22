@@ -27,8 +27,8 @@ Topics.defaultProps = {
   topics: [
     'BUDGET',
     'CAPITAL_PROJECTS',
-    'CRIME',
-    'DEVELOPMENT',
+    //'CRIME',
+    //'DEVELOPMENT',
     'HOMELESSNESS',
   ],
 };

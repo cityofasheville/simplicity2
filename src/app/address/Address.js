@@ -74,7 +74,7 @@ const Address = (props) => {
             <DetailsIconLinkGrouping dataLabels={['Property', 'Maintenance']} dataTitles={['Property', 'Maintenance']} dataHrefs={['/property/properties', '/maintenance?entity=address']} dataIcons={['home', 'road']} />
           </fieldset>
         </div>
-        <div className="col-sm-6">
+        {/*<div className="col-sm-6">
           <div className="row">
             {['CRIME', 'DEVELOPMENT'].map((topic, i) => (
               <div className="col-xs-6" key={['topic', i]}>
@@ -82,7 +82,7 @@ const Address = (props) => {
               </div>
             ))}
           </div>
-        </div>
+        </div>*/}
       </div>
     </div>
   );

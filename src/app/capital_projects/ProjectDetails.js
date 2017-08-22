@@ -150,17 +150,6 @@ const ProjectDetails = (props) => (
         </div>
         <div className="col-sm-5">
           <ProjectMap name={props['Project']} />
-          {/*<Map center={[35.5951005, -82.5487476]} zoom={13} style={{ height: '230px', width: '100%', marginBottom: '15px' }}>
-            <TileLayer
-              url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
-              attribution="&copy: <a href='http://osm.org/copyright'>OpenStreetMap</a> constributors"
-            />
-            <Marker position={[35.5951005, -82.5487476,15]}>
-              <Popup>
-                <span>{props.name}</span>
-              </Popup>
-            </Marker>
-          </Map>*/}
           <a href={props['Photo URL']} target="_blank">
             <img className="img-responsive" src={props['Photo URL']} />
           </a>

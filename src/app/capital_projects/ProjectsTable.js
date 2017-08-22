@@ -53,36 +53,7 @@ const dataColumns = [
     id: 'Status',
     accessor: (project) => (project['Need PM Fields?'].toLowerCase() === 'no' ? '--' : (project.Status.indexOf('Status: ') > -1 ? project.Status.split(': ')[1] : project.Status)),
     maxWidth: 120,
-    // Cell: row => (
-    //   <span style={{ whiteSpace: 'normal' }}>
-    //     <span style={{ marginRight: row.value !== 'Ongoing' ? '5px' : '12px' }}>
-    //       <Icon path={IM_CIRCLE2} color={getStageNumber(row.value) >= 1 ? phaseColor(1) : '#ecf0f1'} />
-    //     </span>
-    //     <span style={{ marginRight: row.value !== 'Ongoing' ? '5px' : '12px' }}>
-    //       <Icon path={IM_CIRCLE2}  color={getStageNumber(row.value) >= 2 ? phaseColor(2) : '#ecf0f1'} />
-    //     </span>
-    //     <span style={{ marginRight: row.value !== 'Ongoing' ? '5px' : '12px' }}>
-    //       <Icon path={IM_CIRCLE2} color={row.value === 'Ongoing' ? 
-    //         '#FFC107' : getStageNumber(row.value) >= 3 ? phaseColor(3) : '#ecf0f1'} />
-    //     </span>
-    //     {row.value !== 'Ongoing' &&
-    //       <span style={{ marginRight: '5px' }}>
-    //         <Icon path={IM_CIRCLE2} color={getStageNumber(row.value) >= 4 ? phaseColor(4) : '#ecf0f1'} style={{ marginRight: '5px' }} />
-    //       </span>
-    //     }
-    //     <span style={{ marginLeft: '5px', color: row.value === 'Ongoing' ? '#FFC107' : phaseColor(getStageNumber(row.value)) }}>
-    //       {row.value}
-    //     </span>
-    //   </span>
-    // ),
   },
-  // {
-  //   Header: (<div>Construction<br />start</div>),
-  //   accessor: 'Target Construction Start',
-  //   maxWidth: 110,
-  //   headerClassName: 'hidden-xs',
-  //   className: 'hidden-xs',
-  // },
   {
     Header: (<div>Current<br />project budget</div>),
     accessor: 'Total Project Funding (Budget Document)',
@@ -126,7 +97,7 @@ const ProjectsTable = props => (
             filterable
             defaultFilterMethod={(filter, row, column) => {
               const id = filter.pivotId || filter.id
-              return row[id] !== undefined ? String(row[id]).toLowerCase().startsWith(filter.value.toLowerCase()) : true
+              return row[id] !== undefined ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true
             }}
             getTrProps={(state, rowInfo) => {
               return {

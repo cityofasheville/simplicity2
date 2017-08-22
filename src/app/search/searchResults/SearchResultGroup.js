@@ -1,24 +1,34 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
+import ReactTable from 'react-table';
 import Icon from '../../../shared/Icon';
 import { IM_SHIELD3, IM_OFFICE, IM_ROAD, IM_USER, IM_USERS, IM_LOCATION, IM_HOME2, IM_QUESTION, IM_ARROW_RIGHT2, IM_ARROW_DOWN2 } from '../../../shared/iconConstants';
-import SearchResult from './SearchResult';
 import styles from './searchResultGroup.css';
-import stylesResult from './searchResult.css';
 
-class SearchResultGroup extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { resultsToShow: 3, numResults: props.results.length, focusedIndex: -1 };
-    this.show3More = this.show3More.bind(this);
+const getLink = (type, id, label) => {
+  switch (type) {
+    case 'address':
+      return `/address?label=${label}&id=${id}`;
+    case 'property':
+      return `/property?label=${label}&id=${id}`;
+    case 'street':
+      return `/street?label=${label}&id=${id}`;
+    case 'neighborhood':
+      return `/neighborhood?label=${label}&id=${id}`;
+    case 'permit':
+      return `/development/detail?label=${label}&id=${id}`;
+    case 'crime':
+      return `/crime/detail?label=${label}&id=${id}`;
+    case 'owner':
+      return `/owner?label=${label}&id=${id}`;
+    default:
+      return '/';
   }
+};
 
-  componentDidUpdate() {
-    this.focusedItem.focus();
-  }
-
-  getIcon(type) {
+const SearchResultGroup = (props) => {
+  const getIcon = (type) => {
     switch (type) {
       case 'address':
         return (<span style={{ marginRight: '5px' }}><Icon path={IM_LOCATION} size={26} /></span>);
@@ -39,56 +49,43 @@ class SearchResultGroup extends React.Component {
     }
   }
 
-  show3More(ev) {
-    if (ev.nativeEvent.screenX === 0 &&
-      ev.nativeEvent.screenY === 0 &&
-      ev.nativeEvent.clientX === 0 &&
-      ev.nativeEvent.clientY === 0
-    ) {
-      // then "click" activated by enter key
-      this.setState({ focusedIndex: this.state.resultsToShow });
-    } else {
-      this.setState({ focusedIndex: -1 });
-    }
-    this.setState({ resultsToShow: this.state.resultsToShow += 3 });
-  }
+  const dataColumns = [
+    {
+      headerStyle: { boxShadow: 'none' },
+      Header: <h2 className="pull-left">
+        {getIcon(props.data.type)}
+        {props.data.label}
+        <span className="offscreen">Number of results</span>
+        <span className="badge">{props.data.results.length}</span>
+        </h2>,
+      accessor: 'label',
+      Cell: (row) => (
+        <a href={getLink(row.original.type, row.original.id, row.original.label)}>
+          <span className="text-primary" style={{ marginLeft: '20px' }}>
+            {getIcon(row.original.type)}
+            {row.value}
+          </span>
+        </a>
+      )
+    },
+  ];
 
-  // the javascript:void(0) is for screenreaders/letting link be tabbable without href
-  render() {
-    return (
-      <div className={['col-xs-12', styles.searchResultGroup].join(' ')}>
-        <h2>
-          {this.getIcon(this.props.type)}
-          {this.props.label}
-          <span className="offscreen">Number of results</span>
-          <span className="badge">{this.props.count}</span>
-        </h2>
-        {
-          this.props.results.slice(0, this.state.resultsToShow).map((result, index) => (
-            <SearchResult
-              key={result.id}
-              id={result.id}
-              type={result.type}
-              label={result.label}
-              ref={this.state.focusedIndex === index ? (focusedItem) => { this.focusedItem = focusedItem; } : null}
-            >
-              {result.label}
-            </SearchResult>
-          ))
-        }
-        {this.state.resultsToShow < this.state.numResults &&
-          <Link onClick={this.show3More} to="javascript:void(0)" className={stylesResult.searchResult}>
-            <div className="form-group">
-              <div className={['form-control', stylesResult.searchResultDiv].join(' ')}>
-                More
-                <div className="pull-right"><Icon path={IM_ARROW_DOWN2} size={26} /></div>
-              </div>
-            </div>
-          </Link>
-        }
-      </div>
-    );
-  }
+  return (
+    <div className={['col-sm-12', styles.searchResultGroup].join(' ')}>
+      <ReactTable
+        data={props.data.results}
+        columns={dataColumns}
+        showPagination={props.data.results.length > 5}
+        defaultPageSize={props.data.results.length < 5 ? props.data.results.length : 5}
+        filterable={props.data.results.length > 5}
+        sortable={false}
+        defaultFilterMethod={(filter, row, column) => {
+          const id = filter.pivotId || filter.id
+          return row[id] !== undefined ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true
+        }}
+      />
+    </div>
+  );
 }
 
 const resultsShape = {
@@ -97,11 +94,14 @@ const resultsShape = {
   label: PropTypes.string,
 };
 
-SearchResultGroup.propTypes = {
+const groupShape = {
   label: PropTypes.string,
-  count: PropTypes.number,
   type: PropTypes.string,
   results: PropTypes.arrayOf(PropTypes.shape(resultsShape)),
+}
+
+SearchResultGroup.propTypes = {
+  data: PropTypes.shape(groupShape),
 };
 
 export default SearchResultGroup;

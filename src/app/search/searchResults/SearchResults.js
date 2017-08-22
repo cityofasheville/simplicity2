@@ -9,10 +9,7 @@ const SearchResults = props => (
       props.results.map(resultGroup => (
         <SearchResultGroup
           key={resultGroup.label}
-          label={resultGroup.label}
-          count={resultGroup.results.length}
-          type={resultGroup.type}
-          results={resultGroup.results}
+          data={resultGroup}
         />
       ))
     }

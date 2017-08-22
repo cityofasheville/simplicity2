@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { browserHistory } from 'react-router';
+import Toggle from 'react-toggle';
 import { urlCategory, longCategory } from './cip_utilities';
 import CapitalProjectsSummaryCard from './CapitalProjectsSummaryCard';
-
 
 const CIPFilter = props => {
   const refreshLocation = (category) => {
@@ -12,26 +12,37 @@ const CIPFilter = props => {
     }
     let newSelected = props.selected.slice();
     const selectedIndexInCurrent = props.selected.indexOf(category);
-    if (selectedIndexInCurrent > -1) {
-      newSelected = props.selected.filter(cat => cat !== category);
-    } else {
-      newSelected.push(category);
+    if (! (props.location.query.mode === 'bond' && !['Parks', 'Housing', 'Transportation'].includes(category))) {
+      if (selectedIndexInCurrent > -1) {
+        newSelected = props.selected.filter(cat => cat !== category);
+      } else {
+        newSelected.push(category);
+      }
     }
     newSelected = newSelected.map(cat => urlCategory(cat));
-    browserHistory.push([props.location.pathname, '?view=', props.location.query.view || 'summary', "&selected=", newSelected.join(','), '&hideNavbar=', props.location.query.hideNavbar].join(''));
+    browserHistory.push([props.location.pathname, '?view=', props.location.query.view || 'summary', "&selected=", newSelected.join(','), '&hideNavbar=', props.location.query.hideNavbar, '&mode=', props.location.query.mode].join(''));
+  }
+
+  const toggleMode = () => {
+    browserHistory.push([props.location.pathname, '?view=', props.location.query.view || 'summary', '&selected=', props.location.query.selected, '&hideNavbar=', props.location.query.hideNavbar, '&mode=', props.location.query.mode === 'bond' ? 'all' : 'bond'].join(''));
   }
 
   return (
     <div>
       <div className="row">
-        <div className="col-sm-12">
-          <p style={{ marginTop: '10px' }}>Click or tap on the project categories below to select/deselect the projects to view</p>.
+        <div className="col-sm-6">
+          <label style={{ minWidth: '400px' }}>
+            <span style={{ fontSize: '26px', fontWeight: 'normal', marginRight: '10px', color: props.location.query.mode === 'bond' ? '#16abe4' : '#c5c5c5' }}>Include only bond projects</span>
+            <Toggle
+              defaultChecked={props.location.query.mode === 'bond'} 
+              onChange={toggleMode} />
+          </label>
         </div>
       </div>
       <div className="row">
         {props.categories.map((category, index) => (
-          <div className="col-sm-3 col-xs-6" key={['SummaryCard', category, 'index'].join('_')} style={{ cursor: 'pointer' }} onClick={() => (refreshLocation(category))}>
-            <CapitalProjectsSummaryCard category={category} selected={props.selected.includes(category)} />
+          <div className="col-sm-4 col-xs-6" key={['SummaryCard', category, 'index'].join('_')} style={{ cursor: 'pointer' }} onClick={() => (refreshLocation(category))}>
+            <CapitalProjectsSummaryCard category={category} selected={props.selected.includes(category) && !(props.location.query.mode === 'bond' && !['Parks', 'Housing', 'Transportation'].includes(category))} disabled={props.location.query.mode === 'bond' && !['Parks', 'Housing', 'Transportation'].includes(category) }/>
           </div>
         ))}
       </div>
@@ -45,8 +56,8 @@ CIPFilter.propTypes = {
 };
 
 CIPFilter.defaultProps = {
-  selected: ['Bond - Transportation Program'],
-  categories: ['Bond - Transportation Program', 'Bond - Parks Program', 'Bond - Housing Program', 'General CIP'],
+  selected: ['Transportation', 'Housing', 'Parks', 'Public Safety', 'Other'],
+  categories: ['Transportation', 'Housing', 'Parks', 'Public Safety', 'Other'],
 }
 
 export default CIPFilter;

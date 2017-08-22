@@ -4310,6 +4310,12 @@ react-tether@^0.5.1:
     prop-types "^15.5.8"
     tether "^1.3.7"
 
+react-toggle@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/react-toggle/-/react-toggle-4.0.1.tgz#0e83e8c94d94232debfa21a938ff3d2b2106ec72"
+  dependencies:
+    classnames "^2.2.5"
+
 react-travel@^1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/react-travel/-/react-travel-1.3.1.tgz#d2a1a23076d6418f980d74ec062539c483160535"

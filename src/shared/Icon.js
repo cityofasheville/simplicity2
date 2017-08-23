@@ -19,7 +19,7 @@ const Icon = props => {
       style={styles.svg}
       width={`${props.size}px`}
       height={`${props.size}px`}
-      viewBox="0 0 16 16"
+      viewBox={props.viewBox ? props.viewBox : "0 0 16 16"}
       preserveAspectRatio='xMidYMid meet'
     >
       <g>
@@ -39,6 +39,7 @@ Icon.propTypes = {
   path: PropTypes.string.isRequired,
   size: PropTypes.number,
   color: PropTypes.string,
+  viewBox: PropTypes.string,
 };
 
 Icon.defaultProps = {

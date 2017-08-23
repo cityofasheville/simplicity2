@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ProjectMap from './ProjectMap';
 import Icon from '../../shared/Icon';
-import { IM_QUESTION, IM_MAP5, IM_SPHERE3, IM_CIRCLE2 } from '../../shared/iconConstants';
+import { IM_QUESTION, IM_MAP5, IM_SPHERE3, IM_CIRCLE2, IM_CERTIFICATE } from '../../shared/iconConstants';
 
 const getIcon = (category) => {
   switch(category) {
@@ -101,6 +101,14 @@ const ProjectDetails = (props) => (
               }
             </div>
           </div>
+          {/*{props.Category.indexOf('Bond') > -1 &&
+            <div className="row">
+              <div className="col-sm-12">
+                <Icon path={IM_CERTIFICATE} size={25} color="#4077a5" /> 
+                <span>Bond funding: {props['GO Bond Funding']}</span>
+              </div>
+            </div>
+          }*/}
           {props['Need PM Fields?'].toLowerCase() === 'yes' &&
             <div className="row">
               <div className="text-center" style={{ marginBottom: '5px', color: '#676873' }}>

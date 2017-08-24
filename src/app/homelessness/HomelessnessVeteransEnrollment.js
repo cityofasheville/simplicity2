@@ -173,14 +173,6 @@ class HomelessnessVeteransEnrollment extends React.Component {
                   <div>
                     Once a Veteran has been identified, a determination is made as to eligibility for VA programs and the Veteran is offered a choice for a housing intervention. If no immediate bed is available in the non-clinical GPD program, the Veteran moves to an intake bed until a GPD bed is available. The Veteran may elect to enroll in a housing program and enter GPD for a short duration (Bridge Housing) while housing is located or enter the long term service intensive transitional program.
                   </div>
-                </li>                
-                <li>
-                  <div>
-                    <strong>Transitional Housing</strong>
-                  </div>
-                  <div>
-                    Housing projects that are designed to provide housing and appropriate supportive services to homeless persons to facilitate movement to independent living within 24 months, or longer if approved by HUD. Individuals and families living in Transitional Housing are included under the HUD Homeless definition.
-                  </div>
                 </li>
                 <li>
                   <div>

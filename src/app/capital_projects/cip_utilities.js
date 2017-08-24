@@ -1929,7 +1929,7 @@ export const getPhasePieChartData = (projectData, categories, mode) => {
   let numOngoing = 0;
 
   for (let project of projectData) {
-    if (categories.includes(mapProjectToCategory(project, categories))) {
+    if (categories.includes(mapProjectToCategory(project))) {
       if (mode !== 'bond' ||
         ( mode === 'bond' && ['Bond - Parks Program', 'Bond - Housing Program', 'Bond - Transportation Program'].includes(project.Category) )
       ) {
@@ -1965,7 +1965,7 @@ export const getPhasePieChartData = (projectData, categories, mode) => {
   return pieData;
 }
 
-export const mapProjectToCategory = (projectData, category) => {
+export const mapProjectToCategory = (projectData) => {
   switch (projectData.Category) {
     case 'Bond - Parks Program':
       return 'Parks';
@@ -1991,7 +1991,7 @@ export const getFundsAllocatedAndExpended = (projectData, categories, mode) => {
   let totalAllocated = 0;
 
   for (let project of projectData) {
-    if (categories.includes(mapProjectToCategory(project, categories))) {
+    if (categories.includes(mapProjectToCategory(project))) {
       if (mode !== 'bond' ||
         ( mode === 'bond' && ['Bond - Parks Program', 'Bond - Housing Program', 'Bond - Transportation Program'].includes(project.Category) )
       ) {
@@ -2010,7 +2010,7 @@ export const getFundsAllocatedAndExpended = (projectData, categories, mode) => {
 export const filterProjects = (projects, categories, mode) => {
   const filteredProjects = [];
   for (let project of projects) {
-    if (categories.includes(mapProjectToCategory(project, categories))) {
+    if (categories.includes(mapProjectToCategory(project))) {
       if (mode === 'bond') {
         if (['Bond - Parks Program', 'Bond - Housing Program', 'Bond - Transportation Program'].includes(project.Category)) {
           filteredProjects.push(project);

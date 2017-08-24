@@ -9,39 +9,40 @@ const programKeys = [
   'Intake',
   'Other',
   'MIA',
+  'Grant & Per Diem',
 ];
 
 const programData = [
   {
-    month: '05/2016',
+    month: '5/2016',
     Unsheltered: 54,
     'Emergency Shelter': 15,
     Other: 36,
-    GPD: 180,
+    'Grant & Per Diem': 180,
   },
   {
-    month: '07/2016',
+    month: '7/2016',
     Unsheltered: 58,
     'Emergency Shelter': 6,
     Other: 3,
     MIA: 31,
-    GPD: 180,
+    'Grant & Per Diem': 180,
   },
   {
-    month: '08/2016',
+    month: '8/2016',
     Unsheltered: 56,
     'Emergency Shelter': 9,
     Other: 5,
     MIA: 23,
-    GPD: 177,
+    'Grant & Per Diem': 177,
   },
   {
-    month: '09/2016',
+    month: '9/2016',
     Unsheltered: 49,
     'Emergency Shelter': 11,
     Other: 6,
     MIA: 19,
-    GPD: 183,
+    'Grant & Per Diem': 183,
   },
   {
     month: '10/2016',
@@ -49,7 +50,7 @@ const programData = [
     'Emergency Shelter': 10,
     Other: 7,
     MIA: 26,
-    GPD: 179,
+    'Grant & Per Diem': 179,
   },
   {
     month: '11/2016',
@@ -57,7 +58,7 @@ const programData = [
     'Emergency Shelter/Intake': 28,
     Other: 16,
     MIA: 12,
-    GPD: 179,
+    'Grant & Per Diem': 179,
   },
   {
     month: '12/2016',
@@ -65,47 +66,67 @@ const programData = [
     'Emergency Shelter/Intake': 21,
     Other: 10,
     MIA: 16,
-    GPD: 175,
+    'Grant & Per Diem': 175,
   },
   {
-    month: '01/2017',
+    month: '1/2017',
     Unsheltered: 22,
     'Emergency Shelter/Intake': 39,
     Other: 15,
     MIA: 7,
-    GPD: 170,
+    'Grant & Per Diem': 170,
   },
   {
-    month: '02/2017',
+    month: '2/2017',
     Unsheltered: 25,
     'Emergency Shelter/Intake': 28,
     Other: 12,
     MIA: 8,
-    GPD: 175,
+    'Grant & Per Diem': 175,
   },
   {
-    month: '03/2017',
+    month: '3/2017',
     Unsheltered: 23,
     'Emergency Shelter/Intake': 25,
     Other: 8,
     MIA: 19,
-    GPD: 177,
+    'Grant & Per Diem': 177,
   },
   {
-    month: '04/2017',
+    month: '4/2017',
     Unsheltered: 26,
     'Emergency Shelter': 8,
     Intake: 24,
     Other: 9,
     MIA: 7,
+    'Grant & Per Diem': 180,
   },
   {
-    month: '05/2017',
+    month: '5/2017',
     Unsheltered: 27,
     'Emergency Shelter': 7,
     Intake: 16,
     Other: 10,
     MIA: 16,
+    'Grant & Per Diem': 180, 
+  },
+  {
+    month: '6/2017',
+    Unsheltered: 36,
+    'Emergency Shelter': 9,
+    Intake: 10,
+    Other: 10,
+    MIA: 20,
+    'Grant & Per Diem': 180,
+  },
+  {
+    month: '7/2017',
+    Unsheltered: 38,
+    'Emergency Shelter': 9,
+    Intake: 18,
+    Other: 8,
+    MIA: 14,
+    'Grant & Per Diem': 174,
   },
 ];
 
@@ -129,7 +150,7 @@ class HomelessnessVeteransEnrollment extends React.Component {
           The Veteran By-Name List is a comprehensive list of homeless Veterans in the community that is populated through information from street and VA outreach, HMIS, community shelters, VA-funded programs including GPD providers, and any other provider who may work with Veterans experiencing homelessness. The list is updated regularly – in most cases, daily – in order to ensure it has the most up-to-date information.
         </p>
         <p>
-          A by-name is not a waiting list – Veterans on this list may already be accessing programs, waiting for a housing unit, have entered a transitional program, declined assistance or may self-resolve their homelessness. The by-name list is used at the Veteran Coordination Assessment meeting (V-CAM) which is a regular case conferencing meeting to determine where Veterans actually are in our homeless assistance system, who needs to be prioritized for services and/or housing and what barriers need to be removed to get them.
+          A by-name is not a waiting list – Veterans on this list may already be accessing programs, waiting for a housing unit, have entered a transitional program, declined assistance or may self-resolve their homelessness. The by-name list is used to determine where Veterans actually are in our homeless assistance system, who needs to be prioritized for services and/or housing and what barriers need to be removed.
           <br />
           <a href="javascript:void(0);" className="text-center inText" onClick={() => this.toggleDefinitions()}>
             {this.state.showingDefinitions ? 'Hide' : 'Show'} by-name list definitions
@@ -142,15 +163,23 @@ class HomelessnessVeteransEnrollment extends React.Component {
                     <strong>Emergency Shelter</strong>
                   </div>
                   <div>
-                    a facility that’s primary purpose is to provide temporary shelter for the general homeless population or those that serve a specific client base such as Domestic Violence victims or youth under 18 years of age.
+                    A facility that’s primary purpose is to provide temporary shelter for the general homeless population or those that serve a specific client base such as Domestic Violence victims or youth under 18 years of age.
                   </div>
                 </li>
+                <li>
+                  <div>
+                    <strong>Intake</strong>
+                  </div>
+                  <div>
+                    Once a Veteran has been identified, a determination is made as to eligibility for VA programs and the Veteran is offered a choice for a housing intervention. If no immediate bed is available in the non-clinical GPD program, the Veteran moves to an intake bed until a GPD bed is available. The Veteran may elect to enroll in a housing program and enter GPD for a short duration (Bridge Housing) while housing is located or enter the long term service intensive transitional program.
+                  </div>
+                </li>                
                 <li>
                   <div>
                     <strong>Transitional Housing</strong>
                   </div>
                   <div>
-                    housing projects that are designed to provide housing and appropriate supportive services to homeless persons to facilitate movement to independent living within 24 months, or longer if approved by HUD. Individuals and families living in Transitional Housing are included under the HUD Homeless definition.
+                    Housing projects that are designed to provide housing and appropriate supportive services to homeless persons to facilitate movement to independent living within 24 months, or longer if approved by HUD. Individuals and families living in Transitional Housing are included under the HUD Homeless definition.
                   </div>
                 </li>
                 <li>
@@ -168,7 +197,15 @@ class HomelessnessVeteransEnrollment extends React.Component {
                   <div>
                     If a Veteran on the active by-name list can no longer be located after repeated attempts, the Veteran’s status is then changed from “active” to “missing in action” and after 90 days or more, are then removed from the list for purposes of calculating these benchmarks. If the Veteran is located at a later date and is still experiencing homelessness, the date of the most recent contact becomes the new date of identification. 
                   </div>
-                </li>                              
+                </li>  
+                <li>
+                    <div>
+                      <strong>Grant &amp; Per Diem</strong>
+                    </div>
+                    <div>
+                      Since 1994, the VA's Homeless Providers Grant and Per Diem Program (GPD) has offered Veterans Affairs Health Care for Homeless Veterans (HCHV) Programs to community agencies providing services to homeless Veterans. The purpose of GPD is to promote the development and provision of supportive housing and/or supportive services with the goal of helping homeless Veterans achieve residential stability, increase their skill levels and/or income, and obtain greater self-determination. In 2017, the VA designated several program types within GPD: Healthcare to Home, Low Barrier, Clinical, Bridge Housing and Service-Intensive Transitional Housing (SITH). Whereas most GPD programs provide short lengths of stay in transitional housing facilities and provide rapid connections to permanent housing, SITH provides up to 24 months of transitional housing in which homeless Veterans are actively working with the assistance of appropriate services and supports to achieve permanent housing. In Buncombe County, Veterans are offered a choice at identification as to whether a housing intervention or a Grant and Per Diem program meets their needs.
+                    </div>
+                </li>                            
                 <li>
                   <div>
                     <strong>NOTE:</strong>

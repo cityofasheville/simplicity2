@@ -1921,6 +1921,68 @@ export const testProjectData = [
  }
 ];
 
+export const getCategoryBarChartData = (projectData, categories, mode) => {
+  const categoryBarData = {};
+  for (let cat of categories) {
+    categoryBarData[cat] = 0;
+  }
+
+  for (let project of projectData) {
+    if (categories.includes(mapProjectToCategory(project))) {
+      if (mode !== 'bond' ||
+        ( mode === 'bond' && ['Bond - Parks Program', 'Bond - Housing Program', 'Bond - Transportation Program'].includes(project.Category) )
+      ) {
+        categoryBarData[mapProjectToCategory(project)] += 1;
+      }
+    }
+  }
+
+  return [categoryBarData];
+}
+
+export const getPhaseBarChartData = (projectData, categories, mode) => {
+  let numInPlanning = 0;
+  let numInDesign = 0;
+  let numInConstruction = 0;
+  let numCompleted = 0;
+  let numOngoing = 0;
+
+  for (let project of projectData) {
+    if (categories.includes(mapProjectToCategory(project))) {
+      if (mode !== 'bond' ||
+        ( mode === 'bond' && ['Bond - Parks Program', 'Bond - Housing Program', 'Bond - Transportation Program'].includes(project.Category) )
+      ) {
+        switch(project.Status) {
+          case 'Status: Planning':
+            numInPlanning += 1;
+            break;
+          case 'Status: Design':
+            numInDesign += 1;
+            break;
+          case 'Status: Construction':
+            numInConstruction += 1;
+            break;
+          case 'Status: Completed':
+            numCompleted += 1;
+            break;
+          default:
+            numOngoing += 1;
+        }
+      }
+    }
+  }
+
+  const barData = [{
+    Ongoing: numOngoing,
+    Design: numInDesign,
+    Planning: numInPlanning,
+    Constuction: numInConstruction,
+    Completed: numCompleted,
+  }];
+
+  return barData;
+}
+
 export const getPhasePieChartData = (projectData, categories, mode) => {
   let numInPlanning = 0;
   let numInDesign = 0;

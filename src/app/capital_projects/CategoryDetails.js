@@ -1,15 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { browserHistory } from 'react-router';
 import ProjectsTable from './ProjectsTable';
-import HousingTimeline from './HousingTimeline';
 import BarChartContainer from '../../shared/visualization/BarChartContainer';
-import PieChart from '../../shared/visualization/PieChart';
-import ProjectExpendedBarChart from './ProjectExpendedBarChart';
-import PageHeader from '../../shared/PageHeader';
 import ButtonGroup from '../../shared/ButtonGroup';
 import LinkButton from '../../shared/LinkButton';
-import { testProjectData, getPhasePieChartData, getFundsAllocatedAndExpended, filterProjects } from './cip_utilities';
+import { testProjectData, getPhaseBarChartData, getCategoryBarChartData, getFundsAllocatedAndExpended, filterProjects } from './cip_utilities';
 
 const getBondText = (type, mode) => {
   switch (type) {
@@ -50,7 +45,11 @@ const CategoryDetails = (props) => {
   actualCategories.sort((a,b) => sortedCats.indexOf(a) > sortedCats.indexOf(b));
 
   const filteredProjects = filterProjects(testProjectData, actualCategories, props.location.query.mode);
-  const pieData = getPhasePieChartData(filteredProjects, actualCategories, props.location.query.mode);
+  const phaseBarData = getPhaseBarChartData(filteredProjects, actualCategories, props.location.query.mode);
+  const categoryBarData = getCategoryBarChartData(filteredProjects, actualCategories, props.location.query.mode);
+  const phaseDataMax = Math.max.apply(null, Object.keys(phaseBarData[0]).map(key => (phaseBarData[0][key])));
+  const catDataMax = Math.max.apply(null, Object.keys(categoryBarData[0]).map(key => (categoryBarData[0][key])));
+  const barDataMax = phaseDataMax > catDataMax ? phaseDataMax : catDataMax;
   const fundingDetails = getFundsAllocatedAndExpended(filteredProjects, actualCategories, props.location.query.mode);
   const getTitle = () => {
     let title = '';
@@ -85,24 +84,33 @@ const CategoryDetails = (props) => {
             <div>
               <div className="row">
                 <div className="col-sm-6">
-                  <h4><span style={{ fontSize: '24px' }}>Total funding: {getDollars(fundingDetails[0].allocated)}</span></h4>
-                  <h4><span style={{ fontSize: '24px' }}>Spent: {getDollars(fundingDetails[0]['Expended funds'])}</span></h4>        
+                  <span style={{ fontSize: '24px' }}>Total funding: {getDollars(fundingDetails[0].allocated)}</span>
+                </div>
+                <div className="col-sm-6">
+                  <span style={{ fontSize: '24px' }}>Spent: {getDollars(fundingDetails[0]['Expended funds'])}</span>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-sm-6">
+                  <BarChartContainer chartTitle="Number of projects by category" mainAxisDataKey="name" legendHeight={25} dataKeys={actualCategories} colorScheme="bright_colors_2" data={categoryBarData} altText="Bar chart of Number of projects by category" height={250} domain={[0, barDataMax + 5]} />
                 </div>
                 <div className="col-sm-6" style={{ marginBottom: '15px'}}>
-                  <PieChart data={pieData} height={130} label={false} defaultLegend endAngle={180} innerRadius={40} outerRadius={80} cy="70%" toolTipFormatter={(value) => ([value, 'projects'].join(' '))} colorScheme="project_phases"/>
+                  <BarChartContainer chartTitle="Number of projects by phase" mainAxisDataKey="name" legendHeight={25} dataKeys={['Planning', 'Design', 'Construction', 'Completed']} colorScheme="bright_colors" data={phaseBarData} altText="Bar chart of Number of projects by phase" height={250} domain={[0, barDataMax + 5]} />
                 </div>
               </div>
               <div className="row">
                 <div className="col-sm-12">
-                  {actualCategories.map((category, index) => (
-                    <p key={['category text', category].join('_')}><span style={{ fontWeight: 'bold' }}>{category}: </span> {getBondText(category, props.location.query.mode)}</p>
-                  ))}
-                  {props.location.query.mode !== 'bond' &&
-                    <div>
-                      <p><span style={{ fontStyle: 'italic' }}>Please note: Current project budgets include prior year funding and may change throughout the life of the project.</span></p>
-                      <p><span style={{ fontStyle: 'italic' }}>Ongoing programs and regular maintenance projects may not be represented in this dashboard. For a complete list including ongoing and maintenance projects within the City's General CIP, please view the adopted <a className="inText" href="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=28348#page=146%20" target="_blank">FY 17-18 Annual Budget</a>.</span></p>
-                    </div>
-                  }
+                  <div style={{ marginTop: '15px' }}>
+                    {actualCategories.map((category, index) => (
+                      <p key={['category text', category].join('_')}><span style={{ fontWeight: 'bold' }}>{category}: </span> {getBondText(category, props.location.query.mode)}</p>
+                    ))}
+                    {props.location.query.mode !== 'bond' &&
+                      <div>
+                        <p><span style={{ fontStyle: 'italic' }}>Please note: Current project budgets include prior year funding and may change throughout the life of the project.</span></p>
+                        <p><span style={{ fontStyle: 'italic' }}>Ongoing programs and regular maintenance projects may not be represented in this dashboard. For a complete list including ongoing and maintenance projects within the City's General CIP, please view the adopted <a className="inText" href="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=28348#page=146%20" target="_blank">FY 17-18 Annual Budget</a>.</span></p>
+                      </div>
+                    }
+                  </div>
                 </div>
               </div>
             </div>
@@ -123,5 +131,3 @@ CategoryDetails.defaultProps = {
 };
 
 export default CategoryDetails;
-
-

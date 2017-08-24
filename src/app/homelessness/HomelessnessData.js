@@ -15,7 +15,7 @@ const HomelessnessData = () => (
     </PageHeader>
     <div className="row">
       <div className="col-sm-12">
-        <h3>Summary page data sources</h3>
+        <h3>Overview page data sources</h3>
         <p>
           The primary source of information for the Homelessness Data Dashboard is the North Carolina Homeless Management Information System (NC HMIS). The Asheville-Buncombe Continuum of Care participates in this statewide database to measure the needs of homeless persons, coordinate their care and report the outcome of these services.
         </p>

@@ -1,15 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { browserHistory } from 'react-router';
 import ProjectsTable from './ProjectsTable';
-import HousingTimeline from './HousingTimeline';
 import BarChartContainer from '../../shared/visualization/BarChartContainer';
-import PieChart from '../../shared/visualization/PieChart';
-import ProjectExpendedBarChart from './ProjectExpendedBarChart';
-import PageHeader from '../../shared/PageHeader';
 import ButtonGroup from '../../shared/ButtonGroup';
 import LinkButton from '../../shared/LinkButton';
-import { testProjectData, getPhasePieChartData, getFundsAllocatedAndExpended, filterProjects } from './cip_utilities';
+import { testProjectData, getPhaseBarChartData, getCategoryBarChartData, getFundsAllocatedAndExpended, filterProjects } from './cip_utilities';
 
 const getBondText = (type, mode) => {
   switch (type) {
@@ -50,7 +45,7 @@ const CategoryDetails = (props) => {
   actualCategories.sort((a,b) => sortedCats.indexOf(a) > sortedCats.indexOf(b));
 
   const filteredProjects = filterProjects(testProjectData, actualCategories, props.location.query.mode);
-  const pieData = getPhasePieChartData(filteredProjects, actualCategories, props.location.query.mode);
+  const phaseBarData = getPhaseBarChartData(filteredProjects, actualCategories, props.location.query.mode);
   const fundingDetails = getFundsAllocatedAndExpended(filteredProjects, actualCategories, props.location.query.mode);
   const getTitle = () => {
     let title = '';
@@ -86,10 +81,15 @@ const CategoryDetails = (props) => {
               <div className="row">
                 <div className="col-sm-6">
                   <h4><span style={{ fontSize: '24px' }}>Total funding: {getDollars(fundingDetails[0].allocated)}</span></h4>
-                  <h4><span style={{ fontSize: '24px' }}>Spent: {getDollars(fundingDetails[0]['Expended funds'])}</span></h4>        
                 </div>
-                <div className="col-sm-6" style={{ marginBottom: '15px'}}>
-                  <PieChart data={pieData} height={130} label={false} defaultLegend endAngle={180} innerRadius={40} outerRadius={80} cy="70%" toolTipFormatter={(value) => ([value, 'projects'].join(' '))} colorScheme="project_phases"/>
+                <div className="col-sm-6">
+                  <h4><span style={{ fontSize: '24px' }}>Spent: {getDollars(fundingDetails[0]['Expended funds'])}</span></h4>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-sm-12" style={{ marginBottom: '15px'}}>
+                  {/*<PieChart data={pieData} height={130} label={false} defaultLegend endAngle={180} innerRadius={40} outerRadius={80} cy="70%" toolTipFormatter={(value) => ([value, 'projects'].join(' '))} colorScheme="project_phases"/>*/}
+                  <BarChartContainer chartTitle="Projects by phase" mainAxisDataKey="name" legendHeight={25} dataKeys={['Planning', 'Design', 'Construction', 'Completed']} colorScheme="bright_colors" data={phaseBarData} altText="Bar chart of Projects by phase" height={250}/>
                 </div>
               </div>
               <div className="row">
@@ -123,5 +123,3 @@ CategoryDetails.defaultProps = {
 };
 
 export default CategoryDetails;
-
-

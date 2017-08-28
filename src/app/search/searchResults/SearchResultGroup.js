@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
 import ReactTable from 'react-table';
 import Icon from '../../../shared/Icon';
-import { IM_SHIELD3, IM_OFFICE, IM_ROAD, IM_USER, IM_USERS, IM_LOCATION, IM_HOME2, IM_QUESTION, IM_ARROW_RIGHT2, IM_ARROW_DOWN2 } from '../../../shared/iconConstants';
+import { IM_SHIELD3, IM_OFFICE, IM_ROAD, IM_USER, IM_USERS, IM_LOCATION, IM_HOME2, IM_QUESTION } from '../../../shared/iconConstants';
 import styles from './searchResultGroup.css';
 
 const getLink = (type, id, label) => {
@@ -47,7 +46,7 @@ const SearchResultGroup = (props) => {
       default:
         return (<span style={{ marginRight: '5px' }}><Icon path={IM_QUESTION} size={26} /></span>);
     }
-  }
+  };
 
   const dataColumns = [
     {
@@ -57,16 +56,24 @@ const SearchResultGroup = (props) => {
         {props.data.label}
         <span className="offscreen">Number of results</span>
         <span className="badge">{props.data.results.length}</span>
-        </h2>,
+      </h2>,
       accessor: 'label',
-      Cell: (row) => (
+      Cell: row => (
         <a href={getLink(row.original.type, row.original.id, row.original.label)}>
           <span className="text-primary" style={{ marginLeft: '20px' }}>
             {getIcon(row.original.type)}
             {row.value}
           </span>
         </a>
-      )
+      ),
+      Filter: ({ filter, onChange }) => (
+        <input
+          onChange={event => onChange(event.target.value)}
+          style={{ width: '100%' }}
+          value={filter ? filter.value : ''}
+          placeholder="Filter results..."
+        />
+      ),
     },
   ];
 
@@ -79,14 +86,14 @@ const SearchResultGroup = (props) => {
         defaultPageSize={props.data.results.length < 5 ? props.data.results.length : 5}
         filterable={props.data.results.length > 5}
         sortable={false}
-        defaultFilterMethod={(filter, row, column) => {
-          const id = filter.pivotId || filter.id
-          return row[id] !== undefined ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true
+        defaultFilterMethod={(filter, row) => {
+          const id = filter.pivotId || filter.id;
+          return row[id] !== undefined ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
         }}
       />
     </div>
   );
-}
+};
 
 const resultsShape = {
   id: PropTypes.string,
@@ -98,7 +105,7 @@ const groupShape = {
   label: PropTypes.string,
   type: PropTypes.string,
   results: PropTypes.arrayOf(PropTypes.shape(resultsShape)),
-}
+};
 
 SearchResultGroup.propTypes = {
   data: PropTypes.shape(groupShape),

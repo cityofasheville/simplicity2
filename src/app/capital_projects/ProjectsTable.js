@@ -40,6 +40,14 @@ const dataColumns = [
         <span style={{ marginLeft: '5px' }}>{row.value}</span>
       </span>
     ),
+    Filter: ({ filter, onChange }) => (
+      <input
+        onChange={event => onChange(event.target.value)}
+        style={{ width: '100%' }}
+        value={filter ? filter.value : ''}
+        placeholder="Search..."
+      />
+    ),
   },
   {
     Header: (<div>Zip<br />code</div>),
@@ -47,12 +55,28 @@ const dataColumns = [
     maxWidth: 120,
     headerClassName: 'hidden-sm hidden-xs',
     className: 'hidden-sm hidden-xs',
+    Filter: ({ filter, onChange }) => (
+      <input
+        onChange={event => onChange(event.target.value)}
+        style={{ width: '100%' }}
+        value={filter ? filter.value : ''}
+        placeholder="Search..."
+      />
+    ),
   },
   {
     Header: (<div>Current<br />phase</div>),
     id: 'Status',
     accessor: project => (project['Need PM Fields?'].toLowerCase() === 'no' ? '--' : (project.Status.indexOf('Status: ') > -1 ? project.Status.split(': ')[1] : project.Status)),
     maxWidth: 120,
+    Filter: ({ filter, onChange }) => (
+      <input
+        onChange={event => onChange(event.target.value)}
+        style={{ width: '100%' }}
+        value={filter ? filter.value : ''}
+        placeholder="Search..."
+      />
+    ),
   },
   {
     Header: (<div>Current<br />project budget</div>),
@@ -60,6 +84,14 @@ const dataColumns = [
     maxWidth: 120,
     headerClassName: 'hidden-xs',
     className: 'hidden-xs',
+    Filter: ({ filter, onChange }) => (
+      <input
+        onChange={event => onChange(event.target.value)}
+        style={{ width: '100%' }}
+        value={filter ? filter.value : ''}
+        placeholder="Search..."
+      />
+    ),
   },
   {
     Header: (<div>Spent</div>),
@@ -68,6 +100,14 @@ const dataColumns = [
     maxWidth: 120,
     headerClassName: 'hidden-xs',
     className: 'hidden-xs',
+    Filter: ({ filter, onChange }) => (
+      <input
+        onChange={event => onChange(event.target.value)}
+        style={{ width: '100%' }}
+        value={filter ? filter.value : ''}
+        placeholder="Search..."
+      />
+    ),
   },
 ];
 

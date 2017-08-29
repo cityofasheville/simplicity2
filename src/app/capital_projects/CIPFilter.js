@@ -30,21 +30,21 @@ const CIPFilter = props => {
   return (
     <div>
       <div className="row">
+        {props.categories.map((category, index) => (
+          <div className="col-lg-2 col-md-3 col-sm-4 col-xs-6" key={['SummaryCard', category, 'index'].join('_')} style={{ cursor: 'pointer' }} onClick={() => (refreshLocation(category))}>
+            <CapitalProjectsSummaryCard category={category} selected={props.selected.includes(category) && !(props.location.query.mode === 'bond' && !['Parks', 'Housing', 'Transportation'].includes(category))} disabled={props.location.query.mode === 'bond' && !['Parks', 'Housing', 'Transportation'].includes(category) }/>
+          </div>
+        ))}
+      </div>
+      <div className="row">
         <div className="col-sm-6">
-          <label style={{ minWidth: '400px' }}>
-            <span style={{ fontSize: '26px', fontWeight: 'normal', marginRight: '10px', color: props.location.query.mode === 'bond' ? '#16abe4' : '#c5c5c5' }}>Include only bond projects</span>
+          <label style={{ minWidth: '400px', cursor: 'pointer', marginBottom: '0px' }}>
+            <span style={{ fontSize: '26px', fontWeight: 'normal', marginRight: '10px' }}>Include only bond projects</span>
             <Toggle
               defaultChecked={props.location.query.mode === 'bond'} 
               onChange={toggleMode} />
           </label>
         </div>
-      </div>
-      <div className="row">
-        {props.categories.map((category, index) => (
-          <div className="col-sm-4 col-xs-6" key={['SummaryCard', category, 'index'].join('_')} style={{ cursor: 'pointer' }} onClick={() => (refreshLocation(category))}>
-            <CapitalProjectsSummaryCard category={category} selected={props.selected.includes(category) && !(props.location.query.mode === 'bond' && !['Parks', 'Housing', 'Transportation'].includes(category))} disabled={props.location.query.mode === 'bond' && !['Parks', 'Housing', 'Transportation'].includes(category) }/>
-          </div>
-        ))}
       </div>
     </div>
   );

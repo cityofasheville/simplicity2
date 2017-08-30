@@ -17,6 +17,7 @@
 }
 
 .Collapsible__trigger {
+  padding-top: 5px;
   cursor: pointer;
   padding: $panel-heading-padding;
   border-bottom: 1px solid transparent;
@@ -28,13 +29,21 @@
 }
 
 .Collapsible__trigger.is-closed::before {
-  content: '\f067';
-  font-family: FontAwesome;
+  content: ' +';
+  background-color: #fff;
+  color: #4077a5;
   padding-right: 5px;
+  padding-left: 5px;
+  margin-right: 5px;
+  border-radius: 7px;
 }
 
 .Collapsible__trigger.is-open::before {
-  content: '\f068';
-  font-family: FontAwesome;
-  padding-right: 5px;
+  content: '-';
+  background-color: #fff;
+  color: #4077a5;
+  padding-right: 7px;
+  padding-left: 7px;
+  margin-right: 5px;
+  border-radius: 7px;
 }

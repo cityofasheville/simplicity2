@@ -3,60 +3,44 @@ import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import Icon from '../../shared/Icon';
-import { IM_LOCATION } from '../../shared/iconConstants';
+import { IM_LOCATION, IM_BIN, LI_RECYCLE2, IM_USER, IM_LOCATION2 } from '../../shared/iconConstants';
 import PageHeader from '../../shared/PageHeader';
 import ButtonGroup from '../../shared/ButtonGroup';
 import LinkButton from '../../shared/LinkButton';
 import DetailsGrouping from '../../shared/DetailsGrouping';
+import DetailsFormGroup from '../../shared/DetailsFormGroup';
 import DetailsIconLinkGrouping from '../../shared/DetailsIconLinkGrouping';
-import TopicCard from '../../shared/TopicCard';
+//import TopicCard from '../../shared/TopicCard';
 import InCityMessage from '../InCityMessage';
+import LoadingAnimation from '../../shared/LoadingAnimation';
 
-const testZoning = [{ type: 'OFFICE', href: 'https://www.municode.com/library/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTVIIIGEUSDI_S7-8-18CEBUDI' },
-{ type: 'RSA', href: 'https://www.municode.com/library/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTVIIIGEUSDI_S7-8-18CEBUDI' }];
-
-const renderZoning = (zoning = testZoning) => (
-  // TODO: get zoning via query...
-  <div className="form-group">
-    <div style={{ fontWeight: 'bold' }}>Zoning</div>
-    <div style={{ marginLeft: '15px' }}>
-      {zoning.map((types, i) => (
-        <a key={['zoning', i].join('_')} target={'_blank'} href={types.href} title={types.type}>{types.type}{i < zoning.length - 1 && <span>,</span>} </a>
-      ))}
-    </div>
-  </div>
-);
-
-const calculateRecycling = (dayOfWeek, city) => {
-  switch (city) {
-    case 'ASHE':
-      // TODO calculation for this week or next week and the recycle week letter
-      return ['(this or next week?) on', dayOfWeek, '(Recycle Week ??)'].join(' ');
-    default:
-      return 'No recycling collection information available';
+const calculateRecycling = (dayOfWeek, inCity) => {
+  if (inCity) {
+    return ['(this or next week?) on', dayOfWeek, '(Recycle Week ??)'].join(' ');
   }
+  return 'No recycling collection information available';
 };
 
-const calculateTrash = (dayOfWeek, city) => {
-  switch (city) {
-    case 'ASHE':
-      return ['every', dayOfWeek].join(' ');
-    default:
-      return 'No trash collection information available';
+const calculateTrash = (dayOfWeek, inCity) => {
+  if (inCity) {
+    return ['every', dayOfWeek].join(' ');
   }
+  return 'No trash collection information available';
 };
 
 const Address = (props) => {
   if (props.data.loading) {
-    return <p>Loading...</p>;
+    return <LoadingAnimation />;
   }
   if (props.data.error) {
     return <p>{props.data.error.message}</p>;
   }
 
+  const addressData = props.data.addresses[0];
+  console.log(addressData);
   return (
     <div>
-      <PageHeader h1={[props.data.mda_address.address, props.data.mda_address.zipcode].join(', ')} h3="About this address" icon={<Icon path={IM_LOCATION} size={50} />}>
+      <PageHeader h1={[addressData.address, addressData.zipcode].join(', ')} h3="About this address" icon={<Icon path={IM_LOCATION} size={50} />}>
         <ButtonGroup>
           <LinkButton pathname="/search" query={{ entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, hideNavbar: props.location.query.hideNavbar }}>Back</LinkButton>
         </ButtonGroup>
@@ -64,13 +48,12 @@ const Address = (props) => {
       <div className="row">
         <div className="col-sm-6">
           <fieldset className="detailsFieldset">
-            <InCityMessage inTheCity={props.data.mda_address.city === 'ASHE'} />
+            <InCityMessage inTheCity={addressData.is_in_city} />
             <hr style={{ marginTop: '10px', marginBottom: '10px' }} />
-            <DetailsGrouping dataLabels={['Trash collection', 'Recycling collection']} dataValues={[calculateTrash(props.data.mda_address.truckday, props.data.mda_address.city), calculateRecycling(props.data.mda_address.truckday, props.data.mda_address.city)]} dataIcons={['trash', 'recycle']} />
-            <div className="col-xs-12">
-              {renderZoning()}
-            </div>
-            <DetailsGrouping dataLabels={['Owner']} dataValues={['TEST OWNER NAME and test owner address']} dataIcons={['user']} />
+            <DetailsFormGroup label="Trash collection" name="trash" value={calculateTrash(addressData.trash_day, addressData.is_in_city)} hasLabel icon={<Icon path={IM_BIN} size={20} />} />
+            <DetailsFormGroup label="Recycling collection" name="recycling" value={calculateRecycling(addressData.trash_day, addressData.is_in_city)} hasLabel icon={<Icon path={LI_RECYCLE2} size={20} viewBox="0 0 24 24" />} />
+            <DetailsFormGroup label="Zoning" name="zoning" value={'Information not yet available'} hasLabel icon={<Icon path={IM_LOCATION2} size={20} />} />
+            <DetailsFormGroup label="Owner" name="owner" value={<div><div>{addressData.owner_name}</div><div>{addressData.owner_address}</div></div>} hasLabel icon={<Icon path={IM_USER} size={20} />} />
             <DetailsIconLinkGrouping dataLabels={['Property', 'Maintenance']} dataTitles={['Property', 'Maintenance']} dataHrefs={['/property/properties', '/maintenance?entity=address']} dataIcons={['home', 'road']} />
           </fieldset>
         </div>
@@ -91,8 +74,7 @@ const Address = (props) => {
 const dataShape = {
   address: PropTypes.string,
   zipcode: PropTypes.string,
-  city: PropTypes.string,
-  truckday: PropTypes.string,
+  trash_day: PropTypes.string,
 };
 
 Address.propTypes = {
@@ -109,18 +91,24 @@ Address.defaultProps = {
 };
 
 const addressQuery = gql`
-  query addressQuery($id: ID!) {
-    mda_address(id: $id) {
+  query addressQuery($civicaddress_ids: [String]!) {
+    addresses(civicaddress_ids: $civicaddress_ids) {
       address
       zipcode
-      city
-      truckday
+      trash_day
+      zoning
+      owner_name
+      owner_address
+      centerline_id
+      is_in_city
+      pinnum
+      centerline_id
     }
   }
 `;
 
 const AddressWithData = graphql(addressQuery, {
-  options: ownProps => ({ variables: { id: ownProps.location.query.id } }),
+  options: ownProps => ({ variables: { civicaddress_ids: [ownProps.location.query.id] } }),
 })(Address);
 
 export default AddressWithData;

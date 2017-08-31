@@ -33,7 +33,5 @@ SearchBar.propTypes = {
   onKeyUp: PropTypes.func,
 };
 
-
-
 export default SearchBar;
 

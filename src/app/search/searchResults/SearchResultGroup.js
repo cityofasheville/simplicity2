@@ -26,6 +26,19 @@ const getLink = (type, id, label) => {
   }
 };
 
+const getPlural = (type) => {
+  switch (type) {
+    case 'address':
+      return 'Addresses';
+    case 'property':
+      return 'Properties';
+    case 'owner':
+      return 'Owners';
+    default:
+      return [type.charAt(0).toUpperCase(), type.slice(1), 's'].join('');
+  }
+};
+
 const SearchResultGroup = (props) => {
   const getIcon = (type) => {
     switch (type) {
@@ -52,8 +65,8 @@ const SearchResultGroup = (props) => {
     {
       headerStyle: { boxShadow: 'none' },
       Header: <h2 className="pull-left">
-        {getIcon(props.data.type)}
-        {props.data.label}
+        {getIcon(props.data.label)}
+        {getPlural(props.data.label)}
         <span className="offscreen">Number of results</span>
         <span className="badge">{props.data.results.length}</span>
       </h2>,
@@ -78,7 +91,7 @@ const SearchResultGroup = (props) => {
   ];
 
   return (
-    <div className={['col-sm-12', styles.searchResultGroup].join(' ')}>
+    <div className={styles.searchResultGroup}>
       <ReactTable
         data={props.data.results}
         columns={dataColumns}

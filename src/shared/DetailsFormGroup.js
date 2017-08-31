@@ -1,23 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from './detailsFormGroup.css';
+//import styles from './detailsFormGroup.css';
 
 const DetailsFormGroup = props => (
-  <div className={['form-group', styles.detailsFormGroup].join(' ')}>
-    {props.hasIcon && <i className={['fa fa-', props.icon].join('')}></i>}
-    {props.hasLabel &&
-      <div className={styles.labelClass}>{props.label}</div>
-    }
-    <div className={styles.valueClass}>{props.value}</div>
+  <div className="form-group">
+    <div className="col-xs-12" style={{ marginBottom: '10px' }}>
+      {props.icon !== null &&
+      <span style={{ marginRight: '5px' }}>{props.icon}</span>
+      }
+      {props.hasLabel &&
+        <label htmlFor={props.name}>{props.label}</label>
+      }
+      <div style={{ marginLeft: '15px' }} name={props.name}>{props.value}</div>
+    </div>
   </div>
 );
 
 DetailsFormGroup.propTypes = {
-  hasIcon: PropTypes.bool,
   hasLabel: PropTypes.bool,
   label: PropTypes.string,
   value: PropTypes.string,
   icon: PropTypes.string,
+  name: PropTypes.string,
 };
 
 DetailsFormGroup.defaultProps = {
@@ -25,7 +29,8 @@ DetailsFormGroup.defaultProps = {
   hasLabel: false,
   label: '',
   value: '',
-  icon: '',
+  icon: null,
+  name: '',
 };
 
 export default DetailsFormGroup;

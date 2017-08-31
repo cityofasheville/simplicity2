@@ -121,22 +121,16 @@ const searchJSON = [
   },
 ];
 
-class Search extends React.Component {
+let timeout = null;
 
-  // TODO: GraphQL/Redux needs to tie in here
-
-  render() {
-    return (
-      <div>
-        <div className="row">
-          <SearchBar text={this.props.text} onKeyUp={this.props.onKeyUp} />
-        </div>
-        <SearchResults results={searchJSON} ></SearchResults>
-      </div>
-    );
-  }
-}
-
+const Search = props => (
+  <div>
+    <div className="row">
+      <SearchBar text={props.text} onKeyUp={props.onKeyUp} />
+    </div>
+    <SearchResults results={searchJSON} ></SearchResults>
+  </div>
+);
 
 Search.propTypes = {
   text: PropTypes.string,
@@ -151,9 +145,13 @@ const mapStateToProps = (state, ownProps) => (
 
 const mapDispatchToProps = dispatch => (
   {
-    onKeyUp: event => (
-      dispatch(searchKeyUp(event.target.value))
-    ),
+    onKeyUp: (event) => {
+      event.persist();
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        dispatch(searchKeyUp(event.target.value));
+      }, 500);
+    },
   }
 );
 

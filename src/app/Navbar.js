@@ -35,7 +35,7 @@ export default class Navbar extends React.Component { // eslint-disable-line rea
   render() {
     return (
       <div style={{ display: this.state.navbarDisplay }}>
-        <nav className="navbar navbar-default" style={{ backgroundColor: '#f6fcff', borderBottom: '1px solid #e7eaff'}}>
+        <nav className="navbar navbar-default navbar-fixed-top" style={{ backgroundColor: '#f6fcff', borderBottom: '1px solid #e7eaff'}}>
           <div className="container-fluid">
             <div className="pull-left" style={{ marginRight: '5px', marginTop: '5px', marginBottom: '5px' }}>
               <a href="http://www.ashevillenc.gov" target="_blank"><img src={require('./citylogo-flatblue.png')} width="80px" height="80px" alt="City of Asheville logo"></img></a>
@@ -52,14 +52,6 @@ export default class Navbar extends React.Component { // eslint-disable-line rea
                 <br />
                 <a href="http://www.ashevillenc.gov" target="_blank" style={{ fontSize: '12px', fontStyle: 'italic' }}>City of Asheville, NC</a>
               </div>
-              {window.location.href.indexOf('dashboards.ashevillenc.gov') === -1 &&
-                <div style={{ color: '#bf1bbf', fontStyle: 'italic', float: 'left', fontSize: '19px', height: '60px', padding: '19.5px 15px', lineHeight: '1' }}>
-                  Pre-Beta
-                  <br />
-                  <a href="https://docs.google.com/a/ashevillenc.gov/forms/d/e/1FAIpQLSdjNwOmoDY3PjQOVreeSL07zgI8otIIPWjY7BnejWMAjci8-w/viewform?c=0&w=1" target="_blank" style={{ color: '#bf1bbf', fontStyle: 'italic', fontSize: '16px' }}>Click here to give feedback or sign up for user testing</a>
-
-                </div>
-              }
             </div>
             <div className={[this.state.navbarCollapse, 'navbar-collapse'].join(' ')}>
               <ul className="nav navbar-nav navbar-right">
@@ -71,6 +63,13 @@ export default class Navbar extends React.Component { // eslint-disable-line rea
             </div>
           </div>
         </nav>
+        {window.location.href.indexOf('dashboards.ashevillenc.gov') === -1 &&
+          <div style={{ color: '#bf1bbf', fontStyle: 'italic', float: 'right', fontSize: '19px', padding: '5px 15px', lineHeight: '1' }}>
+            Pre-Beta:&nbsp;
+            <a href="https://docs.google.com/a/ashevillenc.gov/forms/d/e/1FAIpQLSdjNwOmoDY3PjQOVreeSL07zgI8otIIPWjY7BnejWMAjci8-w/viewform?c=0&w=1" target="_blank" style={{ color: '#bf1bbf', fontStyle: 'italic', fontSize: '16px' }}>Click here to give feedback or sign up for user testing</a>
+
+          </div>
+        }
       </div>
     );
   }

@@ -57,9 +57,9 @@ const getKeyText = (categories, mode) => {
         }
         )}
       </span>
-      <span style={{ marginLeft: '5px' }}>{categories.slice(0, categories.length - 1).join(', ')} {categories.length > 1 ? 'and' : ''} {categories[categories.length - 1]} projects within the City’s general CIP are funded with a combination of general tax revenue, municipal debt and external grants or partnerships.</span>
+      <span style={{ marginLeft: '5px' }}>{categories.slice(0, categories.length - 1).join(', ')} {categories.length > 1 ? 'and' : ''} {categories[categories.length - 1]} projects within the City’s General Capital Improvement Program (CIP) are funded with a combination of general tax revenue, municipal debt and external grants or partnerships.</span>
       {categories.includes('Other') &&
-        <span>&nbsp;Projects categorized as &quot;Other&quot; support facility upgrades and economic development.</span>
+        <span>&nbsp;Projects categorized as &quot;Other&quot; support facility upgrades and economic development initiatives.</span>
       }
     </p>
     { ['Transportation', 'Housing', 'Parks'].map((cat, index) => {
@@ -111,6 +111,7 @@ const CategoryDetails = (props) => {
             </div>
             <div className="col-sm-6">
               <h2>Spent: {getDollars(fundingDetails[0]['Expended funds'])}</h2>
+              <div className="pull-right"><em>Data last updated on 9/1/2017</em></div>
             </div>
           </div>
           <div className="row">

@@ -136,12 +136,6 @@ const ProjectDetails = (props) => (
           <div className="row">
             <div className="col-sm-12" style={{ marginTop: '20px', marginBottom: '10px' }}>
               <hr />
-              {props['Need PM Fields?'].toLowerCase() === 'no' &&
-                <div>
-                  <i>This project is not managed by the city, but City contributions form part of the project funding.</i>
-                  <hr />
-                </div>
-              }
               {props['Project Description']}
               <hr />
               <div>

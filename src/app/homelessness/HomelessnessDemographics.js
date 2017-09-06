@@ -3,6 +3,158 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import BarChartContainer from '../../shared/visualization/BarChartContainer';
 
+const historical_pit = [
+  {
+    Year: '2005',
+    // 'Adults without children': ,
+    // 'In a household with at least one adult and one child': ,
+    // 'In a household with only children': ,
+    Veteran: 126,
+    'Not a Veteran': 376,
+    'Chronically homeless': 169,
+    'Not chronically homeless': 333,
+    Total: 502,
+  },
+  {
+    Year: '2006',
+    // 'Adults without children': ,
+    // 'In a household with at least one adult and one child': ,
+    // 'In a household with only children': ,
+    Veteran: 108,
+    'Not a Veteran': 490,
+    'Chronically homeless': 134,
+    'Not chronically homeless': 464,
+    Total: 598,
+  },
+  {
+    Year: '2007',
+    // 'Adults without children':,
+    // 'In a household with at least one adult and one child': ,
+    // 'In a household with only children': ,
+    Veteran: 111,
+    'Not a Veteran': 542,
+    'Chronically homeless': 105,
+    'Not chronically homeless': 530,
+    Total: 635,
+  },
+  {
+    Year: '2008',
+    // 'Adults without children': ,
+    // 'In a household with at least one adult and one child': ,
+    // 'In a household with only children': ,
+    Veteran: 121,
+    'Not a Veteran': 388,
+    'Chronically homeless': 175,
+    'Not chronically homeless': 334,
+    Total: 509,
+  },
+  {
+    Year: '2009',
+    // 'Adults without children': ,
+    // 'In a household with at least one adult and one child': ,
+    // 'In a household with only children': ,
+    Veteran: 162,
+    'Not a Veteran': 356,
+    'Chronically homeless': 115,
+    'Not chronically homeless': 403,
+    Total: 518,
+  },
+  {
+    Year: '2010',
+    'Adults without children': 415,
+    'In a household with at least one adult and one child': 101,
+    'In a household with only children': 0,
+    Veteran: 200,
+    'Not a Veteran': 316,
+    'Chronically homeless': 111,
+    'Not chronically homeless': 405,
+    Total: 516,
+  },
+  {
+    Year: '2011',
+    'Adults without children': 443,
+    'In a household with at least one adult and one child': 61,
+    'In a household with only children': 10,
+    Veteran: 209,
+    'Not a Veteran': 289,
+    'Chronically homeless': 81,
+    'Not chronically homeless': 417,
+    Total: 498,
+  },
+  {
+    Year: '2012',
+    'Adults without children': 457,
+    'In a household with at least one adult and one child': 94,
+    'In a household with only children': 9,
+    Veteran: 230,
+    'Not a Veteran': 293,
+    'Chronically homeless': 98,
+    'Not chronically homeless': 425,
+    Total: 523,
+  },
+  {
+    Year: '2013',
+    'Adults without children': 474,
+    'In a household with at least one adult and one child': 92,
+    'In a household with only children': 4,
+    Veteran: 232,
+    'Not a Veteran': 338,
+    'Chronically homeless': 54,
+    'Not chronically homeless': 516,
+    Total: 570,
+  },
+  {
+    Year: '2014',
+    'Adults without children': 473,
+    'In a household with at least one adult and one child': 52,
+    'In a household with only children': 5,
+    Veteran: 226,
+    'Not a Veteran': 307,
+    'Chronically homeless': 47,
+    'Not chronically homeless': 486,
+    Total: 533,
+  },
+  {
+    Year: '2015',
+    'Adults without children': 502,
+    'In a household with at least one adult and one child': 52,
+    'In a household with only children': 8,
+    Veteran: 206,
+    'Not a Veteran': 356,
+    'Chronically homeless': 74,
+    'Not chronically homeless': 488,
+    Total: 562,
+  },
+  {
+    Year: '2016',
+    'Adults without children': 467,
+    'In a household with at least one adult and one child': 37,
+    'In a household with only children': 5,
+    Veteran: 196,
+    'Not a Veteran': 313,
+    'Chronically homeless': 72,
+    'Not chronically homeless': 437,
+    Total: 509,
+  },
+  {
+    Year: '2017',
+    // 'Adults without children': ,
+    // 'In a household with at least one adult and one child': ,
+    // 'In a household with only children': ,
+    Veteran: 239,
+    'Not a Veteran': 323,
+    'Chronically homeless': 83,
+    'Not chronically homeless': 479,
+    Total: 562,
+  },
+];
+
+const family_keys = [
+  'Adults without children',
+  'In a household with at least one adult and one child',
+  'In a household with only children',
+];
+
 const target_pop_keys = [
   'Veterans',
   'Chronically homeless',
@@ -162,7 +314,7 @@ const family_situation_data = [
 
 const targetPopsText = ['This chart shows the breakdown among the primary demographic groupings.'];
 
-const familyUnitsText = ['This chart shows homeless families and children compared to homeless adults.'];
+const familyUnitsText = ['This chart shows how many homeless individuals were single adults and how many were in households including children by year.'];
 
 class HomelessnessDemographics extends React.Component {
   constructor(props) {
@@ -196,21 +348,24 @@ class HomelessnessDemographics extends React.Component {
             <p>View the <Link to="/homelessness/veterans" className="inText">Veterans page</Link> to see detailed information about homeless Veterans.</p>
           </div>
         </div>
-        <div className="row">
+        <div className="row" style={{ marginBottom: '10px' }}>
           <div className="col-sm-6">
-            <BarChartContainer chartTitle="Focus populations" layout="vertical" chartText={targetPopsText} mainAxisDataKey="Year" legendHeight={20} dataKeys={this.props.targetPopKeys} colorScheme="bright_colors" data={this.props.targetPopData} stacked altText="Bar chart of homelessness in focus populations" />
+            <BarChartContainer chartTitle="Families and children" layout="vertical" mainAxisDataKey="Year" legendHeight={60} dataKeys={family_keys} colorScheme="bright_colors" data={historical_pit} stacked altText="Bar chart of families" />
           </div>
           <div className="col-sm-6">
-            <BarChartContainer chartTitle="Family units" layout="vertical" chartText={familyUnitsText} mainAxisDataKey="date" legendHeight={20} dataKeys={this.props.familySituationKeys} colorScheme="bright_colors_2" data={this.props.familySituationData} stacked altText="Bar chart of homelessness by family situation" />
+            <p>
+              <br />
+              <br />
+              The graphs on this page reflect the literally homeless as defined by HUD. The Public education systems operate under a different definition of homelessness that includes individuals who lack a fixed, regular, and adequate nighttime residence. This includes what is commonly referred to as ‘doubled-up’ – 2 or more families living in the same unit, often because of economic hardship. The public school systems track this data for the community and it can be viewed at the following links: <a href="http://www.ashevillecityschools.net/pages/Asheville_City_Schools/Student_Services/Education_for_Homeless_Childre" target="_blank" className="inText">Asheville City Schools homelessness information</a> and <a href="https://buncombeschools.org/cms/One.aspx?portalId=92531&pageId=255538" target="_blank" className="inText">Buncombe County Schools homelessness information</a>.
+            </p>
           </div>
         </div>
         <div className="row">
-          <div className="col-sm-12">
-            <br />
-            <div className="alert alert-danger">
-              Note that it is possible for individuals to fall within multiple focus populations (e.g., a person might be a chronically homeless veteran with a family). Additionally, homeless single adults who are neither Veterans nor chronically homeless do not show up in the &quot;focus population&quot; chart. Therefore, the totals in the "focus populations" and "family units" barcharts will not be equal to each other.
-            </div>
-            The graphs on this page reflect the literally homeless as defined by HUD. The Public education systems operate under a different definition of homelessness that includes individuals who lack a fixed, regular, and adequate nighttime residence. This includes what is commonly referred to as ‘doubled-up’ – 2 or more families living in the same unit, often because of economic hardship. The public school systems track this data for the community and it can be viewed at the following links: <a href="http://www.ashevillecityschools.net/pages/Asheville_City_Schools/Student_Services/Education_for_Homeless_Childre" target="_blank" className="inText">Asheville City Schools homelessness information</a> and <a href="https://buncombeschools.org/cms/One.aspx?portalId=92531&pageId=255538" target="_blank" className="inText">Buncombe County Schools homelessness information</a>.
+          <div className="col-sm-6">
+            <BarChartContainer chartTitle="Veterans" layout="vertical" mainAxisDataKey="Year" legendHeight={20} dataKeys={['Veteran', 'Not a Veteran']} colorScheme="bright_colors_2" data={historical_pit} stacked altText="Bar chart of homeless Veterans" />
+          </div>
+          <div className="col-sm-6">
+            <BarChartContainer chartTitle="Chronically homeless" layout="vertical" mainAxisDataKey="Year" legendHeight={20} dataKeys={['Chronically homeless', 'Not chronically homeless']} colorScheme="bright_colors" data={historical_pit} stacked altText="Bar chart of chronically homeless individuals" />
           </div>
         </div>
       </div>

@@ -101,6 +101,22 @@ const getDataColumns = (level, expenseOrRevenue) => {
   return dataColumns;
 };
 
+const tdProps = () => {
+  return {
+    onClick: (e) => {
+      e.target.parentNode.firstChild.click();
+    },
+  };
+};
+
+const trProps = () => {
+  return {
+    style: {
+      cursor: 'pointer',
+    },
+  };
+};
+
 const BudgetDetailsTable = (props) => {
   const dataForTable = props.location.query.mode === 'expenditures' || props.location.query.mode === undefined ? props.expenseTree.children : props.revenueTree.children;
 
@@ -149,6 +165,8 @@ const BudgetDetailsTable = (props) => {
               columns={getDataColumns(0, props.location.query.mode)}
               pageSize={dataForTable.length}
               showPagination={false}
+              getTdProps={tdProps}
+              getTrProps={trProps}
               SubComponent={innerRow1 => (
                 <div style={{ paddingLeft: '34px' }}>
                   <ReactTable
@@ -156,6 +174,8 @@ const BudgetDetailsTable = (props) => {
                     columns={getDataColumns(1, props.location.query.mode)}
                     defaultPageSize={dataForTable[innerRow1.index].children.length}
                     showPagination={false}
+                    getTdProps={tdProps}
+                    getTrProps={trProps}
                     SubComponent={innerRow2 => (
                       <div style={{ paddingLeft: '34px' }}>
                         <ReactTable
@@ -163,6 +183,8 @@ const BudgetDetailsTable = (props) => {
                           columns={getDataColumns(2, props.location.query.mode)}
                           defaultPageSize={dataForTable[innerRow1.index].children[innerRow2.index].children.length}
                           showPagination={false}
+                          getTdProps={tdProps}
+                          getTrProps={trProps}
                           SubComponent={innerRow3 => (
                             <div style={{ paddingLeft: '34px' }}>
                               <ReactTable

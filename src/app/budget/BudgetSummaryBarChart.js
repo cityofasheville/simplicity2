@@ -92,7 +92,7 @@ BudgetSummaryBarChart.propTypes = {
 
 BudgetSummaryBarChart.defaultProps = {
   categoryType: 'use',
-  colorScheme: 'bright_colors',
+  colorScheme: 'bright_colors_4', //must change back to bright_colors
   showLongDesc: false,
 };
 

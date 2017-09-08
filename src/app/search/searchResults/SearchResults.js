@@ -91,7 +91,6 @@ const searchQuery = gql`
     search(searchString: $searchString, searchContexts: $searchContexts) {
       type
       results {
-        score
         type
         ... on AddressResult {
           civic_address_id

@@ -6,8 +6,8 @@ import BarChartContainer from '../../shared/visualization/BarChartContainer';
 const historical_pit = [
   {
     Year: '2005',
-    // 'Adults without children': ,
-    // 'In a household with at least one adult and one child': ,
+    'In a household with at least one adult and one child': 53,
+    'In a household without children': 449,
     // 'In a household with only children': ,
     Veteran: 126,
     'Not a Veteran': 376,
@@ -17,9 +17,8 @@ const historical_pit = [
   },
   {
     Year: '2006',
-    // 'Adults without children': ,
-    // 'In a household with at least one adult and one child': ,
-    // 'In a household with only children': ,
+    'In a household with at least one adult and one child': 101,
+    'In a household without children': 497,
     Veteran: 108,
     'Not a Veteran': 490,
     'Chronically homeless': 134,
@@ -28,7 +27,8 @@ const historical_pit = [
   },
   {
     Year: '2007',
-    // 'Adults without children':,
+    'In a household with at least one adult and one child': 93,
+    'In a household without children': 542,
     // 'In a household with at least one adult and one child': ,
     // 'In a household with only children': ,
     Veteran: 111,
@@ -39,7 +39,8 @@ const historical_pit = [
   },
   {
     Year: '2008',
-    // 'Adults without children': ,
+    'In a household with at least one adult and one child': 102,
+    'In a household without children': 407,
     // 'In a household with at least one adult and one child': ,
     // 'In a household with only children': ,
     Veteran: 121,
@@ -50,7 +51,8 @@ const historical_pit = [
   },
   {
     Year: '2009',
-    // 'Adults without children': ,
+    'In a household with at least one adult and one child': 86,
+    'In a household without children': 432,
     // 'In a household with at least one adult and one child': ,
     // 'In a household with only children': ,
     Veteran: 162,
@@ -61,7 +63,7 @@ const historical_pit = [
   },
   {
     Year: '2010',
-    'Adults without children': 415,
+    'In a household without children': 415,
     'In a household with at least one adult and one child': 101,
     'In a household with only children': 0,
     Veteran: 200,
@@ -72,7 +74,7 @@ const historical_pit = [
   },
   {
     Year: '2011',
-    'Adults without children': 443,
+    'In a household without children': 443,
     'In a household with at least one adult and one child': 61,
     'In a household with only children': 10,
     Veteran: 209,
@@ -83,7 +85,7 @@ const historical_pit = [
   },
   {
     Year: '2012',
-    'Adults without children': 457,
+    'In a household without children': 457,
     'In a household with at least one adult and one child': 94,
     'In a household with only children': 9,
     Veteran: 230,
@@ -94,7 +96,7 @@ const historical_pit = [
   },
   {
     Year: '2013',
-    'Adults without children': 474,
+    'In a household without children': 474,
     'In a household with at least one adult and one child': 92,
     'In a household with only children': 4,
     Veteran: 232,
@@ -105,7 +107,7 @@ const historical_pit = [
   },
   {
     Year: '2014',
-    'Adults without children': 473,
+    'In a household without children': 473,
     'In a household with at least one adult and one child': 52,
     'In a household with only children': 5,
     Veteran: 226,
@@ -116,7 +118,7 @@ const historical_pit = [
   },
   {
     Year: '2015',
-    'Adults without children': 502,
+    'In a household without children': 502,
     'In a household with at least one adult and one child': 52,
     'In a household with only children': 8,
     Veteran: 206,
@@ -127,7 +129,7 @@ const historical_pit = [
   },
   {
     Year: '2016',
-    'Adults without children': 467,
+    'In a household without children': 467,
     'In a household with at least one adult and one child': 37,
     'In a household with only children': 5,
     Veteran: 196,
@@ -138,7 +140,7 @@ const historical_pit = [
   },
   {
     Year: '2017',
-    // 'Adults without children': ,
+    // 'In a household without children': ,
     // 'In a household with at least one adult and one child': ,
     // 'In a household with only children': ,
     Veteran: 239,
@@ -150,7 +152,7 @@ const historical_pit = [
 ];
 
 const family_keys = [
-  'Adults without children',
+  'In a household without children',
   'In a household with at least one adult and one child',
   'In a household with only children',
 ];
@@ -357,6 +359,9 @@ class HomelessnessDemographics extends React.Component {
               <br />
               <br />
               The graphs on this page reflect the literally homeless as defined by HUD. The Public education systems operate under a different definition of homelessness that includes individuals who lack a fixed, regular, and adequate nighttime residence. This includes what is commonly referred to as ‘doubled-up’ – 2 or more families living in the same unit, often because of economic hardship. The public school systems track this data for the community and it can be viewed at the following links: <a href="http://www.ashevillecityschools.net/pages/Asheville_City_Schools/Student_Services/Education_for_Homeless_Childre" target="_blank" className="inText">Asheville City Schools homelessness information</a> and <a href="https://buncombeschools.org/cms/One.aspx?portalId=92531&pageId=255538" target="_blank" className="inText">Buncombe County Schools homelessness information</a>.
+            </p>
+            <p>
+              The &quot;Household with only children&quot; category was introduced in the 2011 PIT Count. Prior to 2011, these households were included in the &quot;Households without Dependent Children&quot; household type (now called &quot;Households without Children&quot;).
             </p>
           </div>
         </div>

@@ -11,7 +11,7 @@ const SearchResults = props => {
     return <LoadingAnimation message="Searching..." />;
   }
   if (props.data.error) {
-    if (props.data.error.message !== 'GraphQL error: TypeError: Cannot read property \'length\' of undefined') {
+    if (props.data.error.message !== 'GraphQL error: TypeError: Cannot read property \'length\' of undefined' && props.data.error.message !== 'GraphQL error: TypeError: Cannot read property \'filter\' of undefined') {
       return <p>{props.data.error.message}</p>;
     }
     return (
@@ -26,7 +26,7 @@ const SearchResults = props => {
   }
   const formattedResults = [];
   for (let context of props.data.search) {
-    if (context.results.length > 0) {
+    if (context !== null && context.results.length > 0) {
       formattedResults.push(
         {
           label: context.results[0].type,
@@ -103,7 +103,7 @@ const searchQuery = gql`
 `;
 
 const SearchResultsWithData = graphql(searchQuery, {
-  options: ownProps => ({ variables: { searchString: ownProps.searchText || '', searchContexts: ['address'] } }),
+  options: ownProps => ({ variables: { searchString: ownProps.searchText || '', searchContexts: ['address', 'civicAddressId'] } }),
 })(SearchResults);
 
 export default connect(mapStateToProps)(SearchResultsWithData);

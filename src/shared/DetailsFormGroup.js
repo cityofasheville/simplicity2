@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-//import styles from './detailsFormGroup.css';
 
 const DetailsFormGroup = props => (
   <div className="form-group">
@@ -19,8 +18,8 @@ const DetailsFormGroup = props => (
 DetailsFormGroup.propTypes = {
   hasLabel: PropTypes.bool,
   label: PropTypes.string,
-  value: PropTypes.string,
-  icon: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  icon: PropTypes.node,
   name: PropTypes.string,
 };
 

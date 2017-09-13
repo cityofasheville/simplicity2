@@ -1,140 +1,128 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
+import { browserHistory } from 'react-router';
 import DetailsTable from '../../shared/DetailsTable';
-import DetailsGrouping from '../../shared/DetailsGrouping';
-import DetailsIconLinkGrouping from '../../shared/DetailsIconLinkGrouping';
+import DetailsFormGroup from '../../shared/DetailsFormGroup';
+import DetailsIconLinkFormGroup from '../../shared/DetailsIconLinkFormGroup';
+import LoadingAnimation from '../../shared/LoadingAnimation';
+import { zoningLinks } from '../address/zoning';
+import Icon from '../../shared/Icon';
+import { IM_PROFILE, IM_USER, IM_GOOGLE, IM_CERTIFICATE, IM_CHECKBOX_PARTIAL2 } from '../../shared/iconConstants';
 
-const renderZoning = propertyZoning => (
-  <div className="form-group">
-    <div style={{ fontWeight: 'bold' }}>Zoning</div>
-    <div style={{ marginLeft: '15px' }}>
-      {propertyZoning.map((types, i) => (
-        <a key={['zoning', i].join('_')} href={types.href} target={'_blank'} title={types.type}>{types.type}{i < propertyZoning.length - 1 && <span>,</span>} </a>
-      ))}
-    </div>
-  </div>
-);
+const getDollars = (value) => {
+  const initialSymbols = value < 0 ? '-$' : '$';
+  return [initialSymbols, Math.abs(value).toLocaleString()].join('');
+};
 
-const Property = props => (
-  <div>
-    <div className="row">
-      <div className="col-sm-12">
-        <h1><button className="btn btn-primary pull-right">Back</button>{props.location.query.label}</h1>
-        <h2>{props.propertyAddress}</h2>
-        <h3>About this property</h3>
+const Property = props => {
+  if (props.data.loading) {
+    return <LoadingAnimation />;
+  }
+  if (props.data.error) {
+    return <p>{props.data.error.message}</p>;
+  }
+
+  const propertyData = props.data.properties[0];
+  return (
+    <div>
+      <div className="row">
+        <div className="col-sm-12">
+          <h1><button className="btn btn-primary pull-right" onClick={browserHistory.goBack}>Back</button>{propertyData.address},&nbsp;{propertyData.zipcode}</h1>
+          <h3>About this property</h3>
+        </div>
       </div>
-    </div>
-    <div className="row">
-      <div className="col-sm-6">
-        <fieldset className="detailsFieldset">
-          <DetailsGrouping dataLabels={Object.keys(props.propertyDetails)} dataValues={Object.values(props.propertyDetails)} colWidth={6} />
-          <div className="col-xs-6">
-            {renderZoning(props.propertyZoning)}
-          </div>
-          <div className="row">
-            <div className="col-xs-12">
-              <DetailsIconLinkGrouping dataLabels={props.iconLinksData.labels} dataTitles={props.iconLinksData.labels} dataHrefs={props.iconLinksData.hrefs} dataIcons={props.iconLinksData.icons} colWidth={6} />
+      <div className="row">
+        <div className="col-sm-6">
+          <fieldset className="detailsFieldset">
+            <div className="row">
+              <div className="col-xs-6">
+                <DetailsFormGroup label="Civic address ID" name="civic_address_id" value={propertyData.civic_address_id} hasLabel />
+                <DetailsFormGroup label="Neighborhood" name="neighborhood" value={propertyData.neighborhood} hasLabel />
+                <DetailsFormGroup label="Appraisal area" name="appraisal_area" value={propertyData.appraisal_area} hasLabel />
+                <DetailsFormGroup
+                  label="Zoning"
+                  name="zoning"
+                  value={<div>{propertyData.zoning.split(',').map((zone, index) => (
+                    <span key={['zone', index].join('_')}><a href={zoningLinks[zone]} target="_blank">{propertyData.zoning.split(',')[index]}</a>{propertyData.zoning.split(',').length > index + 1 ? ', ' : ''}</span>)
+                  )}</div>} hasLabel
+                />
+              </div>
+              <div className="col-xs-6">
+                <DetailsFormGroup label="Pin #" name="pinnum" value={[propertyData.pinnum, propertyData.pinnumext].join('')} hasLabel />
+                <DetailsFormGroup label="Tax exempt" name="tax_exempt" value={propertyData.tax_exempt ? 'Yes' : 'No'} hasLabel />
+                <DetailsFormGroup label="Acreage" name="acreage" value={propertyData.acreage} hasLabel />
+              </div>
             </div>
-          </div>
-        </fieldset>
+            <div className="row">
+              <div className="col-xs-6">
+                <DetailsIconLinkFormGroup label="Deed" title="Deed" href={propertyData.deed_link} icon={<Icon path={IM_CERTIFICATE} size={20} />} />
+                <DetailsIconLinkFormGroup label="Property card" title="property_card" href={propertyData.property_card_link} icon={<Icon path={IM_PROFILE} size={20} />} />
+              </div>
+              <div className="col-xs-6">
+                <DetailsIconLinkFormGroup label="Plat" title="Plat" href={propertyData.plat_link} icon={<Icon path={IM_CHECKBOX_PARTIAL2} size={20} />} />
+                <DetailsIconLinkFormGroup label="Google map directions" title="Google map directions" href={['https://www.google.com/maps?daddr=', propertyData.latitude, ',', propertyData.longitude].join('')} icon={<Icon path={IM_GOOGLE} size={20} />} />
+              </div>
+            </div>
+          </fieldset>
+        </div>
+        <div className="col-sm-6">
+          <fieldset className="detailsFieldset">
+            <DetailsTable
+              data={[
+                { value_type: 'Building value', amount: getDollars(propertyData.building_value) },
+                { value_type: 'Land value', amount: getDollars(propertyData.land_value) },
+                { value_type: 'Appraised value', amount: getDollars(propertyData.appraised_value) },
+                { value_type: 'Tax value', amount: getDollars(propertyData.tax_value) },
+                { value_type: 'Total market value', amount: getDollars(propertyData.market_value) },
+              ]}
+            />
+          </fieldset>
+        </div>
       </div>
-      <div className="col-sm-6">
-        <fieldset className="detailsFieldset">
-          <DetailsTable hasTitle hasTitleIcon title={'Property and tax value'} titleIcon={'usd'} columns={props.tableColumns} data={props.tableData} />
-        </fieldset>
+      <div className="row">
+        <div className="col-sm-6">
+          <fieldset className="detailsFieldset">
+            <DetailsFormGroup label="Owner" name="owner" value={<div><div>{propertyData.owner}</div><div>{propertyData.owner_address}</div></div>} hasLabel icon={<Icon path={IM_USER} size={20} />} />
+          </fieldset>
+        </div>
       </div>
     </div>
-    <div className="row">
-      <div className="col-sm-6">
-        <fieldset className="detailsFieldset">
-          <DetailsGrouping hasTitle hasTitleIcon title={'Owner'} titleIcon={'user'} dataValues={props.ownerData} />
-        </fieldset>
-      </div>
-    </div>
-  </div>
-);
-
-const propertyDataShape = {
-  'Civic address ID': PropTypes.string,
-  Neighborhood: PropTypes.string,
-  'Tax exempt': PropTypes.string,
-  'Pin #': PropTypes.string,
-  'Appraisal area': PropTypes.string,
-  Acreage: PropTypes.string,
-  'Zoning overlay': PropTypes.string,
+  );
 };
 
-const iconLinksDataShape = {
-  icons: PropTypes.array, // eslint-disable-line react/forbid-prop-types
-  labels: PropTypes.array, // eslint-disable-line react/forbid-prop-types
-  hrefs: PropTypes.array, // eslint-disable-line react/forbid-prop-types
-};
+const propertyQuery = gql`
+  query propertyQuery($pins: [String]!) {
+    properties(pins: $pins) {
+      civic_address_id,
+      pinnum,
+      pinnumext,
+      address,
+      city,
+      zipcode,
+      tax_exempt,
+      neighborhood,
+      appraisal_area,
+      acreage,
+      zoning,
+      deed_link,
+      property_card_link,
+      plat_link,
+      latitude,
+      longitude,
+      building_value,
+      land_value,
+      appraised_value,
+      tax_value,
+      market_value,
+      owner,
+      owner_address,
+    }
+  }
+`;
 
-Property.propTypes = {
-  location: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  propertyAddress: PropTypes.string,
-  propertyDetails: PropTypes.shape(propertyDataShape).isRequired, // eslint-disable-line react/forbid-prop-types
-  ownerData: PropTypes.array, // eslint-disable-line react/forbid-prop-types
-  tableColumns: PropTypes.array, // eslint-disable-line react/forbid-prop-types
-  tableData: PropTypes.array, // eslint-disable-line react/forbid-prop-types
-  propertyZoning: PropTypes.array, // eslint-disable-line react/forbid-prop-types
-  iconLinksData: PropTypes.shape(iconLinksDataShape).isRequired, // eslint-disable-line react/forbid-prop-types
-};
+const PropertyWithData = graphql(propertyQuery, {
+  options: ownProps => ({ variables: { pins: [ownProps.location.query.id] } }),
+})(Property);
 
-// TODO - this is temporary dummy data
-Property.defaultProps = {
-  propertyName: '450 MONTFORD AVE Unit',
-  propertyAddress: 'Address of the Property 28123',
-  propertyZoning: [
-    { type: 'OFFICE', href: 'https://www.municode.com/library/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTVIIIGEUSDI_S7-8-18CEBUDI' },
-    { type: 'RSA', href: 'https://www.municode.com/library/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTVIIIGEUSDI_S7-8-18CEBUDI' },
-  ],
-  propertyDetails: {
-    'Civic address ID': '19973',
-    Neighborhood: 'Montford',
-    'Appraisal area': '1',
-    'Tax exempt': 'NO',
-    'Pin #': '123456778990099',
-    Acreage: '1.05999999999999994',
-    'Zoning overlay': 'MONTFORD_HISTORIC DISTRICTS',
-  },
-  ownerData: ['JEAN CHEECKS JETER HEIRS 63 WESTOVER DR'],
-  iconLinksData: {
-    icons: [
-      'id-card',
-      'book',
-      'location-arrow',
-      'google',
-    ],
-    labels: ['Deed',
-      'Property card',
-      'Plat',
-      'Google map directions',
-    ],
-    hrefs: [
-      'http://registerofdeeds.buncombecounty.org/external/LandRecords/protected/SrchBookPage.aspx?bAutoSearch=true&bk=1118&pg=0239&idx=DEE',
-      'http://www.buncombetax.org/PropertyCard.aspx',
-      'http://registerofdeeds.buncombecounty.org/external/LandRecords/protected/SrchBookPage.aspx?bAutoSearch=true&bk=0132&pg=0154&idx=ALL',
-      'https://www.google.com/maps?daddr=35.5955276076747,-82.5484059079659',
-    ],
-  },
-  tableColumns: [
-    {
-      Header: 'Value Type',
-      accessor: 'value_type',
-    },
-    {
-      Header: 'Amount',
-      accessor: 'amount',
-    },
-  ],
-  tableData: [
-    { value_type: 'Building value', amount: '$682,100' },
-    { value_type: 'Land value', amount: '$145,400' },
-    { value_type: 'Appraised value', amount: '$827,500' },
-    { value_type: 'Tax value', amount: '$0' },
-    { value_type: 'Total market value', amount: '$827,500' },
-  ],
-};
-
-export default Property;
+export default PropertyWithData;

@@ -59,7 +59,7 @@ const Address = (props) => {
             )}</div>} hasLabel icon={<Icon path={IM_LOCATION2} size={20} />}
             />
             <DetailsFormGroup label="Owner" name="owner" value={<div><div>{addressData.owner_name}</div><div>{addressData.owner_address}</div></div>} hasLabel icon={<Icon path={IM_USER} size={20} />} />
-            <DetailsIconLinkFormGroup label="Property" title="Property" href={['/property/?pin=', addressData.pinnum].join('')} icon={<Icon path={IM_HOME2} size={20} />} />
+            <DetailsIconLinkFormGroup label="Property" title="Property" href={['/property/?id=', addressData.pinnum, addressData.pinnumext].join('')} icon={<Icon path={IM_HOME2} size={20} />} inWindow />
             {/*<DetailsIconLinkGrouping dataLabels={['Property', 'Maintenance']} dataTitles={['Property', 'Maintenance']} dataHrefs={[['/property/?pin=', addressData.pinnum].join(''), '/maintenance?entity=address']} dataIcons={['home', 'road']} />*/}
           </fieldset>
         </div>
@@ -108,6 +108,7 @@ const addressQuery = gql`
       centerline_id
       is_in_city
       pinnum
+      pinnumext
       centerline_id
     }
   }

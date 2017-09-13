@@ -12,7 +12,7 @@ const DetailsTable = (props) => {
       {props.hasTitle &&
         <div className={styles.titleDiv}>
           {props.hasTitleIcon &&
-            <i className={['fa fa-', props.titleIcon].join('')}></i>
+            props.titleIcon
           } {props.title}
         </div>
       }
@@ -34,7 +34,7 @@ const DetailsTable = (props) => {
 DetailsTable.propTypes = {
   hasTitle: PropTypes.bool,
   hasTitleIcon: PropTypes.bool,
-  titleIcon: PropTypes.string,
+  titleIcon: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   title: PropTypes.string,
   columns: PropTypes.array, // eslint-disable-line react/forbid-prop-types
   data: PropTypes.array, // eslint-disable-line react/forbid-prop-types
@@ -46,8 +46,8 @@ DetailsTable.defaultProps = {
   titleIcon: '',
   title: '',
   columns: [
-    { title: 'Value Type', name: 'value_type' },
-    { title: 'Amount', name: 'amount' },
+    { Header: 'Property/Tax Value', accessor: 'value_type' },
+    { Header: 'Amount', accessor: 'amount' },
   ],
   data: [
     { value_type: 'Building value', amount: '$682,100' },

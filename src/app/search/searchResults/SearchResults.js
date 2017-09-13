@@ -6,7 +6,20 @@ import gql from 'graphql-tag';
 import SearchResultGroup from './SearchResultGroup';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 
-const SearchResults = props => {
+const getResultType = (type) => {
+  switch (type) {
+    case 'address':
+    case 'civicAddressId':
+      return 'address';
+    case 'property':
+    case 'pin':
+      return 'property';
+    default:
+      return type;
+  }
+};
+
+const SearchResults = (props) => {
   if (props.data.loading) {
     return <LoadingAnimation message="Searching..." />;
   }
@@ -29,14 +42,22 @@ const SearchResults = props => {
     if (context !== null && context.results.length > 0) {
       formattedResults.push(
         {
-          label: context.results[0].type,
+          label: getResultType(context.results[0].type),
           results: context.results.map((result) => {
             switch (result.type) {
               case 'address':
+              case 'civicAddressId':
                 return {
                   label: [result.address, result.zipcode].join(', '),
-                  type: result.type,
+                  type: 'address',
                   id: result.civic_address_id,
+                };
+              case 'property':
+              case 'pin':
+                return {
+                  label: [[result.pinnum, result.pinnumext, ' -- '].join(''), result.address, ', ', result.zipcode].join(''),
+                  type: 'property',
+                  id: [result.pinnum, result.pinnumext].join(''),
                 };
               default:
                 return result;
@@ -97,13 +118,20 @@ const searchQuery = gql`
           address
           zipcode
         }
+        ... on PropertyResult {
+          pinnum
+          pinnumext
+          address
+          city
+          zipcode
+        }
       }
     }
   }
 `;
 
 const SearchResultsWithData = graphql(searchQuery, {
-  options: ownProps => ({ variables: { searchString: ownProps.searchText || '', searchContexts: ['address', 'civicAddressId'] } }),
+  options: ownProps => ({ variables: { searchString: ownProps.searchText || '', searchContexts: ['address', 'civicAddressId', 'pin', 'property'] } }),
 })(SearchResults);
 
 export default connect(mapStateToProps)(SearchResultsWithData);

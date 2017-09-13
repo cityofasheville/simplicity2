@@ -15,7 +15,7 @@ export const colorSchemes = {
   blue_red_grouped: ['#081d58', '#67000d', '#9EACE1', '#4292C6', '#08519C', '#fc9272', '#ef3b2c', '#a50f15'], // three blue, three red, colorblind 'safe',
   project_phases: ['#F844FF', '#44CDFF', '#FF5422', '#57D500', '#FFC107'],
 
-  //New Colors [all at least 4.5:1 contrast - colorblind checked]
+  //New Colors [all at least 4.5:1 contrast - colorblind 'safe']
   bright_colors: ['#8E44FD','#288069','#540D53','#454545','#95507D','#980B20','#CB450B'],
   bright_colors_2: ['#9812AF','#E00B8E','#9D205C','#AF360D','#654343','#004D25','#068E23','#0046C7'],
   bright_colors_3: ['#EB0000','#4D0000','#980B20','#875C31','#385646','#1A004D','#1B0CE9','#1D721E','#757575'],

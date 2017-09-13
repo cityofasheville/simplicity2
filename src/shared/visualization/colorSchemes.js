@@ -6,14 +6,19 @@ export const colorSchemes = {
   orange_purple_diverging: ['#7f3b08', '#b2abd2', '#b35806', '#d8daeb', '#e08214', '#8073ac', '#fdb863', '#542788', '#fee0b6', '#2d004b', '#f7f7f7'], // color brewer diverging 11 orange-purple
   single_hue_green_blue: ['#deebf7', '#c6dbef', '#9ecae1', '#6baed6', '#4292c6', '#2171b5', '#08519c', '#08306b', '#e5f5e0', '#c7e9c0', '#a1d99b', '#74c476', '#41ab5d', '#238b45', '#006d2c', '#00441b'], // color brewer single hue blue - single hue green
   single_hue_blue_green: ['#e5f5e0', '#c7e9c0', '#a1d99b', '#74c476', '#41ab5d', '#238b45', '#006d2c', '#00441b', '#deebf7', '#c6dbef', '#9ecae1', '#6baed6', '#4292c6', '#2171b5', '#08519c', '#08306b'], // color brewer single hue blue - single hue green
-  bright_colors: ['#920000', '#006DDB', '#490092', '#FF6DB6', '#000000', '#DB6D00', '#2fe12f', '#01b0b0', '#6DB6FF', '#FFBDDB'], // bright colors 1 colorblind 'safe'
-  // bright_colors: ['#FF6DB6', '#490092', '#920000', '#006DDB', '#000000', '#DB6D00', '#24FF24', '#009292', '#6DB6FF', '#FFBDDB'], // bright colors 1 colorblind 'safe'
-  bright_colors_2: ['#B66DFF', '#DB6D00', '#006DDB', '#000000', '#FF6DB6', '#920000', '#01b0b0', '#2fe12f', '#004949', '#6DB6FF', '#490092'], // bright colors 2 colorblind 'safe'
-  bright_colors_3: ['#920000', '#DB6D00', '#24FF24', '#924900', '#B6DBFF', '#006DDB', '#6DB6FF', '#B66DFF', '#490092', '#004949', '#FF6DB6', '#009292', '#FFBDDB', '#000000'], // bright colors 3 colorblind 'safe'
+  //bright_colors: ['#920000', '#006DDB', '#490092', '#FF6DB6', '#000000', '#DB6D00', '#2fe12f', '#01b0b0', '#6DB6FF', '#FFBDDB'], // bright colors 1 colorblind 'safe'
+  //bright_colors: ['#FF6DB6', '#490092', '#920000', '#006DDB', '#000000', '#DB6D00', '#24FF24', '#009292', '#6DB6FF', '#FFBDDB'], // bright colors 1 colorblind 'safe'
+  //bright_colors_2: ['#B66DFF', '#DB6D00', '#006DDB', '#000000', '#FF6DB6', '#920000', '#01b0b0', '#2fe12f', '#004949', '#6DB6FF', '#490092'], // bright colors 2 colorblind 'safe'
+  //bright_colors_3: ['#920000', '#DB6D00', '#24FF24', '#924900', '#B6DBFF', '#006DDB', '#6DB6FF', '#B66DFF', '#490092', '#004949', '#FF6DB6', '#009292', '#FFBDDB', '#000000'], // bright colors 3 colorblind 'safe'
   bright_colors_4: ['#000000', '#FFBDDB', '#009292', '#FF6DB6', '#004949', '#490092', '#B66DFF', '#6DB6FF', '#006DDB', '#B6DBFF', '#924900', '#24FF24', '#DB6D00', '#920000'], // bright colors 4 colorblind 'safe'
   coa_brand: ['#004987', '#4077a5', '#a6bfd5', '#aaad00', '#bfc240', '#e1e2a6'], // city of asheville branding colors, colorblind 'safe'
   blue_red_grouped: ['#081d58', '#67000d', '#9EACE1', '#4292C6', '#08519C', '#fc9272', '#ef3b2c', '#a50f15'], // three blue, three red, colorblind 'safe',
   project_phases: ['#F844FF', '#44CDFF', '#FF5422', '#57D500', '#FFC107'],
+
+  //New Colors [all at least 4.5:1 contrast - colorblind checked]
+  bright_colors: ['#8E44FD','#288069','#540D53','#454545','#95507D','#980B20','#CB450B'],
+  bright_colors_2: ['#9812AF','#E00B8E','#9D205C','#AF360D','#654343','#004D25','#068E23','#0046C7'],
+  bright_colors_3: ['#EB0000','#4D0000','#980B20','#875C31','#385646','#1A004D','#1B0CE9','#1D721E','#757575'],
 };
 
 export const referenceColorScheme = [

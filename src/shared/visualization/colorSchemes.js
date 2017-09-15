@@ -10,15 +10,17 @@ export const colorSchemes = {
   //bright_colors: ['#FF6DB6', '#490092', '#920000', '#006DDB', '#000000', '#DB6D00', '#24FF24', '#009292', '#6DB6FF', '#FFBDDB'], // bright colors 1 colorblind 'safe'
   //bright_colors_2: ['#B66DFF', '#DB6D00', '#006DDB', '#000000', '#FF6DB6', '#920000', '#01b0b0', '#2fe12f', '#004949', '#6DB6FF', '#490092'], // bright colors 2 colorblind 'safe'
   //bright_colors_3: ['#920000', '#DB6D00', '#24FF24', '#924900', '#B6DBFF', '#006DDB', '#6DB6FF', '#B66DFF', '#490092', '#004949', '#FF6DB6', '#009292', '#FFBDDB', '#000000'], // bright colors 3 colorblind 'safe'
-  bright_colors_4: ['#000000', '#FFBDDB', '#009292', '#FF6DB6', '#004949', '#490092', '#B66DFF', '#6DB6FF', '#006DDB', '#B6DBFF', '#924900', '#24FF24', '#DB6D00', '#920000'], // bright colors 4 colorblind 'safe'
+  //bright_colors_4: ['#000000', '#FFBDDB', '#009292', '#FF6DB6', '#004949', '#490092', '#B66DFF', '#6DB6FF', '#006DDB', '#B6DBFF', '#924900', '#24FF24', '#DB6D00', '#920000'], // bright colors 4 colorblind 'safe'
   coa_brand: ['#004987', '#4077a5', '#a6bfd5', '#aaad00', '#bfc240', '#e1e2a6'], // city of asheville branding colors, colorblind 'safe'
   blue_red_grouped: ['#081d58', '#67000d', '#9EACE1', '#4292C6', '#08519C', '#fc9272', '#ef3b2c', '#a50f15'], // three blue, three red, colorblind 'safe',
   project_phases: ['#F844FF', '#44CDFF', '#FF5422', '#57D500', '#FFC107'],
 
-  //New Colors [all at least 4.5:1 contrast - colorblind 'safe']
-  bright_colors: ['#8E44FD','#288069','#540D53','#454545','#95507D','#980B20','#CB450B'],
-  bright_colors_2: ['#9812AF','#E00B8E','#9D205C','#AF360D','#654343','#004D25','#068E23','#0046C7'],
-  bright_colors_3: ['#EB0000','#4D0000','#980B20','#875C31','#385646','#1A004D','#1B0CE9','#1D721E','#757575'],
+  //New Colors [all at least 3:1 contrast - colorblind 'safe']
+  bright_colors: ['#F25F8B','#66BBBB','#5AA456','#b68549','#367096','#BB5555','#387f34','#444466'],
+  bright_colors_2: ['#AD79BE','#da7c49','#6C9AA7','#57923a','#8a2889','#9e3343','#1B7A55'],
+  bright_colors_3: ['#53A54A','#C26666','#4f75ab','#C7861F','#1d9a68','#8a3838','#3f2f6f','#7c581d'],
+  bright_colors_4: ['#4298AF','#DB843D','#71588F','#AA4644','#89A54E','#4573A7','#975620','#44216e','#000000'],
+
 };
 
 export const referenceColorScheme = [

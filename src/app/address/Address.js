@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import Icon from '../../shared/Icon';
-import { IM_LOCATION, IM_BIN, LI_RECYCLE2, IM_USER, IM_LOCATION2 } from '../../shared/iconConstants';
+import { IM_LOCATION, IM_BIN, LI_RECYCLE2, IM_USER, IM_LOCATION2, IM_HOME2 } from '../../shared/iconConstants';
+import { zoningLinks } from './zoning';
 import PageHeader from '../../shared/PageHeader';
 import ButtonGroup from '../../shared/ButtonGroup';
 import LinkButton from '../../shared/LinkButton';
-import DetailsGrouping from '../../shared/DetailsGrouping';
 import DetailsFormGroup from '../../shared/DetailsFormGroup';
-import DetailsIconLinkGrouping from '../../shared/DetailsIconLinkGrouping';
+import DetailsIconLinkFormGroup from '../../shared/DetailsIconLinkFormGroup';
 //import TopicCard from '../../shared/TopicCard';
 import InCityMessage from '../InCityMessage';
 import LoadingAnimation from '../../shared/LoadingAnimation';
@@ -37,7 +37,6 @@ const Address = (props) => {
   }
 
   const addressData = props.data.addresses[0];
-  console.log(addressData);
   return (
     <div>
       <PageHeader h1={[addressData.address, addressData.zipcode].join(', ')} h3="About this address" icon={<Icon path={IM_LOCATION} size={50} />}>
@@ -52,9 +51,16 @@ const Address = (props) => {
             <hr style={{ marginTop: '10px', marginBottom: '10px' }} />
             <DetailsFormGroup label="Trash collection" name="trash" value={calculateTrash(addressData.trash_day, addressData.is_in_city)} hasLabel icon={<Icon path={IM_BIN} size={20} />} />
             <DetailsFormGroup label="Recycling collection" name="recycling" value={calculateRecycling(addressData.trash_day, addressData.is_in_city)} hasLabel icon={<Icon path={LI_RECYCLE2} size={20} viewBox="0 0 24 24" />} />
-            <DetailsFormGroup label="Zoning" name="zoning" value={'Information not yet available'} hasLabel icon={<Icon path={IM_LOCATION2} size={20} />} />
+            <DetailsFormGroup
+              label="Zoning"
+              name="zoning"
+              value={<div>{addressData.zoning.split(',').map((zone, index) => (
+                <span key={['zone', index].join('_')}><a href={zoningLinks[zone]} target="_blank">{addressData.zoning.split(',')[index]}</a>{addressData.zoning.split(',').length > index + 1 ? ', ' : ''}</span>)
+            )}</div>} hasLabel icon={<Icon path={IM_LOCATION2} size={20} />}
+            />
             <DetailsFormGroup label="Owner" name="owner" value={<div><div>{addressData.owner_name}</div><div>{addressData.owner_address}</div></div>} hasLabel icon={<Icon path={IM_USER} size={20} />} />
-            <DetailsIconLinkGrouping dataLabels={['Property', 'Maintenance']} dataTitles={['Property', 'Maintenance']} dataHrefs={['/property/properties', '/maintenance?entity=address']} dataIcons={['home', 'road']} />
+            <DetailsIconLinkFormGroup label="Property" title="Property" href={['/property/?id=', addressData.pinnum, addressData.pinnumext].join('')} icon={<Icon path={IM_HOME2} size={20} />} inWindow />
+            {/*<DetailsIconLinkGrouping dataLabels={['Property', 'Maintenance']} dataTitles={['Property', 'Maintenance']} dataHrefs={[['/property/?pin=', addressData.pinnum].join(''), '/maintenance?entity=address']} dataIcons={['home', 'road']} />*/}
           </fieldset>
         </div>
         {/*<div className="col-sm-6">
@@ -102,6 +108,7 @@ const addressQuery = gql`
       centerline_id
       is_in_city
       pinnum
+      pinnumext
       centerline_id
     }
   }

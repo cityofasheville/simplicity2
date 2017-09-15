@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
-import styles from './detailsIconLinkFormGroup.css';
 
 const DetailsIconLinkFormGroup = props => (
   <div>
-    <a href={props.href} title={props.title}>
-      <div className={['form-group', styles.detailsIconLinkFormGroup].join(' ')}>
-        <i className={['fa fa-', props.icon].join('')}></i>
-        <div className={styles.labelClass}>{props.label}</div>
+    <a href={props.href} title={props.title} target={props.inWindow ? '_self' : '_blank'}>
+      <div className="form-group">
+        <div className="col-xs-12" style={{ marginBottom: '10px' }}>
+          <span style={{ marginRight: '5px' }}>{props.icon}</span>
+          <span style={{ fontWeight: 'bold' }}>{props.label}</span>
+        </div>
       </div>
     </a>
   </div>
@@ -16,16 +16,18 @@ const DetailsIconLinkFormGroup = props => (
 
 DetailsIconLinkFormGroup.propTypes = {
   label: PropTypes.string,
-  icon: PropTypes.string,
+  icon: PropTypes.node,
   href: PropTypes.string,
   title: PropTypes.string,
+  inWindow: PropTypes.bool,
 };
 
 DetailsIconLinkFormGroup.defaultProps = {
   label: '',
-  icon: '',
+  icon: <span></span>,
   href: 'www.ashevillenc.gov',
   title: 'City of Asheville Website',
+  inWindow: false,
 };
 
 export default DetailsIconLinkFormGroup;

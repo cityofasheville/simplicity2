@@ -117,6 +117,11 @@ const PIT_data = [
     'Unsheltered: with only children': 0,
     'Unsheltered: without children': 72,
   },
+  {
+    date: '2017',
+    'Sheltered people': 457,
+    'Unsheltered people': 105,
+  },
 ];
 
 const enrollment_keys = [
@@ -216,6 +221,16 @@ const enrollment_data = [
     'Transitional Housing': 270,
     Total: 1348,
   },
+  {
+    Year: 2017,
+    'Emergency Shelter': 159,
+    'Housing Programs': 838,
+    'Homelessness Prevention': 21,
+    'Permanent Supportive Housing': 603,
+    'Rapid Re-Housing': 214,
+    'Transitional Housing': 272,
+    Total: 1269,
+  },
 ];
 
 const HomelessnessCounts = props => (
@@ -230,10 +245,10 @@ const HomelessnessCounts = props => (
     </div>
     <div className="row">
       <div className="col-sm-6">
-        <BarChartContainer chartTitle="Point-in-Time counts" layout="vertical" mainAxisDataKey="date" legendHeight={70} dataKeys={props.PITkeys} colorScheme="bright_colors" data={props.PITdata} stacked altText="Bar chart of Point-in-Time counts of people who are homeless" domain={[0, 1500]} />
+        <BarChartContainer chartTitle="Point-in-Time counts" layout="vertical" mainAxisDataKey="date" legendHeight={40} dataKeys={props.PITkeys} colorScheme="bright_colors" data={props.PITdata} stacked altText="Bar chart of Point-in-Time counts of people who are homeless" domain={[0, 1500]} />
       </div>
       <div className="col-sm-6">
-        <BarChartContainer chartTitle="Homeless program enrollments" layout="vertical" mainAxisDataKey="Year" legendHeight={70} dataKeys={props.enrollmentKeys} data={props.enrollmentData} stacked altText="Bar chart of average monthly counts of persons enrolled in housing support programs in the City of Asheville and Buncombe County" domain={[0, 'dataMax']} colorScheme="bright_colors_2" />
+        <BarChartContainer chartTitle="Homeless program enrollments" layout="vertical" mainAxisDataKey="Year" legendHeight={40} dataKeys={props.enrollmentKeys} data={props.enrollmentData} stacked altText="Bar chart of average monthly counts of persons enrolled in housing support programs in the City of Asheville and Buncombe County" domain={[0, 'dataMax']} colorScheme="bright_colors_2" />
       </div>
     </div>
   </div>

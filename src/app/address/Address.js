@@ -14,9 +14,24 @@ import DetailsIconLinkFormGroup from '../../shared/DetailsIconLinkFormGroup';
 import InCityMessage from '../InCityMessage';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 
-const calculateRecycling = (dayOfWeek, inCity) => {
+const getCurrentRecyclingWeek = () => {
+  const d = new Date(); // current time
+  const t = d.getTime() - (1000 * 60 * 60 * 24 * 3); // milliseconds since Jan 4 1970 Sunday
+  const w = Math.floor(t / (1000 * 60 * 60 * 24 * 7)); // weeks since Jan 4 1970
+  const o = w % 2; // equals 0 for even (B weeks) numbered weeks, 1 for odd numbered weeks
+  if (o === 0) {
+    return 'B';
+  }
+  // do your odd numbered week stuff
+  return 'A';
+};
+
+const calculateRecycling = (dayOfWeek, inCity, week) => {
   if (inCity) {
-    return ['(this or next week?) on', dayOfWeek, '(Recycle Week ??)'].join(' ');
+    if (getCurrentRecyclingWeek() === week) {
+      return ['this week on', dayOfWeek, 'Recycle Week', week].join(' ');
+    }
+    return ['next week on', dayOfWeek, 'Recycle Week', week].join(' ');
   }
   return 'No recycling collection information available';
 };
@@ -50,7 +65,7 @@ const Address = (props) => {
             <InCityMessage inTheCity={addressData.is_in_city} />
             <hr style={{ marginTop: '10px', marginBottom: '10px' }} />
             <DetailsFormGroup label="Trash collection" name="trash" value={calculateTrash(addressData.trash_day, addressData.is_in_city)} hasLabel icon={<Icon path={IM_BIN} size={20} />} />
-            <DetailsFormGroup label="Recycling collection" name="recycling" value={calculateRecycling(addressData.trash_day, addressData.is_in_city)} hasLabel icon={<Icon path={LI_RECYCLE2} size={20} viewBox="0 0 24 24" />} />
+            <DetailsFormGroup label="Recycling collection" name="recycling" value={calculateRecycling(addressData.trash_day, addressData.is_in_city, 'TBD')} hasLabel icon={<Icon path={LI_RECYCLE2} size={20} viewBox="0 0 24 24" />} />
             <DetailsFormGroup
               label="Zoning"
               name="zoning"

@@ -3,11 +3,11 @@ const objectAssign = require('object-assign');
 
 const initialState = {
   entities: [
-    //{ label: 'Neighborhoods', type: 'neighborhood', checked: true },
-    //{ label: 'Streets', type: 'street', checked: true },
+    // { label: 'Neighborhoods', type: 'neighborhood', checked: true },
+    // { label: 'Streets', type: 'street', checked: true },
     { label: 'Addresses', type: 'address', checked: true },
     { label: 'Properties', type: 'property', checked: true },
-    { label: 'Owners', type: 'owner', checked: true },
+    // { label: 'Owners', type: 'owner', checked: true },
     //{ label: 'Google places', type: 'google', checked: true },
   ],
 };
@@ -20,7 +20,7 @@ const searchByEntities = (state = initialState, action) => {
           if (entity.type !== action.entityType) {
             return entity;
           }
-          return objectAssign({}, {label: entity.label, type: entity.type, checked: !entity.checked });
+          return objectAssign({}, { label: entity.label, type: entity.type, checked: !entity.checked });
         }) };
     default:
       return state;

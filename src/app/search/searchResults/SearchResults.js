@@ -19,6 +19,30 @@ const getResultType = (type) => {
   }
 };
 
+const getEntitiesToSearch = (entities) => {
+  const entitiesToSearch = [];
+  for (let entity of entities) {
+    if (entity.checked) {
+      if (entity.type === 'address') {
+        entitiesToSearch.push('address');
+        entitiesToSearch.push('civicAddressId');
+      } else if (entity.type === 'property') {
+        entitiesToSearch.push('pin');
+        entitiesToSearch.push('property');
+      } else if (entity.type === 'neighborhood') {
+        entitiesToSearch.push('neighborhood');
+      } else if (entity.type === 'street') {
+        entitiesToSearch.push('street');
+      } else if (entity.type === 'owner') {
+        entitiesToSearch.push('owner');
+      } else if (entity.type === 'google') {
+        entitiesToSearch.push('google');
+      }
+    }
+  }
+  return entitiesToSearch;
+};
+
 const SearchResults = (props) => {
   if (props.data.loading) {
     return <LoadingAnimation message="Searching..." />;
@@ -104,6 +128,7 @@ SearchResults.propTypes = {
 const mapStateToProps = (state, ownProps) => (
   {
     searchText: state.search.text,
+    searchEntities: state.searchByEntities.entities,
   }
 );
 
@@ -131,7 +156,7 @@ const searchQuery = gql`
 `;
 
 const SearchResultsWithData = graphql(searchQuery, {
-  options: ownProps => ({ variables: { searchString: ownProps.searchText || '', searchContexts: ['address', 'civicAddressId', 'pin', 'property'] } }),
+  options: ownProps => ({ variables: { searchString: ownProps.searchText || '', searchContexts: getEntitiesToSearch(ownProps.searchEntities) } }),
 })(SearchResults);
 
 export default connect(mapStateToProps)(SearchResultsWithData);

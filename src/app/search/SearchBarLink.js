@@ -7,7 +7,7 @@ import SearchByEntities from './searchByEntities/SearchByEntities';
 const SearchBarLink = props => (
   <div className="col-xs-12">
     <h1>Discover city data about <strong>places</strong> in your community.</h1>
-    <Link to="/search">
+    <Link to="/search?entities=address,property,neighborhood,street,google,owner">
       <form onSubmit={event => event.preventDefault()}>
         <div className="input-group">
           <input

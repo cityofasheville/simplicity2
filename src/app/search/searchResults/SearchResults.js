@@ -19,6 +19,27 @@ const getResultType = (type) => {
   }
 };
 
+const getEntities = (selected) => {
+  if (selected === undefined || selected.length === 0) {
+    return [];
+  }
+  const entityTypes = selected.split(',');
+  const entities = [
+    // { label: 'Neighborhoods', type: 'neighborhood', checked: true },
+    // { label: 'Streets', type: 'street', checked: true },
+    { label: 'Addresses', type: 'address', checked: true },
+    { label: 'Properties', type: 'property', checked: true },
+    //{ label: 'Owners', type: 'owner', checked: true },
+    //{ label: 'Google places', type: 'google', checked: true }]
+  ];
+  for (let entity of entities) {
+    if (entityTypes.indexOf(entity.type) === -1) {
+      entity.checked = false;
+    }
+  }
+  return entities;
+};
+
 const getEntitiesToSearch = (entities) => {
   const entitiesToSearch = [];
   for (let entity of entities) {
@@ -96,10 +117,12 @@ const SearchResults = (props) => {
       <div className="col-sm-12">
         {
           formattedResults.length > 0 ?
-          formattedResults.map(resultGroup => (
+          formattedResults.map((resultGroup, index) => (
             <SearchResultGroup
-              key={resultGroup.label}
+              key={[resultGroup.label, index].join('_')}
               data={resultGroup}
+              searchText={props.searchText}
+              selectedEntities={props.location.query.entities}
             />
           )) :
           props.searchText === undefined || props.searchText.length === 0 ?
@@ -107,7 +130,7 @@ const SearchResults = (props) => {
               Enter a search term above to get results
             </div> :
             <div className="alert alert-warning alert-sm">
-              No results found. Try a different search term
+              No results found. Try a different search term and/or different search type selections.
             </div>
         }
       </div>
@@ -123,12 +146,14 @@ const resultsShape = {
 
 SearchResults.propTypes = {
   results: PropTypes.arrayOf(PropTypes.shape(resultsShape)),
+  searchText: PropTypes.string,
+  searchEntities: PropTypes.arrayOf(PropTypes.shape({ label: PropTypes.string, type: PropTypes.string, check: PropTypes.bool })),
 };
 
 const mapStateToProps = (state, ownProps) => (
   {
-    searchText: state.search.text,
-    searchEntities: state.searchByEntities.entities,
+    //searchText: state.search.text,
+    searchEntities: ownProps.location.query.entities !== undefined ? getEntities(ownProps.location.query.entities) : getEntities('address,property,neighborhood,street,owner,google'),
   }
 );
 

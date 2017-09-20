@@ -1,21 +1,23 @@
 import React from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { browserHistory } from 'react-router';
 import DetailsTable from '../../shared/DetailsTable';
 import DetailsFormGroup from '../../shared/DetailsFormGroup';
 import DetailsIconLinkFormGroup from '../../shared/DetailsIconLinkFormGroup';
 import LoadingAnimation from '../../shared/LoadingAnimation';
+import PageHeader from '../../shared/PageHeader';
+import ButtonGroup from '../../shared/ButtonGroup';
+import LinkButton from '../../shared/LinkButton';
 import { zoningLinks } from '../address/zoning';
 import Icon from '../../shared/Icon';
-import { IM_PROFILE, IM_USER, IM_GOOGLE, IM_CERTIFICATE, IM_CHECKBOX_PARTIAL2 } from '../../shared/iconConstants';
+import { IM_PROFILE, IM_USER, IM_GOOGLE, IM_CERTIFICATE, IM_CHECKBOX_PARTIAL2, IM_HOME2 } from '../../shared/iconConstants';
 
 const getDollars = (value) => {
   const initialSymbols = value < 0 ? '-$' : '$';
   return [initialSymbols, Math.abs(value).toLocaleString()].join('');
 };
 
-const Property = props => {
+const Property = (props) => {
   if (props.data.loading) {
     return <LoadingAnimation />;
   }
@@ -26,12 +28,14 @@ const Property = props => {
   const propertyData = props.data.properties[0];
   return (
     <div>
-      <div className="row">
-        <div className="col-sm-12">
-          <h1><button className="btn btn-primary pull-right" onClick={browserHistory.goBack}>Back</button>{propertyData.address},&nbsp;{propertyData.zipcode}</h1>
-          <h3>About this property</h3>
-        </div>
-      </div>
+      <PageHeader h1={[propertyData.address, propertyData.zipcode].join(', ')} h3="About this property" icon={<Icon path={IM_HOME2} size={50} />}>
+        <ButtonGroup>
+          {props.location.query.fromAddress &&
+            <LinkButton pathname="/address" query={{ entities: props.location.query.entities, search: props.location.query.search, id: props.location.query.fromAddress, hideNavbar: props.location.query.hideNavbar }} positionInGroup="left">Back to address</LinkButton>
+          }
+          <LinkButton pathname="/search" query={{ entities: props.location.query.entities, search: props.location.query.search, hideNavbar: props.location.query.hideNavbar }} positionInGroup={props.location.query.fromAddress ? 'right' : ''}>Back to search</LinkButton>
+        </ButtonGroup>
+      </PageHeader>
       <div className="row">
         <div className="col-sm-6">
           <fieldset className="detailsFieldset">

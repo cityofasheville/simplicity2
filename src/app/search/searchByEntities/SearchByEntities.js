@@ -1,22 +1,35 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
 import SearchByEntity from './SearchByEntity';
-import { toggleSearchByEntity } from './searchByEntitiesActions';
 import styles from './searchByEntities.css';
 
-const SearchByEntities = props => (
-  <div>
-    <span className="offscreen">Entities to search by</span>
-    <ul className={styles.searchEntitiesUL}>
-      {props.entities.map((entity, i) => (
-        <li key={['entity', i].join('_')} className={entity.checked ? 'text-primary' : styles.unchecked}>
-          <SearchByEntity entity={entity} onClick={props.toggleEntity} />
-        </li>
-      ))}
-    </ul>
-  </div>
-);
+const SearchByEntities = (props) => {
+  const refreshLocation = (entity) => {
+    let newSelected = '';
+    const curSelected = (props.location.query.entities || props.selectedEntities).split(',');
+    const alreadySelected = curSelected.indexOf(entity) > -1;
+    if (alreadySelected) {
+      newSelected = curSelected.filter(ent => ent !== entity);
+    } else {
+      newSelected = [curSelected, entity].join(',').replace(/(^,)|(,$)/g, '');
+    }
+    browserHistory.push([props.location.pathname, '?search=', document.getElementById('searchBox').value, '&entities=', newSelected, '&hideNavbar=', props.location.query.hideNavbar].join(''));
+  };
+
+  return (
+    <div>
+      <span className="offscreen">Entities to search by</span>
+      <ul className={styles.searchEntitiesUL}>
+        {props.entities.map((entity, i) => (
+          <li key={['entity', i].join('_')} className={entity.checked ? 'text-primary' : styles.unchecked}>
+            <SearchByEntity entity={entity} onClick={() => refreshLocation(entity.type)} />
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
 
 const entityDataShape = {
   label: PropTypes.String,
@@ -26,7 +39,7 @@ const entityDataShape = {
 
 SearchByEntities.propTypes = {
   entities: PropTypes.arrayOf(PropTypes.shape(entityDataShape)),
-  toggleEntity: PropTypes.func,
+  selectedEntities: PropTypes.string,
 };
 
 SearchByEntities.defaultProps = {
@@ -38,20 +51,8 @@ SearchByEntities.defaultProps = {
     //{ label: 'Owners', type: 'owner', checked: true },
     //{ label: 'Google places', type: 'google', checked: true },
   ],
+  selectedEntities: '',
 };
 
-const mapStateToProps = state => (
-  {
-    entities: state.searchByEntities.entities,
-  }
-);
+export default SearchByEntities;
 
-const mapDispatchToProps = dispatch => (
-  {
-    toggleEntity: entityType => (
-      dispatch(toggleSearchByEntity(entityType))
-    ),
-  }
-);
-
-export default connect(mapStateToProps, mapDispatchToProps)(SearchByEntities);

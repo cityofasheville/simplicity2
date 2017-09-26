@@ -153,7 +153,7 @@ const ProjectDetails = (props) => (
         <div className="col-sm-5">
           <ProjectMap name={props['Project']} />
           <a href={props['Photo URL']} target="_blank">
-            <img className="img-responsive" src={props['Photo URL']} />
+            <img className="img-responsive" src={props['Photo URL']} style={{ maxHeight: '400px' }} />
           </a>
         </div>
       </div>

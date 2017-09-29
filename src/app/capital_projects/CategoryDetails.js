@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Collapsible from 'react-collapsible';
-//import Collapsible from '../../shared/Collapsible'
+import Collapsible from '../../shared/Collapsible';
 import ProjectsTable from './ProjectsTable';
 import { testProjectData, getFundsAllocatedAndExpended, filterProjects } from './cip_utilities';
 import Icon from '../../shared/Icon';

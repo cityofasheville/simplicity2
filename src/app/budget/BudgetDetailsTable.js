@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import ReactTable from 'react-table';
-import Collapsible from 'react-collapsible';
+import Collapsible from '../../shared/Collapsible';
 import { RadioGroup, Radio } from 'react-radio-group';
 
 const last4Years = [

@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import PropertyListItem from './PropertyListItem';
-import styles from '../spatial_event_topic_summary/spatialEventTopicListStyles.css';
 
 const PropertyList = props => (
-  <div className={styles.topicSummaryList}>
+  <div className="row">
     {props.listData.map((itemData, i) => (
       <PropertyListItem key={['property', i].join('_')} itemData={itemData} />
     ))}

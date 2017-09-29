@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from '../../shared/Icon';
 import { IM_WARNING, IM_INFO, IM_MAP5 } from '../../shared/iconConstants';
-import styles from '../spatial_event_topic_summary/spatialEventTopicListItemStyles.css';
 
 const getAuthoritySite = (authority) => {
   switch (authority) {
@@ -22,22 +21,22 @@ const MaintenanceListItem = (props) => {
   };
 
   return (
-    <div className={['row', styles.topicSummaryListItem].join(' ')}>
+    <div className="row">
       <div className="col-xs-12">
-        <div className={['row', styles.flexRow, styles.titleRow].join(' ')}>
-          <div className={['col-sm-12', styles.categoryTitle].join(' ')}>
+        <div className="row">
+          <div className="col-sm-12">
             <span>{props.itemData.AuthorityName}</span>
           </div>
         </div>
-        <div className={['row', styles.flexRow].join(' ')}>
+        <div className="row">
           {Object.keys(displayItems).map(key => (
             <div className="col-sm-6" key={key}>
-              <label htmlFor={key} className={['control-label', styles.columnTitle].join(' ')}>{key}:</label>
-              <span className={styles.columnValue} name={key}> {displayItems[key]}</span>
+              <label htmlFor={key} className="control-label">{key}:</label>
+              <span className="col-sm-4" name={key}> {displayItems[key]}</span>
             </div>
           ))}
         </div>
-        <div className={['row', styles.linkRow].join(' ')}>
+        <div className="row">
           <div className="col-sm-12">
             <div className="pull-right"><a title="Report an issue" style={{ marginLeft: '7px' }}><Icon path={IM_WARNING} size={20} /> Report an issue</a></div><div className="pull-right"> <a title="View directions to property in Google maps" href={getAuthoritySite(props.itemData.AuthorityName)} target="_blank" style={{ marginLeft: '7px' }}><Icon path={IM_INFO} size={20} /> Authority website</a></div><div className="pull-right"> <a title="View centerline in map"><Icon path={IM_MAP5} size={20} /> Map</a></div>
           </div>

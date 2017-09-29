@@ -123,7 +123,7 @@ class Collapsible extends React.Component {
           msTransition: this.state.transition,
           transition: this.state.transition,
           overflow: this.state.overflow,
-        }
+        };
 
         var openClass = this.state.isClosed ? 'is-closed' : 'is-open';
 

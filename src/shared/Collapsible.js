@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 class Collapsible extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     if (props.open) {
       this.state = {
@@ -14,7 +14,7 @@ class Collapsible extends React.Component {
         hasBeenOpened: true,
         overflow: props.overflowWhenOpen,
         inTransition: false,
-      }
+      };
     } else {
       this.state = {
         isClosed: true,
@@ -24,7 +24,7 @@ class Collapsible extends React.Component {
         hasBeenOpened: false,
         overflow: 'hidden',
         inTransition: false,
-      }
+      };
     }
     this.handleTriggerClick = this.handleTriggerClick.bind(this);
     this.handleTransitionEnd = this.handleTransitionEnd.bind(this);
@@ -32,7 +32,7 @@ class Collapsible extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(this.state.shouldOpenOnNextCycle){
+    if (this.state.shouldOpenOnNextCycle) {
       this.continueOpenCollapsible();
     }
 
@@ -49,7 +49,7 @@ class Collapsible extends React.Component {
 
     // If there has been a change in the open prop (controlled by accordion)
     if (prevProps.open !== this.props.open) {
-      if(this.props.open === true) {
+      if (this.props.open === true) {
         this.openCollapsible();
       } else {
         this.closeCollapsible();
@@ -60,7 +60,7 @@ class Collapsible extends React.Component {
   closeCollapsible() {
     this.setState({
       shouldSwitchAutoOnNextCycle: true,
-      height: this.refs.inner.offsetHeight,
+      height: this.inner.offsetHeight,
       transition: `height ${this.props.transitionTime}ms ${this.props.easing}`,
       inTransition: true,
     });
@@ -75,7 +75,7 @@ class Collapsible extends React.Component {
 
   continueOpenCollapsible() {
     this.setState({
-      height: this.refs.inner.offsetHeight,
+      height: this.inner.offsetHeight,
       transition: `height ${this.props.transitionTime}ms ${this.props.easing}`,
       isClosed: false,
       hasBeenOpened: true,
@@ -88,19 +88,17 @@ class Collapsible extends React.Component {
     event.preventDefault();
 
     if (this.props.triggerDisabled) {
-      return
+      return;
     }
 
     if (this.props.handleTriggerClick) {
       this.props.handleTriggerClick(this.props.accordionPosition);
+    } else if (this.state.isClosed === true) {
+      this.openCollapsible();
+      this.props.onOpening();
     } else {
-      if (this.state.isClosed === true) {
-        this.openCollapsible();
-        this.props.onOpening();
-      } else {
-        this.closeCollapsible();
-        this.props.onClosing();
-      }
+      this.closeCollapsible();
+      this.props.onClosing();
     }
   }
 
@@ -115,35 +113,35 @@ class Collapsible extends React.Component {
   }
 
   render() {
-    var dropdownStyle = {
+    const dropdownStyle = {
       height: this.state.height,
       WebkitTransition: this.state.transition,
       msTransition: this.state.transition,
       transition: this.state.transition,
       overflow: this.state.overflow,
-    }
-    var whiteSpaceStyle = {visibility: 'hidden'}
-    var linkStyle = {
+    };
+    const whiteSpaceStyle = { visibility: 'hidden' };
+    const linkStyle = {
       color: 'white',
       'text-decoration': 'none',
       'white-space': 'nowrap',
-    }
-    var overflowStyle = {overflow: 'hidden'}
+    };
+    const overflowStyle = { overflow: 'hidden' };
 
 
-    var whiteSpace = 'white-space-white-space-white-space-white-space-white-space-white-space-white-space-white-space' +
+    const whiteSpace = 'white-space-white-space-white-space-white-space-white-space-white-space-white-space-white-space' +
       '-white-space-white-space-white-space-white-space-white-space-white-space-white-space-white-space-white-space';
 
-    var openClass = this.state.isClosed ? 'is-closed' : 'is-open';
-    var disabledClass = this.props.triggerDisabled ? 'is-disabled' : '';
+    const openClass = this.state.isClosed ? 'is-closed' : 'is-open';
+    const disabledClass = this.props.triggerDisabled ? 'is-disabled' : '';
 
-    //If user wants different text when tray is open
-    var trigger = (this.state.isClosed === false) && (this.props.triggerWhenOpen !== undefined)
+    // If user wants different text when tray is open
+    const trigger = (this.state.isClosed === false) && (this.props.triggerWhenOpen !== undefined)
       ? this.props.triggerWhenOpen
       : this.props.trigger;
 
     // Don't render children until the first opening of the Collapsible if lazy rendering is enabled
-    var children = this.props.lazyRender
+    const children = this.props.lazyRender
     && !this.state.hasBeenOpened
     && this.state.isClosed
     && !this.state.inTransition ? null : this.props.children;
@@ -158,13 +156,13 @@ class Collapsible extends React.Component {
     const outerClassString = `${this.props.classParentString}__contentOuter ${this.props.contentOuterClassName}`;
     const innerClassString = `${this.props.classParentString}__contentInner ${this.props.contentInnerClassName}`;
 
-    return(
+    return (
       <div className={parentClassString.trim()} style={overflowStyle}>
-        <a style={linkStyle} href="#" onClick={this.handleTriggerClick}>
+        <button style={linkStyle} onClick={this.handleTriggerClick}>
           <span className={triggerClassString} >
             {trigger} <span style={whiteSpaceStyle}>{whiteSpace}</span>
           </span>
-        </a>
+        </button>
 
         <div className={outerClassString.trim()} ref="outer" style={dropdownStyle} onTransitionEnd={this.handleTransitionEnd}>
           <div className={innerClassString.trim()} ref="inner">
@@ -180,6 +178,7 @@ Collapsible.propTypes = {
   transitionTime: PropTypes.number,
   easing: PropTypes.string,
   open: PropTypes.bool,
+  className: PropTypes.string,
   classParentString: PropTypes.string,
   openedClassName: PropTypes.string,
   triggerClassName: PropTypes.string,
@@ -188,7 +187,7 @@ Collapsible.propTypes = {
   contentInnerClassName: PropTypes.string,
   accordionPosition: PropTypes.oneOfType([
     PropTypes.string,
-    PropTypes.number
+    PropTypes.number,
   ]),
   handleTriggerClick: PropTypes.func,
   onOpen: PropTypes.func,
@@ -197,11 +196,11 @@ Collapsible.propTypes = {
   onClosing: PropTypes.func,
   trigger: PropTypes.oneOfType([
     PropTypes.string,
-    PropTypes.element
+    PropTypes.element,
   ]),
-  triggerWhenOpen:PropTypes.oneOfType([
+  triggerWhenOpen: PropTypes.oneOfType([
     PropTypes.string,
-    PropTypes.element
+    PropTypes.element,
   ]),
   triggerDisabled: PropTypes.bool,
   lazyRender: PropTypes.bool,
@@ -214,11 +213,7 @@ Collapsible.propTypes = {
     'initial',
     'unset',
   ]),
-  triggerSibling: PropTypes.oneOfType([
-    PropTypes.element,
-    PropTypes.func,
-  ]),
-}
+};
 
 Collapsible.defaultProps = {
   transitionTime: 400,
@@ -234,7 +229,6 @@ Collapsible.defaultProps = {
   contentOuterClassName: '',
   contentInnerClassName: '',
   className: '',
-  triggerSibling: null,
   onOpen: () => {},
   onClose: () => {},
   onOpening: () => {},

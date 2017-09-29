@@ -60,7 +60,7 @@ class Collapsible extends React.Component {
   closeCollapsible() {
     this.setState({
       shouldSwitchAutoOnNextCycle: true,
-      height: this.inner.offsetHeight,
+      height: this.refs.inner.offsetHeight,
       transition: `height ${this.props.transitionTime}ms ${this.props.easing}`,
       inTransition: true,
     });
@@ -75,7 +75,7 @@ class Collapsible extends React.Component {
 
   continueOpenCollapsible() {
     this.setState({
-      height: this.inner.offsetHeight,
+      height: this.refs.inner.offsetHeight,
       transition: `height ${this.props.transitionTime}ms ${this.props.easing}`,
       isClosed: false,
       hasBeenOpened: true,
@@ -158,11 +158,11 @@ class Collapsible extends React.Component {
 
     return (
       <div className={parentClassString.trim()} style={overflowStyle}>
-        <button style={linkStyle} onClick={this.handleTriggerClick}>
+        <a style={linkStyle} href="#" onClick={this.handleTriggerClick}>
           <span className={triggerClassString} >
             {trigger} <span style={whiteSpaceStyle}>{whiteSpace}</span>
           </span>
-        </button>
+        </a>
 
         <div className={outerClassString.trim()} ref="outer" style={dropdownStyle} onTransitionEnd={this.handleTransitionEnd}>
           <div className={innerClassString.trim()} ref="inner">
@@ -178,7 +178,6 @@ Collapsible.propTypes = {
   transitionTime: PropTypes.number,
   easing: PropTypes.string,
   open: PropTypes.bool,
-  className: PropTypes.string,
   classParentString: PropTypes.string,
   openedClassName: PropTypes.string,
   triggerClassName: PropTypes.string,
@@ -229,6 +228,7 @@ Collapsible.defaultProps = {
   contentOuterClassName: '',
   contentInnerClassName: '',
   className: '',
+  triggerSibling: null,
   onOpen: () => {},
   onClose: () => {},
   onOpening: () => {},

@@ -3,8 +3,9 @@ import { browserHistory } from 'react-router';
 import PropTypes from 'prop-types';
 import PieChart from '../../shared/visualization/PieChart';
 import SpatialEventTopicFilters from '../spatial_event_topic_summary/SpatialEventTopicFilters';
+import CrimeTable from '../crime/CrimeTable';
+import DevelopmentTable from '../development/DevelopmentTable';
 import EmailDownload from '../../shared/EmailDownload';
-import SpatialEventTopicList from '../spatial_event_topic_summary/SpatialEventTopicList';
 import Icon from '../../shared/Icon';
 import { IM_SHIELD3, IM_OFFICE } from '../../shared/iconConstants';
 import PageHeader from '../../shared/PageHeader';
@@ -28,10 +29,10 @@ const testPieDevelopmentData = [
 ];
 
 const testCrimeData = [
-  { crime: 'Larceny', location: '123 Main Street, 28805', date: '01/01/2001', caseNumber: '1234567879', lawBeat: 'AC2' },
-  { crime: 'Larceny of Motor Vehicle', location: '10 Main Street, 28803', date: '01/01/2002', caseNumber: '11111', lawBeat: 'AC3' },
-  { crime: 'Larceny', location: '1 Main Street, Apt 17, 28805', date: '05/01/2001', caseNumber: '9999999', lawBeat: 'AC6' },
-  { crime: 'Larceny', location: '12 Main Street', date: '06/16/2001', caseNumber: 'X12354999', lawBeat: 'AC3' },
+  { crime: 'Larceny', location: '123 Main Street, 28805', date: '01/01/2001', caseNumber: '12345678', lawBeat: 'AC2' },
+  { crime: 'Larceny of Motor Vehicle', location: '10 Main Street, 28803', date: '01/01/2002', caseNumber: '11111111', lawBeat: 'AC3' },
+  { crime: 'Larceny', location: '1 Main Street, Apt 17, 28805', date: '05/01/2001', caseNumber: '99999999', lawBeat: 'AC6' },
+  { crime: 'Larceny', location: '12 Main Street', date: '06/16/2001', caseNumber: 'X1235499', lawBeat: 'AC3' },
   { crime: 'Larceny', location: '1234 Main Street', date: '01/01/2001', caseNumber: '00009990', lawBeat: 'AC2' },
 ];
 
@@ -78,7 +79,7 @@ const SpatialEventTopicSummary = props => (
       </div>
 
       <div id="listView" hidden={props.location.query.view !== 'list'}>
-        <SpatialEventTopicList spatialEventTopic={props.spatialEventTopic.toLowerCase()} listData={props.spatialEventTopic === 'crime' ? testCrimeData : testPermitData} />
+        {props.spatialEventTopic === 'crime' ? <CrimeTable data={testCrimeData} /> : <DevelopmentTable data={testPermitData} />}
       </div>
 
       <div id="mapView" className="col-xs-12" hidden={props.location.query.view !== 'map'}>

@@ -342,7 +342,7 @@ export const testProjectData = [
    "Project Webpage (more information)": "",
    "Photo URL": "http://arcgis.ashevillenc.gov/B160001.jpg",
    "Map Tab": "Bond - Transportation",
-   "Project Updates": "Phase one installation contract with Allison Construction. Reviewing list of bus shelter locations and working on getting easements. First shelter will go in at ABCCM. Having issues getting responses from easements.",
+   "Project Updates": "Phase one installation contract with Allison Construction. Reviewing list of bus shelter locations and working on getting easements. Having issues getting responses from easements. ",
    "LTD Actuals": 11116.79,
    "Estimated Construction Timeframe": "Summer 2017 - Fall 2018",
    "Need PM Fields?": "yes"
@@ -360,7 +360,7 @@ export const testProjectData = [
    "Email Address": "cbandy@ashevillenc.gov",
    "Owner Department": "Transportation",
    "Administering Department": "Capital Projects",
-   "Project Description": "Installation of speed humps and associated pavement markings. at various locations.",
+   "Project Description": "Installation of speed humps and associated pavement markings at various locations.",
    "Status": "Status: Planning",
    "GO Bond Funding": "$400,000",
    "CIP Funding (total)": "$0",
@@ -835,7 +835,7 @@ export const testProjectData = [
    "Project Webpage (more information)": "http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=27798",
    "Photo URL": "http://arcgis.ashevillenc.gov/B160126.png",
    "Map Tab": "Bond - Transportation",
-   "Project Updates": "Start construction in September. MLK not starting until May.",
+   "Project Updates": "Start construction in September. MLK has a contract with Rodgers Group - paving not starting until May. Will have public meetings before start work.",
    "LTD Actuals": 0,
    "Estimated Construction Timeframe": "Fall 2017 - Spring 2018",
    "Need PM Fields?": "yes"
@@ -1086,7 +1086,7 @@ export const testProjectData = [
    "Owner Department": "Public Works",
    "Administering Department": "Capital Projects",
    "Project Description": "Repair of the 122 foot long bridge that carries Cedar Street across the Norfolk Southern Railroad. The bridge was originally constructed in 1966.",
-   "Status": "Status: Construction",
+   "Status": "Status: Completed",
    "GO Bond Funding": "$0",
    "CIP Funding (total)": "$500,000",
    "Grant Funding (total)": "$0",
@@ -1230,7 +1230,7 @@ export const testProjectData = [
    "Email Address": "vsullivan@ashevillenc.gov",
    "Owner Department": "Transportation",
    "Administering Department": "Capital Projects",
-   "Project Description": "A partnership project with the Department of Transportation to add sidewalks and pedestrian crossings on New Leicester Highway (NC81) from Patton Avenue to the city limits.",
+   "Project Description": "A partnership project with the North Carolina Department of Transportation (NCDOT) to add sidewalks and pedestrian crossings on New Leicester Highway (NC81) from Patton Avenue to the city limits.",
    "Status": "Status: Design",
    "GO Bond Funding": "$0",
    "CIP Funding (total)": "$726,000",
@@ -1299,7 +1299,7 @@ export const testProjectData = [
    "Project Webpage (more information)": "http://www.ashevillenc.gov/departments/community/strategic_development_office/riverfront/river_news_and_updates.htm",
    "Photo URL": "http://arcgis.ashevillenc.gov/c0013.png",
    "Map Tab": "General Capital Improvement Program",
-   "Project Updates": "Received preliminary schedule. Will review and share with public in October. In November will start Construction coffees. Had kickoff meeting with inspectors and stakeholders. Had FHWA reps there to make sure inspections and audit needs will be good. Gave SEPI notice to proceed on 9.14.17. Cleaning up 12 Bones site, paving coming out. Then will be moving to Anders Warehouse to remove slab. Reaching out to property developers to coordinate proposed sequencing of construction and coordinating with seasonal use of boat ramp. Coordinate inspections with DSD.",
+   "Project Updates": "Received preliminary schedule. Will review and share with public in October. In November will start Construction coffees. Had kickoff meeting with inspectors and stakeholders. Had FHWA reps there to make sure inspections and audit needs will be good. Gave SEPI notice to proceed on 9.14.17. Cleaning up 12 Bones site, paving coming out. Then will be moving to Anders Warehouse to remove slab. Reaching out to property developers to coordinate proposed sequencing of construction and coordinating with seasonal use of boat ramp. Coordinate inspections with DSD. Began Demolition and clearing work. Still working on finalizing overall construction schedule. Tree removal will be needed. Will have public outreach about tree removal plan. Roadwork that will need traffic control begins in beginning of 2018. Need to consider maintanence work that will begin as pieces are finished - these milestones will be inserted into the schedule.",
    "LTD Actuals": 701401.34,
    "Estimated Construction Timeframe": "Summer 2017 - Summer 2020",
    "Need PM Fields?": "yes"
@@ -1359,7 +1359,7 @@ export const testProjectData = [
    "Map Tab": "General Capital Improvement Program",
    "Project Updates": "",
    "LTD Actuals": 0,
-   "Estimated Construction Timeframe": "#REF!",
+   "Estimated Construction Timeframe": "",
    "Need PM Fields?": "no"
  },
  {
@@ -1388,7 +1388,7 @@ export const testProjectData = [
    "Map Tab": "General Capital Improvement Program",
    "Project Updates": "",
    "LTD Actuals": 0,
-   "Estimated Construction Timeframe": " - ",
+   "Estimated Construction Timeframe": "TBD - TBD",
    "Need PM Fields?": "yes"
  },
  {
@@ -1417,7 +1417,7 @@ export const testProjectData = [
    "Map Tab": "General Capital Improvement Program",
    "Project Updates": "",
    "LTD Actuals": 0,
-   "Estimated Construction Timeframe": "TBD - TBD",
+   "Estimated Construction Timeframe": "Spring 2018 - Fall 2018",
    "Need PM Fields?": "yes"
  },
  {
@@ -1446,7 +1446,7 @@ export const testProjectData = [
    "Map Tab": "General Capital Improvement Program",
    "Project Updates": "",
    "LTD Actuals": 37519.04,
-   "Estimated Construction Timeframe": "Spring 2018 - Fall 2018",
+   "Estimated Construction Timeframe": "Summer 2020 - Summer 2022",
    "Need PM Fields?": "yes"
  },
  {
@@ -1475,7 +1475,7 @@ export const testProjectData = [
    "Map Tab": "General Capital Improvement Program",
    "Project Updates": " In construction. Have portable lighting so that recreation can continue. Finish end of October.",
    "LTD Actuals": 225039.88,
-   "Estimated Construction Timeframe": "Summer 2020 - Summer 2022",
+   "Estimated Construction Timeframe": "Summer 2017 - Fall 2017",
    "Need PM Fields?": "yes"
  },
  {
@@ -1504,7 +1504,7 @@ export const testProjectData = [
    "Map Tab": "General Capital Improvement Program",
    "Project Updates": "Lawn bowling bids week of Sept 5th.",
    "LTD Actuals": 677167.24,
-   "Estimated Construction Timeframe": "Summer 2017 - Fall 2017",
+   "Estimated Construction Timeframe": "Fall 2017 - Spring 2018",
    "Need PM Fields?": "yes"
  },
  {
@@ -1533,7 +1533,7 @@ export const testProjectData = [
    "Map Tab": "General Capital Improvement Program",
    "Project Updates": "",
    "LTD Actuals": 339737.89,
-   "Estimated Construction Timeframe": "Spring 2018",
+   "Estimated Construction Timeframe": "TBD - TBD",
    "Need PM Fields?": "yes"
  },
  {
@@ -1562,7 +1562,7 @@ export const testProjectData = [
    "Map Tab": "General Capital Improvement Program",
    "Project Updates": "",
    "LTD Actuals": 1842330.11,
-   "Estimated Construction Timeframe": "TBD - TBD",
+   "Estimated Construction Timeframe": "Summer 2017  - Summer 2017",
    "Need PM Fields?": "yes"
  },
  {
@@ -1591,7 +1591,7 @@ export const testProjectData = [
    "Map Tab": "General Capital Improvement Program",
    "Project Updates": "",
    "LTD Actuals": 1842330.11,
-   "Estimated Construction Timeframe": "Summer 2017  - Summer 2017",
+   "Estimated Construction Timeframe": "Summer 2017  - Fall 2017",
    "Need PM Fields?": "yes"
  },
  {
@@ -1620,7 +1620,7 @@ export const testProjectData = [
    "Map Tab": "",
    "Project Updates": "",
    "LTD Actuals": 0,
-   "Estimated Construction Timeframe": "Summer 2017  - Fall 2017",
+   "Estimated Construction Timeframe": " - ",
    "Need PM Fields?": "no"
  },
  {
@@ -1647,9 +1647,9 @@ export const testProjectData = [
    "Project Webpage (more information)": "",
    "Photo URL": "http://arcgis.ashevillenc.gov/c0032.jpg",
    "Map Tab": "General Capital Improvement Program",
-   "Project Updates": "Owner Department working on project charter. Tranportation department working with State process for agreement. Concept plan for corridor will be incorportated in South Slope visioning process.",
+   "Project Updates": "Owner Department working on project charter. Tranportation department working with State process for agreement (takes multiple months). Concept plan for corridor will be incorportated in South Slope visioning process. Asks for years that project might go to connstruction (10 year period).",
    "LTD Actuals": 0,
-   "Estimated Construction Timeframe": " - ",
+   "Estimated Construction Timeframe": "TBD - TBD",
    "Need PM Fields?": "yes"
  },
  {
@@ -1676,7 +1676,7 @@ export const testProjectData = [
    "Project Webpage (more information)": "",
    "Photo URL": "http://arcgis.ashevillenc.gov/c0033.jpg",
    "Map Tab": "General Capital Improvement Program",
-   "Project Updates": "Owner Department working on project charter. Tranportation department working with State process for agreement. Concept plan for corridor will be incorportated in South Slope visioning process.",
+   "Project Updates": "Owner Department working on project charter. Tranportation department working with State process for agreement (takes multiple months). Concept plan for corridor will be incorportated in South Slope visioning process. Asks for years that project might go to connstruction (10 year period).",
    "LTD Actuals": 0,
    "Estimated Construction Timeframe": "TBD - TBD",
    "Need PM Fields?": "yes"
@@ -1707,8 +1707,8 @@ export const testProjectData = [
    "Map Tab": "General Capital Improvement Program",
    "Project Updates": "",
    "LTD Actuals": 0,
-   "Estimated Construction Timeframe": "TBD - TBD",
-   "Need PM Fields?": "yes"
+   "Estimated Construction Timeframe": " - ",
+   "Need PM Fields?": "no"
  },
  {
    "GIS_ID": "C0035",
@@ -1765,7 +1765,7 @@ export const testProjectData = [
    "Map Tab": "General Capital Improvement Program",
    "Project Updates": "",
    "LTD Actuals": 0,
-   "Estimated Construction Timeframe": " - ",
+   "Estimated Construction Timeframe": "TBD - TBD",
    "Need PM Fields?": "yes"
  },
  {
@@ -1794,7 +1794,7 @@ export const testProjectData = [
    "Map Tab": "General Capital Improvement Program",
    "Project Updates": "",
    "LTD Actuals": 0,
-   "Estimated Construction Timeframe": "TBD - TBD",
+   "Estimated Construction Timeframe": " - ",
    "Need PM Fields?": "no"
  },
  {
@@ -1823,7 +1823,7 @@ export const testProjectData = [
    "Map Tab": "General Capital Improvement Program",
    "Project Updates": "Feasibility Study and Master plan in progress.",
    "LTD Actuals": 0,
-   "Estimated Construction Timeframe": " - ",
+   "Estimated Construction Timeframe": "Fall 2018 - Summer 2019",
    "Need PM Fields?": "yes"
  },
  {
@@ -1852,7 +1852,7 @@ export const testProjectData = [
    "Map Tab": "General Capital Improvement Program",
    "Project Updates": "Half way through. Finished 6 out of 12 roads, done end of Sept. then start phase 2.",
    "LTD Actuals": 465871.28,
-   "Estimated Construction Timeframe": "",
+   "Estimated Construction Timeframe": "Summer 2017 - Spring 2018",
    "Need PM Fields?": "yes"
  }
 ];

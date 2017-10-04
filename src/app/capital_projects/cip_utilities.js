@@ -1590,7 +1590,7 @@ export const testProjectData = [
    "Photo URL": "http://arcgis.ashevillenc.gov/C0024.png",
    "Map Tab": "General Capital Improvement Program",
    "Project Updates": "",
-   "LTD Actuals": 1842330.11,
+   "LTD Actuals": 201123.77,
    "Estimated Construction Timeframe": "Summer 2017  - Fall 2017",
    "Need PM Fields?": "yes"
  },

@@ -1,3 +1,5 @@
+//Baesd on  glennflanagan react-collapsible (https://github.com/glennflanagan/react-collapsible)
+
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -14,6 +16,7 @@ class Collapsible extends React.Component {
         hasBeenOpened: true,
         overflow: props.overflowWhenOpen,
         inTransition: false,
+        hover: false,
       };
     } else {
       this.state = {
@@ -24,11 +27,14 @@ class Collapsible extends React.Component {
         hasBeenOpened: false,
         overflow: 'hidden',
         inTransition: false,
+        hover: false,
       };
     }
     this.handleTriggerClick = this.handleTriggerClick.bind(this);
     this.handleTransitionEnd = this.handleTransitionEnd.bind(this);
     this.continueOpenCollapsible = this.continueOpenCollapsible.bind(this);
+    this.handleKeyUp = this.handleKeyUp.bind(this);
+    this.setFocusLink = this.setFocusLink.bind(this);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -46,8 +52,6 @@ class Collapsible extends React.Component {
         });
       }, 50);
     }
-
-    // If there has been a change in the open prop (controlled by accordion)
     if (prevProps.open !== this.props.open) {
       if (this.props.open === true) {
         this.openCollapsible();
@@ -55,6 +59,10 @@ class Collapsible extends React.Component {
         this.closeCollapsible();
       }
     }
+  }
+
+  setFocusLink(hoverState) {
+    this.setState({ hover: hoverState });
   }
 
   closeCollapsible() {
@@ -102,6 +110,21 @@ class Collapsible extends React.Component {
     }
   }
 
+  handleKeyUp(event) {
+    event.preventDefault();
+    if (event.charCode === 32) {
+      if (this.props.handleKeyUp) {
+        this.props.handleKeyUp(this.props.accordionPosition);
+      } else if (this.state.isClosed === true) {
+        this.openCollapsible();
+        this.props.onOpening();
+      } else {
+        this.closeCollapsible();
+        this.props.onClosing();
+      }
+    }
+  }
+
   handleTransitionEnd() {
     if (!this.state.isClosed) {
       this.setState({ height: 'auto', overflow: this.props.overflowWhenOpen, inTransition: false });
@@ -122,9 +145,11 @@ class Collapsible extends React.Component {
     };
     const whiteSpaceStyle = { visibility: 'hidden' };
     const linkStyle = {
+      border: this.state.hover ? '3px solid #d3f1ff' : '3px solid #4579B3',
       color: 'white',
-      'text-decoration': 'none',
-      'white-space': 'nowrap',
+      textDecoration: 'none',
+      whiteSpace: 'nowrap',
+      display: 'block',
     };
     const overflowStyle = { overflow: 'hidden' };
 
@@ -158,7 +183,7 @@ class Collapsible extends React.Component {
 
     return (
       <div className={parentClassString.trim()} style={overflowStyle}>
-        <a style={linkStyle} href="#" onClick={this.handleTriggerClick}>
+        <a href="#" style={linkStyle} onKeyPress={this.handleKeyUp} onClick={this.handleTriggerClick} onFocus={() => this.setFocusLink(true)} onBlur={() => this.setFocusLink(false)} onMouseEnter={() => this.setFocusLink(true)} onMouseLeave={() => this.setFocusLink(false)}>
           <span className={triggerClassString} >
             {trigger} <span style={whiteSpaceStyle}>{whiteSpace}</span>
           </span>
@@ -175,6 +200,7 @@ class Collapsible extends React.Component {
 }
 
 Collapsible.propTypes = {
+  hover: PropTypes.bool,
   transitionTime: PropTypes.number,
   easing: PropTypes.string,
   open: PropTypes.bool,
@@ -189,6 +215,8 @@ Collapsible.propTypes = {
     PropTypes.number,
   ]),
   handleTriggerClick: PropTypes.func,
+  handleKeyUp: PropTypes.func,
+  className: PropTypes.string,
   onOpen: PropTypes.func,
   onClose: PropTypes.func,
   onOpening: PropTypes.func,
@@ -212,9 +240,11 @@ Collapsible.propTypes = {
     'initial',
     'unset',
   ]),
+  children: PropTypes.node,
 };
 
 Collapsible.defaultProps = {
+  hover: false,
   transitionTime: 400,
   easing: 'linear',
   open: false,
@@ -228,7 +258,6 @@ Collapsible.defaultProps = {
   contentOuterClassName: '',
   contentInnerClassName: '',
   className: '',
-  triggerSibling: null,
   onOpen: () => {},
   onClose: () => {},
   onOpening: () => {},

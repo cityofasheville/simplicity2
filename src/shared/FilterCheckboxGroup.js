@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 
 const FilterCheckboxGroup = props => (
   <div className="row">
-    { props.children }
+
+      { props.children }
+
   </div>
 );
 

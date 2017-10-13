@@ -19,6 +19,21 @@ const backgroundStyle = (checked) => {
   return styling;
 };
 
+const handleFocus = () => {
+  const styling = {
+    outline: '#4579B3 3px solid',
+    outlineOffset: '2px',
+  }
+  return styling;
+}
+
+const handleBlur = () => {
+  const styling = {
+    outline: '#4579B3 3px solid',
+    outlineOffset: '-2px',
+  }
+  return styling;
+}
 const FilterCheckbox = props => (
     <div>
       <div style={mainStyle(props.selected, props.disabled)} onClick={props.handleChange}>
@@ -45,6 +60,7 @@ FilterCheckbox.defaultProps = {
   disabled: false,
   handleChange: null,
   minHeight: '30px',
+
 }
 
 export default FilterCheckbox;

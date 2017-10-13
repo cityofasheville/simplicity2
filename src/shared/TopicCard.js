@@ -25,7 +25,7 @@ const getTopicIcon = (topic) => {
 };
 
 const TopicCard = props => (
-  <Link to={{ pathname: props.topic, query: { entity: props.entity, view: 'summary', id: props.id, label: props.label } }}>
+  <Link to={{ pathname: props.topic, query: { entity: props.entity, view: 'summary', id: props.id, label: props.label, entities: props.entities } }}>
     <div className={styles.topicCard}>
       <div className="text-primary text-center">{getTopicIcon(props.topic)}</div>
       <div className="text-primary text-center">{props.topic.replace(/_/g, ' ')}</div>
@@ -38,6 +38,7 @@ TopicCard.propTypes = {
   entity: PropTypes.string,
   id: PropTypes.string,
   label: PropTypes.string,
+  entities: PropTypes.string,
 };
 
 TopicCard.defaultProps = {
@@ -45,6 +46,7 @@ TopicCard.defaultProps = {
   entity: 'city',
   id: '',
   label: '',
+  entities: 'address,property,neighborhood,street,google,owner',
 };
 
 export default TopicCard;

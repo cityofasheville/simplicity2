@@ -10,7 +10,7 @@ import ButtonGroup from '../../shared/ButtonGroup';
 import LinkButton from '../../shared/LinkButton';
 import DetailsFormGroup from '../../shared/DetailsFormGroup';
 import DetailsIconLinkFormGroup from '../../shared/DetailsIconLinkFormGroup';
-//import TopicCard from '../../shared/TopicCard';
+import TopicCard from '../../shared/TopicCard';
 import InCityMessage from '../InCityMessage';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 
@@ -78,15 +78,15 @@ const Address = (props) => {
             {/*<DetailsIconLinkGrouping dataLabels={['Property', 'Maintenance']} dataTitles={['Property', 'Maintenance']} dataHrefs={[['/property/?pin=', addressData.pinnum].join(''), '/maintenance?entity=address']} dataIcons={['home', 'road']} />*/}
           </fieldset>
         </div>
-        {/*<div className="col-sm-6">
+        <div className="col-sm-6">
           <div className="row">
-            {['CRIME', 'DEVELOPMENT'].map((topic, i) => (
+            {['CRIME'].map((topic, i) => (
               <div className="col-xs-6" key={['topic', i]}>
-                <TopicCard topic={topic} entity="address" id={props.location.query.id} label={props.location.query.label} />
+                <TopicCard topic={topic} entity="address" id={props.location.query.id} label={[addressData.address, addressData.zipcode].join(', ')} entities={props.location.query.entities} />
               </div>
             ))}
           </div>
-        </div>*/}
+        </div>
       </div>
     </div>
   );

@@ -181,7 +181,7 @@ const searchQuery = gql`
 `;
 
 const SearchResultsWithData = graphql(searchQuery, {
-  options: ownProps => ({ variables: { searchString: ownProps.searchText || '', searchContexts: getEntitiesToSearch(ownProps.searchEntities) } }),
+  options: ownProps => ({ variables: { searchString: ownProps.searchText || '-', searchContexts: getEntitiesToSearch(ownProps.searchEntities) } }),
 })(SearchResults);
 
 export default connect(mapStateToProps)(SearchResultsWithData);

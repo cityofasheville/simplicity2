@@ -79,42 +79,46 @@ const dataColumns = [
 const DevelopmentTable = props => (
   <div>
     <div className="col-sm-12">
-      <div alt={['Table of development'].join(' ')} style={{ marginTop: '10px' }}>
-        <ReactTable
-          data={props.data}
-          columns={dataColumns}
-          showPagination={props.data.length > 20}
-          defaultPageSize={props.data.length <= 20 ? props.data.length : 20}
-          filterable
-          defaultFilterMethod={(filter, row) => {
-            const id = filter.pivotId || filter.id;
-            return row[id] !== undefined ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
-          }}
-          getTdProps={(state, rowInfo) => {
-            return {
-              onClick: () => {
-                document.getElementsByClassName('rt-expandable')[rowInfo.viewIndex].click();
-              },
-            };
-          }}
-          getTrProps={(state, rowInfo) => {
-            return {
-              style: {
-                cursor: 'pointer',
-                background: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '#4077a5': 'none',
-                color: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '#fff': '',
-                fontWeight: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? 'bold': 'normal',
-                fontSize: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '1.2em': '1em',
-              },
-            };
-          }}
-          SubComponent={row => (
-            <div style={{ paddingLeft: '34px', paddingRight: '34px', paddingBottom: '15px', backgroundColor: '#f6fcff', borderRadius: '0px', border: '2px solid #4077a5' }}>
-              <DevelopmentDetail itemData={row.original} standalone={false} />
-            </div>
-          )}
-        />
-      </div>
+      {props.data.length < 1 ?
+        <div className="alert alert-info">No results found</div>
+      :
+        <div alt={['Table of development'].join(' ')} style={{ marginTop: '10px' }}>
+          <ReactTable
+            data={props.data}
+            columns={dataColumns}
+            showPagination={props.data.length > 20}
+            defaultPageSize={props.data.length <= 20 ? props.data.length : 20}
+            filterable
+            defaultFilterMethod={(filter, row) => {
+              const id = filter.pivotId || filter.id;
+              return row[id] !== undefined ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
+            }}
+            getTdProps={(state, rowInfo) => {
+              return {
+                onClick: () => {
+                  document.getElementsByClassName('rt-expandable')[rowInfo.viewIndex].click();
+                },
+              };
+            }}
+            getTrProps={(state, rowInfo) => {
+              return {
+                style: {
+                  cursor: 'pointer',
+                  background: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '#4077a5': 'none',
+                  color: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '#fff': '',
+                  fontWeight: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? 'bold': 'normal',
+                  fontSize: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '1.2em': '1em',
+                },
+              };
+            }}
+            SubComponent={row => (
+              <div style={{ paddingLeft: '34px', paddingRight: '34px', paddingBottom: '15px', backgroundColor: '#f6fcff', borderRadius: '0px', border: '2px solid #4077a5' }}>
+                <DevelopmentDetail itemData={row.original} standalone={false} />
+              </div>
+            )}
+          />
+        </div>
+      }
     </div>
   </div>
 );

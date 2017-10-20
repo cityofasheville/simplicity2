@@ -24,8 +24,8 @@ const FilterCheckbox = props => (
       <div className={mainStyle(props.selected, props.disabled)} onClick={props.handleChange}>
         <div className={backgroundStyle(props.selected)} style={{ paddingTop: '10px' }}>
           <div className="text-center text-primary" style={{ minHeight: '30px' }}>
-            <input type="checkbox" aria-label={props.label} label={props.label} value={props.value} checked={props.selected} readOnly />
-            <span>{props.label}</span>
+            <input style={{ marginRight: '7px' }}type="checkbox" aria-label={props.label} label={props.label} value={props.value} checked={props.selected} readOnly />
+            <label>{props.label}</label>
           </div>
         </div>
       </div>
@@ -38,6 +38,7 @@ FilterCheckbox.propTypes = {
   disabled: PropTypes.bool,
   handleChange: PropTypes.func,
   minHeight: PropTypes.string,
+  focus: PropTypes.bool,
 };
 
 FilterCheckbox.defaultProps = {
@@ -45,6 +46,7 @@ FilterCheckbox.defaultProps = {
   disabled: false,
   handleChange: null,
   minHeight: '30px',
+  focus: false,
 
 }
 

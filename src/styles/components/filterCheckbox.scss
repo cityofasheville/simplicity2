@@ -1,36 +1,41 @@
 .filterCheckbox {
   border-radius: 2px;
-  border-width: 2px;
-  border-style: solid;
+  border: #16abe4 solid 2px;;
   margin-bottom: 10px;
 }
 
 .filterCheckboxDisabled {
   border-radius: 2px;
-  border-width: 2px;
-  border-style: solid;
+  border: #ffffff solid 2px;
   margin-bottom: 10px;
   opacity: 0.25;
 }
-.filterCheckbox input[type="checkbox"]
-.filterCheckbox input[type="checkbox"]:focus + filterCheckbox {
-  outline: #4579B3 2px solid;
-  outline-offset: 2px;
-}
-.filterCheckbox input[type="checkbox"]:checked + filterCheckbox{
-  border-color: #16abe4;
-  opacity: 1;
-}
+
 .unchecked {
-  border-color: #ffffff;
+  border-radius: 2px;
+  margin-bottom: 10px;
+  border: #ffffff solid 2px;
   opacity: .75;
 }
 
+.imcheckue:focus + .filterCheckbox {
+  outline: #4579B3 5px solid;
+  outline-offset: 5px;
+}
+
+.text-center input[type="checkbox"]:focus + .filterCheckbox {
+  outline: #4579B3 5px solid;
+  outline-offset: 5px;
+}
+
+.filterCheckbox input[type="checkbox"]:focus + .filterCheckbox {
+  outline: #4579B3 2px solid;
+  outline-offset: 2px;
+}
+
 .backgroundChecked {
-  padding-top: 10px;
   background-color: #d3f1ff;
 }
 .backgroundUnchecked {
-  padding-top: 10px;
   background-color: #eeeeee;
 }

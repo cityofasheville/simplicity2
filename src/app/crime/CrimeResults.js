@@ -27,6 +27,39 @@ const testCrimeData = [
   { crime: 'Larceny', location: '1234 Main Street', date: '01/01/2001', caseNumber: '00009990', lawBeat: 'AC2' },
 ];
 
+const convertToPieData = (crimeData) => {
+  // Group crimes to less categories?? Right now just show top 8 and Other
+  let pieData = [];
+  let crimeTypeAlreadyPresent;
+  for (let i = 0; i < crimeData.length; i += 1) {
+    crimeTypeAlreadyPresent = false;
+    for (let j = 0; j < pieData.length; j += 1) {
+      if (pieData[j].name === crimeData[i].offense_long_description) {
+        pieData[j].value += 1;
+        crimeTypeAlreadyPresent = true;
+        break;
+      }
+    }
+    if (!crimeTypeAlreadyPresent) {
+      pieData.push(Object.assign({}, {}, { name: crimeData[i].offense_long_description, value: 1 }));
+    }
+  }
+
+  pieData.sort((a, b) => (
+    ((a.value > b.value) ? -1 : ((a.value < b.value) ? 1 : 0)) // eslint-disable-line
+  ));
+
+  let otherCount = 0;
+  for (let i = 9; i < pieData.length; i += 1) {
+    otherCount += pieData[i].value;
+  }
+  if (pieData.length > 8) {
+    pieData = pieData.slice(0, 9).concat({ name: 'Other', value: otherCount });
+  }
+
+  return pieData;
+};
+
 const CrimeResults = props => {
   if (props.data.loading) { // eslint-disable-line react/prop-types
     return <LoadingAnimation />;
@@ -34,6 +67,8 @@ const CrimeResults = props => {
   if (props.data.error) { // eslint-disable-line react/prop-types
     return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
   }
+
+  const pieData = convertToPieData(props.data.crimes_by_address);
 
   return (
     <div>
@@ -52,7 +87,11 @@ const CrimeResults = props => {
 
       <div className="row">
         <div id="summaryView" className="col-xs-12" hidden={props.location.query.view !== 'summary'}>
-          <PieChart data={testPieCrimeData} altText="Crime pie chart" />
+          {pieData.length > 0 ?
+            <PieChart data={pieData} altText="Crime pie chart" />
+            :
+            <div className="alert alert-info">No results found</div>
+          }
         </div>
 
         <div id="listView" hidden={props.location.query.view !== 'list'}>

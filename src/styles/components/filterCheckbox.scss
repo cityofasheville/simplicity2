@@ -18,7 +18,9 @@
   opacity: .75;
 }
 
-label{}
+label {
+  font-weight: normal;
+}
 
 .unchecked input[type="checkbox"]:focus + label,
 .filterCheckboxDisabled input[type="checkbox"]:focus + label,

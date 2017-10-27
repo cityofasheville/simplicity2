@@ -33,9 +33,7 @@ const CIPFilter = props => {
     <div>
       <FilterCheckboxGroup>
         {props.categories.map((category, index) => (
-          <div className="col-lg-2 col-md-3 col-sm-4 col-xs-6" key={['SummaryCard', category, index].join('_')} style={{ cursor: 'pointer' }}>
-            <FilterCheckbox label={category} value={category} handleChange={() => refreshLocation(category)} selected={props.selected.includes(category) && !(props.location.query.mode === 'bond' && !['Parks', 'Housing', 'Transportation'].includes(category))} disabled={props.location.query.mode === 'bond' && !['Parks', 'Housing', 'Transportation'].includes(category)} />
-          </div>
+          <FilterCheckbox key={['SummaryCard', category, index].join('_')} label={category} value={category} handleChange={() => refreshLocation(category)} selected={props.selected.includes(category) && !(props.location.query.mode === 'bond' && !['Parks', 'Housing', 'Transportation'].includes(category))} disabled={props.location.query.mode === 'bond' && !['Parks', 'Housing', 'Transportation'].includes(category)} />
         ))}
       </FilterCheckboxGroup>
       <div className="row">

@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 
 const handleEvent = (event) => {
   event.preventDefault();
-  if (event.charCode === 32 || event.charCode === 13) {
-    // event.target.setAttribute('tabIndex', '-1');
-
+  console.log('hey');
+  if (event.charCode === 37 || event.charCode === 40) {
     const chk = event.target.querySelectorAll('input');
     chk[0].focus();
     for (let i = 0; i < chk.length; i += 1) {
+      console.log(chk[i]);
       chk[i].setAttribute('tabIndex', '0');
     }
   }

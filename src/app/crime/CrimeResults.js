@@ -5,6 +5,7 @@ import moment from 'moment';
 import gql from 'graphql-tag';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import PieChart from '../../shared/visualization/PieChart';
+import Map from '../../shared/visualization/Map';
 import CrimeTable from '../crime/CrimeTable';
 import EmailDownload from '../../shared/EmailDownload';
 import ButtonGroup from '../../shared/ButtonGroup';
@@ -69,6 +70,7 @@ const CrimeResults = props => {
   }
 
   const pieData = convertToPieData(props.data.crimes_by_address);
+  console.log(props.data.crimes_by_address);
 
   return (
     <div>
@@ -100,6 +102,7 @@ const CrimeResults = props => {
 
         <div id="mapView" className="col-xs-12" hidden={props.location.query.view !== 'map'}>
           Map view
+          <Map />
         </div>
       </div>
     </div>

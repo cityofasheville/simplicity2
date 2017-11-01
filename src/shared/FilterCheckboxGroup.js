@@ -5,6 +5,7 @@ const handleEvent = (event) => {
   if(event.keyCode == 9) {}
   else {
     event.preventDefault();
+    event.target.removeAttribute('tabIndex');
     if (event.keyCode === 39 || event.keyCode === 40 || event.keyCode === 13) {
       const chk = event.target.querySelectorAll('input');
       chk[0].focus();

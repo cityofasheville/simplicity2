@@ -30,7 +30,8 @@ const FilterCheckbox = props => (
         </div>
       </div>
     </div>
-  )
+)
+
 FilterCheckbox.propTypes = {
   label: PropTypes.string,  //category
   value: PropTypes.string,  //text

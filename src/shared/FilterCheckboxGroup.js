@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 
 const handleEvent = (event) => {
   event.preventDefault();
-  console.log('hey');
-  if (event.charCode === 37 || event.charCode === 40) {
+  if (event.charCode === 13) {
     const chk = event.target.querySelectorAll('input');
     chk[0].focus();
     for (let i = 0; i < chk.length; i += 1) {

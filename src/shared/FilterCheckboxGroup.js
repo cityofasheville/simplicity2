@@ -65,3 +65,5 @@ FilterCheckboxGroup.defaultProps = {
   children: null,
   id: 'checkboxGroup',
 };
+
+export default FilterCheckboxGroup;

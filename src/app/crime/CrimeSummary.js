@@ -85,7 +85,7 @@ const CrimeSummary = (props) => {
           </fieldset>
         </div>
       </form>
-      <CrimeResults before={before} after={after} radius={props.location.query.within} location={props.location} />
+      <CrimeResults before={before} after={after} radius={withinURL} location={props.location} />
     </div>
   );
 };

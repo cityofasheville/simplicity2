@@ -4,11 +4,27 @@ import esri from 'esri-leaflet';
 
 class Map extends React.Component {
   componentDidMount() {
+    console.log(this.props.data);
     const map = L.map(this.refs.mapRef).setView(this.props.center, 15);
     esri.basemapLayer("Topographic").addTo(map);
     esri.tiledMapLayer({
       url: 'https://tiles.arcgis.com/tiles/aJ16ENn1AaqdFlqx/arcgis/rest/services/AshevilleBasemap/MapServer',
     }).addTo(map);
+    const dataPoints = [];
+    for (let pt of this.props.data) {
+      dataPoints.push({
+        type: 'Feature',
+        properties: {
+          name: 'test',
+        },
+        geometry: {
+          type: 'Point',
+          coordinates: [pt.x, pt.y],
+        },
+      });
+    }
+    L.geoJSON(dataPoints).addTo(map);
+    console.log(dataPoints);
     // query.run(function(error, featureCollection) {
     //   if (featureCollection !== null && featureCollection.features.length > 0) {
     //     const features = L.geoJSON(featureCollection.features).addTo(map);

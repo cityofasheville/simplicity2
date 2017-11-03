@@ -70,7 +70,6 @@ const CrimeResults = props => {
   }
 
   const pieData = convertToPieData(props.data.crimes_by_address);
-  console.log(props.data.crimes_by_address);
 
   return (
     <div>
@@ -101,8 +100,11 @@ const CrimeResults = props => {
         </div>
 
         <div id="mapView" className="col-xs-12" hidden={props.location.query.view !== 'map'}>
-          Map view
-          <Map />
+          {props.data.crimes_by_address.length === 0 ?
+            <div className="alert alert-info">No results found</div>
+            :
+            <Map data={props.data.crimes_by_address} />
+          }
         </div>
       </div>
     </div>

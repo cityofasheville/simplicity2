@@ -10,7 +10,6 @@ class FilterCheckboxGroup extends React.Component {
       chkArr: null,
     };
     this.handleEvent = this.handleEvent.bind(this);
-    //console.log(this.state.chkArr);
   }
 
   componentDidMount() {
@@ -20,35 +19,31 @@ class FilterCheckboxGroup extends React.Component {
   }
 
   handleEvent (event) {
-    //console.log(this.state.chkArr);
-    if (event.keyCode == 9) {
-    }
-    else if (event.keyCode === 37|| event.keyCode === 38 || event.keyCode === 39 || event.keyCode === 40 || event.keyCode === 13) {
-      event.preventDefault();
-
-      if (document.activeElement === document.getElementById(this.props.id)) {
-        console.log('first time');
+    if (document.activeElement === document.getElementById(this.props.id)) {
+      if (event.keyCode === 39 || event.keyCode === 40 || event.keyCode === 13) {
+        event.preventDefault();
         this.state.chkArr[this.state.focus].focus();
-        this.setState({firstTime: false});
       }
-      else if (event.keyCode === 37 || event.keyCode === 38) {
-        console.log('go left');
-        this.setState({focus: this.state.focus -= 1,});
-        if (this.state.focus < 0) {
-          document.getElementById(this.props.id).focus();
-          this.setState({focus: 0});
-        }
-        else this.state.chkArr[this.state.focus].focus();
+    }
+    else if (event.keyCode === 37 || event.keyCode === 38 || (event.shiftKey && event.keyCode === 9)) {
+      event.preventDefault();
+      this.setState({focus: this.state.focus -= 1,});
+      if (this.state.focus < 0) {
+        document.getElementById(this.props.id).focus();
+        this.setState({focus: 0});
       }
-      else if (event.keyCode === 39 || event.keyCode === 40) {
-        console.log('go right');
-        this.setState({focus: this.state.focus += 1,});
-        if (this.state.focus === this.state.chkArr.length) {
-          document.getElementById(this.props.id).focus();
-          this.setState({focus: 0});
-        }
-        else this.state.chkArr[this.state.focus].focus();
+      else
+        this.state.chkArr[this.state.focus].focus();
+    }
+    else if (event.keyCode === 39 || event.keyCode === 40 || event.keyCode === 9) {
+      event.preventDefault();
+      this.setState({focus: this.state.focus += 1,});
+      if (this.state.focus === this.state.chkArr.length) {
+        document.getElementById(this.props.id).focus();
+        this.setState({focus: 0});
       }
+      else
+        this.state.chkArr[this.state.focus].focus();
     }
   }
 
@@ -64,14 +59,9 @@ class FilterCheckboxGroup extends React.Component {
 FilterCheckboxGroup.propTypes = {
   children: PropTypes.node,
   id: PropTypes.string,
-  focus: PropTypes.number,
 };
 
 FilterCheckboxGroup.defaultProps = {
   children: null,
   id: 'checkboxGroup',
-  focus: 0,
 };
-
-export default FilterCheckboxGroup;
-

@@ -2,35 +2,54 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import '../styles/components/filterCheckbox.scss';
 
-const mainStyle = (checked, disable) => {
-  if (disable) {
-    return 'filterCheckboxDisabled';
+class FilterCheckbox extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      checked: props.selected
+    };
+    this.handleClick = this.handleClick.bind(this);
+    this.handleKey = this.handleKey.bind(this);
   }
-  if (checked) {
-    return 'filterCheckbox';
-  }
-  return 'unchecked';
 
-};
-const backgroundStyle = (checked) => {
-  if (checked) {
-    return 'backgroundChecked';
+   handleClick(event) {
+      this.setState({
+        checked: !this.state.checked,
+      });
   }
-  return 'backgroundUncheck';
-};
 
-const FilterCheckbox = props => (
-  <div className="col-lg-2 col-md-3 col-sm-4 col-xs-6" style={{ cursor: 'pointer' }} onMouseUp={e => e.target.blur()} tabIndex="-1">
-      <div className={mainStyle(props.selected, props.disabled)} onMouseUp={e => e.target.blur()} tabIndex="-1" onClick={props.handleChange}>
-        <div className={backgroundStyle(props.selected)} style={{ paddingTop: '10px' }}>
-          <div className="text-center text-primary" style={{ minHeight: '30px' }}>
-            <input tabIndex="-1" style={{ marginRight: '7px' }}type="checkbox" aria-label={props.label} label={props.label} value={props.value} checked={props.selected} onMouseUp={e => e.target.blur()} readOnly />
-            <label style={{ fontWeight: 'normal', cursor: 'pointer' }}>{props.label}</label>
+  handleKey(event) {
+    event.preventDefault();
+    if(event.keyCode === 13 || event.keyCode === 32) {
+      this.setState({
+        checked: !this.state.checked,
+      });
+    }
+  }
+
+  render() {
+    const mainStyle = this.props.disabled ? 'filterCheckboxDisabled' : this.state.checked ? 'filterCheckbox' : 'unchecked';
+    const backgroundStyle = this.state.checked ? 'backgroundChecked' : 'backgroundUnchecked';
+
+    return (
+        <div className="col-lg-2 col-md-3 col-sm-4 col-xs-6" style={{cursor: 'pointer'}}
+             onMouseUp={e => e.target.blur()}
+             tabIndex="-1">
+          <div className={mainStyle} onMouseUp={e => e.target.blur()} tabIndex="-1"
+               onClick={this.props.handleChange}>
+            <div className={backgroundStyle} style={{paddingTop: '10px'}} onClick={this.handleClick}>
+              <div className="text-center text-primary" style={{minHeight: '30px'}}>
+                <input tabIndex="-1" style={{marginRight: '7px'}} type="checkbox" aria-label={this.props.label}
+                       label={this.props.label} value={this.props.value} checked={this.state.checked} onKeyDown={this.handleKey} onMouseUp={e => e.target.blur()}
+                       readOnly/>
+                <label style={{fontWeight: 'normal', cursor: 'pointer'}}>{this.props.label}</label>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-)
+      )
+  }
+}
 
 FilterCheckbox.propTypes = {
   label: PropTypes.string,  //category

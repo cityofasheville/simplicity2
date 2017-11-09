@@ -22,8 +22,11 @@ class FilterCheckboxGroup extends React.Component {
     if (document.activeElement === document.getElementById(this.props.id)) {
       if (event.keyCode === 39 || event.keyCode === 40 || event.keyCode === 13) {
         event.preventDefault();
-        this.state.chkArr[this.state.focus].focus();
+        this.state.chkArr[0].focus();
       }
+    }
+    else if (event.keyCode === 13) {
+      event.target.selected = !event.target.selected;
     }
     else if (event.keyCode === 37 || event.keyCode === 38 || (event.shiftKey && event.keyCode === 9)) {
       event.preventDefault();

@@ -12,15 +12,17 @@ class FilterCheckbox extends React.Component {
     this.handleKey = this.handleKey.bind(this);
   }
 
-   handleClick(event) {
-      this.setState({
-        checked: !this.state.checked,
-      });
+  handleClick(event) {
+    this.setState({
+      checked: !this.state.checked,
+    });
   }
 
   handleKey(event) {
-    event.preventDefault();
-    if(event.keyCode === 13 || event.keyCode === 32) {
+    if(event.keyCode === 13) {
+      event.preventDefault();
+      if(this.props.handleChange != null)
+        this.props.handleChange();
       this.setState({
         checked: !this.state.checked,
       });

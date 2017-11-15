@@ -82,7 +82,7 @@ const Address = (props) => {
           <div className="row">
             {['CRIME'].map((topic, i) => (
               <div className="col-xs-6" key={['topic', i]}>
-                <TopicCard topic={topic} entity="address" id={props.location.query.id} label={[addressData.address, addressData.zipcode].join(', ')} entities={props.location.query.entities} />
+                <TopicCard topic={topic} entity="address" id={props.location.query.id} label={[addressData.address, addressData.zipcode].join(', ')} entities={props.location.query.entities} x={addressData.x} y={addressData.y} />
               </div>
             ))}
           </div>
@@ -122,6 +122,8 @@ const addressQuery = gql`
       owner_address
       centerline_id
       is_in_city
+      x
+      y
       pinnum
       pinnumext
       centerline_id

@@ -68,7 +68,7 @@ const getMarker = (type) => {
     case 'ROBBERY - ARMED - KNIFE':
       return require('../../shared/MoneyPouch.png');
     default:
-      return require('../../shared/marker-icon.png');
+      return require('../../shared/Ellipsis.png');
   }
 };
 
@@ -154,7 +154,7 @@ const CrimeResults = props => {
           {props.data.crimes_by_address.length === 0 ?
             <div className="alert alert-info">No results found</div>
             :
-            <Map data={mapData} />
+            <Map data={mapData} center={props.location.query.x !== '' ? [parseFloat(props.location.query.x), parseFloat(props.location.query.y)] : null} centerLabel={props.location.query.label} drawCircle radius={parseInt(props.location.query.within, 10) / 3} />
           }
         </div>
       </div>

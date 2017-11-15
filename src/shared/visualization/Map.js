@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Map as LeafletMap, Marker, TileLayer } from 'react-leaflet';
+import { Map as LeafletMap, Marker, TileLayer, Popup, Circle } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 
 //using open street map for now because that way can use the clusters, etc.
@@ -18,7 +18,7 @@ const Map = (props) => {
       options: pt.options || {},
     });
   }
-  console.log('Data', props.data);
+  console.log('props', props);
 
   return (
     <div style={{ height: '600px', width: '100%' }}>
@@ -27,7 +27,14 @@ const Map = (props) => {
           url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         />
-        <Marker position={props.center} />
+        {props.drawCircle &&
+          <Circle center={props.center} radius={props.radius} fillOpacity={0.15} />
+        }
+        <Marker position={props.center}>
+          <Popup>
+            <div><b>{props.centerLabel}</b></div>
+          </Popup>
+        </Marker>
         <MarkerClusterGroup markers={markers} options={markerClusterOptions} />
       </LeafletMap>
     </div>
@@ -36,16 +43,22 @@ const Map = (props) => {
 
 Map.propTypes = {
   center: PropTypes.arrayOf(PropTypes.number),
+  centerLabel: PropTypes.string,
   name: PropTypes.string,
   width: PropTypes.string,
   height: PropTypes.string,
+  drawCircle: PropTypes.bool,
+  radius: PropTypes.number,
 };
 
 Map.defaultProps = {
   center: [35.5951, -82.5515],
+  centerLabel: null,
   name: '',
   width: '100%',
   height: '600px',
+  drawCircle: false,
+  radius: 83,
 };
 
 export default Map;

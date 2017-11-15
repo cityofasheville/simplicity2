@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import L from 'leaflet';
 import { graphql } from 'react-apollo';
 import moment from 'moment';
 import gql from 'graphql-tag';
@@ -11,22 +12,65 @@ import EmailDownload from '../../shared/EmailDownload';
 import ButtonGroup from '../../shared/ButtonGroup';
 import LinkButton from '../../shared/LinkButton';
 
-const testPieCrimeData = [
-  { name: 'Aggravated assault', value: 123 },
-  { name: 'Burglary', value: 1000 },
-  { name: 'Larceny', value: 1500 },
-  { name: 'Larceny of Motor Vehicle', value: 2500 },
-  { name: 'Robbery', value: 750 },
-  { name: 'Vandalism', value: 4000 },
-];
-
-const testCrimeData = [
-  { crime: 'Larceny', location: '123 Main Street, 28805', date: '01/01/2001', caseNumber: '12345678', lawBeat: 'AC2' },
-  { crime: 'Larceny of Motor Vehicle', location: '10 Main Street, 28803', date: '01/01/2002', caseNumber: '11111111', lawBeat: 'AC3' },
-  { crime: 'Larceny', location: '1 Main Street, Apt 17, 28805', date: '05/01/2001', caseNumber: '99999999', lawBeat: 'AC6' },
-  { crime: 'Larceny', location: '12 Main Street', date: '06/16/2001', caseNumber: 'X1235499', lawBeat: 'AC3' },
-  { crime: 'Larceny', location: '1234 Main Street', date: '01/01/2001', caseNumber: '00009990', lawBeat: 'AC2' },
-];
+const getMarker = (type) => {
+  switch (type) {
+    case 'MISSING PERSON REPORT':
+    case 'RUNAWAY JUVENILE':
+      return require('../../shared/UserQuestion.png');
+    case 'DAMAGE TO PERSONAL PROPERTY':
+    case 'VANDALISM':
+      return require('../../shared/Hammer.png');
+    case 'ASSAULT - SIMPLE':
+    case 'ASSAULT ON FEMALE':
+    case 'ASSAULT W/DEADLY WEAPON':
+      return require('../../shared/Ambulance.png');
+    case 'COMMUNICATING THREAT':
+      return require('../../shared/BubbleMad.png');
+    case 'INTIMIDATING STATE WITNESS':
+    case 'PERJURY':
+    case 'OBSTRUCTION OF JUSTICE':
+      return require('../../shared/Library2.png');
+    case 'FRAUD':
+    case 'FRAUD-CREDIT CARD':
+    case 'FALSE PRETENSE - OBTAIN PROPERTY BY':
+    case 'IMPERSONATE':
+      return require('../../shared/Profile.png');
+    case 'CARRYING CONCEALED WEAPON':
+      return require('../../shared/GunForbidden.png');    
+    case 'RESIST, DELAY, OBSTRUCT OFFICER':
+    case 'CIT INCIDENT':
+    case 'DV ASSISTANCE OTHER':
+    case 'VICTIM ASSISTANCE OTHER':
+    case 'ASSAULT ON GOVERNMENT OFFICIAL':
+      return require('../../shared/Shield3.png');
+    case 'DWI':
+    case 'UNAUTHORIZED USE OF MOTOR VEHICLE':
+      return require('../../shared/CarCross.png');
+    case 'LARCENY OF MV OTHER':
+    case 'LARCENY OF MV AUTO':
+    case 'LARCENY OF MV TRUCK':
+      return require('../../shared/CarLock2.png');
+    case 'TRESPASS':
+      return require('../../shared/Fence.png');
+    case 'INFORMATION ONLY':
+      return require('../../shared/Pencil7.png');
+    case 'DRUG PARAPHERNALIA POSSESS':
+    case 'DRUG OFFENSE - FELONY':
+    case 'DRUG OFFENSE - MISDEMEANOR':
+    case 'DRUG PARAPHERNALIA OTHER':
+      return require('../../shared/AidKit2.png');     
+    case 'COUNTERFEITING-BUYING/RECEIVING':
+      return require('../../shared/BillDollar.png');
+    case 'LARCENY ALL OTHER':
+    case 'LARCENY FROM BUILDING':
+    case 'LARCENY FROM MOTOR VEHICLE':
+    case 'ROBBERY - COMMON LAW':
+    case 'ROBBERY - ARMED - KNIFE':
+      return require('../../shared/MoneyPouch.png');
+    default:
+      return require('../../shared/marker-icon.png');
+  }
+};
 
 const convertToPieData = (crimeData) => {
   // Group crimes to less categories?? Right now just show top 8 and Other
@@ -70,6 +114,13 @@ const CrimeResults = props => {
   }
 
   const pieData = convertToPieData(props.data.crimes_by_address);
+  const mapData = props.data.crimes_by_address.map(item => (Object.assign({}, item, { popup: `<div><b>${item.address}</b><p>${moment.utc(item.date_occurred).format('M/DD/YYYY')}</p><p>${item.offense_long_description}</p></div>`, options: { icon: L.icon({
+    iconUrl: getMarker(item.offense_long_description),
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [2, -22],
+  }) } })
+  ));
 
   return (
     <div>
@@ -103,7 +154,7 @@ const CrimeResults = props => {
           {props.data.crimes_by_address.length === 0 ?
             <div className="alert alert-info">No results found</div>
             :
-            <Map data={props.data.crimes_by_address} />
+            <Map data={mapData} />
           }
         </div>
       </div>

@@ -1,46 +1,38 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import esri from 'esri-leaflet';
+import { Map as LeafletMap, Marker, TileLayer } from 'react-leaflet';
+import MarkerClusterGroup from 'react-leaflet-markercluster';
 
-class Map extends React.Component {
-  componentDidMount() {
-    console.log(this.props.data);
-    const map = L.map(this.refs.mapRef).setView(this.props.center, 15);
-    esri.basemapLayer("Topographic").addTo(map);
-    esri.tiledMapLayer({
-      url: 'https://tiles.arcgis.com/tiles/aJ16ENn1AaqdFlqx/arcgis/rest/services/AshevilleBasemap/MapServer',
-    }).addTo(map);
-    const dataPoints = [];
-    for (let pt of this.props.data) {
-      dataPoints.push({
-        type: 'Feature',
-        properties: {
-          name: 'test',
-        },
-        geometry: {
-          type: 'Point',
-          coordinates: [pt.x, pt.y],
-        },
-      });
-    }
-    L.geoJSON(dataPoints).addTo(map);
-    console.log(dataPoints);
-    // query.run(function(error, featureCollection) {
-    //   if (featureCollection !== null && featureCollection.features.length > 0) {
-    //     const features = L.geoJSON(featureCollection.features).addTo(map);
-    //     const bounds = features.getBounds();
-    //     features.bindPopup(layer => (L.Util.template('<p>{NAME}<br>LAT: {LAT}<br>LONG: {LONG}</p>', layer.feature.properties)));
-    //     map.fitBounds(bounds);
-    //   }
-    // });
-  }
+//using open street map for now because that way can use the clusters, etc.
 
-  render() {
-    return (
-      <div id="map" ref="mapRef" style={{ width: this.props.width, height: this.props.height }}></div>
-    );
+const markerClusterOptions = {
+  maxClusterRadius: 20,
+};
+
+const Map = (props) => {
+  const markers = [];
+  for (let pt of props.data) {
+    markers.push({
+      position: [pt.y, pt.x],
+      popup: pt.popup || null,
+      options: pt.options || {},
+    });
   }
-}
+  console.log('Data', props.data);
+
+  return (
+    <div style={{ height: '600px', width: '100%' }}>
+      <LeafletMap className="markercluster-map" center={props.center} zoom={15} maxZoom={18}>
+        <TileLayer
+          url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        />
+        <Marker position={props.center} />
+        <MarkerClusterGroup markers={markers} options={markerClusterOptions} />
+      </LeafletMap>
+    </div>
+  );
+};
 
 Map.propTypes = {
   center: PropTypes.arrayOf(PropTypes.number),

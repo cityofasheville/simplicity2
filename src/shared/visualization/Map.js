@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import L from 'leaflet';
 import { Map as LeafletMap, Marker, TileLayer, Popup, Circle } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 
@@ -18,11 +19,10 @@ const Map = (props) => {
       options: pt.options || {},
     });
   }
-  console.log('props', props);
 
   return (
     <div style={{ height: '600px', width: '100%' }}>
-      <LeafletMap className="markercluster-map" center={props.center} zoom={15} maxZoom={18}>
+      <LeafletMap className="markercluster-map" center={props.center} zoom={16} maxZoom={18}>
         <TileLayer
           url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -30,7 +30,15 @@ const Map = (props) => {
         {props.drawCircle &&
           <Circle center={props.center} radius={props.radius} fillOpacity={0.15} />
         }
-        <Marker position={props.center}>
+        <Marker
+          position={props.center}
+          icon={L.icon({
+            iconUrl: require('../../shared/marker-icon-2.png'),
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [2, -22],
+          })}
+        >
           <Popup>
             <div><b>{props.centerLabel}</b></div>
           </Popup>

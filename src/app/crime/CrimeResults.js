@@ -16,7 +16,7 @@ const getMarker = (type) => {
   switch (type) {
     case 'MISSING PERSON REPORT':
     case 'RUNAWAY JUVENILE':
-      return require('../../shared/UserQuestion.png');
+      return require('../../shared/User.png');
     case 'DAMAGE TO PERSONAL PROPERTY':
     case 'VANDALISM':
       return require('../../shared/Hammer.png');
@@ -25,7 +25,7 @@ const getMarker = (type) => {
     case 'ASSAULT W/DEADLY WEAPON':
       return require('../../shared/Ambulance.png');
     case 'COMMUNICATING THREAT':
-      return require('../../shared/BubbleMad.png');
+      return require('../../shared/Bubble.png');
     case 'INTIMIDATING STATE WITNESS':
     case 'PERJURY':
     case 'OBSTRUCTION OF JUSTICE':
@@ -36,7 +36,7 @@ const getMarker = (type) => {
     case 'IMPERSONATE':
       return require('../../shared/Profile.png');
     case 'CARRYING CONCEALED WEAPON':
-      return require('../../shared/GunForbidden.png');    
+      return require('../../shared/Gun.png');
     case 'RESIST, DELAY, OBSTRUCT OFFICER':
     case 'CIT INCIDENT':
     case 'DV ASSISTANCE OTHER':
@@ -45,11 +45,11 @@ const getMarker = (type) => {
       return require('../../shared/Shield3.png');
     case 'DWI':
     case 'UNAUTHORIZED USE OF MOTOR VEHICLE':
-      return require('../../shared/CarCross.png');
+      return require('../../shared/Car.png');
     case 'LARCENY OF MV OTHER':
     case 'LARCENY OF MV AUTO':
     case 'LARCENY OF MV TRUCK':
-      return require('../../shared/CarLock2.png');
+      return require('../../shared/Car.png');
     case 'TRESPASS':
       return require('../../shared/Fence.png');
     case 'INFORMATION ONLY':
@@ -66,7 +66,7 @@ const getMarker = (type) => {
     case 'LARCENY FROM MOTOR VEHICLE':
     case 'ROBBERY - COMMON LAW':
     case 'ROBBERY - ARMED - KNIFE':
-      return require('../../shared/MoneyPouch.png');
+      return require('../../shared/Dollar.png');
     default:
       return require('../../shared/Ellipsis.png');
   }

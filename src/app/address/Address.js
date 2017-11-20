@@ -29,9 +29,9 @@ const getCurrentRecyclingWeek = () => {
 const calculateRecycling = (dayOfWeek, inCity, week) => {
   if (inCity) {
     if (getCurrentRecyclingWeek() === week) {
-      return ['this week on', dayOfWeek, 'Recycle Week', week].join(' ');
+      return ['this week on ', dayOfWeek, ' (Recycle Week ', week, ')'].join('');
     }
-    return ['next week on', dayOfWeek, 'Recycle Week', week].join(' ');
+    return ['next week on ', dayOfWeek, ' (Recycle Week ', week, ')'].join('');
   }
   return 'No recycling collection information available';
 };
@@ -65,7 +65,7 @@ const Address = (props) => {
             <InCityMessage inTheCity={addressData.is_in_city} />
             <hr style={{ marginTop: '10px', marginBottom: '10px' }} />
             <DetailsFormGroup label="Trash collection" name="trash" value={calculateTrash(addressData.trash_day, addressData.is_in_city)} hasLabel icon={<Icon path={IM_BIN} size={20} />} />
-            <DetailsFormGroup label="Recycling collection" name="recycling" value={calculateRecycling(addressData.trash_day, addressData.is_in_city, 'TBD')} hasLabel icon={<Icon path={LI_RECYCLE2} size={20} viewBox="0 0 24 24" />} />
+            <DetailsFormGroup label="Recycling collection" name="recycling" value={calculateRecycling(addressData.recycling_pickup_day, addressData.is_in_city, addressData.recycling_pickup_district)} hasLabel icon={<Icon path={LI_RECYCLE2} size={20} viewBox="0 0 24 24" />} />
             <DetailsFormGroup
               label="Zoning"
               name="zoning"
@@ -125,6 +125,8 @@ const addressQuery = gql`
       pinnum
       pinnumext
       centerline_id
+      recycling_pickup_district,
+      recycling_pickup_day
     }
   }
 `;

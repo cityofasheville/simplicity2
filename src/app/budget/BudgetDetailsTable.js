@@ -103,8 +103,11 @@ const getDataColumns = (level, expenseOrRevenue) => {
 
 const tdProps = () => {
   return {
-    onClick: (e) => {
+    onClick: (e,handleOriginal) => {
       e.target.parentNode.firstChild.click();
+      if(handleOriginal) {
+        handleOriginal();
+      }
     },
   };
 };

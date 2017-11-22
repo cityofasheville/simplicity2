@@ -21,8 +21,8 @@ const Map = (props) => {
   }
 
   return (
-    <div style={{ height: '600px', width: '100%' }}>
-      <LeafletMap className="markercluster-map" center={props.center} zoom={16} maxZoom={18}>
+    <div style={{ height: props.height, width: props.width }}>
+      <LeafletMap className="markercluster-map" center={props.center} zoom={16} maxZoom={18} bounds={props.bounds === null ? [[35.51400444, -82.64637936], [35.63463846, -82.46235837]] : props.bounds}>
         <TileLayer
           url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -30,19 +30,21 @@ const Map = (props) => {
         {props.drawCircle &&
           <Circle center={props.center} radius={props.radius} fillOpacity={0.15} />
         }
-        <Marker
-          position={props.center}
-          icon={L.icon({
-            iconUrl: require('../../shared/marker-icon-2.png'),
-            iconSize: [25, 41],
-            iconAnchor: [12, 41],
-            popupAnchor: [2, -22],
-          })}
-        >
-          <Popup>
-            <div><b>{props.centerLabel}</b></div>
-          </Popup>
-        </Marker>
+        {!props.hideCenter &&
+          <Marker
+            position={props.center}
+            icon={L.icon({
+              iconUrl: require('../../shared/marker-icon-2.png'),
+              iconSize: [25, 41],
+              iconAnchor: [12, 41],
+              popupAnchor: [2, -22],
+            })}
+          >
+            <Popup>
+              <div><b>{props.centerLabel}</b></div>
+            </Popup>
+          </Marker>
+        }
         <MarkerClusterGroup markers={markers} options={markerClusterOptions} />
       </LeafletMap>
     </div>
@@ -57,6 +59,8 @@ Map.propTypes = {
   height: PropTypes.string,
   drawCircle: PropTypes.bool,
   radius: PropTypes.number,
+  hideCenter: PropTypes.bool,
+  bounds: PropTypes.array,
 };
 
 Map.defaultProps = {
@@ -67,6 +71,8 @@ Map.defaultProps = {
   height: '600px',
   drawCircle: false,
   radius: 83,
+  hideCenter: false,
+  bounds: [[35.51400444, -82.64637936], [35.63463846, -82.46235837]],
 };
 
 export default Map;

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ProjectMap from './ProjectMap';
+import Map from '../../shared/visualization/Map';
+import { projectsGeoJSON } from './cip_utilities';
 import Icon from '../../shared/Icon';
 import { IM_QUESTION, IM_MAP5, IM_SPHERE3, IM_CIRCLE2, IM_CERTIFICATE } from '../../shared/iconConstants';
 
@@ -40,6 +41,41 @@ const phaseColor = (phaseNumber) => {
     default:
       return '#57d500';
   }
+};
+
+//TODO: add popups with some useful info...or at least temp x,y to match current live version
+const getMyPoints = name => (
+  projectsGeoJSON.features.filter(item => (item.properties.NAME === name)).map(item => (
+    Object.assign({}, {}, { x: item.geometry.coordinates[0], y: item.geometry.coordinates[1], name: item.properties.NAME })
+  ))
+);
+
+const calculateBounds = (points) => {
+  let xMinIndex = 0;
+  let yMinIndex = 0;
+  let xMaxIndex = 0;
+  let yMaxIndex = 0;
+  if (points.length > 0) {
+    for (let i = 0; i < points.length; i += 1) {
+      if (points[i].x < points[xMinIndex].x) {
+        xMinIndex = i;
+      }
+      if (points[i].x > points[xMaxIndex].x) {
+        xMaxIndex = i;
+      }
+      if (points[i].y < points[yMinIndex].y) {
+        yMinIndex = i;
+      }
+      if (points[i].y > points[yMaxIndex].y) {
+        yMaxIndex = i;
+      }
+    }
+    return [
+      [points[yMinIndex].y, points[xMinIndex].x],
+      [points[yMaxIndex].y, points[xMaxIndex].x],
+    ];
+  }
+  return null;
 };
 
 const ProjectDetails = (props) => (
@@ -151,7 +187,7 @@ const ProjectDetails = (props) => (
           </div>
         </div>
         <div className="col-sm-5">
-          <ProjectMap name={props['Project']} />
+          <Map data={getMyPoints(props['Project'])} height="230px" hideCenter bounds={calculateBounds(getMyPoints(props['Project']))} />
           <a href={props['Photo URL']} target="_blank">
             <img className="img-responsive" src={props['Photo URL']} style={{ maxHeight: '400px' }} />
           </a>

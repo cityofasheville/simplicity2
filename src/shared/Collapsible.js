@@ -145,11 +145,9 @@ class Collapsible extends React.Component {
     };
     const whiteSpaceStyle = { visibility: 'hidden' };
     const linkStyle = {
-      border: this.state.hover ? '3px solid #d3f1ff' : '3px solid #4579B3',
       color: 'white',
       textDecoration: 'none',
       whiteSpace: 'nowrap',
-      display: 'block',
     };
     const overflowStyle = { overflow: 'hidden' };
 
@@ -182,16 +180,17 @@ class Collapsible extends React.Component {
     const innerClassString = `${this.props.classParentString}__contentInner ${this.props.contentInnerClassName}`;
 
     return (
-      <div className={parentClassString.trim()} style={overflowStyle}>
-        <a href="#" style={linkStyle} onKeyPress={this.handleKeyUp} onClick={this.handleTriggerClick} onFocus={() => this.setFocusLink(true)} onBlur={() => this.setFocusLink(false)} onMouseEnter={() => this.setFocusLink(true)} onMouseLeave={() => this.setFocusLink(false)}>
-          <span className={triggerClassString} >
-            {trigger} <span style={whiteSpaceStyle}>{whiteSpace}</span>
-          </span>
-        </a>
-
-        <div className={outerClassString.trim()} ref="outer" style={dropdownStyle} onTransitionEnd={this.handleTransitionEnd}>
-          <div className={innerClassString.trim()} ref="inner">
-            {children}
+      <div style={{ outline: '#4579B3 3px solid', outlineOffset: this.state.hover ? '3px' : '-1px' }}>
+        <div className={parentClassString.trim()} style={overflowStyle}>
+          <a href="#" style={linkStyle} onKeyPress={this.handleKeyUp} onClick={this.handleTriggerClick} onFocus={() => this.setFocusLink(true)} onBlur={() => this.setFocusLink(false)} onMouseEnter={() => this.setFocusLink(true)} onMouseLeave={() => this.setFocusLink(false)}>
+            <span className={triggerClassString} >
+              {trigger} <span style={whiteSpaceStyle}>{whiteSpace}</span>
+            </span>
+          </a>
+          <div className={outerClassString.trim()} ref="outer" style={dropdownStyle} onTransitionEnd={this.handleTransitionEnd}>
+            <div className={innerClassString.trim()} ref="inner">
+              {children}
+            </div>
           </div>
         </div>
       </div>
@@ -245,7 +244,7 @@ Collapsible.propTypes = {
 
 Collapsible.defaultProps = {
   hover: false,
-  transitionTime: 400,
+  transitionTime: 300,
   easing: 'linear',
   open: false,
   classParentString: 'Collapsible',

@@ -4,6 +4,8 @@ import { browserHistory } from 'react-router';
 import Toggle from 'react-toggle';
 import { urlCategory } from './cip_utilities';
 import CapitalProjectsSummaryCard from './CapitalProjectsSummaryCard';
+import FilterCheckboxGroup from '../../shared/FilterCheckboxGroup';
+import FilterCheckbox from '../../shared/FilterCheckbox';
 
 const CIPFilter = props => {
   const refreshLocation = (category) => {
@@ -29,13 +31,11 @@ const CIPFilter = props => {
 
   return (
     <div>
-      <div className="row">
+      <FilterCheckboxGroup>
         {props.categories.map((category, index) => (
-          <div className="col-lg-2 col-md-3 col-sm-4 col-xs-6" key={['SummaryCard', category, index].join('_')} style={{ cursor: 'pointer' }} onClick={() => (refreshLocation(category))}>
-            <CapitalProjectsSummaryCard category={category} selected={props.selected.includes(category) && !(props.location.query.mode === 'bond' && !['Parks', 'Housing', 'Transportation'].includes(category))} disabled={props.location.query.mode === 'bond' && !['Parks', 'Housing', 'Transportation'].includes(category)} />
-          </div>
+          <FilterCheckbox key={['SummaryCard', category, index].join('_')} label={category} value={category} handleChange={() => refreshLocation(category)} selected={props.selected.includes(category) && !(props.location.query.mode === 'bond' && !['Parks', 'Housing', 'Transportation'].includes(category))} disabled={props.location.query.mode === 'bond' && !['Parks', 'Housing', 'Transportation'].includes(category)} />
         ))}
-      </div>
+      </FilterCheckboxGroup>
       <div className="row">
         <div className="col-sm-6">
           <label style={{ minWidth: '400px', cursor: 'pointer', marginBottom: '0px' }}>

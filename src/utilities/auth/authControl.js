@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withApollo } from 'react-apollo';
 
 import { authControlDropdownClicked, loginLinkClicked } from './authActions';
 
@@ -15,7 +16,7 @@ const AuthControl = (props) => {
         <a className="dropdown-toggle" onClick={() => props.dispatch(authControlDropdownClicked())} data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{displayName} <span className="caret"></span></a>
         <ul className="dropdown-menu">
           <li >
-            <a href="#" onClick={(e) => { e.preventDefault(); props.user.logout(props.dispatch); }} className="">Log Out</a>
+            <a href="#" onClick={(e) => { e.preventDefault(); props.user.logout(props.dispatch); props.client.resetStore(); }} className="">Log Out</a>
           </li>
         </ul>
       </li>
@@ -48,4 +49,7 @@ const mapDispatchToProps = dispatch => (
   }
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(AuthControl);
+const AuthControlConnected = connect(mapStateToProps, mapDispatchToProps)(AuthControl);
+
+export default withApollo(AuthControlConnected);
+

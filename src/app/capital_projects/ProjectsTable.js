@@ -141,9 +141,9 @@ const ProjectsTable = props => (
             }}
             getTdProps={(state, rowInfo) => {
               return {
-                onClick: (e, handleOriginal) => {
+                onClick: (e,handleOriginal) => {
                   document.getElementsByClassName('rt-expandable')[rowInfo.viewIndex].click();
-                  if (handleOriginal) {
+                  if(handleOriginal) {
                     handleOriginal();
                   }
                 },

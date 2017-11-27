@@ -60,7 +60,7 @@ export const testProjectData = [
  {
    "GIS_ID": "B160030",
    "MUNIS Project Number": "X1708",
-   "Project": "Playground Improvements",
+   "Project": "Airport Rd Sidewalk",
    "Display Name": "Playgrounds",
    "Location Details": "",
    "Zip Code": "Citywide",
@@ -82,7 +82,7 @@ export const testProjectData = [
    "Photo URL": "http://arcgis.ashevillenc.gov/B160030.jpg",
    "Map Tab": "Bond - Parks",
    "Project Updates": "Currently in design with Surface 678. Have schematic designs to be reviewed by staff and plan community input.",
-   "LTD Actuals": 22244.6,
+   "LTD Actuals": 35272.19,
    "Estimated Construction Timeframe": "Spring 2018 - Fall 2018",
    "Need PM Fields?": "yes"
  },
@@ -355,9 +355,9 @@ export const testProjectData = [
    "Location Details": "",
    "Zip Code": "Citywide",
    "Category": "Bond - Transportation Program",
-   "COA Contact": "Chad Bandy",
-   "Phone Number": "(828) 259-5431",
-   "Email Address": "cbandy@ashevillenc.gov",
+   "COA Contact": "Robert Kun",
+   "Phone Number": "(828) 271-6147",
+   "Email Address": "rkun@ashevillenc.gov",
    "Owner Department": "Transportation",
    "Administering Department": "Capital Projects",
    "Project Description": "Installation of speed humps and associated pavement markings at various locations.",
@@ -373,7 +373,7 @@ export const testProjectData = [
    "Map Tab": "Bond - Transportation",
    "Project Updates": "Three streets identified to contract work for. Will have more from Transportation. Petitions have been delivered. Will have 11 roads with traffic calming. Advertised Aug 31. Open bids on 9.13.17. Will re-bid in the Spring",
    "LTD Actuals": 532.21,
-   "Estimated Construction Timeframe": "Fall 2017 - Spring 2018",
+   "Estimated Construction Timeframe": "Spring 2018 - Fall 2018",
    "Need PM Fields?": "yes"
  },
  {
@@ -402,7 +402,7 @@ export const testProjectData = [
    "Map Tab": "Bond - Transportation",
    "Project Updates": "Have design plans for replacement of signal poles. Contract is ready to be advertised as one contract. Need to coordinate with BB&T building work. Pre-bid 10.12.17 for phase 1",
    "LTD Actuals": 0,
-   "Estimated Construction Timeframe": "Fall 2017 - Winter 2017",
+   "Estimated Construction Timeframe": "Spring 2018 - Summer 2018",
    "Need PM Fields?": "yes"
  },
  {
@@ -877,9 +877,9 @@ export const testProjectData = [
    "Location Details": "Vermont Ave Improvements",
    "Zip Code": "28806",
    "Category": "Bond - Transportation Program",
-   "COA Contact": "Chad Bandy",
-   "Phone Number": "(828) 259-5431",
-   "Email Address": "cbandy@ashevillenc.gov",
+   "COA Contact": "Robert Kun",
+   "Phone Number": "(828) 271-6147",
+   "Email Address": "rkun@ashevillenc.gov",
    "Owner Department": "Transportation",
    "Administering Department": "Capital Projects",
    "Project Description": "The re-construction of the sidewalks along one or both sides of Vermont Ave. including new sidewalk that extends to the park. ",
@@ -1045,7 +1045,7 @@ export const testProjectData = [
  },
  {
    "GIS_ID": "C0016",
-   "MUNIS Project Number": "",
+   "MUNIS Project Number": "T1805",
    "Project": "Greenway Connectors",
    "Display Name": "Greenway Connectors",
    "Location Details": "Greenway Connectors",
@@ -1184,7 +1184,7 @@ export const testProjectData = [
    "Photo URL": "http://arcgis.ashevillenc.gov/c0017.jpg",
    "Map Tab": "General Capital Improvement Program",
    "Project Updates": "Have the bid retaining wall going up and a smaller retaining wall. Have a few punch list items to fix as well. Duke is billing. Might need a re-design of wall in front of Harbor Freight. Have to see if DOT will let us move on or if have to re-design. Need to meet about contractor work. 3 weeks for retaining wall completion, 4 weeks for project completion. Still figuring out responsibilities among DOT, City and Contractor for final items to finish project",
-   "LTD Actuals": 3427363.95,
+   "LTD Actuals": 3436406.41,
    "Estimated Construction Timeframe": "Estimated Completion is Fall 2017",
    "Need PM Fields?": "yes"
  },
@@ -1242,7 +1242,7 @@ export const testProjectData = [
    "Photo URL": "http://arcgis.ashevillenc.gov/C0018.png",
    "Map Tab": "General Capital Improvement Program",
    "Project Updates": "Mattern and Craig working on design. Getting 60% designs.",
-   "LTD Actuals": 99818.73,
+   "LTD Actuals": 111923.73,
    "Estimated Construction Timeframe": "Spring 2018 - Fall 2019",
    "Need PM Fields?": "yes"
  },
@@ -1300,7 +1300,7 @@ export const testProjectData = [
    "Photo URL": "http://arcgis.ashevillenc.gov/c0013.png",
    "Map Tab": "General Capital Improvement Program",
    "Project Updates": "Received preliminary schedule. Will review and share with public in October. In November will start Construction coffees. Had kickoff meeting with inspectors and stakeholders. Had FHWA reps there to make sure inspections and audit needs will be good. Gave SEPI notice to proceed on 9.14.17. Cleaning up 12 Bones site, paving coming out. Then will be moving to Anders Warehouse to remove slab. Reaching out to property developers to coordinate proposed sequencing of construction and coordinating with seasonal use of boat ramp. Coordinate inspections with DSD. Began Demolition and clearing work. Still working on finalizing overall construction schedule. Tree removal will be needed. Will have public outreach about tree removal plan. Roadwork that will need traffic control begins in beginning of 2018. Need to consider maintanence work that will begin as pieces are finished - these milestones will be inserted into the schedule.",
-   "LTD Actuals": 1609129.02,
+   "LTD Actuals": 2161058.09,
    "Estimated Construction Timeframe": "Summer 2017 - Summer 2020",
    "Need PM Fields?": "yes"
  },
@@ -1474,7 +1474,7 @@ export const testProjectData = [
    "Photo URL": "https://arcgis.ashevillenc.gov/c0002.jpg",
    "Map Tab": "General Capital Improvement Program",
    "Project Updates": " In construction. Have portable lighting so that recreation can continue. Finish end of October.",
-   "LTD Actuals": 374924.32,
+   "LTD Actuals": 776924.32,
    "Estimated Construction Timeframe": "Summer 2017 - Fall 2017",
    "Need PM Fields?": "yes"
  },
@@ -1503,7 +1503,7 @@ export const testProjectData = [
    "Photo URL": "http://arcgis.ashevillenc.gov/c0007.jpg",
    "Map Tab": "General Capital Improvement Program",
    "Project Updates": "",
-   "LTD Actuals": 678431.75,
+   "LTD Actuals": 677950.12,
    "Estimated Construction Timeframe": "Completed Fall 2016",
    "Need PM Fields?": "yes"
  },

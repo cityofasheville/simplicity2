@@ -3581,7 +3581,7 @@ export const projectsGeoJSON = {
         ]
       }, 
       "properties" : {
-        "NAME" : "Airport Rd Sidewalk"
+        "NAME" : "Playground Improvements"
       }
     }, 
     {
@@ -3594,7 +3594,7 @@ export const projectsGeoJSON = {
         ]
       }, 
       "properties" : {
-        "NAME" : "Airport Rd Sidewalk"
+        "NAME" : "Playground Improvements"
       }
     }, 
     {
@@ -3607,7 +3607,7 @@ export const projectsGeoJSON = {
         ]
       }, 
       "properties" : {
-        "NAME" : "Airport Rd Sidewalk"
+        "NAME" : "Playground Improvements"
       }
     }, 
     {
@@ -3659,7 +3659,7 @@ export const projectsGeoJSON = {
         ]
       }, 
       "properties" : {
-        "NAME" : "Airport Rd Sidewalk"
+        "NAME" : "Playground Improvements"
       }
     }, 
     {

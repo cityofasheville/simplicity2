@@ -43,10 +43,9 @@ const phaseColor = (phaseNumber) => {
   }
 };
 
-//TODO: add popups with some useful info...or at least temp x,y to match current live version
 const getMyPoints = name => (
   projectsGeoJSON.features.filter(item => (item.properties.NAME === name)).map(item => (
-    Object.assign({}, {}, { x: item.geometry.coordinates[0], y: item.geometry.coordinates[1], name: item.properties.NAME })
+    Object.assign({}, {}, { x: item.geometry.coordinates[0], y: item.geometry.coordinates[1], name: item.properties.NAME, popup: `<div><b>${item.properties.NAME}</b><p>Latitude: ${item.geometry.coordinates[1]}</p><p>Longitude: ${item.geometry.coordinates[0]}</p></div>` })
   ))
 );
 
@@ -187,9 +186,9 @@ const ProjectDetails = (props) => (
           </div>
         </div>
         <div className="col-sm-5">
-          <Map data={getMyPoints(props['Project'])} height="230px" hideCenter bounds={calculateBounds(getMyPoints(props['Project']))} />
+          <Map data={getMyPoints(props.Project)} height="230px" hideCenter bounds={calculateBounds(getMyPoints(props.Project))} />
           <a href={props['Photo URL']} target="_blank">
-            <img className="img-responsive" src={props['Photo URL']} style={{ maxHeight: '400px' }} />
+            <img alt="Photo of project" className="img-responsive" src={props['Photo URL']} style={{ maxHeight: '400px' }} />
           </a>
         </div>
       </div>
@@ -203,7 +202,7 @@ ProjectDetails.propTypes = {
 };
 
 ProjectDetails.defaultProps = {
-  description: "This is a project description for a project. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text.",
+  description: 'This is a project description for a project. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text.',
   hideTitle: false,
 };
 

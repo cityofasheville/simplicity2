@@ -10,6 +10,11 @@ const markerClusterOptions = {
   maxClusterRadius: 20,
 };
 
+const getBounds = (center, within) => {
+  const degToAdd = within / 500000;
+  return [[center[0] - degToAdd, center[1] - degToAdd], [center[0] + degToAdd, center[1] + degToAdd]];
+};
+
 const Map = (props) => {
   const markers = [];
   for (let pt of props.data) {
@@ -22,7 +27,7 @@ const Map = (props) => {
 
   return (
     <div style={{ height: props.height, width: props.width }}>
-      <LeafletMap className="markercluster-map" center={props.center} zoom={16} maxZoom={18} bounds={props.bounds === null ? [[35.51400444, -82.64637936], [35.63463846, -82.46235837]] : props.bounds}>
+      <LeafletMap className="markercluster-map" center={props.center} zoom={props.zoom} maxZoom={18} bounds={props.bounds === null ? getBounds(props.center, 1320) : props.bounds}>
         <TileLayer
           url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -61,6 +66,7 @@ Map.propTypes = {
   radius: PropTypes.number,
   hideCenter: PropTypes.bool,
   bounds: PropTypes.array,
+  zoom: PropTypes.number,
 };
 
 Map.defaultProps = {
@@ -72,7 +78,8 @@ Map.defaultProps = {
   drawCircle: false,
   radius: 83,
   hideCenter: false,
-  bounds: [[35.51400444, -82.64637936], [35.63463846, -82.46235837]],
+  bounds: null,
+  zoom: 16,
 };
 
 export default Map;

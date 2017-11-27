@@ -60,7 +60,7 @@ export const testProjectData = [
  {
    "GIS_ID": "B160030",
    "MUNIS Project Number": "X1708",
-   "Project": "Airport Rd Sidewalk",
+   "Project": "Playground Improvements",
    "Display Name": "Playgrounds",
    "Location Details": "",
    "Zip Code": "Citywide",

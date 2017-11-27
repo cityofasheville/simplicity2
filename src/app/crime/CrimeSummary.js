@@ -31,7 +31,7 @@ const extentOptions = [
 
 const CrimeSummary = (props) => {
   const refreshLocation = () => {
-    browserHistory.push([props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&label=', props.location.query.label, '&within=', document.getElementById('extent').value, '&during=', document.getElementById('time').value, '&hideNavbar=', props.location.query.hideNavbar, '&view=', props.location.query.view].join(''));
+    browserHistory.push([props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&label=', props.location.query.label, '&within=', document.getElementById('extent').value, '&during=', document.getElementById('time').value, '&hideNavbar=', props.location.query.hideNavbar, '&view=', props.location.query.view, '&x=', props.location.query.x, '&y=', props.location.query.y].join(''));
   };
 
   const duringURL = (props.location.query.during === '' || props.location.query.during === undefined) ? '30' : props.location.query.during;
@@ -85,7 +85,7 @@ const CrimeSummary = (props) => {
           </fieldset>
         </div>
       </form>
-      <CrimeResults before={before} after={after} radius={props.location.query.within} location={props.location} />
+      <CrimeResults before={before} after={after} radius={withinURL} location={props.location} />
     </div>
   );
 };

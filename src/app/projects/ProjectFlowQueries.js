@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export const query = gql`
-  query projects() {
-    projects() {
+  query projects {
+    projects {
       ID
     }
   }

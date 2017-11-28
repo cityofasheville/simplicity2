@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactTable from 'react-table';
+import moment from 'moment';
 import DetailsGrouping from '../../shared/DetailsGrouping';
+import DetailsFormGroup from '../../shared/DetailsFormGroup';
 import Icon from '../../shared/Icon';
 import { IM_MAP5 } from '../../shared/iconConstants';
 
@@ -10,8 +12,8 @@ const DevelopmentDetail = props => (
     {props.standalone &&
       <div className="row">
         <div className="col-sm-12">
-          <h1><button className="btn btn-primary pull-right">Back</button>{props.PermitName}</h1>
-          <h2>{props.PermitAddress}</h2>
+          <h1><button className="btn btn-primary pull-right">Back</button>{props.data.applicant_name}</h1>
+          <h2>{props.data.address}</h2>
           <h3>About this permit</h3>
         </div>
       </div>
@@ -21,93 +23,98 @@ const DevelopmentDetail = props => (
         <fieldset>
           <div className="row">
             <div className="col-sm-12">
-              <a style={{ marginLeft: '15px', marginBottom: '15px' }} title="View in map"><Icon path={IM_MAP5} size={20} /> Map</a>
+              <DetailsFormGroup label="Description" name="permit_description" value={props.data.permit_description} hasLabel />
             </div>
-          </div>
-          <div className="row">
-            <DetailsGrouping dataLabels={['Description']} dataValues={[props.PermitDescription]} colWidth={12} />
-            <DetailsGrouping dataLabels={Object.keys(props.data)} dataValues={Object.values(props.data)} colWidth={4} />
+            <div className="col-sm-6">
+              <div className="form-group">
+                <div className="col-xs-12" style={{ marginBottom: '10px' }}>
+                  <a href="">
+                    <span style={{ marginRight: '5px' }}><Icon path={IM_MAP5} size={20} /></span>
+                    <label htmlFor="address">Address</label>
+                  </a>
+                  <div style={{ marginLeft: '15px' }} name="address">{props.data.address}</div>
+                </div>
+              </div>
+              <DetailsFormGroup label="Permit group" name="permit_group" value={props.data.permit_group} hasLabel />
+              <DetailsFormGroup label="Updated date" name="status_date" value={moment.utc(props.data.status_date).format('M/DD/YYYY')} hasLabel />
+            </div>
+            <div className="col-sm-6">
+              <DetailsFormGroup label="Civic address id" name="civic_address_id" value={props.data.civic_address_id} hasLabel />
+              <DetailsFormGroup label="Permit subtype" name="permit_subtype" value={props.data.permit_subtype} hasLabel />
+            </div>
           </div>
         </fieldset>
       </div>
-      <div className="col-sm-12">
-        <div alt={['Table of comments'].join(' ')} style={{ marginTop: '10px' }}>
-          <ReactTable
-            data={props.comments}
-            columns={
-            [{
-              Header: 'Comments',
-              accessor: 'comment',
-              Filter: ({ filter, onChange }) => (
-                <input
-                  onChange={event => onChange(event.target.value)}
-                  style={{ width: '100%' }}
-                  value={filter ? filter.value : ''}
-                  placeholder="Search..."
-                />
-              ),
-            }]
-            }
-            showPagination={props.comments.length > 5}
-            defaultPageSize={props.comments.length <= 5 ? props.comments.length : 5}
-            filterable
-            defaultFilterMethod={(filter, row) => {
-              const id = filter.pivotId || filter.id;
-              return row[id] !== undefined ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
-            }}
-          />
+      {props.data.comments.length > 0 &&
+        <div className="col-sm-12">
+          <div alt={['Table of comments'].join(' ')} style={{ marginTop: '10px' }}>
+            <ReactTable
+              data={props.data.comments}
+              getTdProps={(state, rowInfo) => {
+                return {
+                  style: {
+                    whiteSpace: 'normal',
+                  },
+                };
+              }}
+              columns={
+              [{
+                Header: 'Date',
+                id: 'comment_date',
+                width: 125,
+                accessor: comment => (<span>{moment.utc(comment.comment_date).format('M/DD/YYYY')}</span>),
+                Filter: ({ filter, onChange }) => (
+                  <input
+                    onChange={event => onChange(event.target.value)}
+                    style={{ width: '100%' }}
+                    value={filter ? filter.value : ''}
+                    placeholder="Search..."
+                  />
+                ),
+              }, {
+                Header: 'Comments',
+                accessor: 'comments',
+                minWidth: 400,
+                Filter: ({ filter, onChange }) => (
+                  <input
+                    onChange={event => onChange(event.target.value)}
+                    style={{ width: '100%' }}
+                    value={filter ? filter.value : ''}
+                    placeholder="Search..."
+                  />
+                ),
+              }]
+              }
+              showPagination={props.data.comments.length > 5}
+              defaultPageSize={props.data.comments.length <= 5 ? props.data.comments.length : 5}
+              filterable
+              defaultFilterMethod={(filter, row) => {
+                const id = filter.pivotId || filter.id;
+                return row[id] !== undefined ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
+              }}
+            />
+          </div>
         </div>
-      </div>
+      }
     </div>
   </div>
 );
 
 const permitDataShape = {
-  'Permit #': PropTypes.string,
-  'Permit type': PropTypes.string,
-  'Permit group': PropTypes.string,
-  Status: PropTypes.string,
-  'Applicant name': PropTypes.string,
-  'Applied date': PropTypes.date,
-  'Permit subtype': PropTypes.string,
-  'Permit category': PropTypes.string,
-  'Updated date': PropTypes.date,
-  Contractor: PropTypes.string,
-  'License #': PropTypes.string,
+  permit_number: PropTypes.string,
+  permit_type: PropTypes.string,
+  permit_group: PropTypes.string,
+  applicant_name: PropTypes.string,
+  applied_date: PropTypes.date,
+  permit_subtype: PropTypes.string,
+  status_date: PropTypes.date,
+  contractor_name: PropTypes.string,
+  comments: PropTypes.array,
 };
 
 DevelopmentDetail.propTypes = {
   standalone: PropTypes.bool,
-  PermitDescription: PropTypes.string,
-  PermitName: PropTypes.string,
-  PermitAddress: PropTypes.string,
   data: PropTypes.shape(permitDataShape).isRequired, // eslint-disable-line react/forbid-prop-types
-  comments: PropTypes.array, // eslint-disable-line react/forbid-prop-types
-};
-
-// TODO - this is temporary dummy data
-DevelopmentDetail.defaultProps = {
-  standalone: true,
-  PermitName: 'ASHEVILLE ART MUSEUM EXPANSION AND RENOVATION',
-  PermitAddress: '12 Main Street, Apt 4, 20001',
-  PermitDescription: 'ASHEVILLE ART MUSEUM EXPANSION AND RENOVATION ASHEVILLE ART MUSEUM EXPANSION AND RENOVATION ASHEVILLE ART MUSEUM EXPANSION AND RENOVATION',
-  data: {
-    'Permit #': '1234567879',
-    'Permit type': 'Residential',
-    'Permit group': 'Residential',
-    Status: 'Issued',
-    'Applicant name': 'Billy Contractor',
-    'Applied date': '01/01/2001',
-    'Permit subtype': 'Permit subtype',
-    'Permit category': 'Planning Level I',
-    'Updated date': '02/02/2001',
-    Contractor: 'Billy Contractor Contractorson',
-    'License #': '1234A-123',
-  },
-  comments: [
-    { comment: 'Comment Date: Mon May 02 15:29:34 EDT 2016 - REC APPLICATION FOR A LEVEL 1 ZONING. ADVISED BY CHRIS COLLINS TO JUST ATTACH IN THE DOCUMENTS. (KLA);' },
-    { comment: 'Comment Date: Fri DEC 16, 11:12:48 EST 2016 - Per Chris, the project will follow the Level II review process. Either the scope of work has changed or was not clear in the LEvel I zoning submittal.' },
-  ],
 };
 
 export default DevelopmentDetail;

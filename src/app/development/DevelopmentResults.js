@@ -1,14 +1,74 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import L from 'leaflet';
 import { graphql } from 'react-apollo';
 import moment from 'moment';
 import gql from 'graphql-tag';
+import Map from '../../shared/visualization/Map';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import PieChart from '../../shared/visualization/PieChart';
 import DevelopmentTable from '../development/DevelopmentTable';
 import EmailDownload from '../../shared/EmailDownload';
 import ButtonGroup from '../../shared/ButtonGroup';
 import LinkButton from '../../shared/LinkButton';
+
+const getMarker = (type) => {
+  switch (type) {
+    case 'Commercial':
+      return require('../../shared/Office.png');
+    case 'Fire':
+      return require('../../shared/Fire.png');
+    case 'Residential':
+      return require('../../shared/Home2.png');
+    case 'Sign':
+      return require('../../shared/Direction.png');
+    case 'Event-Temporary Use':
+      return require('../../shared/Users4.png');
+    case 'Historical':
+      return require('../../shared/Library2.png');
+    case 'Over The Counter':
+      return require('../../shared/Mug.png');
+    case 'Outdoor Vendor':
+      return require('../../shared/Cook.png');
+    case 'Development':
+      return require('../../shared/City.png');
+    default:
+      return require('../../shared/Ellipsis.png');
+  }
+};
+
+
+const convertToPieData = (permitData) => {
+  let pieData = [];
+  let permitTypeAlreadyPresent;
+  for (let i = 0; i < permitData.length; i += 1) {
+    permitTypeAlreadyPresent = false;
+    for (let j = 0; j < pieData.length; j += 1) {
+      if (pieData[j].name === permitData[i].permit_type) {
+        pieData[j].value += 1;
+        permitTypeAlreadyPresent = true;
+        break;
+      }
+    }
+    if (!permitTypeAlreadyPresent) {
+      pieData.push(Object.assign({}, {}, { name: permitData[i].permit_type, value: 1 }));
+    }
+  }
+
+  pieData.sort((a, b) => (
+    ((a.value > b.value) ? -1 : ((a.value < b.value) ? 1 : 0)) // eslint-disable-line
+  ));
+
+  let otherCount = 0;
+  for (let i = 9; i < pieData.length; i += 1) {
+    otherCount += pieData[i].value;
+  }
+  if (pieData.length > 8) {
+    pieData = pieData.slice(0, 9).concat({ name: 'Other', value: otherCount });
+  }
+
+  return pieData;
+};
 
 const testPieDevelopmentData = [
   { name: 'Planning Level I', value: 12345 },
@@ -30,6 +90,14 @@ const DevelopmentResults = props => {
     return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
   }
 
+  const mapData = props.data.permits_by_address.map(item => (Object.assign({}, item, { popup: `<div><b>${item.permit_type}</b><p>${moment.utc(item.applied_date).format('M/DD/YYYY')}</p><p>${item.applicant_name}</p></div>`, options: { icon: L.icon({
+    iconUrl: getMarker(item.permit_type),
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [2, -22],
+  }) } })
+  ));
+
   return (
     <div>
       <div className="row">
@@ -47,15 +115,19 @@ const DevelopmentResults = props => {
 
       <div className="row">
         <div id="summaryView" className="col-xs-12" hidden={props.location.query.view !== 'summary'}>
-          <PieChart data={testPieDevelopmentData} altText="Development pie chart" />
+          <PieChart data={convertToPieData(props.data.permits_by_address)} altText="Development pie chart" />
         </div>
 
         <div id="listView" hidden={props.location.query.view !== 'list'}>
-          <DevelopmentTable data={testPermitData} />
+          <DevelopmentTable data={props.data.permits_by_address} />
         </div>
 
         <div id="mapView" className="col-xs-12" hidden={props.location.query.view !== 'map'}>
-          Map view
+          {props.data.permits_by_address.length === 0 ?
+            <div className="alert alert-info">No results found</div>
+            :
+            <Map data={mapData} center={props.location.query.x !== '' ? [parseFloat(props.location.query.x), parseFloat(props.location.query.y)] : null} centerLabel={props.location.query.label} drawCircle radius={parseInt(props.location.query.within, 10) / 3} />
+          }
         </div>
       </div>
     </div>
@@ -74,15 +146,27 @@ DevelopmentResults.defaultProps = {
 };
 
 const getPermitsQuery = gql`
-  query permitsQuery($id: ID!) {
-    mda_permits (id: $id) {
-      objectid
-      record_id
-      record_name
-      date_opened
-      record_status
-      record_status_date
+  query getPermitsQuery($civicaddress_id: Int!, $radius: Int, $before: String, $after: String) {
+    permits_by_address (civicaddress_id: $civicaddress_id, radius: $radius, before: $before, after: $after) {
+      permit_number
+      permit_group
+      permit_type
+      permit_subtype
+      permit_description
+      applicant_name
+      applied_date
+      status_date
+      civic_address_id
       address
+      x
+      y
+      contractor_name
+      contractor_license_number
+      comments {
+        comment_seq_number
+        comment_date
+        comments
+      }
     }
   }
 `;
@@ -91,16 +175,9 @@ const DevelopmentResultsGQL = graphql(getPermitsQuery, {
   options: ownProps => ({
     variables: {
       civicaddress_id: ownProps.location.query.id,
-      radius: (ownProps.location.query.within === '' || ownProps.location.query.within === undefined) ? '83' : ownProps.location.query.within,
-      before: moment.utc().format('YYYY-MM-DD'),
-      after: () => {
-        let after = '1970-01-01';
-        const duringURL = (ownProps.location.query.during === '' || ownProps.location.query.during === undefined) ? '30' : ownProps.location.query.during;
-        if (duringURL !== 'all') {
-          after = moment.utc().subtract((parseInt(duringURL, 10) + 1), 'd').format('YYYY-MM-DD');
-        }
-        return after;
-      },
+      radius: ownProps.radius,
+      before: ownProps.before,
+      after: ownProps.after,
     },
   }),
 })(DevelopmentResults);

@@ -147,6 +147,9 @@ const ProjectsTable = props => (
                     handleOriginal();
                   }
                 },
+                style: {
+                  whiteSpace: 'normal',
+                },
               };
             }}
             getTrProps={(state, rowInfo) => {

@@ -26,6 +26,7 @@ import Topics from './app/Topics';
 import DevelopmentSummary from './app/development/DevelopmentSummary';
 import DevelopmentDetail from './app/development/DevelopmentDetail';
 import DevelopmentSLADashboard from './app/sla_dashboard/SLADashboard';
+import ProjectFlowDashboard from './app/projects/ProjectFlow';
 import CrimeSummary from './app/crime/CrimeSummary';
 import Maintenance from './app/maintenance/Maintenance';
 // Budget
@@ -102,6 +103,9 @@ const Routes = props => (
         </Route>
         <Route path="crime">
           <IndexRoute component={CrimeSummary} />
+        </Route>
+        <Route path="projects">
+          <IndexRoute component={ProjectFlowDashboard} />
         </Route>
         <Route path="development">
           <IndexRoute component={DevelopmentSummary} />

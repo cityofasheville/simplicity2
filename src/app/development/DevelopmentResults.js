@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import L from 'leaflet';
+import { browserHistory } from 'react-router';
 import { graphql } from 'react-apollo';
 import moment from 'moment';
 import gql from 'graphql-tag';
@@ -10,7 +11,7 @@ import PieChart from '../../shared/visualization/PieChart';
 import DevelopmentTable from '../development/DevelopmentTable';
 import EmailDownload from '../../shared/EmailDownload';
 import ButtonGroup from '../../shared/ButtonGroup';
-import LinkButton from '../../shared/LinkButton';
+import Button from '../../shared/Button';
 
 const getMarker = (type) => {
   switch (type) {
@@ -98,6 +99,10 @@ const DevelopmentResults = props => {
   }) } })
   ));
 
+  const refreshLocation = (view) => {
+    browserHistory.push([props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&label=', props.location.query.label, '&within=', document.getElementById('extent').value, '&during=', document.getElementById('time').value, '&hideNavbar=', props.location.query.hideNavbar, '&view=', view, '&x=', props.location.query.x, '&y=', props.location.query.y].join(''));
+  };
+
   return (
     <div>
       <div className="row">
@@ -106,16 +111,20 @@ const DevelopmentResults = props => {
             <EmailDownload emailFunction={() => (console.log('email!'))} downloadFunction={() => (console.log('Download!'))} />
           </div>
           <ButtonGroup>
-            <LinkButton pathname="/development" query={Object.assign({}, props.location.query, { view: 'summary' })} positionInGroup="left" active={props.location.query.view === 'summary'}>Summary</LinkButton>
-            <LinkButton pathname="/development" query={Object.assign({}, props.location.query, { view: 'list' })} active={props.location.query.view === 'list'} positionInGroup="middle">List view</LinkButton>
-            <LinkButton pathname="/development" query={Object.assign({}, props.location.query, { view: 'map' })} active={props.location.query.view === 'map'} positionInGroup="right">Map view</LinkButton>
+            <Button onClick={() => refreshLocation('map')} active={props.location.query.view === 'map'} positionInGroup="left">Map view</Button>
+            <Button onClick={() => refreshLocation('list')} active={props.location.query.view === 'list'} positionInGroup="middle">List view</Button>
+            <Button onClick={() => refreshLocation('summary')} positionInGroup="right" active={props.location.query.view === 'summary'}>Chart</Button>
           </ButtonGroup>
         </div>
       </div>
 
       <div className="row">
         <div id="summaryView" className="col-xs-12" hidden={props.location.query.view !== 'summary'}>
-          <PieChart data={convertToPieData(props.data.permits_by_address)} altText="Development pie chart" />
+          {props.data.permits_by_address.length === 0 ?
+            <div className="alert alert-info">No results found</div>
+            :
+            <PieChart data={convertToPieData(props.data.permits_by_address)} altText="Development pie chart" />
+          }
         </div>
 
         <div id="listView" hidden={props.location.query.view !== 'list'}>
@@ -123,10 +132,10 @@ const DevelopmentResults = props => {
         </div>
 
         <div id="mapView" className="col-xs-12" hidden={props.location.query.view !== 'map'}>
-          {props.data.permits_by_address.length === 0 ?
+          {props.data.permits_by_address.length === 0 || props.location.query.view !== 'map' ?
             <div className="alert alert-info">No results found</div>
             :
-            <Map data={mapData} center={props.location.query.x !== '' ? [parseFloat(props.location.query.x), parseFloat(props.location.query.y)] : null} centerLabel={props.location.query.label} drawCircle radius={parseInt(props.location.query.within, 10) / 3} />
+            <Map data={mapData} center={props.location.query.y !== '' ? [parseFloat(props.location.query.y), parseFloat(props.location.query.x)] : null} centerLabel={props.location.query.label} drawCircle radius={parseInt(props.location.query.within, 10) / 3} within={props.location.query.within} />
           }
         </div>
       </div>

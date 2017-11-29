@@ -1,0 +1,25 @@
+.kanban-phase {
+  border: 3px;
+  border-style: solid;
+  margin: 0px;
+  top: 5px;
+  right: 1px;
+  outline: none;
+  line-height: 1;
+  border-radius: 4px;
+  text-align: left;
+  cursor: pointer;
+}
+.kanban-item {
+  border: 1px;
+  border-style: solid;
+  padding: 2px;
+  margin: 3px;
+  top: 5px;
+  right: 30px;
+  outline: none;
+  line-height: 1;
+  border-radius: 4px;
+  text-align: left;
+  cursor: pointer;
+}

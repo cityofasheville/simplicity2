@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { browserHistory } from 'react-router';
 import L from 'leaflet';
 import { graphql } from 'react-apollo';
 import moment from 'moment';
@@ -10,7 +11,7 @@ import Map from '../../shared/visualization/Map';
 import CrimeTable from '../crime/CrimeTable';
 import EmailDownload from '../../shared/EmailDownload';
 import ButtonGroup from '../../shared/ButtonGroup';
-import LinkButton from '../../shared/LinkButton';
+import Button from '../../shared/Button';
 
 const getMarker = (type) => {
   switch (type) {
@@ -121,6 +122,10 @@ const CrimeResults = props => {
     popupAnchor: [2, -22],
   }) } })
   ));
+  
+  const refreshLocation = (view) => {
+    browserHistory.push([props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&label=', props.location.query.label, '&within=', document.getElementById('extent').value, '&during=', document.getElementById('time').value, '&hideNavbar=', props.location.query.hideNavbar, '&view=', view, '&x=', props.location.query.x, '&y=', props.location.query.y].join(''));
+  };
 
   return (
     <div>
@@ -130,9 +135,9 @@ const CrimeResults = props => {
             <EmailDownload emailFunction={() => (console.log('email!'))} downloadFunction={() => (console.log('Download!'))} />
           </div>
           <ButtonGroup>
-            <LinkButton pathname="/crime" query={Object.assign({}, props.location.query, { view: 'summary' })} positionInGroup="left" active={props.location.query.view === 'summary'}>Summary</LinkButton>
-            <LinkButton pathname="/crime" query={Object.assign({}, props.location.query, { view: 'list' })} active={props.location.query.view === 'list'} positionInGroup="middle">List view</LinkButton>
-            <LinkButton pathname="/crime" query={Object.assign({}, props.location.query, { view: 'map' })} active={props.location.query.view === 'map'} positionInGroup="right">Map view</LinkButton>
+            <Button onClick={() => refreshLocation('map')} active={props.location.query.view === 'map'} positionInGroup="left">Map view</Button>
+            <Button onClick={() => refreshLocation('list')} active={props.location.query.view === 'list'} positionInGroup="middle">List view</Button>
+            <Button onClick={() => refreshLocation('summary')} positionInGroup="right" active={props.location.query.view === 'summary'}>Chart</Button>
           </ButtonGroup>
         </div>
       </div>
@@ -151,10 +156,10 @@ const CrimeResults = props => {
         </div>
 
         <div id="mapView" className="col-xs-12" hidden={props.location.query.view !== 'map'}>
-          {props.data.crimes_by_address.length === 0 ?
+          {props.data.crimes_by_address.length === 0 || props.location.query.view !== 'map' ?
             <div className="alert alert-info">No results found</div>
             :
-            <Map data={mapData} center={props.location.query.x !== '' ? [parseFloat(props.location.query.x), parseFloat(props.location.query.y)] : null} centerLabel={props.location.query.label} drawCircle radius={parseInt(props.location.query.within, 10) / 3} />
+            <Map data={mapData} center={props.location.query.x !== '' ? [parseFloat(props.location.query.y), parseFloat(props.location.query.x)] : null} centerLabel={props.location.query.label} drawCircle radius={parseInt(props.location.query.within, 10) / 3} within={props.location.query.within} />
           }
         </div>
       </div>

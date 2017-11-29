@@ -80,7 +80,7 @@ const Address = (props) => {
         </div>
         <div className="col-sm-6">
           <div className="row">
-            {['CRIME'].map((topic, i) => (
+            {['CRIME', 'DEVELOPMENT'].map((topic, i) => (
               <div className="col-xs-6" key={['topic', i]}>
                 <TopicCard topic={topic} entity="address" id={props.location.query.id} label={[addressData.address, addressData.zipcode].join(', ')} entities={props.location.query.entities} x={addressData.x} y={addressData.y} />
               </div>

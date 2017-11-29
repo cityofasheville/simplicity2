@@ -109,6 +109,9 @@ const tdProps = () => {
         handleOriginal();
       }
     },
+    style: {
+      whiteSpace: 'normal',
+    },
   };
 };
 

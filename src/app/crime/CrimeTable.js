@@ -160,6 +160,13 @@ const CrimeTable = props => (
             columns={dataColumns}
             showPagination={props.data.length > 20}
             defaultPageSize={props.data.length <= 20 ? props.data.length : 20}
+            getTdProps={() => {
+              return {
+                style: {
+                  whiteSpace: 'normal',
+                },
+              };
+            }}
             filterable
             defaultFilterMethod={(filter, row) => {
               const id = filter.pivotId || filter.id;

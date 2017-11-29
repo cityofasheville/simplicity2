@@ -17,15 +17,11 @@ const DevelopmentSLADashboard = (props) => {
   if (props.data.error) { // eslint-disable-line react/prop-types
     return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
   }
-  const open = props.data.projects.filter(itm => {
-    return (itm.CurrentStatus === 'Open');
-  });
-  const inProgress = props.data.projects.filter(itm => {
-    return (itm.CurrentStatus === 'In Progress');
-  });
-  const pending = props.data.projects.filter(itm => {
-    return (itm.CurrentStatus !== 'In Progress' && itm.CurrentStatus !== 'Open');
-  });
+  let open = props.data.projects.filter(itm => (itm.CurrentStatus === 'Open'));
+  let inProgress = props.data.projects.filter(itm => (itm.CurrentStatus === 'In Progress'));
+  let pending = props.data.projects.filter(itm => (
+    itm.CurrentStatus !== 'In Progress' && itm.CurrentStatus !== 'Open'
+  ));
 
   return (
     <div>
@@ -36,36 +32,86 @@ const DevelopmentSLADashboard = (props) => {
       </PageHeader>
       {
         <div>
-          <h1>All BPT Projects</h1>
-          <div className="col-sm-4 kanban-phase">
-            <h2>Open</h2>
-            {
-            open.map((itm, index) => (
-              <div key={[itm.ID, index].join('_')} className="kanban-item">
-                {itm.Summary}
-              </div>
-            ))
-            }
-          </div>
-          <div className="col-sm-4 kanban-phase">
-            <h2>In Progress</h2>
-            {
-            inProgress.map((itm, index) => (
-              <div key={[itm.ID, index].join('_')} className="kanban-item">
-                {itm.Summary}
-              </div>
-            ))
-            }
-          </div>
-          <div className="col-sm-4 kanban-phase" style={{overflow: "hidden"}}>
-            <h2>Pending</h2>
-            {
-            pending.map((itm, index) => (
-              <div key={[itm.ID, index].join('_')} className="kanban-item">
-                {itm.Summary}
-              </div>
-            ))
-            }
+          {
+            props.bpt.map((techName, idx) => {
+              open = props.data.projects.filter(itm => (itm.CurrentStatus === 'Open' && itm.AssignedTechnician === techName));
+              inProgress = props.data.projects.filter(itm => (itm.CurrentStatus === 'In Progress' && itm.AssignedTechnician === techName));
+              pending = props.data.projects.filter(itm => (
+                itm.CurrentStatus !== 'In Progress' && itm.CurrentStatus !== 'Open' && itm.AssignedTechnician === techName
+              ));
+              return (
+                <div className="row" key={`projects-${idx}`}>
+                  <h1>{techName}</h1>
+                  <div className="col-sm-4 kanban-phase">
+                    <h2>Open</h2>
+                    {
+                      open.map((itm, index) => (
+                        <div key={[itm.ID, index].join('_')} className="kanban-item">
+                          {itm.Summary}
+                        </div>
+                      ))
+                    }
+                  </div>
+                  <div className="col-sm-4 kanban-phase">
+                    <h2>In Progress</h2>
+                    {
+                      inProgress.map((itm, index) => (
+                        <div key={[itm.ID, index].join('_')} className="kanban-item">
+                          {itm.Summary}
+                        </div>
+                      ))
+                    }
+                  </div>
+                  <div className="col-sm-4 kanban-phase">
+                    <h2>Pending</h2>
+                    {
+                      pending.map((itm, index) => (
+                        <div key={[itm.ID, index].join('_')} className="kanban-item">
+                          {itm.Summary}
+                        </div>
+                      ))
+                    }
+                  </div>
+
+                </div>
+              );
+            })
+          }
+
+          <div key="projects-all" className="row">
+            <h1>All BPT Projects</h1>
+            <div className="col-sm-4 kanban-phase">
+              <h2>Open</h2>
+              {
+              props.data.projects.filter(itm => (itm.CurrentStatus === 'Open')).map((itm, index) => (
+                <div key={[itm.ID, index].join('_')} className="kanban-item">
+                  {itm.Summary}
+                </div>
+              ))
+              }
+            </div>
+            <div className="col-sm-4 kanban-phase">
+              <h2>In Progress</h2>
+              {
+              props.data.projects.filter(itm => (itm.CurrentStatus === 'In Progress')).map((itm, index) => (
+                <div key={[itm.ID, index].join('_')} className="kanban-item">
+                  {itm.Summary}
+                </div>
+              ))
+              }
+            </div>
+            <div className="col-sm-4 kanban-phase" style={{overflow: "hidden"}}>
+              <h2>Pending</h2>
+              {
+              props.data.projects.filter(itm => (
+                itm.CurrentStatus !== 'In Progress' && itm.CurrentStatus !== 'Open'
+              )).map((itm, index) => (
+                <div key={[itm.ID, index].join('_')} className="kanban-item">
+                  {itm.Summary}
+                </div>
+              ))
+              }
+            </div>
           </div>
         </div>
       }
@@ -75,21 +121,26 @@ const DevelopmentSLADashboard = (props) => {
 
 DevelopmentSLADashboard.propTypes = {
   data: PropTypes.object,
+  bpt: PropTypes.arrayOf(String)
 };
 
 DevelopmentSLADashboard.defaultProps = {
-  tasks: [
-    'Addressing',
-    'Building Review',
-    'Fire Review',
-    'Zoning Review',
+  bpt: [
+    '*BPT Team',
+    'Tom Pace',
+    'Christen McNamara',
+    'Eric LaRue',
+    'Manasa Vankamamidi',
+    'Stephanie Osbourn',
+    'Scott Barnwell',
+    'Eric Jackson',
   ],
 };
 
 export default graphql(query, {
   options: ownProps => ({
     variables: {
-      projects: ownProps.tasks,
+      projects: ownProps.bpt,
     },
   }),
 })(DevelopmentSLADashboard);

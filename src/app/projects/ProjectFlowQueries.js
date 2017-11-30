@@ -9,6 +9,7 @@ export const query = gql`
       AssignedTechnician
       RequestedDate
       CurrentStatus
+      Priority
     }
   }
 `;

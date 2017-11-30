@@ -10,6 +10,7 @@ export const query = gql`
       RequestedDate
       CurrentStatus
       Priority
+      Notes
     }
   }
 `;

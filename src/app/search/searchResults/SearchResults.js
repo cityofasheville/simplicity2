@@ -26,7 +26,7 @@ const getEntities = (selected) => {
   const entityTypes = selected.split(',');
   const entities = [
     // { label: 'Neighborhoods', type: 'neighborhood', checked: true },
-    // { label: 'Streets', type: 'street', checked: true },
+    { label: 'Streets', type: 'street', checked: true },
     { label: 'Addresses', type: 'address', checked: true },
     { label: 'Properties', type: 'property', checked: true },
     //{ label: 'Owners', type: 'owner', checked: true },
@@ -75,9 +75,15 @@ const SearchResults = (props) => {
     return (
       <div className="row">
         <div className="col-sm-12">
-          <div className="alert alert-info alert-sm">
-            Enter a search term above to get results
-          </div>
+          { props.searchText === undefined || props.searchText === '' ?
+            <div className="alert alert-info alert-sm">
+              Enter a search term above to get results
+            </div>
+            :
+            <div className="alert alert-warning alert-sm">
+              No results found. Try a different search term and/or different search type selections.
+            </div>
+          }
         </div>
       </div>
     );
@@ -103,6 +109,12 @@ const SearchResults = (props) => {
                   label: [[result.pinnum, result.pinnumext, ' -- '].join(''), result.address, ', ', result.zipcode].join(''),
                   type: 'property',
                   id: [result.pinnum, result.pinnumext].join(''),
+                };
+              case 'street':
+                return {
+                  label: result.full_street_name,
+                  type: 'street',
+                  id: result.centerline_ids.join(','),
                 };
               default:
                 return result;
@@ -174,6 +186,10 @@ const searchQuery = gql`
           address
           city
           zipcode
+        }
+        ... on StreetResult {
+          full_street_name
+          centerline_ids
         }
       }
     }

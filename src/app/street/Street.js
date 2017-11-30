@@ -17,7 +17,7 @@ const Street = props => (
           <DetailsIconLinkGrouping dataLabels={props.iconLinksData.labels} dataTitles={props.iconLinksData.labels} dataHrefs={props.iconLinksData.hrefs} dataIcons={props.iconLinksData.icons} colWidth={12} />
         </fieldset>
       </div>
-      {/*<div className="col-sm-6">
+      <div className="col-sm-6">
         <div className="row">
           {props.topics.map((topic, i) => (
             <div className="col-xs-6" key={['topic', i].join('_')}>
@@ -25,7 +25,7 @@ const Street = props => (
             </div>
           ))}
         </div>
-      </div>*/}
+      </div>
     </div>
   </div>
 );

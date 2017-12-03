@@ -70,7 +70,7 @@ const ProjectFlowDashboard = (props) => {
 
   return (
     <div>
-      <PageHeader h1="IT Projects Dashboard" icon={<Icon path={IM_OFFICE} size={30} />}>
+      <PageHeader h1="BPT Projects Dashboard" icon={<Icon path={IM_OFFICE} size={30} />}>
         <ButtonGroup>
           <Button onClick={browserHistory.goBack}>Back</Button>
         </ButtonGroup>

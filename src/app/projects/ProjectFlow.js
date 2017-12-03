@@ -151,7 +151,7 @@ const ProjectFlowDashboard = (props) => {
                       </div>
                       <div className="col-sm-4 kanban-col">
                         <div className="kanban-phase">
-                          <h2>Pending<span className="kanban-badge">{sumsPending.tasks}</span><span className="kanban-badge kanban-project">{sumsPending.projects}</span></h2>
+                          <h2>Waiting<span className="kanban-badge">{sumsPending.tasks}</span><span className="kanban-badge kanban-project">{sumsPending.projects}</span></h2>
                           {
                             pending.map((itm, index) => (
                               <div key={[itm.ID, index].join('_')} className={isProject(itm.Priority) ? 'kanban-item kanban-project' : 'kanban-item'}>

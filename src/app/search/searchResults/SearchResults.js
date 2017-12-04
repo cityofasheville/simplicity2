@@ -103,8 +103,8 @@ const SearchResults = (props) => {
                 };
               case 'street':
                 return {
-                  label: result.full_street_name,
-                  type: 'street', 
+                  label: [result.full_street_name, result.zip_code].join(', '),
+                  type: 'street',
                   id: result.centerline_ids.join(','),
                 };
               default:
@@ -115,7 +115,6 @@ const SearchResults = (props) => {
       );
     }
   }
-  console.log(formattedResults);
   return (
     <div className="row">
       <div className="col-sm-12">
@@ -181,6 +180,7 @@ const searchQuery = gql`
         }
         ... on StreetResult {
           full_street_name
+          zip_code
           centerline_ids
         }
       }

@@ -24,6 +24,7 @@ const Map = (props) => {
       options: pt.options || {},
     });
   }
+  console.log(markers);
 
   return (
     <div style={{ height: props.height, width: props.width }}>

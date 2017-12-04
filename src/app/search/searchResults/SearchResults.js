@@ -69,21 +69,12 @@ const SearchResults = (props) => {
     return <LoadingAnimation message="Searching..." />;
   }
   if (props.data.error) {
-    if (props.data.error.message !== 'GraphQL error: TypeError: Cannot read property \'length\' of undefined' && props.data.error.message !== 'GraphQL error: TypeError: Cannot read property \'filter\' of undefined') {
-      return <p>{props.data.error.message}</p>;
-    }
     return (
       <div className="row">
         <div className="col-sm-12">
-          { props.searchText === undefined || props.searchText === '' ?
-            <div className="alert alert-info alert-sm">
-              Enter a search term above to get results
-            </div>
-            :
-            <div className="alert alert-warning alert-sm">
-              No results found. Try a different search term and/or different search type selections.
-            </div>
-          }
+          <div className="alert alert-warning alert-sm">
+            {props.data.error.message}
+          </div>
         </div>
       </div>
     );
@@ -124,6 +115,7 @@ const SearchResults = (props) => {
       );
     }
   }
+  console.log(formattedResults);
   return (
     <div className="row">
       <div className="col-sm-12">

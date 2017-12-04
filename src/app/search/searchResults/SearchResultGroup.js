@@ -5,14 +5,14 @@ import Icon from '../../../shared/Icon';
 import { IM_SHIELD3, IM_OFFICE, IM_ROAD, IM_USER, IM_USERS, IM_LOCATION, IM_HOME2, IM_QUESTION } from '../../../shared/iconConstants';
 import styles from './searchResultGroup.css';
 
-const getLink = (type, id, search, entities) => {
+const getLink = (type, id, search, entities, label) => {
   switch (type) {
     case 'address':
       return `/address?search=${search}&id=${id}&entities=${entities}`;
     case 'property':
       return `/property?search=${search}&id=${id}&entities=${entities}`;
     case 'street':
-      return `/street?search=${search}&id=${id}&entities=${entities}`;
+      return `/street?search=${search}&id=${id}&entities=${entities}&label=${label}`;
     case 'neighborhood':
       return `/neighborhood?search=${search}&id=${id}&entities=${entities}`;
     case 'permit':
@@ -72,7 +72,7 @@ const SearchResultGroup = (props) => {
       </h2>,
       accessor: 'label',
       Cell: row => (
-        <a href={getLink(row.original.type, row.original.id, props.searchText, props.selectedEntities)}>
+        <a href={getLink(row.original.type, row.original.id, props.searchText, props.selectedEntities, row.original.label)}>
           <span className="text-primary" style={{ marginLeft: '20px' }}>
             {getIcon(row.original.type)}
             {row.value}

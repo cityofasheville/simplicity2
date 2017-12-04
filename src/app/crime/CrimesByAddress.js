@@ -106,7 +106,7 @@ const convertToPieData = (crimeData) => {
   return pieData;
 };
 
-const CrimeResults = props => {
+const CrimesByAddress = props => {
   if (props.data.loading) { // eslint-disable-line react/prop-types
     return <LoadingAnimation />;
   }
@@ -167,12 +167,12 @@ const CrimeResults = props => {
   );
 };
 
-CrimeResults.propTypes = {
+CrimesByAddress.propTypes = {
   location: PropTypes.object, // eslint-disable-line
   query: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 };
 
-CrimeResults.defaultProps = {
+CrimesByAddress.defaultProps = {
   query: { entity: 'address', label: '123 Main street' },
 };
 
@@ -191,7 +191,7 @@ const getCrimesQuery = gql`
   }
 `;
 
-const CrimeResultsGQL = graphql(getCrimesQuery, {
+const CrimesByAddressGQL = graphql(getCrimesQuery, {
   options: ownProps => ({
     variables: {
       civicaddress_id: ownProps.location.query.id,
@@ -200,6 +200,6 @@ const CrimeResultsGQL = graphql(getCrimesQuery, {
       after: ownProps.after,
     },
   }),
-})(CrimeResults);
+})(CrimesByAddress);
 
-export default CrimeResultsGQL;
+export default CrimesByAddressGQL;

@@ -104,7 +104,7 @@ const Routes = props => (
         <Route path="crime">
           <IndexRoute component={CrimeSummary} />
         </Route>
-        <Route path="projects">
+        <Route path="bpt_projects">
           <IndexRoute component={ProjectFlowDashboard} />
         </Route>
         <Route path="development">

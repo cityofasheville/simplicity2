@@ -40,8 +40,8 @@ TopicCard.propTypes = {
   id: PropTypes.string,
   label: PropTypes.string,
   entities: PropTypes.string,
-  x: PropTypes.oneOf([PropTypes.string, PropTypes.number]),
-  y: PropTypes.oneOf([PropTypes.string, PropTypes.number]),
+  x: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  y: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 TopicCard.defaultProps = {

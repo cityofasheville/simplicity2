@@ -5,6 +5,11 @@ import AddressesByStreet from './AddressesByStreet';
 import EmailDownload from '../../shared/EmailDownload';
 import ButtonGroup from '../../shared/ButtonGroup';
 import Button from '../../shared/Button';
+import LinkButton from '../../shared/LinkButton';
+import PageHeader from '../../shared/PageHeader';
+import Icon from '../../shared/Icon';
+import { IM_ENVELOP3 } from '../../shared/iconConstants';
+
 
 const testFunc = (props) => {
   console.log(props);
@@ -17,10 +22,13 @@ const AddressList = props => {
 
   return (
     <div>
+      <PageHeader h1={props.location.query.label} h3="Address & Owner Mailing Lists" icon={<Icon path={IM_ENVELOP3} size={50} />}>
+        <ButtonGroup>
+          <LinkButton pathname="/street" query={{ entities: props.location.query.entities, search: props.location.query.search, hideNavbar: props.location.query.hideNavbar, entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label }}>Back to street</LinkButton>
+        </ButtonGroup>
+      </PageHeader>
       <div className="row">
         <div className="col-sm-12">
-          <h1><button className="btn btn-primary pull-right">Back</button>{props.location.query.label}</h1>
-          <h3>Address &amp; Owner Mailing Lists</h3>
           <div className="pull-left">
             <EmailDownload emailFunction={testFunc} downloadFunction={testFunc} args={props.location.query} />
           </div>
@@ -35,30 +43,8 @@ const AddressList = props => {
   );
 };
 
-const addressDataShape = {
-  name: PropTypes.string,
-  address: PropTypes.string,
-};
-
 AddressList.propTypes = {
   location: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-  listData: PropTypes.arrayOf(PropTypes.shape(addressDataShape)),
-};
-
-// TODO - this is temporary dummy data
-AddressList.defaultProps = {
-  location: {
-    query: { label: 'Montford', entity: 'neighborhood', type: 'addresses', id: '1234' },
-  },
-  listData: [
-    {
-      address: '1234 South Main Street, 28801',
-    },
-    {
-      name: 'John Doe',
-      address: '1234 South Main Street, 28801',
-    },
-  ],
 };
 
 export default AddressList;

@@ -3,16 +3,16 @@ import PropTypes from 'prop-types';
 import { browserHistory } from 'react-router';
 import { graphql } from 'react-apollo';
 import { LineChart, Line, XAxis, YAxis, ReferenceLine, CartesianGrid, Tooltip, Legend } from 'recharts';
-import Icon from '../../shared/Icon';
-import { IM_OFFICE } from '../../shared/iconConstants';
+import Icon from '../../../shared/Icon';
+import { IM_OFFICE } from '../../../shared/iconConstants';
 import { getAverageCounts } from './SLA_utilities';
-import PageHeader from '../../shared/PageHeader';
-import ButtonGroup from '../../shared/ButtonGroup';
-import Button from '../../shared/Button';
-import BarChartContainer from '../../shared/visualization/BarChartContainer';
-import ChartContainer from '../../shared/visualization/ChartContainer';
+import PageHeader from '../../../shared/PageHeader';
+import ButtonGroup from '../../../shared/ButtonGroup';
+import Button from '../../../shared/Button';
+import BarChartContainer from '../../../shared/visualization/BarChartContainer';
+import ChartContainer from '../../../shared/visualization/ChartContainer';
 import { query } from './SLADashboardQueries';
-import LoadingAnimation from '../../shared/LoadingAnimation';
+import LoadingAnimation from '../../../shared/LoadingAnimation';
 
 const DevelopmentSLADashboard = (props) => {
   if (props.data.loading) { // eslint-disable-line react/prop-types

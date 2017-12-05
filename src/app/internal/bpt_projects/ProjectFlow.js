@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import { browserHistory } from 'react-router';
 import { graphql } from 'react-apollo';
 import { RadioGroup, Radio } from 'react-radio-group';
-import Icon from '../../shared/Icon';
-import PageHeader from '../../shared/PageHeader';
-import ButtonGroup from '../../shared/ButtonGroup';
-import Button from '../../shared/Button';
+import Icon from '../../../shared/Icon';
+import PageHeader from '../../../shared/PageHeader';
+import ButtonGroup from '../../../shared/ButtonGroup';
+import Button from '../../../shared/Button';
 import { query } from './ProjectFlowQueries';
 import ProjectFlowTable from './ProjectFlowTable';
-import LoadingAnimation from '../../shared/LoadingAnimation';
-import { IM_OFFICE } from '../../shared/iconConstants';
+import LoadingAnimation from '../../../shared/LoadingAnimation';
+import { IM_OFFICE } from '../../../shared/iconConstants';
 
 const getIcon = (type) => {
   switch (type) {

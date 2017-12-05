@@ -83,7 +83,7 @@ const testPermitData = [
   { PermitName: 'Riverridge condos', PermitType: 'Residential', PermitSubType: 'Permit subtype', AppliedDate: '01/01/2001', PermitNum: '1234567879', PermitCategory: 'permit category', Address: '12 Main Street, 23456', PermitGroup: 'Residential', UpdatedDate: '02/02/2001', CurrentStatus: 'Issued', LicenseNumber: '1234A-123', Contractor: 'Bob Jones' },
 ];
 
-const DevelopmentResults = props => {
+const DevelopmentByAddress = props => {
   if (props.data.loading) { // eslint-disable-line react/prop-types
     return <LoadingAnimation />;
   }
@@ -100,7 +100,7 @@ const DevelopmentResults = props => {
   ));
 
   const refreshLocation = (view) => {
-    browserHistory.push([props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&label=', props.location.query.label, '&within=', document.getElementById('extent').value, '&during=', document.getElementById('time').value, '&hideNavbar=', props.location.query.hideNavbar, '&view=', view, '&x=', props.location.query.x, '&y=', props.location.query.y].join(''));
+    browserHistory.push([props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&label=', props.location.query.label, '&within=', document.getElementById('extent').value, '&during=', document.getElementById('time').value, '&hideNavbar=', props.location.query.hideNavbar, '&search=', props.location.query.search, '&view=', view, '&x=', props.location.query.x, '&y=', props.location.query.y].join(''));
   };
 
   return (
@@ -143,13 +143,13 @@ const DevelopmentResults = props => {
   );
 };
 
-DevelopmentResults.propTypes = {
+DevelopmentByAddress.propTypes = {
   spatialEventTopic: PropTypes.string.isRequired,
   location: PropTypes.object, // eslint-disable-line
   query: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 };
 
-DevelopmentResults.defaultProps = {
+DevelopmentByAddress.defaultProps = {
   spatialEventTopic: 'crime',
   query: { entity: 'address', label: '123 Main street' },
 };
@@ -180,7 +180,7 @@ const getPermitsQuery = gql`
   }
 `;
 
-const DevelopmentResultsGQL = graphql(getPermitsQuery, {
+const DevelopmentByAddressGQL = graphql(getPermitsQuery, {
   options: ownProps => ({
     variables: {
       civicaddress_id: ownProps.location.query.id,
@@ -189,6 +189,6 @@ const DevelopmentResultsGQL = graphql(getPermitsQuery, {
       after: ownProps.after,
     },
   }),
-})(DevelopmentResults);
+})(DevelopmentByAddress);
 
-export default DevelopmentResultsGQL;
+export default DevelopmentByAddressGQL;

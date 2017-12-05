@@ -73,6 +73,34 @@ const getMarker = (type) => {
   }
 };
 
+const getBounds = (crimeData) => {
+  let xMinIndex = 0;
+  let yMinIndex = 0;
+  let xMaxIndex = 0;
+  let yMaxIndex = 0;
+  if (crimeData.length > 0) {
+    for (let i = 0; i < crimeData.length; i += 1) {
+      if (crimeData[i].x < crimeData[xMinIndex].x) {
+        xMinIndex = i;
+      }
+      if (crimeData[i].x > crimeData[xMaxIndex].x) {
+        xMaxIndex = i;
+      }
+      if (crimeData[i].y < crimeData[yMinIndex].y) {
+        yMinIndex = i;
+      }
+      if (crimeData[i].y > crimeData[yMaxIndex].y) {
+        yMaxIndex = i;
+      }
+    }
+    return [
+      [crimeData[yMinIndex].y, crimeData[xMinIndex].x],
+      [crimeData[yMaxIndex].y, crimeData[xMaxIndex].x],
+    ];
+  }
+  return null;
+};
+
 const convertToPieData = (crimeData) => {
   // Group crimes to less categories?? Right now just show top 8 and Other
   let pieData = [];
@@ -106,7 +134,7 @@ const convertToPieData = (crimeData) => {
   return pieData;
 };
 
-const CrimeResults = props => {
+const CrimesByStreet = props => {
   if (props.data.loading) { // eslint-disable-line react/prop-types
     return <LoadingAnimation />;
   }
@@ -114,8 +142,8 @@ const CrimeResults = props => {
     return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
   }
 
-  const pieData = convertToPieData(props.data.crimes_by_address);
-  const mapData = props.data.crimes_by_address.map(item => (Object.assign({}, item, { popup: `<div><b>${item.address}</b><p>${moment.utc(item.date_occurred).format('M/DD/YYYY')}</p><p>${item.offense_long_description}</p></div>`, options: { icon: L.icon({
+  const pieData = convertToPieData(props.data.crimes_by_street);
+  const mapData = props.data.crimes_by_street.map(item => (Object.assign({}, item, { popup: `<div><b>${item.address}</b><p>${moment.utc(item.date_occurred).format('M/DD/YYYY')}</p><p>${item.offense_long_description}</p></div>`, options: { icon: L.icon({
     iconUrl: getMarker(item.offense_long_description),
     iconSize: [25, 41],
     iconAnchor: [12, 41],
@@ -124,7 +152,7 @@ const CrimeResults = props => {
   ));
   
   const refreshLocation = (view) => {
-    browserHistory.push([props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&label=', props.location.query.label, '&within=', document.getElementById('extent').value, '&during=', document.getElementById('time').value, '&hideNavbar=', props.location.query.hideNavbar, '&view=', view, '&x=', props.location.query.x, '&y=', props.location.query.y].join(''));
+    browserHistory.push([props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&label=', props.location.query.label, '&within=', document.getElementById('extent').value, '&during=', document.getElementById('time').value, '&search=', props.location.query.search, '&hideNavbar=', props.location.query.hideNavbar, '&view=', view, '&x=', props.location.query.x, '&y=', props.location.query.y].join(''));
   };
 
   return (
@@ -152,14 +180,14 @@ const CrimeResults = props => {
         </div>
 
         <div id="listView" hidden={props.location.query.view !== 'list'}>
-          <CrimeTable data={props.data.crimes_by_address} />
+          <CrimeTable data={props.data.crimes_by_street} />
         </div>
 
         <div id="mapView" className="col-xs-12" hidden={props.location.query.view !== 'map'}>
-          {props.data.crimes_by_address.length === 0 || props.location.query.view !== 'map' ?
+          {props.data.crimes_by_street.length === 0 || props.location.query.view !== 'map' ?
             <div className="alert alert-info">No results found</div>
             :
-            <Map data={mapData} center={props.location.query.x !== '' ? [parseFloat(props.location.query.y), parseFloat(props.location.query.x)] : null} centerLabel={props.location.query.label} drawCircle radius={parseInt(props.location.query.within, 10) / 3} within={props.location.query.within} />
+            <Map data={mapData} bounds={getBounds(props.data.crimes_by_street)} hideCenter />
           }
         </div>
       </div>
@@ -167,18 +195,18 @@ const CrimeResults = props => {
   );
 };
 
-CrimeResults.propTypes = {
+CrimesByStreet.propTypes = {
   location: PropTypes.object, // eslint-disable-line
   query: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 };
 
-CrimeResults.defaultProps = {
+CrimesByStreet.defaultProps = {
   query: { entity: 'address', label: '123 Main street' },
 };
 
 const getCrimesQuery = gql`
-  query getCrimesQuery($civicaddress_id: Int!, $radius: Int, $before: String, $after: String) {
-    crimes_by_address (civicaddress_id: $civicaddress_id, radius: $radius, before: $before, after: $after) {
+  query getCrimesQuery($centerline_ids: [Float], $radius: Int) {
+    crimes_by_street (centerline_ids: $centerline_ids, radius: $radius) {
       case_number
       date_occurred
       address
@@ -191,15 +219,30 @@ const getCrimesQuery = gql`
   }
 `;
 
-const CrimeResultsGQL = graphql(getCrimesQuery, {
+// const getCrimesQuery = gql`
+//   query getCrimesQuery($centerline_ids: [Float], $radius: Int, $before: String, $after: String) {
+//     crimes_by_street (centerline_ids: $centerline_ids, radius: $radius, before: $before, after: $after) {
+//       case_number
+//       date_occurred
+//       address
+//       offense_long_description
+//       offense_short_description
+//       geo_beat
+//       x
+//       y
+//     }
+//   }
+// `;
+
+const CrimesByStreetGQL = graphql(getCrimesQuery, {
   options: ownProps => ({
     variables: {
-      civicaddress_id: ownProps.location.query.id,
+      centerline_ids: ownProps.location.query.id.split(','),
       radius: ownProps.radius,
       before: ownProps.before,
       after: ownProps.after,
     },
   }),
-})(CrimeResults);
+})(CrimesByStreet);
 
-export default CrimeResultsGQL;
+export default CrimesByStreetGQL;

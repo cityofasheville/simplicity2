@@ -82,7 +82,7 @@ const Address = (props) => {
           <div className="row">
             {['CRIME', 'DEVELOPMENT'].map((topic, i) => (
               <div className="col-xs-6" key={['topic', i]}>
-                <TopicCard topic={topic} entity="address" id={props.location.query.id} label={[addressData.address, addressData.zipcode].join(', ')} entities={props.location.query.entities} x={addressData.x} y={addressData.y} />
+                <TopicCard topic={topic} entity="address" id={props.location.query.id} label={[addressData.address, addressData.zipcode].join(', ')} entities={props.location.query.entities} x={addressData.x} y={addressData.y} search={props.location.query.search} />
               </div>
             ))}
           </div>

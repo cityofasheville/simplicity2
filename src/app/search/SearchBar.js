@@ -13,7 +13,7 @@ const getEntities = (selected) => {
   }
   const entities = [
     // { label: 'Neighborhoods', type: 'neighborhood', checked: true },
-    // { label: 'Streets', type: 'street', checked: true },
+    { label: 'Streets', type: 'street', checked: true },
     { label: 'Addresses', type: 'address', checked: true },
     { label: 'Properties', type: 'property', checked: true },
     //{ label: 'Owners', type: 'owner', checked: true },
@@ -82,7 +82,7 @@ class SearchBar extends React.Component {
 SearchBar.defaultProps = {
   entities: [
     // { label: 'Neighborhoods', type: 'neighborhood', checked: true },
-    // { label: 'Streets', type: 'street', checked: true },
+    { label: 'Streets', type: 'street', checked: true },
     { label: 'Addresses', type: 'address', checked: true },
     { label: 'Properties', type: 'property', checked: true },
     //{ label: 'Owners', type: 'owner', checked: true },

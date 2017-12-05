@@ -22,6 +22,7 @@ const getIcon = (type) => {
       return <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24"><text x="7" y="24" fontFamily="Roboto" fontSize="24" fill="#fff">3</text></svg>;
     case 'Project Small  5-20 Hrs':
     case 'Project Small':
+    case 'Project Small 5-20 Hrs':
       return <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24"><text x="7" y="24" fontFamily="Roboto" fontSize="24" fill="#fff">S</text></svg>;
     case 'Project Large':
     case 'Project Larger 100 Hrs':
@@ -35,7 +36,7 @@ const getIcon = (type) => {
 };
 
 const isProject = priority => (
-  ['Project Small  5-20 Hrs', 'Project Small', 'Project Large', 'Project Larger 100 Hrs', 'Project Medium', 'Project Medium 20-100 Hrs'].indexOf(priority) > -1
+  ['Project Small 5-20 Hrs', 'Project Small  5-20 Hrs', 'Project Small', 'Project Large', 'Project Larger 100 Hrs', 'Project Medium', 'Project Medium 20-100 Hrs'].indexOf(priority) > -1
 );
 
 const sumByType = (projects) => {

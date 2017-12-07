@@ -159,7 +159,7 @@ const CrimesByAddress = props => {
           {props.data.crimes_by_address.length === 0 || props.location.query.view !== 'map' ?
             <div className="alert alert-info">No results found</div>
             :
-            <Map data={mapData} center={props.location.query.x !== '' ? [parseFloat(props.location.query.y), parseFloat(props.location.query.x)] : null} centerLabel={props.location.query.label} drawCircle radius={parseInt(props.location.query.within, 10) / 3} within={parseInt(props.location.query.within, 10)} />
+            <Map data={mapData} showCenter center={props.location.query.x !== '' ? [parseFloat(props.location.query.y), parseFloat(props.location.query.x)] : null} centerLabel={props.location.query.label} drawCircle radius={parseInt(props.location.query.within, 10) / 3} within={parseInt(props.location.query.within, 10)} />
           }
         </div>
       </div>

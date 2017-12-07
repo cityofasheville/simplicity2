@@ -37,10 +37,12 @@ const DevelopmentDetail = props => (
               </div>
               <DetailsFormGroup label="Permit group" name="permit_group" value={props.data.permit_group} hasLabel />
               <DetailsFormGroup label="Updated date" name="status_date" value={moment.utc(props.data.status_date).format('M/DD/YYYY')} hasLabel />
+              <DetailsFormGroup label="Contractor License #" name="contracotr_license_number" value={props.data.contractor_license_number} hasLabel />
             </div>
             <div className="col-sm-6">
               <DetailsFormGroup label="Civic address id" name="civic_address_id" value={props.data.civic_address_id} hasLabel />
               <DetailsFormGroup label="Permit subtype" name="permit_subtype" value={props.data.permit_subtype} hasLabel />
+              <DetailsFormGroup label="Contractor Name" name="contractor_name" value={props.data.contractor_name} hasLabel />
             </div>
           </div>
         </fieldset>

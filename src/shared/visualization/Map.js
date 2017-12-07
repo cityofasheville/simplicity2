@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import L from 'leaflet';
-import { Map as LeafletMap, Marker, TileLayer, Popup, Circle } from 'react-leaflet';
+import { Map as LeafletMap, Marker, TileLayer, Popup, Circle, Polyline } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-markercluster';
+import { convertStreetLinesToLatLngArrays } from '../../utilities/mapUtilities';
 
 //using open street map for now because that way can use the clusters, etc.
 
@@ -17,6 +18,7 @@ const getBounds = (center, within) => {
 
 const Map = (props) => {
   const markers = [];
+  let lines = [];
   for (let pt of props.data) {
     markers.push({
       position: [pt.y, pt.x],
@@ -24,7 +26,10 @@ const Map = (props) => {
       options: pt.options || {},
     });
   }
-  console.log(markers);
+
+  if (props.drawStreet) {
+    lines = convertStreetLinesToLatLngArrays(props.streetData);
+  }
 
   return (
     <div style={{ height: props.height, width: props.width }}>
@@ -36,7 +41,7 @@ const Map = (props) => {
         {props.drawCircle &&
           <Circle center={props.center} radius={props.radius} fillOpacity={0.15} />
         }
-        {!props.hideCenter &&
+        {props.showCenter &&
           <Marker
             position={props.center}
             icon={L.icon({
@@ -50,6 +55,11 @@ const Map = (props) => {
               <div><b>{props.centerLabel}</b></div>
             </Popup>
           </Marker>
+        }
+        {props.drawStreet &&
+          lines.map((line, index) =>
+            <Polyline key={['street_line', index].join('_')} positions={line} weight={5} />
+          )
         }
         <MarkerClusterGroup markers={markers} options={markerClusterOptions} />
       </LeafletMap>
@@ -65,10 +75,12 @@ Map.propTypes = {
   height: PropTypes.string,
   drawCircle: PropTypes.bool,
   radius: PropTypes.number,
-  hideCenter: PropTypes.bool,
+  showCenter: PropTypes.bool,
   zoom: PropTypes.number,
   within: PropTypes.number,
-  bounds: PropTypes.array,
+  bounds: PropTypes.array, //eslint-disable-line
+  streetData: PropTypes.array, //eslint-disable-line
+  drawStreet: PropTypes.bool,
 };
 
 Map.defaultProps = {
@@ -78,11 +90,13 @@ Map.defaultProps = {
   width: '100%',
   height: '600px',
   drawCircle: false,
+  drawStreet: false,
   radius: 83,
-  hideCenter: false,
+  showCenter: false,
   zoom: 16,
   within: 1320,
   bounds: null,
+  streetData: null,
 };
 
 export default Map;

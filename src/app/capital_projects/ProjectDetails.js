@@ -186,7 +186,7 @@ const ProjectDetails = (props) => (
           </div>
         </div>
         <div className="col-sm-5">
-          <Map data={getMyPoints(props.Project)} height="230px" hideCenter bounds={calculateBounds(getMyPoints(props.Project))} />
+          <Map data={getMyPoints(props.Project)} height="230px" bounds={calculateBounds(getMyPoints(props.Project))} />
           <a href={props['Photo URL']} target="_blank">
             <img alt="Photo of project" className="img-responsive" src={props['Photo URL']} style={{ maxHeight: '400px' }} />
           </a>

@@ -4,35 +4,8 @@ import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import Map from '../../shared/visualization/Map';
+import { getBoundsFromStreetData } from '../../utilities/mapUtilities';
 import LoadingAnimation from '../../shared/LoadingAnimation';
-
-const getBounds = (data) => {
-  let xMinIndex = 0;
-  let yMinIndex = 0;
-  let xMaxIndex = 0;
-  let yMaxIndex = 0;
-  if (data.length > 0) {
-    for (let i = 0; i < data.length; i += 1) {
-      if (data[i].x < data[xMinIndex].x) {
-        xMinIndex = i;
-      }
-      if (data[i].x > data[xMaxIndex].x) {
-        xMaxIndex = i;
-      }
-      if (data[i].y < data[yMinIndex].y) {
-        yMinIndex = i;
-      }
-      if (data[i].y > data[yMaxIndex].y) {
-        yMaxIndex = i;
-      }
-    }
-    return [
-      [data[yMinIndex].y, data[xMinIndex].x],
-      [data[yMaxIndex].y, data[xMaxIndex].x],
-    ];
-  }
-  return null;
-};
 
 const dataColumns = [
   {
@@ -123,7 +96,7 @@ const AddressesByStreet = props => {
           {props.data.addresses_by_street.length === 0 || props.location.query.view !== 'map' ?
             <div className="alert alert-info">No results found</div>
             :
-            <Map data={mapData} bounds={getBounds(props.data.addresses_by_street)} hideCenter />
+            <Map data={mapData} bounds={getBoundsFromStreetData(props.data.streets)} drawStreet streetData={props.data.streets} />
           }
         </div>
       </div>
@@ -142,8 +115,8 @@ AddressesByStreet.defaultProps = {
   query: { entity: 'address', label: '123 Main street' },
 };
 
-const getAddressesQuery = gql`
-  query getAddressesQuery($centerline_ids: [Float]) {
+const getAddressesAndStreetInfoQuery = gql`
+  query getAddressesAndStreetInfoQuery($centerline_ids: [Float]) {
     addresses_by_street (centerline_ids: $centerline_ids) {
       civic_address_id
       x
@@ -161,10 +134,19 @@ const getAddressesQuery = gql`
       owner_state
       owner_zipcode
     }
+    streets (centerline_ids: $centerline_ids) {
+      centerline_id
+        left_zipcode
+        right_zipcode
+        line {
+          x
+          y
+        }
+    }
   }
 `;
 
-const AddressesByStreetGQL = graphql(getAddressesQuery, {
+const AddressesByStreetGQL = graphql(getAddressesAndStreetInfoQuery, {
   options: ownProps => ({
     variables: {
       centerline_ids: ownProps.location.query.id.split(','),

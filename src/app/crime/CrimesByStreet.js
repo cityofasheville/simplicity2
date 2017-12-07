@@ -8,6 +8,7 @@ import gql from 'graphql-tag';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import PieChart from '../../shared/visualization/PieChart';
 import Map from '../../shared/visualization/Map';
+import { getBoundsFromStreetData } from '../../utilities/mapUtilities';
 import CrimeTable from '../crime/CrimeTable';
 import EmailDownload from '../../shared/EmailDownload';
 import ButtonGroup from '../../shared/ButtonGroup';
@@ -71,34 +72,6 @@ const getMarker = (type) => {
     default:
       return require('../../shared/Ellipsis.png');
   }
-};
-
-const getBounds = (crimeData) => {
-  let xMinIndex = 0;
-  let yMinIndex = 0;
-  let xMaxIndex = 0;
-  let yMaxIndex = 0;
-  if (crimeData.length > 0) {
-    for (let i = 0; i < crimeData.length; i += 1) {
-      if (crimeData[i].x < crimeData[xMinIndex].x) {
-        xMinIndex = i;
-      }
-      if (crimeData[i].x > crimeData[xMaxIndex].x) {
-        xMaxIndex = i;
-      }
-      if (crimeData[i].y < crimeData[yMinIndex].y) {
-        yMinIndex = i;
-      }
-      if (crimeData[i].y > crimeData[yMaxIndex].y) {
-        yMaxIndex = i;
-      }
-    }
-    return [
-      [crimeData[yMinIndex].y, crimeData[xMinIndex].x],
-      [crimeData[yMaxIndex].y, crimeData[xMaxIndex].x],
-    ];
-  }
-  return null;
 };
 
 const convertToPieData = (crimeData) => {
@@ -187,7 +160,7 @@ const CrimesByStreet = props => {
           {props.data.crimes_by_street.length === 0 || props.location.query.view !== 'map' ?
             <div className="alert alert-info">No results found</div>
             :
-            <Map data={mapData} bounds={getBounds(props.data.crimes_by_street)} hideCenter />
+            <Map data={mapData} bounds={getBoundsFromStreetData(props.data.streets)} drawStreet streetData={props.data.streets} />
           }
         </div>
       </div>
@@ -204,9 +177,9 @@ CrimesByStreet.defaultProps = {
   query: { entity: 'address', label: '123 Main street' },
 };
 
-const getCrimesQuery = gql`
-  query getCrimesQuery($centerline_ids: [Float], $radius: Int) {
-    crimes_by_street (centerline_ids: $centerline_ids, radius: $radius) {
+const getCrimesAndStreetInfoQuery = gql`
+  query getCrimesAndStreetInfoQuery($centerline_ids: [Float], $radius: Int, $before: String, $after: String) {
+    crimes_by_street (centerline_ids: $centerline_ids, radius: $radius, before: $before, after: $after) {
       case_number
       date_occurred
       address
@@ -216,25 +189,19 @@ const getCrimesQuery = gql`
       x
       y
     }
+    streets (centerline_ids: $centerline_ids) {
+      centerline_id
+        left_zipcode
+        right_zipcode
+        line {
+          x
+          y
+        }
+    }    
   }
 `;
 
-// const getCrimesQuery = gql`
-//   query getCrimesQuery($centerline_ids: [Float], $radius: Int, $before: String, $after: String) {
-//     crimes_by_street (centerline_ids: $centerline_ids, radius: $radius, before: $before, after: $after) {
-//       case_number
-//       date_occurred
-//       address
-//       offense_long_description
-//       offense_short_description
-//       geo_beat
-//       x
-//       y
-//     }
-//   }
-// `;
-
-const CrimesByStreetGQL = graphql(getCrimesQuery, {
+const CrimesByStreetGQL = graphql(getCrimesAndStreetInfoQuery, {
   options: ownProps => ({
     variables: {
       centerline_ids: ownProps.location.query.id.split(','),

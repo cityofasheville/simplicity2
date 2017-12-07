@@ -6,6 +6,7 @@ import { graphql } from 'react-apollo';
 import moment from 'moment';
 import gql from 'graphql-tag';
 import Map from '../../shared/visualization/Map';
+import { getBoundsFromStreetData } from '../../utilities/mapUtilities';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import PieChart from '../../shared/visualization/PieChart';
 import DevelopmentTable from '../development/DevelopmentTable';
@@ -37,7 +38,6 @@ const getMarker = (type) => {
       return require('../../shared/Ellipsis.png');
   }
 };
-
 
 const convertToPieData = (permitData) => {
   let pieData = [];
@@ -91,7 +91,7 @@ const DevelopmentByStreet = props => {
     return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
   }
 
-  const mapData = props.data.permits_by_street.map(item => (Object.assign({}, item, { popup: `<div><b>${item.permit_type}</b><p>${moment.utc(item.applied_date).format('M/DD/YYYY')}</p><p>${item.applicant_name}</p></div>`, options: { icon: L.icon({
+  const mapData = props.data.permits_by_street.map(item => (Object.assign({}, item, { popup: `<div><b>${item.permit_type}</b><p>${moment.utc(item.applied_date).format('M/DD/YYYY')}</p><p>Applicant: ${item.applicant_name}</p><p>Contractor: ${item.contractor_name}</p></div>`, options: { icon: L.icon({
     iconUrl: getMarker(item.permit_type),
     iconSize: [25, 41],
     iconAnchor: [12, 41],
@@ -135,7 +135,7 @@ const DevelopmentByStreet = props => {
           {props.data.permits_by_street.length === 0 || props.location.query.view !== 'map' ?
             <div className="alert alert-info">No results found</div>
             :
-            <Map data={mapData} center={props.location.query.y !== '' ? [parseFloat(props.location.query.y), parseFloat(props.location.query.x)] : null} centerLabel={props.location.query.label} drawCircle radius={parseInt(props.location.query.within, 10) / 3} within={props.location.query.within} />
+            <Map data={mapData} within={props.location.query.within} bounds={getBoundsFromStreetData(props.data.streets)} drawStreet streetData={props.data.streets} />
           }
         </div>
       </div>
@@ -154,9 +154,9 @@ DevelopmentByStreet.defaultProps = {
   query: { entity: 'address', label: '123 Main street' },
 };
 
-const getPermitsQuery = gql`
-  query getPermitsQuery($centerline_ids: [Float], $radius: Int) {
-    permits_by_street (centerline_ids: $centerline_ids, radius: $radius) {
+const getPermitsAndStreetInfoQuery = gql`
+  query getPermitsAndStreetInfoQuery($centerline_ids: [Float], $radius: Int, $before: String, $after: String) {
+    permits_by_street (centerline_ids: $centerline_ids, radius: $radius, before: $before, after: $after) {
       permit_number
       permit_group
       permit_type
@@ -177,36 +177,19 @@ const getPermitsQuery = gql`
         comments
       }
     }
+    streets (centerline_ids: $centerline_ids) {
+      centerline_id
+        left_zipcode
+        right_zipcode
+        line {
+          x
+          y
+        }
+    }    
   }
 `;
 
-// const getPermitsQuery = gql`
-//   query getPermitsQuery($centerline_ids: [Float], $radius: Int, $before: String, $after: String) {
-//     permits_by_street (centerline_ids: $centerline_ids, radius: $radius, before: $before, after: $after) {
-//       permit_number
-//       permit_group
-//       permit_type
-//       permit_subtype
-//       permit_description
-//       applicant_name
-//       applied_date
-//       status_date
-//       civic_address_id
-//       address
-//       x
-//       y
-//       contractor_name
-//       contractor_license_number
-//       comments {
-//         comment_seq_number
-//         comment_date
-//         comments
-//       }
-//     }
-//   }
-// `;
-
-const DevelopmentByStreetGQL = graphql(getPermitsQuery, {
+const DevelopmentByStreetGQL = graphql(getPermitsAndStreetInfoQuery, {
   options: ownProps => ({
     variables: {
       centerline_ids: ownProps.location.query.id.split(','),

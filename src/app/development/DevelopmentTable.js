@@ -37,7 +37,7 @@ const dataColumns = [
   {
     Header: 'Name',
     accessor: 'applicant_name',
-    minWidth: 300,
+    minWidth: 250,
     Filter: ({ filter, onChange }) => (
       <input
         onChange={event => onChange(event.target.value)}
@@ -50,13 +50,26 @@ const dataColumns = [
   {
     Header: 'Type',
     accessor: 'permit_type',
-    width: 200,
+    minWidth: 150,
     Cell: row => (
       <span>
         <span title={row.original.permit_type}>{getIcon(row.value, row.isExpanded)}</span>
         <span style={{ marginLeft: '5px' }}>{row.value}</span>
       </span>
     ),
+    Filter: ({ filter, onChange }) => (
+      <input
+        onChange={event => onChange(event.target.value)}
+        style={{ width: '100%' }}
+        value={filter ? filter.value : ''}
+        placeholder="Search..."
+      />
+    ),
+  },
+  {
+    Header: 'Contracotr',
+    accessor: 'contractor_name',
+    minWidth: 150,
     Filter: ({ filter, onChange }) => (
       <input
         onChange={event => onChange(event.target.value)}

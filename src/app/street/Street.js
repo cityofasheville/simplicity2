@@ -10,7 +10,7 @@ import { IM_ENVELOP3, IM_ROAD } from '../../shared/iconConstants';
 
 const Street = props => (
   <div>
-    <PageHeader h1={props.location.query.label} h3="About this property" icon={<Icon path={IM_ROAD} size={50} />}>
+    <PageHeader h1={props.location.query.label} h3="About this street" icon={<Icon path={IM_ROAD} size={50} />}>
       <ButtonGroup>
         <LinkButton pathname="/search" query={{ entities: props.location.query.entities, search: props.location.query.search, hideNavbar: props.location.query.hideNavbar }}>Back to search</LinkButton>
       </ButtonGroup>

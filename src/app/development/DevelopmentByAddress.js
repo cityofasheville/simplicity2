@@ -91,7 +91,7 @@ const DevelopmentByAddress = props => {
     return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
   }
 
-  const mapData = props.data.permits_by_address.map(item => (Object.assign({}, item, { popup: `<div><b>${item.permit_type}</b><p>${moment.utc(item.applied_date).format('M/DD/YYYY')}</p><p>${item.applicant_name}</p></div>`, options: { icon: L.icon({
+  const mapData = props.data.permits_by_address.map(item => (Object.assign({}, item, { popup: `<div><b>${item.permit_type}</b><p>${moment.utc(item.applied_date).format('M/DD/YYYY')}</p><p>Applicant: ${item.applicant_name}</p><p>Contractor: ${item.contractor_name}</p></div>`, options: { icon: L.icon({
     iconUrl: getMarker(item.permit_type),
     iconSize: [25, 41],
     iconAnchor: [12, 41],
@@ -135,7 +135,7 @@ const DevelopmentByAddress = props => {
           {props.data.permits_by_address.length === 0 || props.location.query.view !== 'map' ?
             <div className="alert alert-info">No results found</div>
             :
-            <Map data={mapData} center={props.location.query.y !== '' ? [parseFloat(props.location.query.y), parseFloat(props.location.query.x)] : null} centerLabel={props.location.query.label} drawCircle radius={parseInt(props.location.query.within, 10) / 3} within={props.location.query.within} />
+            <Map data={mapData} showCenter center={props.location.query.y !== '' ? [parseFloat(props.location.query.y), parseFloat(props.location.query.x)] : null} centerLabel={props.location.query.label} drawCircle radius={parseInt(props.location.query.within, 10) / 3} within={props.location.query.within} />
           }
         </div>
       </div>

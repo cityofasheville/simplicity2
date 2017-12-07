@@ -47,3 +47,25 @@ export const convertStreetLinesToLatLngArrays = (streetData) => {
   }
   return lines;
 };
+
+export const convertPolygonsToLatLngArrays = (polygonData) => {
+  const polygons = [];
+  for (let poly of polygonData) {
+    polygons.push(poly.points.map(pt => [pt.y, pt.x]));
+  }
+  return polygons;
+};
+
+const getAllPolygonPoints = (polygonData) => {
+  const points = [];
+  for (let poly of polygonData) {
+    for (let pt of poly.points) {
+      points.push(pt);
+    }
+  }
+  return points;
+};
+
+export const getBoundsFromPolygonData = data => (
+  getBounds(getAllPolygonPoints(data))
+);

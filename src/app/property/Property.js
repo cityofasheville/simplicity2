@@ -9,6 +9,8 @@ import PageHeader from '../../shared/PageHeader';
 import ButtonGroup from '../../shared/ButtonGroup';
 import LinkButton from '../../shared/LinkButton';
 import { zoningLinks } from '../address/zoning';
+import Map from '../../shared/visualization/Map';
+import { getBoundsFromPolygonData } from '../../utilities/mapUtilities';
 import Icon from '../../shared/Icon';
 import { IM_PROFILE, IM_USER, IM_GOOGLE, IM_CERTIFICATE, IM_CHECKBOX_PARTIAL2, IM_HOME2 } from '../../shared/iconConstants';
 
@@ -26,6 +28,7 @@ const Property = (props) => {
   }
 
   const propertyData = props.data.properties[0];
+
   return (
     <div>
       <PageHeader h1={[propertyData.address, propertyData.zipcode].join(', ')} h3="About this property" icon={<Icon path={IM_HOME2} size={50} />}>
@@ -69,6 +72,9 @@ const Property = (props) => {
               </div>
             </div>
           </fieldset>
+          <fieldset className="detailsFieldset">
+            <DetailsFormGroup label="Owner" name="owner" value={<div><div>{propertyData.owner}</div><div>{propertyData.owner_address}</div></div>} hasLabel icon={<Icon path={IM_USER} size={20} />} />
+          </fieldset>
         </div>
         <div className="col-sm-6">
           <fieldset className="detailsFieldset">
@@ -81,13 +87,7 @@ const Property = (props) => {
                 { value_type: 'Total market value', amount: getDollars(propertyData.market_value) },
               ]}
             />
-          </fieldset>
-        </div>
-      </div>
-      <div className="row">
-        <div className="col-sm-6">
-          <fieldset className="detailsFieldset">
-            <DetailsFormGroup label="Owner" name="owner" value={<div><div>{propertyData.owner}</div><div>{propertyData.owner_address}</div></div>} hasLabel icon={<Icon path={IM_USER} size={20} />} />
+            <Map bounds={getBoundsFromPolygonData(propertyData.polygons)} drawPolygon polygonData={propertyData.polygons} height="250px" />
           </fieldset>
         </div>
       </div>
@@ -121,6 +121,12 @@ const propertyQuery = gql`
       market_value,
       owner,
       owner_address,
+      polygons {
+        points {
+          x
+          y
+        }
+      }
     }
   }
 `;

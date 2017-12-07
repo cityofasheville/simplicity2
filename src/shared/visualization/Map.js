@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import L from 'leaflet';
-import { Map as LeafletMap, Marker, TileLayer, Popup, Circle, Polyline } from 'react-leaflet';
+import { Map as LeafletMap, Marker, TileLayer, Popup, Circle, Polyline, Polygon } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-markercluster';
-import { convertStreetLinesToLatLngArrays } from '../../utilities/mapUtilities';
+import { convertStreetLinesToLatLngArrays, convertPolygonsToLatLngArrays } from '../../utilities/mapUtilities';
 
 //using open street map for now because that way can use the clusters, etc.
 
@@ -19,6 +19,7 @@ const getBounds = (center, within) => {
 const Map = (props) => {
   const markers = [];
   let lines = [];
+  let polygons = [];
   for (let pt of props.data) {
     markers.push({
       position: [pt.y, pt.x],
@@ -29,6 +30,10 @@ const Map = (props) => {
 
   if (props.drawStreet) {
     lines = convertStreetLinesToLatLngArrays(props.streetData);
+  }
+
+  if (props.drawPolygon) {
+    polygons = convertPolygonsToLatLngArrays(props.polygonData);
   }
 
   return (
@@ -61,6 +66,11 @@ const Map = (props) => {
             <Polyline key={['street_line', index].join('_')} positions={line} weight={5} />
           )
         }
+        {props.drawPolygon &&
+          polygons.map((poly, index) =>
+            <Polygon key={['polygon', index].join('_')} positions={poly} />
+          )
+        }
         <MarkerClusterGroup markers={markers} options={markerClusterOptions} />
       </LeafletMap>
     </div>
@@ -74,12 +84,15 @@ Map.propTypes = {
   width: PropTypes.string,
   height: PropTypes.string,
   drawCircle: PropTypes.bool,
+  drawPolygon: PropTypes.bool,
   radius: PropTypes.number,
   showCenter: PropTypes.bool,
   zoom: PropTypes.number,
   within: PropTypes.number,
   bounds: PropTypes.array, //eslint-disable-line
   streetData: PropTypes.array, //eslint-disable-line
+  polygonData: PropTypes.array, //eslint-disable-line
+  data: PropTypes.array, //eslint-disable-line
   drawStreet: PropTypes.bool,
 };
 
@@ -91,12 +104,15 @@ Map.defaultProps = {
   height: '600px',
   drawCircle: false,
   drawStreet: false,
+  drawPolygon: false,
   radius: 83,
   showCenter: false,
   zoom: 16,
   within: 1320,
   bounds: null,
   streetData: null,
+  polygonData: null,
+  data: [],
 };
 
 export default Map;

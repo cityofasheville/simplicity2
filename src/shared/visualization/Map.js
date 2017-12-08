@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import L from 'leaflet';
 import { Map as LeafletMap, Marker, TileLayer, Popup, Circle, Polyline, Polygon } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-markercluster';
-import { convertStreetLinesToLatLngArrays, convertPolygonsToLatLngArrays } from '../../utilities/mapUtilities';
 
 //using open street map for now because that way can use the clusters, etc.
 
@@ -18,22 +17,12 @@ const getBounds = (center, within) => {
 
 const Map = (props) => {
   const markers = [];
-  let lines = [];
-  let polygons = [];
   for (let pt of props.data) {
     markers.push({
       position: [pt.y, pt.x],
       popup: pt.popup || null,
       options: pt.options || {},
     });
-  }
-
-  if (props.drawStreet) {
-    lines = convertStreetLinesToLatLngArrays(props.streetData);
-  }
-
-  if (props.drawPolygon) {
-    polygons = convertPolygonsToLatLngArrays(props.polygonData);
   }
 
   return (
@@ -62,13 +51,17 @@ const Map = (props) => {
           </Marker>
         }
         {props.drawStreet &&
-          lines.map((line, index) =>
+          props.streetData.map((line, index) =>
             <Polyline key={['street_line', index].join('_')} positions={line} weight={5} />
           )
         }
         {props.drawPolygon &&
-          polygons.map((poly, index) =>
-            <Polygon key={['polygon', index].join('_')} positions={poly} />
+          props.polygonData.map((poly, index) =>
+            <Polygon key={['polygon', index].join('_')} positions={poly.polygons}>
+              <Popup>
+                {poly.popup}
+              </Popup>
+            </Polygon>
           )
         }
         <MarkerClusterGroup markers={markers} options={markerClusterOptions} />

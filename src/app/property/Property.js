@@ -10,7 +10,7 @@ import ButtonGroup from '../../shared/ButtonGroup';
 import LinkButton from '../../shared/LinkButton';
 import { zoningLinks } from '../address/zoning';
 import Map from '../../shared/visualization/Map';
-import { getBoundsFromPolygonData } from '../../utilities/mapUtilities';
+import { getBoundsFromPolygonData, combinePolygonsFromPropertyList } from '../../utilities/mapUtilities';
 import Icon from '../../shared/Icon';
 import { IM_PROFILE, IM_USER, IM_GOOGLE, IM_CERTIFICATE, IM_CHECKBOX_PARTIAL2, IM_HOME2 } from '../../shared/iconConstants';
 
@@ -31,14 +31,16 @@ const Property = (props) => {
 
   return (
     <div>
-      <PageHeader h1={[propertyData.address, propertyData.zipcode].join(', ')} h3="About this property" icon={<Icon path={IM_HOME2} size={50} />}>
-        <ButtonGroup>
-          {props.location.query.fromAddress &&
-            <LinkButton pathname="/address" query={{ entities: props.location.query.entities, search: props.location.query.search, id: props.location.query.fromAddress, hideNavbar: props.location.query.hideNavbar }} positionInGroup="left">Back to address</LinkButton>
-          }
-          <LinkButton pathname="/search" query={{ entities: props.location.query.entities, search: props.location.query.search, hideNavbar: props.location.query.hideNavbar }} positionInGroup={props.location.query.fromAddress ? 'right' : ''}>Back to search</LinkButton>
-        </ButtonGroup>
-      </PageHeader>
+      {props.hideHeader !== true &&
+        <PageHeader h1={[propertyData.address, propertyData.zipcode].join(', ')} h3="About this property" icon={<Icon path={IM_HOME2} size={50} />}>
+          <ButtonGroup>
+            {props.location.query.fromAddress &&
+              <LinkButton pathname="/address" query={{ entities: props.location.query.entities, search: props.location.query.search, id: props.location.query.fromAddress, hideNavbar: props.location.query.hideNavbar }} positionInGroup="left">Back to address</LinkButton>
+            }
+            <LinkButton pathname="/search" query={{ entities: props.location.query.entities, search: props.location.query.search, hideNavbar: props.location.query.hideNavbar }} positionInGroup={props.location.query.fromAddress ? 'right' : ''}>Back to search</LinkButton>
+          </ButtonGroup>
+        </PageHeader>
+      }
       <div className="row">
         <div className="col-sm-6">
           <fieldset className="detailsFieldset">
@@ -87,7 +89,7 @@ const Property = (props) => {
                 { value_type: 'Total market value', amount: getDollars(propertyData.market_value) },
               ]}
             />
-            <Map bounds={getBoundsFromPolygonData(propertyData.polygons)} drawPolygon polygonData={propertyData.polygons} height="250px" />
+            <Map bounds={getBoundsFromPolygonData(propertyData.polygons)} drawPolygon polygonData={combinePolygonsFromPropertyList([propertyData])} height="250px" />
           </fieldset>
         </div>
       </div>
@@ -132,7 +134,7 @@ const propertyQuery = gql`
 `;
 
 const PropertyWithData = graphql(propertyQuery, {
-  options: ownProps => ({ variables: { pins: [ownProps.location.query.id] } }),
+  options: ownProps => ({ variables: { pins: (ownProps.location === undefined) ? ownProps.pins : [ownProps.location.query.id] } }),
 })(Property);
 
 export default PropertyWithData;

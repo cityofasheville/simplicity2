@@ -1,3 +1,5 @@
+import React from 'react';
+
 export const getBounds = (data) => {
   let xMinIndex = 0;
   let yMinIndex = 0;
@@ -64,6 +66,19 @@ const getAllPolygonPoints = (polygonData) => {
     }
   }
   return points;
+};
+
+export const combinePolygonsFromPropertyList = (propertyList) => {
+  const polygons = [];
+  for (let property of propertyList) {
+    const polygonData = Object.assign({}, property);
+    delete polygonData.polygons;
+    polygonData.polygons = [];
+    polygonData.polygons = convertPolygonsToLatLngArrays(property.polygons);
+    polygonData.popup = (<div><b>Pin #</b><div>{property.pinnum}{property.pinnumext}</div><br /><b>Civic Address ID</b><div>{property.civic_address_id || 'none found'}</div><br /><b>Address: </b><div>{property.address}, {property.zipcode}</div></div>);
+    polygons.push(polygonData);
+  }
+  return polygons;
 };
 
 export const getBoundsFromPolygonData = data => (

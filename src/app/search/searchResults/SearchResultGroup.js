@@ -8,19 +8,19 @@ import styles from './searchResultGroup.css';
 const getLink = (type, id, search, entities, label) => {
   switch (type) {
     case 'address':
-      return `/address?search=${search}&id=${id}&entities=${entities}`;
+      return `/address?search=${search}&id=${id}&entities=${entities}&entity=address`;
     case 'property':
-      return `/property?search=${search}&id=${id}&entities=${entities}`;
+      return `/property?search=${search}&id=${id}&entities=${entities}&entity=property`;
     case 'street':
-      return `/street?search=${search}&id=${id}&entities=${entities}&label=${label}`;
+      return `/street?search=${search}&id=${id}&entities=${entities}&label=${label}&entity=street`;
     case 'neighborhood':
-      return `/neighborhood?search=${search}&id=${id}&entities=${entities}`;
+      return `/neighborhood?search=${search}&id=${id}&entities=${entities}&entity=neighborhood`;
     case 'permit':
-      return `/development/detail?search=${search}&id=${id}&entities=${entities}`;
+      return `/development/detail?search=${search}&id=${id}&entities=${entities}&entity=permit`;
     case 'crime':
-      return `/crime/detail?search=${search}&id=${id}&entities=${entities}`;
+      return `/crime/detail?search=${search}&id=${id}&entities=${entities}&entity=crime`;
     case 'owner':
-      return `/owner?search=${search}&id=${id}&entities=${entities}`;
+      return `/owner?search=${search}&id=${id}&entities=${entities}&entity=owner`;
     default:
       return '/';
   }

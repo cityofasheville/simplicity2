@@ -6,7 +6,7 @@ import { graphql } from 'react-apollo';
 import moment from 'moment';
 import gql from 'graphql-tag';
 import Map from '../../shared/visualization/Map';
-import { getBoundsFromStreetData } from '../../utilities/mapUtilities';
+import { getBoundsFromStreetData, convertStreetLinesToLatLngArrays } from '../../utilities/mapUtilities';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import PieChart from '../../shared/visualization/PieChart';
 import DevelopmentTable from '../development/DevelopmentTable';
@@ -135,7 +135,7 @@ const DevelopmentByStreet = props => {
           {props.data.permits_by_street.length === 0 || props.location.query.view !== 'map' ?
             <div className="alert alert-info">No results found</div>
             :
-            <Map data={mapData} within={props.location.query.within} bounds={getBoundsFromStreetData(props.data.streets)} drawStreet streetData={props.data.streets} />
+            <Map data={mapData} within={props.location.query.within} bounds={getBoundsFromStreetData(props.data.streets)} drawStreet streetData={convertStreetLinesToLatLngArrays(props.data.streets)} />
           }
         </div>
       </div>

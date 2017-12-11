@@ -9,7 +9,7 @@ import CrimesByStreet from './CrimesByStreet';
 import Icon from '../../shared/Icon';
 import styles from '../spatial_event_topic_summary/spatialEventTopicFilters.css';
 import SpatialEventTopicLocationInfo from '../spatial_event_topic_summary/SpatialEventTopicLocationInfo';
-import { IM_SHIELD3 } from '../../shared/iconConstants';
+import { IM_SHIELD3, IM_LIBRARY2 } from '../../shared/iconConstants';
 
 //import SpatialEventTopicCategoryFilters from './SpatialEventTopicCategoryFilters';
 
@@ -46,11 +46,18 @@ const CrimeSummary = (props) => {
 
   return (
     <div>
-      <PageHeader h1="Crime" icon={<Icon path={IM_SHIELD3} size={35} />}>
-        <ButtonGroup>
-          <Button onClick={browserHistory.goBack}>Back</Button>
-        </ButtonGroup>
-      </PageHeader>
+      <div className="row">
+        <div className="col-sm-12">
+          <h1>
+            <span style={{ marginRight: '5px' }}>{<Icon path={IM_SHIELD3} size={35} />}</span>
+            <span style={{ marginRight: '25px' }}>Crime</span>
+            <a href="https://apdp2c.buncombecounty.org/" target="_blank"><button className="btn btn-xs btn-info">{<Icon path={IM_LIBRARY2} size={16} />}<span style={{ marginLeft: '4px' }}>View APD reports</span></button></a>
+            <ButtonGroup>
+              <Button onClick={browserHistory.goBack}>Back</Button>
+            </ButtonGroup>
+          </h1>
+        </div>
+      </div>
       <form className="row form-horizontal">
         <div className="col-xs-12">
           <fieldset className={styles.filtersDiv}>

@@ -25,7 +25,7 @@ const getEntities = (selected) => {
   }
   const entityTypes = selected.split(',');
   const entities = [
-    // { label: 'Neighborhoods', type: 'neighborhood', checked: true },
+    { label: 'Neighborhoods', type: 'neighborhood', checked: true },
     { label: 'Streets', type: 'street', checked: true },
     { label: 'Addresses', type: 'address', checked: true },
     { label: 'Properties', type: 'property', checked: true },
@@ -107,6 +107,12 @@ const SearchResults = (props) => {
                   type: 'street',
                   id: result.centerline_ids.join(','),
                 };
+              case 'neighborhood':
+                return {
+                  label: result.name,
+                  type: 'neighborhood',
+                  id: result.nbhd_id,
+                };
               default:
                 return result;
             }
@@ -182,6 +188,10 @@ const searchQuery = gql`
           full_street_name
           zip_code
           centerline_ids
+        }
+        ... on NeighborhoodResult {
+          name
+          nbhd_id
         }
       }
     }

@@ -14,7 +14,7 @@ const getLink = (type, id, search, entities, label) => {
     case 'street':
       return `/street?search=${search}&id=${id}&entities=${entities}&label=${label}&entity=street`;
     case 'neighborhood':
-      return `/neighborhood?search=${search}&id=${id}&entities=${entities}&entity=neighborhood`;
+      return `/neighborhood?search=${search}&id=${id}&entities=${entities}&label=${label}&entity=neighborhood`;
     case 'permit':
       return `/development/detail?search=${search}&id=${id}&entities=${entities}&entity=permit`;
     case 'crime':

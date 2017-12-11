@@ -78,15 +78,17 @@ const Address = (props) => {
             {/*<DetailsIconLinkGrouping dataLabels={['Property', 'Maintenance']} dataTitles={['Property', 'Maintenance']} dataHrefs={[['/property/?pin=', addressData.pinnum].join(''), '/maintenance?entity=address']} dataIcons={['home', 'road']} />*/}
           </fieldset>
         </div>
-        <div className="col-sm-6">
-          <div className="row">
-            {['CRIME', 'DEVELOPMENT'].map((topic, i) => (
-              <div className="col-xs-6" key={['topic', i]}>
-                <TopicCard topic={topic} entity="address" id={props.location.query.id} label={[addressData.address, addressData.zipcode].join(', ')} entities={props.location.query.entities} x={addressData.x} y={addressData.y} search={props.location.query.search} />
-              </div>
-            ))}
+        {addressData.is_in_city &&
+          <div className="col-sm-6">
+            <div className="row">
+              {['CRIME', 'DEVELOPMENT'].map((topic, i) => (
+                <div className="col-xs-6" key={['topic', i]}>
+                  <TopicCard topic={topic} entity="address" id={props.location.query.id} label={[addressData.address, addressData.zipcode].join(', ')} entities={props.location.query.entities} x={addressData.x} y={addressData.y} search={props.location.query.search} />
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        }
       </div>
     </div>
   );

@@ -65,119 +65,128 @@ const getIcon = (type, isExpanded) => {
   }
 };
 
-const dataColumns = [
-  {
-    Header: 'Type',
-    accessor: 'offense_long_description',
-    width: 335,
-    Cell: row => (
-      <span>
-        <span title={row.original.crime}>{getIcon(row.value, row.isExpanded)}</span>
-        <span style={{ marginLeft: '5px' }}>{row.value}</span>
-      </span>
-    ),
-    Filter: ({ filter, onChange }) => (
-      <input
-        onChange={event => onChange(event.target.value)}
-        style={{ width: '100%' }}
-        value={filter ? filter.value : ''}
-        placeholder="Search..."
-      />
-    ),
-  },
-  {
-    Header: 'Date',
-    id: 'date_occurred',
-    accessor: crime => (<span>{moment.utc(crime.date_occurred).format('M/DD/YYYY')}</span>),
-    width: 100,
-    Filter: ({ filter, onChange }) => (
-      <input
-        onChange={event => onChange(event.target.value)}
-        style={{ width: '100%' }}
-        value={filter ? filter.value : ''}
-        placeholder="Search..."
-      />
-    ),
-  },
-  {
-    Header: 'Location',
-    accessor: 'address',
-    minWidth: 200,
-    //headerClassName: 'hidden-sm hidden-xs',
-    //className: 'hidden-sm hidden-xs',
-    Cell: row => (
-      <span>
-        <span> <a title="Click to crime in map" target="_blank" href="http://www.google.com"><Icon path={IM_MAP5} size={23} /></a></span>
-        <span style={{ marginLeft: '5px' }}>{row.value}</span>
-      </span>
-    ),
-    Filter: ({ filter, onChange }) => (
-      <input
-        onChange={event => onChange(event.target.value)}
-        style={{ width: '100%' }}
-        value={filter ? filter.value : ''}
-        placeholder="Search..."
-      />
-    ),
-  },
-  {
-    Header: 'Case #',
-    accessor: 'case_number',
-    width: 95,
-    Filter: ({ filter, onChange }) => (
-      <input
-        onChange={event => onChange(event.target.value)}
-        style={{ width: '100%' }}
-        value={filter ? filter.value : ''}
-        placeholder="Search..."
-      />
-    ),
-  },
-  {
-    Header: 'Law Beat',
-    accessor: 'geo_beat',
-    width: 85,
-    Filter: ({ filter, onChange }) => (
-      <input
-        onChange={event => onChange(event.target.value)}
-        style={{ width: '100%' }}
-        value={filter ? filter.value : ''}
-        placeholder="Search..."
-      />
-    ),
-  },
-];
 
-const CrimeTable = props => (
-  <div>
-    <div className="col-sm-12">
-      {props.data.length < 1 ?
-        <div className="alert alert-info">No results found</div>
-      :
-        <div alt={['Table of crimes'].join(' ')} style={{ marginTop: '10px' }}>
-          <ReactTable
-            data={props.data}
-            columns={dataColumns}
-            showPagination={props.data.length > 20}
-            defaultPageSize={props.data.length <= 20 ? props.data.length : 20}
-            getTdProps={() => {
-              return {
-                style: {
-                  whiteSpace: 'normal',
-                },
-              };
-            }}
-            filterable
-            defaultFilterMethod={(filter, row) => {
-              const id = filter.pivotId || filter.id;
-              return row[id] !== undefined ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
-            }}
-          />
-        </div>
-      }
+const CrimeTable = props => {
+  const urlString = [props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&label=', props.location.query.label, '&within=', document.getElementById('extent').value, '&during=', document.getElementById('time').value, '&hideNavbar=', props.location.query.hideNavbar, '&search=', props.location.query.search, '&view=map', '&x=', props.location.query.x, '&y=', props.location.query.y].join('');
+
+  const dataColumns = [
+    {
+      Header: 'Type',
+      accessor: 'offense_long_description',
+      width: 335,
+      Cell: row => (
+        <span>
+          <span title={row.original.crime}>{getIcon(row.value, row.isExpanded)}</span>
+          <span style={{ marginLeft: '5px' }}>{row.value}</span>
+        </span>
+      ),
+      Filter: ({ filter, onChange }) => (
+        <input
+          onChange={event => onChange(event.target.value)}
+          style={{ width: '100%' }}
+          value={filter ? filter.value : ''}
+          placeholder="Search..."
+        />
+      ),
+    },
+    {
+      Header: 'Date',
+      id: 'date_occurred',
+      accessor: crime => (<span>{moment.utc(crime.date_occurred).format('M/DD/YYYY')}</span>),
+      width: 100,
+      Filter: ({ filter, onChange }) => (
+        <input
+          onChange={event => onChange(event.target.value)}
+          style={{ width: '100%' }}
+          value={filter ? filter.value : ''}
+          placeholder="Search..."
+        />
+      ),
+      filterMethod: (filter, row) => {
+        const id = filter.pivotId || filter.id;
+        return row[id] !== undefined ? String(row[id].props.children).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
+      },
+    },
+    {
+      Header: 'Location',
+      accessor: 'address',
+      minWidth: 200,
+      //headerClassName: 'hidden-sm hidden-xs',
+      //className: 'hidden-sm hidden-xs',
+      Cell: row => (
+        <span>
+          <span> <a title="Click to crime in map" href={[urlString, '&zoomToPoint=', [row.original.y, row.original.x].join(',')].join('')}><Icon path={IM_MAP5} size={23} /></a></span>
+          <span style={{ marginLeft: '5px' }}>{row.value}</span>
+        </span>
+      ),
+      Filter: ({ filter, onChange }) => (
+        <input
+          onChange={event => onChange(event.target.value)}
+          style={{ width: '100%' }}
+          value={filter ? filter.value : ''}
+          placeholder="Search..."
+        />
+      ),
+    },
+    {
+      Header: 'Case #',
+      accessor: 'case_number',
+      width: 95,
+      Filter: ({ filter, onChange }) => (
+        <input
+          onChange={event => onChange(event.target.value)}
+          style={{ width: '100%' }}
+          value={filter ? filter.value : ''}
+          placeholder="Search..."
+        />
+      ),
+    },
+    {
+      Header: 'Law Beat',
+      accessor: 'geo_beat',
+      width: 85,
+      Filter: ({ filter, onChange }) => (
+        <input
+          onChange={event => onChange(event.target.value)}
+          style={{ width: '100%' }}
+          value={filter ? filter.value : ''}
+          placeholder="Search..."
+        />
+      ),
+    },
+  ];
+
+  return (
+    <div>
+      <div className="col-sm-12">
+        {props.data.length < 1 ?
+          <div className="alert alert-info">No results found</div>
+        :
+          <div alt={['Table of crimes'].join(' ')} style={{ marginTop: '10px' }}>
+            <ReactTable
+              data={props.data}
+              columns={dataColumns}
+              showPagination={props.data.length > 20}
+              defaultPageSize={props.data.length <= 20 ? props.data.length : 20}
+              getTdProps={() => {
+                return {
+                  style: {
+                    whiteSpace: 'normal',
+                  },
+                };
+              }}
+              filterable
+              defaultFilterMethod={(filter, row) => {
+                const id = filter.pivotId || filter.id;
+                return row[id] !== undefined ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
+              }}
+            />
+          </div>
+        }
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 CrimeTable.propTypes = {
   data: PropTypes.array, // eslint-disable-line

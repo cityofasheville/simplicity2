@@ -12,7 +12,7 @@ const getEntities = (selected) => {
     entityTypes = selected.split(',');
   }
   const entities = [
-    // { label: 'Neighborhoods', type: 'neighborhood', checked: true },
+    { label: 'Neighborhoods', type: 'neighborhood', checked: true },
     { label: 'Streets', type: 'street', checked: true },
     { label: 'Addresses', type: 'address', checked: true },
     { label: 'Properties', type: 'property', checked: true },
@@ -81,7 +81,7 @@ class SearchBar extends React.Component {
 
 SearchBar.defaultProps = {
   entities: [
-    // { label: 'Neighborhoods', type: 'neighborhood', checked: true },
+    { label: 'Neighborhoods', type: 'neighborhood', checked: true },
     { label: 'Streets', type: 'street', checked: true },
     { label: 'Addresses', type: 'address', checked: true },
     { label: 'Properties', type: 'property', checked: true },

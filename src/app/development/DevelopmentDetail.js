@@ -28,9 +28,9 @@ const DevelopmentDetail = props => (
             <div className="col-sm-6">
               <div className="form-group">
                 <div className="col-xs-12" style={{ marginBottom: '10px' }}>
-                  <a href="">
+                  <a href={['https://www.google.com/maps/?q=', [props.data.y, props.data.x].join(',')].join('')} target="_blank" title="Click to view address in Google maps">
                     <span style={{ marginRight: '5px' }}><Icon path={IM_MAP5} size={20} /></span>
-                    <label htmlFor="address">Address</label>
+                    <label htmlFor="address" style={{ cursor: 'pointer' }}>Address</label>
                   </a>
                   <div style={{ marginLeft: '15px' }} name="address">{props.data.address}</div>
                 </div>

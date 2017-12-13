@@ -152,14 +152,23 @@ const CrimesByAddress = props => {
         </div>
 
         <div id="listView" hidden={props.location.query.view !== 'list'}>
-          <CrimeTable data={props.data.crimes_by_address} />
+          <CrimeTable data={props.data.crimes_by_address} location={props.location} />
         </div>
 
         <div id="mapView" className="col-xs-12" hidden={props.location.query.view !== 'map'}>
           {props.data.crimes_by_address.length === 0 || props.location.query.view !== 'map' ?
             <div className="alert alert-info">No results found</div>
             :
-            <Map data={mapData} showCenter center={props.location.query.x !== '' ? [parseFloat(props.location.query.y), parseFloat(props.location.query.x)] : null} centerLabel={props.location.query.label} drawCircle radius={parseInt(props.location.query.within, 10) / 3} within={parseInt(props.location.query.within, 10)} />
+            <Map
+              data={mapData}
+              showCenter
+              center={props.location.query.x !== '' ? [parseFloat(props.location.query.y), parseFloat(props.location.query.x)] : null}
+              centerLabel={props.location.query.label}
+              drawCircle
+              radius={parseInt(props.location.query.within, 10) / 3}
+              within={parseInt(props.location.query.within, 10)}
+              zoomToPoint={(props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== '') ? props.location.query.zoomToPoint : null}
+            />
           }
         </div>
       </div>

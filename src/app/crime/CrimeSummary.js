@@ -6,6 +6,7 @@ import ButtonGroup from '../../shared/ButtonGroup';
 import Button from '../../shared/Button';
 import CrimesByAddress from './CrimesByAddress';
 import CrimesByStreet from './CrimesByStreet';
+import CrimesByNeighborhood from './CrimesByNeighborhood';
 import Icon from '../../shared/Icon';
 import styles from '../spatial_event_topic_summary/spatialEventTopicFilters.css';
 import SpatialEventTopicLocationInfo from '../spatial_event_topic_summary/SpatialEventTopicLocationInfo';
@@ -79,7 +80,7 @@ const CrimeSummary = (props) => {
                 </select>
               </div>
             </div>
-            <div className="form-group" hidden={props.location.query.entity === 'street'}>
+            <div className="form-group" hidden={props.location.query.entity === 'street' || props.location.query.entity === 'neighborhood'}>
               <label htmlFor="time" className="col-sm-2 control-label">within</label>
               <div className="col-sm-10">
                 <select value={withinURL} onChange={refreshLocation} name="extent" id="extent" className="form-control" defaultValue={83}>
@@ -96,7 +97,10 @@ const CrimeSummary = (props) => {
       {props.location.query.entity === 'address' ?
         <CrimesByAddress before={before} after={after} radius={withinURL} location={props.location} />
         :
-        <CrimesByStreet before={before} after={after} radius={110} location={props.location} />
+        props.location.query.entity === 'street' ?
+          <CrimesByStreet before={before} after={after} radius={110} location={props.location} />
+          :
+          <CrimesByNeighborhood before={before} after={after} location={props.location} />
       }
     </div>
   );

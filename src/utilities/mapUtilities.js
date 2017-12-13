@@ -81,6 +81,17 @@ export const combinePolygonsFromPropertyList = (propertyList) => {
   return polygons;
 };
 
+export const combinePolygonsFromNeighborhoodList = (neighborhoodList) => {
+  const polygons = [];
+  for (let key of Object.keys(neighborhoodList)) {
+    const polygonData = {};
+    polygonData.polygons = [];
+    polygonData.polygons = convertPolygonsToLatLngArrays([neighborhoodList[key].polygon]);
+    polygons.push(polygonData);
+  }
+  return polygons;
+};
+
 export const getBoundsFromPolygonData = data => (
   getBounds(getAllPolygonPoints(data))
 );

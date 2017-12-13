@@ -71,8 +71,6 @@ const PropertiesByStreet = props => {
     return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
   }
 
-  console.log(combinePolygonsFromPropertyList(props.data.properties_by_street));
-
   return (
     <div>
       <div className="row">

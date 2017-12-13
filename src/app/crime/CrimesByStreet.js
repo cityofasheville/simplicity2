@@ -153,14 +153,14 @@ const CrimesByStreet = props => {
         </div>
 
         <div id="listView" hidden={props.location.query.view !== 'list'}>
-          <CrimeTable data={props.data.crimes_by_street} />
+          <CrimeTable data={props.data.crimes_by_street} location={props.location} />
         </div>
 
         <div id="mapView" className="col-xs-12" hidden={props.location.query.view !== 'map'}>
           {props.data.crimes_by_street.length === 0 || props.location.query.view !== 'map' ?
             <div className="alert alert-info">No results found</div>
             :
-            <Map data={mapData} bounds={getBoundsFromStreetData(props.data.streets)} drawStreet streetData={convertStreetLinesToLatLngArrays(props.data.streets)} />
+            <Map data={mapData} bounds={getBoundsFromStreetData(props.data.streets)} drawStreet streetData={convertStreetLinesToLatLngArrays(props.data.streets)} zoomToPoint={(props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== '') ? props.location.query.zoomToPoint : null} />
           }
         </div>
       </div>

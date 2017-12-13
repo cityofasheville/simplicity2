@@ -25,15 +25,26 @@ const Map = (props) => {
     });
   }
 
+  let shouldZoomToNonCenter = false;
+  let zoomTo = null;
+  if (props.zoomToPoint !== null && props.zoomToPoint !== '') {
+    shouldZoomToNonCenter = true;
+    zoomTo = props.zoomToPoint.split(',');
+    zoomTo = [parseFloat(zoomTo[0]), parseFloat(zoomTo[1])];
+  }
+
   return (
     <div style={{ height: props.height, width: props.width }}>
-      <LeafletMap className="markercluster-map" center={props.center} zoom={props.zoom} maxZoom={18} bounds={props.bounds === null ? getBounds(props.center, props.within) : props.bounds}>
+      <LeafletMap className="markercluster-map" center={shouldZoomToNonCenter ? zoomTo : props.center} zoom={props.zoom} maxZoom={18} bounds={props.bounds === null ? getBounds(shouldZoomToNonCenter ? zoomTo : props.center, shouldZoomToNonCenter ? 83 : props.within) : props.bounds}>
         <TileLayer
           url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         />
         {props.drawCircle &&
           <Circle center={props.center} radius={props.radius} fillOpacity={0.15} />
+        }
+        {props.zoomToPoint &&
+          <Circle center={zoomTo} radius={15} fillOpacity={0.15} color="red" />
         }
         {props.showCenter &&
           <Marker
@@ -87,6 +98,7 @@ Map.propTypes = {
   polygonData: PropTypes.array, //eslint-disable-line
   data: PropTypes.array, //eslint-disable-line
   drawStreet: PropTypes.bool,
+  zoomToPoint: PropTypes.string,
 };
 
 Map.defaultProps = {
@@ -106,6 +118,7 @@ Map.defaultProps = {
   streetData: null,
   polygonData: null,
   data: [],
+  zoomToPoint: null,
 };
 
 export default Map;

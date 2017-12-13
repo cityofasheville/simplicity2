@@ -4,7 +4,7 @@ import moment from 'moment';
 import ReactTable from 'react-table';
 import DevelopmentDetail from './DevelopmentDetail';
 import Icon from '../../shared/Icon';
-import { IM_HOME2, IM_OFFICE, IM_DIRECTION, IM_LIBRARY2, IM_FIRE, IM_USERS4, IM_COOK, IM_CITY, LI_WALKING, IM_MUG } from '../../shared/iconConstants';
+import { IM_HOME2, IM_MAP5, IM_OFFICE, IM_DIRECTION, IM_LIBRARY2, IM_FIRE, IM_USERS4, IM_COOK, IM_CITY, LI_WALKING, IM_MUG } from '../../shared/iconConstants';
 
 const getIcon = (type, isExpanded) => {
   switch (type) {
@@ -33,133 +33,149 @@ const getIcon = (type, isExpanded) => {
   }
 };
 
-const dataColumns = [
-  {
-    Header: 'Name',
-    accessor: 'applicant_name',
-    minWidth: 250,
-    Filter: ({ filter, onChange }) => (
-      <input
-        onChange={event => onChange(event.target.value)}
-        style={{ width: '100%' }}
-        value={filter ? filter.value : ''}
-        placeholder="Search..."
-      />
-    ),
-  },
-  {
-    Header: 'Type',
-    accessor: 'permit_type',
-    minWidth: 150,
-    Cell: row => (
-      <span>
-        <span title={row.original.permit_type}>{getIcon(row.value, row.isExpanded)}</span>
-        <span style={{ marginLeft: '5px' }}>{row.value}</span>
-      </span>
-    ),
-    Filter: ({ filter, onChange }) => (
-      <input
-        onChange={event => onChange(event.target.value)}
-        style={{ width: '100%' }}
-        value={filter ? filter.value : ''}
-        placeholder="Search..."
-      />
-    ),
-  },
-  {
-    Header: 'Contracotr',
-    accessor: 'contractor_name',
-    minWidth: 150,
-    Filter: ({ filter, onChange }) => (
-      <input
-        onChange={event => onChange(event.target.value)}
-        style={{ width: '100%' }}
-        value={filter ? filter.value : ''}
-        placeholder="Search..."
-      />
-    ),
-  },
-  {
-    Header: 'Applied Date',
-    id: 'applied_date',
-    accessor: permit => (<span>{moment.utc(permit.applied_date).format('M/DD/YYYY')}</span>),
-    width: 110,
-    Filter: ({ filter, onChange }) => (
-      <input
-        onChange={event => onChange(event.target.value)}
-        style={{ width: '100%' }}
-        value={filter ? filter.value : ''}
-        placeholder="Search..."
-      />
-    ),
-  },
-  {
-    Header: 'Permit #',
-    accessor: 'permit_number',
-    width: 115,
-    Filter: ({ filter, onChange }) => (
-      <input
-        onChange={event => onChange(event.target.value)}
-        style={{ width: '100%' }}
-        value={filter ? filter.value : ''}
-        placeholder="Search..."
-      />
-    ),
-  },
-];
 
-const DevelopmentTable = props => (
-  <div>
-    <div className="col-sm-12">
-      {props.data.length < 1 ?
-        <div className="alert alert-info">No results found</div>
-      :
-        <div alt={['Table of development'].join(' ')} style={{ marginTop: '10px' }}>
-          <ReactTable
-            data={props.data}
-            columns={dataColumns}
-            showPagination={props.data.length > 20}
-            defaultPageSize={props.data.length <= 20 ? props.data.length : 20}
-            filterable
-            defaultFilterMethod={(filter, row) => {
-              const id = filter.pivotId || filter.id;
-              return row[id] !== undefined ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
-            }}
-            getTdProps={(state, rowInfo) => {
-              return {
-                onClick: (e, handleOriginal) => {
-                  document.getElementsByClassName('rt-expandable')[rowInfo.viewIndex].click();
-                  if (handleOriginal) {
-                    handleOriginal();
-                  }
-                },
-                style: {
-                  whiteSpace: 'normal',
-                },
-              };
-            }}
-            getTrProps={(state, rowInfo) => {
-              return {
-                style: {
-                  cursor: 'pointer',
-                  background: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '#4077a5': 'none',
-                  color: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '#fff': '',
-                  fontWeight: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? 'bold': 'normal',
-                  fontSize: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '1.2em': '1em',
-                },
-              };
-            }}
-            SubComponent={row => (
-              <div style={{ paddingLeft: '34px', paddingRight: '34px', paddingBottom: '15px', backgroundColor: '#f6fcff', borderRadius: '0px', border: '2px solid #4077a5' }}>
-                <DevelopmentDetail data={row.original} standalone={false} />
-              </div>
-            )}
-          />
-        </div>
-      }
+const DevelopmentTable = props => {
+  const urlString = [props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&label=', props.location.query.label, '&within=', document.getElementById('extent').value, '&during=', document.getElementById('time').value, '&hideNavbar=', props.location.query.hideNavbar, '&search=', props.location.query.search, '&view=map', '&x=', props.location.query.x, '&y=', props.location.query.y].join('');
+
+  const dataColumns = [
+    {
+      Header: 'Name',
+      accessor: 'applicant_name',
+      minWidth: 250,
+      Cell: row => (
+        <span>
+          <span> <a title="Click to permit in map" href={[urlString, '&zoomToPoint=', [row.original.y, row.original.x].join(',')].join('')} style={{ color: row.isExpanded ? 'white' : '#4077a5' }}><Icon path={IM_MAP5} size={23} /></a></span>
+          <span style={{ marginLeft: '5px' }}>{row.value}</span>
+        </span>
+      ),
+      Filter: ({ filter, onChange }) => (
+        <input
+          onChange={event => onChange(event.target.value)}
+          style={{ width: '100%' }}
+          value={filter ? filter.value : ''}
+          placeholder="Search..."
+        />
+      ),
+    },    
+    {
+      Header: 'Type',
+      accessor: 'permit_type',
+      minWidth: 150,
+      Cell: row => (
+        <span>
+          <span title={row.original.permit_type}>{getIcon(row.value, row.isExpanded)}</span>
+          <span style={{ marginLeft: '5px' }}>{row.value}</span>
+        </span>
+      ),
+      Filter: ({ filter, onChange }) => (
+        <input
+          onChange={event => onChange(event.target.value)}
+          style={{ width: '100%' }}
+          value={filter ? filter.value : ''}
+          placeholder="Search..."
+        />
+      ),
+    },
+    {
+      Header: 'Contractor',
+      accessor: 'contractor_name',
+      minWidth: 150,
+      Filter: ({ filter, onChange }) => (
+        <input
+          onChange={event => onChange(event.target.value)}
+          style={{ width: '100%' }}
+          value={filter ? filter.value : ''}
+          placeholder="Search..."
+        />
+      ),
+    },
+    {
+      Header: 'Applied Date',
+      id: 'applied_date',
+      accessor: permit => (<span>{moment.utc(permit.applied_date).format('M/DD/YYYY')}</span>),
+      width: 110,
+      Filter: ({ filter, onChange }) => (
+        <input
+          onChange={event => onChange(event.target.value)}
+          style={{ width: '100%' }}
+          value={filter ? filter.value : ''}
+          placeholder="Search..."
+        />
+      ),
+      filterMethod: (filter, row) => {
+        const id = filter.pivotId || filter.id;
+        return row[id] !== undefined ? String(row[id].props.children).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
+      },
+    },
+    {
+      Header: 'Permit #',
+      accessor: 'permit_number',
+      width: 115,
+      Filter: ({ filter, onChange }) => (
+        <input
+          onChange={event => onChange(event.target.value)}
+          style={{ width: '100%' }}
+          value={filter ? filter.value : ''}
+          placeholder="Search..."
+        />
+      ),
+    },
+  ];
+
+  return (
+    <div>
+      <div className="col-sm-12">
+        {props.data.length < 1 ?
+          <div className="alert alert-info">No results found</div>
+        :
+          <div alt={['Table of development'].join(' ')} style={{ marginTop: '10px' }}>
+            <ReactTable
+              data={props.data}
+              columns={dataColumns}
+              showPagination={props.data.length > 20}
+              defaultPageSize={props.data.length <= 20 ? props.data.length : 20}
+              filterable
+              defaultFilterMethod={(filter, row) => {
+                const id = filter.pivotId || filter.id;
+                return row[id] !== undefined ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
+              }}
+              getTdProps={(state, rowInfo) => {
+                return {
+                  onClick: (e, handleOriginal) => {
+                    document.getElementsByClassName('rt-expandable')[rowInfo.viewIndex].click();
+                    if (handleOriginal) {
+                      handleOriginal();
+                    }
+                  },
+                  style: {
+                    whiteSpace: 'normal',
+                  },
+                };
+              }}
+              getTrProps={(state, rowInfo) => {
+                return {
+                  style: {
+                    cursor: 'pointer',
+                    background: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '#4077a5': 'none',
+                    color: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '#fff': '',
+                    fontWeight: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? 'bold': 'normal',
+                    fontSize: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '1.2em': '1em',
+                  },
+                };
+              }}
+              SubComponent={row => (
+                <div style={{ paddingLeft: '34px', paddingRight: '34px', paddingBottom: '15px', backgroundColor: '#f6fcff', borderRadius: '0px', border: '2px solid #4077a5' }}>
+                  <DevelopmentDetail data={row.original} standalone={false} />
+                </div>
+              )}
+            />
+          </div>
+        }
+      </div>
     </div>
-  </div>
-);
+  );
+};
+
 
 DevelopmentTable.propTypes = {
   data: PropTypes.array, // eslint-disable-line

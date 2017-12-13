@@ -43,7 +43,7 @@ const Map = (props) => {
         {props.drawCircle &&
           <Circle center={props.center} radius={props.radius} fillOpacity={0.15} />
         }
-        {props.zoomToPoint &&
+        {shouldZoomToNonCenter &&
           <Circle center={zoomTo} radius={15} fillOpacity={0.15} color="red" />
         }
         {props.showCenter &&
@@ -69,9 +69,11 @@ const Map = (props) => {
         {props.drawPolygon &&
           props.polygonData.map((poly, index) =>
             <Polygon key={['polygon', index].join('_')} positions={poly.polygons}>
-              <Popup>
-                {poly.popup}
-              </Popup>
+              {poly.popup &&
+                <Popup>
+                  {poly.popup}
+                </Popup>
+              }
             </Polygon>
           )
         }

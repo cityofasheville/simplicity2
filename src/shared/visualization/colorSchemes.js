@@ -16,10 +16,10 @@ export const colorSchemes = {
   project_phases: ['#F844FF', '#44CDFF', '#FF5422', '#57D500', '#FFC107'],
 
   //New Colors [all at least 3:1 contrast - colorblind 'safe']
-  bright_colors_2: ['#66BBBB','#ec6991','#6EA36C','#d24b4b','#336a8e','#7e3026','#40405e'],
-  bright_colors: ['#AD79BE','#da7c49','#6C9AA7','#57923a','#8a2889','#9e3343','#1B7A55'],
-  bright_colors_3: ['#53A54A','#C26666','#4f75ab','#C7861F','#1d9a68','#8a3838','#3f2f6f','#7c581d'],
-  bright_colors_4: ['#4298AF','#DB843D','#71588F','#AA4644','#89A54E','#4573A7','#975620','#44216e','#000000'],
+  bright_colors_2: ['#fcc15c','#e22f18','#7dad13','#5273aa','#e53e45','#4e0b61','#750c0c'],
+  bright_colors: ['#029CD9','#DB7A0A','#76A145','#47699A','#B82E37','#7b4276','#073d49'],
+  //bright_colors_2: ['#15a145','#df6969','#10888b','#c67393','#D37C12','#167416','#4a587e','#2c1540'],
+  bright_colors_3: ['#4298AF','#DB843D','#71588F','#AA4644','#89A54E','#4573A7','#975620','#44216e','#000000'],
 
 };
 

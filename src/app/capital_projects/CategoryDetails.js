@@ -111,7 +111,7 @@ const CategoryDetails = (props) => {
             </div>
             <div className="col-sm-6">
               <h2>Spent: {getDollars(fundingDetails[0]['Expended funds'])}</h2>
-              <div className="pull-right"><em>Data last updated on 11/03/2017</em></div>
+              <div className="pull-right"><em>Data last updated on 12/18/2017</em></div>
             </div>
           </div>
           <div className="row">

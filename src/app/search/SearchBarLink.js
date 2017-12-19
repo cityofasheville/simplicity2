@@ -31,7 +31,3 @@ SearchBarLink.propTypes = {};
 
 export default SearchBarLink;
 
-
-
-
-

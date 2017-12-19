@@ -74,7 +74,7 @@ const Address = (props) => {
             )}</div>} hasLabel icon={<Icon path={IM_LOCATION2} size={20} />}
             />
             <DetailsFormGroup label="Owner" name="owner" value={<div><div>{addressData.owner_name}</div><div>{addressData.owner_address}</div></div>} hasLabel icon={<Icon path={IM_USER} size={20} />} />
-            <DetailsIconLinkFormGroup label="Property" title="Property" href={['/property/?fromAddress=', props.location.query.id, '&search=', props.location.query.search, '&id=', addressData.pinnum, addressData.pinnumext, '&entities=', props.location.query.entities].join('')} icon={<Icon path={IM_HOME2} size={20} />} inWindow />
+            <DetailsIconLinkFormGroup label="Property" title="Property" href={['/property/?fromAddress=', props.location.query.id, '&search=', props.location.query.search, '&id=', addressData.pinnum, '&entities=', props.location.query.entities].join('')} icon={<Icon path={IM_HOME2} size={20} />} inWindow />
             {/*<DetailsIconLinkGrouping dataLabels={['Property', 'Maintenance']} dataTitles={['Property', 'Maintenance']} dataHrefs={[['/property/?pin=', addressData.pinnum].join(''), '/maintenance?entity=address']} dataIcons={['home', 'road']} />*/}
           </fieldset>
         </div>
@@ -127,7 +127,6 @@ const addressQuery = gql`
       x
       y
       pinnum
-      pinnumext
       centerline_id
       recycling_pickup_district,
       recycling_pickup_day

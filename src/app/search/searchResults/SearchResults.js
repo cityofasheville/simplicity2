@@ -29,7 +29,7 @@ const getEntities = (selected) => {
     { label: 'Streets', type: 'street', checked: true },
     { label: 'Addresses', type: 'address', checked: true },
     { label: 'Properties', type: 'property', checked: true },
-    //{ label: 'Owners', type: 'owner', checked: true },
+    { label: 'Owners', type: 'owner', checked: true },
     //{ label: 'Google places', type: 'google', checked: true }]
   ];
   for (let entity of entities) {
@@ -65,6 +65,9 @@ const getEntitiesToSearch = (entities) => {
 };
 
 const SearchResults = (props) => {
+  if (props.data === undefined) {
+    return <div className="alert alert-info alert-sm">Enter a search term above to get results</div>;
+  }
   if (props.data.loading) {
     return <LoadingAnimation message="Searching..." />;
   }
@@ -97,13 +100,13 @@ const SearchResults = (props) => {
               case 'property':
               case 'pin':
                 return {
-                  label: [[result.pinnum, result.pinnumext, ' -- '].join(''), result.address, ', ', result.zipcode].join(''),
+                  label: [[result.pinnum, ' -- '].join(''), result.address, ', ', result.zipcode].join(''),
                   type: 'property',
-                  id: [result.pinnum, result.pinnumext].join(''),
+                  id: result.pinnum,
                 };
               case 'street':
                 return {
-                  label: [result.full_street_name, result.zip_code].join(', '),
+                  label: result.zip_code === null ? result.full_street_name : [result.full_street_name, result.zip_code].join(', '),
                   type: 'street',
                   id: result.centerline_ids.join(','),
                 };
@@ -112,6 +115,12 @@ const SearchResults = (props) => {
                   label: result.name,
                   type: 'neighborhood',
                   id: result.nbhd_id,
+                };
+              case 'owner':
+                return {
+                  label: result.ownerName,
+                  type: 'owner',
+                  id: result.pinnums.join(','),
                 };
               default:
                 return result;
@@ -179,7 +188,6 @@ const searchQuery = gql`
         }
         ... on PropertyResult {
           pinnum
-          pinnumext
           address
           city
           zipcode
@@ -193,13 +201,18 @@ const searchQuery = gql`
           name
           nbhd_id
         }
+        ... on OwnerResult {
+          ownerName: name
+          pinnums
+        }
       }
     }
   }
 `;
 
 const SearchResultsWithData = graphql(searchQuery, {
-  options: ownProps => ({ variables: { searchString: ownProps.searchText || '_empty_', searchContexts: getEntitiesToSearch(ownProps.searchEntities) } }),
+  skip: ownProps => (!ownProps.searchText),
+  options: ownProps => ({ variables: { searchString: ownProps.searchText, searchContexts: getEntitiesToSearch(ownProps.searchEntities) } }),
 })(SearchResults);
 
 export default connect(mapStateToProps)(SearchResultsWithData);

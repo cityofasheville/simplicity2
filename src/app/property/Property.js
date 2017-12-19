@@ -27,11 +27,12 @@ const Property = (props) => {
     return <p>{props.data.error.message}</p>;
   }
 
-  const propertyData = props.data.properties[0];
+  console.log(props);
+  const propertyData = props.inTable ? props.data : props.data.properties[0];
 
   return (
     <div>
-      {props.hideHeader !== true &&
+      {props.inTable !== true &&
         <PageHeader h1={[propertyData.address, propertyData.zipcode].join(', ')} h3="About this property" icon={<Icon path={IM_HOME2} size={50} />}>
           <ButtonGroup>
             {props.location.query.fromAddress &&
@@ -58,7 +59,7 @@ const Property = (props) => {
                 />
               </div>
               <div className="col-xs-6">
-                <DetailsFormGroup label="Pin #" name="pinnum" value={[propertyData.pinnum, propertyData.pinnumext].join('')} hasLabel />
+                <DetailsFormGroup label="Pin #" name="pinnum" value={propertyData.pinnum} hasLabel />
                 <DetailsFormGroup label="Tax exempt" name="tax_exempt" value={propertyData.tax_exempt ? 'Yes' : 'No'} hasLabel />
                 <DetailsFormGroup label="Acreage" name="acreage" value={propertyData.acreage} hasLabel />
               </div>
@@ -102,7 +103,6 @@ const propertyQuery = gql`
     properties(pins: $pins) {
       civic_address_id,
       pinnum,
-      pinnumext,
       address,
       city,
       zipcode,
@@ -134,6 +134,7 @@ const propertyQuery = gql`
 `;
 
 const PropertyWithData = graphql(propertyQuery, {
+  skip: ownProps => (ownProps.inTable),
   options: ownProps => ({ variables: { pins: (ownProps.location === undefined) ? ownProps.pins : [ownProps.location.query.id] } }),
 })(Property);
 

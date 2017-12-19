@@ -20,7 +20,7 @@ const getLink = (type, id, search, entities, label) => {
     case 'crime':
       return `/crime/detail?search=${search}&id=${id}&entities=${entities}&entity=crime`;
     case 'owner':
-      return `/owner?search=${search}&id=${id}&entities=${entities}&entity=owner`;
+      return `/owner?search=${search}&id=${id}&entities=${entities}&entity=owner&view=list`;
     default:
       return '/';
   }

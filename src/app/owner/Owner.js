@@ -1,48 +1,206 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { browserHistory } from 'react-router';
+import ReactTable from 'react-table';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
+import LoadingAnimation from '../../shared/LoadingAnimation';
+import Property from '../property/Property';
+import PageHeader from '../../shared/PageHeader';
+import ButtonGroup from '../../shared/ButtonGroup';
+import Button from '../../shared/Button';
+import LinkButton from '../../shared/LinkButton';
 import EmailDownload from '../../shared/EmailDownload';
-import PropertyList from '../property/PropertyList';
+import Icon from '../../shared/Icon';
+import { IM_USER } from '../../shared/iconConstants';
+import { getBounds, combinePolygonsFromPropertyList } from '../../utilities/mapUtilities';
+import Map from '../../shared/visualization/Map';
 
 const testFunc = (props) => {
   console.log(props);
 };
 
-const testPropertyData = [
+const dataColumns = [
   {
-    PropertyName: '99999 BENNETT RD Unit',
-    CivicAddressID: '91291231',
-    PIN: '8695992975000000',
+    Header: 'Property',
+    id: 'property',
+    accessor: property => (<span>{property.address},{property.zipcode}</span>),
+    minWidth: 335,
+    Filter: ({ filter, onChange }) => (
+      <input
+        onChange={event => onChange(event.target.value)}
+        style={{ width: '100%' }}
+        value={filter ? filter.value : ''}
+        placeholder="Search..."
+      />
+    ),
   },
   {
-    PropertyName: '333 HAZEL MILL RD Unit',
-    CivicAddressID: '21066',
-    PIN: '9638904490000000',
+    Header: 'Civic Address ID',
+    accessor: 'civic_address_id',
+    width: 150,
+    Filter: ({ filter, onChange }) => (
+      <input
+        onChange={event => onChange(event.target.value)}
+        style={{ width: '100%' }}
+        value={filter ? filter.value : ''}
+        placeholder="Search..."
+      />
+    ),
+    filterMethod: (filter, row) => {
+      const id = filter.pivotId || filter.id;
+      return row[id] !== undefined ? String(row[id].props.children).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
+    },
+  },
+  {
+    Header: 'Pin #',
+    accessor: 'pinnum',
+    minWidth: 100,
+    Filter: ({ filter, onChange }) => (
+      <input
+        onChange={event => onChange(event.target.value)}
+        style={{ width: '100%' }}
+        value={filter ? filter.value : ''}
+        placeholder="Search..."
+      />
+    ),
   },
 ];
 
-const Owner = props => (
-  <div>
-    <div className="row">
-      <div className="col-sm-12">
-        <h1><button className="btn btn-primary pull-right">Back</button>{props.location.query.label}</h1>
-        <h3>About this owner&apos;s properties</h3>
-      </div>
-    </div>
-    <div className="row">
-      <div className="col-sm-12">
-        <div className="btn-group pull-right">
-          <button className="btn btn-primary active">List view</button>
-          <button className="btn btn-primary">Map view</button>
-        </div>
-        <EmailDownload emailFunction={testFunc} downloadFunction={testFunc} args={props.location.query} />
-      </div>
-    </div>
-    <PropertyList listData={testPropertyData} />
-  </div>
-);
+const Owner = props => {
+  if (props.data.loading) {
+    return <LoadingAnimation />;
+  }
+  if (props.data.error) {
+    return <p>{props.data.error.message}</p>;
+  }
 
-Owner.propTypes = {
-  location: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  const refreshLocation = (view) => {
+    browserHistory.push([props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&label=', props.location.query.label, '&hideNavbar=', props.location.query.hideNavbar, '&search=', props.location.query.search, '&view=', view].join(''));
+  };
+
+  let polygons = Object.keys(props.data.properties).map(key => props.data.properties[key].polygons);
+  const points = [];
+  for (let p of polygons) {
+    for (let key of Object.keys(p)) {
+      for (let pt of p[key].points) {
+        points.push({ x: pt.x, y: pt.y });
+      }
+    }
+  }
+
+  return (
+    <div>
+      <PageHeader h1={props.data.properties[0].owner} h3="About this owner's properties" icon={<Icon path={IM_USER} size={50} />}>
+        <ButtonGroup>
+          <LinkButton pathname="/search" query={{ entities: props.location.query.entities, search: props.location.query.search, hideNavbar: props.location.query.hideNavbar }}>Back to search</LinkButton>
+        </ButtonGroup>
+      </PageHeader>
+      <div className="row">
+        <div className="col-xs-12">
+          <div className="pull-left">
+            <EmailDownload emailFunction={() => (console.log('email!'))} downloadFunction={() => (console.log('Download!'))} />
+          </div>
+          <ButtonGroup>
+            <Button onClick={() => refreshLocation('map')} active={props.location.query.view === 'map'} positionInGroup="left">Map view</Button>
+            <Button onClick={() => refreshLocation('list')} active={props.location.query.view === 'list'} positionInGroup="right">List view</Button>
+          </ButtonGroup>
+        </div>
+      </div>
+
+
+      <div className="row">
+        <div className="col-sm-12">
+          {
+            props.location.query.view === 'map' ?
+              <Map bounds={getBounds(points)} drawPolygon polygonData={combinePolygonsFromPropertyList(props.data.properties)} />
+            :
+              <div alt={['Table of development'].join(' ')} style={{ marginTop: '10px' }}>
+                <ReactTable
+                  data={props.data.properties}
+                  columns={dataColumns}
+                  showPagination={props.data.properties.length > 20}
+                  defaultPageSize={props.data.properties.length <= 20 ? props.data.properties.length : 20}
+                  filterable
+                  defaultFilterMethod={(filter, row) => {
+                    const id = filter.pivotId || filter.id;
+                    return row[id] !== undefined ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
+                  }}
+                  getTdProps={(state, rowInfo) => {
+                    return {
+                      onClick: (e, handleOriginal) => {
+                        document.getElementsByClassName('rt-expandable')[rowInfo.viewIndex].click();
+                        if (handleOriginal) {
+                          handleOriginal();
+                        }
+                      },
+                      style: {
+                        whiteSpace: 'normal',
+                      },
+                    };
+                  }}
+                  getTrProps={(state, rowInfo) => {
+                    return {
+                      style: {
+                        cursor: 'pointer',
+                        background: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '#4077a5' : 'none',
+                        color: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '#fff' : '',
+                        fontWeight: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? 'bold' : 'normal',
+                        fontSize: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '1.2em' : '1em',
+                      },
+                    };
+                  }}
+                  SubComponent={row => (
+                    <div style={{ paddingLeft: '34px', paddingRight: '34px', paddingTop: '15px', backgroundColor: '#f6fcff', borderRadius: '0px', border: '2px solid #4077a5' }}>
+                      <Property inTable data={row.original} />
+                    </div>
+                  )}
+                />
+              </div>
+          }
+        </div>
+      </div>
+    </div>
+  );
+
 };
 
-export default Owner;
+const propertyQuery = gql`
+  query propertyQuery($pins: [String]!) {
+    properties(pins: $pins) {
+      civic_address_id,
+      pinnum,
+      address,
+      city,
+      zipcode,
+      tax_exempt,
+      neighborhood,
+      appraisal_area,
+      acreage,
+      zoning,
+      deed_link,
+      property_card_link,
+      plat_link,
+      latitude,
+      longitude,
+      building_value,
+      land_value,
+      appraised_value,
+      tax_value,
+      market_value,
+      owner,
+      owner_address,
+      polygons {
+        points {
+          x
+          y
+        }
+      }
+    }
+  }
+`;
+
+const OwnerWithData = graphql(propertyQuery, {
+  options: ownProps => ({ variables: { pins: (ownProps.location === undefined) ? ownProps.pins : ownProps.location.query.id.split(',') } }),
+})(Owner);
+
+export default OwnerWithData;

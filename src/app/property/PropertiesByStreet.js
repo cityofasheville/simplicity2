@@ -14,7 +14,7 @@ const dataColumns = [
     accessor: 'pinnum',
     width: 175,
     Cell: row => (
-      <span>{row.original.pinnum}{row.original.pinnumext}</span>
+      <span>{row.original.pinnum}</span>
     ),
     Filter: ({ filter, onChange }) => (
       <input
@@ -25,7 +25,7 @@ const dataColumns = [
       />
     ),
     filterMethod: (filter, row) => {
-      const joinedInfo = [row._original.pinnum, row._original.pinnumext].join('');
+      const joinedInfo = row._original.pinnum;
       return row._original !== undefined ? joinedInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
     },
   },
@@ -115,7 +115,7 @@ const PropertiesByStreet = props => {
                 }}
                 SubComponent={row => (
                   <div style={{ paddingLeft: '34px', paddingRight: '34px', paddingBottom: '15px', backgroundColor: '#f6fcff', borderRadius: '0px', border: '2px solid #4077a5' }}>
-                    <Property pins={[row.original.pinnum, row.original.pinnumext].join('')} hideHeader={true} />
+                    <Property pins={row.original.pinnum} hideHeader={true} />
                   </div>
                 )}
               />
@@ -151,7 +151,6 @@ const getPropertiesAndStreetInfoQuery = gql`
     properties_by_street (centerline_ids: $centerline_ids) {
       civic_address_id,
       pinnum,
-      pinnumext,
       address,
       city,
       zipcode,

@@ -6,7 +6,6 @@ import ButtonGroup from '../../shared/ButtonGroup';
 import Button from '../../shared/Button';
 import LinkButton from '../../shared/LinkButton';
 import PageHeader from '../../shared/PageHeader';
-import PropertyList from './PropertyList';
 import PropertiesByStreet from './PropertiesByStreet';
 import Icon from '../../shared/Icon';
 import { IM_HOME2 } from '../../shared/iconConstants';
@@ -63,11 +62,7 @@ const Properties = props => {
           </ButtonGroup>
         </div>
       </div>
-      {props.location.query.entity === 'street' ?
-        <PropertiesByStreet {...props} />
-        :
-        <PropertyList listData={testPropertyData} />
-      }
+      <PropertiesByStreet {...props} />
     </div>
   );
 };

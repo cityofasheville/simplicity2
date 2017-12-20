@@ -30,9 +30,10 @@ const dataColumns = [
     },
   },
   {
-    Header: 'Civic Address ID',
-    accessor: 'civic_address_id',
-    width: 115,
+    Header: 'Civic Address ID(s)',
+    id: 'civic_address_ids',
+    accessor: property => (<span>{property.civic_address_ids.join(', ')}</span>),
+    width: 150,
     Filter: ({ filter, onChange }) => (
       <input
         onChange={event => onChange(event.target.value)}
@@ -149,7 +150,7 @@ PropertiesByStreet.defaultProps = {
 const getPropertiesAndStreetInfoQuery = gql`
   query getPropertiesAndStreetInfoQuery($centerline_ids: [Float]) {
     properties_by_street (centerline_ids: $centerline_ids) {
-      civic_address_id,
+      civic_address_ids,
       pinnum,
       address,
       city,

@@ -27,7 +27,6 @@ const Property = (props) => {
     return <p>{props.data.error.message}</p>;
   }
 
-  console.log(props);
   const propertyData = props.inTable ? props.data : props.data.properties[0];
 
   return (
@@ -47,7 +46,7 @@ const Property = (props) => {
           <fieldset className="detailsFieldset">
             <div className="row">
               <div className="col-xs-6">
-                <DetailsFormGroup label="Civic address ID" name="civic_address_id" value={propertyData.civic_address_id} hasLabel />
+                <DetailsFormGroup label="Civic address ID(s)" name="civic_address_ids" value={propertyData.civic_address_ids.join(', ')} hasLabel />
                 <DetailsFormGroup label="Neighborhood" name="neighborhood" value={propertyData.neighborhood} hasLabel />
                 <DetailsFormGroup label="Appraisal area" name="appraisal_area" value={propertyData.appraisal_area} hasLabel />
                 <DetailsFormGroup
@@ -101,7 +100,7 @@ const Property = (props) => {
 const propertyQuery = gql`
   query propertyQuery($pins: [String]!) {
     properties(pins: $pins) {
-      civic_address_id,
+      civic_address_ids,
       pinnum,
       address,
       city,

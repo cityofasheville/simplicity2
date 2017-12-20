@@ -35,9 +35,10 @@ const dataColumns = [
     ),
   },
   {
-    Header: 'Civic Address ID',
-    accessor: 'civic_address_id',
-    width: 150,
+    Header: 'Civic Address ID(s)',
+    id: 'civic_address_ids',
+    accessor: property => (<span>{property.civic_address_ids.join(', ')}</span>),
+    width: 160,
     Filter: ({ filter, onChange }) => (
       <input
         onChange={event => onChange(event.target.value)}
@@ -167,7 +168,7 @@ const Owner = props => {
 const propertyQuery = gql`
   query propertyQuery($pins: [String]!) {
     properties(pins: $pins) {
-      civic_address_id,
+      civic_address_ids,
       pinnum,
       address,
       city,

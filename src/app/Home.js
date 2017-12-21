@@ -7,7 +7,7 @@ import Topics from './Topics';
 const Homepage = props => (
   <div>
     <div className="row">
-      <SearchBar />
+      <SearchBar location={props.location} selectedEntities={props.location.query.entities !== undefined ? props.location.query.entities : 'neighborhood,street,address,property,owner'} />
     </div>
     <Topics />
   </div>
@@ -28,7 +28,3 @@ Homepage.defaultProps = {
 };
 
 export default Homepage;
-
-
-
-

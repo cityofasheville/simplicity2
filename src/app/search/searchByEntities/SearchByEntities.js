@@ -7,7 +7,8 @@ import styles from './searchByEntities.css';
 const SearchByEntities = (props) => {
   const refreshLocation = (entity) => {
     let newSelected = '';
-    const curSelected = (props.location.query.entities || props.selectedEntities).split(',');
+    const useLocation = props.location.query.entities !== undefined;
+    const curSelected = (useLocation ? props.location.query.entities : props.selectedEntities).split(',');
     const alreadySelected = curSelected.indexOf(entity) > -1;
     if (alreadySelected) {
       newSelected = curSelected.filter(ent => ent !== entity);

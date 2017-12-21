@@ -134,7 +134,7 @@ const propertyQuery = gql`
 
 const PropertyWithData = graphql(propertyQuery, {
   skip: ownProps => (ownProps.inTable),
-  options: ownProps => ({ variables: { pins: (ownProps.location === undefined) ? ownProps.pins : [ownProps.location.query.id] } }),
+  options: ownProps => ({ variables: { pins: [ownProps.location.query.id] } }),
 })(Property);
 
 export default PropertyWithData;

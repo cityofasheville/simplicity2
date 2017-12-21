@@ -116,7 +116,7 @@ const PropertiesByStreet = props => {
                 }}
                 SubComponent={row => (
                   <div style={{ paddingLeft: '34px', paddingRight: '34px', paddingBottom: '15px', backgroundColor: '#f6fcff', borderRadius: '0px', border: '2px solid #4077a5' }}>
-                    <Property pins={row.original.pinnum} hideHeader={true} />
+                    <Property data={row.original} hideHeader={true} inTable />
                   </div>
                 )}
               />

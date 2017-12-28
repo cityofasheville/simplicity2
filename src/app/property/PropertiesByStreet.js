@@ -5,7 +5,7 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import Map from '../../shared/visualization/Map';
 import Property from './Property';
-import { getBoundsFromStreetData, convertStreetLinesToLatLngArrays, convertPolygonsToLatLngArrays, combinePolygonsFromPropertyList } from '../../utilities/mapUtilities';
+import { getBoundsFromStreetData, convertStreetLinesToLatLngArrays, combinePolygonsFromPropertyList } from '../../utilities/mapUtilities';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 
 const dataColumns = [
@@ -173,9 +173,17 @@ const getPropertiesAndStreetInfoQuery = gql`
       owner,
       owner_address,
       polygons {
-        points {
-          x
-          y
+        outer {
+          points {
+            x
+            y
+          }
+        }
+        holes {
+          points {
+            x
+            y
+          }
         }
       }
     }

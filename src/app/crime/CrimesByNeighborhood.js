@@ -199,9 +199,17 @@ const getCrimesQuery = gql`
     neighborhoods (nbrhd_ids: $nbrhd_ids) {
       name
       polygon {
-        points {
-          x
-          y
+        outer {
+          points {
+            x
+            y
+          }
+        }
+        holes {
+          points {
+            x
+            y
+          }
         }
       }
     } 

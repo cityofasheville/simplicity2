@@ -12,7 +12,7 @@ import LinkButton from '../../shared/LinkButton';
 import EmailDownload from '../../shared/EmailDownload';
 import Icon from '../../shared/Icon';
 import { IM_USER } from '../../shared/iconConstants';
-import { getBounds, combinePolygonsFromPropertyList } from '../../utilities/mapUtilities';
+import { getBoundsFromPropertyList, combinePolygonsFromPropertyList } from '../../utilities/mapUtilities';
 import Map from '../../shared/visualization/Map';
 
 const testFunc = (props) => {
@@ -80,14 +80,6 @@ const Owner = props => {
   };
 
   let polygons = Object.keys(props.data.properties).map(key => props.data.properties[key].polygons);
-  const points = [];
-  for (let p of polygons) {
-    for (let key of Object.keys(p)) {
-      for (let pt of p[key].points) {
-        points.push({ x: pt.x, y: pt.y });
-      }
-    }
-  }
 
   return (
     <div>
@@ -113,7 +105,7 @@ const Owner = props => {
         <div className="col-sm-12">
           {
             props.location.query.view === 'map' ?
-              <Map bounds={getBounds(points)} drawPolygon polygonData={combinePolygonsFromPropertyList(props.data.properties)} />
+              <Map bounds={getBoundsFromPropertyList(polygons)} drawPolygon polygonData={combinePolygonsFromPropertyList(props.data.properties)} />
             :
               <div alt={['Table of development'].join(' ')} style={{ marginTop: '10px' }}>
                 <ReactTable
@@ -191,9 +183,17 @@ const propertyQuery = gql`
       owner,
       owner_address,
       polygons {
-        points {
-          x
-          y
+        outer {
+          points {
+            x
+            y
+          }
+        }
+        holes {
+          points {
+            x
+            y
+          }
         }
       }
     }

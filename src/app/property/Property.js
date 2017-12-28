@@ -10,7 +10,7 @@ import ButtonGroup from '../../shared/ButtonGroup';
 import LinkButton from '../../shared/LinkButton';
 import { zoningLinks } from '../address/zoning';
 import Map from '../../shared/visualization/Map';
-import { getBoundsFromPolygonData, combinePolygonsFromPropertyList } from '../../utilities/mapUtilities';
+import { getBoundsFromPropertyPolygons, combinePolygonsFromPropertyList } from '../../utilities/mapUtilities';
 import Icon from '../../shared/Icon';
 import { IM_PROFILE, IM_USER, IM_GOOGLE, IM_CERTIFICATE, IM_CHECKBOX_PARTIAL2, IM_HOME2 } from '../../shared/iconConstants';
 
@@ -89,7 +89,7 @@ const Property = (props) => {
                 { value_type: 'Total market value', amount: getDollars(propertyData.market_value) },
               ]}
             />
-            <Map bounds={getBoundsFromPolygonData(propertyData.polygons)} drawPolygon polygonData={combinePolygonsFromPropertyList([propertyData])} height="250px" />
+            <Map bounds={getBoundsFromPropertyPolygons(propertyData.polygons)} drawPolygon polygonData={combinePolygonsFromPropertyList([propertyData])} height="250px" />
           </fieldset>
         </div>
       </div>
@@ -123,9 +123,17 @@ const propertyQuery = gql`
       owner,
       owner_address,
       polygons {
-        points {
-          x
-          y
+        outer {
+          points {
+            x
+            y
+          }
+        }
+        holes {
+          points {
+            x
+            y
+          }
         }
       }
     }

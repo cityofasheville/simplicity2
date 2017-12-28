@@ -53,15 +53,47 @@ export const convertStreetLinesToLatLngArrays = (streetData) => {
 export const convertPolygonsToLatLngArrays = (polygonData) => {
   const polygons = [];
   for (let poly of polygonData) {
-    polygons.push(poly.points.map(pt => [pt.y, pt.x]));
+    const latLng = [];
+    latLng.push(poly.outer.points.map(pt => [pt.y, pt.x]));
+    if (poly.holes && poly.holes.length > 0) {
+      for (let hole of poly.holes) {
+        latLng.push(hole.points.map(pt => [pt.y, pt.x]));
+      }
+    }
+    polygons.push(latLng);
   }
   return polygons;
 };
 
+//get bounds based on the outer points of polygon/s of a property
+export const getBoundsFromPropertyPolygons = (polygonData) => {
+  const points = [];
+  for (let poly of polygonData) {
+    for (let pt of poly.outer.points) {
+      points.push(pt);
+    }
+  }
+  return getBounds(points);
+};
+
+//get bounds based on the outer points of a list of property polygons
+export const getBoundsFromPropertyList = (polygonList) => {
+  const points = [];
+  for (let polygon of polygonList) {
+    for (let index of Object.keys(polygon)) {
+      for (let pt of polygon[index].outer.points) {
+        points.push(pt);
+      }
+    }
+  }
+  return getBounds(points);
+};
+
+//only getting the outer bounds
 const getAllPolygonPoints = (polygonData) => {
   const points = [];
   for (let poly of polygonData) {
-    for (let pt of poly.points) {
+    for (let pt of poly.outer.points) {
       points.push(pt);
     }
   }

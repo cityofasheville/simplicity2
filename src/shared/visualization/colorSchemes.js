@@ -16,10 +16,8 @@ export const colorSchemes = {
   project_phases: ['#F844FF', '#44CDFF', '#FF5422', '#57D500', '#FFC107'],
 
   //New Colors [all at least 3:1 contrast - colorblind 'safe']
-  bright_colors_2: ['#fcc15c','#e22f18','#7dad13','#5273aa','#e53e45','#4e0b61','#750c0c'],
-  bright_colors: ['#029CD9','#DB7A0A','#76A145','#47699A','#B82E37','#7b4276','#073d49'],
-  //bright_colors_2: ['#15a145','#df6969','#10888b','#c67393','#D37C12','#167416','#4a587e','#2c1540'],
-  bright_colors_3: ['#4298AF','#DB843D','#71588F','#AA4644','#89A54E','#4573A7','#975620','#44216e','#000000'],
+  bright_colors: ['#FF3A3A','#749B5F','#2d93ad','#004EA3','#9B6681','#9E4F55','#073d49'],
+  bright_colors_2: ['#fcc15c','#ef6948','#c97a85','#995767','#029CD9','#47699A','#143642'],
 
 };
 

@@ -7,7 +7,7 @@ import Topics from './Topics';
 const Homepage = props => (
   <div>
     <div className="row">
-      <SearchBar location={props.location} selectedEntities={props.location.query.entities !== undefined ? props.location.query.entities : 'neighborhood,street,address,property,owner'} />
+      <SearchBar location={props.location} selectedEntities={props.location.query.entities !== undefined ? props.location.query.entities : 'neighborhood,street,address,property,owner,google'} />
     </div>
     <Topics />
   </div>

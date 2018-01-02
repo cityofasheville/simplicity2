@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactTable from 'react-table';
 import Icon from '../../../shared/Icon';
-import { IM_SHIELD3, IM_OFFICE, IM_ROAD, IM_USER, IM_USERS, IM_LOCATION, IM_HOME2, IM_QUESTION } from '../../../shared/iconConstants';
+import { IM_SHIELD3, IM_OFFICE, IM_ROAD, IM_USER, IM_USERS, IM_LOCATION, IM_HOME2, IM_QUESTION, IM_GOOGLE, IM_SEARCH } from '../../../shared/iconConstants';
 import styles from './searchResultGroup.css';
 
 const getLink = (type, id, search, entities, label) => {
@@ -21,6 +21,8 @@ const getLink = (type, id, search, entities, label) => {
       return `/crime/detail?search=${search}&id=${id}&entities=${entities}&entity=crime`;
     case 'owner':
       return `/owner?search=${search}&id=${id}&entities=${entities}&entity=owner&view=list`;
+    case 'place':
+      return `/search?search=${id}&entities=${entities}`;
     default:
       return '/';
   }
@@ -56,7 +58,11 @@ const SearchResultGroup = (props) => {
         return (<span style={{ marginRight: '5px' }}><Icon path={IM_SHIELD3} size={26} /></span>);
       case 'owner':
         return (<span style={{ marginRight: '5px' }}><Icon path={IM_USER} size={26} /></span>);
-      default:
+      case 'place':
+        return (<span style={{ marginRight: '5px' }}><Icon path={IM_GOOGLE} size={26} /></span>);
+      case 'search':
+        return (<span style={{ marginRight: '5px' }}><Icon path={IM_SEARCH} size={26} /></span>);
+        default:
         return (<span style={{ marginRight: '5px' }}><Icon path={IM_QUESTION} size={26} /></span>);
     }
   };
@@ -69,15 +75,29 @@ const SearchResultGroup = (props) => {
         {getPlural(props.data.label)}
         <span className="offscreen">Number of results</span>
         <span className="badge">{props.data.results.length}</span>
+        {props.data.label === 'place' &&
+          <img src={require('./powered_by_google_on_white.png')} alt="Powered by Google" style={{ marginLeft: '20px' }}></img>
+        }
       </h2>,
       accessor: 'label',
       Cell: row => (
-        <a href={getLink(row.original.type, row.original.id, props.searchText, props.selectedEntities, row.original.label)}>
-          <span className="text-primary" style={{ marginLeft: '20px' }}>
-            {getIcon(row.original.type)}
-            {row.value}
-          </span>
-        </a>
+        <span style={{ display: 'flex', flexWrap: 'wrap' }}>
+          <a href={getLink(row.original.type, row.original.id, props.searchText, props.selectedEntities, row.original.label)} style={props.data.label === 'place' ? { flex: '50' } : { flex: '100' }}>
+            <span className="text-primary" style={{ marginLeft: '20px' }}>
+              {getIcon(row.original.type === 'place' ? 'search' : row.original.type)}
+              {row.value}
+            </span>
+          </a>
+          {props.data.label === 'place' &&
+            <span className="text-primary" style={{ flex: '50', marginLeft: '20px' }}>
+              <a
+                href={['https://www.google.com/maps/place/?q=place_id:', row.original.place_id].join('')}target="_blank"
+              >
+                <span style={{ marginRight: '5px' }}><Icon path={IM_GOOGLE} size={26} /></span>{row.original.place_name}
+              </a>
+            </span>
+          }
+        </span>
       ),
       Filter: ({ filter, onChange }) => (
         <input

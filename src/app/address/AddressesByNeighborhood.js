@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import Map from '../../shared/visualization/Map';
-import { getBoundsFromStreetData, convertStreetLinesToLatLngArrays } from '../../utilities/mapUtilities';
+import { getBoundsFromPolygonData, combinePolygonsFromNeighborhoodList } from '../../utilities/mapUtilities';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 
 const dataColumns = [
@@ -55,7 +55,7 @@ const dataColumns = [
   },
 ];
 
-const AddressesByStreet = props => {
+const AddressesByNeighborhood = props => {
   if (props.data.loading) { // eslint-disable-line react/prop-types
     return <LoadingAnimation />;
   }
@@ -63,22 +63,22 @@ const AddressesByStreet = props => {
     return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
   }
 
-  const mapData = props.data.addresses_by_street.map(item => (Object.assign({}, item, { popup: `<b>Address</b><div>${item.street_number} ${item.street_prefix} ${item.street_name} ${item.unit || ''}</div><div>${item.city}, NC ${item.zipcode}</div><br /><b>Owner</b><div>${item.owner_name}</div><div>${item.owner_address}</div><div>${item.owner_cityname}, ${item.owner_state} ${item.owner_zipcode}</div>` })
+  const mapData = props.data.addresses_by_neighborhood.map(item => (Object.assign({}, item, { popup: `<b>Address</b><div>${item.street_number} ${item.street_prefix} ${item.street_name} ${item.unit || ''}</div><div>${item.city}, NC ${item.zipcode}</div><br /><b>Owner</b><div>${item.owner_name}</div><div>${item.owner_address}</div><div>${item.owner_cityname}, ${item.owner_state} ${item.owner_zipcode}</div>` })
   ));
 
   return (
     <div>
       <div className="row">
         <div id="listView" hidden={props.location.query.view === 'map'}>
-          {props.data.addresses_by_street.length < 1 ?
+          {props.data.addresses_by_neighborhood.length < 1 ?
             <div className="alert alert-info">No results found</div>
           :
             <div alt={['Table of addresses'].join(' ')} style={{ marginTop: '10px' }}>
               <ReactTable
-                data={props.data.addresses_by_street}
+                data={props.data.addresses_by_neighborhood}
                 columns={dataColumns}
-                showPagination={props.data.addresses_by_street.length > 20}
-                defaultPageSize={props.data.addresses_by_street.length <= 20 ? props.data.addresses_by_street.length : 20}
+                showPagination={props.data.addresses_by_neighborhood.length > 20}
+                defaultPageSize={props.data.addresses_by_neighborhood.length <= 20 ? props.data.addresses_by_neighborhood.length : 20}
                 getTdProps={() => {
                   return {
                     style: {
@@ -93,10 +93,15 @@ const AddressesByStreet = props => {
         </div>
 
         <div id="mapView" className="col-xs-12" hidden={props.location.query.view !== 'map'}>
-          {props.data.addresses_by_street.length === 0 || props.location.query.view !== 'map' ?
+          {props.data.addresses_by_neighborhood.length === 0 || props.location.query.view !== 'map' ?
             <div className="alert alert-info">No results found</div>
             :
-            <Map data={mapData} bounds={getBoundsFromStreetData(props.data.streets)} drawStreet streetData={convertStreetLinesToLatLngArrays(props.data.streets)} />
+            <Map
+              data={mapData}
+              drawPolygon
+              polygonData={combinePolygonsFromNeighborhoodList([props.data.neighborhoods[0]])}
+              bounds={getBoundsFromPolygonData([props.data.neighborhoods[0].polygon])}
+            />
           }
         </div>
       </div>
@@ -104,20 +109,20 @@ const AddressesByStreet = props => {
   );
 };
 
-AddressesByStreet.propTypes = {
+AddressesByNeighborhood.propTypes = {
   spatialEventTopic: PropTypes.string.isRequired,
   location: PropTypes.object, // eslint-disable-line
   query: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 };
 
-AddressesByStreet.defaultProps = {
+AddressesByNeighborhood.defaultProps = {
   spatialEventTopic: 'crime',
   query: { entity: 'address', label: '123 Main street' },
 };
 
-const getAddressesAndStreetInfoQuery = gql`
-  query getAddressesAndStreetInfoQuery($centerline_ids: [Float]) {
-    addresses_by_street (centerline_ids: $centerline_ids) {
+const getAddressesAndNeighborhoodInfoQuery = gql`
+  query getAddressesAndStreetInfoQuery($nbrhd_ids: [String]) {
+    addresses_by_neighborhood (nbrhd_ids: $nbrhd_ids) {
       civic_address_id
       x
       y
@@ -134,24 +139,32 @@ const getAddressesAndStreetInfoQuery = gql`
       owner_state
       owner_zipcode
     }
-    streets (centerline_ids: $centerline_ids) {
-      centerline_id
-        left_zipcode
-        right_zipcode
-        line {
-          x
-          y
+    neighborhoods (nbrhd_ids: $nbrhd_ids) {
+      name
+      polygon {
+        outer {
+          points {
+            x
+            y
+          }
         }
-    }
+        holes {
+          points {
+            x
+            y
+          }
+        }
+      }
+    } 
   }
 `;
 
-const AddressesByStreetGQL = graphql(getAddressesAndStreetInfoQuery, {
+const AddressesByNeighborhoodGQL = graphql(getAddressesAndNeighborhoodInfoQuery, {
   options: ownProps => ({
     variables: {
-      centerline_ids: ownProps.location.query.id.split(','),
+      nbrhd_ids: [ownProps.location.query.id],
     },
   }),
-})(AddressesByStreet);
+})(AddressesByNeighborhood);
 
-export default AddressesByStreetGQL;
+export default AddressesByNeighborhoodGQL;

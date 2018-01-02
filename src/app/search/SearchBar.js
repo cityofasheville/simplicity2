@@ -17,7 +17,7 @@ const getEntities = (selected) => {
     { label: 'Addresses', type: 'address', checked: true },
     { label: 'Properties', type: 'property', checked: true },
     { label: 'Owners', type: 'owner', checked: true },
-    //{ label: 'Google places', type: 'google', checked: true }]
+    { label: 'Google places', type: 'google', checked: true },
   ];
   for (let entity of entities) {
     if (entityTypes.indexOf(entity.type) === -1) {
@@ -86,7 +86,7 @@ SearchBar.defaultProps = {
     { label: 'Addresses', type: 'address', checked: true },
     { label: 'Properties', type: 'property', checked: true },
     { label: 'Owners', type: 'owner', checked: true },
-    //{ label: 'Google places', type: 'google', checked: true },
+    { label: 'Google places', type: 'google', checked: true },
   ],
   selectedEntities: '',
 };

@@ -30,7 +30,7 @@ const getEntities = (selected) => {
     { label: 'Addresses', type: 'address', checked: true },
     { label: 'Properties', type: 'property', checked: true },
     { label: 'Owners', type: 'owner', checked: true },
-    //{ label: 'Google places', type: 'google', checked: true }]
+    { label: 'Google places', type: 'google', checked: true },
   ];
   for (let entity of entities) {
     if (entityTypes.indexOf(entity.type) === -1) {
@@ -57,7 +57,7 @@ const getEntitiesToSearch = (entities) => {
       } else if (entity.type === 'owner') {
         entitiesToSearch.push('owner');
       } else if (entity.type === 'google') {
-        entitiesToSearch.push('google');
+        entitiesToSearch.push('place');
       }
     }
   }
@@ -121,6 +121,14 @@ const SearchResults = (props) => {
                   label: result.ownerName,
                   type: 'owner',
                   id: result.pinnums.join(','),
+                };
+              case 'place':
+                return {
+                  label: result.address,
+                  type: 'place',
+                  id: result.address,
+                  place_name: result.placeName,
+                  place_id: result.place_id,
                 };
               default:
                 return result;
@@ -204,6 +212,14 @@ const searchQuery = gql`
         ... on OwnerResult {
           ownerName: name
           pinnums
+        }
+        ... on PlaceResult {
+          type
+          placeName: name
+          id
+          place_id
+          address
+          types
         }
       }
     }

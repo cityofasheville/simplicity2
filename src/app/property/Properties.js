@@ -7,6 +7,7 @@ import Button from '../../shared/Button';
 import LinkButton from '../../shared/LinkButton';
 import PageHeader from '../../shared/PageHeader';
 import PropertiesByStreet from './PropertiesByStreet';
+import PropertiesByNeighborhood from './PropertiesByNeighborhood';
 import Icon from '../../shared/Icon';
 import { IM_HOME2 } from '../../shared/iconConstants';
 
@@ -41,14 +42,14 @@ const getSubtitle = (entity) => {
 
 const Properties = props => {
   const refreshLocation = (view) => {
-    browserHistory.push([props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&label=', props.location.query.label, '&search=', props.location.query.search, '&hideNavbar=', props.location.query.hideNavbar, '&view=', view, '&search=', props.location.query.search].join(''));
+    browserHistory.push([props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&label=', props.location.query.label, '&search=', props.location.query.search, '&hideNavbar=', props.location.query.hideNavbar, '&view=', view].join(''));
   };
 
   return (
     <div>
       <PageHeader h1={props.location.query.label} h3={getSubtitle(props.location.query.entity)} icon={<Icon path={IM_HOME2} size={50} />}>
         <ButtonGroup>
-          <LinkButton pathname="/street" query={{ entities: props.location.query.entities, search: props.location.query.search, hideNavbar: props.location.query.hideNavbar, entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label }}>Back to street</LinkButton>
+          <LinkButton pathname="/street" query={{ entities: props.location.query.entities, search: props.location.query.search, hideNavbar: props.location.query.hideNavbar, entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label }}>Back to {props.location.query.entity}</LinkButton>
         </ButtonGroup>
       </PageHeader>
       <div className="row">
@@ -62,7 +63,11 @@ const Properties = props => {
           </ButtonGroup>
         </div>
       </div>
-      <PropertiesByStreet {...props} />
+      {props.location.query.entity === 'street' ?
+        <PropertiesByStreet {...props} />
+      :
+        <PropertiesByNeighborhood {...props} />
+      }
     </div>
   );
 };

@@ -2,6 +2,7 @@ import React from 'react';
 import { browserHistory } from 'react-router';
 import PropTypes from 'prop-types';
 import AddressesByStreet from './AddressesByStreet';
+import AddressesByNeighborhood from './AddressesByNeighborhood';
 import EmailDownload from '../../shared/EmailDownload';
 import ButtonGroup from '../../shared/ButtonGroup';
 import Button from '../../shared/Button';
@@ -17,14 +18,14 @@ const testFunc = (props) => {
 
 const AddressList = props => {
   const refreshLocation = (view) => {
-    browserHistory.push([props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&label=', props.location.query.label, '&search=', props.location.query.search, '&hideNavbar=', props.location.query.hideNavbar, '&view=', view, '&search=', props.location.query.search].join(''));
+    browserHistory.push([props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&label=', props.location.query.label, '&search=', props.location.query.search, '&hideNavbar=', props.location.query.hideNavbar, '&view=', view].join(''));
   };
 
   return (
     <div>
       <PageHeader h1={props.location.query.label} h3="Address & Owner Mailing Lists" icon={<Icon path={IM_ENVELOP3} size={50} />}>
         <ButtonGroup>
-          <LinkButton pathname="/street" query={{ entities: props.location.query.entities, search: props.location.query.search, hideNavbar: props.location.query.hideNavbar, entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label }}>Back to street</LinkButton>
+          <LinkButton pathname="/street" query={{ entities: props.location.query.entities, search: props.location.query.search, hideNavbar: props.location.query.hideNavbar, entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label }}>Back to {props.location.query.entity}</LinkButton>
         </ButtonGroup>
       </PageHeader>
       <div className="row">
@@ -38,7 +39,11 @@ const AddressList = props => {
           </ButtonGroup>
         </div>
       </div>
-      <AddressesByStreet {...props} />
+      {props.location.query.entity === 'street' ?
+        <AddressesByStreet {...props} />
+        :
+        <AddressesByNeighborhood {...props} />
+      }
     </div>
   );
 };

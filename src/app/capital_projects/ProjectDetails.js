@@ -6,14 +6,13 @@ import Icon from '../../shared/Icon';
 import { IM_QUESTION, IM_MAP5, IM_SPHERE3, IM_CIRCLE2, IM_CERTIFICATE } from '../../shared/iconConstants';
 
 const getIcon = (category) => {
-  switch(category) {
+  switch (category) {
     default:
       return <Icon path={IM_QUESTION} size={30} />
   }
 };
 
 const getStageNumber = (stage) => {
-  const newStage = stage.split(': ')[1];
   switch (stage) {
     case 'Status: Planning':
       return 1;
@@ -82,15 +81,15 @@ const ProjectDetails = (props) => (
     <div className="col-sm-12">
       <div className="row" hidden={props.hideTitle}>
         <div className="col-sm-12">
-          <h4>{getIcon()} {props['Project Name']}</h4>
+          <h4>{getIcon()} {props.display_name}</h4>
         </div>
       </div>
       <div className="row" style={props.hideTitle ? { marginTop: '15px' } : null}>
         <div className="col-sm-7">
-          {props['Project Webpage (more information)'] !== '' &&
+          {props.project_webpage_more_information !== null &&
             <div className="row">
               <div className="col-sm-12" style={{ marginTop: '5px' }}>
-                <div className="pull-left" style={{ marginRight: '10px', marginBottom: '20px' }}> <a title="View project in story map" href={props['Project Webpage (more information)']} target="_blank"><Icon path={IM_SPHERE3} size={20} /> Project Website</a></div>
+                <div className="pull-left" style={{ marginRight: '10px', marginBottom: '20px' }}> <a title="View project web site" href={props.project_webpage_more_information} target="_blank"><Icon path={IM_SPHERE3} size={20} /> Project Website</a></div>
               </div>
             </div>
           }
@@ -101,16 +100,16 @@ const ProjectDetails = (props) => (
                   Current Project Budget
                 </div>
                 <div>
-                  <strong>{props['Total Project Funding (Budget Document)']}</strong>
+                  <strong>{props.total_project_funding_budget_document}</strong>
                 </div>
               </div>
-              {props['Need PM Fields?'].toLowerCase() === 'yes' &&
+              {props.show_pm_fields &&
                 <div className="text-center" style={{ marginBottom: '10px' }}>
                   <div style={{ color: '#676873' }}>
                     Spent
                   </div>
                   <div>
-                    <strong>{['$', parseInt(props['LTD Actuals']).toLocaleString()].join('')}</strong>
+                    <strong>{['$', parseInt(props.total_spent).toLocaleString()].join('')}</strong>
                   </div>
                 </div>         
               }
@@ -121,16 +120,16 @@ const ProjectDetails = (props) => (
                   Zip code
                 </div>
                 <div >
-                  <strong>{props['Zip Code'] || '?'}</strong>
+                  <strong>{props.zip_code || '?'}</strong>
                 </div>
               </div>
-              {props['Need PM Fields?'].toLowerCase() === 'yes' &&
+              {props.show_pm_fields &&
                 <div className="text-center" style={{ marginBottom: '20px' }}>
                   <div style={{ color: '#676873' }}>
                     Estimated Construction Timeframe
                   </div>
                   <div>
-                    <strong>{props['Estimated Construction Timeframe'] || '?'}</strong>
+                    <strong>{props.status !== null && props.status.indexOf('Completed') > -1 ? ['Completed', props.actual_construction_end].join(' ') : props.target_construction_start === null ? props.target_construction_end : [props.target_construction_start, props.target_construction_end].join(' - ')}</strong>
                   </div>
                 </div>
               }
@@ -144,51 +143,51 @@ const ProjectDetails = (props) => (
               </div>
             </div>
           }*/}
-          {props['Need PM Fields?'].toLowerCase() === 'yes' &&
+          {props.show_pm_fields && props.status !== null &&
             <div className="row">
               <div className="text-center" style={{ marginBottom: '5px', color: '#676873' }}>
                 Project phase
               </div>
-              <div className={props.Status === 'Ongoing' ? "col-xs-3" : "col-xs-2"}>
-                <Icon path={IM_CIRCLE2} size={25} color={getStageNumber(props.Status) >= 1 ? phaseColor(1) : '#ecf0f1'} />
+              <div className={props.status === 'Ongoing' ? "col-xs-3" : "col-xs-2"}>
+                <Icon path={IM_CIRCLE2} size={25} color={getStageNumber(props.status) >= 1 ? phaseColor(1) : '#ecf0f1'} />
               </div>
-              <div className={props.Status === 'Ongoing' ? "col-xs-3" : "col-xs-2"}>
-                <Icon path={IM_CIRCLE2} size={25}  color={getStageNumber(props.Status) >= 2 ? phaseColor(2) : '#ecf0f1'} />
+              <div className={props.status === 'Ongoing' ? "col-xs-3" : "col-xs-2"}>
+                <Icon path={IM_CIRCLE2} size={25}  color={getStageNumber(props.status) >= 2 ? phaseColor(2) : '#ecf0f1'} />
               </div>
-              <div className={props.Status === 'Ongoing' ? "col-xs-3" : "col-xs-2"}>
-                <Icon path={IM_CIRCLE2} size={25}  color={props.Status === 'Ongoing' ? '#FFC107' : getStageNumber(props.Status) >= 3 ? phaseColor(3) : '#ecf0f1'} />
+              <div className={props.status === 'Ongoing' ? "col-xs-3" : "col-xs-2"}>
+                <Icon path={IM_CIRCLE2} size={25}  color={props.status === 'Ongoing' ? '#FFC107' : getStageNumber(props.status) >= 3 ? phaseColor(3) : '#ecf0f1'} />
               </div>
-              {props.Status !== 'Ongoing' &&
+              {props.status !== 'Ongoing' &&
                 <div className="col-xs-2">
-                  <Icon path={IM_CIRCLE2} size={25} color={getStageNumber(props.Status) >= 4 ? phaseColor(4) : '#ecf0f1'} style={{ marginRight: '5px' }} />
+                  <Icon path={IM_CIRCLE2} size={25} color={getStageNumber(props.status) >= 4 ? phaseColor(4) : '#ecf0f1'} style={{ marginRight: '5px' }} />
                 </div>
               }
-              <div className="col-xs-2" style={{ color: props.Status === 'Ongoing' ? '#FFC107' : phaseColor(getStageNumber(props.Status)), fontWeight: 'bold' }}>
-                {props.Status === 'Ongoing' ? props.Status : props.Status.split(': ')[1]}
+              <div className="col-xs-2" style={{ color: props.status === 'Ongoing' ? '#FFC107' : phaseColor(getStageNumber(props.status)), fontWeight: 'bold' }}>
+                {props.status === 'Ongoing' ? props.status : props.status.split(': ')[1]}
               </div>
             </div>
           }
           <div className="row">
             <div className="col-sm-12" style={{ marginTop: '20px', marginBottom: '10px' }}>
               <hr />
-              {props['Project Description']}
+              {props.project_description}
               <hr />
               <div>
-                <label htmlFor="contact">Project contact:&nbsp;</label><span name="contact">{props['COA Contact']}</span>
+                <label htmlFor="contact">Project contact:&nbsp;</label><span name="contact">{props.coa_contact}</span>
               </div>
               <div>
-                <label htmlFor="contact_phone">Contact phone:&nbsp;</label><span name="contact_phone">{props['Phone Number']}</span>
+                <label htmlFor="contact_phone">Contact phone:&nbsp;</label><span name="contact_phone">{props.phone_number}</span>
               </div>
               <div>
-                <label htmlFor="contact_email">Contact email:&nbsp;</label><span name="contact_email">{props['Email Address']}</span>
+                <label htmlFor="contact_email">Contact email:&nbsp;</label><span name="contact_email">{props.email_address}</span>
               </div>
             </div>
           </div>
         </div>
         <div className="col-sm-5">
-          <Map data={getMyPoints(props.Project)} height="230px" bounds={calculateBounds(getMyPoints(props.Project))} />
-          <a href={props['Photo URL']} target="_blank">
-            <img alt="Photo of project" className="img-responsive" src={props['Photo URL']} style={{ maxHeight: '400px' }} />
+          <Map data={getMyPoints(props.project)} height="230px" bounds={calculateBounds(getMyPoints(props.project))} />
+          <a href={props.photo_url} target="_blank">
+            <img alt="Photo of project" className="img-responsive" src={props.photo_url} style={{ maxHeight: '400px' }} />
           </a>
         </div>
       </div>

@@ -1,10 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
 import Collapsible from '../../shared/Collapsible';
 import ProjectsTable from './ProjectsTable';
-import { testProjectData, getFundsAllocatedAndExpended, filterProjects } from './cip_utilities';
+import { getFundsAllocatedAndExpended, filterProjects, longCategories } from './cip_utilities';
 import Icon from '../../shared/Icon';
 import { IM_SHIELD3, IM_TREE, IM_HOME2, IM_BUS, LI_BOLD } from '../../shared/iconConstants';
+import LoadingAnimation from '../../shared/LoadingAnimation';
 
 const getBondText = (type) => {
   switch (type) {
@@ -45,8 +48,8 @@ const getIcon = (type, bond) => {
   }
 };
 
-const getKeyText = (categories, mode) => {
-  return (<div>
+const getKeyText = (categories, mode) => (
+  <div>
     <p>
       <span>
         { ['Transportation', 'Housing', 'Parks', 'Public Safety', 'Other'].map((cat, index) => {
@@ -68,8 +71,8 @@ const getKeyText = (categories, mode) => {
       }
       return null;
     })}
-  </div>);
-};
+  </div>
+);
 
 const getDollars = (value) => {
   if (Math.abs(value) > 1000000) {
@@ -81,13 +84,20 @@ const getDollars = (value) => {
 };
 
 const CategoryDetails = (props) => {
+  if (props.data.loading) { // eslint-disable-line react/prop-types
+    return <LoadingAnimation />;
+  }
+  if (props.data.error) { // eslint-disable-line react/prop-types
+    return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
+  }
+
   let actualCategories = Array.from(props.categories);
   if (props.location.query.mode === 'bond') {
     actualCategories = actualCategories.filter(cat => (['Transportation', 'Parks', 'Housing'].includes(cat)));
   }
   const sortedCats = ['Transportation', 'Housing', 'Parks', 'Public Safety', 'Other'];
   actualCategories.sort((a, b) => sortedCats.indexOf(a) > sortedCats.indexOf(b));
-  const filteredProjects = filterProjects(testProjectData, actualCategories, props.location.query.mode);
+  const filteredProjects = filterProjects(props.data.cip_projects, actualCategories, props.location.query.mode);
   const fundingDetails = getFundsAllocatedAndExpended(filteredProjects, actualCategories, props.location.query.mode);
 
   const getTitle = () => {
@@ -111,7 +121,6 @@ const CategoryDetails = (props) => {
             </div>
             <div className="col-sm-6">
               <h2>Spent: {getDollars(fundingDetails[0]['Expended funds'])}</h2>
-              <div className="pull-right"><em>Data last updated on 12/18/2017</em></div>
             </div>
           </div>
           <div className="row">
@@ -143,4 +152,38 @@ CategoryDetails.defaultProps = {
   categories: ['Housing', 'Transportation', 'Parks', 'Public Safety', 'Other'],
 };
 
-export default CategoryDetails;
+const getProjectsQuery = gql`
+  query getProjectsQuery($categories: [String]) {
+    cip_projects (categories: $categories) {
+      project
+      display_name
+      zip_code
+      category
+      coa_contact
+      phone_number
+      email_address
+      project_description
+      status
+      total_project_funding_budget_document
+      total_spent
+      target_construction_start
+      target_construction_end
+      actual_construction_end
+      estimated_construction_duration
+      project_webpage_more_information
+      photo_url
+      contact
+      show_pm_fields
+    }
+  }
+`;
+
+const CategoryDetailsGQL = graphql(getProjectsQuery, {
+  options: ownProps => ({
+    variables: {
+      categories: longCategories(Array.from(ownProps.categories)),
+    },
+  }),
+})(CategoryDetails);
+
+export default CategoryDetailsGQL;

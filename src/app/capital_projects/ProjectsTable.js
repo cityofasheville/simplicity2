@@ -30,11 +30,11 @@ const getIcon = (category, isExpanded) => {
 const dataColumns = [
   {
     Header: 'Project',
-    accessor: 'Display Name',
+    accessor: 'display_name',
     Cell: row => (
       <span>
-        <span title={mapProjectToCategory(row.original)}>{getIcon(row.original.Category, row.isExpanded)}</span>
-        {row.original.Category.indexOf('Bond') > -1 &&
+        <span title={mapProjectToCategory(row.original)}>{getIcon(row.original.category, row.isExpanded)}</span>
+        {row.original.category.indexOf('Bond') > -1 &&
           <span title={'Bond project'} style={{ marginLeft: '3px' }}><Icon path={LI_BOLD} size={16} color={row.isExpanded ? '#fff' : '#4077a5'} viewBox="0 0 24 24" /></span>
         }
         <span style={{ marginLeft: '5px' }}>{row.value}</span>
@@ -51,7 +51,7 @@ const dataColumns = [
   },
   {
     Header: (<div>Zip<br />code</div>),
-    accessor: 'Zip Code',
+    accessor: 'zip_code',
     maxWidth: 120,
     headerClassName: 'hidden-sm hidden-xs',
     className: 'hidden-sm hidden-xs',
@@ -66,8 +66,19 @@ const dataColumns = [
   },
   {
     Header: (<div>Current<br />phase</div>),
-    id: 'Status',
-    accessor: project => (project['Need PM Fields?'].toLowerCase() === 'no' ? '--' : (project.Status.indexOf('Status: ') > -1 ? project.Status.split(': ')[1] : project.Status)),
+    accessor: 'status',
+    Cell: row => (
+      <span>
+        {!row.original.show_pm_fields || row.original.status === null ?
+          '--'
+          :
+          row.original.status.indexOf('Status: ') > -1 ?
+          row.original.status.split(': ')[1]
+          :
+          row.original.status
+        }
+      </span>
+    ),
     maxWidth: 120,
     Filter: ({ filter, onChange }) => (
       <input
@@ -80,7 +91,7 @@ const dataColumns = [
   },
   {
     Header: (<div>Current<br />project budget</div>),
-    accessor: 'Total Project Funding (Budget Document)',
+    accessor: 'total_project_funding_budget_document',
     maxWidth: 120,
     headerClassName: 'hidden-xs',
     className: 'hidden-xs',
@@ -96,7 +107,7 @@ const dataColumns = [
   {
     Header: (<div>Spent</div>),
     id: 'spent',
-    accessor: project => (project['Need PM Fields?'].toLowerCase() === 'no' ? '--' : ['$', parseInt(project['LTD Actuals'], 10).toLocaleString()].join('')),
+    accessor: project => (!project.show_pm_fields ? '--' : ['$', parseInt(project.total_spent, 10).toLocaleString()].join('')),
     maxWidth: 120,
     headerClassName: 'hidden-xs',
     className: 'hidden-xs',

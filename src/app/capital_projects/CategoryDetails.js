@@ -1,10 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
 import Collapsible from '../../shared/Collapsible';
 import ProjectsTable from './ProjectsTable';
-import { testProjectData, getFundsAllocatedAndExpended, filterProjects } from './cip_utilities';
+import { testProjectData, getFundsAllocatedAndExpended, filterProjects, longCategories } from './cip_utilities';
 import Icon from '../../shared/Icon';
 import { IM_SHIELD3, IM_TREE, IM_HOME2, IM_BUS, LI_BOLD } from '../../shared/iconConstants';
+import LoadingAnimation from '../../shared/LoadingAnimation';
 
 const getBondText = (type) => {
   switch (type) {
@@ -81,6 +84,15 @@ const getDollars = (value) => {
 };
 
 const CategoryDetails = (props) => {
+  if (props.data.loading) { // eslint-disable-line react/prop-types
+    return <LoadingAnimation />;
+  }
+  if (props.data.error) { // eslint-disable-line react/prop-types
+    return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
+  }
+
+  console.log(props.data.cip_projects);
+
   let actualCategories = Array.from(props.categories);
   if (props.location.query.mode === 'bond') {
     actualCategories = actualCategories.filter(cat => (['Transportation', 'Parks', 'Housing'].includes(cat)));
@@ -143,4 +155,55 @@ CategoryDetails.defaultProps = {
   categories: ['Housing', 'Transportation', 'Parks', 'Public Safety', 'Other'],
 };
 
-export default CategoryDetails;
+const getProjectsQuery = gql`
+  query getProjectsQuery($categories: [String]) {
+    cip_projects (categories: $categories) {
+      gis_id
+      munis_project_number
+      project
+      display_name
+      location_details
+      zip_code
+      category
+      coa_contact
+      phone_number
+      email_address
+      owner_department
+      administering_department
+      project_description
+      status
+      go_bond_funding
+      cip_funding_total
+      grant_funding_total
+      other_funding
+      total_project_funding_budget_document
+      preliminary_project_budget_planning_phase_estimate
+      estimated_total_project_cost
+      total_spent
+      target_construction_start
+      target_construction_end
+      actual_construction_end
+      amount_behind_schedule
+      estimated_construction_duration
+      project_folder
+      project_webpage_more_information
+      communication_plan
+      photo_url
+      map_tab
+      project_updates
+      where
+      contact
+      show_pm_fields
+    }
+  }
+`;
+
+const CategoryDetailsGQL = graphql(getProjectsQuery, {
+  options: ownProps => ({
+    variables: {
+      categories: longCategories(Array.from(ownProps.categories)),
+    },
+  }),
+})(CategoryDetails);
+
+export default CategoryDetailsGQL;

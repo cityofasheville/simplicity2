@@ -4102,3 +4102,30 @@ export const longCategory = (category) => {
       return 'Other';
   }
 };
+
+export const longCategories = (categories) => {
+  const longCats = [];
+  for (let cat of categories) {
+    const lowerCat = cat.toLowerCase();
+    if (lowerCat === 'housing') {
+      longCats.push('CIP - Affordable Housing');
+      longCats.push('Bond - Housing Program');
+    }
+    else if (lowerCat === 'transportation') {
+      longCats.push('CIP - Transportation & Infrastructure');
+      longCats.push('Bond - Transportation Program');
+    }
+    else if (lowerCat === 'parks') {
+      longCats.push('CIP - Parks & Recreation');
+      longCats.push('Bond - Parks Program');
+    }
+    else if (lowerCat === 'public_safety') {
+      longCats.push('CIP - Public Safety');
+    }
+    else {
+      longCats.push('CIP - Economic Development');
+      longCats.push('CIP - General Government')
+    }
+  }
+  return longCats;
+}

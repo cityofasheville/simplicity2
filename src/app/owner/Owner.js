@@ -23,7 +23,7 @@ const dataColumns = [
   {
     Header: 'Property',
     id: 'property',
-    accessor: property => (<span>{property.address},{property.zipcode}</span>),
+    accessor: property => (<span>{property.property_address}, {property.property_zipcode}</span>),
     minWidth: 335,
     Filter: ({ filter, onChange }) => (
       <input
@@ -35,9 +35,8 @@ const dataColumns = [
     ),
   },
   {
-    Header: 'Civic Address ID(s)',
-    id: 'civic_address_ids',
-    accessor: property => (<span>{property.civic_address_ids.join(', ')}</span>),
+    Header: 'Civic Address ID',
+    accessor: 'property_civic_address_id',
     width: 160,
     Filter: ({ filter, onChange }) => (
       <input
@@ -55,7 +54,7 @@ const dataColumns = [
   {
     Header: 'Pin #',
     accessor: 'pinnum',
-    minWidth: 100,
+    minWidth: 150,
     Filter: ({ filter, onChange }) => (
       <input
         onChange={event => onChange(event.target.value)}
@@ -161,10 +160,14 @@ const propertyQuery = gql`
   query propertyQuery($pins: [String]!) {
     properties(pins: $pins) {
       civic_address_ids,
+      property_civic_address_id,
       pinnum,
       address,
+      property_address,
       city,
+      property_city,
       zipcode,
+      property_zipcode,
       tax_exempt,
       neighborhood,
       appraisal_area,

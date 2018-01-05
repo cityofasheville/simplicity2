@@ -1,5 +1,6 @@
 import React from 'react';
 import { graphql } from 'react-apollo';
+import ReactTable from 'react-table';
 import gql from 'graphql-tag';
 import DetailsTable from '../../shared/DetailsTable';
 import DetailsFormGroup from '../../shared/DetailsFormGroup';
@@ -19,6 +20,45 @@ const getDollars = (value) => {
   return [initialSymbols, Math.abs(value).toLocaleString()].join('');
 };
 
+const dataColumns = [
+  {
+    Header: 'Civic address ID(s)',
+    accessor: 'civic_address_id',
+    width: 150,
+    Filter: ({ filter, onChange }) => (
+      <input
+        onChange={event => onChange(event.target.value)}
+        style={{ width: '100%' }}
+        value={filter ? filter.value : ''}
+        placeholder="Search..."
+      />
+    ),
+    filterMethod: (filter, row) => {
+      const joinedInfo = row._original.pinnum;
+      return row._original !== undefined ? joinedInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
+    },
+  },
+  {
+    Header: 'Address(es)',
+    accessor: 'Address',
+    Cell: row => (
+      <span>{row.original.address}, {row.original.zipcode}</span>
+    ),
+    Filter: ({ filter, onChange }) => (
+      <input
+        onChange={event => onChange(event.target.value)}
+        style={{ width: '100%' }}
+        value={filter ? filter.value : ''}
+        placeholder="Search..."
+      />
+    ),
+    filterMethod: (filter, row) => {
+      const joinedInfo = [row._original.address, row._original.zipcode].join(', ');
+      return row._original !== undefined ? joinedInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
+    },
+  },
+];
+
 const Property = (props) => {
   if (props.data.loading) {
     return <LoadingAnimation />;
@@ -28,11 +68,19 @@ const Property = (props) => {
   }
 
   const propertyData = props.inTable ? props.data : props.data.properties[0];
+  const dataForAddressesTable = [];
+  for (let i = 0; i < propertyData.civic_address_ids.length; i += 1) {
+    dataForAddressesTable.push({
+      civic_address_id: propertyData.civic_address_ids[i],
+      address: propertyData.address[i],
+      zipcode: propertyData.zipcode[i],
+    });
+  }
 
   return (
     <div>
       {props.inTable !== true &&
-        <PageHeader h1={[propertyData.address, propertyData.zipcode].join(', ')} h3="About this property" icon={<Icon path={IM_HOME2} size={50} />}>
+        <PageHeader h1={propertyData.pinnum} h3="About this property" icon={<Icon path={IM_HOME2} size={50} />}>
           <ButtonGroup>
             {props.location.query.fromAddress &&
               <LinkButton pathname="/address" query={{ entities: props.location.query.entities, search: props.location.query.search, id: props.location.query.fromAddress, hideNavbar: props.location.query.hideNavbar }} positionInGroup="left">Back to address</LinkButton>
@@ -45,8 +93,29 @@ const Property = (props) => {
         <div className="col-sm-6">
           <fieldset className="detailsFieldset">
             <div className="row">
+              <div className="col-xs-12">
+                <div alt={['Table of addresses'].join(' ')} style={{ marginRight: '10px', marginLeft: '10px' }}>
+                  <ReactTable
+                    data={dataForAddressesTable}
+                    columns={dataColumns}
+                    showPagination={dataForAddressesTable.length > 5}
+                    defaultPageSize={dataForAddressesTable.length <= 5 ? dataForAddressesTable.length : 5}
+                    filterable={dataForAddressesTable.length > 5}
+                    defaultFilterMethod={(filter, row) => {
+                      const id = filter.pivotId || filter.id;
+                      return row[id] !== undefined ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
+                    }}
+                    getTdProps={(state, rowInfo) => {
+                      return {
+                        style: {
+                          whiteSpace: 'normal',
+                        },
+                      };
+                    }}
+                  />
+                </div>
+              </div>
               <div className="col-xs-6">
-                <DetailsFormGroup label="Civic address ID(s)" name="civic_address_ids" value={propertyData.civic_address_ids.join(', ')} hasLabel />
                 <DetailsFormGroup label="Neighborhood" name="neighborhood" value={propertyData.neighborhood} hasLabel />
                 <DetailsFormGroup label="Appraisal area" name="appraisal_area" value={propertyData.appraisal_area} hasLabel />
                 <DetailsFormGroup

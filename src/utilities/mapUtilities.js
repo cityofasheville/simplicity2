@@ -107,7 +107,7 @@ export const combinePolygonsFromPropertyList = (propertyList) => {
     delete polygonData.polygons;
     polygonData.polygons = [];
     polygonData.polygons = convertPolygonsToLatLngArrays(property.polygons);
-    polygonData.popup = (<div><b>Pin #</b><div>{property.pinnum}</div><br /><b>Civic Address ID(s)</b><div>{property.civic_address_ids !== null ? property.civic_address_ids.join(', ') : 'none found'}</div><br /><b>Address: </b><div>{property.address}, {property.zipcode}</div></div>);
+    polygonData.popup = (<div><b>Pin #</b><div>{property.pinnum}</div><br /><b>Civic Address ID</b><div>{property.property_civic_address_id}</div><br /><b>Address: </b><div>{property.property_address}, {property.property_zipcode}</div></div>);
     polygons.push(polygonData);
   }
   return polygons;

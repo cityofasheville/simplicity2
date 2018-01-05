@@ -30,9 +30,8 @@ const dataColumns = [
     },
   },
   {
-    Header: 'Civic Address ID(s)',
-    id: 'civic_address_ids',
-    accessor: property => (<span>{property.civic_address_ids.join(', ')}</span>),
+    Header: 'Civic Address ID',
+    accessor: 'property_civic_address_id',
     width: 150,
     Filter: ({ filter, onChange }) => (
       <input
@@ -47,7 +46,7 @@ const dataColumns = [
     Header: 'Address',
     accessor: 'Address',
     Cell: row => (
-      <span>{row.original.address}, {row.original.zipcode}</span>
+      <span>{row.original.property_address}, {row.original.property_zipcode}</span>
     ),
     Filter: ({ filter, onChange }) => (
       <input
@@ -151,10 +150,14 @@ const getPropertiesByNeighborhoodQuery = gql`
   query getPropertiesByNeighborhoodQuery($nbrhd_ids: [String]) {
     properties_by_neighborhood (nbrhd_ids: $nbrhd_ids) {
       civic_address_ids,
+      property_civic_address_id,
       pinnum,
       address,
+      property_address,
       city,
+      property_city,
       zipcode,
+      property_zipcode,
       tax_exempt,
       neighborhood,
       appraisal_area,

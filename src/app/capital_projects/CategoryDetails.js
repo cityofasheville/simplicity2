@@ -174,6 +174,8 @@ const getProjectsQuery = gql`
       photo_url
       contact
       show_pm_fields
+      latitude
+      longitude
     }
   }
 `;

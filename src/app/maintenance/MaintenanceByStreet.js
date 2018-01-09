@@ -4,44 +4,10 @@ import gql from 'graphql-tag';
 import ReactTable from 'react-table';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import Map from '../../shared/visualization/Map';
-import { getBoundsFromStreetData, convertStreetLinesToLatLngArrays, formatMaintenanceData } from '../../utilities/mapUtilities';
+import { getBoundsFromStreetData, convertStreetLinesToLatLngArrays, formatMaintenanceData, getBounds } from '../../utilities/mapUtilities';
+import Icon from '../../shared/Icon';
+import { IM_MAP5 } from '../../shared/iconConstants';
 
-const dataColumns = [
-  {
-    Header: 'Centerline ID',
-    accessor: 'centerline_id',
-    Cell: row => (
-      <span>{parseInt(row.original.centerline_id, 10)}</span>
-    ),
-    Filter: ({ filter, onChange }) => (
-      <input
-        onChange={event => onChange(event.target.value)}
-        style={{ width: '100%' }}
-        value={filter ? filter.value : ''}
-        placeholder="Search..."
-      />
-    ),
-  },
-  {
-    Header: 'Maintenance Entities',
-    accessor: 'maintenance_entities',
-    Cell: row => (
-      <span>{row.original.maintenance_entities.map((item, index) => <div key={index}>{item}</div>)}</span>
-    ),
-    Filter: ({ filter, onChange }) => (
-      <input
-        onChange={event => onChange(event.target.value)}
-        style={{ width: '100%' }}
-        value={filter ? filter.value : ''}
-        placeholder="Search..."
-      />
-    ),
-    filterMethod: (filter, row) => {
-      const joinedInfo = row._original.maintenance_entities.join('');
-      return row._original !== undefined ? joinedInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
-    },
-  },
-];
 
 const MaintenanceByStreet = props => {
   if (props.data.loading) { // eslint-disable-line react/prop-types
@@ -50,6 +16,49 @@ const MaintenanceByStreet = props => {
   if (props.data.error) { // eslint-disable-line react/prop-types
     return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
   }
+
+  const urlString = [props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&label=', props.location.query.label, '&hideNavbar=', props.location.query.hideNavbar, '&search=', props.location.query.search, '&view=map'].join('');
+
+  const dataColumns = [
+    {
+      Header: 'Centerline ID',
+      accessor: 'centerline_id',
+      Cell: row => (
+        <span>
+          <span><a title="Click to centerline in map" href={[urlString, '&bounds=', JSON.stringify(getBounds(row.original.line))].join('')}><Icon path={IM_MAP5} size={23} /></a></span>
+          <span style={{ marginLeft: '5px' }}>{parseInt(row.value, 10)}</span>
+        </span>
+      ),
+
+      Filter: ({ filter, onChange }) => (
+        <input
+          onChange={event => onChange(event.target.value)}
+          style={{ width: '100%' }}
+          value={filter ? filter.value : ''}
+          placeholder="Search..."
+        />
+      ),
+    },
+    {
+      Header: 'Maintenance Entities',
+      accessor: 'maintenance_entities',
+      Cell: row => (
+        <span>{row.original.maintenance_entities.map((item, index) => <div key={index}>{item === null ? 'No information available' : item}{row.original.maintenance_entities.length > 1 && index < row.original.maintenance_entities.length - 1 ? ',' : ''}</div>)}</span>
+      ),
+      Filter: ({ filter, onChange }) => (
+        <input
+          onChange={event => onChange(event.target.value)}
+          style={{ width: '100%' }}
+          value={filter ? filter.value : ''}
+          placeholder="Search..."
+        />
+      ),
+      filterMethod: (filter, row) => {
+        const joinedInfo = row._original.maintenance_entities.join('');
+        return row._original !== undefined ? joinedInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
+      },
+    },
+  ];
 
   return (
     <div className="row">
@@ -79,7 +88,7 @@ const MaintenanceByStreet = props => {
           {props.data.streets.length === 0 || props.location.query.view !== 'map' ?
             <div className="alert alert-info">No results found</div>
             :
-            <Map maintenanceData={formatMaintenanceData(props.data.streets)} drawMaintenance bounds={getBoundsFromStreetData(props.data.streets)} />
+            <Map maintenanceData={formatMaintenanceData(props.data.streets)} drawMaintenance bounds={props.location.query.bounds !== undefined & props.location.query.bounds !== '' ? JSON.parse(props.location.query.bounds) : getBoundsFromStreetData(props.data.streets)} />
           }
         </div>
       </div>

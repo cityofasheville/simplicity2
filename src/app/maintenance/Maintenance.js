@@ -40,8 +40,8 @@ const Maintenance = props => {
             <EmailDownload emailFunction={testFunc} downloadFunction={testFunc} args={props.location.query} />
           </div>
           <ButtonGroup>
-            <Button onClick={() => refreshLocation('list')} active={props.location.query.view !== 'map'} positionInGroup="left">List view</Button>
-            <Button onClick={() => refreshLocation('map')} active={props.location.query.view === 'map'} positionInGroup="right">Map view</Button>
+            <Button onClick={() => refreshLocation('map')} active={props.location.query.view === 'map'} positionInGroup="left">Map view</Button>
+            <Button onClick={() => refreshLocation('list')} active={props.location.query.view !== 'map'} positionInGroup="right">List view</Button>
           </ButtonGroup>
         </div>
       </div>

@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { browserHistory } from 'react-router';
 import EmailDownload from '../../shared/EmailDownload';
 import ButtonGroup from '../../shared/ButtonGroup';
@@ -15,19 +14,6 @@ import { IM_HOME2 } from '../../shared/iconConstants';
 const testFunc = (props) => {
   console.log(props);
 };
-
-const testPropertyData = [
-  {
-    PropertyName: '99999 BENNETT RD Unit',
-    CivicAddressID: '91291231',
-    PIN: '8695992975000000',
-  },
-  {
-    PropertyName: '333 HAZEL MILL RD Unit',
-    CivicAddressID: '21066',
-    PIN: '9638904490000000',
-  },
-];
 
 const getSubtitle = (entity) => {
   switch (entity) {
@@ -70,10 +56,6 @@ const Properties = props => {
       }
     </div>
   );
-};
-
-Properties.propTypes = {
-  location: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 };
 
 export default Properties;

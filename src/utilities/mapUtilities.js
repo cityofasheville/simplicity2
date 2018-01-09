@@ -127,3 +127,26 @@ export const combinePolygonsFromNeighborhoodList = (neighborhoodList) => {
 export const getBoundsFromPolygonData = data => (
   getBounds(getAllPolygonPoints(data))
 );
+
+export const formatMaintenanceData = data => {
+  const maintenanceData = [];
+  for (let centerline of data) {
+    const segmentInfo = {};
+    segmentInfo.line = centerline.line.map(point => [point.y, point.x]);
+    if (centerline.maintenance_entities.length === 1) {
+      if (centerline.maintenance_entities.indexOf('NCDOT') > -1) {
+        segmentInfo.color = '#920000';
+      } else if (centerline.maintenance_entities.indexOf('CITY OF ASHEVILLE') > -1) {
+        segmentInfo.color = '#006DDB';
+      } else {
+        segmentInfo.color = '#777777';
+      }
+    }
+    if (centerline.maintenance_entities.length > 1) {
+      segmentInfo.color = '#DB6D00';
+    }
+    segmentInfo.popup = (<div><b>Centerline ID</b><div>{parseInt(centerline.centerline_id, 10)}</div><br /><b>Maintenance</b>{centerline.maintenance_entities.map((item, idx) => <div key={idx}>{item}{centerline.maintenance_entities.length > 1 && idx < centerline.maintenance_entities.length - 1 ? ',' : ''}</div>)}<br /></div>);
+    maintenanceData.push(segmentInfo);
+  }
+  return maintenanceData;
+};

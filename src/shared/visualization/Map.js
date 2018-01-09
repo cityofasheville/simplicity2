@@ -66,6 +66,17 @@ const Map = (props) => {
             <Polyline key={['street_line', index].join('_')} positions={line} weight={5} />
           )
         }
+        {props.drawMaintenance &&
+          props.maintenanceData.map((line, index) =>
+            <Polyline
+              key={['maintenance_line', index].join('_')} positions={line.line} weight={5} color={line.color}
+            >
+              <Popup>
+                {line.popup}
+              </Popup>
+            </Polyline>
+          )
+        }
         {props.drawPolygon &&
           props.polygonData.map((poly, index) =>
             <Polygon key={['polygon', index].join('_')} positions={poly.polygons}>
@@ -101,6 +112,8 @@ Map.propTypes = {
   data: PropTypes.array, //eslint-disable-line
   drawStreet: PropTypes.bool,
   zoomToPoint: PropTypes.string,
+  maintenanceData: PropTypes.array, //eslint-disable-line
+  drawMaintenance: PropTypes.bool,
 };
 
 Map.defaultProps = {
@@ -112,6 +125,7 @@ Map.defaultProps = {
   drawCircle: false,
   drawStreet: false,
   drawPolygon: false,
+  drawMaintenance: false,
   radius: 83,
   showCenter: false,
   zoom: 16,
@@ -119,6 +133,7 @@ Map.defaultProps = {
   bounds: null,
   streetData: null,
   polygonData: null,
+  maintenanceData: null,
   data: [],
   zoomToPoint: null,
 };

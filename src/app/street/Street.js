@@ -6,7 +6,7 @@ import Icon from '../../shared/Icon';
 import ButtonGroup from '../../shared/ButtonGroup';
 import LinkButton from '../../shared/LinkButton';
 import PageHeader from '../../shared/PageHeader';
-import { IM_ENVELOP3, IM_ROAD, IM_HOME2 } from '../../shared/iconConstants';
+import { IM_ENVELOP3, IM_ROAD, IM_HOME2, IM_TRAFFIC_CONE } from '../../shared/iconConstants';
 
 const Street = props => (
   <div>
@@ -20,7 +20,7 @@ const Street = props => (
         <fieldset className="detailsFieldset">
           <DetailsIconLinkFormGroup label="Address & Owner Mailing Lists" icon={<Icon path={IM_ENVELOP3} size={24} />} href={['address/addressList', '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&label=', props.location.query.label, '&search=', props.location.query.search, '&hideNavbar=', props.location.query.hideNavbar].join('')} title="Address & Owner Mailing Lists" inWindow />
           <DetailsIconLinkFormGroup label="Properties" icon={<Icon path={IM_HOME2} size={24} />} href={['property/properties', '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&search=', props.location.query.search, '&label=', props.location.query.label, '&hideNavbar=', props.location.query.hideNavbar].join('')} title="Properties" inWindow />
-          <DetailsIconLinkFormGroup label="Maintenance" icon={'<div>ICON</div>'} href={['address/addressList', '?entity=', props.location.query.entity, '&search=', props.location.query.search, '&id=', props.location.query.id, '&label=', props.location.query.label, '&hideNavbar=', props.location.query.hideNavbar].join('')} title="Maintenance" inWindow />
+          <DetailsIconLinkFormGroup label="Maintenance" icon={<Icon path={IM_TRAFFIC_CONE} size={24} />} href={['maintenance', '?entity=', props.location.query.entity, '&search=', props.location.query.search, '&id=', props.location.query.id, '&label=', props.location.query.label, '&hideNavbar=', props.location.query.hideNavbar, '&view=map'].join('')} title="Maintenance" inWindow />
         </fieldset>
       </div>
       <div className="col-sm-6">

@@ -4,10 +4,24 @@ import gql from 'graphql-tag';
 import ReactTable from 'react-table';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import Map from '../../shared/visualization/Map';
-import { getBoundsFromStreetData, convertStreetLinesToLatLngArrays, formatMaintenanceData, getBounds } from '../../utilities/mapUtilities';
+import { getBoundsFromStreetData, formatMaintenanceData, getBounds } from '../../utilities/mapUtilities';
 import Icon from '../../shared/Icon';
 import { IM_MAP5 } from '../../shared/iconConstants';
 
+
+const getMaintenanceInfo = (entity, comma) => {
+  if (entity === null) {
+    return <div>No information available{comma ? ',' : ''}</div>;
+  }
+  if (entity === 'CITY OF ASHEVILLE') {
+    return (<div><span><a href="http://www.ashevillenc.gov/departments/street_services/maintenance.htm" target="_blank">{entity}</a></span><span style={{ marginLeft: '10px' }}><a href="http://www.ashevillenc.gov/departments/it/online/service_requests.htm" target="_blank"><button className="btn btn-xs btn-warning">Report with the Asheville App</button></a>
+    </span></div>);
+  }
+  if (entity === 'NCDOT') {
+    return <div><span><a href="https://apps.ncdot.gov/contactus/Home/PostComment?Unit=PIO" target="_blank">{entity}</a>{comma ? ',' : ''}</span></div>;
+  }
+  return <div>{entity}{comma ? ',' : ''}</div>;
+};
 
 const MaintenanceByStreet = props => {
   if (props.data.loading) { // eslint-disable-line react/prop-types
@@ -43,7 +57,7 @@ const MaintenanceByStreet = props => {
       Header: 'Maintenance Entities',
       accessor: 'maintenance_entities',
       Cell: row => (
-        <span>{row.original.maintenance_entities.map((item, index) => <div key={index}>{item === null ? 'No information available' : item}{row.original.maintenance_entities.length > 1 && index < row.original.maintenance_entities.length - 1 ? ',' : ''}</div>)}</span>
+        <span>{row.original.maintenance_entities.map((item, index) => <div key={index}>{getMaintenanceInfo(item, row.original.maintenance_entities.length > 1 && index < row.original.maintenance_entities.length - 1)}</div>)}</span>
       ),
       Filter: ({ filter, onChange }) => (
         <input

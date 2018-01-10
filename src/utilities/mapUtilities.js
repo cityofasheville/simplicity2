@@ -1,5 +1,19 @@
 import React from 'react';
 
+const getMaintenanceInfo = (entity, comma) => {
+  if (entity === null) {
+    return <div>No information available{comma ? ',' : ''}</div>;
+  }
+  if (entity === 'CITY OF ASHEVILLE') {
+    return (<div><span><a href="http://www.ashevillenc.gov/departments/street_services/maintenance.htm" target="_blank">{entity}</a></span><span style={{ marginLeft: '10px' }}><a href="http://www.ashevillenc.gov/departments/it/online/service_requests.htm" target="_blank"><button className="btn btn-xs btn-warning">Report with the Asheville App</button></a>
+    </span></div>);
+  }
+  if (entity === 'NCDOT') {
+    return <div><span><a href="https://apps.ncdot.gov/contactus/Home/PostComment?Unit=PIO" target="_blank">{entity}</a>{comma ? ',' : ''}</span></div>;
+  }
+  return <div>{entity}{comma ? ',' : ''}</div>;
+};
+
 export const getBounds = (data) => {
   let xMinIndex = 0;
   let yMinIndex = 0;
@@ -145,7 +159,7 @@ export const formatMaintenanceData = data => {
     if (centerline.maintenance_entities.length > 1) {
       segmentInfo.color = '#DB6D00';
     }
-    segmentInfo.popup = (<div><b>Centerline ID</b><div>{parseInt(centerline.centerline_id, 10)}</div><br /><b>Maintenance</b>{centerline.maintenance_entities.map((item, idx) => <div key={idx}>{item}{centerline.maintenance_entities.length > 1 && idx < centerline.maintenance_entities.length - 1 ? ',' : ''}</div>)}<br /></div>);
+    segmentInfo.popup = (<div><b>Centerline ID</b><div>{parseInt(centerline.centerline_id, 10)}</div><br /><b>Maintenance</b>{centerline.maintenance_entities.map((item, idx) => <div key={idx}>{getMaintenanceInfo(item, centerline.maintenance_entities.length > 1 && idx < centerline.maintenance_entities.length - 1)}</div>)}<br /></div>);
     maintenanceData.push(segmentInfo);
   }
   return maintenanceData;

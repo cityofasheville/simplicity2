@@ -1,9 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import Icon from '../../shared/Icon';
-import { IM_LOCATION, IM_BIN, LI_RECYCLE2, IM_USER, IM_LOCATION2, IM_HOME2 } from '../../shared/iconConstants';
+import { IM_LOCATION, IM_BIN, LI_RECYCLE2, IM_USER, IM_LOCATION2, IM_HOME2, IM_TRAFFIC_CONE } from '../../shared/iconConstants';
 import { zoningLinks } from './zoning';
 import PageHeader from '../../shared/PageHeader';
 import ButtonGroup from '../../shared/ButtonGroup';
@@ -43,6 +42,20 @@ const calculateTrash = (dayOfWeek, inCity) => {
   return 'No trash collection information available';
 };
 
+const getMaintenanceInfo = (entity) => {
+  if (entity === null) {
+    return <div>No information available</div>;
+  }
+  if (entity === 'CITY OF ASHEVILLE') {
+    return (<div><span><a href="http://www.ashevillenc.gov/departments/street_services/maintenance.htm" target="_blank">{entity}</a></span><span style={{ marginLeft: '10px' }}><a href="http://www.ashevillenc.gov/departments/it/online/service_requests.htm" target="_blank"><button className="btn btn-xs btn-warning">Report with the Asheville App</button></a>
+    </span></div>);
+  }
+  if (entity === 'NCDOT') {
+    return <div><span><a href="https://apps.ncdot.gov/contactus/Home/PostComment?Unit=PIO" target="_blank">{entity}</a></span></div>;
+  }
+  return <div>{entity}</div>;
+};
+
 const Address = (props) => {
   if (props.data.loading) {
     return <LoadingAnimation />;
@@ -73,9 +86,15 @@ const Address = (props) => {
                 <span key={['zone', index].join('_')}><a href={zoningLinks[zone]} target="_blank">{addressData.zoning.split(',')[index]}</a>{addressData.zoning.split(',').length > index + 1 ? ', ' : ''}</span>)
             )}</div>} hasLabel icon={<Icon path={IM_LOCATION2} size={20} />}
             />
+            <DetailsFormGroup
+              label="Street maintenance"
+              name="street_maintenance"
+              value={getMaintenanceInfo(addressData.street_maintenance)}
+              hasLabel
+              icon={<Icon path={IM_TRAFFIC_CONE} size={20} />}
+            />
             <DetailsFormGroup label="Owner" name="owner" value={<div><div>{addressData.owner_name}</div><div>{addressData.owner_address}</div></div>} hasLabel icon={<Icon path={IM_USER} size={20} />} />
             <DetailsIconLinkFormGroup label="Property" title="Property" href={['/property/?fromAddress=', props.location.query.id, '&search=', props.location.query.search, '&id=', addressData.pinnum, '&entities=', props.location.query.entities].join('')} icon={<Icon path={IM_HOME2} size={20} />} inWindow />
-            {/*<DetailsIconLinkGrouping dataLabels={['Property', 'Maintenance']} dataTitles={['Property', 'Maintenance']} dataHrefs={[['/property/?pin=', addressData.pinnum].join(''), '/maintenance?entity=address']} dataIcons={['home', 'road']} />*/}
           </fieldset>
         </div>
         {addressData.is_in_city &&
@@ -94,25 +113,6 @@ const Address = (props) => {
   );
 };
 
-const dataShape = {
-  address: PropTypes.string,
-  zipcode: PropTypes.string,
-  trash_day: PropTypes.string,
-};
-
-Address.propTypes = {
-  data: PropTypes.shape(dataShape).isRequired,
-  location: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-};
-
-Address.defaultProps = {
-  data: {
-    address: '450 MONTFORD AVE',
-    zipcode: '28801',
-    city: 'Asheville', //this should probably be changed to be an inTheCity boolean?
-  },
-};
-
 const addressQuery = gql`
   query addressQuery($civicaddress_ids: [String]!) {
     addresses(civicaddress_ids: $civicaddress_ids) {
@@ -128,8 +128,9 @@ const addressQuery = gql`
       y
       pinnum
       centerline_id
-      recycling_pickup_district,
+      recycling_pickup_district
       recycling_pickup_day
+      street_maintenance
     }
   }
 `;

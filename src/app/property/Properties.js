@@ -1,6 +1,5 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
-import EmailDownload from '../../shared/EmailDownload';
 import ButtonGroup from '../../shared/ButtonGroup';
 import Button from '../../shared/Button';
 import LinkButton from '../../shared/LinkButton';
@@ -40,9 +39,6 @@ const Properties = props => {
       </PageHeader>
       <div className="row">
         <div className="col-sm-12">
-          <div className="pull-left">
-            <EmailDownload emailFunction={testFunc} downloadFunction={testFunc} args={props.location.query} />
-          </div>
           <ButtonGroup>
             <Button onClick={() => refreshLocation('list')} active={props.location.query.view !== 'map'} positionInGroup="left">List view</Button>
             <Button onClick={() => refreshLocation('map')} active={props.location.query.view === 'map'} positionInGroup="right">Map view</Button>

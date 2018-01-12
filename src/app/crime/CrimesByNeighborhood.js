@@ -132,8 +132,8 @@ const CrimesByNeighborhood = props => {
     <div>
       <div className="row">
         <div className="col-xs-12">
-          <div className="pull-left">
-            <EmailDownload emailFunction={() => (console.log('email!'))} downloadFunction={() => (console.log('Download!'))} />
+          <div className="pull-left" style={{ marginTop: '10px', marginBottom: '15px' }}>
+            <EmailDownload downloadData={props.data.crimes_by_neighborhood} fileName="crimes_by_neighborhood.csv" />
           </div>
           <ButtonGroup>
             <Button onClick={() => refreshLocation('map')} active={props.location.query.view === 'map'} positionInGroup="left">Map view</Button>

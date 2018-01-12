@@ -2,6 +2,7 @@ import React from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import ReactTable from 'react-table';
+import EmailDownload from '../../shared/EmailDownload';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import Map from '../../shared/visualization/Map';
 import { getBoundsFromStreetData, formatMaintenanceData, getBounds } from '../../utilities/mapUtilities';
@@ -77,6 +78,9 @@ const MaintenanceByStreet = props => {
   return (
     <div className="row">
       <div className="col-sm-12">
+        <EmailDownload downloadData={props.data.streets} fileName="maintenance_by_street.csv" />
+      </div>
+      <div className="col-sm-12">
         <div id="listView" hidden={props.location.query.view === 'map'} alt={['Table of addresses'].join(' ')} style={{ marginTop: '10px' }}>
           <ReactTable
             data={props.data.streets}
@@ -98,7 +102,7 @@ const MaintenanceByStreet = props => {
           />
         </div>
 
-        <div id="mapView" className="col-xs-12" hidden={props.location.query.view !== 'map'}>
+        <div id="mapView" hidden={props.location.query.view !== 'map'}>
           {props.data.streets.length === 0 || props.location.query.view !== 'map' ?
             <div className="alert alert-info">No results found</div>
             :

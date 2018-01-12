@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import Map from '../../shared/visualization/Map';
+import EmailDownload from '../../shared/EmailDownload';
 import Property from './Property';
 import { getBoundsFromPolygonData, combinePolygonsFromPropertyList } from '../../utilities/mapUtilities';
 import LoadingAnimation from '../../shared/LoadingAnimation';
@@ -74,7 +75,10 @@ const PropertiesByNeighborhood = props => {
   return (
     <div>
       <div className="row">
-        <div id="listView" hidden={props.location.query.view === 'map'}>
+        <div className="col-sm-12">
+          <EmailDownload downloadData={props.data.properties_by_neighborhood} fileName="properties_by_neighborhodd.csv" />
+        </div>
+        <div id="listView" className="col-sm-12" hidden={props.location.query.view === 'map'}>
           {props.data.properties_by_neighborhood.length < 1 ?
             <div className="alert alert-info">No results found</div>
           :

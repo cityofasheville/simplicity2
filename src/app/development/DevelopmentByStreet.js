@@ -91,7 +91,7 @@ const DevelopmentByStreet = props => {
     return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
   }
 
-  const mapData = props.data.permits_by_street.map(item => (Object.assign({}, item, { popup: `<div><b>${item.permit_type}</b><p>${moment.utc(item.applied_date).format('M/DD/YYYY')}</p><p>Applicant: ${item.applicant_name}</p><p>Contractor: ${item.contractor_name}</p></div>`, options: { icon: L.icon({
+  const mapData = props.data.permits_by_street.map(item => (Object.assign({}, item, { popup: `<div><b>${item.permit_type}</b><p>${moment.utc(item.applied_date).format('M/DD/YYYY')}</p><p><b>Applicant</b>:<div>${item.applicant_name}</div></p><p><b>Contractor(s):</b> ${item.contractor_names.map((contractor, index) => `<div>${contractor}: ${item.contractor_license_numbers[index]}</div>`).join('')}</p></div>`, options: { icon: L.icon({
     iconUrl: getMarker(item.permit_type),
     iconSize: [25, 41],
     iconAnchor: [12, 41],
@@ -169,8 +169,8 @@ const getPermitsAndStreetInfoQuery = gql`
       address
       x
       y
-      contractor_name
-      contractor_license_number
+      contractor_names
+      contractor_license_numbers
       comments {
         comment_seq_number
         comment_date

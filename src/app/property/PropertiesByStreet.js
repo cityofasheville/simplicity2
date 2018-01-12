@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import Map from '../../shared/visualization/Map';
+import EmailDownload from '../../shared/EmailDownload';
 import Property from './Property';
 import { getBoundsFromStreetData, convertStreetLinesToLatLngArrays, combinePolygonsFromPropertyList } from '../../utilities/mapUtilities';
 import LoadingAnimation from '../../shared/LoadingAnimation';
@@ -74,7 +75,10 @@ const PropertiesByStreet = props => {
   return (
     <div>
       <div className="row">
-        <div id="listView" hidden={props.location.query.view === 'map'}>
+        <div className="col-sm-12">
+          <EmailDownload downloadData={props.data.properties_by_street} fileName="properties_by_street.csv" />
+        </div>
+        <div id="listView" className="col-sm-12" hidden={props.location.query.view === 'map'}>
           {props.data.properties_by_street.length < 1 ?
             <div className="alert alert-info">No results found</div>
           :

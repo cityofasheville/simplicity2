@@ -1,15 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { CSVLink } from 'react-csv';
 import Icon from './Icon';
 import { IM_DOWNLOAD7 } from './iconConstants';
 import ButtonGroup from './ButtonGroup';
 import Button from './Button';
 
 const EmailDownload = props => (
-  <div>
-    <ButtonGroup style={{ marginBottom: '5px' }}>
-      <Button type="success" onClick={props.downloadFunction}><Icon path={IM_DOWNLOAD7} /> Download</Button>
-    </ButtonGroup>
+  <div style={{ marginBottom: '5px' }}>
+    <CSVLink data={props.downloadData} filename={props.fileName || 'data.csv'}>
+      <Button type="success" size="xs"><Icon path={IM_DOWNLOAD7} /> Download</Button>
+    </CSVLink>
     {/* <ButtonGroup style={{ marginBottom: '5px', marginRight: '5px' }}>
       <Button type="success" onClick={props.emailFunction}><Icon path={IM_ENVELOP5} /> Email</Button>
     </ButtonGroup> */}
@@ -18,12 +19,13 @@ const EmailDownload = props => (
 
 EmailDownload.propTypes = {
   emailFunction: PropTypes.func,
-  downloadFunction: PropTypes.func,
+  downloadData: PropTypes.array,
+  fileName: PropTypes.string,
 };
 
 EmailDownload.defaultProps = {
   emailFunction: null,
-  downloadFunction: null,
+  downloadData: [],
 };
 
 export default EmailDownload;

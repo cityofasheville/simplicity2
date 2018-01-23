@@ -1,0 +1,126 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import { browserHistory } from 'react-router';
+import { connect } from 'react-redux';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
+import SearchResultGroup from './SearchResultGroup';
+import LoadingAnimation from '../../../shared/LoadingAnimation';
+
+const getEntitiesToSearch = () => (
+  ['address']
+);
+
+const GooglePlaceResults = (props) => {
+  if (props.data === undefined) {
+    return <div className="alert alert-info alert-sm">No results found.</div>;
+  }
+  if (props.data.loading) {
+    return <LoadingAnimation message="Searching..." />;
+  }
+  if (props.data.error) {
+    return (
+      <div className="row">
+        <div className="col-sm-12">
+          <div className="alert alert-warning alert-sm">
+            {props.data.error.message}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const formattedResults = [];
+  for (let context of props.data.search) {
+    if (context !== null && context.results.length > 0) {
+      formattedResults.push(
+        {
+          label: 'address',
+          results: context.results.map(result => (
+            {
+              label: [result.address, result.zipcode].join(', '),
+              type: 'address',
+              id: result.civic_address_id,
+            }
+          )),
+        }
+      );
+    }
+  }
+
+  const renderResults = () => {
+    if (formattedResults[0].results.length === 0) {
+      return (
+        <div className="alert alert-info alert-sm">
+        No results found.
+      </div>
+      );
+    }
+    if (formattedResults[0].results.length === 1) {
+     browserHistory.push(['/address', '?entity=address', '&id=', formattedResults[0].results[0].id, '&label=', props.placeSearch, '&hideNavbar=', props.location.query.hideNavbar, '&search=', props.searchText, '&entities=', props.location.query.entities].join(''));
+    }
+    return (
+      formattedResults.map((resultGroup, index) => (
+        <SearchResultGroup
+          key={[resultGroup.label, index].join('_')}
+          data={resultGroup}
+          searchText={props.placeSearch}
+          selectedEntities={props.location.query.entities}
+          originalSearch={props.searchText}
+        />
+      ))
+    );
+  };
+
+  return (
+    <div className="row">
+      <div className="col-sm-12">
+        {
+          renderResults()
+        }
+      </div>
+    </div>
+  );
+};
+
+const resultsShape = {
+  label: PropTypes.string,
+  type: PropTypes.string,
+  results: PropTypes.array,
+};
+
+GooglePlaceResults.propTypes = {
+  results: PropTypes.arrayOf(PropTypes.shape(resultsShape)),
+  searchText: PropTypes.string,
+  placeSearch: PropTypes.string,
+};
+
+const searchQuery = gql`
+  query searchQuery($searchString: String!, $searchContexts: [String]) {
+    search(searchString: $searchString, searchContexts: $searchContexts) {
+      type
+      results {
+        type
+        ... on AddressResult {
+          civic_address_id
+          address
+          zipcode
+        }
+      }
+    }
+  }
+`;
+
+const mapStateToProps = (state, ownProps) => (
+  {
+    searchText: ownProps.location.query.search,
+    placeSearch: ownProps.location.query.placeSearch,
+  }
+);
+
+const GooglePlaceResultsWithData = graphql(searchQuery, {
+  skip: ownProps => (!ownProps.placeSearch),
+  options: ownProps => ({ variables: { searchString: ownProps.placeSearch, searchContexts: getEntitiesToSearch() } }),
+})(GooglePlaceResults);
+
+export default connect(mapStateToProps)(GooglePlaceResultsWithData);

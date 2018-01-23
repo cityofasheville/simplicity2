@@ -69,7 +69,10 @@ const Address = (props) => {
     <div>
       <PageHeader h1={[addressData.address, addressData.zipcode].join(', ')} h3="About this address" icon={<Icon path={IM_LOCATION} size={50} />}>
         <ButtonGroup>
-          <LinkButton pathname="/search" query={{ entities: props.location.query.entities, search: props.location.query.search, hideNavbar: props.location.query.hideNavbar }}>Back to search</LinkButton>
+          <LinkButton pathname="/search" positionInGroup="left" query={{ entities: props.location.query.entities, search: props.location.query.search, hideNavbar: props.location.query.hideNavbar }}>Back to search</LinkButton>
+          {props.location.query.placeSearch &&
+            <LinkButton positionInGroup="right" pathname="/search/googlePlaceMatches" query={{ entities: props.location.query.entities, search: props.location.query.search, hideNavbar: props.location.query.hideNavbar, placeSearch: props.location.query.placeSearch }}>Back to place matches</LinkButton>
+          }
         </ButtonGroup>
       </PageHeader>
       <div className="row">

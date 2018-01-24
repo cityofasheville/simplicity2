@@ -21,6 +21,7 @@ import Properties from './app/property/Properties';
 import Street from './app/street/Street';
 import Neighborhood from './app/neighborhood/Neighborhood';
 import Owner from './app/owner/Owner';
+import GooglePlaceResults from './app/search/searchResults/GooglePlaceResults';
 // Topics
 import Topics from './app/Topics';
 import DevelopmentSummary from './app/development/DevelopmentSummary';
@@ -71,7 +72,10 @@ const Routes = props => (
     <Router history={browserHistory} onUpdate={logPageView === null ? null : () => logPageView()}>
       <Route path="/" component={App}>
         <IndexRoute component={Home} />
-        <Route path="search" component={Search}></Route>
+        <Route path="search">
+          <IndexRoute component={Search} />
+          <Route path="googlePlaceMatches" component={GooglePlaceResults}></Route>
+        </Route>
         <Route path="my-simplicity" component={MySimpliCity}></Route>
         <Route path="locations" component={Locations} />
         <Route path="address">

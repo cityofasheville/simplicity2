@@ -5,9 +5,12 @@ import Icon from '../../../shared/Icon';
 import { IM_SHIELD3, IM_OFFICE, IM_ROAD, IM_USER, IM_USERS, IM_LOCATION, IM_HOME2, IM_QUESTION, IM_GOOGLE, IM_SEARCH } from '../../../shared/iconConstants';
 import styles from './searchResultGroup.css';
 
-const getLink = (type, id, search, entities, label) => {
+const getLink = (type, id, search, entities, label, originalSearch) => {
   switch (type) {
     case 'address':
+      if (originalSearch) {
+        return `/address?search=${originalSearch}&placeSearch=${search}&id=${id}&entities=${entities}&entity=address`;
+      }
       return `/address?search=${search}&id=${id}&entities=${entities}&entity=address`;
     case 'property':
       return `/property?search=${search}&id=${id}&entities=${entities}&entity=property`;
@@ -22,7 +25,7 @@ const getLink = (type, id, search, entities, label) => {
     case 'owner':
       return `/owner?search=${search}&id=${id}&entities=${entities}&entity=owner&view=list`;
     case 'place':
-      return `/search?search=${id}&entities=${entities}`;
+      return `/search/googlePlaceMatches?search=${search}&placeSearch=${id}&entities=${entities}`;
     default:
       return '/';
   }
@@ -62,7 +65,7 @@ const SearchResultGroup = (props) => {
         return (<span style={{ marginRight: '5px' }}><Icon path={IM_GOOGLE} size={26} /></span>);
       case 'search':
         return (<span style={{ marginRight: '5px' }}><Icon path={IM_SEARCH} size={26} /></span>);
-        default:
+      default:
         return (<span style={{ marginRight: '5px' }}><Icon path={IM_QUESTION} size={26} /></span>);
     }
   };
@@ -82,7 +85,7 @@ const SearchResultGroup = (props) => {
       accessor: 'label',
       Cell: row => (
         <span style={{ display: 'flex', flexWrap: 'wrap' }}>
-          <a href={getLink(row.original.type, row.original.id, props.searchText, props.selectedEntities, row.original.label)} style={props.data.label === 'place' ? { flex: '50' } : { flex: '100' }}>
+          <a href={getLink(row.original.type, row.original.id, props.searchText, props.selectedEntities, row.original.label, props.originalSearch)} style={props.data.label === 'place' ? { flex: '50' } : { flex: '100' }}>
             <span className="text-primary" style={{ marginLeft: '20px' }}>
               {getIcon(row.original.type === 'place' ? 'search' : row.original.type)}
               {row.value}

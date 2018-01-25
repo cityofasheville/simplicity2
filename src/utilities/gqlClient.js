@@ -1,4 +1,7 @@
-import ApolloClient, { createNetworkInterface } from 'apollo-client';
+import { ApolloClient } from 'apollo-client';
+import { createHttpLink } from 'apollo-link-http';
+import { setContext } from 'apollo-link-context';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 
 let SERVER_URL = 'https://data-api1.ashevillenc.gov/graphql';
 
@@ -6,23 +9,19 @@ if (process.env.USE_LOCAL_API === 'true') {
   SERVER_URL = 'http://localhost:8080/graphql';
 }
 
-const networkInterface = createNetworkInterface({ uri: SERVER_URL });
+const httpLink = createHttpLink({ uri: SERVER_URL });
 
-/* eslint-disable no-param-reassign */
-networkInterface.use([{
-  applyMiddleware(req, next) {
-    if (!req.options.headers) {
-      req.options.headers = {};
-    }
-    // get the authentation token from storage if it exists
-    req.options.headers.authorization = sessionStorage.getItem('token') || null;
-    next();
+const middlewareLink = setContext(() => ({
+  headers: {
+    authorization: sessionStorage.getItem('token') || null,
   },
-}]);
-/* eslint-enable no-param-reassign */
+}));
+
+const link = middlewareLink.concat(httpLink);
 
 export const client = new ApolloClient({
-  networkInterface,
+  link: link,
+  cache: new InMemoryCache(),
 });
 
-export const apollo = client.reducer();
+//export const state = client.extract();

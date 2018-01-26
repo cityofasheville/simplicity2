@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { graphql } from 'react-apollo';
+import { getSearchText } from './searchQueries';
 
 import SearchBar from './SearchBar';
 
@@ -10,6 +12,7 @@ let timeout = null;
 
 const Search = props => (
   <div>
+    {console.log('search', props.searchText.search, props)}
     <div className="row">
       <SearchBar text={props.text || props.location.query.search} selectedEntities={props.location.query.entities} onKeyUp={props.onKeyUp} onSearchClick={props.onSearchClick} location={props.location} />
     </div>
@@ -42,4 +45,11 @@ const mapDispatchToProps = dispatch => (
   }
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(Search);
+//export default connect(mapStateToProps, mapDispatchToProps)(Search);
+
+export default graphql(getSearchText, {
+  props: ({ data: { searchText } }) => ({
+    searchText,
+  }),
+})(Search);
+

@@ -69,6 +69,8 @@ if (window.location.href.indexOf('dashboards.ashevillenc.gov') > -1) {
   logPageView = null;
 } // later add an else for SimpliCity2
 
+console.log(client);
+
 const Routes = props => (
   <Provider store={props.store}>
     <ApolloProvider client={client} >

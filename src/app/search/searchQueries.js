@@ -7,3 +7,11 @@ export const getSearchText = gql`
     }
   }
 `;
+
+export const updateSearchText = gql`
+  mutation updateSearchText($text: String!) {
+    updateSearchText(text: $text) @client {
+      searchText
+    }
+  }
+`;

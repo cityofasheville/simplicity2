@@ -5,7 +5,7 @@ import { ApolloProvider } from 'react-apollo';
 import { Provider } from 'react-redux';
 
 // GraphQL Client
-import { client } from './utilities/gqlClient';
+import { client } from './gqlClient';
 
 // Routed components
 import App from './app/App';

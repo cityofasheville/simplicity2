@@ -1,6 +1,7 @@
 import React from 'react';
 import { graphql, compose } from 'react-apollo';
-import { getSearchText, updateSearchText } from './searchQueries';
+import { getSearchText } from './graphql/searchQueries';
+import { updateSearchText } from './graphql/searchMutations';
 
 import SearchBar from './SearchBar';
 

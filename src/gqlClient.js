@@ -22,8 +22,6 @@ const link = middlewareLink.concat(httpLink);
 
 const cache = new InMemoryCache();
 
-//console.log('what', resolvers, defaultState);
-
 const stateLink = withClientState({
   cache,
   defaults: defaultState,

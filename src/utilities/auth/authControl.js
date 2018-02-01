@@ -1,22 +1,58 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { withApollo } from 'react-apollo';
-
-import { authControlDropdownClicked, loginLinkClicked } from './authActions';
+import { graphql, compose, withApollo } from 'react-apollo';
+import { firebase } from 'firebase';
+import { getUser, getDropdownOpen } from './graphql/authQueries';
+import { updateAuthDropdown, updateUser, updateAuthModal } from './graphql/authMutations';
+import { defaultAuthState } from './graphql/authDefaultState';
 
 const AuthControl = (props) => {
   const open = (props.open) ? 'open' : '';
-
   const displayName = (props.user.name) ? props.user.name : props.user.email;
 
   if (props.user.loggedIn === true) {
     return (
       <li className={['dropdown', open].join(' ')}>
-        <a className="dropdown-toggle" onClick={() => props.dispatch(authControlDropdownClicked())} data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{displayName} <span className="caret"></span></a>
+        <a
+          className="dropdown-toggle"
+          onClick={() => props.updateAuthDropdown({
+            variables: {
+              open: !props.open,
+            },
+          })}
+          data-toggle="dropdown"
+          role="button"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >{displayName}
+          <span className="caret"></span>
+        </a>
         <ul className="dropdown-menu">
           <li >
-            <a href="#" onClick={(e) => { e.preventDefault(); props.user.logout(props.dispatch); props.client.resetStore(); }} className="">Log Out</a>
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                firebase.auth().signOut()
+                .then(() => {
+                  this.props.updateUser({
+                    variables: {
+                      loggedIn: defaultAuthState.loggedIn,
+                      privilege: defaultAuthState.privilege,
+                      name: defaultAuthState.name,
+                      email: defaultAuthState.email,
+                      provider: defaultAuthState.provider,
+                      token: defaultAuthState.token,
+                    },
+                  });
+             //     this.props.client.resetStore();
+                }, (error) => {
+                  dispatch(logoutError(error)); //todo
+                });
+              }}
+              className=""
+            >Log Out
+            </a>
           </li>
         </ul>
       </li>
@@ -25,31 +61,44 @@ const AuthControl = (props) => {
 
   return (
     <li>
-      <a href="#" onClick={(e) => { e.preventDefault(); props.dispatch(loginLinkClicked()); }} className="">Log In</a>
+      <a
+        href="#"
+        onClick={(e) => {
+          e.preventDefault();
+          props.updateAuthModal({
+            variables: {
+              open: !props.open,
+            },
+          });
+        }}
+        className=""
+      >Log In
+    </a>
     </li>
   );
 };
 
 AuthControl.propTypes = {
-  dispatch: PropTypes.func,
+  updateAuthDropdown: PropTypes.func,
   user: PropTypes.object,
   open: PropTypes.bool,
 };
 
-const mapStateToProps = state => (
-  {
-    user: state.auth.user,
-    open: state.auth.dropdown.open,
-  }
-);
+const AuthControlComposed = compose(
+  graphql(updateAuthModal, { name: 'updateAuthModal' }),
+  graphql(updateUser, { name: 'updateUser' }),
+  graphql(updateAuthDropdown, { name: 'updateAuthDropdown' }),
+  graphql(getDropdownOpen, {
+    props: ({ data: { dropdown } }) => ({
+      open: dropdown.open,
+    }),
+  }),
+  graphql(getUser, {
+    props: ({ data: { user } }) => ({
+      user,
+    }),
+  })
+)(AuthControl);
 
-const mapDispatchToProps = dispatch => (
-  {
-    dispatch,
-  }
-);
-
-const AuthControlConnected = connect(mapStateToProps, mapDispatchToProps)(AuthControl);
-
-export default withApollo(AuthControlConnected);
+export default withApollo(AuthControlComposed);
 

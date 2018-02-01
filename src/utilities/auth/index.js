@@ -2,13 +2,14 @@ import React from 'react';
 import firebase from 'firebase';
 import firebaseui from 'firebaseui';
 import { userLoggedIn, userLoggedOut, loginError, logoutError } from './authActions';
+import { getUser } from './graphql/authQueries';
 
 const authProviders = [
   firebase.auth.GoogleAuthProvider.PROVIDER_ID,
   //firebase.auth.EmailAuthProvider.PROVIDER_ID,
 ];
 
-const initializeFirebaseApp = (store) => {
+const initializeFirebaseApp = (client) => {
   firebase.initializeApp({
     apiKey: 'AIzaSyAEwpGQsTfOhwxUXaLX43FNAPA7BfL4SQ0',
     authDomain: 'simplicityii-878be.firebaseapp.com',
@@ -22,7 +23,7 @@ const initializeFirebaseApp = (store) => {
         email: user.email,
         name: user.displayName,
         provider: user.providerData[0].providerId,
-        token: null,
+        token: null, //hmmm....will it not have a token here that could just be used?
         logout: firebaseLogout,
       };
       user.getToken(true) /* forceRefresh */
@@ -67,7 +68,7 @@ export const AuthProviders = () => (
   <div id="firebaseui-auth-container"></div>
 );
 
-export const initAuth = (store) => {
-  initializeFirebaseApp(store);
+export const initAuth = (client) => {
+  initializeFirebaseApp(client);
   initializeFirebaseAuthUI();
 };

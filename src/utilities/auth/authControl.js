@@ -37,12 +37,7 @@ const AuthControl = (props) => {
                 .then(() => {
                   this.props.updateUser({
                     variables: {
-                      loggedIn: defaultAuthState.loggedIn,
-                      privilege: defaultAuthState.privilege,
-                      name: defaultAuthState.name,
-                      email: defaultAuthState.email,
-                      provider: defaultAuthState.provider,
-                      token: defaultAuthState.token,
+                      user: defaultAuthState.user,
                     },
                   });
              //     this.props.client.resetStore();

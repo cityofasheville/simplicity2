@@ -60,7 +60,6 @@ class Main extends React.Component {
     });
 
     firebase.auth().onAuthStateChanged((user) => {
-      console.log('authStateChange', this.props.updateUser);
       if (user) {
         const userData = {
           email: user.email,
@@ -77,11 +76,11 @@ class Main extends React.Component {
           this.props.updateUser({
             variables: {
               loggedIn: true,
-              privilege: user.privilege,
-              name: user.name,
-              email: user.email,
-              provider: user.provider,
-              token: user.token,
+              privilege: userData.privilege,
+              name: userData.name,
+              email: userData.email,
+              provider: userData.provider,
+              token: userData.token,
             },
           });
         }, (error) => {
@@ -94,12 +93,7 @@ class Main extends React.Component {
           .then(() => {
             this.props.updateUser({
               variables: {
-                loggedIn: defaultAuthState.loggedIn,
-                privilege: defaultAuthState.privilege,
-                name: defaultAuthState.name,
-                email: defaultAuthState.email,
-                provider: defaultAuthState.provider,
-                token: defaultAuthState.token,
+                user: defaultAuthState.user,
               },
             });
          //   this.props.client.resetStore();
@@ -142,4 +136,6 @@ const App = compose(
   })
 )(Main);
 
-export default withApollo(App);
+export default App;
+
+//export default withApollo(App);

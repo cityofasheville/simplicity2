@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import firebase from 'firebase';
 import { graphql, compose, withApollo } from 'react-apollo';
-import { firebase } from 'firebase';
 import { getUser, getDropdownOpen } from './graphql/authQueries';
 import { updateAuthDropdown, updateUser, updateAuthModal } from './graphql/authMutations';
-import { defaultAuthState } from './graphql/authDefaultState';
+
 
 const AuthControl = (props) => {
   const open = (props.open) ? 'open' : '';
@@ -35,12 +35,7 @@ const AuthControl = (props) => {
                 e.preventDefault();
                 firebase.auth().signOut()
                 .then(() => {
-                  this.props.updateUser({
-                    variables: {
-                      user: defaultAuthState.user,
-                    },
-                  });
-             //     this.props.client.resetStore();
+                  this.props.client.resetStore();
                 }, (error) => {
                   dispatch(logoutError(error)); //todo
                 });

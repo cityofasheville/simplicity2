@@ -28,7 +28,7 @@ const stateLink = withClientState({
   resolvers,
 });
 
-export const client = new ApolloClient({
+const aClient = new ApolloClient({
   link: ApolloLink.from([
     stateLink,
     link,
@@ -36,4 +36,10 @@ export const client = new ApolloClient({
   cache,
 });
 
-//export const state = client.extract();
+aClient.onResetStore(() => {
+  console.log('rewriting defaults');
+  stateLink.writeDefaults();
+});
+
+export const client = aClient;
+

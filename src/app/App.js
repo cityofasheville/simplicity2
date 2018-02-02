@@ -72,7 +72,6 @@ class Main extends React.Component {
         .then((idToken) => {
           userData.token = idToken;
           sessionStorage.setItem('token', idToken);
-          //store.dispatch(userLoggedIn(userData));
           this.props.updateUser({
             variables: {
               loggedIn: true,
@@ -88,15 +87,11 @@ class Main extends React.Component {
           console.log(`TOKEN ERROR: ${JSON.stringify(error)}`);
         });
       } else {
-        //store.dispatch(userLoggedOut());
+        console.log('hello');
         firebase.auth().signOut()
           .then(() => {
-            this.props.updateUser({
-              variables: {
-                user: defaultAuthState.user,
-              },
-            });
-         //   this.props.client.resetStore();
+            console.log('test');
+            this.props.client.resetStore();
           }, (error) => {
             dispatch(logoutError(error)); //todo
           });
@@ -136,6 +131,4 @@ const App = compose(
   })
 )(Main);
 
-export default App;
-
-//export default withApollo(App);
+export default withApollo(App);

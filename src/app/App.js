@@ -31,18 +31,10 @@ const initializeFirebaseAuthUI = () => {
   authUi.start('#firebaseui-auth-container', {
     signInSuccessUrl: '/',
     signInOptions: authProviders,
+    signInFlow: 'popup',
     // TODO:  Terms of service url.
     tosUrl: '<your-tos-url>',
   });
-};
-
-const firebaseLogout = (dispatch) => {
-  return firebase.auth().signOut()
-    .then(() => {
-      dispatch(userLoggedOut());
-    }, (error) => {
-      dispatch(logoutError(error));
-    });
 };
 
 class Main extends React.Component {
@@ -61,40 +53,31 @@ class Main extends React.Component {
 
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        const userData = {
-          email: user.email,
-          name: user.displayName,
-          provider: user.providerData[0].providerId,
-          token: null, //hmmm....will it not have a token here that could just be used?
-          logout: firebaseLogout,
-        };
-        user.getToken(true) /* forceRefresh */
-        .then((idToken) => {
-          userData.token = idToken;
-          sessionStorage.setItem('token', idToken);
-          this.props.updateUser({
-            variables: {
-              loggedIn: true,
-              privilege: userData.privilege,
-              name: userData.name,
-              email: userData.email,
-              provider: userData.provider,
-              token: userData.token,
-            },
-          });
+        sessionStorage.setItem('token', user.refreshToken);
+        this.props.updateUser({
+          variables: {
+            loggedIn: true,
+            privilege: 0,
+            name: user.displayName,
+            email: user.email,
+            provider: user.providerData[0].providerId,
+            token: user.refreshToken,
+          },
         }, (error) => {
-          store.dispatch(loginError(error));
           console.log(`TOKEN ERROR: ${JSON.stringify(error)}`);
         });
       } else {
-        console.log('hello');
-        firebase.auth().signOut()
-          .then(() => {
-            console.log('test');
-            this.props.client.resetStore();
-          }, (error) => {
-            dispatch(logoutError(error)); //todo
-          });
+        const defaultUser = defaultAuthState.user;
+        this.props.updateUser({
+          variables: {
+            loggedIn: defaultUser.loggedIn,
+            privilege: defaultUser.privilege,
+            name: defaultUser.name,
+            email: defaultUser.email,
+            provider: defaultUser.provider,
+            token: defaultUser.token,
+          },
+        });
       }
     });
     

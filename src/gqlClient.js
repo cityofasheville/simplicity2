@@ -36,10 +36,12 @@ const aClient = new ApolloClient({
   cache,
 });
 
-aClient.onResetStore(() => {
-  console.log('rewriting defaults');
-  stateLink.writeDefaults();
-});
+aClient.onResetStore(stateLink.writeDefaults);
+
+// aClient.onResetStore(() => {
+//   console.log('rewriting defaults');
+//   stateLink.writeDefaults();
+// });
 
 export const client = aClient;
 

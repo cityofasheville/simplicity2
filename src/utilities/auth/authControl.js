@@ -1,23 +1,21 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import firebase from 'firebase';
 import { graphql, compose, withApollo } from 'react-apollo';
-import { getUser, getDropdownOpen } from './graphql/authQueries';
+import { getUser, getDropdownOpen, getModalOpen } from './graphql/authQueries';
 import { updateAuthDropdown, updateUser, updateAuthModal } from './graphql/authMutations';
-
+import { defaultAuthState } from './graphql/authDefaultState';
 
 const AuthControl = (props) => {
-  const open = (props.open) ? 'open' : '';
   const displayName = (props.user.name) ? props.user.name : props.user.email;
 
   if (props.user.loggedIn === true) {
     return (
-      <li className={['dropdown', open].join(' ')}>
+      <li className={['dropdown', props.dropdownOpen ? 'open' : ''].join(' ')}>
         <a
           className="dropdown-toggle"
           onClick={() => props.updateAuthDropdown({
             variables: {
-              open: !props.open,
+              open: !props.dropdownOpen,
             },
           })}
           data-toggle="dropdown"
@@ -35,9 +33,19 @@ const AuthControl = (props) => {
                 e.preventDefault();
                 firebase.auth().signOut()
                 .then(() => {
-                  this.props.client.resetStore();
+                  const defaultUser = defaultAuthState.user;
+                  props.updateUser({
+                    variables: {
+                      loggedIn: defaultUser.loggedIn,
+                      privilege: defaultUser.privilege,
+                      name: defaultUser.name,
+                      email: defaultUser.email,
+                      provider: defaultUser.provider,
+                      token: defaultUser.token,
+                    },
+                  });
                 }, (error) => {
-                  dispatch(logoutError(error)); //todo
+                  console.log(error);
                 });
               }}
               className=""
@@ -57,7 +65,7 @@ const AuthControl = (props) => {
           e.preventDefault();
           props.updateAuthModal({
             variables: {
-              open: !props.open,
+              open: !props.modalOpen,
             },
           });
         }}
@@ -68,19 +76,18 @@ const AuthControl = (props) => {
   );
 };
 
-AuthControl.propTypes = {
-  updateAuthDropdown: PropTypes.func,
-  user: PropTypes.object,
-  open: PropTypes.bool,
-};
-
 const AuthControlComposed = compose(
   graphql(updateAuthModal, { name: 'updateAuthModal' }),
   graphql(updateUser, { name: 'updateUser' }),
   graphql(updateAuthDropdown, { name: 'updateAuthDropdown' }),
+  graphql(getModalOpen, {
+    props: ({ data: { modal } }) => ({
+      modalOpen: modal.open,
+    }),
+  }),
   graphql(getDropdownOpen, {
     props: ({ data: { dropdown } }) => ({
-      open: dropdown.open,
+      dropdownOpen: dropdown.open,
     }),
   }),
   graphql(getUser, {

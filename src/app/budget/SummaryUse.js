@@ -2,10 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { connect } from 'react-redux';
 import BudgetSummaryBarChart from './BudgetSummaryBarChart';
 import LoadingAnimation from '../../shared/LoadingAnimation';
-import { buildSummaryUseData } from './budgetActions';
 
 const SummaryUse = (props) => {
   if (props.data.loading) { // eslint-disable-line react/prop-types
@@ -15,7 +13,6 @@ const SummaryUse = (props) => {
     return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
   }
 
-  props.buildSummaryUseData(props.data.budgetSummary); // eslint-disable-line react/prop-types
   return (
     <div className="row">
       <div className="col-sm-12">
@@ -45,12 +42,4 @@ const budgetSummaryUseQuery = gql`
   }
 `;
 
-const SummaryUseGQL = graphql(budgetSummaryUseQuery, {})(SummaryUse);
-export default connect(
-  null,
-  dispatch => ({
-    buildSummaryUseData: queryData => (
-      dispatch(buildSummaryUseData(queryData))
-    ),
-  }),
-)(SummaryUseGQL);
+export default graphql(budgetSummaryUseQuery, {})(SummaryUse);

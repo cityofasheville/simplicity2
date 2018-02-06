@@ -1,11 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { graphql } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
-import { connect } from 'react-redux';
 import BudgetSankey from './BudgetSankey';
 import LoadingAnimation from '../../shared/LoadingAnimation';
-import { buildCashFlowData } from './budgetActions';
+import { updateSankeyData } from './graphql/budgetMutations';
+import { buildCashFlowData } from './budgetUtilities';
 
 const SummaryCashFlow = (props) => {
   if (props.data.loading) { // eslint-disable-line react/prop-types
@@ -15,7 +14,16 @@ const SummaryCashFlow = (props) => {
     return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
   }
 
-  props.buildCashFlowData(props.data); // eslint-disable-line react/prop-types
+  const cashFlowData = buildCashFlowData(props.data);
+
+  props.updateSankeyData({
+    variables: {
+      sankeyData: {
+        nodes: cashFlowData.sankeyNodes,
+        links: cashFlowData.sankeyLinks,
+      },
+    },
+  });
 
   return (
     <div className="row">
@@ -53,14 +61,7 @@ const glBudgetCashFlowQuery = gql`
   }
 `;
 
-const SummaryCashFlowGQL = graphql(glBudgetCashFlowQuery, {})(SummaryCashFlow);
-
-export default connect(
-  null,
-  dispatch => ({
-    buildCashFlowData: queryData => (
-      dispatch(buildCashFlowData(queryData))
-    ),
-  }),
-)(SummaryCashFlowGQL);
-
+export default compose(
+  graphql(glBudgetCashFlowQuery, {}),
+  graphql(updateSankeyData, { name: 'updateSankeyData' }),
+)(SummaryCashFlow);

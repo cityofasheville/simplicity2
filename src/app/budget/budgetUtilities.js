@@ -319,5 +319,6 @@ export const buildCashFlowData = (data) => {
   // combine the revenues, funds, expenses nodes into one array
   sankeyNodes = revenueNodes.concat(fundNodes).concat(expenseNodes);
   sankeyNodes = sankeyNodes.map(node => (objectAssign({}, node, { value: Math.round(node.value) })));
+  console.log('nodes', sankeyNodes, 'links', sankeyLinks);
   return { sankeyNodes, sankeyLinks };
 };

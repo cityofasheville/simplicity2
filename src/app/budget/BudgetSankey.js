@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { graphql } from 'react-apollo';
+import { getSankeyData } from './graphql/budgetQueries';
 import Sankey from '../../shared/visualization/Sankey';
 
 const BudgetSankey = props => (
@@ -27,11 +28,9 @@ BudgetSankey.defaultProps = {
   altText: 'Flow diagram',
 };
 
-const mapStateToProps = state => (
-  {
-    nodes: state.budget.cashFlowData.nodes,
-    links: state.budget.cashFlowData.links,
-  }
-);
-
-export default connect(mapStateToProps)(BudgetSankey);
+export default graphql(getSankeyData, {
+  props: ({ data: { nodes, links } }) => ({
+    nodes,
+    links,
+  }),
+})(BudgetSankey);

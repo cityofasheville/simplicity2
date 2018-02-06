@@ -1,10 +1,9 @@
 import { combineReducers } from 'redux';
 
 // Import Reducers
-import modal from './app/modal/modalReducers';
 import budget from './app/budget/budgetReducer';
 
-const reducers = combineReducers({ modal, budget });
+const reducers = combineReducers({ budget });
 
 export default reducers;
 

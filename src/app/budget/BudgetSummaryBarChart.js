@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import BarChart from '../../shared/visualization/BarChart';
-import { buildSummaryData } from './budgetUtilities';
+import { graphql, compose } from 'react-apollo';
+import { getBudgetSummaryDept, getBudgetSummaryUse } from './graphql/budgetQueries';
 
 const getDollars = (value) => {
   if (Math.abs(value) > 1000000) {
@@ -47,7 +48,8 @@ class BudgetSummaryBarChart extends React.Component {
     super(props);
     this.state = {
       showingLongDesc: this.showLongDesc,
-      summaryData: buildSummaryData(props.data.budgetSummary) };
+      summaryData: props.categoryType === 'use' ? props.summaryUseData : props.summaryDeptData,
+    };
   }
 
   toggleLongDesc() {
@@ -99,4 +101,16 @@ BudgetSummaryBarChart.defaultProps = {
   showLongDesc: false,
 };
 
-export default BudgetSummaryBarChart;
+//not that efficient...
+export default compose(
+  graphql(getBudgetSummaryDept, {
+    props: ({ data: { budgetSummaryDept } }) => ({
+      summaryDeptData: budgetSummaryDept,
+    }),
+  }),
+  graphql(getBudgetSummaryUse, {
+    props: ({ data: { budgetSummaryUse } }) => ({
+      summaryUseData: budgetSummaryUse,
+    }),
+  }),
+)(BudgetSummaryBarChart);

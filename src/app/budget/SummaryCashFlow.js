@@ -6,37 +6,54 @@ import LoadingAnimation from '../../shared/LoadingAnimation';
 import { updateSankeyData } from './graphql/budgetMutations';
 import { buildCashFlowData } from './budgetUtilities';
 
-const SummaryCashFlow = (props) => {
-  if (props.data.loading) { // eslint-disable-line react/prop-types
-    return <LoadingAnimation />;
-  }
-  if (props.data.error) { // eslint-disable-line react/prop-types
-    return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
+class SummaryCashFlow extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      sankeyInitialized: false,
+    };
+
+    this.initializeSankey = this.initializeSankey.bind(this);
   }
 
-  const cashFlowData = buildCashFlowData(props.data);
-
-  props.updateSankeyData({
-    variables: {
-      sankeyData: {
-        nodes: cashFlowData.sankeyNodes,
-        links: cashFlowData.sankeyLinks,
+  async initializeSankey() {
+    const cashFlowData = buildCashFlowData(this.props.data);
+    await this.props.updateSankeyData({
+      variables: {
+        sankeyData: {
+          nodes: cashFlowData.sankeyNodes,
+          links: cashFlowData.sankeyLinks,
+        },
       },
-    },
-  });
+    });
+    this.setState({ sankeyInitialized: true });
+  }
 
-  return (
-    <div className="row">
-      <div className="col-sm-12">
-        <h3>Cash flow diagram: Revenues to expenditures</h3>
-        <div style={{ marginBottom: '5px' }}>
-          The chart below shows how revenue flows through the City’s key funds to the various departments. The thickness of each flow is proportional to the amount of money represented. Mouse over the rectangles and flows to see actual amounts.
+  render() {
+    if (this.props.data.loading) { // eslint-disable-line react/prop-types
+      return <LoadingAnimation />;
+    }
+    if (this.props.data.error) { // eslint-disable-line react/prop-types
+      return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
+    }
+  
+    if (!this.state.sankeyInitialized) {
+      this.initializeSankey();
+    }
+  
+    return (
+      <div className="row">
+        <div className="col-sm-12">
+          <h3>Cash flow diagram: Revenues to expenditures</h3>
+          <div style={{ marginBottom: '5px' }}>
+            The chart below shows how revenue flows through the City’s key funds to the various departments. The thickness of each flow is proportional to the amount of money represented. Mouse over the rectangles and flows to see actual amounts.
+          </div>
+          <BudgetSankey altText="Cash flow diagram" />
         </div>
-        <BudgetSankey altText="Cash flow diagram" />
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 const glBudgetCashFlowQuery = gql`
   query glBudgetCashFlowQuery {

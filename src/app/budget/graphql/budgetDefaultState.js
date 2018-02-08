@@ -4,4 +4,21 @@ export const defaultBudgetState = {
     nodes: [{ name: '', value: 0 }],
     links: [{ source: 0, target: 0, value: 0 }],
   },
+  budgetTrees: {
+    __typename: 'budgetTrees',
+    expenseTree: null,
+    revenueTree: null,
+    expenseTreeForTreemap: null,
+    revenueTreeForTreemap: null,
+  },
+  budgetSummaryUse: {
+    __typename: 'budgetSummaryUse',
+    dataKeys: null,
+    dataValues: null,
+  },
+  budgetSummaryDept: {
+    __typename: 'budgetSummaryDept',
+    dataKeys: null,
+    dataValues: null,
+  },
 };

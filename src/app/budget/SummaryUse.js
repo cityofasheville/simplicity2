@@ -1,25 +1,55 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { graphql } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import BudgetSummaryBarChart from './BudgetSummaryBarChart';
 import LoadingAnimation from '../../shared/LoadingAnimation';
+import { updateBudgetSummaryUse } from './graphql/budgetMutations';
+import { buildSummaryData } from './budgetUtilities';
 
-const SummaryUse = (props) => {
-  if (props.data.loading) { // eslint-disable-line react/prop-types
-    return <LoadingAnimation size="small" />;
-  }
-  if (props.data.error) { // eslint-disable-line react/prop-types
-    return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
+class SummaryUse extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      summaryUseInitialized: false,
+    };
+
+    this.initializeSummaryUse = this.initializeSummaryUse.bind(this);
   }
 
-  return (
-    <div className="row">
-      <div className="col-sm-12">
-        <BudgetSummaryBarChart categoryType="use" {...props} />
+  async initializeSummaryUse() {
+    const summaryUseData = buildSummaryData(this.props.data.budgetSummary);
+    await this.props.updateBudgetSummaryUse({
+      variables: {
+        budgetSummaryUse: {
+          dataKeys: summaryUseData.dataKeys,
+          dataValues: summaryUseData.dataValues,
+        },
+      },
+    });
+    this.setState({ summaryUseInitialized: true });
+  }
+
+  render() {
+    if (this.props.data.loading) { // eslint-disable-line react/prop-types
+      return <LoadingAnimation size="small" />;
+    }
+    if (this.props.data.error) { // eslint-disable-line react/prop-types
+      return <p>{this.props.data.error.message}</p>; // eslint-disable-line react/prop-types
+    }
+
+    if (!this.state.summaryUseInitialized) {
+      this.initializeSummaryUse();
+    }
+
+    return (
+      <div className="row">
+        <div className="col-sm-12">
+          <BudgetSummaryBarChart categoryType="use" {...this.props} />
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 };
 
 SummaryUse.propTypes = {
@@ -42,4 +72,7 @@ const budgetSummaryUseQuery = gql`
   }
 `;
 
-export default graphql(budgetSummaryUseQuery, {})(SummaryUse);
+export default compose(
+  graphql(budgetSummaryUseQuery, {}),
+  graphql(updateBudgetSummaryUse, { name: 'updateBudgetSummaryUse' }),
+)(SummaryUse);

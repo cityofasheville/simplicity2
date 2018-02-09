@@ -1,34 +1,55 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { graphql } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
-import { connect } from 'react-redux';
 import BudgetSankey from './BudgetSankey';
 import LoadingAnimation from '../../shared/LoadingAnimation';
-import { buildCashFlowData } from './budgetActions';
+import { updateSankeyData } from './graphql/budgetMutations';
+import { getSankeyData } from './graphql/budgetQueries';
+import { buildCashFlowData } from './budgetUtilities';
 
-const SummaryCashFlow = (props) => {
-  if (props.data.loading) { // eslint-disable-line react/prop-types
-    return <LoadingAnimation />;
+class SummaryCashFlow extends React.Component {
+  constructor(props) {
+    super(props);
+    this.initializeSankey = this.initializeSankey.bind(this);
   }
-  if (props.data.error) { // eslint-disable-line react/prop-types
-    return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
+
+  async initializeSankey() {
+    const cashFlowData = buildCashFlowData(this.props.data);
+    await this.props.updateSankeyData({
+      variables: {
+        sankeyData: {
+          nodes: cashFlowData.sankeyNodes,
+          links: cashFlowData.sankeyLinks,
+        },
+      },
+    });
   }
 
-  props.buildCashFlowData(props.data); // eslint-disable-line react/prop-types
-
-  return (
-    <div className="row">
-      <div className="col-sm-12">
-        <h3>Cash flow diagram: Revenues to expenditures</h3>
-        <div style={{ marginBottom: '5px' }}>
-          The chart below shows how revenue flows through the City’s key funds to the various departments. The thickness of each flow is proportional to the amount of money represented. Mouse over the rectangles and flows to see actual amounts.
+  render() {
+    if (this.props.data.loading) { // eslint-disable-line react/prop-types
+      return <LoadingAnimation />;
+    }
+    if (this.props.data.error) { // eslint-disable-line react/prop-types
+      return <p>{this.props.data.error.message}</p>; // eslint-disable-line react/prop-types
+    }
+  
+    if (this.props.sankeyData.nodes === null) {
+      this.initializeSankey();
+    }
+  
+    return (
+      <div className="row">
+        <div className="col-sm-12">
+          <h3>Cash flow diagram: Revenues to expenditures</h3>
+          <div style={{ marginBottom: '5px' }}>
+            The chart below shows how revenue flows through the City’s key funds to the various departments. The thickness of each flow is proportional to the amount of money represented. Mouse over the rectangles and flows to see actual amounts.
+          </div>
+          <BudgetSankey altText="Cash flow diagram" />
         </div>
-        <BudgetSankey altText="Cash flow diagram" />
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 const glBudgetCashFlowQuery = gql`
   query glBudgetCashFlowQuery {
@@ -53,14 +74,12 @@ const glBudgetCashFlowQuery = gql`
   }
 `;
 
-const SummaryCashFlowGQL = graphql(glBudgetCashFlowQuery, {})(SummaryCashFlow);
-
-export default connect(
-  null,
-  dispatch => ({
-    buildCashFlowData: queryData => (
-      dispatch(buildCashFlowData(queryData))
-    ),
+export default compose(
+  graphql(glBudgetCashFlowQuery, {}),
+  graphql(getSankeyData, {
+    props: ({ data: { sankeyData } }) => ({
+      sankeyData,
+    }),
   }),
-)(SummaryCashFlowGQL);
-
+  graphql(updateSankeyData, { name: 'updateSankeyData' }),
+)(SummaryCashFlow);

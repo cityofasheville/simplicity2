@@ -6,6 +6,7 @@ import BudgetSummaryBarChart from './BudgetSummaryBarChart';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import { buildSummaryData } from './budgetUtilities';
 import { updateBudgetSummaryDept } from './graphql/budgetMutations';
+import { getBudgetSummaryDept } from './graphql/budgetQueries';
 
 class SummaryDepartments extends React.Component {
   constructor(props) {
@@ -17,9 +18,11 @@ class SummaryDepartments extends React.Component {
     this.initializeSummaryDept = this.initializeSummaryDept.bind(this);
   }
 
-  //TODO -- add check here that only call this if also the cache has nulls...
   async initializeSummaryDept() {
-    console.log('updating');
+    if (this.props.summaryDeptData.dataKeys !== null) {
+      this.setState({ summaryDeptInitialized: true });
+      return;
+    }
     const summaryDeptData = buildSummaryData(this.props.data.budgetSummary);
     await this.props.updateBudgetSummaryDept({
       variables: {
@@ -76,5 +79,10 @@ const budgetSummaryDeptQuery = gql`
 
 export default compose(
   graphql(budgetSummaryDeptQuery, {}),
+  graphql(getBudgetSummaryDept, {
+    props: ({ data: { budgetSummaryDept } }) => ({
+      summaryDeptData: budgetSummaryDept,
+    }),
+  }),
   graphql(updateBudgetSummaryDept, { name: 'updateBudgetSummaryDept' }),
 )(SummaryDepartments);

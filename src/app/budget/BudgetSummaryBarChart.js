@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import BarChart from '../../shared/visualization/BarChart';
 import { graphql, compose } from 'react-apollo';
+import BarChart from '../../shared/visualization/BarChart';
 import { getBudgetSummaryDept, getBudgetSummaryUse } from './graphql/budgetQueries';
 
 const getDollars = (value) => {

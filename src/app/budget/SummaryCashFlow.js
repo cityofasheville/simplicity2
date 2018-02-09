@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 import BudgetSankey from './BudgetSankey';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import { updateSankeyData } from './graphql/budgetMutations';
+import { getSankeyData } from './graphql/budgetQueries';
 import { buildCashFlowData } from './budgetUtilities';
 
 class SummaryCashFlow extends React.Component {
@@ -17,6 +18,10 @@ class SummaryCashFlow extends React.Component {
   }
 
   async initializeSankey() {
+    if (this.props.sankeyData.nodes === null) {
+      this.setState({ sankeyInitialized: true });
+      return;
+    }
     const cashFlowData = buildCashFlowData(this.props.data);
     await this.props.updateSankeyData({
       variables: {
@@ -80,5 +85,10 @@ const glBudgetCashFlowQuery = gql`
 
 export default compose(
   graphql(glBudgetCashFlowQuery, {}),
+  graphql(getSankeyData, {
+    props: ({ data: { sankeyData } }) => ({
+      sankeyData,
+    }),
+  }),
   graphql(updateSankeyData, { name: 'updateSankeyData' }),
 )(SummaryCashFlow);

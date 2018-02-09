@@ -5,6 +5,7 @@ import gql from 'graphql-tag';
 import BudgetSummaryBarChart from './BudgetSummaryBarChart';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import { updateBudgetSummaryUse } from './graphql/budgetMutations';
+import { getBudgetSummaryUse } from './graphql/budgetQueries';
 import { buildSummaryData } from './budgetUtilities';
 
 class SummaryUse extends React.Component {
@@ -18,6 +19,10 @@ class SummaryUse extends React.Component {
   }
 
   async initializeSummaryUse() {
+    if (this.props.summaryUseData.dataKeys !== null) {
+      this.setState({ summaryUseInitialized: true });
+      return;
+    }
     const summaryUseData = buildSummaryData(this.props.data.budgetSummary);
     await this.props.updateBudgetSummaryUse({
       variables: {
@@ -74,5 +79,10 @@ const budgetSummaryUseQuery = gql`
 
 export default compose(
   graphql(budgetSummaryUseQuery, {}),
+  graphql(getBudgetSummaryUse, {
+    props: ({ data: { budgetSummaryUse } }) => ({
+      summaryUseData: budgetSummaryUse,
+    }),
+  }),
   graphql(updateBudgetSummaryUse, { name: 'updateBudgetSummaryUse' }),
 )(SummaryUse);

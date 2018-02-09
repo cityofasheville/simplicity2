@@ -11,18 +11,13 @@ import { buildSummaryData } from './budgetUtilities';
 class SummaryUse extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      summaryUseInitialized: false,
-    };
-
     this.initializeSummaryUse = this.initializeSummaryUse.bind(this);
   }
 
   async initializeSummaryUse() {
-    if (this.props.summaryUseData.dataKeys !== null) {
-      this.setState({ summaryUseInitialized: true });
-      return;
-    }
+    // if (this.props.summaryUseData.dataKeys !== null) {
+    //   return;
+    // }
     const summaryUseData = buildSummaryData(this.props.data.budgetSummary);
     await this.props.updateBudgetSummaryUse({
       variables: {
@@ -32,7 +27,6 @@ class SummaryUse extends React.Component {
         },
       },
     });
-    this.setState({ summaryUseInitialized: true });
   }
 
   render() {
@@ -43,7 +37,7 @@ class SummaryUse extends React.Component {
       return <p>{this.props.data.error.message}</p>; // eslint-disable-line react/prop-types
     }
 
-    if (!this.state.summaryUseInitialized) {
+    if (this.props.summaryUseData.dataKeys === null) {
       this.initializeSummaryUse();
     }
 
@@ -55,7 +49,7 @@ class SummaryUse extends React.Component {
       </div>
     );
   }
-};
+}
 
 SummaryUse.propTypes = {
   data: PropTypes.object, // eslint-disable-line react/forbid-prop-types

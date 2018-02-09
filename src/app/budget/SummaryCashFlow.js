@@ -10,18 +10,10 @@ import { buildCashFlowData } from './budgetUtilities';
 class SummaryCashFlow extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      sankeyInitialized: false,
-    };
-
     this.initializeSankey = this.initializeSankey.bind(this);
   }
 
   async initializeSankey() {
-    if (this.props.sankeyData.nodes === null) {
-      this.setState({ sankeyInitialized: true });
-      return;
-    }
     const cashFlowData = buildCashFlowData(this.props.data);
     await this.props.updateSankeyData({
       variables: {
@@ -31,7 +23,6 @@ class SummaryCashFlow extends React.Component {
         },
       },
     });
-    this.setState({ sankeyInitialized: true });
   }
 
   render() {
@@ -39,10 +30,10 @@ class SummaryCashFlow extends React.Component {
       return <LoadingAnimation />;
     }
     if (this.props.data.error) { // eslint-disable-line react/prop-types
-      return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
+      return <p>{this.props.data.error.message}</p>; // eslint-disable-line react/prop-types
     }
   
-    if (!this.state.sankeyInitialized) {
+    if (this.props.sankeyData.nodes === null) {
       this.initializeSankey();
     }
   

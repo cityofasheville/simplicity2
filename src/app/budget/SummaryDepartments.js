@@ -11,18 +11,10 @@ import { getBudgetSummaryDept } from './graphql/budgetQueries';
 class SummaryDepartments extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      summaryDeptInitialized: false,
-    };
-
     this.initializeSummaryDept = this.initializeSummaryDept.bind(this);
   }
 
   async initializeSummaryDept() {
-    if (this.props.summaryDeptData.dataKeys !== null) {
-      this.setState({ summaryDeptInitialized: true });
-      return;
-    }
     const summaryDeptData = buildSummaryData(this.props.data.budgetSummary);
     await this.props.updateBudgetSummaryDept({
       variables: {
@@ -32,7 +24,6 @@ class SummaryDepartments extends React.Component {
         },
       },
     });
-    this.setState({ summaryDeptInitialized: true });
   }
 
   render() {
@@ -43,7 +34,7 @@ class SummaryDepartments extends React.Component {
       return <p>{this.props.data.error.message}</p>; // eslint-disable-line react/prop-types
     }
 
-    if (!this.state.summaryDeptInitialized) {
+    if (this.props.summaryDeptData.dataKeys === null) {
       this.initializeSummaryDept();
     }
 

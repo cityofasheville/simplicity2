@@ -4,9 +4,9 @@ import { graphql } from 'react-apollo';
 import { getSankeyData } from './graphql/budgetQueries';
 import Sankey from '../../shared/visualization/Sankey';
 
-const BudgetSankey = props => {
-  return (<Sankey nodes={props.nodes} links={props.links} altText={props.altText} />)
-};
+const BudgetSankey = props => (
+  <Sankey nodes={props.nodes} links={props.links} altText={props.altText} />
+);
 
 const nameShape = {
   name: PropTypes.string,

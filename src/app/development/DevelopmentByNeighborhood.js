@@ -72,7 +72,7 @@ const convertToPieData = (permitData) => {
   return pieData;
 };
 
-const DevelopmentByNeighborhood = props => {
+const DevelopmentByNeighborhood = (props) => {
   if (props.data.loading) { // eslint-disable-line react/prop-types
     return <LoadingAnimation />;
   }

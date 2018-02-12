@@ -80,10 +80,10 @@ class Main extends React.Component {
         });
       }
     });
-    
+
     initializeFirebaseAuthUI();
   }
-  
+
   render() {
     return (
       <div className="">

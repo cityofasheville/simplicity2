@@ -16,7 +16,6 @@ const timeOptions = [
   { display: 'the last 6 months', value: '183' },
   { display: 'the last year', value: '365' },
   { display: 'the last 5 years', value: '1825' },
-  { display: 'the last 10 years', value: '3650' },
   { display: 'all time', value: 'all' },
 ];
 

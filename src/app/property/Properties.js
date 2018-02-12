@@ -9,11 +9,6 @@ import PropertiesByNeighborhood from './PropertiesByNeighborhood';
 import Icon from '../../shared/Icon';
 import { IM_HOME2 } from '../../shared/iconConstants';
 
-
-const testFunc = (props) => {
-  console.log(props);
-};
-
 const getSubtitle = (entity) => {
   switch (entity) {
     case 'street':
@@ -25,7 +20,7 @@ const getSubtitle = (entity) => {
   }
 };
 
-const Properties = props => {
+const Properties = (props) => {
   const refreshLocation = (view) => {
     browserHistory.push([props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&label=', props.location.query.label, '&search=', props.location.query.search, '&hideNavbar=', props.location.query.hideNavbar, '&view=', view].join(''));
   };

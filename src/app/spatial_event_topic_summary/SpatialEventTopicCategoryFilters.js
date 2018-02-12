@@ -73,7 +73,7 @@ const renderCategories = (spatialEventTopic) => {
             ))
           }
         </div>
-      );        
+      );
     default:
       return [];
   }

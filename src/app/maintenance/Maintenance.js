@@ -8,10 +8,6 @@ import PageHeader from '../../shared/PageHeader';
 import Icon from '../../shared/Icon';
 import { IM_TRAFFIC_CONE } from '../../shared/iconConstants';
 
-const testFunc = (props) => {
-  console.log(props);
-};
-
 const getSubtitle = (entity) => {
   switch (entity) {
     case 'street':
@@ -21,7 +17,7 @@ const getSubtitle = (entity) => {
   }
 };
 
-const Maintenance = props => {
+const Maintenance = (props) => {
   const refreshLocation = (view) => {
     browserHistory.push([props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&label=', props.location.query.label, '&search=', props.location.query.search, '&hideNavbar=', props.location.query.hideNavbar, '&view=', view].join(''));
   };

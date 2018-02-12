@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Map from '../../shared/visualization/Map';
 import Icon from '../../shared/Icon';
-import { IM_QUESTION, IM_MAP5, IM_SPHERE3, IM_CIRCLE2, IM_CERTIFICATE } from '../../shared/iconConstants';
+import { IM_QUESTION, IM_SPHERE3, IM_CIRCLE2 } from '../../shared/iconConstants';
 
 const getIcon = (category) => {
   switch (category) {
     default:
-      return <Icon path={IM_QUESTION} size={30} />
+      return <Icon path={IM_QUESTION} size={30} />;
   }
 };
 
@@ -75,7 +75,7 @@ const ProjectDetails = (props) => {
       Object.assign({}, {}, { x: props.longitude[index], y: y, name: props.display_name, popup: `<div><b>${props.display_name}</b><p>Latitude: ${y}</p><p>Longitude: ${props.longitude[index]}</p></div>` })
     ))
   );
-  
+
   return (
     <div className="row">
       <div className="col-sm-12">
@@ -111,7 +111,7 @@ const ProjectDetails = (props) => {
                     <div>
                       <strong>{['$', parseInt(props.total_spent).toLocaleString()].join('')}</strong>
                     </div>
-                  </div>         
+                  </div>
                 }
               </div>
               <div className="col-xs-7">

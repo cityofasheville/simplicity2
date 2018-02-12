@@ -352,7 +352,7 @@ class HomelessnessDemographics extends React.Component {
         </div>
         <div className="row" style={{ marginBottom: '10px' }}>
           <div className="col-sm-6">
-            <BarChartContainer chartTitle="Families and children" layout="vertical" mainAxisDataKey="Year" legendHeight={60} dataKeys={family_keys} colorScheme="bright_colors" data={historical_pit} stacked altText="Bar chart of families" />
+            <BarChartContainer chartTitle="Families and children" layout="horizontal" mainAxisDataKey="Year" legendHeight={60} dataKeys={family_keys} colorScheme="bright_colors" data={historical_pit} stacked altText="Bar chart of families" />
           </div>
           <div className="col-sm-6">
             <p>
@@ -367,10 +367,10 @@ class HomelessnessDemographics extends React.Component {
         </div>
         <div className="row">
           <div className="col-sm-6">
-            <BarChartContainer chartTitle="Veterans" layout="vertical" mainAxisDataKey="Year" legendHeight={20} dataKeys={['Veteran', 'Civilian']} colorScheme="bright_colors_2" data={historical_pit} stacked altText="Bar chart of homeless Veterans" />
+            <BarChartContainer chartTitle="Veterans" layout="horizontal" mainAxisDataKey="Year" legendHeight={20} dataKeys={['Veteran', 'Civilian']} colorScheme="bright_colors_2" data={historical_pit} stacked altText="Bar chart of homeless Veterans" />
           </div>
           <div className="col-sm-6">
-            <BarChartContainer chartTitle="Chronically homeless" layout="vertical" mainAxisDataKey="Year" legendHeight={20} dataKeys={['Chronically homeless', 'Not chronically homeless']} colorScheme="bright_colors" data={historical_pit} stacked altText="Bar chart of chronically homeless individuals" />
+            <BarChartContainer chartTitle="Chronically homeless" layout="horizontal" mainAxisDataKey="Year" legendHeight={20} dataKeys={['Chronically homeless', 'Not chronically homeless']} colorScheme="bright_colors" data={historical_pit} stacked altText="Bar chart of chronically homeless individuals" />
           </div>
         </div>
       </div>

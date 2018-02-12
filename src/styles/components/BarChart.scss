@@ -1,0 +1,31 @@
+.tooltip-content {
+  background: white;
+  border: 1px solid black;
+  color: black;
+  padding: 10px;
+  z-index: 99;
+  min-width: 120px;
+  opacity: 1;
+}
+
+.tooltip-content:before {
+  background: inherit;
+  content: "";
+  padding: 0px;
+  transform: rotate(45deg);
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  z-index: 99;
+  border-right: inherit;
+  border-bottom: inherit;
+  bottom: -8px;
+  left: calc(50% - 15px);
+}
+
+.tooltip {
+  opacity: 1;
+  background-color: white;
+  padding: 0.5em;
+  border: 0.1em solid black;
+}

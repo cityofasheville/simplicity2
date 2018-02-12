@@ -1,57 +1,47 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { OrdinalFrame } from 'semiotic'
 import { ResponsiveContainer, BarChart as RechartsBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ReferenceArea, ReferenceLine } from 'recharts';
 import { colorSchemes, referenceColorScheme } from './colorSchemes';
 
-const renderTitle = (title) => {
-  if (title === undefined) {
-    return '';
-  }
-  return (<h3>{title}</h3>);
-};
-
-const CustomizedLabel = labelProps => (
-  <g className="recharts-reference-area-label">{labelProps.text.map((text, i) => <text key={['labelText', i].join('_')} stroke="none" fill="black" x="0" y={20 * (i + 1)} className="recharts-text" textAnchor="middle"><tspan x={labelProps.x} dy="0em">{text}</tspan></text>)}</g>
-);
-
 const BarChart = props => (
-  <div style={{ height: props.height }} alt={props.altText}>
-    {props.chartTitle !== null && renderTitle(props.chartTitle)}
-    <ResponsiveContainer>
-      <RechartsBarChart data={props.data} barGap={props.barGap} layout={props.layout} margin={props.margin}>
-        {props.layout === 'horizontal' &&
-          <XAxis dataKey={props.mainAxisDataKey} hide={props.hidePrimaryAxis} tickFormatter={props.mainTickFormatter !== undefined ? props.mainTickFormatter : null} />
+  <OrdinalFrame
+    data={props.dataKeys.map((k, kIndex) => props.data.map(function(d) {
+      let rVal = {};
+      rVal[props.mainAxisDataKey] = d[props.mainAxisDataKey]
+      rVal.label = k
+      rVal.value = d[k] ? d[k] : 0
+      const thisScheme = colorSchemes[props.colorScheme]
+      rVal.color = thisScheme[kIndex % thisScheme.length]
+      return rVal
+    })).reduce((p, c) => p.concat(c))}
+    axis={(
+      {
+        orient: 'left',
+        tickFormat: d => d,
+        label: {
+          name: 'Count',
+          position: { anchor: 'middle' }
         }
-        {props.layout === 'horizontal' &&
-          <YAxis tickFormatter={props.secondaryTickFormatter !== undefined ? props.secondaryTickFormatter : null} width={props.yAxisWidth} domain={props.domain} />
-        }
-        {props.layout === 'vertical' &&
-          <YAxis dataKey={props.mainAxisDataKey} hide={props.hidePrimaryAxis} type="category" tickFormatter={props.mainTickFormatter !== undefined ? props.mainTickFormatter : null} width={props.yAxisWidth} />
-        }
-        {props.layout === 'vertical' &&
-          <XAxis type="number" tickFormatter={props.secondaryTickFormatter !== undefined ? props.secondaryTickFormatter : null} domain={props.domain} />
-        }
-        <CartesianGrid strokeDasharray="3 3" />
-        <Tooltip formatter={props.toolTipFormatter} />
-        {!props.hideLegend &&
-          <Legend height={props.legendHeight} />
-        }
-        {props.barDataKeys.map((barDataKey, i) => (
-          <Bar key={barDataKey} dataKey={barDataKey} fill={colorSchemes[props.colorScheme][i % colorSchemes[props.colorScheme].length]} stackId={props.stacked ? 1 : i} animationDuration={50} />
-        ))}
-        {props.referenceArea &&
-          <XAxis type="number" xAxisId={1} domain={[0, 1000]} dataKey={props.mainReferenceAxisDataKey} hide />
-        }
-        {props.referenceArea && props.referenceAreaLabels.map((text, i) => (
-          <ReferenceArea key={['referenceArea', i].join('_')} xAxisId={1} x1={i === 0 ? 0 : props.referenceAreaExes[i - 1]} x2={props.referenceAreaExes[i] || ((i * 250) - 250)} stroke="black" fill={referenceColorScheme[i % referenceColorScheme.length]} strokeOpacity={0.3} label={<CustomizedLabel text={text} />} />
-        ))}
-        {props.referenceLine && props.referenceX &&
-          <ReferenceLine x={props.referenceX} label={props.referenceLineLabel || null} stroke={props.referenceLineColor} strokeWidth={2} isFront />
-        }
-      </RechartsBarChart>
-    </ResponsiveContainer>
-  </div>
-);
+      }
+    )}
+    projection={props.layout}
+    type='bar'
+    oLabel={true}
+    oAccessor={props.mainAxisDataKey}
+    oPadding={10}
+    rAccessor='value'
+    style={d => ({fill: d.color})}
+    pieceHoverAnnotation={true}
+    title={props.chartTitle}
+    tooltipContent={function(d) {
+      const xAxisLabel = props.mainAxisDataKey
+      return <div>
+          {xAxisLabel[0].toUpperCase() + xAxisLabel.slice(1)}: {d.data[xAxisLabel]}, {d.data.label}: {d.data.value}
+        </div>
+      }}
+    />
+)
 
 BarChart.propTypes = {
   chartTitle: PropTypes.string,

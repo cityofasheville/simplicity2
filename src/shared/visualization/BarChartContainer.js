@@ -45,7 +45,7 @@ class BarChartContainer extends React.Component {
             <BarChart barDataKeys={this.props.dataKeys} {...this.props} chartTitle={null} />
           </div>
         </div>
-        {!this.props.hideSummary && 
+        {!this.props.hideSummary &&
           <div className="row">
             <div className="col-xs-10 col-xs-offset-2">
               <br />

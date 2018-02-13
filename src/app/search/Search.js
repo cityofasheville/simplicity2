@@ -1,45 +1,46 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { graphql, compose } from 'react-apollo';
+import { getSearchText } from './graphql/searchQueries';
+import { updateSearchText } from './graphql/searchMutations';
 
 import SearchBar from './SearchBar';
-
-import { searchKeyUp } from './searchActions';
 
 let timeout = null;
 
 const Search = props => (
   <div>
     <div className="row">
-      <SearchBar text={props.text || props.location.query.search} selectedEntities={props.location.query.entities} onKeyUp={props.onKeyUp} onSearchClick={props.onSearchClick} location={props.location} />
+      <SearchBar
+        text={props.searchText.search || props.location.query.search}
+        selectedEntities={props.location.query.entities}
+        onKeyUp={(e) => {
+          e.persist();
+          clearTimeout(timeout);
+          timeout = setTimeout(() => {
+            props.updateSearchText({
+              variables: {
+                searchText: e.target.value,
+              },
+            });
+          }, 500);
+        }}
+        onSearchClick={text => props.updateSearchText({
+          variables: {
+            searchText: text,
+          },
+        })}
+        location={props.location}
+      />
     </div>
   </div>
 );
 
-Search.propTypes = {
-  text: PropTypes.string,
-  onKeyUp: PropTypes.func,
-};
+export default compose(
+  graphql(updateSearchText, { name: 'updateSearchText' }),
+  graphql(getSearchText, {
+    props: ({ data: { searchText } }) => ({
+      searchText,
+    }),
+  })
+)(Search);
 
-const mapStateToProps = (state, ownProps) => (
-  {
-    text: state.search.text,
-  }
-);
-
-const mapDispatchToProps = dispatch => (
-  {
-    onKeyUp: (event) => {
-      event.persist();
-      clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        dispatch(searchKeyUp(event.target.value));
-      }, 500);
-    },
-    onSearchClick: (value) => {
-      dispatch(searchKeyUp(value));
-    },
-  }
-);
-
-export default connect(mapStateToProps, mapDispatchToProps)(Search);

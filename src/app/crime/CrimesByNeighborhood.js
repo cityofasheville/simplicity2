@@ -116,14 +116,16 @@ const CrimesByNeighborhood = props => {
   }
 
   const pieData = convertToPieData(props.data.crimes_by_neighborhood);
-  const mapData = props.data.crimes_by_neighborhood.map(item => (Object.assign({}, item, { popup: `<div><b>${item.address}</b><p>${moment.utc(item.date_occurred).format('M/DD/YYYY')}</p><p>${item.offense_long_description}</p></div>`, options: { icon: L.icon({
-    iconUrl: getMarker(item.offense_long_description),
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [2, -22],
-  }) } })
+  const mapData = props.data.crimes_by_neighborhood.map(item => (Object.assign({}, item, {
+    popup: `<div><b>${item.address}</b><p>${moment.utc(item.date_occurred).format('M/DD/YYYY')}</p><p>${item.offense_long_description}</p></div>`,
+    options: { icon: L.icon({
+      iconUrl: getMarker(item.offense_long_description),
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [2, -22],
+    }) } })
   ));
-  
+
   const refreshLocation = (view) => {
     browserHistory.push([props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&label=', props.location.query.label, '&within=', document.getElementById('extent').value, '&during=', document.getElementById('time').value, '&hideNavbar=', props.location.query.hideNavbar, '&search=', props.location.query.search, '&view=', view, '&x=', props.location.query.x, '&y=', props.location.query.y].join(''));
   };

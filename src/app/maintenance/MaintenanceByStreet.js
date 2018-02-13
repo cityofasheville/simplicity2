@@ -24,7 +24,7 @@ const getMaintenanceInfo = (entity, comma) => {
   return <div>{entity}{comma ? ',' : ''}</div>;
 };
 
-const MaintenanceByStreet = props => {
+const MaintenanceByStreet = (props) => {
   if (props.data.loading) { // eslint-disable-line react/prop-types
     return <LoadingAnimation />;
   }

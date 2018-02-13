@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { connect } from 'react-redux';
-import BudgetSummaryBarChart from './BudgetSummaryBarChart';
+// import BudgetSummaryBarChart from './BudgetSummaryBarChart';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import { buildSummaryDeptData } from './budgetActions';
 
@@ -19,11 +19,11 @@ const SummaryDepartments = (props) => {
   return (
     <div className="row">
       <div className="col-sm-12">
-        <BudgetSummaryBarChart categoryType="department" colorScheme="bright_colors_2" {...props} />
       </div>
     </div>
   );
 };
+        // <BudgetSummaryBarChart categoryType="department" colorScheme="bright_colors_2" {...props} />
 
 SummaryDepartments.propTypes = {
   data: PropTypes.object, // eslint-disable-line react/forbid-prop-types

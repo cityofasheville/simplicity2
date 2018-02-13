@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import BarChart from '../../shared/visualization/BarChart';
+import { OrdinalFrame } from 'semiotic'
+import { colorSchemes } from './colorSchemes';
+
 
 const getLongDesc = (data, dataKeys, mainAxisKey, valueFormatter) => (
   <div>
@@ -16,6 +18,18 @@ const getLongDesc = (data, dataKeys, mainAxisKey, valueFormatter) => (
   </div>
 );
 
+function formatDataForStacking(data, dataKeys, mainAxisDataKey, colorScheme) {
+  return dataKeys.map((k, kIndex) => data.map(function(d) {
+      let rVal = {};
+      rVal[mainAxisDataKey] = d[mainAxisDataKey]
+      rVal.label = k
+      rVal.value = d[k] ? d[k] : 0
+      const thisScheme = colorSchemes[colorScheme]
+      rVal.color = thisScheme[kIndex % thisScheme.length]
+      return rVal
+    })).reduce((p, c) => p.concat(c))
+}
+
 class BarChartContainer extends React.Component {
   constructor(props) {
     super(props);
@@ -29,6 +43,7 @@ class BarChartContainer extends React.Component {
   }
 
   render() {
+    const formattedData = formatDataForStacking(this.props.data, this.props.dataKeys, this.props.mainAxisDataKey, this.props.colorScheme)
     return (
       <div>
         <h4>{this.props.chartTitle}</h4>
@@ -42,7 +57,41 @@ class BarChartContainer extends React.Component {
         </p>
         <div className="row">
           <div className="col-sm-12">
-            <BarChart barDataKeys={this.props.dataKeys} {...this.props} chartTitle={null} />
+            <OrdinalFrame
+              data={formattedData}
+              axis={(
+                {
+                  orient: 'left',
+                  tickFormat: d => d,
+                  label: {
+                    name: 'Count',
+                    position: { anchor: 'middle' }
+                  }
+                }
+              )}
+              projection={this.props.layout}
+              type='bar'
+              oLabel={true}
+              oAccessor={this.props.mainAxisDataKey}
+              oPadding={10}
+              rAccessor='value'
+              style={d => ({fill: d.color})}
+              pieceHoverAnnotation={true}
+              title={this.props.chartTitle}
+              tooltipContent={(d) =>
+                `${this.props.mainAxisDataKey[0].toUpperCase() + this.props.mainAxisDataKey.slice(1)}: ${d.data[this.props.mainAxisDataKey]}, ${d.data.label}: ${d.data.value}`
+              }
+              legend={{
+                legendGroups: [
+                  {
+                    styleFn: d => ({fill: d.color}),
+                    items: formattedData.map(d => ({label: d.label, color: d.color}))
+                      .filter((item, pos, thisArray) => thisArray
+                        .findIndex(d => d.label === item.label && d.color === item.color) === pos)
+                  }
+                ]
+              }}
+            />
           </div>
         </div>
         {!this.props.hideSummary &&

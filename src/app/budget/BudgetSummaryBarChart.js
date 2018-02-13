@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { graphql, compose } from 'react-apollo';
 import BarChart from '../../shared/visualization/BarChart';
+import { getBudgetSummaryDept, getBudgetSummaryUse } from './graphql/budgetQueries';
 
 const getDollars = (value) => {
   if (Math.abs(value) > 1000000) {
@@ -45,7 +46,10 @@ const getLongDesc = data => (
 class BudgetSummaryBarChart extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { showingLongDesc: this.showLongDesc };
+    this.state = {
+      showingLongDesc: this.showLongDesc,
+      summaryData: props.categoryType === 'use' ? props.summaryUseData : props.summaryDeptData,
+    };
   }
 
   toggleLongDesc() {
@@ -53,6 +57,7 @@ class BudgetSummaryBarChart extends React.Component {
       showingLongDesc: !this.state.showingLongDesc,
     });
   }
+
 
   render() {
     return (
@@ -64,7 +69,7 @@ class BudgetSummaryBarChart extends React.Component {
         </div>
         <div className="row">
           <div className="col-sm-12">
-            <BarChart data={this.props.summaryData.dataValues} legendHeight={115} referenceArea mainAxisDataKey="display_year" mainReferenceAxisDataKey="yearAxisNumeric" referenceAreaLabels={[['Actual', 'Spent'], ['Adopted', 'Budget'], ['Proposed', 'Budget']]} referenceAreaExes={[500, 750, 1000]} barDataKeys={this.props.summaryData.dataKeys} secondaryTickFormatter={getDollars} stacked toolTipFormatter={getDollarsLong} colorScheme={this.props.colorScheme} domain={['dataMin', 'dataMax + 50000000']} altText={['Spending by', this.props.categoryType, 'bar chart'].join(' ')} />
+            <BarChart data={this.state.summaryData.dataValues} legendHeight={115} referenceArea mainAxisDataKey="display_year" mainReferenceAxisDataKey="yearAxisNumeric" referenceAreaLabels={[['Actual', 'Spent'], ['Adopted', 'Budget'], ['Proposed', 'Budget']]} referenceAreaExes={[500, 750, 1000]} barDataKeys={this.state.summaryData.dataKeys} secondaryTickFormatter={getDollars} stacked toolTipFormatter={getDollarsLong} colorScheme={this.props.colorScheme} domain={['dataMin', 'dataMax + 50000000']} altText={['Spending by', this.props.categoryType, 'bar chart'].join(' ')} />
           </div>
           <span className="pull-right" style={{ fontSize: '12px' }}>Barchart totals exclude interfund transfers</span>
         </div>
@@ -74,7 +79,7 @@ class BudgetSummaryBarChart extends React.Component {
               {this.state.showingLongDesc ? 'Hide' : 'Show'} spending {getTitle(this.props.categoryType)} bar chart summary
             </a>
             <div hidden={!this.state.showingLongDesc}>
-              {getLongDesc(this.props.summaryData)}
+              {getLongDesc(this.state.summaryData)}
             </div>
           </div>
         </div>
@@ -86,7 +91,7 @@ class BudgetSummaryBarChart extends React.Component {
 BudgetSummaryBarChart.propTypes = {
   categoryType: PropTypes.string,
   colorScheme: PropTypes.string,
-  summaryData: PropTypes.object, // eslint-disable-line
+  budgetSummary: PropTypes.object, // eslint-disable-line
   showLongDesc: PropTypes.bool, // eslint-disable-line
 };
 
@@ -96,11 +101,16 @@ BudgetSummaryBarChart.defaultProps = {
   showLongDesc: false,
 };
 
-const mapStateToProps = (state, ownProps) => (
-  {
-    summaryData: ownProps.categoryType === 'use' ? state.budget.summaryUseData : state.budget.summaryDeptData,
-  }
-);
-
-export default connect(mapStateToProps)(BudgetSummaryBarChart);
-
+//not that efficient...
+export default compose(
+  graphql(getBudgetSummaryDept, {
+    props: ({ data: { budgetSummaryDept } }) => ({
+      summaryDeptData: budgetSummaryDept,
+    }),
+  }),
+  graphql(getBudgetSummaryUse, {
+    props: ({ data: { budgetSummaryUse } }) => ({
+      summaryUseData: budgetSummaryUse,
+    }),
+  }),
+)(BudgetSummaryBarChart);

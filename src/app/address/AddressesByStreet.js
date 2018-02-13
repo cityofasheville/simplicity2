@@ -56,7 +56,7 @@ const dataColumns = [
   },
 ];
 
-const AddressesByStreet = props => {
+const AddressesByStreet = (props) => {
   if (props.data.loading) { // eslint-disable-line react/prop-types
     return <LoadingAnimation />;
   }

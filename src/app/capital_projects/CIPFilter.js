@@ -3,18 +3,17 @@ import PropTypes from 'prop-types';
 import { browserHistory } from 'react-router';
 import Toggle from 'react-toggle';
 import { urlCategory } from './cip_utilities';
-import CapitalProjectsSummaryCard from './CapitalProjectsSummaryCard';
 import FilterCheckboxGroup from '../../shared/FilterCheckboxGroup';
 import FilterCheckbox from '../../shared/FilterCheckbox';
 
-const CIPFilter = props => {
+const CIPFilter = (props) => {
   const refreshLocation = (category) => {
     if (props.selected.length === 1 && props.selected[0] === category) { //can't deselect last one
       return;
     }
     let newSelected = props.selected.slice();
     const selectedIndexInCurrent = props.selected.indexOf(category);
-    if (! (props.location.query.mode === 'bond' && !['Parks', 'Housing', 'Transportation'].includes(category))) {
+    if (!(props.location.query.mode === 'bond' && !['Parks', 'Housing', 'Transportation'].includes(category))) {
       if (selectedIndexInCurrent > -1) {
         newSelected = props.selected.filter(cat => cat !== category);
       } else {
@@ -59,6 +58,6 @@ CIPFilter.propTypes = {
 CIPFilter.defaultProps = {
   selected: ['Transportation', 'Housing', 'Parks', 'Public Safety', 'Other'],
   categories: ['Transportation', 'Housing', 'Parks', 'Public Safety', 'Other'],
-}
+};
 
 export default CIPFilter;

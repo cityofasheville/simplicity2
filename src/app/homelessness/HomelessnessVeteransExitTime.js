@@ -40,7 +40,7 @@ const days_exit_data = [
   },
 ];
 
-const HomelessnessVeteransExitTime = (props) => (
+const HomelessnessVeteransExitTime = props => (
   <div>
     <div className="row">
       <div className="col-sm-12">

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import SearchResultGroup from './SearchResultGroup';
@@ -138,6 +137,7 @@ const SearchResults = (props) => {
       );
     }
   }
+
   return (
     <div className="row">
       <div className="col-sm-12">
@@ -226,9 +226,7 @@ const searchQuery = gql`
   }
 `;
 
-const SearchResultsWithData = graphql(searchQuery, {
+export default graphql(searchQuery, {
   skip: ownProps => (!ownProps.searchText),
-  options: ownProps => ({ variables: { searchString: ownProps.searchText, searchContexts: getEntitiesToSearch(ownProps.searchEntities) } }),
+  options: ownProps => ({ variables: { searchString: ownProps.searchText, searchContexts: getEntitiesToSearch(ownProps.location.query.entities !== undefined ? getEntities(ownProps.location.query.entities) : getEntities('address,property,neighborhood,street,owner,google')) } }),
 })(SearchResults);
-
-export default connect(mapStateToProps)(SearchResultsWithData);

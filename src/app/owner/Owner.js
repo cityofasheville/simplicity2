@@ -15,10 +15,6 @@ import { IM_USER } from '../../shared/iconConstants';
 import { getBoundsFromPropertyList, combinePolygonsFromPropertyList } from '../../utilities/mapUtilities';
 import Map from '../../shared/visualization/Map';
 
-const testFunc = (props) => {
-  console.log(props);
-};
-
 const dataColumns = [
   {
     Header: 'Property',
@@ -78,7 +74,7 @@ const Owner = props => {
     browserHistory.push([props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&label=', props.location.query.label, '&hideNavbar=', props.location.query.hideNavbar, '&search=', props.location.query.search, '&view=', view].join(''));
   };
 
-  let polygons = Object.keys(props.data.properties).map(key => props.data.properties[key].polygons);
+  const polygons = Object.keys(props.data.properties).map(key => props.data.properties[key].polygons);
 
   return (
     <div>
@@ -153,7 +149,6 @@ const Owner = props => {
       </div>
     </div>
   );
-
 };
 
 const propertyQuery = gql`

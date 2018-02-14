@@ -1,29 +1,53 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { graphql } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import { connect } from 'react-redux';
 // import BudgetSummaryBarChart from './BudgetSummaryBarChart';
 import LoadingAnimation from '../../shared/LoadingAnimation';
-import { buildSummaryDeptData } from './budgetActions';
+import { buildSummaryData } from './budgetUtilities';
+import { updateBudgetSummaryDept } from './graphql/budgetMutations';
+import { getBudgetSummaryDept } from './graphql/budgetQueries';
 
-const SummaryDepartments = (props) => {
-  if (props.data.loading) { // eslint-disable-line react/prop-types
-    return <LoadingAnimation size="small" />;
-  }
-  if (props.data.error) { // eslint-disable-line react/prop-types
-    return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
+class SummaryDepartments extends React.Component {
+  constructor(props) {
+    super(props);
+    this.initializeSummaryDept = this.initializeSummaryDept.bind(this);
   }
 
-  props.buildSummaryDeptData(props.data.budgetSummary); // eslint-disable-line react/prop-types
-  return (
-    <div className="row">
-      <div className="col-sm-12">
+  async initializeSummaryDept() {
+    const summaryDeptData = buildSummaryData(this.props.data.budgetSummary);
+    await this.props.updateBudgetSummaryDept({
+      variables: {
+        budgetSummaryDept: {
+          dataValues: summaryDeptData.dataValues,
+          dataKeys: summaryDeptData.dataKeys,
+        },
+      },
+    });
+  }
+
+  render() {
+    if (this.props.data.loading) { // eslint-disable-line react/prop-types
+      return <LoadingAnimation size="small" />;
+    }
+    if (this.props.data.error) { // eslint-disable-line react/prop-types
+      return <p>{this.props.data.error.message}</p>; // eslint-disable-line react/prop-types
+    }
+
+    if (this.props.summaryDeptData.dataKeys === null) {
+      this.initializeSummaryDept();
+    }
+
+    return (
+      <div className="row">
+        <div className="col-sm-12">
+          <BudgetSummaryBarChart categoryType="department" colorScheme="bright_colors_2" {...this.props} />
+        </div>
       </div>
-    </div>
-  );
-};
-        // <BudgetSummaryBarChart categoryType="department" colorScheme="bright_colors_2" {...props} />
+    );
+  }
+}
 
 SummaryDepartments.propTypes = {
   data: PropTypes.object, // eslint-disable-line react/forbid-prop-types
@@ -45,12 +69,12 @@ const budgetSummaryDeptQuery = gql`
   }
 `;
 
-const SummaryDepartmentsGQL = graphql(budgetSummaryDeptQuery, {})(SummaryDepartments);
-export default connect(
-  null,
-  dispatch => ({
-    buildSummaryDeptData: queryData => (
-      dispatch(buildSummaryDeptData(queryData))
-    ),
+export default compose(
+  graphql(budgetSummaryDeptQuery, {}),
+  graphql(getBudgetSummaryDept, {
+    props: ({ data: { budgetSummaryDept } }) => ({
+      summaryDeptData: budgetSummaryDept,
+    }),
   }),
-)(SummaryDepartmentsGQL);
+  graphql(updateBudgetSummaryDept, { name: 'updateBudgetSummaryDept' }),
+)(SummaryDepartments);

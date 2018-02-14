@@ -26,17 +26,17 @@ const getIcon = (type, bond) => {
   switch (type) {
     case 'Transportation':
       if (bond) {
-        return <span><Icon path={IM_BUS} size={25} color="#4077a5" /><Icon path={LI_BOLD} size={16} color="#4077a5" viewBox="0 0 24 24" /></span>
+        return <span><Icon path={IM_BUS} size={25} color="#4077a5" /><Icon path={LI_BOLD} size={16} color="#4077a5" viewBox="0 0 24 24" /></span>;
       }
       return <Icon path={IM_BUS} size={25} color="#4077a5" />;
     case 'Parks':
       if (bond) {
-        return <span><Icon path={IM_TREE} size={25} color="#4077a5" /><Icon path={LI_BOLD} size={16} color="#4077a5" viewBox="0 0 24 24" /></span>
+        return <span><Icon path={IM_TREE} size={25} color="#4077a5" /><Icon path={LI_BOLD} size={16} color="#4077a5" viewBox="0 0 24 24" /></span>;
       }
       return <Icon path={IM_TREE} size={25} color="#4077a5" />;
     case 'Housing':
       if (bond) {
-        return <span><Icon path={IM_HOME2} size={25} color="#4077a5" /><Icon path={LI_BOLD} size={16} color="#4077a5" viewBox="0 0 24 24" /></span>
+        return <span><Icon path={IM_HOME2} size={25} color="#4077a5" /><Icon path={LI_BOLD} size={16} color="#4077a5" viewBox="0 0 24 24" /></span>;
       }
       return <Icon path={IM_HOME2} size={25} color="#4077a5" />;
     case 'Public Safety':
@@ -48,7 +48,7 @@ const getIcon = (type, bond) => {
   }
 };
 
-const getKeyText = (categories, mode) => (
+const getKeyText = categories => (
   <div>
     <p>
       <span>
@@ -99,17 +99,6 @@ const CategoryDetails = (props) => {
   actualCategories.sort((a, b) => sortedCats.indexOf(a) > sortedCats.indexOf(b));
   const filteredProjects = filterProjects(props.data.cip_projects, actualCategories, props.location.query.mode);
   const fundingDetails = getFundsAllocatedAndExpended(filteredProjects, actualCategories, props.location.query.mode);
-
-  const getTitle = () => {
-    let title = '';
-    for (let category of actualCategories) {
-      title = [title, ' ', category, ','].join('');
-    }
-    if (title.endsWith(',')) {
-      title = title.slice(0, -1);
-    }
-    return title;
-  };
 
   return (
     <div>

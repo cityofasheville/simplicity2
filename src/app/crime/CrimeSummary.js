@@ -1,7 +1,6 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
 import moment from 'moment';
-import PageHeader from '../../shared/PageHeader';
 import ButtonGroup from '../../shared/ButtonGroup';
 import Button from '../../shared/Button';
 import CrimesByAddress from './CrimesByAddress';
@@ -12,14 +11,11 @@ import styles from '../spatial_event_topic_summary/spatialEventTopicFilters.css'
 import SpatialEventTopicLocationInfo from '../spatial_event_topic_summary/SpatialEventTopicLocationInfo';
 import { IM_SHIELD3, IM_LIBRARY2 } from '../../shared/iconConstants';
 
-//import SpatialEventTopicCategoryFilters from './SpatialEventTopicCategoryFilters';
-
 const timeOptions = [
   { display: 'the last 30 days', value: '30' },
   { display: 'the last 6 months', value: '183' },
   { display: 'the last year', value: '365' },
   { display: 'the last 5 years', value: '1825' },
-  { display: 'the last 10 years', value: '3650' },
   { display: 'all time', value: 'all' },
 ];
 

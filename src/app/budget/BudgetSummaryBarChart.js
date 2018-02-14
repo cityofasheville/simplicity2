@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { graphql, compose } from 'react-apollo';
 import BarChart from '../../shared/visualization/BarChart';
+import { getBudgetSummaryDept, getBudgetSummaryUse } from './graphql/budgetQueries';
 
 const getDollars = (value) => {
   if (Math.abs(value) > 1000000) {
@@ -45,7 +46,10 @@ const getLongDesc = data => (
 class BudgetSummaryBarChart extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { showingLongDesc: this.showLongDesc };
+    this.state = {
+      showingLongDesc: this.showLongDesc,
+      summaryData: props.categoryType === 'use' ? props.summaryUseData : props.summaryDeptData,
+    };
   }
 
   toggleLongDesc() {
@@ -53,6 +57,7 @@ class BudgetSummaryBarChart extends React.Component {
       showingLongDesc: !this.state.showingLongDesc,
     });
   }
+
 
   render() {
     return (
@@ -128,7 +133,7 @@ class BudgetSummaryBarChart extends React.Component {
               {this.state.showingLongDesc ? 'Hide' : 'Show'} spending {getTitle(this.props.categoryType)} bar chart summary
             </a>
             <div hidden={!this.state.showingLongDesc}>
-              {getLongDesc(this.props.summaryData)}
+              {getLongDesc(this.state.summaryData)}
             </div>
           </div>
         </div>
@@ -140,7 +145,7 @@ class BudgetSummaryBarChart extends React.Component {
 BudgetSummaryBarChart.propTypes = {
   categoryType: PropTypes.string,
   colorScheme: PropTypes.string,
-  summaryData: PropTypes.object, // eslint-disable-line
+  budgetSummary: PropTypes.object, // eslint-disable-line
   showLongDesc: PropTypes.bool, // eslint-disable-line
 };
 
@@ -150,11 +155,16 @@ BudgetSummaryBarChart.defaultProps = {
   showLongDesc: false,
 };
 
-const mapStateToProps = (state, ownProps) => (
-  {
-    summaryData: ownProps.categoryType === 'use' ? state.budget.summaryUseData : state.budget.summaryDeptData,
-  }
-);
-
-export default connect(mapStateToProps)(BudgetSummaryBarChart);
-
+//not that efficient...
+export default compose(
+  graphql(getBudgetSummaryDept, {
+    props: ({ data: { budgetSummaryDept } }) => ({
+      summaryDeptData: budgetSummaryDept,
+    }),
+  }),
+  graphql(getBudgetSummaryUse, {
+    props: ({ data: { budgetSummaryUse } }) => ({
+      summaryUseData: budgetSummaryUse,
+    }),
+  }),
+)(BudgetSummaryBarChart);

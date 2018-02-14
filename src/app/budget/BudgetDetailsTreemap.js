@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { graphql } from 'react-apollo';
 import { browserHistory } from 'react-router';
 import { RadioGroup, Radio } from 'react-radio-group';
 import Icon from '../../shared/Icon';
 import { IM_ARROW_UP8 } from '../../shared/iconConstants';
 import Treemap from '../../shared/visualization/Treemap';
-// import { updateNodePath } from '../../../containers/budgetActions';
+import { getBudgetTrees } from './graphql/budgetQueries';
 
 const getButtonClass = (categoryType, buttonName) => {
   if (
@@ -164,8 +164,6 @@ BudgetDetailsTreemap.propTypes = {
   location: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   diveDeeper: PropTypes.func,
   jumpUp: PropTypes.func,
-  // expensePath: PropTypes.string,
-  // revenuePath: PropTypes.string,
 };
 
 BudgetDetailsTreemap.defaultProps = {
@@ -174,27 +172,11 @@ BudgetDetailsTreemap.defaultProps = {
   revenueTree: { amount: 0, size: 0, name: 'no data', children: [] },
   diveDeeper: goDeeper,
   jumpUp: goUp,
-  // expensePath: 'root',
-  // revenuePath: 'root',
 };
 
-const mapStateToProps = state => (
-  {
-    expenseTree: state.budget.expenseTreeForTreemap,
-    revenueTree: state.budget.revenueTreeForTreemap,
-    // expensePath: state.budget.expensePath,
-    // revenuePath: state.budget.revenuePath,
-  }
-);
-
-// const mapDispatchToProps = dispatch => (
-//   {
-//     diveDeeper: rectangle => (
-//       dispatch(updateNodePath(rectangle))
-//     ),
-//   }
-// );
-
-
-export default connect(mapStateToProps)(BudgetDetailsTreemap);
-
+export default graphql(getBudgetTrees, {
+  props: ({ data: { budgetTrees } }) => ({
+    expenseTree: budgetTrees.expenseTreeForTreemap,
+    revenueTree: budgetTrees.revenueTreeForTreemap,
+  }),
+})(BudgetDetailsTreemap);

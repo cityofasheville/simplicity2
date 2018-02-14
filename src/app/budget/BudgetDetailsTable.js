@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { graphql } from 'react-apollo';
 import { browserHistory } from 'react-router';
-import { connect } from 'react-redux';
 import ReactTable from 'react-table';
-import Collapsible from '../../shared/Collapsible';
 import { RadioGroup, Radio } from 'react-radio-group';
+import Collapsible from '../../shared/Collapsible';
+import { getBudgetTrees } from './graphql/budgetQueries';
 
 const last4Years = [
   2015,
@@ -230,12 +231,9 @@ BudgetDetailsTable.defaultProps = {
   notes: tableNotes,
 };
 
-const mapStateToProps = state => (
-  {
-    expenseTree: state.budget.expenseTree,
-    revenueTree: state.budget.revenueTree,
-  }
-);
-
-export default connect(mapStateToProps)(BudgetDetailsTable);
-
+export default graphql(getBudgetTrees, {
+  props: ({ data: { budgetTrees } }) => ({
+    expenseTree: budgetTrees.expenseTree,
+    revenueTree: budgetTrees.revenueTree,
+  }),
+})(BudgetDetailsTable);

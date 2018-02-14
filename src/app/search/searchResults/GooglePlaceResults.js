@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { browserHistory } from 'react-router';
-import { connect } from 'react-redux';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import SearchResultGroup from './SearchResultGroup';
@@ -57,21 +56,21 @@ const GooglePlaceResults = (props) => {
       );
     }
     if (formattedResults[0].results.length === 1) {
-     browserHistory.push(['/address', '?entity=address', '&id=', formattedResults[0].results[0].id, '&label=', props.placeSearch, '&hideNavbar=', props.location.query.hideNavbar, '&search=', props.searchText, '&entities=', props.location.query.entities].join(''));
+     browserHistory.push(['/address', '?entity=address', '&id=', formattedResults[0].results[0].id, '&label=', props.placeSearch, '&hideNavbar=', props.location.query.hideNavbar, '&search=', props.location.query.search, '&entities=', props.location.query.entities].join(''));
     }
     return (
       <div>
         <h2>Multiple addresses found</h2>
         <p>
-          <i>{props.placeSearch}</i>, the address from Google associated with the search <i>{props.searchText}</i>, returned multiple results in SimpliCity. Explore the potential matches below.
+          <i>{props.location.query.placeSearch}</i>, the address from Google associated with the search <i>{props.location.query.search}</i>, returned multiple results in SimpliCity. Explore the potential matches below.
         </p>
         {formattedResults.map((resultGroup, index) => (
           <SearchResultGroup
             key={[resultGroup.label, index].join('_')}
             data={resultGroup}
-            searchText={props.placeSearch}
+            searchText={props.location.query.placeSearch}
             selectedEntities={props.location.query.entities}
-            originalSearch={props.searchText}
+            originalSearch={props.location.query.search}
           />
         ))}
       </div>
@@ -117,16 +116,7 @@ const searchQuery = gql`
   }
 `;
 
-const mapStateToProps = (state, ownProps) => (
-  {
-    searchText: ownProps.location.query.search,
-    placeSearch: ownProps.location.query.placeSearch,
-  }
-);
-
-const GooglePlaceResultsWithData = graphql(searchQuery, {
-  skip: ownProps => (!ownProps.placeSearch),
-  options: ownProps => ({ variables: { searchString: ownProps.placeSearch, searchContexts: getEntitiesToSearch() } }),
+export default graphql(searchQuery, {
+  skip: ownProps => (!ownProps.location.query.placeSearch),
+  options: ownProps => ({ variables: { searchString: ownProps.location.query.placeSearch, searchContexts: getEntitiesToSearch() } }),
 })(GooglePlaceResults);
-
-export default connect(mapStateToProps)(GooglePlaceResultsWithData);

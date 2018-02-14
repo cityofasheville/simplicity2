@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import Icon from '../../shared/Icon';
 import { IM_SEARCH } from '../../shared/iconConstants';
 import SearchByEntities from './searchByEntities/SearchByEntities';

@@ -10,7 +10,10 @@ const getLongDesc = (data, dataKeys, mainAxisKey, valueFormatter) => (
       <div key={[value[mainAxisKey], index].join('_')}>
         <p>{value[mainAxisKey]}<br />
           {dataKeys.map(key => (
-            <span key={[value[mainAxisKey], key].join('_')}>{key}: {valueFormatter !== null ? valueFormatter(value[key]) : value[key]}<br /></span>
+            <span key={[value[mainAxisKey], key].join('_')}>
+              {key}: {valueFormatter !== null ? valueFormatter(value[key]) : value[key]}
+              <br />
+            </span>
           ))}
         </p>
       </div>
@@ -43,7 +46,12 @@ class BarChartContainer extends React.Component {
   }
 
   render() {
-    const formattedData = formatDataForStacking(this.props.data, this.props.dataKeys, this.props.mainAxisDataKey, this.props.colorScheme)
+    console.log(this.props)
+    const formattedData = formatDataForStacking(
+      this.props.data,
+      this.props.dataKeys,
+      this.props.mainAxisDataKey,
+      this.props.colorScheme)
     return (
       <div>
         <h4>{this.props.chartTitle}</h4>
@@ -77,11 +85,12 @@ class BarChartContainer extends React.Component {
               rAccessor='value'
               style={d => ({fill: d.color})}
               pieceHoverAnnotation={true}
-              title={this.props.chartTitle}
+              // title={this.props.chartTitle}
               tooltipContent={(d) =>
-                `${this.props.mainAxisDataKey[0].toUpperCase() + this.props.mainAxisDataKey.slice(1)}: ${d.data[this.props.mainAxisDataKey]}, ${d.data.label}: ${d.data.value}`
+                `${this.props.mainAxisDataKey[0].toUpperCase()+ this.props.mainAxisDataKey.slice(1)}: ${d.data[this.props.mainAxisDataKey]}, ${d.data.label}: ${d.data.value}`
               }
               legend={{
+                width: 40,
                 legendGroups: [
                   {
                     styleFn: d => ({fill: d.color}),
@@ -91,6 +100,10 @@ class BarChartContainer extends React.Component {
                   }
                 ]
               }}
+              // max margin should be 1/5 of chart size
+              //
+              // TODO: determine margin by length of longest label and remsize
+              margin={{left: 40, right: 100}}
             />
           </div>
         </div>

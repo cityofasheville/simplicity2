@@ -91,7 +91,7 @@
     "recharts": "^0.20.8",
     "redux": "^3.6.0",
     "selectly": "^0.5.0",
-    "semiotic": "^1.7.3",
+    "semiotic": "^1.7.6",
     "semiotic-mark": "^0.1.0",
     "url-loader": "^0.5.8",
     "zen-observable": "^0.7.1"

@@ -5,6 +5,7 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import SearchResultGroup from './SearchResultGroup';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
+import Error from '../../../shared/Error';
 
 const getEntitiesToSearch = () => (
   ['address']
@@ -18,15 +19,7 @@ const GooglePlaceResults = (props) => {
     return <LoadingAnimation message="Searching..." />;
   }
   if (props.data.error) {
-    return (
-      <div className="row">
-        <div className="col-sm-12">
-          <div className="alert alert-warning alert-sm">
-            {props.data.error.message}
-          </div>
-        </div>
-      </div>
-    );
+    return <Error message={props.data.error.message} />;
   }
 
   const formattedResults = [];

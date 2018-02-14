@@ -4,6 +4,7 @@ import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import BudgetSummaryBarChart from './BudgetSummaryBarChart';
 import LoadingAnimation from '../../shared/LoadingAnimation';
+import Error from '../../shared/Error';
 import { updateBudgetSummaryUse } from './graphql/budgetMutations';
 import { getBudgetSummaryUse } from './graphql/budgetQueries';
 import { buildSummaryData } from './budgetUtilities';
@@ -34,7 +35,7 @@ class SummaryUse extends React.Component {
       return <LoadingAnimation size="small" />;
     }
     if (this.props.data.error) { // eslint-disable-line react/prop-types
-      return <p>{this.props.data.error.message}</p>; // eslint-disable-line react/prop-types
+      return <Error message={this.props.data.error.message} />; // eslint-disable-line react/prop-types
     }
 
     if (this.props.summaryUseData.dataKeys === null) {

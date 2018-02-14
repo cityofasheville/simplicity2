@@ -6,6 +6,7 @@ import { graphql } from 'react-apollo';
 import moment from 'moment';
 import gql from 'graphql-tag';
 import LoadingAnimation from '../../shared/LoadingAnimation';
+import Error from '../../shared/Error';
 import PieChart from '../../shared/visualization/PieChart';
 import Map from '../../shared/visualization/Map';
 import { getBoundsFromStreetData, convertStreetLinesToLatLngArrays } from '../../utilities/mapUtilities';
@@ -112,7 +113,7 @@ const CrimesByStreet = props => {
     return <LoadingAnimation />;
   }
   if (props.data.error) { // eslint-disable-line react/prop-types
-    return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
+    return <Error message={props.data.error.message} />; // eslint-disable-line react/prop-types
   }
 
   const pieData = convertToPieData(props.data.crimes_by_street);

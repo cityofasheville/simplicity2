@@ -10,6 +10,7 @@ import Button from '../../../shared/Button';
 import { query } from './ProjectFlowQueries';
 import ProjectFlowTable from './ProjectFlowTable';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
+import Error from '../../../shared/Error';
 import { IM_OFFICE } from '../../../shared/iconConstants';
 
 const getIcon = (type) => {
@@ -57,7 +58,7 @@ const ProjectFlowDashboard = (props) => {
     return <LoadingAnimation />;
   }
   if (props.data.error) { // eslint-disable-line react/prop-types
-    return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
+    return <Error message={props.data.error.message} />; // eslint-disable-line react/prop-types
   }
   let open = props.data.projects.filter(itm => (itm.CurrentStatus === 'Open'));
   let inProgress = props.data.projects.filter(itm => (itm.CurrentStatus === 'In Progress'));

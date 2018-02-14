@@ -6,6 +6,7 @@ import DetailsTable from '../../shared/DetailsTable';
 import DetailsFormGroup from '../../shared/DetailsFormGroup';
 import DetailsIconLinkFormGroup from '../../shared/DetailsIconLinkFormGroup';
 import LoadingAnimation from '../../shared/LoadingAnimation';
+import Error from '../../shared/Error';
 import PageHeader from '../../shared/PageHeader';
 import ButtonGroup from '../../shared/ButtonGroup';
 import LinkButton from '../../shared/LinkButton';
@@ -64,7 +65,7 @@ const Property = (props) => {
     return <LoadingAnimation />;
   }
   if (props.data.error) {
-    return <p>{props.data.error.message}</p>;
+    return <Error message={props.data.error.message} />;
   }
 
   const propertyData = props.inTable ? props.data : props.data.properties[0];

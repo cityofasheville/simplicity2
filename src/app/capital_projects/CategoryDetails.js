@@ -8,6 +8,7 @@ import { getFundsAllocatedAndExpended, filterProjects, longCategories } from './
 import Icon from '../../shared/Icon';
 import { IM_SHIELD3, IM_TREE, IM_HOME2, IM_BUS, LI_BOLD } from '../../shared/iconConstants';
 import LoadingAnimation from '../../shared/LoadingAnimation';
+import Error from '../../shared/Error';
 
 const getBondText = (type) => {
   switch (type) {
@@ -88,7 +89,7 @@ const CategoryDetails = (props) => {
     return <LoadingAnimation />;
   }
   if (props.data.error) { // eslint-disable-line react/prop-types
-    return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
+    return <Error message={props.data.error.message} />; // eslint-disable-line react/prop-types
   }
 
   let actualCategories = Array.from(props.categories);

@@ -12,6 +12,7 @@ import DetailsIconLinkFormGroup from '../../shared/DetailsIconLinkFormGroup';
 import TopicCard from '../../shared/TopicCard';
 import InCityMessage from '../InCityMessage';
 import LoadingAnimation from '../../shared/LoadingAnimation';
+import Error from '../../shared/Error';
 
 const getCurrentRecyclingWeek = () => {
   const d = new Date(); // current time
@@ -61,7 +62,7 @@ const Address = (props) => {
     return <LoadingAnimation />;
   }
   if (props.data.error) {
-    return <p>{props.data.error.message}</p>;
+    return <Error message={props.data.error.message} />;
   }
 
   const addressData = props.data.addresses[0];

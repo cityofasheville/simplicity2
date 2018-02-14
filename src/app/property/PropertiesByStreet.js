@@ -8,6 +8,7 @@ import EmailDownload from '../../shared/EmailDownload';
 import Property from './Property';
 import { getBoundsFromStreetData, convertStreetLinesToLatLngArrays, combinePolygonsFromPropertyList } from '../../utilities/mapUtilities';
 import LoadingAnimation from '../../shared/LoadingAnimation';
+import Error from '../../shared/Error';
 
 const dataColumns = [
   {
@@ -69,7 +70,7 @@ const PropertiesByStreet = props => {
     return <LoadingAnimation />;
   }
   if (props.data.error) { // eslint-disable-line react/prop-types
-    return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
+    return <Error message={props.data.error.message} />; // eslint-disable-line react/prop-types
   }
 
   return (

@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 import ReactTable from 'react-table';
 import EmailDownload from '../../shared/EmailDownload';
 import LoadingAnimation from '../../shared/LoadingAnimation';
+import Error from '../../shared/Error';
 import Map from '../../shared/visualization/Map';
 import { getBoundsFromStreetData, formatMaintenanceData, getBounds } from '../../utilities/mapUtilities';
 import Icon from '../../shared/Icon';
@@ -29,7 +30,7 @@ const MaintenanceByStreet = (props) => {
     return <LoadingAnimation />;
   }
   if (props.data.error) { // eslint-disable-line react/prop-types
-    return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
+    return <Error message={props.data.error.message} />; // eslint-disable-line react/prop-types
   }
 
   const urlString = [props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&label=', props.location.query.label, '&hideNavbar=', props.location.query.hideNavbar, '&search=', props.location.query.search, '&view=map'].join('');

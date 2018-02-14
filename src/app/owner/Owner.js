@@ -4,6 +4,7 @@ import ReactTable from 'react-table';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import LoadingAnimation from '../../shared/LoadingAnimation';
+import Error from '../../shared/Error';
 import Property from '../property/Property';
 import PageHeader from '../../shared/PageHeader';
 import ButtonGroup from '../../shared/ButtonGroup';
@@ -67,7 +68,7 @@ const Owner = props => {
     return <LoadingAnimation />;
   }
   if (props.data.error) {
-    return <p>{props.data.error.message}</p>;
+    return <Error message={props.data.error.message} />;
   }
 
   const refreshLocation = (view) => {

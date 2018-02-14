@@ -3,6 +3,7 @@ import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import BudgetSankey from './BudgetSankey';
 import LoadingAnimation from '../../shared/LoadingAnimation';
+import Error from '../../shared/Error';
 import { updateSankeyData } from './graphql/budgetMutations';
 import { getSankeyData } from './graphql/budgetQueries';
 import { buildCashFlowData } from './budgetUtilities';
@@ -30,7 +31,7 @@ class SummaryCashFlow extends React.Component {
       return <LoadingAnimation />;
     }
     if (this.props.data.error) { // eslint-disable-line react/prop-types
-      return <p>{this.props.data.error.message}</p>; // eslint-disable-line react/prop-types
+      return <Error message={this.props.data.error.message} />; // eslint-disable-line react/prop-types
     }
   
     if (this.props.sankeyData.nodes === null) {

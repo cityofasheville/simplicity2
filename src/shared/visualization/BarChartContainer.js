@@ -7,7 +7,6 @@ import { color } from 'd3-color'
 
 /*
  * TODOS
- * highlight what a user is hovering over-- bar or piece
  * keep nice tooltip formatting with color and such
  * size margins based on where labels are even going (y or x), how long they are, remsize
  * shared tooltip option for budgetsummarybarchart
@@ -114,11 +113,11 @@ class BarChartContainer extends React.Component {
                   }
                 ]
               }}
-              // max margin should be 1/5 of chart size
-              //
-              // TODO: determine margin by length of longest label and remsize
               margin={{left: 40, right: 100, bottom: 40}}
-              customHoverBehavior={d => { d ? this.setState({ hover: Object.values(d.data).join('') }) : null}}
+              customHoverBehavior={d => { d ?
+                this.setState({ hover: Object.values(d.data).join('') }) :
+                this.setState({hover: null})
+              }}
             />
           </div>
         </div>

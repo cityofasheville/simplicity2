@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { graphql, compose } from 'react-apollo';
-import BarChart from '../../shared/visualization/BarChart';
+import BarChartContainer from '../../shared/visualization/BarChartContainer';
 import { getBudgetSummaryDept, getBudgetSummaryUse } from './graphql/budgetQueries';
 
 const getDollars = (value) => {
@@ -69,61 +69,25 @@ class BudgetSummaryBarChart extends React.Component {
         </div>
         <div className="row">
           <div className="col-sm-12">
-            <BarChart
-              data={this.props.summaryData.dataValues}
+
+            <BarChartContainer
+              data={this.state.summaryData.dataValues}
+              colorScheme={this.props.colorScheme}
+              mainAxisDataKey="display_year"
+              dataKeys={this.state.summaryData.dataKeys}
+            />
+            {/*
               legendHeight={115}
-              referenceArea mainAxisDataKey="display_year"
+              referenceArea
               mainReferenceAxisDataKey="yearAxisNumeric"
               referenceAreaLabels={[['Actual', 'Spent'], ['Adopted', 'Budget'], ['Proposed', 'Budget']]}
               referenceAreaExes={[500, 750, 1000]}
-              barDataKeys={this.props.summaryData.dataKeys}
               secondaryTickFormatter={getDollars}
               stacked
               toolTipFormatter={getDollarsLong}
-              colorScheme={this.props.colorScheme}
               domain={['dataMin', 'dataMax + 50000000']}
               altText={['Spending by', this.props.categoryType, 'bar chart'].join(' ')}
-            />
-            {/*<OrdinalFrame
-              data={formattedData}
-              axis={(
-                {
-                  orient: 'left',
-                  tickFormat: d => d,
-                  label: {
-                    name: 'Count',
-                    position: { anchor: 'middle' }
-                  }
-                }
-              )}
-              projection={this.props.layout}
-              type='bar'
-              oLabel={true}
-              oAccessor={this.props.mainAxisDataKey}
-              oPadding={10}
-              rAccessor='value'
-              style={d => ({fill: d.color})}
-              pieceHoverAnnotation={true}
-              // title={this.props.chartTitle}
-              tooltipContent={(d) =>
-                `${this.props.mainAxisDataKey[0].toUpperCase()+ this.props.mainAxisDataKey.slice(1)}: ${d.data[this.props.mainAxisDataKey]}, ${d.data.label}: ${d.data.value}`
-              }
-              legend={{
-                width: 40,
-                legendGroups: [
-                  {
-                    styleFn: d => ({fill: d.color}),
-                    items: formattedData.map(d => ({label: d.label, color: d.color}))
-                      .filter((item, pos, thisArray) => thisArray
-                        .findIndex(d => d.label === item.label && d.color === item.color) === pos)
-                  }
-                ]
-              }}
-              // max margin should be 1/5 of chart size
-              //
-              // TODO: determine margin by length of longest label and remsize
-              margin={{right: 100}}
-            /> */}
+            */}
           </div>
           <span className="pull-right" style={{ fontSize: '12px' }}>Barchart totals exclude interfund transfers</span>
         </div>

@@ -2,6 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { OrdinalFrame } from 'semiotic'
 import { colorSchemes } from './colorSchemes';
+import { color } from 'd3-color'
+
+
+/*
+ * TODOS
+ * highlight what a user is hovering over-- bar or piece
+ * keep nice tooltip formatting with color and such
+ * size margins based on where labels are even going (y or x), how long they are, remsize
+ * shared tooltip option for budgetsummarybarchart
+ * label for actual/adopted/proposed on budget dash (annotations?)
+ * legend on bottom-- either wait or make a PR to semiotic
+ * ability to format y axis values-- either wait or make a PR to semiotic
+ */
 
 
 const getLongDesc = (data, dataKeys, mainAxisKey, valueFormatter) => (
@@ -23,14 +36,14 @@ const getLongDesc = (data, dataKeys, mainAxisKey, valueFormatter) => (
 
 function formatDataForStacking(data, dataKeys, mainAxisDataKey, colorScheme) {
   return dataKeys.map((k, kIndex) => data.map(function(d) {
-      let rVal = {};
-      rVal[mainAxisDataKey] = d[mainAxisDataKey]
-      rVal.label = k
-      rVal.value = d[k] ? d[k] : 0
-      const thisScheme = colorSchemes[colorScheme]
-      rVal.color = thisScheme[kIndex % thisScheme.length]
-      return rVal
-    })).reduce((p, c) => p.concat(c))
+    let rVal = {};
+    rVal[mainAxisDataKey] = d[mainAxisDataKey]
+    rVal.label = k
+    rVal.value = d[k] ? d[k] : 0
+    const thisScheme = colorSchemes[colorScheme]
+    rVal.color = thisScheme[kIndex % thisScheme.length]
+    return rVal
+  })).reduce((p, c) => p.concat(c))
 }
 
 class BarChartContainer extends React.Component {
@@ -46,7 +59,6 @@ class BarChartContainer extends React.Component {
   }
 
   render() {
-    console.log(this.props)
     const formattedData = formatDataForStacking(
       this.props.data,
       this.props.dataKeys,
@@ -83,9 +95,11 @@ class BarChartContainer extends React.Component {
               oAccessor={this.props.mainAxisDataKey}
               oPadding={10}
               rAccessor='value'
-              style={d => ({fill: d.color})}
+              style={d => this.state.hover === Object.values(d).join('') ?
+                {fill: color(d.color).brighter().toString(), stroke: color(d.color).darker().toString()} :
+                {fill: d.color}
+              }
               pieceHoverAnnotation={true}
-              // title={this.props.chartTitle}
               tooltipContent={(d) =>
                 `${this.props.mainAxisDataKey[0].toUpperCase()+ this.props.mainAxisDataKey.slice(1)}: ${d.data[this.props.mainAxisDataKey]}, ${d.data.label}: ${d.data.value}`
               }
@@ -103,7 +117,8 @@ class BarChartContainer extends React.Component {
               // max margin should be 1/5 of chart size
               //
               // TODO: determine margin by length of longest label and remsize
-              margin={{left: 40, right: 100}}
+              margin={{left: 40, right: 100, bottom: 40}}
+              customHoverBehavior={d => { d ? this.setState({ hover: Object.values(d.data).join('') }) : null}}
             />
           </div>
         </div>

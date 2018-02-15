@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Tooltip from './Tooltip'
 import { OrdinalFrame } from 'semiotic'
 import { colorSchemes } from './colorSchemes';
 import { color } from 'd3-color'
@@ -94,14 +95,20 @@ class BarChartContainer extends React.Component {
               oAccessor={this.props.mainAxisDataKey}
               oPadding={10}
               rAccessor='value'
-              style={d => this.state.hover === Object.values(d).join('') ?
+              style={d => this.state.hover === d[this.props.mainAxisDataKey] ?
                 {fill: color(d.color).brighter().toString(), stroke: color(d.color).darker().toString()} :
                 {fill: d.color}
               }
-              pieceHoverAnnotation={true}
-              tooltipContent={(d) =>
-                `${this.props.mainAxisDataKey[0].toUpperCase()+ this.props.mainAxisDataKey.slice(1)}: ${d.data[this.props.mainAxisDataKey]}, ${d.data.label}: ${d.data.value}`
-              }
+              hoverAnnotation={true}
+              tooltipContent={ function(d) {
+                const textLines = d.pieces.map(piece =>
+                  ({
+                    text: `${piece.label}: ${this.props.tooltipYValFormatter(piece.value)}`,
+                    color: piece.color
+                  })
+                )
+                return <Tooltip title={d.column.name} textLines={textLines} />
+              }.bind(this)}
               legend={{
                 width: 40,
                 legendGroups: [
@@ -114,10 +121,11 @@ class BarChartContainer extends React.Component {
                 ]
               }}
               margin={{left: 40, right: 100, bottom: 40}}
-              customHoverBehavior={d => { d ?
-                this.setState({ hover: Object.values(d.data).join('') }) :
+              customHoverBehavior={d => { d && d.pieces ?
+                this.setState({hover: d.pieces[0].data[this.props.mainAxisDataKey]}) :
                 this.setState({hover: null})
-              }}
+              }
+            }
             />
           </div>
         </div>
@@ -129,7 +137,7 @@ class BarChartContainer extends React.Component {
                 {this.state.showingLongDesc ? 'Hide' : 'Show'} {this.props.chartTitle} bar chart summary
               </a>
               <div hidden={!this.state.showingLongDesc}>
-                {getLongDesc(this.props.data, this.props.dataKeys, this.props.mainAxisDataKey, this.props.toolTipFormatter)}
+                {getLongDesc(this.props.data, this.props.dataKeys, this.props.mainAxisDataKey, this.props.tooltipYValFormatter)}
               </div>
             </div>
           </div>
@@ -145,6 +153,9 @@ BarChartContainer.propTypes = {
   chartText: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   chartTitle: PropTypes.string,
   hideSummary: PropTypes.bool,
+  tooltipYValFormatter: PropTypes.func,
+  yAxisTickFormatter: PropTypes.func,
+  // pieceOrWholeHover: PropTypes.string
 };
 
 BarChartContainer.defaultProps = {
@@ -152,8 +163,10 @@ BarChartContainer.defaultProps = {
   dataKeys: [],
   chartText: '',
   chartTitle: '',
-  toolTipFormatter: null,
   hideSummary: false,
+  tooltipYValFormatter: val => val,
+  yAxisTickFormatter: null,
+  // pieceOrWholeHover: 'piece'
 };
 
 export default BarChartContainer;

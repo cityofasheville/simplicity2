@@ -75,6 +75,8 @@ class BudgetSummaryBarChart extends React.Component {
               colorScheme={this.props.colorScheme}
               mainAxisDataKey="display_year"
               dataKeys={this.state.summaryData.dataKeys}
+              yAxisTickFormatter={getDollars}
+              tooltipYValFormatter={getDollarsLong}
             />
             {/*
               legendHeight={115}
@@ -82,9 +84,7 @@ class BudgetSummaryBarChart extends React.Component {
               mainReferenceAxisDataKey="yearAxisNumeric"
               referenceAreaLabels={[['Actual', 'Spent'], ['Adopted', 'Budget'], ['Proposed', 'Budget']]}
               referenceAreaExes={[500, 750, 1000]}
-              secondaryTickFormatter={getDollars}
               stacked
-              toolTipFormatter={getDollarsLong}
               domain={['dataMin', 'dataMax + 50000000']}
               altText={['Spending by', this.props.categoryType, 'bar chart'].join(' ')}
             */}

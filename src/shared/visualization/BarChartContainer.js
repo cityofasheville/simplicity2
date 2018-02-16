@@ -8,12 +8,10 @@ import { color } from 'd3-color'
 
 /*
  * TODOS
- * keep nice tooltip formatting with color and such
- * size margins based on where labels are even going (y or x), how long they are, remsize
- * shared tooltip option for budgetsummarybarchart
  * label for actual/adopted/proposed on budget dash (annotations?)
  * legend on bottom-- either wait or make a PR to semiotic
  * ability to format y axis values-- either wait or make a PR to semiotic
+ * size margins based on where labels are even going (y or x), how long they are, remsize
  */
 
 
@@ -44,6 +42,10 @@ function formatDataForStacking(data, dataKeys, mainAxisDataKey, colorScheme) {
     rVal.color = thisScheme[kIndex % thisScheme.length]
     return rVal
   })).reduce((p, c) => p.concat(c))
+}
+
+function reverseDataIfHorizontal(layout, data){
+  return layout === 'horizontal' ? data : data.reverse()
 }
 
 class BarChartContainer extends React.Component {
@@ -79,6 +81,14 @@ class BarChartContainer extends React.Component {
           <div className="col-sm-12">
             <OrdinalFrame
               data={formattedData}
+              hoverAnnotation={true}
+              margin={{left: 40, right: 100, bottom: 40}}
+              oAccessor={this.props.mainAxisDataKey}
+              oLabel={true}
+              oPadding={10}
+              projection={this.props.layout}
+              rAccessor='value'
+              type='bar'
               axis={(
                 {
                   orient: 'left',
@@ -89,17 +99,32 @@ class BarChartContainer extends React.Component {
                   }
                 }
               )}
-              projection={this.props.layout}
-              type='bar'
-              oLabel={true}
-              oAccessor={this.props.mainAxisDataKey}
-              oPadding={10}
-              rAccessor='value'
+              customHoverBehavior={d => { d && d.pieces ?
+                this.setState({hover: d.pieces[0].data[this.props.mainAxisDataKey]}) :
+                this.setState({hover: null})
+              }}
+              legend={{
+                width: 40,
+                legendGroups: [
+                  {
+                    styleFn: d => ({fill: d.color}),
+                    items: reverseDataIfHorizontal(
+                        this.props.layout,
+                        formattedData.map(d => ({label: d.label, color: d.color}))
+                          .filter((item, pos, thisArray) =>
+                            thisArray.findIndex(d => d.label === item.label && d.color === item.color) === pos)
+                      )
+                  }
+                ]
+              }}
               style={d => this.state.hover === d[this.props.mainAxisDataKey] ?
-                {fill: color(d.color).brighter().toString(), stroke: color(d.color).darker().toString()} :
+                {
+                  fill: color(d.color).brighter(0.5).toString(),
+                  stroke: color(d.color).toString(),
+                  strokeWidth: 3,
+                } :
                 {fill: d.color}
               }
-              hoverAnnotation={true}
               tooltipContent={ function(d) {
                 const textLines = d.pieces.map(piece =>
                   ({
@@ -107,25 +132,9 @@ class BarChartContainer extends React.Component {
                     color: piece.color
                   })
                 )
+                if (this.props.layout !== 'horizontal') { textLines.reverse() }
                 return <Tooltip title={d.column.name} textLines={textLines} />
               }.bind(this)}
-              legend={{
-                width: 40,
-                legendGroups: [
-                  {
-                    styleFn: d => ({fill: d.color}),
-                    items: formattedData.map(d => ({label: d.label, color: d.color}))
-                      .filter((item, pos, thisArray) => thisArray
-                        .findIndex(d => d.label === item.label && d.color === item.color) === pos)
-                  }
-                ]
-              }}
-              margin={{left: 40, right: 100, bottom: 40}}
-              customHoverBehavior={d => { d && d.pieces ?
-                this.setState({hover: d.pieces[0].data[this.props.mainAxisDataKey]}) :
-                this.setState({hover: null})
-              }
-            }
             />
           </div>
         </div>
@@ -155,7 +164,6 @@ BarChartContainer.propTypes = {
   hideSummary: PropTypes.bool,
   tooltipYValFormatter: PropTypes.func,
   yAxisTickFormatter: PropTypes.func,
-  // pieceOrWholeHover: PropTypes.string
 };
 
 BarChartContainer.defaultProps = {
@@ -166,7 +174,6 @@ BarChartContainer.defaultProps = {
   hideSummary: false,
   tooltipYValFormatter: val => val,
   yAxisTickFormatter: null,
-  // pieceOrWholeHover: 'piece'
 };
 
 export default BarChartContainer;

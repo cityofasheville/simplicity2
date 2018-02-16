@@ -9,8 +9,8 @@ class Tooltip extends React.Component {
 	}
 
 	render() {
-		return <div>
-			<div style={{fontSize: '1.5rem'}}>{this.props.title}</div>
+		return <div style={{fontSize: '1.5rem'}}>
+			<div>{this.props.title}</div>
 			{this.props.textLines.map(lineObj =>
 				<div key={lineObj.text} style={{color: lineObj.color}}>{lineObj.text}</div>
 			)}
@@ -26,7 +26,10 @@ Tooltip.propTypes = {
 			color: "blablabla"
 		},
 	] */
-	title: PropTypes.string
+	title: PropTypes.oneOfType([
+		PropTypes.string,
+		PropTypes.number
+	])
 }
 
 Tooltip.defaultProps = {

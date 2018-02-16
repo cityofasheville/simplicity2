@@ -38,7 +38,6 @@ const AuthProviderModal = (props) => {
 
 AuthProviderModal.propTypes = {
   open: PropTypes.bool,
-  updateAuthModal: PropTypes.func,
 };
 
 export default compose(

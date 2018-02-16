@@ -2,7 +2,7 @@ import { getUser, getModalOpen, getDropdownOpen } from './authQueries';
 
 export const authResolvers = {
   Mutation: {
-    updateUser: (_, { loggedIn, privilege, name, email, provider, token }, { cache }) => {
+    updateUser: (_, { loggedIn, privilege, name, email, provider }, { cache }) => {
       const data = {
         user: {
           loggedIn,
@@ -10,7 +10,6 @@ export const authResolvers = {
           name,
           email,
           provider,
-          token,
         },
       };
       cache.writeQuery({ query: getUser, data });

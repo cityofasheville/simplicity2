@@ -19,14 +19,14 @@ const Search = props => (
           timeout = setTimeout(() => {
             props.updateSearchText({
               variables: {
-                searchText: e.target.value,
+                text: e.target.value,
               },
             });
           }, 500);
         }}
         onSearchClick={text => props.updateSearchText({
           variables: {
-            searchText: text,
+            text,
           },
         })}
         location={props.location}

@@ -1,5 +1,6 @@
 import { ApolloClient } from 'apollo-client';
 import { createHttpLink } from 'apollo-link-http';
+import firebase from 'firebase';
 import { ApolloLink } from 'apollo-link';
 import { setContext } from 'apollo-link-context';
 import { InMemoryCache } from 'apollo-cache-inmemory';
@@ -13,11 +14,24 @@ if (process.env.USE_LOCAL_API === 'true') {
 }
 
 const httpLink = createHttpLink({ uri: SERVER_URL });
-const middlewareLink = setContext(() => ({
-  headers: {
-    authorization: sessionStorage.getItem('token') || null,
-  },
-}));
+
+const middlewareLink = setContext(
+  request =>
+    new Promise((success, fail) => {
+      const signedInUser = firebase.auth().currentUser;
+      if (signedInUser) {
+        signedInUser.getIdToken()
+        .then((idToken) => {
+          sessionStorage.setItem('token', idToken);
+        });
+      }
+      setTimeout(() => {
+        success({ headers: {
+          authorization: sessionStorage.getItem('token') || null,
+        } });
+      }, 10);
+    })
+);
 const link = middlewareLink.concat(httpLink);
 
 const cache = new InMemoryCache();

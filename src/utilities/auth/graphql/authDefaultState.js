@@ -6,7 +6,6 @@ export const defaultAuthState = {
     name: '',
     email: '',
     provider: '',
-    token: '',
   },
   modal: {
     __typename: 'authModal',

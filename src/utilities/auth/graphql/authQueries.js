@@ -8,7 +8,6 @@ export const getUser = gql`
       name
       email
       provider
-      token
     }
   }
 `;

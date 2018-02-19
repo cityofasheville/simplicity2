@@ -71,6 +71,28 @@ class BudgetSummaryBarChart extends React.Component {
           <div className="col-sm-12">
 
             <BarChartContainer
+              annotations={[
+                {
+                  type: 'or',
+                  display_year: '2014-15',
+                  label: 'Actual Spent'
+                },
+                {
+                  type: 'or',
+                  display_year: '2015-16',
+                  label: 'Actual Spent'
+                },
+                {
+                  type: 'or',
+                  display_year: '2016-17',
+                  label: 'Adopted'
+                },
+                {
+                  type: 'or',
+                  display_year: '2017-18',
+                  label: 'Proposed'
+                }
+              ]}
               data={this.state.summaryData.dataValues}
               colorScheme={this.props.colorScheme}
               mainAxisDataKey="display_year"

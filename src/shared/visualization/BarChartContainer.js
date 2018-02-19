@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Tooltip from './Tooltip'
+import { AnnotationLabel } from 'react-annotation'
+import { Mark } from "semiotic-mark"
 import { OrdinalFrame } from 'semiotic'
 import { colorSchemes } from './colorSchemes';
 import { color } from 'd3-color'
@@ -8,7 +10,6 @@ import { color } from 'd3-color'
 
 /*
  * TODOS
- * label for actual/adopted/proposed on budget dash (annotations?)
  * legend on bottom-- either wait or make a PR to semiotic
  * ability to format y axis values-- either wait or make a PR to semiotic
  * size margins based on where labels are even going (y or x), how long they are, remsize
@@ -80,9 +81,41 @@ class BarChartContainer extends React.Component {
         <div className="row">
           <div className="col-sm-12">
             <OrdinalFrame
+              annotations={this.props.annotations}
+              svgAnnotationRules={
+                  function(d) {
+                    let returnMarkX = d.screenCoordinates[0] + (this.props.layout === "horizontal" ? 10 : 0)
+                    const allAnnotations = d.annotationLayer.annotations
+                    const indexOfFirstLabelOccurrence = allAnnotations.findIndex(annotation => annotation.label === d.d.label)
+                    const labelMatches = allAnnotations.filter(annotation => annotation.label === d.d.label)
+
+                    if (indexOfFirstLabelOccurrence === d.i && labelMatches.length > 1) {
+                      // If it's the first occurence of that label and there's another one, return nothing
+                      return
+                    } else if (d.i - indexOfFirstLabelOccurrence + 1 === labelMatches.length) {
+                      // If two contiguous annotations are the same, average their x value and display one
+                      // Offset to left is equal to (distance between two labels / 2) * labelMatches.length - 1
+                      const categoryVals = Object.values(d.categories)
+                      returnMarkX -= ((categoryVals[1].x - categoryVals[0].x) / 2) * (labelMatches.length - 1)
+                    }
+
+                    return <Mark
+                      markType="text"
+                      key={d.d.label + "annotationtext" + d.i}
+                      forceUpdate={true}
+                      x={returnMarkX}
+                      y={d.screenCoordinates[1] + (this.props.layout === "vertical" ? 10 : 0)}
+                      y={-15}
+                      className={`annotation annotation-or-label ${d.d.className || ""}`}
+                      textAnchor="middle"
+                    >
+                      {d.d.label}
+                    </Mark>
+                  }.bind(this)
+              }
               data={formattedData}
               hoverAnnotation={true}
-              margin={{left: 40, right: 100, bottom: 40}}
+              margin={{top: 40, right: 100, bottom: 40, left: 40}}
               oAccessor={this.props.mainAxisDataKey}
               oLabel={true}
               oPadding={10}
@@ -119,7 +152,7 @@ class BarChartContainer extends React.Component {
               }}
               style={d => this.state.hover === d[this.props.mainAxisDataKey] ?
                 {
-                  fill: color(d.color).brighter(0.5).toString(),
+                  fill: color(d.color).brighter(0.6).toString(),
                   stroke: color(d.color).toString(),
                   strokeWidth: 3,
                 } :
@@ -157,6 +190,7 @@ class BarChartContainer extends React.Component {
 }
 
 BarChartContainer.propTypes = {
+  annotations: PropTypes.arrayOf(PropTypes.object),
   data: PropTypes.array, // eslint-disable-line
   dataKeys: PropTypes.arrayOf(PropTypes.string),
   chartText: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
@@ -167,6 +201,7 @@ BarChartContainer.propTypes = {
 };
 
 BarChartContainer.defaultProps = {
+  annotations: [],
   data: [],
   dataKeys: [],
   chartText: '',

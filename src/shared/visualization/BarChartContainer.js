@@ -12,6 +12,7 @@ import { color } from 'd3-color'
  * TODOS
  * legend on bottom-- either wait or make a PR to semiotic
  * ability to format y axis values-- either wait or make a PR to semiotic
+ * write break text function for legend
  * size margins based on where labels are even going (y or x), how long they are, remsize
  */
 
@@ -82,45 +83,15 @@ class BarChartContainer extends React.Component {
           <div className="col-sm-12">
             <OrdinalFrame
               annotations={this.props.annotations}
-              svgAnnotationRules={
-                  function(d) {
-                    let returnMarkX = d.screenCoordinates[0] + (this.props.layout === "horizontal" ? 10 : 0)
-                    const allAnnotations = d.annotationLayer.annotations
-                    const indexOfFirstLabelOccurrence = allAnnotations.findIndex(annotation => annotation.label === d.d.label)
-                    const labelMatches = allAnnotations.filter(annotation => annotation.label === d.d.label)
-
-                    if (indexOfFirstLabelOccurrence === d.i && labelMatches.length > 1) {
-                      // If it's the first occurence of that label and there's another one, return nothing
-                      return
-                    } else if (d.i - indexOfFirstLabelOccurrence + 1 === labelMatches.length) {
-                      // If two contiguous annotations are the same, average their x value and display one
-                      // Offset to left is equal to (distance between two labels / 2) * labelMatches.length - 1
-                      const categoryVals = Object.values(d.categories)
-                      returnMarkX -= ((categoryVals[1].x - categoryVals[0].x) / 2) * (labelMatches.length - 1)
-                    }
-
-                    return <Mark
-                      markType="text"
-                      key={d.d.label + "annotationtext" + d.i}
-                      forceUpdate={true}
-                      x={returnMarkX}
-                      y={d.screenCoordinates[1] + (this.props.layout === "vertical" ? 10 : 0)}
-                      y={-15}
-                      className={`annotation annotation-or-label ${d.d.className || ""}`}
-                      textAnchor="middle"
-                    >
-                      {d.d.label}
-                    </Mark>
-                  }.bind(this)
-              }
               data={formattedData}
               hoverAnnotation={true}
               margin={{top: 40, right: 100, bottom: 40, left: 40}}
               oAccessor={this.props.mainAxisDataKey}
               oLabel={true}
-              oPadding={10}
+              oPadding={15}
               projection={this.props.layout}
               rAccessor='value'
+              rExtent={this.props.domain}
               type='bar'
               axis={(
                 {
@@ -158,7 +129,41 @@ class BarChartContainer extends React.Component {
                 } :
                 {fill: d.color}
               }
-              tooltipContent={ function(d) {
+              svgAnnotationRules={(d) => {
+                    // Don't try to fire when there aren't annotations
+                    if (this.props.annotations.length < 1) { return }
+
+                    let returnMarkX = d.screenCoordinates[0] + (this.props.layout === "horizontal" ? 10 : 0)
+                    const allAnnotations = d.annotationLayer.annotations
+                    const indexOfFirstLabelOccurrence = allAnnotations.findIndex(annotation => annotation.label === d.d.label)
+                    const labelMatches = allAnnotations.filter(annotation => annotation.label === d.d.label)
+
+                    if (indexOfFirstLabelOccurrence === d.i && labelMatches.length > 1) {
+                      // If it's the first occurence of that label and there's another one, return nothing
+                      return
+                    } else if (d.i - indexOfFirstLabelOccurrence + 1 === labelMatches.length) {
+                      // If two contiguous annotations are the same, average their x value and display one
+                      // Offset to left is equal to (distance between two labels / 2) * (labelMatches.length - 1)
+                      const categoryVals = Object.values(d.categories)
+                      returnMarkX -= ((categoryVals[1].x - categoryVals[0].x) / 2) * (labelMatches.length - 1)
+                    }
+
+                    return <Mark
+                      markType="text"
+                      key={d.d.label + "annotationtext" + d.i}
+                      forceUpdate={true}
+                      x={returnMarkX}
+                      y={d.screenCoordinates[1] + (this.props.layout === "vertical" ? 10 : 0)}
+                      y={-15}
+                      className={`annotation annotation-or-label ${d.d.className || ""}`}
+                      textAnchor="middle"
+                      style={{fontWeight: 'bolder'}}
+                    >
+                      {d.d.label}
+                    </Mark>
+                  }
+              }
+              tooltipContent={(d) => {
                 const textLines = d.pieces.map(piece =>
                   ({
                     text: `${piece.label}: ${this.props.tooltipYValFormatter(piece.value)}`,
@@ -167,7 +172,7 @@ class BarChartContainer extends React.Component {
                 )
                 if (this.props.layout !== 'horizontal') { textLines.reverse() }
                 return <Tooltip title={d.column.name} textLines={textLines} />
-              }.bind(this)}
+              }}
             />
           </div>
         </div>
@@ -193,6 +198,7 @@ BarChartContainer.propTypes = {
   annotations: PropTypes.arrayOf(PropTypes.object),
   data: PropTypes.array, // eslint-disable-line
   dataKeys: PropTypes.arrayOf(PropTypes.string),
+  domain: PropTypes.arrayOf(PropTypes.number),
   chartText: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   chartTitle: PropTypes.string,
   hideSummary: PropTypes.bool,
@@ -204,6 +210,7 @@ BarChartContainer.defaultProps = {
   annotations: [],
   data: [],
   dataKeys: [],
+  domain: [],
   chartText: '',
   chartTitle: '',
   hideSummary: false,

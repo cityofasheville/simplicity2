@@ -266,7 +266,6 @@ const HomelessnessCounts = props => (
           dataKeys={props.enrollmentKeys}
           data={props.enrollmentData}
           stacked altText="Bar chart of average monthly counts of persons enrolled in housing support programs in the City of Asheville and Buncombe County"
-          domain={[0, 'dataMax']}
           colorScheme="bright_colors_2"
         />
       </div>

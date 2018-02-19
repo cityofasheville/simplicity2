@@ -10,7 +10,9 @@ class Tooltip extends React.Component {
 
 	render() {
 		return <div style={{fontSize: '1.5rem'}}>
-			<div>{this.props.title}</div>
+			<div style={{fontWeight: 'bolder', textAlign: 'center'}}>
+				{this.props.title}
+			</div>
 			{this.props.textLines.map(lineObj =>
 				<div key={lineObj.text} style={{color: lineObj.color}}>{lineObj.text}</div>
 			)}

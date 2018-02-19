@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ResponsiveContainer, AreaChart as RechartsAreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { colorSchemes } from './colorSchemes';
 
 const getDollars = (value) => {
@@ -23,7 +22,17 @@ const AreaChart = props => (
         <CartesianGrid strokeDasharray="3 3" />
         <Tooltip formatter={props.dollars ? getDollars : null} />
         {props.dataKeys.map((area, i) => (
-          <Area key={['area', i].join('_')} type="monotone" dataKey={props.dataKeys[i]} stackId={1} fill={colorSchemes[props.colorScheme][i % colorSchemes[props.colorScheme].length]} stroke={colorSchemes[props.colorScheme][i % colorSchemes[props.colorScheme].length]} fillOpacity={1} onClick={props.diveDeeper !== undefined ? () => props.diveDeeper(props.dataKeys[i]) : null} style={{ cursor: 'pointer' }} />
+          <Area
+            key={['area', i].join('_')}
+            type="monotone"
+            dataKey={props.dataKeys[i]}
+            stackId={1}
+            fill={colorSchemes[props.colorScheme][i % colorSchemes[props.colorScheme].length]}
+            stroke={colorSchemes[props.colorScheme][i % colorSchemes[props.colorScheme].length]}
+            fillOpacity={1}
+            onClick={props.diveDeeper !== undefined ? () => props.diveDeeper(props.dataKeys[i]) : null}
+            style={{ cursor: 'pointer' }}
+          />
         ))}
         <Legend iconType="square" />
       </RechartsAreaChart>

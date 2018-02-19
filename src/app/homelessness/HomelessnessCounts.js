@@ -255,6 +255,7 @@ const HomelessnessCounts = props => (
           data={props.PITdata}
           stacked altText="Bar chart of Point-in-Time counts of people who are homeless"
           domain={[0, 1500]}
+          xAxisLabel="Count"
         />
       </div>
       <div className="col-sm-6">
@@ -267,6 +268,7 @@ const HomelessnessCounts = props => (
           data={props.enrollmentData}
           stacked altText="Bar chart of average monthly counts of persons enrolled in housing support programs in the City of Asheville and Buncombe County"
           colorScheme="bright_colors_2"
+          xAxisLabel="Count"
         />
       </div>
     </div>

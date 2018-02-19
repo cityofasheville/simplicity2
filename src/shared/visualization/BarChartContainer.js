@@ -1,17 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Tooltip from './Tooltip'
-import { AnnotationLabel } from 'react-annotation'
 import { Mark } from "semiotic-mark"
 import { OrdinalFrame } from 'semiotic'
 import { colorSchemes } from './colorSchemes';
 import { color } from 'd3-color'
+import { formatDataForStackedBar } from './visUtilities'
 
 
 /*
  * TODOS
  * legend on bottom-- either wait or make a PR to semiotic
- * ability to format y axis values-- either wait or make a PR to semiotic
  * write break text function for legend
  * size margins based on where labels are even going (y or x), how long they are, remsize
  */
@@ -34,18 +33,6 @@ const getLongDesc = (data, dataKeys, mainAxisKey, valueFormatter) => (
   </div>
 );
 
-function formatDataForStacking(data, dataKeys, mainAxisDataKey, colorScheme) {
-  return dataKeys.map((k, kIndex) => data.map(function(d) {
-    let rVal = {};
-    rVal[mainAxisDataKey] = d[mainAxisDataKey]
-    rVal.label = k
-    rVal.value = d[k] ? d[k] : 0
-    const thisScheme = colorSchemes[colorScheme]
-    rVal.color = thisScheme[kIndex % thisScheme.length]
-    return rVal
-  })).reduce((p, c) => p.concat(c))
-}
-
 function reverseDataIfHorizontal(layout, data){
   return layout === 'horizontal' ? data : data.reverse()
 }
@@ -63,7 +50,7 @@ class BarChartContainer extends React.Component {
   }
 
   render() {
-    const formattedData = formatDataForStacking(
+    const formattedData = formatDataForStackedBar(
       this.props.data,
       this.props.dataKeys,
       this.props.mainAxisDataKey,
@@ -71,6 +58,7 @@ class BarChartContainer extends React.Component {
     return (
       <div>
         <h4>{this.props.chartTitle}</h4>
+        <br/>
         <p>
           {this.props.chartText.isArray &&
             this.props.chartText.map((textChunk, index) => (<span key={index}>{textChunk}</span>))
@@ -81,99 +69,100 @@ class BarChartContainer extends React.Component {
         </p>
         <div className="row">
           <div className="col-sm-12">
-            <OrdinalFrame
-              annotations={this.props.annotations}
-              data={formattedData}
-              hoverAnnotation={true}
-              margin={{top: 40, right: 100, bottom: 40, left: 40}}
-              oAccessor={this.props.mainAxisDataKey}
-              oLabel={true}
-              oPadding={15}
-              projection={this.props.layout}
-              rAccessor='value'
-              rExtent={this.props.domain}
-              type='bar'
-              axis={(
-                {
-                  orient: 'left',
-                  tickFormat: d => d,
-                  label: {
-                    name: 'Count',
-                    position: { anchor: 'middle' }
-                  }
-                }
-              )}
-              customHoverBehavior={d => { d && d.pieces ?
-                this.setState({hover: d.pieces[0].data[this.props.mainAxisDataKey]}) :
-                this.setState({hover: null})
-              }}
-              legend={{
-                width: 40,
-                legendGroups: [
+            <div style={{ height: this.props.height }} alt={this.props.altText}>
+              <OrdinalFrame
+                annotations={this.props.annotations}
+                data={formattedData}
+                hoverAnnotation={true}
+                margin={{top: 20, right: 100, bottom: 60, left: 60}}
+                oAccessor={this.props.mainAxisDataKey}
+                oLabel={true}
+                oPadding={12.5}
+                projection={this.props.layout}
+                rAccessor='value'
+                rExtent={this.props.domain}
+                type='bar'
+                axis={(
                   {
-                    styleFn: d => ({fill: d.color}),
-                    items: reverseDataIfHorizontal(
-                        this.props.layout,
-                        formattedData.map(d => ({label: d.label, color: d.color}))
-                          .filter((item, pos, thisArray) =>
-                            thisArray.findIndex(d => d.label === item.label && d.color === item.color) === pos)
-                      )
-                  }
-                ]
-              }}
-              style={d => this.state.hover === d[this.props.mainAxisDataKey] ?
-                {
-                  fill: color(d.color).brighter(0.6).toString(),
-                  stroke: color(d.color).toString(),
-                  strokeWidth: 3,
-                } :
-                {fill: d.color}
-              }
-              svgAnnotationRules={(d) => {
-                    // Don't try to fire when there aren't annotations
-                    if (this.props.annotations.length < 1) { return }
-
-                    let returnMarkX = d.screenCoordinates[0] + (this.props.layout === "horizontal" ? 10 : 0)
-                    const allAnnotations = d.annotationLayer.annotations
-                    const indexOfFirstLabelOccurrence = allAnnotations.findIndex(annotation => annotation.label === d.d.label)
-                    const labelMatches = allAnnotations.filter(annotation => annotation.label === d.d.label)
-
-                    if (indexOfFirstLabelOccurrence === d.i && labelMatches.length > 1) {
-                      // If it's the first occurence of that label and there's another one, return nothing
-                      return
-                    } else if (d.i - indexOfFirstLabelOccurrence + 1 === labelMatches.length) {
-                      // If two contiguous annotations are the same, average their x value and display one
-                      // Offset to left is equal to (distance between two labels / 2) * (labelMatches.length - 1)
-                      const categoryVals = Object.values(d.categories)
-                      returnMarkX -= ((categoryVals[1].x - categoryVals[0].x) / 2) * (labelMatches.length - 1)
+                    orient: 'left',
+                    tickFormat: d => this.props.yAxisTickFormatter(d),
+                    label: !this.props.xAxisLabel ? null : {
+                      name: this.props.xAxisLabel,
+                      position: { anchor: 'middle' }
                     }
-
-                    return <Mark
-                      markType="text"
-                      key={d.d.label + "annotationtext" + d.i}
-                      forceUpdate={true}
-                      x={returnMarkX}
-                      y={d.screenCoordinates[1] + (this.props.layout === "vertical" ? 10 : 0)}
-                      y={-15}
-                      className={`annotation annotation-or-label ${d.d.className || ""}`}
-                      textAnchor="middle"
-                      style={{fontWeight: 'bolder'}}
-                    >
-                      {d.d.label}
-                    </Mark>
                   }
-              }
-              tooltipContent={(d) => {
-                const textLines = d.pieces.map(piece =>
-                  ({
-                    text: `${piece.label}: ${this.props.tooltipYValFormatter(piece.value)}`,
-                    color: piece.color
-                  })
-                )
-                if (this.props.layout !== 'horizontal') { textLines.reverse() }
-                return <Tooltip title={d.column.name} textLines={textLines} />
-              }}
-            />
+                )}
+                customHoverBehavior={d => { d && d.pieces ?
+                  this.setState({hover: d.pieces[0].data[this.props.mainAxisDataKey]}) :
+                  this.setState({hover: null})
+                }}
+                legend={{
+                  width: 40,
+                  legendGroups: [
+                    {
+                      styleFn: d => ({fill: d.color}),
+                      items: reverseDataIfHorizontal(
+                          this.props.layout,
+                          formattedData.map(d => ({label: d.label, color: d.color}))
+                            .filter((item, pos, thisArray) =>
+                              thisArray.findIndex(d => d.label === item.label && d.color === item.color) === pos)
+                        )
+                    }
+                  ]
+                }}
+                style={d => this.state.hover === d[this.props.mainAxisDataKey] ?
+                  {
+                    fill: color(d.color).brighter(0.6).toString(),
+                    stroke: color(d.color).toString(),
+                    strokeWidth: 3,
+                  } :
+                  {fill: d.color}
+                }
+                svgAnnotationRules={(d) => {
+                      // Don't try to fire when there aren't annotations
+                      if (this.props.annotations.length < 1) { return }
+
+                      let returnMarkX = d.screenCoordinates[0] + (this.props.layout === "horizontal" ? 10 : 0)
+                      const allAnnotations = d.annotationLayer.annotations
+                      const indexOfFirstLabelOccurrence = allAnnotations.findIndex(annotation => annotation.label === d.d.label)
+                      const labelMatches = allAnnotations.filter(annotation => annotation.label === d.d.label)
+
+                      if (indexOfFirstLabelOccurrence === d.i && labelMatches.length > 1) {
+                        // If it's the first occurence of that label and there's another one, return nothing
+                        return
+                      } else if (d.i - indexOfFirstLabelOccurrence + 1 === labelMatches.length) {
+                        // If two contiguous annotations are the same, average their x value and display one
+                        // Offset to left is equal to (distance between two labels / 2) * (labelMatches.length - 1)
+                        const categoryVals = Object.values(d.categories)
+                        returnMarkX -= ((categoryVals[1].x - categoryVals[0].x) / 2) * (labelMatches.length - 1)
+                      }
+
+                      return <Mark
+                        markType="text"
+                        key={d.d.label + "annotationtext" + d.i}
+                        forceUpdate={true}
+                        x={returnMarkX}
+                        y={d.screenCoordinates[1] + (this.props.layout === "vertical" ? 10 : 0)}
+                        y={-15}
+                        className={`annotation annotation-or-label ${d.d.className || ""}`}
+                        textAnchor="middle"
+                      >
+                        {d.d.label}
+                      </Mark>
+                    }
+                }
+                tooltipContent={(d) => {
+                  const textLines = d.pieces.map(piece =>
+                    ({
+                      text: `${piece.label}: ${this.props.tooltipYValFormatter(piece.value)}`,
+                      color: piece.color
+                    })
+                  )
+                  if (this.props.layout !== 'horizontal') { textLines.reverse() }
+                  return <Tooltip title={d.column.name} textLines={textLines} />
+                }}
+              />
+            </div>
           </div>
         </div>
         {!this.props.hideSummary &&
@@ -203,6 +192,7 @@ BarChartContainer.propTypes = {
   chartTitle: PropTypes.string,
   hideSummary: PropTypes.bool,
   tooltipYValFormatter: PropTypes.func,
+  xAxisLabel: PropTypes.string,
   yAxisTickFormatter: PropTypes.func,
 };
 
@@ -215,7 +205,8 @@ BarChartContainer.defaultProps = {
   chartTitle: '',
   hideSummary: false,
   tooltipYValFormatter: val => val,
-  yAxisTickFormatter: null,
+  xAxisLabel: null,
+  yAxisTickFormatter: val => val,
 };
 
 export default BarChartContainer;

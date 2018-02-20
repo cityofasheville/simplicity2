@@ -206,7 +206,7 @@ const getCrimesQuery = gql`
 const CrimesByAddressGQL = graphql(getCrimesQuery, {
   options: ownProps => ({
     variables: {
-      civicaddress_id: ownProps.location.query.id,
+      civicaddress_id: ownProps.location.query.id.trim(),
       radius: ownProps.radius,
       before: ownProps.before,
       after: ownProps.after,

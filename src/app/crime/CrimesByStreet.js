@@ -207,7 +207,7 @@ const getCrimesAndStreetInfoQuery = gql`
 const CrimesByStreetGQL = graphql(getCrimesAndStreetInfoQuery, {
   options: ownProps => ({
     variables: {
-      centerline_ids: ownProps.location.query.id.split(','),
+      centerline_ids: ownProps.location.query.id.trim().split(','),
       radius: ownProps.radius,
       before: ownProps.before,
       after: ownProps.after,

@@ -140,7 +140,7 @@ const addressQuery = gql`
 `;
 
 const AddressWithData = graphql(addressQuery, {
-  options: ownProps => ({ variables: { civicaddress_ids: [ownProps.location.query.id] } }),
+  options: ownProps => ({ variables: { civicaddress_ids: [ownProps.location.query.id.trim()] } }),
 })(Address);
 
 export default AddressWithData;

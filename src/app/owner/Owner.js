@@ -200,7 +200,7 @@ const propertyQuery = gql`
 `;
 
 const OwnerWithData = graphql(propertyQuery, {
-  options: ownProps => ({ variables: { pins: (ownProps.location === undefined) ? ownProps.pins : ownProps.location.query.id.split(',') } }),
+  options: ownProps => ({ variables: { pins: (ownProps.location === undefined) ? ownProps.pins : ownProps.location.query.id.trim().split(',') } }),
 })(Owner);
 
 export default OwnerWithData;

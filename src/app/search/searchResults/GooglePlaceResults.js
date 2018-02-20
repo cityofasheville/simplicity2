@@ -111,5 +111,5 @@ const searchQuery = gql`
 
 export default graphql(searchQuery, {
   skip: ownProps => (!ownProps.location.query.placeSearch),
-  options: ownProps => ({ variables: { searchString: ownProps.location.query.placeSearch, searchContexts: getEntitiesToSearch() } }),
+  options: ownProps => ({ variables: { searchString: ownProps.location.query.placeSearch.trim(), searchContexts: getEntitiesToSearch() } }),
 })(GooglePlaceResults);

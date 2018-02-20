@@ -154,7 +154,7 @@ const getAddressesAndStreetInfoQuery = gql`
 const AddressesByStreetGQL = graphql(getAddressesAndStreetInfoQuery, {
   options: ownProps => ({
     variables: {
-      centerline_ids: ownProps.location.query.id.split(','),
+      centerline_ids: ownProps.location.query.id.trim().split(','),
     },
   }),
 })(AddressesByStreet);

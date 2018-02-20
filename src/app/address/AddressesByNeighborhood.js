@@ -167,7 +167,7 @@ const getAddressesAndNeighborhoodInfoQuery = gql`
 const AddressesByNeighborhoodGQL = graphql(getAddressesAndNeighborhoodInfoQuery, {
   options: ownProps => ({
     variables: {
-      nbrhd_ids: [ownProps.location.query.id],
+      nbrhd_ids: [ownProps.location.query.id.trim()],
     },
   }),
 })(AddressesByNeighborhood);

@@ -111,6 +111,7 @@ class BarChartContainer extends React.Component {
                   ]
                 }}
                 style={d => this.state.hover === d[this.props.mainAxisDataKey] ?
+                  // For the currently hovered bar, return a brighter fill and add a stroke
                   {
                     fill: color(d.color).brighter(0.6).toString(),
                     stroke: color(d.color).toString(),

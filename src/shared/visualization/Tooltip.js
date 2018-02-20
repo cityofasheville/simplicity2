@@ -9,7 +9,11 @@ class Tooltip extends React.Component {
 	}
 
 	render() {
-		return <div style={{fontSize: '1.5rem'}}>
+		const styles = this.props.style || {}
+		styles.fontSize = '1.5rem'
+		styles.padding = '0.5rem'
+		styles.minWidth = `${(this.props.textLines.map(line => line.text).join('').length + 0.5) / this.props.textLines.length}rem`
+		return <div style={styles}>
 			<div style={{fontWeight: 'bolder', textAlign: 'center'}}>
 				{this.props.title}
 			</div>

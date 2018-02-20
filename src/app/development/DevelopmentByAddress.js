@@ -181,7 +181,7 @@ const getPermitsQuery = gql`
 const DevelopmentByAddressGQL = graphql(getPermitsQuery, {
   options: ownProps => ({
     variables: {
-      civicaddress_id: ownProps.location.query.id,
+      civicaddress_id: ownProps.location.query.id.trim(),
       radius: ownProps.radius,
       before: ownProps.before,
       after: ownProps.after,

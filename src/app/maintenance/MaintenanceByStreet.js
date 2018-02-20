@@ -133,7 +133,7 @@ const getMaintenanceQuery = gql`
 const MaintenanceByStreetGQL = graphql(getMaintenanceQuery, {
   options: ownProps => ({
     variables: {
-      centerline_ids: ownProps.location.query.id.split(','),
+      centerline_ids: ownProps.location.query.id.trim().split(','),
     },
   }),
 })(MaintenanceByStreet);

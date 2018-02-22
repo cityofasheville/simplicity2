@@ -79,7 +79,7 @@ const PropertiesByNeighborhood = (props) => {
         <div className="col-sm-12">
           <EmailDownload downloadData={props.data.properties_by_neighborhood} fileName="properties_by_neighborhodd.csv" />
         </div>
-        <div id="listView" className="col-sm-12" hidden={props.location.query.view === 'map'}>
+        <div id="listView" className="col-sm-12" hidden={props.location.query.view !== 'list'}>
           {props.data.properties_by_neighborhood.length < 1 ?
             <div className="alert alert-info">No results found</div>
           :
@@ -128,8 +128,8 @@ const PropertiesByNeighborhood = (props) => {
           }
         </div>
 
-        <div id="mapView" className="col-xs-12" hidden={props.location.query.view !== 'map'}>
-          {props.data.properties_by_neighborhood.length === 0 || props.location.query.view !== 'map' ?
+        <div id="mapView" className="col-xs-12" hidden={props.location.query.view === 'list'}>
+          {props.data.properties_by_neighborhood.length === 0 || props.location.query.view === 'list' ?
             <div className="alert alert-info">No results found</div>
             :
             <Map bounds={getBoundsFromPolygonData([props.data.neighborhoods[0].polygon])} drawPolygon polygonData={combinePolygonsFromPropertyList(props.data.properties_by_neighborhood)} />
@@ -154,32 +154,33 @@ PropertiesByNeighborhood.defaultProps = {
 const getPropertiesByNeighborhoodQuery = gql`
   query getPropertiesByNeighborhoodQuery($nbrhd_ids: [String]) {
     properties_by_neighborhood (nbrhd_ids: $nbrhd_ids) {
-      civic_address_ids,
-      property_civic_address_id,
-      pinnum,
-      address,
-      property_address,
-      city,
-      property_city,
-      zipcode,
-      property_zipcode,
-      tax_exempt,
-      neighborhood,
-      appraisal_area,
-      acreage,
-      zoning,
-      deed_link,
-      property_card_link,
-      plat_link,
-      latitude,
-      longitude,
-      building_value,
-      land_value,
-      appraised_value,
-      tax_value,
-      market_value,
-      owner,
-      owner_address,
+      civic_address_ids
+      property_civic_address_id
+      pinnum
+      address
+      property_address
+      city
+      property_city
+      is_in_city
+      zipcode
+      property_zipcode
+      tax_exempt
+      neighborhood
+      appraisal_area
+      acreage
+      zoning
+      deed_link
+      property_card_link
+      plat_link
+      latitude
+      longitude
+      building_value
+      land_value
+      appraised_value
+      tax_value
+      market_value
+      owner
+      owner_address
       polygons {
         outer {
           points {

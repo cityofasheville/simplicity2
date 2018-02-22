@@ -7,6 +7,7 @@ import DetailsFormGroup from '../../shared/DetailsFormGroup';
 import DetailsIconLinkFormGroup from '../../shared/DetailsIconLinkFormGroup';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import Error from '../../shared/Error';
+import InCityMessage from '../InCityMessage';
 import PageHeader from '../../shared/PageHeader';
 import ButtonGroup from '../../shared/ButtonGroup';
 import LinkButton from '../../shared/LinkButton';
@@ -94,6 +95,11 @@ const Property = (props) => {
         <div className="col-sm-6">
           <fieldset className="detailsFieldset">
             <div className="row">
+              <div className="col-xs-12" style={{ marginBottom: '10px' }}>
+                <InCityMessage inTheCity={propertyData.is_in_city} />
+              </div>
+            </div>
+            <div className="row">
               <div className="col-xs-12">
                 <div alt={['Table of addresses'].join(' ')} style={{ marginRight: '10px', marginLeft: '10px' }}>
                   <ReactTable
@@ -176,6 +182,7 @@ const propertyQuery = gql`
       city,
       zipcode,
       tax_exempt,
+      is_in_city,
       neighborhood,
       appraisal_area,
       acreage,

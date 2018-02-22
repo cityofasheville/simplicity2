@@ -33,7 +33,7 @@ const MaintenanceByStreet = (props) => {
     return <Error message={props.data.error.message} />; // eslint-disable-line react/prop-types
   }
 
-  const urlString = [props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&label=', props.location.query.label, '&hideNavbar=', props.location.query.hideNavbar, '&search=', props.location.query.search, '&view=map'].join('');
+  const urlString = [props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&entities=', props.location.query.entities, '&label=', props.location.query.label, '&hideNavbar=', props.location.query.hideNavbar, '&search=', props.location.query.search, '&view=map'].join('');
 
   const dataColumns = [
     {
@@ -82,7 +82,7 @@ const MaintenanceByStreet = (props) => {
         <EmailDownload downloadData={props.data.streets} fileName="maintenance_by_street.csv" />
       </div>
       <div className="col-sm-12">
-        <div id="listView" hidden={props.location.query.view === 'map'} alt={['Table of addresses'].join(' ')} style={{ marginTop: '10px' }}>
+        <div id="listView" hidden={props.location.query.view !== 'list'} alt={['Table of addresses'].join(' ')} style={{ marginTop: '10px' }}>
           <ReactTable
             data={props.data.streets}
             columns={dataColumns}
@@ -103,8 +103,8 @@ const MaintenanceByStreet = (props) => {
           />
         </div>
 
-        <div id="mapView" hidden={props.location.query.view !== 'map'}>
-          {props.data.streets.length === 0 || props.location.query.view !== 'map' ?
+        <div id="mapView" hidden={props.location.query.view === 'list'}>
+          {props.data.streets.length === 0 || props.location.query.view === 'list' ?
             <div className="alert alert-info">No results found</div>
             :
             <Map maintenanceData={formatMaintenanceData(props.data.streets)} drawMaintenance bounds={props.location.query.bounds !== undefined & props.location.query.bounds !== '' ? JSON.parse(props.location.query.bounds) : getBoundsFromStreetData(props.data.streets)} />

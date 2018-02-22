@@ -19,7 +19,7 @@ const getSubtitle = (entity) => {
 
 const Maintenance = (props) => {
   const refreshLocation = (view) => {
-    browserHistory.push([props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&label=', props.location.query.label, '&search=', props.location.query.search, '&hideNavbar=', props.location.query.hideNavbar, '&view=', view].join(''));
+    browserHistory.push([props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&entities=', props.location.query.entities, '&label=', props.location.query.label, '&search=', props.location.query.search, '&hideNavbar=', props.location.query.hideNavbar, '&view=', view].join(''));
   };
 
   return (
@@ -32,8 +32,8 @@ const Maintenance = (props) => {
       <div className="row">
         <div className="col-sm-12">
           <ButtonGroup>
-            <Button onClick={() => refreshLocation('map')} active={props.location.query.view === 'map'} positionInGroup="left">Map view</Button>
-            <Button onClick={() => refreshLocation('list')} active={props.location.query.view !== 'map'} positionInGroup="right">List view</Button>
+            <Button onClick={() => refreshLocation('map')} active={props.location.query.view !== 'list'} positionInGroup="left">Map view</Button>
+            <Button onClick={() => refreshLocation('list')} active={props.location.query.view === 'list'} positionInGroup="right">List view</Button>
           </ButtonGroup>
         </div>
       </div>

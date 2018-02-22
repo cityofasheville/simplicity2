@@ -12,14 +12,14 @@ import { IM_ENVELOP3 } from '../../shared/iconConstants';
 
 const AddressList = (props) => {
   const refreshLocation = (view) => {
-    browserHistory.push([props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&label=', props.location.query.label, '&search=', props.location.query.search, '&hideNavbar=', props.location.query.hideNavbar, '&view=', view].join(''));
+    browserHistory.push([props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&entities=', props.location.query.entities, '&label=', props.location.query.label, '&search=', props.location.query.search, '&hideNavbar=', props.location.query.hideNavbar, '&view=', view].join(''));
   };
 
   return (
     <div>
       <PageHeader h1={props.location.query.label} h3="Address & Owner Mailing Lists" icon={<Icon path={IM_ENVELOP3} size={50} />}>
         <ButtonGroup>
-          <LinkButton pathname="/street" query={{ entities: props.location.query.entities, search: props.location.query.search, hideNavbar: props.location.query.hideNavbar, entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label }}>Back to {props.location.query.entity}</LinkButton>
+          <LinkButton pathname={props.location.query.entity === 'neighborhood' ? '/neighborhood' : '/street'} query={{ entities: props.location.query.entities, search: props.location.query.search, hideNavbar: props.location.query.hideNavbar, entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label }}>Back to {props.location.query.entity}</LinkButton>
         </ButtonGroup>
       </PageHeader>
       <div className="row">

@@ -37,9 +37,11 @@ export default class Navbar extends React.Component { // eslint-disable-line rea
       <div style={{ display: this.state.navbarDisplay }}>
         <nav className="navbar navbar-default navbar-fixed-top" style={{ backgroundColor: '#f6fcff', borderBottom: '1px solid #e7eaff'}}>
           <div className="container-fluid">
-            <div className="pull-left" style={{ marginRight: '5px', marginTop: '5px', marginBottom: '5px' }}>
-              <a href="http://www.ashevillenc.gov" target="_blank"><img src={require('./citylogo-flatblue.png')} width="80px" height="80px" alt="City of Asheville logo"></img></a>
-            </div>
+            <IndexLink to="/">
+              <div className="pull-left" style={{ marginRight: '5px', marginTop: '5px', marginBottom: '5px' }}>
+                <img src={require('./citylogo-flatblue.png')} width="80px" height="80px" alt="City of Asheville logo"></img>
+              </div>
+            </IndexLink>
             <div className="navbar-header">
               <button type="button" className="navbar-toggle collapsed" onClick={this.toggleNavbarCollapse} aria-expanded="false">
                 <span className="sr-only">Toggle navigation</span>
@@ -50,7 +52,7 @@ export default class Navbar extends React.Component { // eslint-disable-line rea
               <div className="pull-left">
                 <IndexLink to="/" className="navbar-brand" style={{ fontSize: '30px', marginBottom: '-10px' }}>SimpliCity</IndexLink>
                 <br />
-                <a href="http://www.ashevillenc.gov" target="_blank" style={{ fontSize: '12px', fontStyle: 'italic' }}>City of Asheville, NC</a>
+                <IndexLink to="/" style={{ fontSize: '12px', fontStyle: 'italic' }}>City of Asheville, NC</IndexLink>
               </div>
             </div>
             <div className={[this.state.navbarCollapse, 'navbar-collapse'].join(' ')}>

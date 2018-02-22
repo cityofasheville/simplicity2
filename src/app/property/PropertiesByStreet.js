@@ -79,7 +79,7 @@ const PropertiesByStreet = props => {
         <div className="col-sm-12">
           <EmailDownload downloadData={props.data.properties_by_street} fileName="properties_by_street.csv" />
         </div>
-        <div id="listView" className="col-sm-12" hidden={props.location.query.view === 'map'}>
+        <div id="listView" className="col-sm-12" hidden={props.location.query.view !== 'list'}>
           {props.data.properties_by_street.length < 1 ?
             <div className="alert alert-info">No results found</div>
           :
@@ -128,8 +128,8 @@ const PropertiesByStreet = props => {
           }
         </div>
 
-        <div id="mapView" className="col-xs-12" hidden={props.location.query.view !== 'map'}>
-          {props.data.properties_by_street.length === 0 || props.location.query.view !== 'map' ?
+        <div id="mapView" className="col-xs-12" hidden={props.location.query.view === 'list'}>
+          {props.data.properties_by_street.length === 0 || props.location.query.view === 'list' ?
             <div className="alert alert-info">No results found</div>
             :
             <Map bounds={getBoundsFromStreetData(props.data.streets)} drawStreet streetData={convertStreetLinesToLatLngArrays(props.data.streets)} drawPolygon polygonData={combinePolygonsFromPropertyList(props.data.properties_by_street)} />
@@ -154,32 +154,33 @@ PropertiesByStreet.defaultProps = {
 const getPropertiesAndStreetInfoQuery = gql`
   query getPropertiesAndStreetInfoQuery($centerline_ids: [Float]) {
     properties_by_street (centerline_ids: $centerline_ids) {
-      civic_address_ids,
-      pinnum,
-      address,
-      city,
-      zipcode,
+      civic_address_ids
+      pinnum
+      address
+      city
+      zipcode
       property_civic_address_id
       property_address
       property_city
+      is_in_city
       property_zipcode
-      tax_exempt,
-      neighborhood,
-      appraisal_area,
-      acreage,
-      zoning,
-      deed_link,
-      property_card_link,
-      plat_link,
-      latitude,
-      longitude,
-      building_value,
-      land_value,
-      appraised_value,
-      tax_value,
-      market_value,
-      owner,
-      owner_address,
+      tax_exempt
+      neighborhood
+      appraisal_area
+      acreage
+      zoning
+      deed_link
+      property_card_link
+      plat_link
+      latitude
+      longitude
+      building_value
+      land_value
+      appraised_value
+      tax_value
+      market_value
+      owner
+      owner_address
       polygons {
         outer {
           points {

@@ -1,4 +1,6 @@
 import React from 'react';
+import Icon from '../shared/Icon';
+import { IM_GITHUB } from '../shared/iconConstants';
 
 const Footer = () => (
   <div>
@@ -10,10 +12,11 @@ const Footer = () => (
         width: '100%',
       }}
     />
-    <footer className="footer">
+    <footer className="footer" style={{ paddingTop: '2px' }}>
       <div className="container">
-        <p style={{ fontStyle: 'italic' }}>Our charts are colorblind friendly, and we strive for full accessibility. If you encounter any issues, please use our <a className="inText" href="https://docs.google.com/a/ashevillenc.gov/forms/d/e/1FAIpQLSdjNwOmoDY3PjQOVreeSL07zgI8otIIPWjY7BnejWMAjci8-w/viewform?c=0&w=1" target="_blank" title="website feedback form">feedback form</a>.
-        </p>
+        <div style={{ fontStyle: 'italic' }} className="text-center">We strive for full accessibility. Report issues with our <a className="inText" href="https://docs.google.com/a/ashevillenc.gov/forms/d/e/1FAIpQLSdjNwOmoDY3PjQOVreeSL07zgI8otIIPWjY7BnejWMAjci8-w/viewform?c=0&w=1" target="_blank" title="website feedback form">feedback form</a>.
+        </div>
+        <div className="text-center" style={{ fontStyle: 'italic', marginBottom: '2px' }}>It&apos;s open source! Fork it on <a href="https://github.com/cityofasheville/simplicity2" target="_blank">GitHub <Icon path={IM_GITHUB} size={23} /></a></div>
       </div>
     </footer>
   </div>

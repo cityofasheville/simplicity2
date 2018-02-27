@@ -4428,11 +4428,7 @@ miller-rabin@^4.0.0:
     bn.js "^4.0.0"
     brorand "^1.0.1"
 
-"mime-db@>= 1.30.0 < 2":
-  version "1.32.0"
-  resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.32.0.tgz#485b3848b01a3cda5f968b4882c0771e58e09414"
-
-mime-db@~1.30.0:
+"mime-db@>= 1.30.0 < 2", mime-db@~1.30.0:
   version "1.30.0"
   resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.30.0.tgz#74c643da2dd9d6a45399963465b26d5ca7d71f01"
 
@@ -6100,9 +6096,9 @@ semiotic-mark@0.1.2, semiotic-mark@^0.1.0:
     d3-transition "1.0.3"
     prop-types "15.6.0"
 
-semiotic@^1.7.6:
-  version "1.7.7"
-  resolved "https://registry.yarnpkg.com/semiotic/-/semiotic-1.7.7.tgz#73a33d3644bad5bc8c5c51ae82628f785197a06e"
+semiotic@^1.7.12:
+  version "1.7.12"
+  resolved "https://registry.yarnpkg.com/semiotic/-/semiotic-1.7.12.tgz#0348afcfcf600f6744e13450441dc0dcc810c641"
   dependencies:
     "@mapbox/polylabel" "1.0.2"
     babel-plugin-external-helpers "^6.22.0"

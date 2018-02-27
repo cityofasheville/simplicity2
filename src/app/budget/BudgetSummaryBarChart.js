@@ -100,6 +100,7 @@ class BudgetSummaryBarChart extends React.Component {
               yAxisTickFormatter={getDollars}
               tooltipYValFormatter={getDollarsLong}
               domain={[0, 190000000]}
+              legendLabelFormatter={function(label) {return label.replace(' Department', '')}}
             />
             {/*
               legendHeight={115}

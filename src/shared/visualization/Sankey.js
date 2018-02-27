@@ -1,135 +1,97 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import { drag } from 'd3-drag';
-import { format } from 'd3-format';
-import { scaleOrdinal, schemeCategory20 } from 'd3-scale';
-// import { select } from 'd3-selection';
-import { sankey } from 'd3-sankey';
-import _ from 'lodash';
-// import { rgb } from 'd3-color';
+import Tooltip from './Tooltip'
+import { scaleSequential } from 'd3-scale'
+import { interpolateLab } from 'd3-interpolate'
+import { NetworkFrame } from 'semiotic'
 
-import styles from './sankey.css';
 
-// https://github.com/nickbalestra/sankey/blob/master/app/SankeyChart.js
+
+
+/*
+ * TODOS
+ * Why is downward transformation happening?  Top margin shouldn't be negative
+ * On hover instead of tooltip, show labels and amounts for relevant nodes
+ */
+
 class Sankey extends React.Component {
-  constructor(props) {
-    super(props);
 
-    this.width = props.width;
-    this.height = props.height;
-    this.altText = props.altText;
-    this.state = {
-      nodes: props.nodes,
-      links: props.links,
-      nodeTitles: props.nodes.map(() => ({ showing: false, x: 0, y: 0 })),
-      linkTitles: props.links.map(() => ({ showing: false, x: 0, y: 0 })),
-    };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      nodes: nextProps.nodes,
-      links: nextProps.links,
-      nodeTitles: nextProps.nodes.map(() => ({ showing: false, x: 0, y: 0 })),
-      linkTitles: nextProps.links.map(() => ({ showing: false, x: 0, y: 0 })),
-    });
-  }
-
-  toggleTitle(ev) {
-    if (ev.target.getAttribute('data-link') !== null) {
-      const index = parseInt(ev.target.getAttribute('data-link'), 10);
-      this.setState({ linkTitles: this.state.linkTitles.map((item, i) => {
-        if (index === i) {
-          return Object.assign({}, { showing: true, x: ev.clientX - window.document.getElementById('sankeySVG').getBoundingClientRect().left, y: ev.clientY - window.document.getElementById('sankeySVG').getBoundingClientRect().top });
-        }
-        return Object.assign({}, { showing: false, x: 0, y: 0 });
-      }),
-        nodeTitles: this.state.nodeTitles.map(() => (Object.assign({}, { showing: false, x: 0, y: 0 }))) });
-    } else if (ev.target.getAttribute('data-node') !== null) {
-      const index = parseInt(ev.target.getAttribute('data-node'), 10);
-      this.setState({ nodeTitles: this.state.nodeTitles.map((item, i) => {
-        if (index === i) {
-          return Object.assign({}, { showing: true, x: ev.clientX - window.document.getElementById('sankeySVG').getBoundingClientRect().left, y: ev.clientY - window.document.getElementById('sankeySVG').getBoundingClientRect().top });
-        }
-        return Object.assign({}, { showing: false, x: 0, y: 0 });
-      }),
-        linkTitles: this.state.linkTitles.map(() => (Object.assign({}, { showing: false, x: 0, y: 0 }))) });
-    } else {
-      this.setState({ nodeTitles: this.state.nodeTitles.map(() => (Object.assign({}, { showing: false, x: 0, y: 0 }))),
-        linkTitles: this.state.linkTitles.map(() => (Object.assign({}, { showing: false, x: 0, y: 0 }))) });
-    }
+  constructor() {
+    super()
+    this.state = { hover: null }
   }
 
   render() {
-    // ========================================================================
-    // Set units, margin, sizes
-    // ========================================================================
-    const margin = { top: 10, right: 10, bottom: 10, left: 10 };
-    const width = this.width - margin.left - margin.right;
-    const height = this.height - margin.top - margin.bottom;
-
-    const newFormat = d => formatNumber(d);
-    const formatNumber = format(',.0f'); // zero decimal places
-    // const color = scaleOrdinal(schemeCategory20);
-    const color = ['#c6dbef', '#9ecae1', '#6baed6', '#4292c6'];
-    // const color = ['#40004b', '#d9f0d3', '#762a83', '#a6dba0', '#9970ab', '#5aae61', '#c2a5cf', '#1b7837', '#e7d4e8', '#00441b', '#f7f7f7', '#8e0152', '#e6f5d0', '#c51b7d', '#b8e186', '#de77ae', '#7fbc41', '#f1b6da', '#4d9221', '#fde0ef', '#276419', '#f7f7f7']; // color brewer diverging 11 pink-green
-
-    // ========================================================================
-    // Set the sankey diagram properties
-    // ========================================================================
-    const sankeyChart = sankey()
-      .size([width, height])
-      .nodeWidth(24)
-      .nodePadding(8);
-
-    const path = sankeyChart.link();
-
     const graph = {
-      nodes: _.cloneDeep(this.state.nodes),
-      links: _.cloneDeep(this.state.links),
+      nodes: JSON.parse(JSON.stringify(this.props.nodes))
+        .map((d, i) => {d.id = i; return d})
+        .sort((a, b) => b.value - a.value),
+      links: JSON.parse(JSON.stringify(this.props.links)),
     };
 
-    sankeyChart.nodes(graph.nodes)
-      .links(graph.links)
-      .layout(32);
+    const lighterColor = '#559ecc'
+    const darkerColor = '#4292c6'
+    let nodeColor = scaleSequential(interpolateLab(darkerColor, lighterColor))
 
-    const links = graph.links.map((link, i) => (
-      <g key={['link', i].join('_')}>
-        <path className={styles.link} d={path(link)} style={{ strokeWidth: Math.max(1, link.dy) }} data-link={i}>
-          <title>{[link.source.name, ' → ', link.target.name, ': $', newFormat(link.value)].join('')}</title>
-        </path>
-        <text x={this.state.linkTitles[i].x} y={this.state.linkTitles[i].y} textAnchor={'middle'} hidden={!this.state.linkTitles[i].showing}>{[link.source.name, ' → ', link.target.name, ': $', newFormat(link.value)].join('')}</text> :
-      </g>
-    ));
-
-    const nodes = graph.nodes.map((node, i) => (
-      <g key={['node', i].join('_')}>
-        <g className={styles.node} transform={['translate(', node.x, ',', node.y, ')'].join('')}>
-          <rect height={node.dy} width={sankeyChart.nodeWidth()} fill={color[i % color.length]} stroke="black" data-node={i}>
-            <title>{[node.name, '\n$', newFormat(node.value)].join('')}</title>
-          </rect>
-          { (node.x >= width / 2) ?
-            <text x={-6} y={node.dy / 2} dy={'.35em'} textAnchor={'end'} >{node.name}</text> :
-            <text x={6 + sankeyChart.nodeWidth()} y={node.dy / 2} dy={'.35em'} textAnchor={'start'} >{node.name}</text>
-          }
-        </g>
-        { (node.x >= width / 2) ?
-          <text x={this.state.nodeTitles[i].x} y={this.state.nodeTitles[i].y} textAnchor={'end'} hidden={!this.state.nodeTitles[i].showing}>{['$', newFormat(node.value)].join('')}</text> :
-          <text x={this.state.nodeTitles[i].x} y={this.state.nodeTitles[i].y} textAnchor={'start'} hidden={!this.state.nodeTitles[i].showing}>{['$', newFormat(node.value)].join('')}</text>
+    return <NetworkFrame
+      networkType='sankey'
+      size={[+this.props.width, +this.props.height]}
+      nodes={graph.nodes}
+      edges={graph.links}
+      nodeIdAccessor='id'
+      sourceAccessor='source'
+      targetAccessor='target'
+      // nodeLabels={d => <div key={`${d.name}-${d.id}-node`}>{d.name}</div>}
+      nodeStyle={(d) => {
+        const colorDomain = [graph.nodes[graph.nodes.length - 1].value, graph.nodes[0].value]
+        nodeColor.domain(colorDomain)
+        const thisNodeColor = nodeColor(d.value)
+        const strokeColor = d.name === this.state.hover ? 'black' : darkerColor
+        return { stroke: strokeColor, strokeWidth: '3px', fill: nodeColor(d.value)}
+      }}
+      edgeStyle={d => {
+        // If source or target is hovered node, opacity should be darker
+        const opacity = (this.state.hover === d.source.name || this.state.hover === d.target.name) ? '1' : '0.4'
+        return {stroke: 'gray', fill: 'gray', fillOpacity: opacity, strokeOpacity: opacity}
+      }}
+      hoverAnnotation={true}
+      tooltipContent={d => {
+        const nodeSources = d.targetLinks.map(link => link.source.name)
+        const nodeTargets = d.sourceLinks.map(link => link.target.name)
+        const textLines = []
+        if (nodeSources.length > 0) {
+          textLines.push({
+            text: `Sources: ${nodeSources.join(', ')}`,
+            color: 'black'
+          })
         }
-      </g>
-    ));
+        if (nodeTargets.length > 0) {
+          textLines.push({
+            text: `Destinations: ${nodeTargets.join(', ')}`,
+            color: 'black'
+          })
+        }
 
-    // JSX rendering return if didn't rely on faux-dom
-    // ------------------------------------------------------------------------
-    return (
-      <svg alt={this.altText} width={width + margin.left + margin.right} height={height + margin.top + margin.bottom} onClick={ev => (this.toggleTitle(ev))} id="sankeySVG">
-        <g transform={['translate(', margin.left, ',', margin.top, ')'].join('')}>
-          {links}
-          {nodes}
-        </g>
-      </svg>
-    );
+        return <Tooltip
+          title={d.name}
+          textLines={textLines}
+          style={{
+            backgroundColor: 'white',
+            border: '1px solid black',
+            maxWidth: '100px',
+            position: 'absolute',
+            top: `${-d.height / 2}px`,
+            left: `${this.props.width / 12}px`
+          }}
+        />
+      }}
+      zoomToFit={true}
+      customHoverBehavior={d => d && d.name ?
+        this.setState({hover: d.name}) : this.setState({hover: null})
+      }
+      margin={{top: -200, right: 10, bottom: 25, left: 10}}
+    />
+
   }
 }
 

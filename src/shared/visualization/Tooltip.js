@@ -12,13 +12,17 @@ class Tooltip extends React.Component {
 		const styles = this.props.style || {}
 		styles.fontSize = '1.5rem'
 		styles.padding = '0.5rem'
-		styles.minWidth = `${(this.props.textLines.map(line => line.text).join('').length + 0.5) / this.props.textLines.length}rem`
+		const minWidth = Math.min(
+			(this.props.textLines.map(line => line.text).join('').length + 0.5) / this.props.textLines.length,
+			20
+		)
+		styles.minWidth = `${minWidth}rem`
 		return <div style={styles}>
 			<div style={{fontWeight: 'bolder', textAlign: 'center'}}>
 				{this.props.title}
 			</div>
-			{this.props.textLines.map(lineObj =>
-				<div key={lineObj.text} style={{color: lineObj.color}}>{lineObj.text}</div>
+			{this.props.textLines.map((lineObj, i) =>
+				<div key={`textLine-${i}`} style={{color: lineObj.color}}>{lineObj.text}</div>
 			)}
 		</div>
 	}

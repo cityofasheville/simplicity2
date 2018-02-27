@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Tooltip from './Tooltip'
+import HorizontalLegend from './HorizontalLegend'
 import { Mark } from "semiotic-mark"
 import { OrdinalFrame } from 'semiotic'
 import { colorSchemes } from './colorSchemes';
@@ -10,8 +11,6 @@ import { formatDataForStackedBar } from './visUtilities'
 
 /*
  * TODOS
- * legend on bottom-- either wait or make a PR to semiotic
- * write break text function for legend
  * size margins based on where labels are even going (y or x), how long they are, remsize
  */
 
@@ -55,6 +54,13 @@ class BarChartContainer extends React.Component {
       this.props.dataKeys,
       this.props.mainAxisDataKey,
       this.props.colorScheme)
+
+    const legendLabels = formattedData.map(d => ({label: d.label ? d.label : 'Unknown', color: d.color, type: 'legendItem'}))
+      .filter((item, pos, thisArray) =>
+        thisArray.findIndex(d => d.label === item.label && d.color === item.color) === pos)
+      .sort((a, b) => a.value - b.value)
+      .map((d, i) => {d.legendIndex = i; d.labelLength = 0 ;return d})
+
     return (
       <div>
         <h4>{this.props.chartTitle}</h4>
@@ -74,7 +80,7 @@ class BarChartContainer extends React.Component {
                 annotations={this.props.annotations}
                 data={formattedData}
                 hoverAnnotation={true}
-                margin={{top: 20, right: 100, bottom: 60, left: 60}}
+                margin={{top: 20, right: 0, bottom: 40, left: 60}}
                 oAccessor={this.props.mainAxisDataKey}
                 oLabel={true}
                 oPadding={12.5}
@@ -86,29 +92,15 @@ class BarChartContainer extends React.Component {
                   {
                     orient: 'left',
                     tickFormat: d => this.props.yAxisTickFormatter(d),
-                    label: !this.props.xAxisLabel ? null : {
-                      name: this.props.xAxisLabel,
-                      position: { anchor: 'middle' }
-                    }
+                    // label: !this.props.xAxisLabel ? null : {
+                    //   name: this.props.xAxisLabel,
+                    //   position: { anchor: 'middle' }
+                    // }
                   }
                 )}
                 customHoverBehavior={d => { d && d.pieces ?
                   this.setState({hover: d.pieces[0].data[this.props.mainAxisDataKey]}) :
                   this.setState({hover: null})
-                }}
-                legend={{
-                  width: 40,
-                  legendGroups: [
-                    {
-                      styleFn: d => ({fill: d.color}),
-                      items: reverseDataIfHorizontal(
-                          this.props.layout,
-                          formattedData.map(d => ({label: d.label, color: d.color}))
-                            .filter((item, pos, thisArray) =>
-                              thisArray.findIndex(d => d.label === item.label && d.color === item.color) === pos)
-                        )
-                    }
-                  ]
                 }}
                 style={d => this.state.hover === d[this.props.mainAxisDataKey] ?
                   // For the currently hovered bar, return a brighter fill and add a stroke
@@ -120,38 +112,37 @@ class BarChartContainer extends React.Component {
                   {fill: d.color}
                 }
                 svgAnnotationRules={(d) => {
-                      // Don't try to fire when there aren't annotations
-                      if (this.props.annotations.length < 1) { return }
+                  // Don't try to fire when there aren't annotations
+                  if (this.props.annotations.length < 1) { return }
 
-                      let returnMarkX = d.screenCoordinates[0] + (this.props.layout === "horizontal" ? 10 : 0)
-                      const allAnnotations = d.annotationLayer.annotations
-                      const indexOfFirstLabelOccurrence = allAnnotations.findIndex(annotation => annotation.label === d.d.label)
-                      const labelMatches = allAnnotations.filter(annotation => annotation.label === d.d.label)
+                  let returnMarkX = d.screenCoordinates[0] + (this.props.layout === "horizontal" ? 10 : 0)
+                  const allAnnotations = d.annotationLayer.annotations
+                  const indexOfFirstLabelOccurrence = allAnnotations.findIndex(annotation => annotation.label === d.d.label)
+                  const labelMatches = allAnnotations.filter(annotation => annotation.label === d.d.label)
 
-                      if (indexOfFirstLabelOccurrence === d.i && labelMatches.length > 1) {
-                        // If it's the first occurence of that label and there's another one, return nothing
-                        return
-                      } else if (d.i - indexOfFirstLabelOccurrence + 1 === labelMatches.length) {
-                        // If two contiguous annotations are the same, average their x value and display one
-                        // Offset to left is equal to (distance between two labels / 2) * (labelMatches.length - 1)
-                        const categoryVals = Object.values(d.categories)
-                        returnMarkX -= ((categoryVals[1].x - categoryVals[0].x) / 2) * (labelMatches.length - 1)
-                      }
+                  if (indexOfFirstLabelOccurrence === d.i && labelMatches.length > 1) {
+                    // If it's the first occurence of that label and there's another one, return nothing
+                    return
+                  } else if (d.i - indexOfFirstLabelOccurrence + 1 === labelMatches.length) {
+                    // If two contiguous annotations are the same, average their x value and display one
+                    // Offset to left is equal to (distance between two labels / 2) * (labelMatches.length - 1)
+                    const categoryVals = Object.values(d.categories)
+                    returnMarkX -= ((categoryVals[1].x - categoryVals[0].x) / 2) * (labelMatches.length - 1)
+                  }
 
-                      return <Mark
-                        markType="text"
-                        key={d.d.label + "annotationtext" + d.i}
-                        forceUpdate={true}
-                        x={returnMarkX}
-                        y={d.screenCoordinates[1] + (this.props.layout === "vertical" ? 10 : 0)}
-                        y={-15}
-                        className={`annotation annotation-or-label ${d.d.className || ""}`}
-                        textAnchor="middle"
-                      >
-                        {d.d.label}
-                      </Mark>
-                    }
-                }
+                  return <Mark
+                    markType="text"
+                    key={(d.d.label ? d.d.label : 'Unknown') + "annotationtext" + d.i}
+                    forceUpdate={true}
+                    x={returnMarkX}
+                    y={d.screenCoordinates[1] + (this.props.layout === "vertical" ? 10 : 0)}
+                    y={-15}
+                    className={`annotation annotation-or-label ${d.d.className || ""}`}
+                    textAnchor="middle"
+                  >
+                    {d.d.label}
+                  </Mark>
+                }}
                 tooltipContent={(d) => {
                   const textLines = d.pieces.map(piece =>
                     ({
@@ -162,6 +153,11 @@ class BarChartContainer extends React.Component {
                   if (this.props.layout !== 'horizontal') { textLines.reverse() }
                   return <Tooltip title={d.column.name} textLines={textLines} />
                 }}
+              />
+              <HorizontalLegend
+                width={300} // FIGURE OUT HOW TO GET WIDTH
+                items={legendLabels}
+                legendLabelFormatter={this.props.legendLabelFormatter}
               />
             </div>
           </div>
@@ -195,6 +191,7 @@ BarChartContainer.propTypes = {
   tooltipYValFormatter: PropTypes.func,
   xAxisLabel: PropTypes.string,
   yAxisTickFormatter: PropTypes.func,
+  legendLabelFormatter: PropTypes.func,
 };
 
 BarChartContainer.defaultProps = {
@@ -208,6 +205,7 @@ BarChartContainer.defaultProps = {
   tooltipYValFormatter: val => val,
   xAxisLabel: null,
   yAxisTickFormatter: val => val,
+  legendLabelFormatter: val => val,
 };
 
 export default BarChartContainer;

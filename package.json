@@ -92,7 +92,7 @@
     "react-toggle": "^4.0.1",
     "recharts": "^0.20.8",
     "selectly": "^0.5.0",
-    "semiotic": "^1.7.6",
+    "semiotic": "^1.7.12",
     "semiotic-mark": "^0.1.0",
     "url-loader": "^0.5.8",
     "zen-observable": "^0.7.1"

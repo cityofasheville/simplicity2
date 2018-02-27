@@ -14,7 +14,6 @@ import { formatDataForStackedBar } from './visUtilities'
  * size margins based on where labels are even going (y or x), how long they are, remsize
  */
 
-
 const getLongDesc = (data, dataKeys, mainAxisKey, valueFormatter) => (
   <div>
     {data.map((value, index) => (
@@ -22,7 +21,7 @@ const getLongDesc = (data, dataKeys, mainAxisKey, valueFormatter) => (
         <p>{value[mainAxisKey]}<br />
           {dataKeys.map(key => (
             <span key={[value[mainAxisKey], key].join('_')}>
-              {key}: {valueFormatter !== null ? valueFormatter(value[key]) : value[key]}
+              {key ? key : '[data error]'}: {valueFormatter !== null ? valueFormatter(value[key]) : value[key]}
               <br />
             </span>
           ))}
@@ -31,10 +30,6 @@ const getLongDesc = (data, dataKeys, mainAxisKey, valueFormatter) => (
     ))}
   </div>
 );
-
-function reverseDataIfHorizontal(layout, data){
-  return layout === 'horizontal' ? data : data.reverse()
-}
 
 class BarChartContainer extends React.Component {
   constructor(props) {
@@ -55,14 +50,8 @@ class BarChartContainer extends React.Component {
       this.props.mainAxisDataKey,
       this.props.colorScheme)
 
-    const legendLabels = formattedData.map(d => ({label: d.label ? d.label : 'Unknown', color: d.color, type: 'legendItem'}))
-      .filter((item, pos, thisArray) =>
-        thisArray.findIndex(d => d.label === item.label && d.color === item.color) === pos)
-      .sort((a, b) => a.value - b.value)
-      .map((d, i) => {d.legendIndex = i; d.labelLength = 0 ;return d})
-
     return (
-      <div>
+      <div role="img" aria-label={this.props.altText} tabIndex={0}>
         <h4>{this.props.chartTitle}</h4>
         <br/>
         <p>
@@ -80,7 +69,7 @@ class BarChartContainer extends React.Component {
                 annotations={this.props.annotations}
                 data={formattedData}
                 hoverAnnotation={true}
-                margin={{top: 20, right: 0, bottom: 40, left: 60}}
+                margin={{top: 0, right: 10, bottom: 40, left: 60}}
                 oAccessor={this.props.mainAxisDataKey}
                 oLabel={true}
                 oPadding={12.5}
@@ -92,10 +81,7 @@ class BarChartContainer extends React.Component {
                   {
                     orient: 'left',
                     tickFormat: d => this.props.yAxisTickFormatter(d),
-                    // label: !this.props.xAxisLabel ? null : {
-                    //   name: this.props.xAxisLabel,
-                    //   position: { anchor: 'middle' }
-                    // }
+                    ticks: 10,
                   }
                 )}
                 customHoverBehavior={d => { d && d.pieces ?
@@ -135,8 +121,7 @@ class BarChartContainer extends React.Component {
                     key={(d.d.label ? d.d.label : 'Unknown') + "annotationtext" + d.i}
                     forceUpdate={true}
                     x={returnMarkX}
-                    y={d.screenCoordinates[1] + (this.props.layout === "vertical" ? 10 : 0)}
-                    y={-15}
+                    y={5}
                     className={`annotation annotation-or-label ${d.d.className || ""}`}
                     textAnchor="middle"
                   >
@@ -155,8 +140,7 @@ class BarChartContainer extends React.Component {
                 }}
               />
               <HorizontalLegend
-                width={300} // FIGURE OUT HOW TO GET WIDTH
-                items={legendLabels}
+                formattedData={formattedData}
                 legendLabelFormatter={this.props.legendLabelFormatter}
               />
             </div>

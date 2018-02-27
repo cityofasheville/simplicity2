@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { graphql, compose } from 'react-apollo';
-import BarChartContainer from '../../shared/visualization/BarChartContainer';
+import BarChart from '../../shared/visualization/BarChart';
 import { getBudgetSummaryDept, getBudgetSummaryUse } from './graphql/budgetQueries';
 
 const getDollars = (value) => {
@@ -13,16 +13,17 @@ const getDollars = (value) => {
   return [value < 0 ? '-$' : '$', Math.abs(value).toFixed(0).toLocaleString()].join('');
 };
 
-const getDollarsLong = value => (
-  [value < 0 ? '-$' : '$', Math.abs(value).toLocaleString()].join('')
-);
+const getDollarsLong = value => {
+  if (!value || value === 0) {return '$0'}
+  return [value < 0 ? '-$' : '$', Math.abs(value).toLocaleString()].join('')
+}
 
 const getTitle = (categoryType) => {
   switch (categoryType) {
     case 'use':
-      return 'by use';
+      return 'Spending By Use';
     case 'department':
-      return 'by department';
+      return 'Spending By Department';
     default:
       return '';
   }
@@ -63,14 +64,8 @@ class BudgetSummaryBarChart extends React.Component {
     return (
       <div>
         <div className="row">
-          <div className="col-xs-9 col-xs-offset-2">
-            <h4 className="text-center">Spending {getTitle(this.props.categoryType)}</h4>
-          </div>
-        </div>
-        <div className="row">
           <div className="col-sm-12">
-
-            <BarChartContainer
+            <BarChart
               annotations={[
                 {
                   type: 'or',
@@ -101,23 +96,9 @@ class BudgetSummaryBarChart extends React.Component {
               tooltipYValFormatter={getDollarsLong}
               domain={[0, 190000000]}
               legendLabelFormatter={function(label) {return label.replace(' Department', '')}}
-            />
-            {/*
-              legendHeight={115}
-              mainReferenceAxisDataKey="yearAxisNumeric"
               altText={['Spending by', this.props.categoryType, 'bar chart'].join(' ')}
-            */}
-          </div>
-          <span className="pull-right" style={{ fontSize: '12px' }}>Barchart totals exclude interfund transfers</span>
-        </div>
-        <div className="row">
-          <div className="col-xs-10 col-xs-offset-2">
-            <a href="javascript:void(0);" className="text-center inText" onClick={() => this.toggleLongDesc()}>
-              {this.state.showingLongDesc ? 'Hide' : 'Show'} spending {getTitle(this.props.categoryType)} bar chart summary
-            </a>
-            <div hidden={!this.state.showingLongDesc}>
-              {getLongDesc(this.state.summaryData)}
-            </div>
+              chartTitle={getTitle(this.props.categoryType)}
+            />
           </div>
         </div>
       </div>

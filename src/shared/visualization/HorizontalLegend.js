@@ -15,8 +15,13 @@ class HorizontalLegend extends React.Component {
     styles.textAlign = 'center'
     const rectWidth = 15
 
+    const labelItems = this.props.formattedData.map(d => ({label: d.label, color: d.color}))
+      .filter((item, pos, thisArray) =>
+        thisArray.findIndex(d => d.label === item.label && d.color === item.color) === pos)
+      .sort((a, b) => a.value - b.value)
+
     return <div style={styles} >
-      {this.props.items.map((item, index, originalArr) => {
+      {labelItems.map((item, index, originalArr) => {
         const label = this.props.legendLabelFormatter(item.label)
         return <div
           key={label + "-legendItem-" + index}
@@ -54,14 +59,8 @@ class HorizontalLegend extends React.Component {
 }
 
 HorizontalLegend.propTypes = {
-    items: PropTypes.arrayOf(PropTypes.object),
+    formattedData: PropTypes.arrayOf(PropTypes.object),
     legendLabelFormatter: PropTypes.func,
-    /* Array format of [
-        {
-            label: "blabalbla",
-            color: "blablabla"
-        },
-    ] */
 }
 
 HorizontalLegend.defaultProps = {

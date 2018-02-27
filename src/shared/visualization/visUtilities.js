@@ -5,7 +5,7 @@ export const formatDataForStackedBar = (data, dataKeys, mainAxisDataKey, colorSc
   return dataKeys.map((k, kIndex) => data.map(function(d) {
     let rVal = {};
     rVal[mainAxisDataKey] = d[mainAxisDataKey]
-    rVal.label = k
+    rVal.label = k ? k : '[error]'
     rVal.value = d[k] ? d[k] : 0
     const thisScheme = colorSchemes[colorScheme]
     rVal.color = thisScheme[kIndex % thisScheme.length]
@@ -17,7 +17,7 @@ export const formatDataForStackedArea = (data, dataKeys, mainAxisDataKey, colorS
   const thisScheme = colorSchemes[colorScheme]
   return dataKeys.map((k, kIndex) =>
     ({
-      label: k,
+      label: k ? k : '[error]',
       color: thisScheme[kIndex % thisScheme.length],
       coordinates: data.map(function(d) {
         let rVal = {};

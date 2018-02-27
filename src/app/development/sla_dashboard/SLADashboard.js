@@ -9,7 +9,7 @@ import { getAverageCounts } from './SLA_utilities';
 import PageHeader from '../../../shared/PageHeader';
 import ButtonGroup from '../../../shared/ButtonGroup';
 import Button from '../../../shared/Button';
-import BarChartContainer from '../../../shared/visualization/BarChartContainer';
+import BarChart from '../../../shared/visualization/BarChart';
 import ChartContainer from '../../../shared/visualization/ChartContainer';
 import { query } from './SLADashboardQueries';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
@@ -48,7 +48,7 @@ const DevelopmentSLADashboard = (props) => {
                 </ChartContainer>
               </div>
               <div className="col-sm-6" style={{ marginBotton: '10px' }} >
-                <BarChartContainer chartTitle="Volume" mainAxisDataKey="displayDate" legendHeight={40} dataKeys={[[task, 'Past SLA'].join(' '), [task, 'Met SLA'].join(' ')]} data={aggregateData[task]} stacked altText={['Bar chart of number of records meeting SLA for ', task.split(' Total')[0]].join(' ')} colorScheme="bright_colors" />
+                <BarChart chartTitle="Volume" mainAxisDataKey="displayDate" legendHeight={40} dataKeys={[[task, 'Past SLA'].join(' '), [task, 'Met SLA'].join(' ')]} data={aggregateData[task]} stacked altText={['Bar chart of number of records meeting SLA for ', task.split(' Total')[0]].join(' ')} colorScheme="bright_colors" />
               </div>
             </div>
             <hr />

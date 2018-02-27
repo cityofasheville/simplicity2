@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import BarChartContainer from '../../shared/visualization/BarChartContainer';
+import BarChart from '../../shared/visualization/BarChart';
 
 const PIT_keys = [
   'Sheltered people',
@@ -245,7 +245,7 @@ const HomelessnessCounts = props => (
     </div>
     <div className="row">
       <div className="col-sm-6">
-        <BarChartContainer
+        <BarChart
           chartTitle="Point-in-Time counts"
           layout="horizontal"
           mainAxisDataKey="date"
@@ -259,7 +259,7 @@ const HomelessnessCounts = props => (
         />
       </div>
       <div className="col-sm-6">
-        <BarChartContainer
+        <BarChart
           chartTitle="Homeless program enrollments"
           layout="horizontal"
           mainAxisDataKey="Year"

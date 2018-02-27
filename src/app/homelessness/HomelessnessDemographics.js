@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import BarChartContainer from '../../shared/visualization/BarChartContainer';
+import BarChart from '../../shared/visualization/BarChart';
 
 const historical_pit = [
   {
@@ -352,7 +352,7 @@ class HomelessnessDemographics extends React.Component {
         </div>
         <div className="row" style={{ marginBottom: '10px' }}>
           <div className="col-sm-6">
-            <BarChartContainer chartTitle="Families and children" layout="horizontal" mainAxisDataKey="Year" legendHeight={60} dataKeys={family_keys} colorScheme="bright_colors" data={historical_pit} stacked altText="Bar chart of families" />
+            <BarChart chartTitle="Families and children" layout="horizontal" mainAxisDataKey="Year" legendHeight={60} dataKeys={family_keys} colorScheme="bright_colors" data={historical_pit} stacked altText="Bar chart of families" />
           </div>
           <div className="col-sm-6">
             <p>
@@ -367,10 +367,10 @@ class HomelessnessDemographics extends React.Component {
         </div>
         <div className="row">
           <div className="col-sm-6">
-            <BarChartContainer chartTitle="Veterans" layout="horizontal" mainAxisDataKey="Year" legendHeight={20} dataKeys={['Veteran', 'Civilian']} colorScheme="bright_colors_2" data={historical_pit} stacked altText="Bar chart of homeless Veterans" />
+            <BarChart chartTitle="Veterans" layout="horizontal" mainAxisDataKey="Year" legendHeight={20} dataKeys={['Veteran', 'Civilian']} colorScheme="bright_colors_2" data={historical_pit} stacked altText="Bar chart of homeless Veterans" />
           </div>
           <div className="col-sm-6">
-            <BarChartContainer chartTitle="Chronically homeless" layout="horizontal" mainAxisDataKey="Year" legendHeight={20} dataKeys={['Chronically homeless', 'Not chronically homeless']} colorScheme="bright_colors" data={historical_pit} stacked altText="Bar chart of chronically homeless individuals" />
+            <BarChart chartTitle="Chronically homeless" layout="horizontal" mainAxisDataKey="Year" legendHeight={20} dataKeys={['Chronically homeless', 'Not chronically homeless']} colorScheme="bright_colors" data={historical_pit} stacked altText="Bar chart of chronically homeless individuals" />
           </div>
         </div>
       </div>

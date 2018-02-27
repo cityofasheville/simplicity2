@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { RadioGroup, Radio } from 'react-radio-group';
-import BarChartContainer from '../../shared/visualization/BarChartContainer';
+import BarChart from '../../shared/visualization/BarChart';
 
 const getDollars = (value) => {
   if (Math.abs(value) > 1000000) {
@@ -39,7 +39,7 @@ const ProjectExpendedBarChart = props => (
     <div className="row">
       <div className="col-sm-12">
         <div style={{ clear: 'both' }}>
-          <BarChartContainer data={props.data} layout="vertical" secondaryTickFormatter={getDollars} toolTipFormatter={getDollarsLong} mainAxisDataKey="name" dataKeys={['Remaining funds', 'Expended funds']} colorScheme="bright_colors_2" altText={[props.type, 'bond project funds expended by project'].join(' ')} stacked yAxisWidth={200} barGap={10} height={500} />
+          <BarChart data={props.data} layout="vertical" secondaryTickFormatter={getDollars} toolTipFormatter={getDollarsLong} mainAxisDataKey="name" dataKeys={['Remaining funds', 'Expended funds']} colorScheme="bright_colors_2" altText={[props.type, 'bond project funds expended by project'].join(' ')} stacked yAxisWidth={200} barGap={10} height={500} />
         </div>
       </div>
     </div>

@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 import ReactTable from 'react-table';
 import EmailDownload from '../../shared/EmailDownload';
 import LoadingAnimation from '../../shared/LoadingAnimation';
+import Error from '../../shared/Error';
 import Map from '../../shared/visualization/Map';
 import { getBoundsFromStreetData, formatMaintenanceData, getBounds } from '../../utilities/mapUtilities';
 import Icon from '../../shared/Icon';
@@ -29,10 +30,10 @@ const MaintenanceByStreet = (props) => {
     return <LoadingAnimation />;
   }
   if (props.data.error) { // eslint-disable-line react/prop-types
-    return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
+    return <Error message={props.data.error.message} />; // eslint-disable-line react/prop-types
   }
 
-  const urlString = [props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&label=', props.location.query.label, '&hideNavbar=', props.location.query.hideNavbar, '&search=', props.location.query.search, '&view=map'].join('');
+  const urlString = [props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&entities=', props.location.query.entities, '&label=', props.location.query.label, '&hideNavbar=', props.location.query.hideNavbar, '&search=', props.location.query.search, '&view=map'].join('');
 
   const dataColumns = [
     {
@@ -81,7 +82,7 @@ const MaintenanceByStreet = (props) => {
         <EmailDownload downloadData={props.data.streets} fileName="maintenance_by_street.csv" />
       </div>
       <div className="col-sm-12">
-        <div id="listView" hidden={props.location.query.view === 'map'} alt={['Table of addresses'].join(' ')} style={{ marginTop: '10px' }}>
+        <div id="listView" hidden={props.location.query.view !== 'list'} alt={['Table of addresses'].join(' ')} style={{ marginTop: '10px' }}>
           <ReactTable
             data={props.data.streets}
             columns={dataColumns}
@@ -102,8 +103,8 @@ const MaintenanceByStreet = (props) => {
           />
         </div>
 
-        <div id="mapView" hidden={props.location.query.view !== 'map'}>
-          {props.data.streets.length === 0 || props.location.query.view !== 'map' ?
+        <div id="mapView" hidden={props.location.query.view === 'list'}>
+          {props.data.streets.length === 0 || props.location.query.view === 'list' ?
             <div className="alert alert-info">No results found</div>
             :
             <Map maintenanceData={formatMaintenanceData(props.data.streets)} drawMaintenance bounds={props.location.query.bounds !== undefined & props.location.query.bounds !== '' ? JSON.parse(props.location.query.bounds) : getBoundsFromStreetData(props.data.streets)} />
@@ -132,7 +133,7 @@ const getMaintenanceQuery = gql`
 const MaintenanceByStreetGQL = graphql(getMaintenanceQuery, {
   options: ownProps => ({
     variables: {
-      centerline_ids: ownProps.location.query.id.split(','),
+      centerline_ids: ownProps.location.query.id.trim().split(','),
     },
   }),
 })(MaintenanceByStreet);

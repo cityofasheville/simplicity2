@@ -6,6 +6,7 @@ import { graphql } from 'react-apollo';
 import moment from 'moment';
 import gql from 'graphql-tag';
 import LoadingAnimation from '../../shared/LoadingAnimation';
+import Error from '../../shared/Error';
 import PieChart from '../../shared/visualization/PieChart';
 import Map from '../../shared/visualization/Map';
 import CrimeTable from '../crime/CrimeTable';
@@ -111,7 +112,7 @@ const CrimesByAddress = (props) => {
     return <LoadingAnimation />;
   }
   if (props.data.error) { // eslint-disable-line react/prop-types
-    return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
+    return <Error message={props.data.error.message} />; // eslint-disable-line react/prop-types
   }
 
   const pieData = convertToPieData(props.data.crimes_by_address);
@@ -126,7 +127,7 @@ const CrimesByAddress = (props) => {
   ));
 
   const refreshLocation = (view) => {
-    browserHistory.push([props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&label=', props.location.query.label, '&within=', document.getElementById('extent').value, '&during=', document.getElementById('time').value, '&hideNavbar=', props.location.query.hideNavbar, '&search=', props.location.query.search, '&view=', view, '&x=', props.location.query.x, '&y=', props.location.query.y].join(''));
+    browserHistory.push([props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&entities=', props.location.query.entities, '&label=', props.location.query.label, '&within=', document.getElementById('extent').value, '&during=', document.getElementById('time').value, '&hideNavbar=', props.location.query.hideNavbar, '&search=', props.location.query.search, '&view=', view, '&x=', props.location.query.x, '&y=', props.location.query.y].join(''));
   };
 
   return (
@@ -205,7 +206,7 @@ const getCrimesQuery = gql`
 const CrimesByAddressGQL = graphql(getCrimesQuery, {
   options: ownProps => ({
     variables: {
-      civicaddress_id: ownProps.location.query.id,
+      civicaddress_id: ownProps.location.query.id.trim(),
       radius: ownProps.radius,
       before: ownProps.before,
       after: ownProps.after,

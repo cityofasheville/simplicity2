@@ -4,6 +4,7 @@ import ReactTable from 'react-table';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import LoadingAnimation from '../../shared/LoadingAnimation';
+import Error from '../../shared/Error';
 import Property from '../property/Property';
 import PageHeader from '../../shared/PageHeader';
 import ButtonGroup from '../../shared/ButtonGroup';
@@ -67,11 +68,11 @@ const Owner = props => {
     return <LoadingAnimation />;
   }
   if (props.data.error) {
-    return <p>{props.data.error.message}</p>;
+    return <Error message={props.data.error.message} />;
   }
 
   const refreshLocation = (view) => {
-    browserHistory.push([props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&label=', props.location.query.label, '&hideNavbar=', props.location.query.hideNavbar, '&search=', props.location.query.search, '&view=', view].join(''));
+    browserHistory.push([props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&entities=', props.location.query.entities, '&label=', props.location.query.label, '&hideNavbar=', props.location.query.hideNavbar, '&search=', props.location.query.search, '&view=', view].join(''));
   };
 
   const polygons = Object.keys(props.data.properties).map(key => props.data.properties[key].polygons);
@@ -199,7 +200,7 @@ const propertyQuery = gql`
 `;
 
 const OwnerWithData = graphql(propertyQuery, {
-  options: ownProps => ({ variables: { pins: (ownProps.location === undefined) ? ownProps.pins : ownProps.location.query.id.split(',') } }),
+  options: ownProps => ({ variables: { pins: (ownProps.location === undefined) ? ownProps.pins : ownProps.location.query.id.trim().split(',') } }),
 })(Owner);
 
 export default OwnerWithData;

@@ -41,7 +41,6 @@ const AuthControl = (props) => {
                       name: defaultUser.name,
                       email: defaultUser.email,
                       provider: defaultUser.provider,
-                      token: defaultUser.token,
                     },
                   });
                 }, (error) => {

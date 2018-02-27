@@ -6,6 +6,8 @@ import DetailsTable from '../../shared/DetailsTable';
 import DetailsFormGroup from '../../shared/DetailsFormGroup';
 import DetailsIconLinkFormGroup from '../../shared/DetailsIconLinkFormGroup';
 import LoadingAnimation from '../../shared/LoadingAnimation';
+import Error from '../../shared/Error';
+import InCityMessage from '../InCityMessage';
 import PageHeader from '../../shared/PageHeader';
 import ButtonGroup from '../../shared/ButtonGroup';
 import LinkButton from '../../shared/LinkButton';
@@ -64,7 +66,7 @@ const Property = (props) => {
     return <LoadingAnimation />;
   }
   if (props.data.error) {
-    return <p>{props.data.error.message}</p>;
+    return <Error message={props.data.error.message} />;
   }
 
   const propertyData = props.inTable ? props.data : props.data.properties[0];
@@ -92,6 +94,11 @@ const Property = (props) => {
       <div className="row">
         <div className="col-sm-6">
           <fieldset className="detailsFieldset">
+            <div className="row">
+              <div className="col-xs-12" style={{ marginBottom: '10px' }}>
+                <InCityMessage inTheCity={propertyData.is_in_city} />
+              </div>
+            </div>
             <div className="row">
               <div className="col-xs-12">
                 <div alt={['Table of addresses'].join(' ')} style={{ marginRight: '10px', marginLeft: '10px' }}>
@@ -175,6 +182,7 @@ const propertyQuery = gql`
       city,
       zipcode,
       tax_exempt,
+      is_in_city,
       neighborhood,
       appraisal_area,
       acreage,
@@ -211,7 +219,7 @@ const propertyQuery = gql`
 
 const PropertyWithData = graphql(propertyQuery, {
   skip: ownProps => (ownProps.inTable),
-  options: ownProps => ({ variables: { pins: [ownProps.location.query.id] } }),
+  options: ownProps => ({ variables: { pins: [ownProps.location.query.id.trim()] } }),
 })(Property);
 
 export default PropertyWithData;

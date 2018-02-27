@@ -53,16 +53,18 @@ class Main extends React.Component {
 
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        sessionStorage.setItem('token', user.refreshToken);
-        this.props.updateUser({
-          variables: {
-            loggedIn: true,
-            privilege: 0,
-            name: user.displayName,
-            email: user.email,
-            provider: user.providerData[0].providerId,
-            token: user.refreshToken,
-          },
+        user.getIdToken()
+        .then((token) => {
+          sessionStorage.setItem('token', token);
+          this.props.updateUser({
+            variables: {
+              loggedIn: true,
+              privilege: user.email.endsWith('ashevillenc.gov') ? 2 : 1,
+              name: user.displayName,
+              email: user.email,
+              provider: user.providerData[0].providerId,
+            },
+          });
         }, (error) => {
           console.log(`TOKEN ERROR: ${JSON.stringify(error)}`);
         });
@@ -75,7 +77,6 @@ class Main extends React.Component {
             name: defaultUser.name,
             email: defaultUser.email,
             provider: defaultUser.provider,
-            token: defaultUser.token,
           },
         });
       }

@@ -4,6 +4,7 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import SearchResultGroup from './SearchResultGroup';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
+import Error from '../../../shared/Error';
 
 const getResultType = (type) => {
   switch (type) {
@@ -24,10 +25,10 @@ const getEntities = (selected) => {
   }
   const entityTypes = selected.split(',');
   const entities = [
-    { label: 'Neighborhoods', type: 'neighborhood', checked: true },
-    { label: 'Streets', type: 'street', checked: true },
     { label: 'Addresses', type: 'address', checked: true },
     { label: 'Properties', type: 'property', checked: true },
+    { label: 'Neighborhoods', type: 'neighborhood', checked: true },
+    { label: 'Streets', type: 'street', checked: true },
     { label: 'Owners', type: 'owner', checked: true },
     { label: 'Google places', type: 'google', checked: true },
   ];
@@ -71,15 +72,7 @@ const SearchResults = (props) => {
     return <LoadingAnimation message="Searching..." />;
   }
   if (props.data.error) {
-    return (
-      <div className="row">
-        <div className="col-sm-12">
-          <div className="alert alert-warning alert-sm">
-            {props.data.error.message}
-          </div>
-        </div>
-      </div>
-    );
+    return <Error message={props.data.error.message} />;
   }
   const formattedResults = [];
   for (let context of props.data.search) {
@@ -176,13 +169,6 @@ SearchResults.propTypes = {
   searchEntities: PropTypes.arrayOf(PropTypes.shape({ label: PropTypes.string, type: PropTypes.string, check: PropTypes.bool })),
 };
 
-const mapStateToProps = (state, ownProps) => (
-  {
-    //searchText: state.search.text,
-    searchEntities: ownProps.location.query.entities !== undefined ? getEntities(ownProps.location.query.entities) : getEntities('address,property,neighborhood,street,owner,google'),
-  }
-);
-
 const searchQuery = gql`
   query searchQuery($searchString: String!, $searchContexts: [String]) {
     search(searchString: $searchString, searchContexts: $searchContexts) {
@@ -227,6 +213,6 @@ const searchQuery = gql`
 `;
 
 export default graphql(searchQuery, {
-  skip: ownProps => (!ownProps.searchText),
-  options: ownProps => ({ variables: { searchString: ownProps.searchText, searchContexts: getEntitiesToSearch(ownProps.location.query.entities !== undefined ? getEntities(ownProps.location.query.entities) : getEntities('address,property,neighborhood,street,owner,google')) } }),
+  skip: ownProps => (!ownProps.searchText || ownProps.searchText.trim().length < 4),
+  options: ownProps => ({ variables: { searchString: ownProps.searchText.trim(), searchContexts: getEntitiesToSearch(ownProps.location.query.entities !== undefined ? getEntities(ownProps.location.query.entities) : getEntities('address,property,neighborhood,street,owner,google')) } }),
 })(SearchResults);

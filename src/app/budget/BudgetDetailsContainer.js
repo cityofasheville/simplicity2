@@ -5,6 +5,7 @@ import BudgetDetailsTable from './BudgetDetailsTable';
 import BudgetDetailsTreemap from './BudgetDetailsTreemap';
 import BudgetSummaryDetails from './BudgetSummaryDetails';
 import LoadingAnimation from '../../shared/LoadingAnimation';
+import Error from '../../shared/Error';
 import { buildTrees } from './budgetUtilities';
 import { updateBudgetTrees } from './graphql/budgetMutations';
 
@@ -51,9 +52,9 @@ class BudgetDetailsContainer extends React.Component {
       );
     }
     if (this.props.data.error) { // eslint-disable-line react/prop-types
-      return <p>{this.props.data.error.message}</p>; // eslint-disable-line react/prop-types
+      return <Error message={this.props.data.error.message} />; // eslint-disable-line react/prop-types
     }
-  
+
     if (!this.state.treesInitialized) {
       this.initializeTrees();
     }

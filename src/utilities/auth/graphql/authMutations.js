@@ -7,7 +7,6 @@ export const updateUser = gql`
     $name: String
     $email: String
     $provider: String
-    $token: String
    ) {
     updateUser(
       loggedIn: $loggedIn
@@ -15,14 +14,12 @@ export const updateUser = gql`
       name: $name
       email: $email
       provider: $provider
-      token: $token
     ) @client {
       loggedIn
       privilege
       name
       email
       provider
-      token
     }
   }
 `;

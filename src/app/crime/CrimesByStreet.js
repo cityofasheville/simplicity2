@@ -6,6 +6,7 @@ import { graphql } from 'react-apollo';
 import moment from 'moment';
 import gql from 'graphql-tag';
 import LoadingAnimation from '../../shared/LoadingAnimation';
+import Error from '../../shared/Error';
 import PieChart from '../../shared/visualization/PieChart';
 import Map from '../../shared/visualization/Map';
 import { getBoundsFromStreetData, convertStreetLinesToLatLngArrays } from '../../utilities/mapUtilities';
@@ -112,7 +113,7 @@ const CrimesByStreet = props => {
     return <LoadingAnimation />;
   }
   if (props.data.error) { // eslint-disable-line react/prop-types
-    return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
+    return <Error message={props.data.error.message} />; // eslint-disable-line react/prop-types
   }
 
   const pieData = convertToPieData(props.data.crimes_by_street);
@@ -127,7 +128,7 @@ const CrimesByStreet = props => {
   ));
 
   const refreshLocation = (view) => {
-    browserHistory.push([props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&label=', props.location.query.label, '&within=', document.getElementById('extent').value, '&during=', document.getElementById('time').value, '&search=', props.location.query.search, '&hideNavbar=', props.location.query.hideNavbar, '&view=', view, '&x=', props.location.query.x, '&y=', props.location.query.y].join(''));
+    browserHistory.push([props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&entities=', props.location.query.entities, '&label=', props.location.query.label, '&within=', document.getElementById('extent').value, '&during=', document.getElementById('time').value, '&search=', props.location.query.search, '&hideNavbar=', props.location.query.hideNavbar, '&view=', view, '&x=', props.location.query.x, '&y=', props.location.query.y].join(''));
   };
 
   return (
@@ -206,7 +207,7 @@ const getCrimesAndStreetInfoQuery = gql`
 const CrimesByStreetGQL = graphql(getCrimesAndStreetInfoQuery, {
   options: ownProps => ({
     variables: {
-      centerline_ids: ownProps.location.query.id.split(','),
+      centerline_ids: ownProps.location.query.id.trim().split(','),
       radius: ownProps.radius,
       before: ownProps.before,
       after: ownProps.after,

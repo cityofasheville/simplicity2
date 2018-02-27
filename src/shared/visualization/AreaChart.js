@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Tooltip from './Tooltip'
 import { ResponsiveXYFrame } from 'semiotic'
-import { line } from "d3-shape"
 import { scaleTime } from 'd3-scale'
 import { formatDataForStackedArea } from './visUtilities'
 
@@ -29,7 +28,7 @@ const dateFromSlash = (stringDate) => {
   return new Date(splitDate[1], splitDate[0])
 }
 
-class AreaChartContainer extends React.Component {
+class AreaChart extends React.Component {
   constructor(props) {
     super(props);
     this.state = { showingLongDesc: this.showLongDesc };
@@ -161,18 +160,18 @@ class AreaChartContainer extends React.Component {
   }
 }
 
-AreaChartContainer.propTypes = {
+AreaChart.propTypes = {
   chartText: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   chartTitle: PropTypes.string,
   hideSummary: PropTypes.bool,
   toolTipFormatter: PropTypes.func,
 };
 
-AreaChartContainer.defaultProps = {
+AreaChart.defaultProps = {
   chartText: '',
   chartTitle: '',
   hideSummary: false,
   toolTipFormatter: null,
 };
 
-export default AreaChartContainer;
+export default AreaChart;

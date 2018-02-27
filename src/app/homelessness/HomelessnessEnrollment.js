@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import AreaChartContainer from '../../shared/visualization/AreaChartContainer';
+import AreaChart from '../../shared/visualization/AreaChart';
 
 const dataKeys = [
   'Homelessness Prevention',
@@ -1074,7 +1074,7 @@ class HomelessnessEnrollment extends React.Component {
         </div>
         <div className="row">
           <div className="col-sm-12">
-            <AreaChartContainer
+            <AreaChart
               data={this.props.summaryData}
               mainAxisDataKey="Date"
               dataKeys={dataKeys}

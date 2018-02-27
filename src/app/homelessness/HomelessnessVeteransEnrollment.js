@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import AreaChartContainer from '../../shared/visualization/AreaChartContainer';
+import AreaChart from '../../shared/visualization/AreaChart';
 
 const programKeys = [
   'Unsheltered',
@@ -108,7 +108,7 @@ const programData = [
     Intake: 16,
     Other: 10,
     MIA: 16,
-    'Grant & Per Diem': 180, 
+    'Grant & Per Diem': 180,
   },
   {
     month: '6/2017',
@@ -187,9 +187,9 @@ class HomelessnessVeteransEnrollment extends React.Component {
                     <strong>MIA</strong>
                   </div>
                   <div>
-                    If a Veteran on the active by-name list can no longer be located after repeated attempts, the Veteran’s status is then changed from “active” to “missing in action” and after 90 days or more, are then removed from the list for purposes of calculating these benchmarks. If the Veteran is located at a later date and is still experiencing homelessness, the date of the most recent contact becomes the new date of identification. 
+                    If a Veteran on the active by-name list can no longer be located after repeated attempts, the Veteran’s status is then changed from “active” to “missing in action” and after 90 days or more, are then removed from the list for purposes of calculating these benchmarks. If the Veteran is located at a later date and is still experiencing homelessness, the date of the most recent contact becomes the new date of identification.
                   </div>
-                </li>  
+                </li>
                 <li>
                     <div>
                       <strong>Grant &amp; Per Diem</strong>
@@ -197,7 +197,7 @@ class HomelessnessVeteransEnrollment extends React.Component {
                     <div>
                       Since 1994, the VA's Homeless Providers Grant and Per Diem Program (GPD) has offered Veterans Affairs Health Care for Homeless Veterans (HCHV) Programs to community agencies providing services to homeless Veterans. The purpose of GPD is to promote the development and provision of supportive housing and/or supportive services with the goal of helping homeless Veterans achieve residential stability, increase their skill levels and/or income, and obtain greater self-determination. In 2017, the VA designated several program types within GPD: Healthcare to Home, Low Barrier, Clinical, Bridge Housing and Service-Intensive Transitional Housing (SITH). Whereas most GPD programs provide short lengths of stay in transitional housing facilities and provide rapid connections to permanent housing, SITH provides up to 24 months of transitional housing in which homeless Veterans are actively working with the assistance of appropriate services and supports to achieve permanent housing. In Buncombe County, Veterans are offered a choice at identification as to whether a housing intervention or a Grant and Per Diem program meets their needs.
                     </div>
-                </li>                            
+                </li>
                 <li>
                   <div>
                     <strong>NOTE:</strong>
@@ -212,7 +212,7 @@ class HomelessnessVeteransEnrollment extends React.Component {
         </p>
         <div className="row">
           <div className="col-sm-12">
-            <AreaChartContainer data={this.props.data} mainAxisDataKey="month" dataKeys={this.props.dataKeys} altText={'Area chart of Veterans on the by-name list'} colorScheme="bright_colors_2" />
+            <AreaChart data={this.props.data} mainAxisDataKey="month" dataKeys={this.props.dataKeys} altText={'Area chart of Veterans on the by-name list'} colorScheme="bright_colors_2" />
           </div>
         </div>
       </div>

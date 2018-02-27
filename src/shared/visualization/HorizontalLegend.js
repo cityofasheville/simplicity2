@@ -15,10 +15,11 @@ class HorizontalLegend extends React.Component {
     styles.textAlign = 'center'
     const rectWidth = 15
 
-    const labelItems = this.props.formattedData.map(d => ({label: d.label, color: d.color}))
+    const labelItems = this.props.formattedData
       .filter((item, pos, thisArray) =>
-        thisArray.findIndex(d => d.label === item.label && d.color === item.color) === pos)
-      .sort((a, b) => a.value - b.value)
+        // Limit it to just the first occurrence
+        pos === thisArray.findIndex(d => d.label === item.label && d.color === item.color)
+      ).sort((a, b) => a.value - b.value)
 
     return <div style={styles} >
       {labelItems.map((item, index, originalArr) => {

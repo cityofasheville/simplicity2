@@ -6,8 +6,6 @@ import { interpolateLab } from 'd3-interpolate'
 import { NetworkFrame } from 'semiotic'
 
 
-
-
 /*
  * TODOS
  * Why is downward transformation happening?  Top margin shouldn't be negative
@@ -34,14 +32,32 @@ class Sankey extends React.Component {
     let nodeColor = scaleSequential(interpolateLab(darkerColor, lighterColor))
 
     return <NetworkFrame
-      networkType='sankey'
-      size={[+this.props.width, +this.props.height]}
-      nodes={graph.nodes}
       edges={graph.links}
+      hoverAnnotation={true}
+      margin={{top: -200, right: 10, bottom: 25, left: 10}}
+      networkType='sankey'
       nodeIdAccessor='id'
+      nodes={graph.nodes}
+      size={[+this.props.width, +this.props.height]}
       sourceAccessor='source'
       targetAccessor='target'
-      // nodeLabels={d => <div key={`${d.name}-${d.id}-node`}>{d.name}</div>}
+      nodeLabels={d => {
+        const hoverInSourceLinks = d.targetLinks.map(link => link.source.name).includes(this.state.hover)
+        const hoverInDestLinks = d.sourceLinks.map(link => link.target.name).includes(this.state.hover)
+        const opacity = this.state.hover === d.name || hoverInSourceLinks || hoverInDestLinks ? '1' : '0'
+        return <text style={{position: 'absolute', opacity: opacity, color: 'black'}} key={`${d.name}-${d.id}-node`}>
+          {d.name}
+        </text>}
+      }
+      zoomToFit={true}
+      customHoverBehavior={d => d && d.name ?
+        this.setState({hover: d.name}) : this.setState({hover: null})
+      }
+      edgeStyle={d => {
+        // If source or target is hovered node, opacity should be darker
+        const opacity = (this.state.hover === d.source.name || this.state.hover === d.target.name) ? '1' : '0.4'
+        return {stroke: 'gray', fill: 'gray', fillOpacity: opacity, strokeOpacity: opacity}
+      }}
       nodeStyle={(d) => {
         const colorDomain = [graph.nodes[graph.nodes.length - 1].value, graph.nodes[0].value]
         nodeColor.domain(colorDomain)
@@ -49,47 +65,7 @@ class Sankey extends React.Component {
         const strokeColor = d.name === this.state.hover ? 'black' : darkerColor
         return { stroke: strokeColor, strokeWidth: '3px', fill: nodeColor(d.value)}
       }}
-      edgeStyle={d => {
-        // If source or target is hovered node, opacity should be darker
-        const opacity = (this.state.hover === d.source.name || this.state.hover === d.target.name) ? '1' : '0.4'
-        return {stroke: 'gray', fill: 'gray', fillOpacity: opacity, strokeOpacity: opacity}
-      }}
-      hoverAnnotation={true}
-      tooltipContent={d => {
-        const nodeSources = d.targetLinks.map(link => link.source.name)
-        const nodeTargets = d.sourceLinks.map(link => link.target.name)
-        const textLines = []
-        if (nodeSources.length > 0) {
-          textLines.push({
-            text: `Sources: ${nodeSources.join(', ')}`,
-            color: 'black'
-          })
-        }
-        if (nodeTargets.length > 0) {
-          textLines.push({
-            text: `Destinations: ${nodeTargets.join(', ')}`,
-            color: 'black'
-          })
-        }
-
-        return <Tooltip
-          title={d.name}
-          textLines={textLines}
-          style={{
-            backgroundColor: 'white',
-            border: '1px solid black',
-            maxWidth: '100px',
-            position: 'absolute',
-            top: `${-d.height / 2}px`,
-            left: `${this.props.width / 12}px`
-          }}
-        />
-      }}
-      zoomToFit={true}
-      customHoverBehavior={d => d && d.name ?
-        this.setState({hover: d.name}) : this.setState({hover: null})
-      }
-      margin={{top: -200, right: 10, bottom: 25, left: 10}}
+      tooltipContent=''
     />
 
   }

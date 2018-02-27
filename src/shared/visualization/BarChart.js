@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import Tooltip from './Tooltip'
 import HorizontalLegend from './HorizontalLegend'
 import { Mark } from "semiotic-mark"
-import { OrdinalFrame } from 'semiotic'
-import { colorSchemes } from './colorSchemes';
+import { ResponsiveOrdinalFrame } from 'semiotic'
 import { color } from 'd3-color'
 import { formatDataForStackedBar } from './visUtilities'
 
@@ -31,7 +30,7 @@ const getLongDesc = (data, dataKeys, mainAxisKey, valueFormatter) => (
   </div>
 );
 
-class BarChartContainer extends React.Component {
+class BarChart extends React.Component {
   constructor(props) {
     super(props);
     this.state = { showingLongDesc: this.showLongDesc };
@@ -65,7 +64,7 @@ class BarChartContainer extends React.Component {
         <div className="row">
           <div className="col-sm-12">
             <div style={{ height: this.props.height }} alt={this.props.altText}>
-              <OrdinalFrame
+              <ResponsiveOrdinalFrame
                 annotations={this.props.annotations}
                 data={formattedData}
                 hoverAnnotation={true}
@@ -164,7 +163,7 @@ class BarChartContainer extends React.Component {
   }
 }
 
-BarChartContainer.propTypes = {
+BarChart.propTypes = {
   annotations: PropTypes.arrayOf(PropTypes.object),
   data: PropTypes.array, // eslint-disable-line
   dataKeys: PropTypes.arrayOf(PropTypes.string),
@@ -178,7 +177,7 @@ BarChartContainer.propTypes = {
   legendLabelFormatter: PropTypes.func,
 };
 
-BarChartContainer.defaultProps = {
+BarChart.defaultProps = {
   annotations: [],
   data: [],
   dataKeys: [],
@@ -192,4 +191,4 @@ BarChartContainer.defaultProps = {
   legendLabelFormatter: val => val,
 };
 
-export default BarChartContainer;
+export default BarChart;

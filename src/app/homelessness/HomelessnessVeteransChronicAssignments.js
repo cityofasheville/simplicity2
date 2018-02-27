@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import AreaChartContainer from '../../shared/visualization/AreaChartContainer';
+import AreaChart from '../../shared/visualization/AreaChart';
 
 const chronicKeys = [
   'Declining',
@@ -106,7 +106,7 @@ const chronicData = [
     SSVF: 3,
     'HUD-VASH': 8,
     'Grant & Per Diem': 34,
-  },  
+  },
 ];
 
 class HomelessnessVeteransChronicAssignments extends React.Component {
@@ -164,7 +164,7 @@ class HomelessnessVeteransChronicAssignments extends React.Component {
           </p>
         <div className="row">
           <div className="col-sm-12">
-            <AreaChartContainer data={chronicData} mainAxisDataKey="month" dataKeys={chronicKeys} altText={'Area chart of Chronic Homeless Veteran Program Assignments'} colorScheme="bright_colors" />
+            <AreaChart data={chronicData} mainAxisDataKey="month" dataKeys={chronicKeys} altText={'Area chart of Chronic Homeless Veteran Program Assignments'} colorScheme="bright_colors" />
           </div>
         </div>
       </div>

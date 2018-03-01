@@ -32,6 +32,7 @@ class Sankey extends React.Component {
     let nodeColor = scaleSequential(interpolateLab(darkerColor, lighterColor))
 
     return <NetworkFrame
+      annotations={graph.nodes}
       edges={graph.links}
       hoverAnnotation={true}
       margin={{top: -200, right: 10, bottom: 25, left: 10}}
@@ -41,31 +42,62 @@ class Sankey extends React.Component {
       size={[+this.props.width, +this.props.height]}
       sourceAccessor='source'
       targetAccessor='target'
-      nodeLabels={d => {
-        const hoverInSourceLinks = d.targetLinks.map(link => link.source.name).includes(this.state.hover)
-        const hoverInDestLinks = d.sourceLinks.map(link => link.target.name).includes(this.state.hover)
-        const opacity = this.state.hover === d.name || hoverInSourceLinks || hoverInDestLinks ? '1' : '0'
-        return <text style={{position: 'absolute', opacity: opacity, color: 'black'}} key={`${d.name}-${d.id}-node`}>
-          {d.name}
-        </text>}
-      }
       zoomToFit={true}
       customHoverBehavior={d => d && d.name ?
         this.setState({hover: d.name}) : this.setState({hover: null})
       }
+      svgAnnotationRules={d => {
+        if (this.state.hover === null) { return }
+
+        let label = d.d.name
+        let value
+        const hoverInSourceLinks = d.edges.filter(edge => edge.source.name === this.state.hover && edge.target.name === d.d.name)
+        const hoverInDestLinks = d.d.sourceLinks.filter(link => link.target.name === this.state.hover)
+
+        if (this.state.hover === d.d.name) {
+          label = d.d.name + ' Total'
+          value = d.d.value
+        } else if (hoverInSourceLinks.length > 0) {
+          const link = hoverInSourceLinks[0]
+          value = link.value
+        } else if (hoverInDestLinks.length > 0) {
+          const link = d.edges.filter(edge => edge.target.name === this.state.hover && edge.source.name === d.d.name)[0]
+          value = link.value
+        } else {
+          return
+        }
+
+        const text = `${label}: ${this.props.valueFormatter(value)}`
+
+        return <text
+          key={`${d.d.name}-${d.i}-nodeLabel`}
+          style={{
+              position: 'absolute',
+              opacity: 1,
+              color: 'black',
+              fontWeight: d.d.name === this.state.hover ? 'bolder' : 'normal',
+              textAnchor: 'left'
+          }}
+          x={d.d.x - 4 * text.length}
+          y={d.d.y}
+        >
+          {text}
+        </text>
+      }}
       edgeStyle={d => {
         // If source or target is hovered node, opacity should be darker
-        const opacity = (this.state.hover === d.source.name || this.state.hover === d.target.name) ? '1' : '0.4'
-        return {stroke: 'gray', fill: 'gray', fillOpacity: opacity, strokeOpacity: opacity}
+        const opacity = (this.state.hover === d.source.name || this.state.hover === d.target.name) ? '0.75' : '0.15'
+        return {stroke: 'none', fill: 'gray', fillOpacity: opacity}
       }}
       nodeStyle={(d) => {
         const colorDomain = [graph.nodes[graph.nodes.length - 1].value, graph.nodes[0].value]
         nodeColor.domain(colorDomain)
         const thisNodeColor = nodeColor(d.value)
-        const strokeColor = d.name === this.state.hover ? 'black' : darkerColor
-        return { stroke: strokeColor, strokeWidth: '3px', fill: nodeColor(d.value)}
+        const strokeOpacity = d.name === this.state.hover ? 1 : 0.5
+        const strokeWidth = d.name === this.state.hover ? 3.5 : 2
+        return { stroke: darkerColor, strokeWidth: `${strokeWidth}px`, strokeOpacity: strokeOpacity, fill: nodeColor(d.value), fillOpacity: strokeOpacity}
       }}
-      tooltipContent=''
+      tooltipContent={() => ''}
     />
 
   }
@@ -87,6 +119,7 @@ Sankey.propTypes = {
   height: PropTypes.number,
   width: PropTypes.number,
   altText: PropTypes.string,
+  valueFormatter: PropTypes.func
 };
 
 Sankey.defaultProps = {
@@ -95,6 +128,7 @@ Sankey.defaultProps = {
   height: 600,
   width: 1150,
   altText: 'Sankey diagram',
+  valueFormatter: d => d,
 };
 
 export default Sankey;

@@ -6,7 +6,6 @@ import { scaleTime } from 'd3-scale'
 import { formatDataForStackedArea } from './visUtilities'
 
 
-
 const getLongDesc = (data, dataKeys, mainAxisKey, valueFormatter) => (
   <div>
     {data.map((value, index) => (

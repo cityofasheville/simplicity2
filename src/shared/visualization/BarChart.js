@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Tooltip from './Tooltip'
 import HorizontalLegend from './HorizontalLegend'
 import { Mark } from "semiotic-mark"
-import { ResponsiveOrdinalFrame } from 'semiotic'
+import { OrdinalFrame } from 'semiotic'
 import { color } from 'd3-color'
 import { formatDataForStackedBar } from './visUtilities'
 
@@ -48,9 +48,8 @@ class BarChart extends React.Component {
       this.props.dataKeys,
       this.props.mainAxisDataKey,
       this.props.colorScheme)
-
     return (
-      <div role="img" aria-label={this.props.altText} tabIndex={0}>
+      <div>
         <h4>{this.props.chartTitle}</h4>
         <br/>
         <p>
@@ -61,10 +60,12 @@ class BarChart extends React.Component {
             this.props.chartText
           }
         </p>
-        <div className="row">
+        <div className="row"
+        role="img" alt={this.props.altText} tabIndex={0}
+        >
           <div className="col-sm-12">
-            <div style={{ height: this.props.height }} alt={this.props.altText}>
-              <ResponsiveOrdinalFrame
+            <div style={{ height: this.props.height }}>
+              <OrdinalFrame
                 annotations={this.props.annotations}
                 data={formattedData}
                 hoverAnnotation={true}
@@ -135,7 +136,7 @@ class BarChart extends React.Component {
                     })
                   )
                   if (this.props.layout !== 'horizontal') { textLines.reverse() }
-                  return <Tooltip title={d.column.name} textLines={textLines} />
+                  return <Tooltip title={d.column.name} textLines={textLines}/>
                 }}
               />
               <HorizontalLegend

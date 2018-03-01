@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Tooltip from './Tooltip'
-import { ResponsiveXYFrame } from 'semiotic'
+import { XYFrame } from 'semiotic'
 import { scaleTime } from 'd3-scale'
 import { formatDataForStackedArea } from './visUtilities'
 
@@ -57,8 +57,8 @@ class AreaChart extends React.Component {
         </p>
         <div className="row">
           <div className="col-sm-12">
-            <div style={{ height: this.props.height }}>
-              <ResponsiveXYFrame
+            <div style={{ height: this.props.height }} role="img" aria-label={this.props.altText} tabIndex={0}>
+              <XYFrame
                 /*
                 TODO:
                   set dimensions meaningfully and adjust tooltip position accordingly

@@ -21,7 +21,9 @@ class HorizontalLegend extends React.Component {
         pos === thisArray.findIndex(d => d.label === item.label && d.color === item.color)
       ).sort((a, b) => a.value - b.value)
 
-    return <div style={styles} >
+    return <div
+      style={styles}
+    >
       {labelItems.map((item, index, originalArr) => {
         const label = this.props.legendLabelFormatter(item.label)
         return <div

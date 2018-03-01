@@ -30,7 +30,10 @@ const dateFromSlash = (stringDate) => {
 class AreaChart extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { showingLongDesc: this.showLongDesc };
+    this.state = {
+      altText: this.props.altText || this.props.chartTitle,
+      showingLongDesc: this.showLongDesc,
+    };
   }
 
   toggleLongDesc() {
@@ -62,7 +65,7 @@ class AreaChart extends React.Component {
             <div
               style={{ height: this.props.height }}
               role="img"
-              aria-label={this.props.altText}
+              aria-label={this.state.altText}
               tabIndex={0}
             >
               <XYFrame
@@ -163,16 +166,28 @@ class AreaChart extends React.Component {
 }
 
 AreaChart.propTypes = {
+  altText: PropTypes.string,
   chartText: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   chartTitle: PropTypes.string,
+  colorScheme: PropTypes.string,
+  data: PropTypes.arrayOf(PropTypes.object),
+  dataKeys: PropTypes.arrayOf(PropTypes.string),
+  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   hideSummary: PropTypes.bool,
+  mainAxisDataKey: PropTypes.string,
   toolTipFormatter: PropTypes.func,
 };
 
 AreaChart.defaultProps = {
+  altText: null,
   chartText: '',
   chartTitle: '',
+  colorScheme: 'new_bright_colors',
+  data: [],
+  dataKeys: [],
+  height: null,
   hideSummary: false,
+  mainAxisDataKey: null,
   toolTipFormatter: null,
 };
 

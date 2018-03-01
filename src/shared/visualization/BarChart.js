@@ -147,12 +147,14 @@ class BarChart extends React.Component {
           </div>
         </div>
         {!this.props.hideSummary &&
+          // TODO: improve keyboard functionality-- a sighted user who relies on the keyboard can't use the button to see the summary very easily
+          // see also area chart (and maybe make this into a component)
           <div className="row">
-            <div className="col-xs-10 col-xs-offset-2">
+            <div className="col-xs-10 col-xs-offset-1">
               <br />
-              <a href="javascript:void(0);" className="text-center inText" onClick={() => this.toggleLongDesc()}>
+              <div className="text-center inText" role="button" tabIndex="0" onClick={() => this.toggleLongDesc()}>
                 {this.state.showingLongDesc ? 'Hide' : 'Show'} {this.props.chartTitle} bar chart summary
-              </a>
+              </div>
               <div hidden={!this.state.showingLongDesc}>
                 {getLongDesc(this.props.data, this.props.dataKeys, this.props.mainAxisDataKey, this.props.tooltipYValFormatter)}
               </div>

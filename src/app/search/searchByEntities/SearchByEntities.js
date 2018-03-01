@@ -15,7 +15,7 @@ const SearchByEntities = (props) => {
     } else {
       newSelected = [curSelected, entity].join(',').replace(/(^,)|(,$)/g, '');
     }
-    browserHistory.push([props.location.pathname, '?search=', document.getElementById('searchBox').value, '&entities=', newSelected, '&hideNavbar=', props.location.query.hideNavbar].join(''));
+    browserHistory.replace([props.location.pathname, '?search=', document.getElementById('searchBox').value, '&entities=', newSelected, '&hideNavbar=', props.location.query.hideNavbar].join(''));
   };
 
   return (

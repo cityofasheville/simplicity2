@@ -21,11 +21,11 @@ const CIPFilter = (props) => {
       }
     }
     newSelected = newSelected.map(cat => urlCategory(cat));
-    browserHistory.push([props.location.pathname, '?view=', props.location.query.view || 'summary', "&selected=", newSelected.join(','), '&hideNavbar=', props.location.query.hideNavbar, '&mode=', props.location.query.mode].join(''));
+    browserHistory.replace([props.location.pathname, '?view=', props.location.query.view || 'summary', "&selected=", newSelected.join(','), '&hideNavbar=', props.location.query.hideNavbar, '&mode=', props.location.query.mode].join(''));
   };
 
   const toggleMode = () => {
-    browserHistory.push([props.location.pathname, '?view=', props.location.query.view || 'summary', '&selected=', props.location.query.selected, '&hideNavbar=', props.location.query.hideNavbar, '&mode=', props.location.query.mode === 'bond' ? 'all' : 'bond'].join(''));
+    browserHistory.replace([props.location.pathname, '?view=', props.location.query.view || 'summary', '&selected=', props.location.query.selected, '&hideNavbar=', props.location.query.hideNavbar, '&mode=', props.location.query.mode === 'bond' ? 'all' : 'bond'].join(''));
   };
 
   return (

@@ -67,7 +67,7 @@ const ProjectFlowDashboard = (props) => {
   ));
 
   const refreshLocation = (value) => {
-    browserHistory.push([props.location.pathname, '?view=', value].join(''));
+    browserHistory.replace([props.location.pathname, '?view=', value].join(''));
   };
 
   return (

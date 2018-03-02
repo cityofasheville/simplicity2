@@ -143,7 +143,7 @@ class BarChart extends React.Component {
                     })
                   );
                   if (this.props.layout !== 'horizontal') { textLines.reverse(); }
-                  return <Tooltip title={d.column.name} textLines={textLines} />;
+                  return Tooltip(textLines, d.column.name);
                 }}
               />
               {HorizontalLegend(formattedData, this.props.legendLabelFormatter)}

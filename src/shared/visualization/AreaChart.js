@@ -110,36 +110,30 @@ class AreaChart extends React.Component {
                       label: point.label,
                       color: point.color,
                       data: point.coordinates.find(i => i[this.props.mainAxisDataKey] === d[this.props.mainAxisDataKey]),
-                      dataSum: point.coordinates.reduce((a, c) => {
-                        return {value: a.value + c.value}
-                      }),
+                      dataSum: point.coordinates.reduce((a, c) =>
+                        ({ value: a.value + c.value })),
                     }))
-                    .sort((a, b) => {
-                      return a.dataSum.value - b.dataSum.value;
-                    });
+                    .sort((a, b) => a.dataSum.value - b.dataSum.value);
 
                   const textLines = points.map(thisPoint =>
                     ({
                       text: `${thisPoint.label}: ${thisPoint.data.value}`,
-                      color: thisPoint.color
+                      color: thisPoint.color,
                     })
-                  )
+                  );
 
                   const minTooltipWidth = (textLines.map(line => line.text).join('').length + 0.5) / textLines.length;
 
-                  return (<Tooltip
-                    title={d[this.props.mainAxisDataKey]}
-                    textLines={textLines}
-                    style={{
+                  return Tooltip(textLines, d[this.props.mainAxisDataKey],
+                    {
                       backgroundColor: 'white',
                       border: '1px solid black',
                       position: 'absolute',
                       left: (minTooltipWidth * 16 < 1200 - d.voronoiX) ?
                         '1.5rem' :
                         `${-minTooltipWidth - 1.5}rem`,
-                      top: 400 * -0.5 + 'px',
-                    }}
-                  />);
+                      top: `${400 * -0.5}px`,
+                    });
                 }}
               />
             </div>

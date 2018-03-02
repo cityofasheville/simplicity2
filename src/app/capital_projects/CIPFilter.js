@@ -1,13 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { browserHistory } from 'react-router';
 import Toggle from 'react-toggle';
 import { urlCategory } from './cip_utilities';
 import FilterCheckboxGroup from '../../shared/FilterCheckboxGroup';
 import FilterCheckbox from '../../shared/FilterCheckbox';
+import { refreshLocation } from '../../utilities/generalUtilities';
 
 const CIPFilter = (props) => {
-  const refreshLocation = (category) => {
+  const toggleMode = () => (
+    {
+      mode: props.location.query.mode === 'bond' ? 'all' : 'bond',
+    }
+  );
+
+  const getNewUrlParams = (category) => {
     if (props.selected.length === 1 && props.selected[0] === category) { //can't deselect last one
       return;
     }
@@ -21,18 +27,16 @@ const CIPFilter = (props) => {
       }
     }
     newSelected = newSelected.map(cat => urlCategory(cat));
-    browserHistory.replace([props.location.pathname, '?view=', props.location.query.view || 'summary', "&selected=", newSelected.join(','), '&hideNavbar=', props.location.query.hideNavbar, '&mode=', props.location.query.mode].join(''));
-  };
-
-  const toggleMode = () => {
-    browserHistory.replace([props.location.pathname, '?view=', props.location.query.view || 'summary', '&selected=', props.location.query.selected, '&hideNavbar=', props.location.query.hideNavbar, '&mode=', props.location.query.mode === 'bond' ? 'all' : 'bond'].join(''));
+    return {
+      selected: newSelected.join(','),
+    };
   };
 
   return (
     <div>
       <FilterCheckboxGroup>
         {props.categories.map((category, index) => (
-          <FilterCheckbox key={['SummaryCard', category, index].join('_')} label={category} value={category} handleChange={() => refreshLocation(category)} selected={props.selected.includes(category) && !(props.location.query.mode === 'bond' && !['Parks', 'Housing', 'Transportation'].includes(category))} disabled={props.location.query.mode === 'bond' && !['Parks', 'Housing', 'Transportation'].includes(category)} />
+          <FilterCheckbox key={['SummaryCard', category, index].join('_')} label={category} value={category} handleChange={() => refreshLocation(getNewUrlParams(category), props.location)} selected={props.selected.includes(category) && !(props.location.query.mode === 'bond' && !['Parks', 'Housing', 'Transportation'].includes(category))} disabled={props.location.query.mode === 'bond' && !['Parks', 'Housing', 'Transportation'].includes(category)} />
         ))}
       </FilterCheckboxGroup>
       <div className="row">
@@ -41,7 +45,7 @@ const CIPFilter = (props) => {
             <span style={{ fontSize: '26px', fontWeight: 'normal', marginRight: '10px' }}>Include only bond projects</span>
             <Toggle
               defaultChecked={props.location.query.mode === 'bond'}
-              onChange={toggleMode}
+              onChange={() => refreshLocation(toggleMode(), props.location)}
             />
           </label>
         </div>

@@ -1,12 +1,13 @@
 import React from 'react';
+import { browserHistory } from 'react-router';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
-import { browserHistory } from 'react-router';
 import { RadioGroup, Radio } from 'react-radio-group';
 import Icon from '../../shared/Icon';
 import { IM_ARROW_UP8 } from '../../shared/iconConstants';
 import Treemap from '../../shared/visualization/Treemap';
 import { getBudgetTrees } from './graphql/budgetQueries';
+import { refreshLocation } from '../../utilities/generalUtilities';
 
 const getButtonClass = (categoryType, buttonName) => {
   if (
@@ -110,9 +111,11 @@ const renderBreadcrumb = (tree, props) => {
 const BudgetDetailsTreemap = (props) => {
   const myTree = props.location.query.mode === 'expenditures' || props.location.query.mode === undefined ? props.expenseTree : props.revenueTree;
 
-  const refreshLocation = (value) => {
-    browserHistory.replace([props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&entities=', props.location.query.entities, '&label=', props.location.query.label, '&mode=', value, '&hideNavbar=', props.location.query.hideNavbar].join(''));
-  };
+  const getNewUrlParams = mode => (
+    {
+      mode,
+    }
+  );
 
   return (
     <div>
@@ -141,7 +144,7 @@ const BudgetDetailsTreemap = (props) => {
             <button className={getButtonClass(props.categoryType, 'department')}>Departments</button>
           </div>
           <div className="radioGroup pull-right" style={{ marginLeft: '10px' }}>
-            <RadioGroup name="treemapRadios" selectedValue={props.location.query.mode || 'expenditures'} onChange={refreshLocation}>
+            <RadioGroup name="treemapRadios" selectedValue={props.location.query.mode || 'expenditures'} onChange={value => refreshLocation(getNewUrlParams(value), props.location)}>
               <label>
                 <Radio value="expenditures" />Expenditures
               </label>

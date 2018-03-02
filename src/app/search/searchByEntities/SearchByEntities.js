@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { browserHistory } from 'react-router';
 import SearchByEntity from './SearchByEntity';
 import styles from './searchByEntities.css';
+import { refreshLocation } from '../../../utilities/generalUtilities';
 
 const SearchByEntities = (props) => {
-  const refreshLocation = (entity) => {
+  const getNewUrlParams = (entity) => {
     let newSelected = '';
     const useLocation = props.location.query.entities !== undefined;
     const curSelected = (useLocation ? props.location.query.entities : props.selectedEntities).split(',');
@@ -15,7 +15,10 @@ const SearchByEntities = (props) => {
     } else {
       newSelected = [curSelected, entity].join(',').replace(/(^,)|(,$)/g, '');
     }
-    browserHistory.replace([props.location.pathname, '?search=', document.getElementById('searchBox').value, '&entities=', newSelected, '&hideNavbar=', props.location.query.hideNavbar].join(''));
+    return {
+      search: document.getElementById('searchBox').value,
+      entities: newSelected,
+    };
   };
 
   return (
@@ -24,7 +27,7 @@ const SearchByEntities = (props) => {
       <ul className={styles.searchEntitiesUL}>
         {props.entities.map((entity, i) => (
           <li key={['entity', i].join('_')} className={entity.checked ? 'text-primary' : styles.unchecked}>
-            <SearchByEntity entity={entity} onClick={() => refreshLocation(entity.type)} />
+            <SearchByEntity entity={entity} onClick={() => refreshLocation(getNewUrlParams(entity.type), props.location)} />
           </li>
         ))}
       </ul>

@@ -6,10 +6,10 @@ const Tooltip = (textLines, title, style) => {
   styles.fontSize = '1.5rem';
   styles.padding = '0.5rem';
   const minWidth = Math.min(
-    (textLines.map(line => line.text).join('').length + 0.5) / textLines.length,
+    (textLines.map(line => line.text).join('').length) / textLines.length,
     20
   );
-  styles.minWidth = `${minWidth}rem`;
+  styles.minWidth = `${minWidth / 2}em`;
   return (<div style={styles}>
     <div style={{ fontWeight: 'bolder', textAlign: 'center' }}>
       {title}

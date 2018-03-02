@@ -2514,9 +2514,9 @@ element-resize-detector@^1.1.12:
   dependencies:
     batch-processor "^1.0.0"
 
-element-resize-event@2.0.7:
-  version "2.0.7"
-  resolved "https://registry.yarnpkg.com/element-resize-event/-/element-resize-event-2.0.7.tgz#8b63953715967cd2241620245573e79e684e07b0"
+"element-resize-event@github:emeeks/element-resize-event":
+  version "2.0.8"
+  resolved "https://codeload.github.com/emeeks/element-resize-event/tar.gz/3d31c7f568ac21243fb666fd86aec5455d603b98"
 
 elliptic@^6.0.0:
   version "6.4.0"
@@ -6348,9 +6348,9 @@ semiotic-mark@0.1.2, semiotic-mark@^0.1.2:
     d3-transition "1.0.3"
     prop-types "15.6.0"
 
-semiotic@^1.8.1:
-  version "1.8.1"
-  resolved "https://registry.yarnpkg.com/semiotic/-/semiotic-1.8.1.tgz#359c8c4a729b2340cffb64ccf599f31b4b2110f4"
+semiotic@^1.8.2:
+  version "1.8.2"
+  resolved "https://registry.yarnpkg.com/semiotic/-/semiotic-1.8.2.tgz#5af5c58c0929053a8316a5e30dce937322b153f7"
   dependencies:
     "@mapbox/polylabel" "1.0.2"
     babel-plugin-external-helpers "^6.22.0"
@@ -6370,7 +6370,7 @@ semiotic@^1.8.1:
     d3-selection "1.1.0"
     d3-shape "1.0.4"
     d3-voronoi "1.0.2"
-    element-resize-event "2.0.7"
+    element-resize-event "github:emeeks/element-resize-event"
     json2csv "3.7.3"
     labella "1.1.4"
     prop-types "15.6.0"

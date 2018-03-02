@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { XYFrame } from 'semiotic';
+import { ResponsiveXYFrame } from 'semiotic';
 import { scaleTime } from 'd3-scale';
 import Tooltip from './Tooltip';
 import { formatDataForStackedArea } from './visUtilities';
@@ -68,7 +68,7 @@ class AreaChart extends React.Component {
               aria-label={this.state.altText}
               tabIndex={0}
             >
-              <XYFrame
+              <ResponsiveXYFrame
                 /*
                 TODO:
                   set dimensions meaningfully and adjust tooltip position accordingly
@@ -124,7 +124,9 @@ class AreaChart extends React.Component {
 
                   const minTooltipWidth = (textLines.map(line => line.text).join('').length + 0.5) / textLines.length;
 
-                  return Tooltip(textLines, d[this.props.mainAxisDataKey],
+                  return Tooltip(
+                    textLines,
+                    d[this.props.mainAxisDataKey],
                     {
                       backgroundColor: 'white',
                       border: '1px solid black',

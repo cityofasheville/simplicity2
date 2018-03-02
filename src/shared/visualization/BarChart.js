@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { color } from 'd3-color';
 import { Mark } from 'semiotic-mark';
-import { OrdinalFrame } from 'semiotic';
-import Tooltip from './Tooltip';
+import { ResponsiveOrdinalFrame } from 'semiotic';
 import HorizontalLegend from './HorizontalLegend';
+import Tooltip from './Tooltip';
 import { formatDataForStackedBar } from './visUtilities';
 
 
@@ -72,7 +72,7 @@ class BarChart extends React.Component {
         >
           <div className="col-sm-12">
             <div style={{ height: this.props.height }}>
-              <OrdinalFrame
+              <ResponsiveOrdinalFrame
                 annotations={this.props.annotations}
                 data={formattedData}
                 hoverAnnotation

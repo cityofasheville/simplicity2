@@ -1,10 +1,8 @@
 import React from 'react';
 
 
-const HorizontalLegend = (formattedData, legendLabelFormatter, inputStyle) => {
-  const styles = inputStyle || {
-    width: '100%',
-  };
+const HorizontalLegend = (formattedData, legendLabelFormatter, inputStyle = { width: '100%' }, valueAccessor = 'value') => {
+  const styles = inputStyle;
   styles.textAlign = 'center';
   const rectWidth = 15;
 
@@ -13,9 +11,9 @@ const HorizontalLegend = (formattedData, legendLabelFormatter, inputStyle) => {
       // Limit it to just the first occurrence
       pos === thisArray.findIndex(d => d.label === item.label && d.color === item.color)
     ).map((item) => {
-      item.value = formattedData.reduce((total, num) => total + num.value);
+      item[valueAccessor] = formattedData.reduce((total, num) => total + num[valueAccessor]);
       return item;
-    }).sort((a, b) => b.value - a.value);
+    }).sort((a, b) => b[valueAccessor] - a[valueAccessor]);
 
   return (<div
     style={styles}

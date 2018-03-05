@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
-import { browserHistory } from 'react-router';
 import ReactTable from 'react-table';
 import { RadioGroup, Radio } from 'react-radio-group';
 import Collapsible from '../../shared/Collapsible';
 import { getBudgetTrees } from './graphql/budgetQueries';
+import { refreshLocation } from '../../utilities/generalUtilities';
 
 const last4Years = [
   2015,
@@ -127,9 +127,12 @@ const trProps = () => {
 const BudgetDetailsTable = (props) => {
   const dataForTable = props.location.query.mode === 'expenditures' || props.location.query.mode === undefined ? props.expenseTree.children : props.revenueTree.children;
 
-  const refreshLocation = (value) => {
-    browserHistory.push([props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&entities=', props.location.query.entities, '&label=', props.location.query.label, '&mode=', value, '&hideNavbar=', props.location.query.hideNavbar].join(''));
-  };
+  const getNewUrlParams = mode => (
+    {
+      mode,
+      nodePath: 'root',
+    }
+  );
 
   return (
     <div>
@@ -144,7 +147,7 @@ const BudgetDetailsTable = (props) => {
       <div className="row">
         <div className="col-sm-12">
           <div className="radioGroup pull-right" style={{ marginBottom: '3px' }}>
-            <RadioGroup name="tableRadios" selectedValue={props.location.query.mode || 'expenditures'} onChange={refreshLocation}>
+            <RadioGroup name="tableRadios" id="tableRadios" selectedValue={props.location.query.mode || 'expenditures'} onChange={value => refreshLocation(getNewUrlParams(value), props.location)}>
               <label>
                 <Radio value="expenditures" />Expenditures
               </label>

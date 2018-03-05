@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { browserHistory } from 'react-router';
 import L from 'leaflet';
 import { graphql } from 'react-apollo';
 import moment from 'moment';
@@ -14,6 +13,7 @@ import EmailDownload from '../../shared/EmailDownload';
 import ButtonGroup from '../../shared/ButtonGroup';
 import Button from '../../shared/Button';
 import { getBoundsFromPolygonData, combinePolygonsFromNeighborhoodList } from '../../utilities/mapUtilities';
+import { refreshLocation } from '../../utilities/generalUtilities';
 
 const getMarker = (type) => {
   switch (type) {
@@ -127,9 +127,11 @@ const CrimesByNeighborhood = props => {
     }) } })
   ));
 
-  const refreshLocation = (view) => {
-    browserHistory.push([props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&entities=', props.location.query.entities, '&label=', props.location.query.label, '&within=', document.getElementById('extent').value, '&during=', document.getElementById('time').value, '&hideNavbar=', props.location.query.hideNavbar, '&search=', props.location.query.search, '&view=', view, '&x=', props.location.query.x, '&y=', props.location.query.y].join(''));
-  };
+  const getNewUrlParams = view => (
+    {
+      view,
+    }
+  );
 
   return (
     <div>
@@ -139,9 +141,9 @@ const CrimesByNeighborhood = props => {
             <EmailDownload downloadData={props.data.crimes_by_neighborhood} fileName="crimes_by_neighborhood.csv" />
           </div>
           <ButtonGroup>
-            <Button onClick={() => refreshLocation('map')} active={props.location.query.view === 'map'} positionInGroup="left">Map view</Button>
-            <Button onClick={() => refreshLocation('list')} active={props.location.query.view === 'list'} positionInGroup="middle">List view</Button>
-            <Button onClick={() => refreshLocation('summary')} positionInGroup="right" active={props.location.query.view === 'summary'}>Chart</Button>
+            <Button onClick={() => refreshLocation(getNewUrlParams('map'), props.location)} active={props.location.query.view === 'map'} positionInGroup="left">Map view</Button>
+            <Button onClick={() => refreshLocation(getNewUrlParams('list'), props.location)} active={props.location.query.view === 'list'} positionInGroup="middle">List view</Button>
+            <Button onClick={() => refreshLocation(getNewUrlParams('summary'), props.location)} positionInGroup="right" active={props.location.query.view === 'summary'}>Chart</Button>
           </ButtonGroup>
         </div>
       </div>

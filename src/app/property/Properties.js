@@ -1,5 +1,4 @@
 import React from 'react';
-import { browserHistory } from 'react-router';
 import ButtonGroup from '../../shared/ButtonGroup';
 import Button from '../../shared/Button';
 import LinkButton from '../../shared/LinkButton';
@@ -8,6 +7,7 @@ import PropertiesByStreet from './PropertiesByStreet';
 import PropertiesByNeighborhood from './PropertiesByNeighborhood';
 import Icon from '../../shared/Icon';
 import { IM_HOME2 } from '../../shared/iconConstants';
+import { refreshLocation } from '../../utilities/generalUtilities';
 
 const getSubtitle = (entity) => {
   switch (entity) {
@@ -21,9 +21,11 @@ const getSubtitle = (entity) => {
 };
 
 const Properties = (props) => {
-  const refreshLocation = (view) => {
-    browserHistory.push([props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&entities=', props.location.query.entities, '&label=', props.location.query.label, '&search=', props.location.query.search, '&hideNavbar=', props.location.query.hideNavbar, '&view=', view].join(''));
-  };
+  const getNewUrlParams = view => (
+    {
+      view,
+    }
+  );
 
   return (
     <div>
@@ -35,8 +37,8 @@ const Properties = (props) => {
       <div className="row">
         <div className="col-sm-12">
           <ButtonGroup>
-            <Button onClick={() => refreshLocation('map')} active={props.location.query.view !== 'list'} positionInGroup="right">Map view</Button>
-            <Button onClick={() => refreshLocation('list')} active={props.location.query.view === 'list'} positionInGroup="left">List view</Button>
+            <Button onClick={() => refreshLocation(getNewUrlParams('map'), props.location)} active={props.location.query.view !== 'list'} positionInGroup="left">Map view</Button>
+            <Button onClick={() => refreshLocation(getNewUrlParams('list'), props.location)} active={props.location.query.view === 'list'} positionInGroup="right">List view</Button>
           </ButtonGroup>
         </div>
       </div>

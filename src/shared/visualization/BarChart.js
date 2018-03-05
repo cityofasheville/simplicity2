@@ -39,17 +39,6 @@ class BarChart extends React.Component {
     };
   }
 
-  componentDidMount() {
-    this.rerenderOnResize();
-    window.addEventListener('resize', this.rerenderOnResize.bind(this));
-  }
-
-  rerenderOnResize() {
-    if (this.barExists) {
-      this.setState({ isDesktop: window.innerWidth > 1450 });
-    }
-  }
-
   toggleLongDesc() {
     this.setState({
       showingLongDesc: !this.state.showingLongDesc,
@@ -101,7 +90,6 @@ class BarChart extends React.Component {
               }}
             >
               <OrdinalFrame
-                responsiveWidth
                 annotations={this.props.annotations}
                 data={formattedData}
                 hoverAnnotation

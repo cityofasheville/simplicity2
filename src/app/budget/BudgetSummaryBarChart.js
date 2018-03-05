@@ -71,21 +71,25 @@ class BudgetSummaryBarChart extends React.Component {
                   type: 'or',
                   display_year: '2014-15',
                   label: 'Actual Spent',
+                  budgetAnnotation: true,
                 },
                 {
                   type: 'or',
                   display_year: '2015-16',
                   label: 'Actual Spent',
+                  budgetAnnotation: true,
                 },
                 {
                   type: 'or',
                   display_year: '2016-17',
                   label: 'Adopted',
+                  budgetAnnotation: true,
                 },
                 {
                   type: 'or',
                   display_year: '2017-18',
                   label: 'Proposed',
+                  budgetAnnotation: true,
                 },
               ]}
               data={this.state.summaryData.dataValues}

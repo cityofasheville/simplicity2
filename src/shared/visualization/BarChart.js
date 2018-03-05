@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { color } from 'd3-color';
-import { Mark } from 'semiotic-mark';
 import { OrdinalFrame } from 'semiotic';
 import HorizontalLegend from './HorizontalLegend';
 import Tooltip from './Tooltip';
-import { formatDataForStackedBar } from './visUtilities';
+import { formatDataForStackedBar, budgetBarAnnotationRule } from './visUtilities';
 
 
 /*
@@ -53,6 +52,7 @@ class BarChart extends React.Component {
       this.props.mainAxisDataKey,
       this.props.colorScheme,
     );
+
     return (
       <div ref={refNode => this.barExist = true}>
         <h4>{this.props.chartTitle}</h4>
@@ -125,32 +125,31 @@ class BarChart extends React.Component {
                   // Don't try to fire when there aren't annotations
                   if (this.props.annotations.length < 1) { return; }
 
-                  let returnMarkX = d.screenCoordinates[0] + (this.props.layout === 'horizontal' ? 10 : 0);
-                  const allAnnotations = d.annotationLayer.annotations;
-                  const indexOfFirstLabelOccurrence = allAnnotations.findIndex(annotation => annotation.label === d.d.label);
-                  const labelMatches = allAnnotations.filter(annotation => annotation.label === d.d.label);
-
-                  if (indexOfFirstLabelOccurrence === d.i && labelMatches.length > 1) {
-                    // If it's the first occurence of that label and there's another one, return nothing
-                    return;
-                  } else if ((d.i - indexOfFirstLabelOccurrence) + 1 === labelMatches.length) {
-                    // If two contiguous annotations are the same, average their x value and display one
-                    // Offset to left is equal to (distance between two labels / 2) * (labelMatches.length - 1)
-                    const categoryVals = Object.values(d.categories);
-                    returnMarkX -= ((categoryVals[1].x - categoryVals[0].x) / 2) * (labelMatches.length - 1);
+                  if (d.d.budgetAnnotation === true) {
+                    // todo: separate this out?
+                    return budgetBarAnnotationRule(d, this.props.layout);
                   }
 
-                  return <Mark
-                    markType="text"
-                    key={`${d.d.label || 'Unknown'}-annotationtext${d.i}`}
-                    forceUpdate
-                    x={returnMarkX}
-                    y={5}
-                    className={`annotation annotation-or-label ${d.d.className || ''}`}
-                    textAnchor="middle"
-                  >
-                    {d.d.label}
-                  </Mark>;
+                  if (d.d.type === 'line' && d.screenCoordinates[0]) {
+                    return (<g key={d.d.label}>
+                      <text
+                        x={d.screenCoordinates[0]}
+                        y={-5}
+                        textAnchor="middle"
+                      >
+                        {d.d.label}
+                      </text>
+                      <line
+                        stroke="black"
+                        strokeWidth={3}
+                        x1={d.screenCoordinates[0]}
+                        x2={d.screenCoordinates[0]}
+                        y1={0}
+                        y2={d.adjustedSize[1]}
+                      />
+                    </g>
+                    );
+                  }
                 }}
                 tooltipContent={(d) => {
                   const textLines = d.pieces.map(piece =>

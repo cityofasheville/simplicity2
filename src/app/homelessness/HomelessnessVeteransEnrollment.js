@@ -146,17 +146,18 @@ class HomelessnessVeteransEnrollment extends React.Component {
     return (
       <div>
         <h3>Veterans on the by-name list</h3>
-        <p>
+        <div>
           The Veteran By-Name List is a comprehensive list of homeless Veterans in the community that is populated through information from street and VA outreach, HMIS, community shelters, VA-funded programs including GPD providers, and any other provider who may work with Veterans experiencing homelessness. The list is updated regularly – in most cases, daily – in order to ensure it has the most up-to-date information.
-        </p>
-        <p>
+        </div>
+        <br />
+        <div>
           A by-name is not a waiting list – Veterans on this list may already be accessing programs, waiting for a housing unit, have entered a transitional program, declined assistance or may self-resolve their homelessness. The by-name list is used to determine where Veterans actually are in our homeless assistance system, who needs to be prioritized for services and/or housing and what barriers need to be removed.
           <br />
           <a href="javascript:void(0);" className="text-center inText" onClick={() => this.toggleDefinitions()}>
             {this.state.showingDefinitions ? 'Hide' : 'Show'} by-name list definitions
           </a>
           <div hidden={!this.state.showingDefinitions}>
-            <p>
+            <div>
               <ul>
                 <li>
                   <div>
@@ -191,12 +192,12 @@ class HomelessnessVeteransEnrollment extends React.Component {
                   </div>
                 </li>
                 <li>
-                    <div>
-                      <strong>Grant &amp; Per Diem</strong>
-                    </div>
-                    <div>
-                      Since 1994, the VA's Homeless Providers Grant and Per Diem Program (GPD) has offered Veterans Affairs Health Care for Homeless Veterans (HCHV) Programs to community agencies providing services to homeless Veterans. The purpose of GPD is to promote the development and provision of supportive housing and/or supportive services with the goal of helping homeless Veterans achieve residential stability, increase their skill levels and/or income, and obtain greater self-determination. In 2017, the VA designated several program types within GPD: Healthcare to Home, Low Barrier, Clinical, Bridge Housing and Service-Intensive Transitional Housing (SITH). Whereas most GPD programs provide short lengths of stay in transitional housing facilities and provide rapid connections to permanent housing, SITH provides up to 24 months of transitional housing in which homeless Veterans are actively working with the assistance of appropriate services and supports to achieve permanent housing. In Buncombe County, Veterans are offered a choice at identification as to whether a housing intervention or a Grant and Per Diem program meets their needs.
-                    </div>
+                  <div>
+                    <strong>Grant &amp; Per Diem</strong>
+                  </div>
+                  <div>
+                    Since 1994, the VA's Homeless Providers Grant and Per Diem Program (GPD) has offered Veterans Affairs Health Care for Homeless Veterans (HCHV) Programs to community agencies providing services to homeless Veterans. The purpose of GPD is to promote the development and provision of supportive housing and/or supportive services with the goal of helping homeless Veterans achieve residential stability, increase their skill levels and/or income, and obtain greater self-determination. In 2017, the VA designated several program types within GPD: Healthcare to Home, Low Barrier, Clinical, Bridge Housing and Service-Intensive Transitional Housing (SITH). Whereas most GPD programs provide short lengths of stay in transitional housing facilities and provide rapid connections to permanent housing, SITH provides up to 24 months of transitional housing in which homeless Veterans are actively working with the assistance of appropriate services and supports to achieve permanent housing. In Buncombe County, Veterans are offered a choice at identification as to whether a housing intervention or a Grant and Per Diem program meets their needs.
+                  </div>
                 </li>
                 <li>
                   <div>
@@ -207,9 +208,9 @@ class HomelessnessVeteransEnrollment extends React.Component {
                   </div>
                 </li>
               </ul>
-            </p>
+            </div>
           </div>
-        </p>
+        </div>
         <div className="row">
           <div className="col-sm-12">
             <AreaChart data={this.props.data} mainAxisDataKey="month" dataKeys={this.props.dataKeys} altText={'Area chart of Veterans on the by-name list'} colorScheme="bright_colors_2" />

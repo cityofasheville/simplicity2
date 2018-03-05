@@ -50,10 +50,26 @@ const HomelessnessVeteransExitTime = props => (
     </div>
     <div className="row">
       <div className="col-md-6">
-        <BarChart layout="vertical" chartTitle="Average days from identification to positive exit: non-GPD" mainAxisDataKey="month" dataKeys={['Non-GPD']} colorScheme="bright_colors" data={props.data} altText="Bar chart of average days from identification to positive exit: non-GPD" domain={[0, 380]} referenceLine referenceX={90} referenceLineLabel="90 days" margin={{ top: 15, left: 10, right: 0, bottom: 0 }} />
+        <BarChart
+          layout="horizontal"
+          chartTitle="Average days from identification to positive exit: non-GPD"
+          mainAxisDataKey="month"
+          dataKeys={['Non-GPD']}
+          colorScheme="bright_colors"
+          data={props.data}
+          altText="Bar chart of average days from identification to positive exit: non-GPD"
+          domain={[0, 380]}
+          annotations={[
+            {
+              type: 'line',
+              label: '90 days',
+              value: 90,
+            },
+          ]}
+        />
       </div>
       <div className="col-md-6">
-        <BarChart layout="vertical" chartTitle="Average days from identification to positive exit: All Grant & Per Diem programs" mainAxisDataKey="month" dataKeys={['GPD']} colorScheme="bright_colors_2" data={props.data} altText="Bar chart of average days from identification to positive exit: All Grant & Per Diem programs" />
+        <BarChart layout="horizontal" chartTitle="Average days from identification to positive exit: All Grant & Per Diem programs" mainAxisDataKey="month" dataKeys={['GPD']} colorScheme="bright_colors_2" data={props.data} altText="Bar chart of average days from identification to positive exit: All Grant & Per Diem programs" />
       </div>
     </div>
   </div>

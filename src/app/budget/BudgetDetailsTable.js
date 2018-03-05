@@ -130,6 +130,7 @@ const BudgetDetailsTable = (props) => {
   const getNewUrlParams = mode => (
     {
       mode,
+      nodePath: 'root',
     }
   );
 

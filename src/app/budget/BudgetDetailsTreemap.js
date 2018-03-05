@@ -31,7 +31,7 @@ const goDeeper = (props) => {
       return '';
     }).join('')].join('');
   newURL = [newURL, 'nodePath=', curPath].join('');
-  props.history.push(newURL);
+  props.history.replace(newURL);
 };
 
 const goUp = (props, numLevels) => {
@@ -54,7 +54,7 @@ const goUp = (props, numLevels) => {
     curNodePathInfo = curNodePathInfo.slice(0, curNodePathInfo.length - stepsUp).join('-');
     newURL = [newURL, 'nodePath=', curNodePathInfo].join('');
   }
-  browserHistory.push(newURL);
+  browserHistory.replace(newURL);
 };
 
 const findTop = (data, path) => {
@@ -114,6 +114,7 @@ const BudgetDetailsTreemap = (props) => {
   const getNewUrlParams = mode => (
     {
       mode,
+      nodePath: 'root',
     }
   );
 

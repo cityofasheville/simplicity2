@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { color } from 'd3-color';
 import { Mark } from 'semiotic-mark';
-import { ResponsiveOrdinalFrame } from 'semiotic';
+import { OrdinalFrame } from 'semiotic';
 import HorizontalLegend from './HorizontalLegend';
 import Tooltip from './Tooltip';
 import { formatDataForStackedBar } from './visUtilities';
@@ -39,11 +39,23 @@ class BarChart extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.rerenderOnResize();
+    window.addEventListener('resize', this.rerenderOnResize.bind(this));
+  }
+
+  rerenderOnResize() {
+    if (this.barExists) {
+      this.setState({ isDesktop: window.innerWidth > 1450 });
+    }
+  }
+
   toggleLongDesc() {
     this.setState({
       showingLongDesc: !this.state.showingLongDesc,
     });
   }
+
 
   render() {
     const formattedData = formatDataForStackedBar(
@@ -53,7 +65,7 @@ class BarChart extends React.Component {
       this.props.colorScheme,
     );
     return (
-      <div>
+      <div ref={refNode => this.barExist = true}>
         <h4>{this.props.chartTitle}</h4>
         <br />
         <p>
@@ -70,16 +82,33 @@ class BarChart extends React.Component {
           alt={this.props.altText}
           tabIndex={0}
         >
-          <div className="col-sm-12">
-            <div style={{ height: this.props.height }}>
-              <ResponsiveOrdinalFrame
+          <div
+            className="col-sm-12"
+            style={{
+              width: '100%',
+              display: 'inline-block',
+              margin: '0 auto',
+              textAlign: 'center',
+            }}
+          >
+            <div
+              style={{
+                height: this.props.height,
+                margin: '0 auto',
+                display: 'inline-block',
+                width: '95%',
+                textAlign: 'center',
+              }}
+            >
+              <OrdinalFrame
+                responsiveWidth
                 annotations={this.props.annotations}
                 data={formattedData}
                 hoverAnnotation
-                margin={{ top: 0, right: 10, bottom: 40, left: 60 }}
+                margin={{ top: 5, right: 40, bottom: 40, left: 60 }}
                 oAccessor={this.props.mainAxisDataKey}
                 oLabel
-                oPadding={12.5}
+                oPadding={10}
                 projection={this.props.layout}
                 rAccessor="value"
                 rExtent={this.props.domain}
@@ -146,7 +175,7 @@ class BarChart extends React.Component {
                   return Tooltip(textLines, d.column.name);
                 }}
               />
-              {HorizontalLegend(formattedData, this.props.legendLabelFormatter)}
+            {HorizontalLegend(formattedData, this.props.legendLabelFormatter, { marginLeft: '60px' })}
             </div>
           </div>
         </div>

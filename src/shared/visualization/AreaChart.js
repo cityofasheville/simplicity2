@@ -75,6 +75,7 @@ class AreaChart extends React.Component {
                   remove logic that only applies to this use case to utils or homelessness folder
                 */
                 size={[1200, 450]}
+                responsiveWidth
                 lines={formattedData}
                 xScaleType={scaleTime()}
                 xAccessor={d => dateFromSlash(d[this.props.mainAxisDataKey])}

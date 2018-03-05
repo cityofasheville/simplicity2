@@ -70,23 +70,23 @@ class BudgetSummaryBarChart extends React.Component {
                 {
                   type: 'or',
                   display_year: '2014-15',
-                  label: 'Actual Spent'
+                  label: 'Actual Spent',
                 },
                 {
                   type: 'or',
                   display_year: '2015-16',
-                  label: 'Actual Spent'
+                  label: 'Actual Spent',
                 },
                 {
                   type: 'or',
                   display_year: '2016-17',
-                  label: 'Adopted'
+                  label: 'Adopted',
                 },
                 {
                   type: 'or',
                   display_year: '2017-18',
-                  label: 'Proposed'
-                }
+                  label: 'Proposed',
+                },
               ]}
               data={this.state.summaryData.dataValues}
               colorScheme={this.props.colorScheme}

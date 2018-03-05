@@ -1,9 +1,8 @@
 import React from 'react';
 
 
-const HorizontalLegend = (formattedData, legendLabelFormatter, inputStyle = { width: '100%' }, valueAccessor = 'value') => {
+const HorizontalLegend = (formattedData, legendLabelFormatter, inputStyle = {}, valueAccessor = 'value') => {
   const styles = inputStyle;
-  styles.textAlign = 'center';
   const rectWidth = 15;
 
   const labelItems = JSON.parse(JSON.stringify(formattedData))
@@ -23,7 +22,7 @@ const HorizontalLegend = (formattedData, legendLabelFormatter, inputStyle = { wi
       return (<div
         key={`${label}-legendItem-${index}`}
         style={{
-          margin: `0px ${rectWidth / 3}px 0px 0px`,
+          padding: `0px ${rectWidth / 3}px 0px 0px`,
           whiteSpace: 'normal',
           display: 'inline-block',
         }}

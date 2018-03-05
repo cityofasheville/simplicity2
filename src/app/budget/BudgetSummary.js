@@ -18,10 +18,10 @@ const BudgetSummary = props => (
       </ButtonGroup>
     </PageHeader>
     <div className="row">
-      <div className="col-sm-6">
+      <div className="col-md-6">
         <SummaryUse />
       </div>
-      <div className="col-sm-6">
+      <div className="col-md-6">
         <SummaryDepartments />
       </div>
       <div tabIndex={0} style={{ fontSize: '12px', textAlign: 'center' }}>Bar chart totals exclude interfund transfers</div>

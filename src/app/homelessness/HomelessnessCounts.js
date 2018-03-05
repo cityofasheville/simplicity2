@@ -244,7 +244,7 @@ const HomelessnessCounts = props => (
       </div>
     </div>
     <div className="row">
-      <div className="col-sm-6">
+      <div className="col-md-6">
         <BarChart
           chartTitle="Point-in-Time counts"
           layout="horizontal"
@@ -258,7 +258,7 @@ const HomelessnessCounts = props => (
           xAxisLabel="Count"
         />
       </div>
-      <div className="col-sm-6">
+      <div className="col-md-6">
         <BarChart
           chartTitle="Homeless program enrollments"
           layout="horizontal"

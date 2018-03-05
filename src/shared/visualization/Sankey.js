@@ -8,6 +8,7 @@ import { NetworkFrame } from 'semiotic';
 /*
  * TODOS
  * Why is downward transformation happening?  Top margin shouldn't be negative
+ * Make it vertical on mobile
  */
 
 class Sankey extends React.Component {
@@ -34,7 +35,7 @@ class Sankey extends React.Component {
         annotations={graph.nodes}
         edges={graph.links}
         hoverAnnotation
-        margin={{ top: -200, right: 10, bottom: 25, left: 10 }}
+        margin={{ top: -200, right: this.props.width / 9, bottom: 25, left: this.props.width / 9 }}
         networkType="sankey"
         nodeIdAccessor="id"
         nodes={graph.nodes}

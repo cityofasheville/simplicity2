@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import BarChartContainer from '../../shared/visualization/BarChartContainer';
+import BarChart from '../../shared/visualization/BarChart';
 
 const PIT_keys = [
   'Sheltered people',
@@ -239,16 +239,37 @@ const HomelessnessCounts = props => (
       <div className="col-sm-12">
         <h3>How many people are homeless in Asheville?</h3>
         <p>
-          Estimating how many people are homeless is complicated since it is always changing. Each day new people either become homeless or arrive in Buncombe County while others transition into housing through our homeless support programs. The charts below show these two different sides: the <a className="inText" key="PIT_link" href="https://www.hudexchange.info/programs/hdx/guides/pit-hic/#general-pit-guides-and-tools" target="_blank" title="Annual point-in-time count definition and procedures">annual Point-in-Time (PIT) count</a> is a one-night estimate of homeless persons conducted each January, while the graph of homeless program enrollments shows the average number of people actively receiving housing support in Buncombe County either through emergency shelter, transitional housing, a housing subsidy or permanent supportive housing. View <a className="inText" href="http://www.ncceh.org/pitdata/" target="_blank">state and local PIT counts for NC</a> or view the <a target="_blank" href="https://public.tableau.com/profile/durhamopeningdoors#!/vizhome/PITCount2016EggoWaffleIron/StatePITCountWaffleIron" className="inText">&quot;waffle chart&quot;</a> for nationwide PIT data. 
+          Estimating how many people are homeless is complicated since it is always changing. Each day new people either become homeless or arrive in Buncombe County while others transition into housing through our homeless support programs. The charts below show these two different sides: the <a className="inText" key="PIT_link" href="https://www.hudexchange.info/programs/hdx/guides/pit-hic/#general-pit-guides-and-tools" target="_blank" title="Annual point-in-time count definition and procedures">annual Point-in-Time (PIT) count</a> is a one-night estimate of homeless persons conducted each January, while the graph of homeless program enrollments shows the average number of people actively receiving housing support in Buncombe County either through emergency shelter, transitional housing, a housing subsidy or permanent supportive housing. View <a className="inText" href="http://www.ncceh.org/pitdata/" target="_blank">state and local PIT counts for NC</a> or view the <a target="_blank" href="https://public.tableau.com/profile/durhamopeningdoors#!/vizhome/PITCount2016EggoWaffleIron/StatePITCountWaffleIron" className="inText">&quot;waffle chart&quot;</a> for nationwide PIT data.
         </p>
       </div>
     </div>
     <div className="row">
-      <div className="col-sm-6">
-        <BarChartContainer chartTitle="Point-in-Time counts" layout="vertical" mainAxisDataKey="date" legendHeight={40} dataKeys={props.PITkeys} colorScheme="bright_colors" data={props.PITdata} stacked altText="Bar chart of Point-in-Time counts of people who are homeless" domain={[0, 1500]} />
+      <div className="col-md-6">
+        <BarChart
+          chartTitle="Point-in-Time counts"
+          layout="horizontal"
+          mainAxisDataKey="date"
+          legendHeight={40}
+          dataKeys={props.PITkeys}
+          colorScheme="bright_colors"
+          data={props.PITdata}
+          stacked altText="Bar chart of Point-in-Time counts of people who are homeless"
+          domain={[0, 1500]}
+          xAxisLabel="Count"
+        />
       </div>
-      <div className="col-sm-6">
-        <BarChartContainer chartTitle="Homeless program enrollments" layout="vertical" mainAxisDataKey="Year" legendHeight={40} dataKeys={props.enrollmentKeys} data={props.enrollmentData} stacked altText="Bar chart of average monthly counts of persons enrolled in housing support programs in the City of Asheville and Buncombe County" domain={[0, 'dataMax']} colorScheme="bright_colors_2" />
+      <div className="col-md-6">
+        <BarChart
+          chartTitle="Homeless program enrollments"
+          layout="horizontal"
+          mainAxisDataKey="Year"
+          legendHeight={40}
+          dataKeys={props.enrollmentKeys}
+          data={props.enrollmentData}
+          stacked altText="Bar chart of average monthly counts of persons enrolled in housing support programs in the City of Asheville and Buncombe County"
+          colorScheme="bright_colors_2"
+          xAxisLabel="Count"
+        />
       </div>
     </div>
   </div>

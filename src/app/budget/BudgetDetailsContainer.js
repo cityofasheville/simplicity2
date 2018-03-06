@@ -1,12 +1,13 @@
 import React from 'react';
-import { graphql } from 'react-apollo';
-import { connect } from 'react-redux';
+import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import BudgetDetailsTable from './BudgetDetailsTable';
 import BudgetDetailsTreemap from './BudgetDetailsTreemap';
 import BudgetSummaryDetails from './BudgetSummaryDetails';
 import LoadingAnimation from '../../shared/LoadingAnimation';
-import { buildBudgetTrees } from './budgetActions';
+import Error from '../../shared/Error';
+import { buildTrees } from './budgetUtilities';
+import { updateBudgetTrees } from './graphql/budgetMutations';
 
 const renderSubComponent = (props) => {
   switch (props.location.pathname) { // eslint-disable-line react/prop-types
@@ -19,23 +20,52 @@ const renderSubComponent = (props) => {
   }
 };
 
-const BudgetDetailsContainer = (props) => {
-  if (props.data.loading) { // eslint-disable-line react/prop-types
-    return (
-      <LoadingAnimation message="Loading...Thank you for your patience. The full budget data can take several moments to load"/>
-    );
-  }
-  if (props.data.error) { // eslint-disable-line react/prop-types
-    return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
+class BudgetDetailsContainer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      treesInitialized: false,
+    };
+
+    this.initializeTrees = this.initializeTrees.bind(this);
   }
 
-  props.buildBudgetTrees(props.data.budgetHistory); // eslint-disable-line react/prop-types
-  return (
-    <div>
-      {renderSubComponent(props)}
-    </div>
-  );
-};
+  async initializeTrees() {
+    const trees = buildTrees(this.props.data.budgetHistory);
+    await this.props.updateBudgetTrees({
+      variables: {
+        budgetTrees: {
+          expenseTree: trees.expenseTree,
+          revenueTree: trees.revenueTree,
+          expenseTreeForTreemap: trees.expenseTreeForTreemap,
+          revenueTreeForTreemap: trees.revenueTreeForTreemap,
+        },
+      },
+    });
+    this.setState({ treesInitialized: true });
+  }
+
+  render() {
+    if (this.props.data.loading) { // eslint-disable-line react/prop-types
+      return (
+        <LoadingAnimation message="Loading...Thank you for your patience. The full budget data can take several moments to load" />
+      );
+    }
+    if (this.props.data.error) { // eslint-disable-line react/prop-types
+      return <Error message={this.props.data.error.message} />; // eslint-disable-line react/prop-types
+    }
+
+    if (!this.state.treesInitialized) {
+      this.initializeTrees();
+    }
+
+    return (
+      <div>
+        {renderSubComponent(this.props)}
+      </div>
+    );
+  }
+}
 
 const budgetHistoryQuery = gql`
   query budgetHistoryQuery {
@@ -60,12 +90,7 @@ const budgetHistoryQuery = gql`
   }
 `;
 
-const BudgetDetailsContainerGQL = graphql(budgetHistoryQuery, {})(BudgetDetailsContainer);
-export default connect(
-  null,
-  dispatch => ({
-    buildBudgetTrees: queryData => (
-      dispatch(buildBudgetTrees(queryData))
-    ),
-  }),
-)(BudgetDetailsContainerGQL);
+export default compose(
+  graphql(budgetHistoryQuery, {}),
+  graphql(updateBudgetTrees, { name: 'updateBudgetTrees' }),
+)(BudgetDetailsContainer);

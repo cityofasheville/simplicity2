@@ -1,12 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
+import PropTypes from 'prop-types';
+import { graphql } from 'react-apollo';
 import { RadioGroup, Radio } from 'react-radio-group';
 import Icon from '../../shared/Icon';
 import { IM_ARROW_UP8 } from '../../shared/iconConstants';
 import Treemap from '../../shared/visualization/Treemap';
-// import { updateNodePath } from '../../../containers/budgetActions';
+import { getBudgetTrees } from './graphql/budgetQueries';
+import { refreshLocation } from '../../utilities/generalUtilities';
 
 const getButtonClass = (categoryType, buttonName) => {
   if (
@@ -30,7 +31,7 @@ const goDeeper = (props) => {
       return '';
     }).join('')].join('');
   newURL = [newURL, 'nodePath=', curPath].join('');
-  props.history.push(newURL);
+  props.history.replace(newURL);
 };
 
 const goUp = (props, numLevels) => {
@@ -53,7 +54,7 @@ const goUp = (props, numLevels) => {
     curNodePathInfo = curNodePathInfo.slice(0, curNodePathInfo.length - stepsUp).join('-');
     newURL = [newURL, 'nodePath=', curNodePathInfo].join('');
   }
-  browserHistory.push(newURL);
+  browserHistory.replace(newURL);
 };
 
 const findTop = (data, path) => {
@@ -110,9 +111,12 @@ const renderBreadcrumb = (tree, props) => {
 const BudgetDetailsTreemap = (props) => {
   const myTree = props.location.query.mode === 'expenditures' || props.location.query.mode === undefined ? props.expenseTree : props.revenueTree;
 
-  const refreshLocation = (value) => {
-    browserHistory.push([props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&label=', props.location.query.label, '&mode=', value, '&hideNavbar=', props.location.query.hideNavbar].join(''));
-  };
+  const getNewUrlParams = mode => (
+    {
+      mode,
+      nodePath: 'root',
+    }
+  );
 
   return (
     <div>
@@ -141,7 +145,7 @@ const BudgetDetailsTreemap = (props) => {
             <button className={getButtonClass(props.categoryType, 'department')}>Departments</button>
           </div>
           <div className="radioGroup pull-right" style={{ marginLeft: '10px' }}>
-            <RadioGroup name="treemapRadios" selectedValue={props.location.query.mode || 'expenditures'} onChange={refreshLocation}>
+            <RadioGroup name="treemapRadios" selectedValue={props.location.query.mode || 'expenditures'} onChange={value => refreshLocation(getNewUrlParams(value), props.location)}>
               <label>
                 <Radio value="expenditures" />Expenditures
               </label>
@@ -164,8 +168,6 @@ BudgetDetailsTreemap.propTypes = {
   location: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   diveDeeper: PropTypes.func,
   jumpUp: PropTypes.func,
-  // expensePath: PropTypes.string,
-  // revenuePath: PropTypes.string,
 };
 
 BudgetDetailsTreemap.defaultProps = {
@@ -174,27 +176,11 @@ BudgetDetailsTreemap.defaultProps = {
   revenueTree: { amount: 0, size: 0, name: 'no data', children: [] },
   diveDeeper: goDeeper,
   jumpUp: goUp,
-  // expensePath: 'root',
-  // revenuePath: 'root',
 };
 
-const mapStateToProps = state => (
-  {
-    expenseTree: state.budget.expenseTreeForTreemap,
-    revenueTree: state.budget.revenueTreeForTreemap,
-    // expensePath: state.budget.expensePath,
-    // revenuePath: state.budget.revenuePath,
-  }
-);
-
-// const mapDispatchToProps = dispatch => (
-//   {
-//     diveDeeper: rectangle => (
-//       dispatch(updateNodePath(rectangle))
-//     ),
-//   }
-// );
-
-
-export default connect(mapStateToProps)(BudgetDetailsTreemap);
-
+export default graphql(getBudgetTrees, {
+  props: ({ data: { budgetTrees } }) => ({
+    expenseTree: budgetTrees.expenseTreeForTreemap,
+    revenueTree: budgetTrees.revenueTreeForTreemap,
+  }),
+})(BudgetDetailsTreemap);

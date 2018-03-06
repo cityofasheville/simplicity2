@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactTable from 'react-table';
-import { browserHistory } from 'react-router';
 import L from 'leaflet';
 import { graphql } from 'react-apollo';
 import moment from 'moment';
 import gql from 'graphql-tag';
 import LoadingAnimation from '../../shared/LoadingAnimation';
+import Error from '../../shared/Error';
 import PieChart from '../../shared/visualization/PieChart';
 import Map from '../../shared/visualization/Map';
 import DevelopmentTable from './DevelopmentTable';
@@ -14,6 +14,7 @@ import EmailDownload from '../../shared/EmailDownload';
 import ButtonGroup from '../../shared/ButtonGroup';
 import Button from '../../shared/Button';
 import { getBoundsFromPolygonData, combinePolygonsFromNeighborhoodList } from '../../utilities/mapUtilities';
+import { refreshLocation } from '../../utilities/generalUtilities';
 
 const getMarker = (type) => {
   switch (type) {
@@ -72,12 +73,12 @@ const convertToPieData = (permitData) => {
   return pieData;
 };
 
-const DevelopmentByNeighborhood = props => {
+const DevelopmentByNeighborhood = (props) => {
   if (props.data.loading) { // eslint-disable-line react/prop-types
     return <LoadingAnimation />;
   }
   if (props.data.error) { // eslint-disable-line react/prop-types
-    return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
+    return <Error message={props.data.error.message} />; // eslint-disable-line react/prop-types
   }
 
   const pieData = convertToPieData(props.data.permits_by_neighborhood);
@@ -89,9 +90,11 @@ const DevelopmentByNeighborhood = props => {
   }) } })
   ));
 
-  const refreshLocation = (view) => {
-    browserHistory.push([props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&label=', props.location.query.label, '&within=', document.getElementById('extent').value, '&during=', document.getElementById('time').value, '&hideNavbar=', props.location.query.hideNavbar, '&search=', props.location.query.search, '&view=', view, '&x=', props.location.query.x, '&y=', props.location.query.y].join(''));
-  };
+  const getNewUrlParams = view => (
+    {
+      view,
+    }
+  );
 
   return (
     <div>
@@ -101,9 +104,9 @@ const DevelopmentByNeighborhood = props => {
             <EmailDownload downloadData={props.data.permits_by_neighborhood} fileName="permits_by_neighborhood.csv" />
           </div>
           <ButtonGroup>
-            <Button onClick={() => refreshLocation('map')} active={props.location.query.view === 'map'} positionInGroup="left">Map view</Button>
-            <Button onClick={() => refreshLocation('list')} active={props.location.query.view === 'list'} positionInGroup="middle">List view</Button>
-            <Button onClick={() => refreshLocation('summary')} positionInGroup="right" active={props.location.query.view === 'summary'}>Chart</Button>
+            <Button onClick={() => refreshLocation(getNewUrlParams('map'), props.location)} active={props.location.query.view === 'map'} positionInGroup="left">Map view</Button>
+            <Button onClick={() => refreshLocation(getNewUrlParams('list'), props.location)} active={props.location.query.view === 'list'} positionInGroup="middle">List view</Button>
+            <Button onClick={() => refreshLocation(getNewUrlParams('summary'), props.location)} positionInGroup="right" active={props.location.query.view === 'summary'}>Chart</Button>
           </ButtonGroup>
         </div>
       </div>
@@ -195,7 +198,7 @@ const getPermitsQuery = gql`
 const DevelopmentByNeighborhoodGQL = graphql(getPermitsQuery, {
   options: ownProps => ({
     variables: {
-      nbrhd_ids: [ownProps.location.query.id],
+      nbrhd_ids: [ownProps.location.query.id.trim()],
       before: ownProps.before,
       after: ownProps.after,
     },

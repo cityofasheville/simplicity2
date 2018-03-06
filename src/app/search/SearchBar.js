@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import Icon from '../../shared/Icon';
 import { IM_SEARCH } from '../../shared/iconConstants';
 import SearchByEntities from './searchByEntities/SearchByEntities';
@@ -12,10 +11,10 @@ const getEntities = (selected) => {
     entityTypes = selected.split(',');
   }
   const entities = [
-    { label: 'Neighborhoods', type: 'neighborhood', checked: true },
-    { label: 'Streets', type: 'street', checked: true },
     { label: 'Addresses', type: 'address', checked: true },
     { label: 'Properties', type: 'property', checked: true },
+    { label: 'Neighborhoods', type: 'neighborhood', checked: true },
+    { label: 'Streets', type: 'street', checked: true },
     { label: 'Owners', type: 'owner', checked: true },
     { label: 'Google places', type: 'google', checked: true },
   ];
@@ -81,10 +80,10 @@ class SearchBar extends React.Component {
 
 SearchBar.defaultProps = {
   entities: [
-    { label: 'Neighborhoods', type: 'neighborhood', checked: true },
-    { label: 'Streets', type: 'street', checked: true },
     { label: 'Addresses', type: 'address', checked: true },
     { label: 'Properties', type: 'property', checked: true },
+    { label: 'Neighborhoods', type: 'neighborhood', checked: true },
+    { label: 'Streets', type: 'street', checked: true },
     { label: 'Owners', type: 'owner', checked: true },
     { label: 'Google places', type: 'google', checked: true },
   ],

@@ -1,29 +1,57 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { graphql } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
-import { connect } from 'react-redux';
+// import { connect } from 'react-redux';
 import BudgetSummaryBarChart from './BudgetSummaryBarChart';
 import LoadingAnimation from '../../shared/LoadingAnimation';
-import { buildSummaryUseData } from './budgetActions';
+import Error from '../../shared/Error';
+import { updateBudgetSummaryUse } from './graphql/budgetMutations';
+import { getBudgetSummaryUse } from './graphql/budgetQueries';
+import { buildSummaryData } from './budgetUtilities';
 
-const SummaryUse = (props) => {
-  if (props.data.loading) { // eslint-disable-line react/prop-types
-    return <LoadingAnimation size="small" />;
-  }
-  if (props.data.error) { // eslint-disable-line react/prop-types
-    return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
+class SummaryUse extends React.Component {
+  constructor(props) {
+    super(props);
+    this.initializeSummaryUse = this.initializeSummaryUse.bind(this);
   }
 
-  props.buildSummaryUseData(props.data.budgetSummary); // eslint-disable-line react/prop-types
-  return (
-    <div className="row">
-      <div className="col-sm-12">
-        <BudgetSummaryBarChart categoryType="use" {...props} />
+  async initializeSummaryUse() {
+    // if (this.props.summaryUseData.dataKeys !== null) {
+    //   return;
+    // }
+    const summaryUseData = buildSummaryData(this.props.data.budgetSummary);
+    await this.props.updateBudgetSummaryUse({
+      variables: {
+        budgetSummaryUse: {
+          dataKeys: summaryUseData.dataKeys,
+          dataValues: summaryUseData.dataValues,
+        },
+      },
+    });
+  }
+
+  render() {
+    if (this.props.data.loading) { // eslint-disable-line react/prop-types
+      return <LoadingAnimation size="small" />;
+    }
+    if (this.props.data.error) { // eslint-disable-line react/prop-types
+      return <Error message={this.props.data.error.message} />; // eslint-disable-line react/prop-types
+    }
+
+    if (this.props.summaryUseData.dataKeys === null) {
+      this.initializeSummaryUse();
+    }
+
+    return (
+      <div className="row">
+        <div className="col-sm-12">
+          <BudgetSummaryBarChart categoryType="use" {...this.props} />
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 SummaryUse.propTypes = {
   data: PropTypes.object, // eslint-disable-line react/forbid-prop-types
@@ -45,12 +73,12 @@ const budgetSummaryUseQuery = gql`
   }
 `;
 
-const SummaryUseGQL = graphql(budgetSummaryUseQuery, {})(SummaryUse);
-export default connect(
-  null,
-  dispatch => ({
-    buildSummaryUseData: queryData => (
-      dispatch(buildSummaryUseData(queryData))
-    ),
+export default compose(
+  graphql(budgetSummaryUseQuery, {}),
+  graphql(getBudgetSummaryUse, {
+    props: ({ data: { budgetSummaryUse } }) => ({
+      summaryUseData: budgetSummaryUse,
+    }),
   }),
-)(SummaryUseGQL);
+  graphql(updateBudgetSummaryUse, { name: 'updateBudgetSummaryUse' }),
+)(SummaryUse);

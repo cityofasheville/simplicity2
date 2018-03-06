@@ -8,6 +8,7 @@ import { getFundsAllocatedAndExpended, filterProjects, longCategories } from './
 import Icon from '../../shared/Icon';
 import { IM_SHIELD3, IM_TREE, IM_HOME2, IM_BUS, LI_BOLD } from '../../shared/iconConstants';
 import LoadingAnimation from '../../shared/LoadingAnimation';
+import Error from '../../shared/Error';
 
 const getBondText = (type) => {
   switch (type) {
@@ -26,17 +27,17 @@ const getIcon = (type, bond) => {
   switch (type) {
     case 'Transportation':
       if (bond) {
-        return <span><Icon path={IM_BUS} size={25} color="#4077a5" /><Icon path={LI_BOLD} size={16} color="#4077a5" viewBox="0 0 24 24" /></span>
+        return <span><Icon path={IM_BUS} size={25} color="#4077a5" /><Icon path={LI_BOLD} size={16} color="#4077a5" viewBox="0 0 24 24" /></span>;
       }
       return <Icon path={IM_BUS} size={25} color="#4077a5" />;
     case 'Parks':
       if (bond) {
-        return <span><Icon path={IM_TREE} size={25} color="#4077a5" /><Icon path={LI_BOLD} size={16} color="#4077a5" viewBox="0 0 24 24" /></span>
+        return <span><Icon path={IM_TREE} size={25} color="#4077a5" /><Icon path={LI_BOLD} size={16} color="#4077a5" viewBox="0 0 24 24" /></span>;
       }
       return <Icon path={IM_TREE} size={25} color="#4077a5" />;
     case 'Housing':
       if (bond) {
-        return <span><Icon path={IM_HOME2} size={25} color="#4077a5" /><Icon path={LI_BOLD} size={16} color="#4077a5" viewBox="0 0 24 24" /></span>
+        return <span><Icon path={IM_HOME2} size={25} color="#4077a5" /><Icon path={LI_BOLD} size={16} color="#4077a5" viewBox="0 0 24 24" /></span>;
       }
       return <Icon path={IM_HOME2} size={25} color="#4077a5" />;
     case 'Public Safety':
@@ -48,7 +49,7 @@ const getIcon = (type, bond) => {
   }
 };
 
-const getKeyText = (categories, mode) => (
+const getKeyText = categories => (
   <div>
     <p>
       <span>
@@ -88,7 +89,7 @@ const CategoryDetails = (props) => {
     return <LoadingAnimation />;
   }
   if (props.data.error) { // eslint-disable-line react/prop-types
-    return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
+    return <Error message={props.data.error.message} />; // eslint-disable-line react/prop-types
   }
 
   let actualCategories = Array.from(props.categories);
@@ -99,17 +100,6 @@ const CategoryDetails = (props) => {
   actualCategories.sort((a, b) => sortedCats.indexOf(a) > sortedCats.indexOf(b));
   const filteredProjects = filterProjects(props.data.cip_projects, actualCategories, props.location.query.mode);
   const fundingDetails = getFundsAllocatedAndExpended(filteredProjects, actualCategories, props.location.query.mode);
-
-  const getTitle = () => {
-    let title = '';
-    for (let category of actualCategories) {
-      title = [title, ' ', category, ','].join('');
-    }
-    if (title.endsWith(',')) {
-      title = title.slice(0, -1);
-    }
-    return title;
-  };
 
   return (
     <div>

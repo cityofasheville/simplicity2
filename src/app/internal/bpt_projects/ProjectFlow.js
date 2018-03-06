@@ -10,7 +10,9 @@ import Button from '../../../shared/Button';
 import { query } from './ProjectFlowQueries';
 import ProjectFlowTable from './ProjectFlowTable';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
+import Error from '../../../shared/Error';
 import { IM_OFFICE } from '../../../shared/iconConstants';
+import { refreshLocation } from '../../../utilities/generalUtilities';
 
 const getIcon = (type) => {
   switch (type) {
@@ -57,7 +59,7 @@ const ProjectFlowDashboard = (props) => {
     return <LoadingAnimation />;
   }
   if (props.data.error) { // eslint-disable-line react/prop-types
-    return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
+    return <Error message={props.data.error.message} />; // eslint-disable-line react/prop-types
   }
   let open = props.data.projects.filter(itm => (itm.CurrentStatus === 'Open'));
   let inProgress = props.data.projects.filter(itm => (itm.CurrentStatus === 'In Progress'));
@@ -65,9 +67,11 @@ const ProjectFlowDashboard = (props) => {
     itm.CurrentStatus !== 'In Progress' && itm.CurrentStatus !== 'Open'
   ));
 
-  const refreshLocation = (value) => {
-    browserHistory.push([props.location.pathname, '?view=', value].join(''));
-  };
+  const getNewUrlParams = view => (
+    {
+      view,
+    }
+  );
 
   return (
     <div>
@@ -102,7 +106,7 @@ const ProjectFlowDashboard = (props) => {
                 <div className="row" key={`projects-${idx}`}>
                   <h1 style={{ marginTop: '40px' }}>{displayName}
                     <div className="radioGroup pull-right" style={{ marginBottom: '3px' }}>
-                      <RadioGroup name={['viewRadio', `projects-${idx}`].join('_')} selectedValue={props.location.query.view || 'kanban'} onChange={refreshLocation} style={{ fontSize: '16px', marginTop: '15px', color: 'black' }}>
+                      <RadioGroup name={['viewRadio', `projects-${idx}`].join('_')} selectedValue={props.location.query.view || 'kanban'} onChange={(value) => refreshLocation(getNewUrlParams(value), props.location)} style={{ fontSize: '16px', marginTop: '15px', color: 'black' }}>
                         <label>
                           <Radio value="kanban" />kanban
                         </label>

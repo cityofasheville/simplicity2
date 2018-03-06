@@ -66,8 +66,8 @@ const getIcon = (type, isExpanded) => {
 };
 
 
-const CrimeTable = props => {
-  const urlString = [props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&label=', props.location.query.label, '&within=', document.getElementById('extent').value, '&during=', document.getElementById('time').value, '&hideNavbar=', props.location.query.hideNavbar, '&search=', props.location.query.search, '&view=map', '&x=', props.location.query.x, '&y=', props.location.query.y].join('');
+const CrimeTable = (props) => {
+  const urlString = [props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&entities=', props.location.query.entities, '&label=', props.location.query.label, '&within=', document.getElementById('extent').value, '&during=', document.getElementById('time').value, '&hideNavbar=', props.location.query.hideNavbar, '&search=', props.location.query.search, '&view=map', '&x=', props.location.query.x, '&y=', props.location.query.y].join('');
 
   const dataColumns = [
     {
@@ -111,8 +111,6 @@ const CrimeTable = props => {
       Header: 'Location',
       accessor: 'address',
       minWidth: 200,
-      //headerClassName: 'hidden-sm hidden-xs',
-      //className: 'hidden-sm hidden-xs',
       Cell: row => (
         <span>
           <span> <a title="Click to crime in map" href={[urlString, '&zoomToPoint=', [row.original.y, row.original.x].join(',')].join('')}><Icon path={IM_MAP5} size={23} /></a></span>

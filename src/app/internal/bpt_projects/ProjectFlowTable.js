@@ -79,7 +79,7 @@ const dataColumns = [
         placeholder="Search..."
       />
     ),
-  },  
+  },
   {
     Header: 'Priority',
     accessor: 'Priority',

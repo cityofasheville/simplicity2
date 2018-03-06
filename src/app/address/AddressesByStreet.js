@@ -7,6 +7,7 @@ import Map from '../../shared/visualization/Map';
 import EmailDownload from '../../shared/EmailDownload';
 import { getBoundsFromStreetData, convertStreetLinesToLatLngArrays } from '../../utilities/mapUtilities';
 import LoadingAnimation from '../../shared/LoadingAnimation';
+import Error from '../../shared/Error';
 
 const dataColumns = [
   {
@@ -56,12 +57,12 @@ const dataColumns = [
   },
 ];
 
-const AddressesByStreet = props => {
+const AddressesByStreet = (props) => {
   if (props.data.loading) { // eslint-disable-line react/prop-types
     return <LoadingAnimation />;
   }
   if (props.data.error) { // eslint-disable-line react/prop-types
-    return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
+    return <Error message={props.data.error.message} />; // eslint-disable-line react/prop-types
   }
 
   const mapData = props.data.addresses_by_street.map(item => (Object.assign({}, item, { popup: `<b>Address</b><div>${item.street_number} ${item.street_prefix} ${item.street_name} ${item.unit || ''}</div><div>${item.city}, NC ${item.zipcode}</div><br /><b>Owner</b><div>${item.owner_name}</div><div>${item.owner_address}</div><div>${item.owner_cityname}, ${item.owner_state} ${item.owner_zipcode}</div>` })
@@ -153,7 +154,7 @@ const getAddressesAndStreetInfoQuery = gql`
 const AddressesByStreetGQL = graphql(getAddressesAndStreetInfoQuery, {
   options: ownProps => ({
     variables: {
-      centerline_ids: ownProps.location.query.id.split(','),
+      centerline_ids: ownProps.location.query.id.trim().split(','),
     },
   }),
 })(AddressesByStreet);

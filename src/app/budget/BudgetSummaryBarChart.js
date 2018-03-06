@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { graphql, compose } from 'react-apollo';
 import BarChart from '../../shared/visualization/BarChart';
+import { getBudgetSummaryDept, getBudgetSummaryUse } from './graphql/budgetQueries';
 
 const getDollars = (value) => {
   if (Math.abs(value) > 1000000) {
@@ -12,16 +13,17 @@ const getDollars = (value) => {
   return [value < 0 ? '-$' : '$', Math.abs(value).toFixed(0).toLocaleString()].join('');
 };
 
-const getDollarsLong = value => (
-  [value < 0 ? '-$' : '$', Math.abs(value).toLocaleString()].join('')
-);
+const getDollarsLong = value => {
+  if (!value || value === 0) {return '$0'}
+  return [value < 0 ? '-$' : '$', Math.abs(value).toLocaleString()].join('')
+}
 
 const getTitle = (categoryType) => {
   switch (categoryType) {
     case 'use':
-      return 'by use';
+      return 'Spending By Use';
     case 'department':
-      return 'by department';
+      return 'Spending By Department';
     default:
       return '';
   }
@@ -45,7 +47,10 @@ const getLongDesc = data => (
 class BudgetSummaryBarChart extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { showingLongDesc: this.showLongDesc };
+    this.state = {
+      showingLongDesc: this.showLongDesc,
+      summaryData: props.categoryType === 'use' ? props.summaryUseData : props.summaryDeptData,
+    };
   }
 
   toggleLongDesc() {
@@ -54,28 +59,50 @@ class BudgetSummaryBarChart extends React.Component {
     });
   }
 
+
   render() {
     return (
       <div>
         <div className="row">
-          <div className="col-xs-9 col-xs-offset-2">
-            <h4 className="text-center">Spending {getTitle(this.props.categoryType)}</h4>
-          </div>
-        </div>
-        <div className="row">
           <div className="col-sm-12">
-            <BarChart data={this.props.summaryData.dataValues} legendHeight={115} referenceArea mainAxisDataKey="display_year" mainReferenceAxisDataKey="yearAxisNumeric" referenceAreaLabels={[['Actual', 'Spent'], ['Adopted', 'Budget'], ['Proposed', 'Budget']]} referenceAreaExes={[500, 750, 1000]} barDataKeys={this.props.summaryData.dataKeys} secondaryTickFormatter={getDollars} stacked toolTipFormatter={getDollarsLong} colorScheme={this.props.colorScheme} domain={['dataMin', 'dataMax + 50000000']} altText={['Spending by', this.props.categoryType, 'bar chart'].join(' ')} />
-          </div>
-          <span className="pull-right" style={{ fontSize: '12px' }}>Barchart totals exclude interfund transfers</span>
-        </div>
-        <div className="row">
-          <div className="col-xs-10 col-xs-offset-2">
-            <a href="javascript:void(0);" className="text-center inText" onClick={() => this.toggleLongDesc()}>
-              {this.state.showingLongDesc ? 'Hide' : 'Show'} spending {getTitle(this.props.categoryType)} bar chart summary
-            </a>
-            <div hidden={!this.state.showingLongDesc}>
-              {getLongDesc(this.props.summaryData)}
-            </div>
+            <BarChart
+              annotations={[
+                {
+                  type: 'or',
+                  display_year: '2014-15',
+                  label: 'Actual Spent',
+                  budgetAnnotation: true,
+                },
+                {
+                  type: 'or',
+                  display_year: '2015-16',
+                  label: 'Actual Spent',
+                  budgetAnnotation: true,
+                },
+                {
+                  type: 'or',
+                  display_year: '2016-17',
+                  label: 'Adopted',
+                  budgetAnnotation: true,
+                },
+                {
+                  type: 'or',
+                  display_year: '2017-18',
+                  label: 'Proposed',
+                  budgetAnnotation: true,
+                },
+              ]}
+              data={this.state.summaryData.dataValues}
+              colorScheme={this.props.colorScheme}
+              mainAxisDataKey="display_year"
+              dataKeys={this.state.summaryData.dataKeys}
+              yAxisTickFormatter={getDollars}
+              tooltipYValFormatter={getDollarsLong}
+              domain={[0, 190000000]}
+              legendLabelFormatter={function(label) {return label.replace(' Department', '')}}
+              altText={['Spending by', this.props.categoryType, 'bar chart'].join(' ')}
+              chartTitle={getTitle(this.props.categoryType)}
+            />
           </div>
         </div>
       </div>
@@ -86,7 +113,7 @@ class BudgetSummaryBarChart extends React.Component {
 BudgetSummaryBarChart.propTypes = {
   categoryType: PropTypes.string,
   colorScheme: PropTypes.string,
-  summaryData: PropTypes.object, // eslint-disable-line
+  budgetSummary: PropTypes.object, // eslint-disable-line
   showLongDesc: PropTypes.bool, // eslint-disable-line
 };
 
@@ -96,11 +123,16 @@ BudgetSummaryBarChart.defaultProps = {
   showLongDesc: false,
 };
 
-const mapStateToProps = (state, ownProps) => (
-  {
-    summaryData: ownProps.categoryType === 'use' ? state.budget.summaryUseData : state.budget.summaryDeptData,
-  }
-);
-
-export default connect(mapStateToProps)(BudgetSummaryBarChart);
-
+//not that efficient...
+export default compose(
+  graphql(getBudgetSummaryDept, {
+    props: ({ data: { budgetSummaryDept } }) => ({
+      summaryDeptData: budgetSummaryDept,
+    }),
+  }),
+  graphql(getBudgetSummaryUse, {
+    props: ({ data: { budgetSummaryUse } }) => ({
+      summaryUseData: budgetSummaryUse,
+    }),
+  }),
+)(BudgetSummaryBarChart);

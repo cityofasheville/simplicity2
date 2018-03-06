@@ -1,97 +1,100 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ResponsiveContainer, PieChart as RechartsPieChart, Pie, Tooltip, Legend, Cell } from 'recharts';
+import { ResponsiveOrdinalFrame } from 'semiotic';
 import { colorSchemes } from './colorSchemes';
-import styles from './pieChartStyles.css';
+import HorizontalLegend from './HorizontalLegend';
+import Tooltip from './Tooltip';
 
-const renderTitle = (title) => {
-  if (title === undefined) {
-    return '';
+
+class PieChart extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      hover: null,
+    };
   }
-  return (<h3>{title}</h3>);
-};
 
-const PieChart = props => {
-  const renderLegend = payload => (
-    <ul style={{ marginBottom: '30px' }}>
-      {
-        payload.map((entry, index) => (
-          <li key={[entry.name, index].join('_')}><div style={{ backgroundColor: colorSchemes[props.colorScheme][index % colorSchemes[props.colorScheme].length], width: '15px', height: '15px', display: 'inline-block', marginRight: '5px' }}></div>{entry.name}: {entry.value}</li>
-        ))
-      }
-    </ul>
-  );
+  render() {
+    const thisData = this.props.data.map((d, i) => ({
+      label: d.name,
+      magnitude: d.value,
+      color: colorSchemes[this.props.colorScheme][i % colorSchemes[this.props.colorScheme].length],
+    }));
 
-  return (
-    <div style={{ height: props.height }} alt={props.altText}>
-      {renderTitle(props.chartTitle)}
-      <ResponsiveContainer>
-        <RechartsPieChart>
-          <Pie
-            data={props.data}
-            cx={props.cx}
-            cy={props.cy}
-            startAngle={props.startAngle}
-            endAngle={props.endAngle}
-            paddingAngle={props.paddingAngle}
-            label={props.label}
-            outerRadius={props.outerRadius}
-            fill={'#9C27B0'}
-            innerRadius={props.doughnut ? 40 : props.innerRadius}
-            isAnimationActive={false}
+    return (
+      <div
+        className="ordinal-pie-elements"
+        role="img"
+        tabIndex={0}
+        alt={this.props.altText}
+      >
+        {HorizontalLegend(thisData, d => d, { width: '65%', margin: '0 auto', paddingBottom: '10px' })}
+        <div
+          className="pie-container"
+        >
+          <div
+            style={{ height: this.props.height, width: this.props.height, margin: '0 auto' }}
           >
-            {props.data.map((entry, index) => <Cell key={['cell', index].join('_')} fill={colorSchemes[props.colorScheme][index % colorSchemes[props.colorScheme].length]} />)}
-          </Pie>
-          <Tooltip formatter={props.toolTipFormatter} />
-          {props.defaultLegend &&
-            <Legend legentType="square" />
-          }
-          {!props.defaultLegend &&
-            <Legend verticalAlign={'bottom'} content={props.defaultLegend ? null : renderLegend(props.data)} className={styles.pieLegend} />
-          }
-        </RechartsPieChart>
-      </ResponsiveContainer>
-    </div>
-  );
-};
+            <ResponsiveOrdinalFrame
+              data={thisData}
+              dynamicColumnWidth="magnitude"
+              hoverAnnotation
+              margin={20}
+              oAccessor="label"
+              projection="radial"
+              title={this.props.chartTitle}
+              customHoverBehavior={(d) => {
+                d && d.pieces ?
+                this.setState({ hover: d.pieces[0].data.label }) :
+                this.setState({ hover: null });
+              }}
+              size={[this.props.height - 20, this.props.height - 20]}
+              style={d => ({
+                position: 'absolute',
+                fill: d.color,
+                stroke: 'white',
+                strokeWidth: 2.5,
+                fillOpacity: d.label === this.state.hover ? '1' : '0.95',
+              })}
+              tooltipContent={(d) => {
+                const textLine = [{
+                  text: `${d.column.name}: ${d.pieces[0].magnitude}`,
+                  color: d.pieces[0].color,
+                }];
+                return Tooltip(textLine, '', { fontWeight: 'bolder' });
+              }}
+              type={{
+                type: 'bar',
+                innerRadius: this.props.doughnut ? 40 : this.props.innerRadius,
+              }}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
 
 PieChart.propTypes = {
   chartTitle: PropTypes.string,
   data: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
   height: PropTypes.number,
-  label: PropTypes.bool,
-  defaultLegend: PropTypes.bool,
   altText: PropTypes.string,
   doughnut: PropTypes.bool,
-  defaultLegend: PropTypes.bool,
   colorScheme: PropTypes.string,
-  startAngle: PropTypes.number,
-  endAngle: PropTypes.number,
-  paddingAngle: PropTypes.number,
   innerRadius: PropTypes.number,
-  outerRadius: PropTypes.number,
-  cx: PropTypes.string,
-  cy: PropTypes.string,
   toolTipFormatter: PropTypes.func,
 };
 
 PieChart.defaultProps = {
   data: [],
   height: 400,
-  label: true,
   defaultLegend: false,
   altText: 'Pie chart',
   doughnut: false,
-  defaultLegend: false,
   colorScheme: 'bright_colors',
-  startAngle: 0,
-  endAngle: 360,
-  paddingAngle: 0,
   innerRadius: 0,
-  outerRadius: 100,
-  cx: '50%',
-  cy: '40%',
-  toolTipFormatter: null,
+  toolTipFormatter: d => d,
 };
 
 export default PieChart;

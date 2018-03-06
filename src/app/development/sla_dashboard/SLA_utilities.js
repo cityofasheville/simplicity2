@@ -1,11 +1,11 @@
-export const getTasks = () => {
-  return [
+export const getTasks = () => (
+  [
     'Addressing',
     'Building Review',
     'Fire Review',
     'Zoning Review',
   ]
-};
+);
 
 export const getAverageCounts = (slaData) => {
   const formattedData = {};

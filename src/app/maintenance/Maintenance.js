@@ -1,5 +1,4 @@
 import React from 'react';
-import { browserHistory } from 'react-router';
 import MaintenanceByStreet from './MaintenanceByStreet';
 import ButtonGroup from '../../shared/ButtonGroup';
 import Button from '../../shared/Button';
@@ -7,10 +6,7 @@ import LinkButton from '../../shared/LinkButton';
 import PageHeader from '../../shared/PageHeader';
 import Icon from '../../shared/Icon';
 import { IM_TRAFFIC_CONE } from '../../shared/iconConstants';
-
-const testFunc = (props) => {
-  console.log(props);
-};
+import { refreshLocation } from '../../utilities/generalUtilities';
 
 const getSubtitle = (entity) => {
   switch (entity) {
@@ -21,10 +17,12 @@ const getSubtitle = (entity) => {
   }
 };
 
-const Maintenance = props => {
-  const refreshLocation = (view) => {
-    browserHistory.push([props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&label=', props.location.query.label, '&search=', props.location.query.search, '&hideNavbar=', props.location.query.hideNavbar, '&view=', view].join(''));
-  };
+const Maintenance = (props) => {
+  const getNewUrlParams = view => (
+    {
+      view,
+    }
+  );
 
   return (
     <div>
@@ -36,8 +34,8 @@ const Maintenance = props => {
       <div className="row">
         <div className="col-sm-12">
           <ButtonGroup>
-            <Button onClick={() => refreshLocation('map')} active={props.location.query.view === 'map'} positionInGroup="left">Map view</Button>
-            <Button onClick={() => refreshLocation('list')} active={props.location.query.view !== 'map'} positionInGroup="right">List view</Button>
+            <Button onClick={() => refreshLocation(getNewUrlParams('map'), props.location)} active={props.location.query.view !== 'list'} positionInGroup="left">Map view</Button>
+            <Button onClick={() => refreshLocation(getNewUrlParams('list'), props.location)} active={props.location.query.view === 'list'} positionInGroup="right">List view</Button>
           </ButtonGroup>
         </div>
       </div>

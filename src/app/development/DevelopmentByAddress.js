@@ -1,17 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import L from 'leaflet';
-import { browserHistory } from 'react-router';
 import { graphql } from 'react-apollo';
 import moment from 'moment';
 import gql from 'graphql-tag';
 import Map from '../../shared/visualization/Map';
 import LoadingAnimation from '../../shared/LoadingAnimation';
+import Error from '../../shared/Error';
 import PieChart from '../../shared/visualization/PieChart';
 import DevelopmentTable from '../development/DevelopmentTable';
 import EmailDownload from '../../shared/EmailDownload';
 import ButtonGroup from '../../shared/ButtonGroup';
 import Button from '../../shared/Button';
+import { refreshLocation } from '../../utilities/generalUtilities';
 
 const getMarker = (type) => {
   switch (type) {
@@ -71,24 +72,12 @@ const convertToPieData = (permitData) => {
   return pieData;
 };
 
-const testPieDevelopmentData = [
-  { name: 'Planning Level I', value: 12345 },
-  { name: 'Planning Level II', value: 1000 },
-  { name: 'Planning Level III', value: 15000 },
-];
-
-const testPermitData = [
-  { PermitName: 'A permit name something', PermitType: 'Residential', PermitSubType: 'Permit subtype', AppliedDate: '01/01/2001', PermitNum: '1234567879', PermitCategory: 'Planning Level I', Address: '12 Main Street, Apt 4, 20001', PermitGroup: 'Residential', UpdatedDate: '02/02/2001', CurrentStatus: 'Issued', LicenseNumber: '1234A-123', Contractor: 'Bob Jones' },
-  { PermitName: 'My permit name', PermitType: 'Commercial', PermitSubType: 'Permit subtype', AppliedDate: '01/01/2001', PermitNum: '1234567879', PermitCategory: 'Planning Level II', Address: '12 Main Street, 28804', PermitGroup: 'Commercial', UpdatedDate: '02/02/2001', CurrentStatus: 'Issued', LicenseNumber: '1234A-123', Contractor: 'Bob Jones' },
-  { PermitName: 'Riverridge condos', PermitType: 'Residential', PermitSubType: 'Permit subtype', AppliedDate: '01/01/2001', PermitNum: '1234567879', PermitCategory: 'permit category', Address: '12 Main Street, 23456', PermitGroup: 'Residential', UpdatedDate: '02/02/2001', CurrentStatus: 'Issued', LicenseNumber: '1234A-123', Contractor: 'Bob Jones' },
-];
-
 const DevelopmentByAddress = props => {
   if (props.data.loading) { // eslint-disable-line react/prop-types
     return <LoadingAnimation />;
   }
   if (props.data.error) { // eslint-disable-line react/prop-types
-    return <p>{props.data.error.message}</p>; // eslint-disable-line react/prop-types
+    return <Error message={props.data.error.message} />; // eslint-disable-line react/prop-types
   }
 
   const mapData = props.data.permits_by_address.map(item => (Object.assign({}, item, { popup: `<div><b>${item.permit_type}</b><p>${moment.utc(item.applied_date).format('M/DD/YYYY')}</p><p><b>Applicant</b>:<div>${item.applicant_name}</div></p><p><b>Contractor(s):</b> ${item.contractor_names.map((contractor, index) => `<div>${contractor}: ${item.contractor_license_numbers[index]}</div>`).join('')}</p></div>`, options: { icon: L.icon({
@@ -99,9 +88,11 @@ const DevelopmentByAddress = props => {
   }) } })
   ));
 
-  const refreshLocation = (view) => {
-    browserHistory.push([props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&label=', props.location.query.label, '&within=', document.getElementById('extent').value, '&during=', document.getElementById('time').value, '&hideNavbar=', props.location.query.hideNavbar, '&search=', props.location.query.search, '&view=', view, '&x=', props.location.query.x, '&y=', props.location.query.y].join(''));
-  };
+  const getNewUrlParams = view => (
+    {
+      view,
+    }
+  );
 
   return (
     <div>
@@ -111,9 +102,9 @@ const DevelopmentByAddress = props => {
             <EmailDownload downloadData={props.data.permits_by_address} fileName="permits_by_address.csv" />
           </div>
           <ButtonGroup>
-            <Button onClick={() => refreshLocation('map')} active={props.location.query.view === 'map'} positionInGroup="left">Map view</Button>
-            <Button onClick={() => refreshLocation('list')} active={props.location.query.view === 'list'} positionInGroup="middle">List view</Button>
-            <Button onClick={() => refreshLocation('summary')} positionInGroup="right" active={props.location.query.view === 'summary'}>Chart</Button>
+            <Button onClick={() => refreshLocation(getNewUrlParams('map'), props.location)} active={props.location.query.view === 'map'} positionInGroup="left">Map view</Button>
+            <Button onClick={() => refreshLocation(getNewUrlParams('list'), props.location)} active={props.location.query.view === 'list'} positionInGroup="middle">List view</Button>
+            <Button onClick={() => refreshLocation(getNewUrlParams('summary'), props.location)} positionInGroup="right" active={props.location.query.view === 'summary'}>Chart</Button>
           </ButtonGroup>
         </div>
       </div>
@@ -192,7 +183,7 @@ const getPermitsQuery = gql`
 const DevelopmentByAddressGQL = graphql(getPermitsQuery, {
   options: ownProps => ({
     variables: {
-      civicaddress_id: ownProps.location.query.id,
+      civicaddress_id: ownProps.location.query.id.trim(),
       radius: ownProps.radius,
       before: ownProps.before,
       after: ownProps.after,

@@ -1,9 +1,9 @@
 import React from 'react';
-import { browserHistory } from 'react-router';
 import ReactTable from 'react-table';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import LoadingAnimation from '../../shared/LoadingAnimation';
+import Error from '../../shared/Error';
 import Property from '../property/Property';
 import PageHeader from '../../shared/PageHeader';
 import ButtonGroup from '../../shared/ButtonGroup';
@@ -14,10 +14,7 @@ import Icon from '../../shared/Icon';
 import { IM_USER } from '../../shared/iconConstants';
 import { getBoundsFromPropertyList, combinePolygonsFromPropertyList } from '../../utilities/mapUtilities';
 import Map from '../../shared/visualization/Map';
-
-const testFunc = (props) => {
-  console.log(props);
-};
+import { refreshLocation } from '../../utilities/generalUtilities';
 
 const dataColumns = [
   {
@@ -71,14 +68,16 @@ const Owner = props => {
     return <LoadingAnimation />;
   }
   if (props.data.error) {
-    return <p>{props.data.error.message}</p>;
+    return <Error message={props.data.error.message} />;
   }
 
-  const refreshLocation = (view) => {
-    browserHistory.push([props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&label=', props.location.query.label, '&hideNavbar=', props.location.query.hideNavbar, '&search=', props.location.query.search, '&view=', view].join(''));
-  };
+  const getNewUrlParams = view => (
+    {
+      view,
+    }
+  );
 
-  let polygons = Object.keys(props.data.properties).map(key => props.data.properties[key].polygons);
+  const polygons = Object.keys(props.data.properties).map(key => props.data.properties[key].polygons);
 
   return (
     <div>
@@ -93,8 +92,8 @@ const Owner = props => {
             <EmailDownload downloadData={props.data.properties} fileName="properties_by_owner.csv" />
           </div>
           <ButtonGroup>
-            <Button onClick={() => refreshLocation('map')} active={props.location.query.view === 'map'} positionInGroup="left">Map view</Button>
-            <Button onClick={() => refreshLocation('list')} active={props.location.query.view === 'list'} positionInGroup="right">List view</Button>
+            <Button onClick={() => refreshLocation(getNewUrlParams('map'), props.location)} active={props.location.query.view === 'map'} positionInGroup="left">Map view</Button>
+            <Button onClick={() => refreshLocation(getNewUrlParams('list'), props.location)} active={props.location.query.view === 'list'} positionInGroup="right">List view</Button>
           </ButtonGroup>
         </div>
       </div>
@@ -153,7 +152,6 @@ const Owner = props => {
       </div>
     </div>
   );
-
 };
 
 const propertyQuery = gql`
@@ -204,7 +202,7 @@ const propertyQuery = gql`
 `;
 
 const OwnerWithData = graphql(propertyQuery, {
-  options: ownProps => ({ variables: { pins: (ownProps.location === undefined) ? ownProps.pins : ownProps.location.query.id.split(',') } }),
+  options: ownProps => ({ variables: { pins: (ownProps.location === undefined) ? ownProps.pins : ownProps.location.query.id.trim().split(',') } }),
 })(Owner);
 
 export default OwnerWithData;

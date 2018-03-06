@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import BarChartContainer from '../../shared/visualization/BarChartContainer';
+import BarChart from '../../shared/visualization/BarChart';
 
 const days_exit_keys = [
   'Non-GPD',
@@ -40,7 +40,7 @@ const days_exit_data = [
   },
 ];
 
-const HomelessnessVeteransExitTime = (props) => (
+const HomelessnessVeteransExitTime = props => (
   <div>
     <div className="row">
       <div className="col-sm-12">
@@ -49,11 +49,27 @@ const HomelessnessVeteransExitTime = (props) => (
       </div>
     </div>
     <div className="row">
-      <div className="col-sm-6">
-        <BarChartContainer layout="vertical" chartTitle="Average days from identification to positive exit: non-GPD" mainAxisDataKey="month" dataKeys={['Non-GPD']} colorScheme="bright_colors" data={props.data} altText="Bar chart of average days from identification to positive exit: non-GPD" domain={[0, 380]} referenceLine referenceX={90} referenceLineLabel="90 days" margin={{ top: 15, left: 10, right: 0, bottom: 0 }} />
+      <div className="col-md-6">
+        <BarChart
+          layout="horizontal"
+          chartTitle="Average days from identification to positive exit: non-GPD"
+          mainAxisDataKey="month"
+          dataKeys={['Non-GPD']}
+          colorScheme="bright_colors"
+          data={props.data}
+          altText="Bar chart of average days from identification to positive exit: non-GPD"
+          domain={[0, 380]}
+          annotations={[
+            {
+              type: 'line',
+              label: '90 days',
+              value: 90,
+            },
+          ]}
+        />
       </div>
-      <div className="col-sm-6">
-        <BarChartContainer layout="vertical" chartTitle="Average days from identification to positive exit: All Grant & Per Diem programs" mainAxisDataKey="month" dataKeys={['GPD']} colorScheme="bright_colors_2" data={props.data} altText="Bar chart of average days from identification to positive exit: All Grant & Per Diem programs" />
+      <div className="col-md-6">
+        <BarChart layout="horizontal" chartTitle="Average days from identification to positive exit: All Grant & Per Diem programs" mainAxisDataKey="month" dataKeys={['GPD']} colorScheme="bright_colors_2" data={props.data} altText="Bar chart of average days from identification to positive exit: All Grant & Per Diem programs" />
       </div>
     </div>
   </div>

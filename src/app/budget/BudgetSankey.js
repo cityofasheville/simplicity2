@@ -5,7 +5,15 @@ import { getSankeyData } from './graphql/budgetQueries';
 import Sankey from '../../shared/visualization/Sankey';
 
 const BudgetSankey = props => (
-  <Sankey nodes={props.nodes} links={props.links} altText={props.altText} />
+  <Sankey
+    nodes={props.nodes}
+    links={props.links}
+    altText={props.altText}
+    valueFormatter={value => {
+      if (!value || value === 0) {return '$0'}
+      return [value < 0 ? '-$' : '$', Math.abs(value).toLocaleString()].join('')
+    }}
+  />
 );
 
 const nameShape = {

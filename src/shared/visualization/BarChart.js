@@ -1,114 +1,227 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ResponsiveContainer, BarChart as RechartsBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ReferenceArea, ReferenceLine } from 'recharts';
-import { colorSchemes, referenceColorScheme } from './colorSchemes';
+import { color } from 'd3-color';
+import { OrdinalFrame } from 'semiotic';
+import HorizontalLegend from './HorizontalLegend';
+import Tooltip from './Tooltip';
+import { formatDataForStackedBar, budgetBarAnnotationRule } from './visUtilities';
 
-const renderTitle = (title) => {
-  if (title === undefined) {
-    return '';
-  }
-  return (<h3>{title}</h3>);
-};
 
-const CustomizedLabel = labelProps => (
-  <g className="recharts-reference-area-label">{labelProps.text.map((text, i) => <text key={['labelText', i].join('_')} stroke="none" fill="black" x="0" y={20 * (i + 1)} className="recharts-text" textAnchor="middle"><tspan x={labelProps.x} dy="0em">{text}</tspan></text>)}</g>
-);
+/*
+ * TODOS
+ * size margins based on where labels are even going (y or x), how long they are, remsize
+ */
 
-const BarChart = props => (
-  <div style={{ height: props.height }} alt={props.altText}>
-    {props.chartTitle !== null && renderTitle(props.chartTitle)}
-    <ResponsiveContainer>
-      <RechartsBarChart data={props.data} barGap={props.barGap} layout={props.layout} margin={props.margin}>
-        {props.layout === 'horizontal' &&
-          <XAxis dataKey={props.mainAxisDataKey} hide={props.hidePrimaryAxis} tickFormatter={props.mainTickFormatter !== undefined ? props.mainTickFormatter : null} />
-        }
-        {props.layout === 'horizontal' &&
-          <YAxis tickFormatter={props.secondaryTickFormatter !== undefined ? props.secondaryTickFormatter : null} width={props.yAxisWidth} domain={props.domain} />
-        }
-        {props.layout === 'vertical' &&
-          <YAxis dataKey={props.mainAxisDataKey} hide={props.hidePrimaryAxis} type="category" tickFormatter={props.mainTickFormatter !== undefined ? props.mainTickFormatter : null} width={props.yAxisWidth} />
-        }
-        {props.layout === 'vertical' &&
-          <XAxis type="number" tickFormatter={props.secondaryTickFormatter !== undefined ? props.secondaryTickFormatter : null} domain={props.domain} />
-        }
-        <CartesianGrid strokeDasharray="3 3" />
-        <Tooltip formatter={props.toolTipFormatter} />
-        {!props.hideLegend &&
-          <Legend height={props.legendHeight} />
-        }
-        {props.barDataKeys.map((barDataKey, i) => (
-          <Bar key={barDataKey} dataKey={barDataKey} fill={colorSchemes[props.colorScheme][i % colorSchemes[props.colorScheme].length]} stackId={props.stacked ? 1 : i} animationDuration={50} />
-        ))}
-        {props.referenceArea &&
-          <XAxis type="number" xAxisId={1} domain={[0, 1000]} dataKey={props.mainReferenceAxisDataKey} hide />
-        }
-        {props.referenceArea && props.referenceAreaLabels.map((text, i) => (
-          <ReferenceArea key={['referenceArea', i].join('_')} xAxisId={1} x1={i === 0 ? 0 : props.referenceAreaExes[i - 1]} x2={props.referenceAreaExes[i] || ((i * 250) - 250)} stroke="black" fill={referenceColorScheme[i % referenceColorScheme.length]} strokeOpacity={0.3} label={<CustomizedLabel text={text} />} />
-        ))}
-        {props.referenceLine && props.referenceX &&
-          <ReferenceLine x={props.referenceX} label={props.referenceLineLabel || null} stroke={props.referenceLineColor} strokeWidth={2} isFront />
-        }
-      </RechartsBarChart>
-    </ResponsiveContainer>
+const getLongDesc = (data, dataKeys, mainAxisKey, valueFormatter) => (
+  <div>
+    {data.map((value, index) => (
+      <div key={[value[mainAxisKey], index].join('_')}>
+        <p>{value[mainAxisKey]}<br />
+          {dataKeys.map(key => (
+            <span key={[value[mainAxisKey], key].join('_')}>
+              {key || '[data error]'}: {valueFormatter !== null ? valueFormatter(value[key]) : value[key]}
+              <br />
+            </span>
+          ))}
+        </p>
+      </div>
+    ))}
   </div>
 );
 
+class BarChart extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      altText: this.props.altText || this.props.chartTitle,
+      showingLongDesc: this.showLongDesc,
+    };
+  }
+
+  toggleLongDesc() {
+    this.setState({
+      showingLongDesc: !this.state.showingLongDesc,
+    });
+  }
+
+
+  render() {
+    const formattedData = formatDataForStackedBar(
+      this.props.data,
+      this.props.dataKeys,
+      this.props.mainAxisDataKey,
+      this.props.colorScheme,
+    );
+
+    return (
+      <div ref={refNode => this.barExist = true}>
+        <h4>{this.props.chartTitle}</h4>
+        <br />
+        <p>
+          {this.props.chartText.isArray &&
+            this.props.chartText.map((textChunk, index) => (<span key={index}>{textChunk}</span>))
+          }
+          {!this.props.chartText.isArray &&
+            this.props.chartText
+          }
+        </p>
+        <div
+          className="row"
+          role="img"
+          alt={this.props.altText}
+          tabIndex={0}
+        >
+          <div
+            className="col-sm-12"
+            style={{
+              width: '100%',
+              display: 'inline-block',
+              margin: '0 auto',
+              textAlign: 'center',
+            }}
+          >
+            <div
+              style={{
+                height: this.props.height,
+                margin: '0 auto',
+                display: 'inline-block',
+                width: '95%',
+                textAlign: 'center',
+              }}
+            >
+              <OrdinalFrame
+                annotations={this.props.annotations}
+                data={formattedData}
+                hoverAnnotation
+                margin={{ top: 5, right: 40, bottom: 40, left: 60 }}
+                oAccessor={this.props.mainAxisDataKey}
+                oLabel
+                oPadding={10}
+                projection={this.props.layout}
+                rAccessor="value"
+                rExtent={this.props.domain}
+                type="bar"
+                axis={({
+                  orient: 'left',
+                  tickFormat: d => this.props.yAxisTickFormatter(d),
+                  ticks: 10,
+                })}
+                customHoverBehavior={(d) => {
+                  d && d.pieces ?
+                  this.setState({ hover: d.pieces[0].data[this.props.mainAxisDataKey] }) :
+                  this.setState({ hover: null });
+                }}
+                style={d => (
+                  this.state.hover === d[this.props.mainAxisDataKey] ?
+                  // For the currently hovered bar, return a brighter fill and add a stroke
+                  {
+                    fill: color(d.color).brighter(0.6).toString(),
+                    stroke: color(d.color).toString(),
+                    strokeWidth: 3,
+                  } :
+                  { fill: d.color })
+                }
+                svgAnnotationRules={(d) => {
+                  // Don't try to fire when there aren't annotations
+                  if (this.props.annotations.length < 1) { return; }
+
+                  if (d.d.budgetAnnotation === true) {
+                    // todo: separate this out?
+                    return budgetBarAnnotationRule(d, this.props.layout);
+                  }
+
+                  if (d.d.type === 'line' && d.screenCoordinates[0]) {
+                    return (<g key={d.d.label}>
+                      <text
+                        x={d.screenCoordinates[0]}
+                        y={-5}
+                        textAnchor="middle"
+                      >
+                        {d.d.label}
+                      </text>
+                      <line
+                        stroke="black"
+                        strokeWidth={3}
+                        x1={d.screenCoordinates[0]}
+                        x2={d.screenCoordinates[0]}
+                        y1={0}
+                        y2={d.adjustedSize[1]}
+                      />
+                    </g>
+                    );
+                  }
+                }}
+                tooltipContent={(d) => {
+                  const textLines = d.pieces.map(piece =>
+                    ({
+                      text: `${piece.label}: ${this.props.tooltipYValFormatter(piece.value)}`,
+                      color: piece.color,
+                    })
+                  );
+                  if (this.props.layout !== 'horizontal') { textLines.reverse(); }
+                  return Tooltip(textLines, d.column.name);
+                }}
+              />
+            {HorizontalLegend(formattedData, this.props.legendLabelFormatter, { marginLeft: '60px' })}
+            </div>
+          </div>
+        </div>
+        {!this.props.hideSummary &&
+          // TODO: improve keyboard functionality-- a sighted user who relies on the keyboard can't use the button to see the summary very easily
+          // see also area chart (and maybe make this into a component)
+          <div className="row">
+            <div className="col-xs-10 col-xs-offset-1">
+              <br />
+              <div className="text-center inText" role="button" tabIndex="0" onClick={() => this.toggleLongDesc()}>
+                {this.state.showingLongDesc ? 'Hide' : 'Show'} {this.props.chartTitle} bar chart summary
+              </div>
+              <div hidden={!this.state.showingLongDesc}>
+                {getLongDesc(this.props.data, this.props.dataKeys, this.props.mainAxisDataKey, this.props.tooltipYValFormatter)}
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    );
+  }
+}
+
 BarChart.propTypes = {
-  chartTitle: PropTypes.string,
   altText: PropTypes.string,
-  data: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  barDataKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
-  mainAxisDataKey: PropTypes.string.isRequired,
-  mainReferenceAxisDataKey: PropTypes.string,
-  secondaryTickFormatter: PropTypes.func,
-  hidePrimaryAxis: PropTypes.bool,
-  mainTickFormatter: PropTypes.func,
-  height: PropTypes.number,
-  stacked: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
-  dollars: PropTypes.bool,
-  colorScheme: PropTypes.string, // eslint-disable-line react/no-unused-prop-types
-  referenceArea: PropTypes.bool,
-  referenceAreaLabels: PropTypes.arrayOf(PropTypes.array),
-  referenceAreaExes: PropTypes.arrayOf(PropTypes.number),
-  referenceLine: PropTypes.bool,
-  referenceLineColor: PropTypes.string,
-  referenceLinLabel: PropTypes.string,
-  referenceLineX: PropTypes.number,
-  domain: PropTypes.array, // eslint-disable-line,
-  toolTipFormatter: PropTypes.func,
-  barGap: PropTypes.number,
-  legendHeight: PropTypes.number,
+  annotations: PropTypes.arrayOf(PropTypes.object),
+  chartText: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+  chartTitle: PropTypes.string,
+  colorScheme: PropTypes.string,
+  data: PropTypes.array, // eslint-disable-line
+  dataKeys: PropTypes.arrayOf(PropTypes.string),
+  domain: PropTypes.arrayOf(PropTypes.number),
+  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  hideSummary: PropTypes.bool,
   layout: PropTypes.string,
-  yAxisWidth: PropTypes.number,
-  margin: PropTypes.object,
-  hideLegend: PropTypes.bool,
+  legendLabelFormatter: PropTypes.func,
+  mainAxisDataKey: PropTypes.string,
+  tooltipYValFormatter: PropTypes.func,
+  xAxisLabel: PropTypes.string,
+  yAxisTickFormatter: PropTypes.func,
 };
 
 BarChart.defaultProps = {
-  altText: 'Bar chart',
+  altText: null,
+  annotations: [],
+  chartText: '',
+  chartTitle: '',
+  colorScheme: 'new_bright_colors',
   data: [],
-  barDataKeys: [],
-  mainReferenceAxisDataKey: '',
-  mainAxisDataKey2: '',
-  yTickFormater: null,
-  xTickFormater: null,
-  height: 450,
-  stacked: false,
-  dollars: false,
-  colorScheme: 'pink_green_diverging',
-  referenceArea: false,
-  referenceLineColor: 'black',
-  referenceAreaLabels: [],
-  referenceAreaExes: [],
-  domain: [0, 'auto'],
-  toolTipFormatter: null,
-  barGap: 4,
-  layout: 'horizontal',
-  legendHeight: 35,
-  hidePrimaryAxis: false,
-  yAxisWidth: 60,
-  margin: { top: 0, left: 10, bottom: 0, right: 0 },
-  hideLegend: false,
+  dataKeys: [],
+  domain: [],
+  height: null,
+  hideSummary: false,
+  layout: 'vertical',
+  legendLabelFormatter: val => val,
+  mainAxisDataKey: null,
+  tooltipYValFormatter: val => val,
+  xAxisLabel: null,
+  yAxisTickFormatter: val => val,
 };
 
 export default BarChart;

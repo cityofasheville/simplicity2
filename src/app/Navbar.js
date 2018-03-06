@@ -76,4 +76,3 @@ export default class Navbar extends React.Component { // eslint-disable-line rea
     );
   }
 }
-

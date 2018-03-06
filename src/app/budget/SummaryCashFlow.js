@@ -33,11 +33,11 @@ class SummaryCashFlow extends React.Component {
     if (this.props.data.error) { // eslint-disable-line react/prop-types
       return <Error message={this.props.data.error.message} />; // eslint-disable-line react/prop-types
     }
-  
+
     if (this.props.sankeyData.nodes === null) {
       this.initializeSankey();
     }
-  
+
     return (
       <div className="row">
         <div className="col-sm-12">

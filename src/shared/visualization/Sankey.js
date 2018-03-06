@@ -9,6 +9,7 @@ import { NetworkFrame } from 'semiotic';
  * TODOS
  * Why is downward transformation happening?  Top margin shouldn't be negative
  * Make it vertical on mobile
+ * Generally clarify
  */
 
 class Sankey extends React.Component {
@@ -47,35 +48,58 @@ class Sankey extends React.Component {
           this.setState({ hover: d.name }) : this.setState({ hover: null }))
         }
         svgAnnotationRules={(d) => {
-          if (this.state.hover === null) { return; }
           let label = d.d.name;
-          let value;
+          const key = `${d.d.name}-${d.i}-nodeLabel`;
+          const style = {
+            position: 'absolute',
+            opacity: '1',
+            color: 'black',
+            fontWeight: 'normal',
+            textAnchor: 'left',
+          };
+
           const hoverInSourceLinks = d.edges.find(edge => edge.source.name === this.state.hover && edge.target.name === d.d.name);
           const hoverInDestLinks = d.edges.find(edge => edge.target.name === this.state.hover && edge.source.name === d.d.name);
+
           if (this.state.hover === d.d.name) {
-            label = `${d.d.name} Total`;
-            value = d.d.value;
+            style.fontWeight = 'bolder';
+            label = `${d.d.name} Total: ${this.props.valueFormatter(d.d.value)}`;
           } else if (hoverInSourceLinks) {
-            value = hoverInSourceLinks.value;
+            style.fontWeight = 'bolder';
+            label = `${d.d.name}: ${this.props.valueFormatter(hoverInSourceLinks.value)}`;
+            return (<text
+              key={key}
+              style={style}
+              x={d.d.x - (4 * label.length)}
+              y={d.d.y}
+              opacity={0.5}
+            >
+              &#8594; {label}
+            </text>);
           } else if (hoverInDestLinks) {
-            value = hoverInDestLinks.value;
-          } else {
-            return;
+            style.fontWeight = 'bolder';
+            label = `${d.d.name}: ${this.props.valueFormatter(hoverInDestLinks.value)}`;
+            return (<text
+              key={key}
+              style={style}
+              x={d.d.x - (4 * label.length)}
+              y={d.d.y}
+              opacity={0.5}
+            >
+              {label} &#8594;
+            </text>);
           }
-          const text = `${label}: ${this.props.valueFormatter(value)}`;
+
+          style.opacity = '0.5';
+
           return (<text
-            key={`${d.d.name}-${d.i}-nodeLabel`}
-            style={{
-              position: 'absolute',
-              opacity: 1,
-              color: 'black',
-              fontWeight: d.d.name === this.state.hover ? 'bolder' : 'normal',
-              textAnchor: 'left',
-            }}
-            x={d.d.x - (4 * text.length)}
+            key={key}
+            style={style}
+            x={d.d.x - (4 * label.length)}
             y={d.d.y}
+            opacity={0.5}
           >
-            {text}
+            {label}
           </text>);
         }}
         edgeStyle={(d) => {
@@ -87,7 +111,7 @@ class Sankey extends React.Component {
           const colorDomain = [graph.nodes[graph.nodes.length - 1].value, graph.nodes[0].value];
           nodeColor.domain(colorDomain);
           const strokeOpacity = d.name === this.state.hover ? 1 : 0.5;
-          const strokeWidth = d.name === this.state.hover ? 3.5 : 2;
+          const strokeWidth = d.name === this.state.hover ? 5 : 1;
           return { stroke: darkerColor, strokeWidth: `${strokeWidth}px`, strokeOpacity, fill: nodeColor(d.value), fillOpacity: strokeOpacity };
         }}
         tooltipContent={() => ''}

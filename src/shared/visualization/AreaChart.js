@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ResponsiveXYFrame } from 'semiotic';
 import { scaleTime } from 'd3-scale';
+import HorizontalLegend from './HorizontalLegend';
 import Tooltip from './Tooltip';
 import { formatDataForStackedArea } from './visUtilities';
 
@@ -61,9 +62,23 @@ class AreaChart extends React.Component {
           }
         </p>
         <div className="row">
-          <div className="col-sm-12">
+          <div
+            className="col-sm-12"
+            style={{
+              width: '100%',
+              display: 'inline-block',
+              margin: '0 auto',
+              textAlign: 'center',
+            }}
+          >
             <div
-              style={{ height: this.props.height }}
+              style={{
+                height: this.props.height,
+                margin: '0 auto',
+                display: 'inline-block',
+                width: '95%',
+                textAlign: 'center',
+              }}
               role="img"
               aria-label={this.state.altText}
               tabIndex={0}
@@ -110,7 +125,7 @@ class AreaChart extends React.Component {
                     .map(point => ({
                       label: point.label,
                       color: point.color,
-                      data: point.coordinates.find(i => i[this.props.mainAxisDataKey] === d[this.props.mainAxisDataKey]),
+                      data: point.coordinates.find(p => p[this.props.mainAxisDataKey] === d[this.props.mainAxisDataKey]),
                       dataSum: point.coordinates.reduce((a, c) =>
                         ({ value: a.value + c.value })),
                     }))
@@ -139,6 +154,15 @@ class AreaChart extends React.Component {
                     });
                 }}
               />
+              {HorizontalLegend(
+                formattedData.map(d => d.coordinates.map(datum => {datum.color = d.color; return datum; })).reduce((total, curr) => {
+                  return total.concat(curr);
+                }),
+                this.props.legendLabelFormatter,
+                {},
+                'value',
+                // true,
+              )}
             </div>
           </div>
         </div>
@@ -172,6 +196,7 @@ AreaChart.propTypes = {
   height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   hideSummary: PropTypes.bool,
   mainAxisDataKey: PropTypes.string,
+  legendLabelFormatter: PropTypes.func,
   toolTipFormatter: PropTypes.func,
 };
 
@@ -185,6 +210,7 @@ AreaChart.defaultProps = {
   height: null,
   hideSummary: false,
   mainAxisDataKey: null,
+  legendLabelFormatter: d => d,
   toolTipFormatter: null,
 };
 

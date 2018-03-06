@@ -10,9 +10,15 @@ const HorizontalLegend = (formattedData, legendLabelFormatter, inputStyle = {}, 
       // Limit it to just the first occurrence
       pos === thisArray.findIndex(d => d.label === item.label && d.color === item.color)
     ).map((item) => {
-      item[valueAccessor] = formattedData.reduce((total, num) => total + num[valueAccessor]);
+      item.sum = formattedData
+        .filter(d => d.label === item.label)
+        .reduce((total, num) => {
+          const returnObj = {};
+          returnObj[valueAccessor] = total[valueAccessor] + num.value;
+          return returnObj;
+        });
       return item;
-    }).sort((a, b) => b[valueAccessor] - a[valueAccessor]);
+    }).sort((a, b) => b.sum[valueAccessor] - a.sum[valueAccessor]);
 
   return (<div
     style={styles}

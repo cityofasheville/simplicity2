@@ -155,10 +155,6 @@ input[type="radio"],
   appearance: none;
   cursor: pointer;
 
-  &:focus {
-    outline: none;
-  }
-
   &:before,
   &:after {
     content: "";

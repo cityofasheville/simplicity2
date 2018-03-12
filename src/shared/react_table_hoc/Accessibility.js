@@ -25,7 +25,6 @@ export default function accessibility(WrappedReactTable) {
   class KeyboardNavigableReactTable extends React.Component {
     // The presence of a subcomponent means there is an expander arrow column.
     // This line needs to come before the state.
-    // eslint-disable-next-line
     hasExpanderCol = !!this.props.SubComponent;
     columnStartIndex = this.hasExpanderCol ? 0 : 1;
 

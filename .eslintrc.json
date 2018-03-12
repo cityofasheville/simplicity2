@@ -42,6 +42,7 @@
       "jsx-a11y/role-supports-aria-props": 2,
       "max-len": 0,
       "newline-per-chained-call": 0,
+      "no-restricted-syntax": ["error", "ForInStatement", "LabeledStatement", "WithStatement"],
       "no-use-before-define": 0,
       "prefer-template": 2,
       "react/jsx-filename-extension": 0,

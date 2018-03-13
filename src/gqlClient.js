@@ -1,4 +1,5 @@
 import { ApolloClient } from 'apollo-client';
+import fetch from 'unfetch';
 import { createHttpLink } from 'apollo-link-http';
 import firebase from 'firebase';
 import { ApolloLink } from 'apollo-link';
@@ -13,7 +14,7 @@ if (process.env.USE_LOCAL_API === 'true') {
   SERVER_URL = 'http://localhost:8080/graphql';
 }
 
-const httpLink = createHttpLink({ uri: SERVER_URL });
+const httpLink = createHttpLink({ uri: SERVER_URL, fetch });
 
 const middlewareLink = setContext(
   request =>

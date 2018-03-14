@@ -54,7 +54,7 @@ class BarChart extends React.Component {
     );
 
     return (
-      <div ref={refNode => this.barExist = true}>
+      <div>
         <h4>{this.props.chartTitle}</h4>
         <br />
         <p>

@@ -5,6 +5,8 @@ import ProjectDetails from './ProjectDetails';
 import { mapProjectToCategory } from './cip_utilities';
 import Icon from '../../shared/Icon';
 import { IM_SHIELD3, IM_TREE, IM_HOME2, IM_BUS, LI_BOLD } from '../../shared/iconConstants';
+import accessibility from '../../shared/react_table_hoc/Accessibility';
+import expandingRows from '../../shared/react_table_hoc/ExpandingRows';
 
 const getIcon = (category, isExpanded) => {
   switch (category) {
@@ -48,6 +50,9 @@ const dataColumns = [
         placeholder="Search..."
       />
     ),
+    getProps: () => ({
+      role: 'rowheader',
+    }),
   },
   {
     Header: (<div>Zip<br />code</div>),
@@ -135,12 +140,16 @@ const getColumns = (type, subType) => {
   }];
 };
 
+const ExpandableAccessibleReactTable = expandingRows(accessibility(ReactTable));
+
 const ProjectsTable = props => (
   <div>
     <div className="row">
       <div className="col-sm-12">
         <div alt={['Table of', props.type, props.subType || '', 'bond project statuses'].join(' ')} style={{ marginTop: '10px' }}>
-          <ReactTable
+          <ExpandableAccessibleReactTable
+            tableId="projects"
+            ariaLabel="Capital Projects"
             data={props.data}
             columns={getColumns(props.type, props.subType)}
             showPagination
@@ -150,14 +159,8 @@ const ProjectsTable = props => (
               const id = filter.pivotId || filter.id;
               return row[id] !== undefined ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
             }}
-            getTdProps={(state, rowInfo) => {
+            getTdProps={() => {
               return {
-                onClick: (e, handleOriginal) => {
-                  document.getElementsByClassName('rt-expandable')[rowInfo.viewIndex].click();
-                  if (handleOriginal) {
-                    handleOriginal();
-                  }
-                },
                 style: {
                   whiteSpace: 'normal',
                 },

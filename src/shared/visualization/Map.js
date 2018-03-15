@@ -1,10 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import L from 'leaflet';
-import { Map as LeafletMap, Marker, TileLayer, Popup, Circle, Polyline, Polygon } from 'react-leaflet';
+import { Map as LeafletMap, Marker, TileLayer, Popup, Circle, Polyline, Polygon, LayersControl } from 'react-leaflet';
+import { GoogleLayer } from 'react-leaflet-google';
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 
-//using open street map for now because that way can use the clusters, etc.
+// using open street map for now because that way can use the clusters, etc.
+
+const mapKey = 'AIzaSyAO8R1pXvBhpRoTFJ4d81MA8D8QBD0mPe0'; // restrict your referrers in cloud console
+const { BaseLayer } = LayersControl;
+const satellite = 'SATELLITE';
 
 const markerClusterOptions = {
   maxClusterRadius: 20,
@@ -36,59 +41,66 @@ const Map = (props) => {
   return (
     <div style={{ height: props.height, width: props.width }}>
       <LeafletMap className="markercluster-map" center={shouldZoomToNonCenter ? zoomTo : props.center} zoom={props.zoom} maxZoom={18} bounds={props.bounds === null ? getBounds(shouldZoomToNonCenter ? zoomTo : props.center, shouldZoomToNonCenter ? 83 : props.within) : props.bounds}>
-        <TileLayer
-          url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        />
-        {props.drawCircle &&
-          <Circle center={props.center} radius={props.radius} fillOpacity={0.15} />
-        }
-        {shouldZoomToNonCenter &&
-          <Circle center={zoomTo} radius={15} fillOpacity={0.15} color="red" />
-        }
-        {props.showCenter &&
-          <Marker
-            position={props.center}
-            icon={L.icon({
-              iconUrl: require('../../shared/marker-icon-2.png'),
-              iconSize: [25, 41],
-              iconAnchor: [12, 41],
-              popupAnchor: [2, -22],
-            })}
-          >
-            <Popup>
-              <div><b>{props.centerLabel}</b></div>
-            </Popup>
-          </Marker>
-        }
-        {props.drawStreet &&
-          props.streetData.map((line, index) =>
-            <Polyline key={['street_line', index].join('_')} positions={line} weight={5} />
-          )
-        }
-        {props.drawMaintenance &&
-          props.maintenanceData.map((line, index) =>
-            <Polyline
-              key={['maintenance_line', index].join('_')} positions={line.line} weight={5} color={line.color}
+        <LayersControl position="topright">
+          <BaseLayer checked name="OpenStreetMap">
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            />
+          </BaseLayer>
+          <BaseLayer name="Google Maps Satellite">
+            <GoogleLayer googlekey={mapKey} maptype={satellite} />
+          </BaseLayer>
+          {props.drawCircle &&
+            <Circle center={props.center} radius={props.radius} fillOpacity={0.15} />
+          }
+          {shouldZoomToNonCenter &&
+            <Circle center={zoomTo} radius={15} fillOpacity={0.15} color="red" />
+          }
+          {props.showCenter &&
+            <Marker
+              position={props.center}
+              icon={L.icon({
+                iconUrl: require('../../shared/marker-icon-2.png'),
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [2, -22],
+              })}
             >
               <Popup>
-                {line.popup}
+                <div><b>{props.centerLabel}</b></div>
               </Popup>
-            </Polyline>
-          )
-        }
-        {props.drawPolygon &&
-          props.polygonData.map((poly, index) =>
-            <Polygon key={['polygon', index].join('_')} positions={poly.polygons}>
-              {poly.popup &&
+            </Marker>
+          }
+          {props.drawStreet &&
+            props.streetData.map((line, index) =>
+              <Polyline key={['street_line', index].join('_')} positions={line} weight={5} />
+            )
+          }
+          {props.drawMaintenance &&
+            props.maintenanceData.map((line, index) =>
+              <Polyline
+                key={['maintenance_line', index].join('_')} positions={line.line} weight={5} color={line.color}
+              >
                 <Popup>
-                  {poly.popup}
+                  {line.popup}
                 </Popup>
-              }
-            </Polygon>
-          )
-        }
-        <MarkerClusterGroup markers={markers} options={markerClusterOptions} />
+              </Polyline>
+            )
+          }
+          {props.drawPolygon &&
+            props.polygonData.map((poly, index) =>
+              <Polygon key={['polygon', index].join('_')} positions={poly.polygons}>
+                {poly.popup &&
+                  <Popup>
+                    {poly.popup}
+                  </Popup>
+                }
+              </Polygon>
+            )
+          }
+          <MarkerClusterGroup markers={markers} options={markerClusterOptions} />
+        </LayersControl>
       </LeafletMap>
     </div>
   );

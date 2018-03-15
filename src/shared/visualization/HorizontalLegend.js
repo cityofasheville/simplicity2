@@ -1,36 +1,37 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 
-const HorizontalLegend = (formattedData, legendLabelFormatter, inputStyle = {}, valueAccessor = 'value') => {
-  const styles = inputStyle;
+const HorizontalLegend = (props) => {
   const rectWidth = 15;
 
-  const labelItems = JSON.parse(JSON.stringify(formattedData))
+  const labelItems = JSON.parse(JSON.stringify(props.formattedData))
     .filter((item, pos, thisArray) =>
       // Limit it to just the first occurrence
       pos === thisArray.findIndex(d => d.label === item.label && d.color === item.color)
     ).map((item) => {
-      item.sum = formattedData
+      item.sum = props.formattedData
         .filter(d => d.label === item.label)
         .reduce((total, num) => {
           const returnObj = {};
-          returnObj[valueAccessor] = total[valueAccessor] + num.value;
+          returnObj[props.valueAccessor] = total[props.valueAccessor] + num.value;
           return returnObj;
         });
       return item;
-    }).sort((a, b) => b.sum[valueAccessor] - a.sum[valueAccessor]);
+    }).sort((a, b) => b.sum[props.valueAccessor] - a.sum[props.valueAccessor]);
 
   return (<div
-    style={styles}
+    style={props.style}
   >
     {labelItems.map((item, index) => {
-      const label = legendLabelFormatter(item.label);
+      const label = props.legendLabelFormatter(item.label);
       return (<div
         key={`${label}-legendItem-${index}`}
         style={{
           padding: `0px ${rectWidth / 3}px 0px 0px`,
           whiteSpace: 'normal',
           display: 'inline-block',
+          textAlign: 'left',
         }}
       >
         <svg
@@ -50,12 +51,23 @@ const HorizontalLegend = (formattedData, legendLabelFormatter, inputStyle = {}, 
             height={rectWidth}
           />
         </svg>
-        <text>
+        <span>
           {label}
-        </text>
+        </span>
       </div>);
     })}
   </div>);
+};
+
+HorizontalLegend.propTypes = {
+  formattedData: PropTypes.arrayOf(PropTypes.object),
+  legendLabelFormatter: PropTypes.func,
+  valueAccessor: PropTypes.string,
+};
+
+HorizontalLegend.defaultProps = {
+  legendLabelFormatter: d => d,
+  valueAccessor: 'value',
 };
 
 export default HorizontalLegend;

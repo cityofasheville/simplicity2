@@ -154,15 +154,12 @@ class AreaChart extends React.Component {
                     });
                 }}
               />
-              {HorizontalLegend(
-                formattedData.map(d => d.coordinates.map(datum => {datum.color = d.color; return datum; })).reduce((total, curr) => {
+              <HorizontalLegend
+                formattedData={formattedData.map(d => d.coordinates.map(datum => {datum.color = d.color; return datum; })).reduce((total, curr) => {
                   return total.concat(curr);
-                }),
-                this.props.legendLabelFormatter,
-                {},
-                'value',
-                // true,
-              )}
+                })}
+                legendLabelFormatter={this.props.legendLabelFormatter}
+              />
             </div>
           </div>
         </div>

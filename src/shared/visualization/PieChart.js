@@ -26,9 +26,12 @@ class PieChart extends React.Component {
         className="ordinal-pie-elements"
         role="img"
         tabIndex={0}
-        alt={this.props.altText}
+        aria-label={this.props.altText}
       >
-        {HorizontalLegend(thisData, d => d, { width: '65%', margin: '0 auto', paddingBottom: '10px' })}
+        <HorizontalLegend
+          formattedData={thisData}
+          style={{ width: '65%', margin: '0 auto', paddingBottom: '10px' }}
+        />
         <div
           className="pie-container"
         >
@@ -36,6 +39,7 @@ class PieChart extends React.Component {
             style={{ height: this.props.height, width: this.props.height, margin: '0 auto' }}
           >
             <ResponsiveOrdinalFrame
+              chartTitle={this.props.altText}
               data={thisData}
               dynamicColumnWidth="magnitude"
               hoverAnnotation

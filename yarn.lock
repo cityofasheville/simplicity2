@@ -5780,9 +5780,9 @@ semiotic-mark@0.1.2, semiotic-mark@^0.1.2:
     d3-transition "1.0.3"
     prop-types "15.6.0"
 
-semiotic@^1.9.0:
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/semiotic/-/semiotic-1.9.0.tgz#858a07e60d8b64fa2af15fed46a9590ab92028d8"
+semiotic@^1.9.1:
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/semiotic/-/semiotic-1.9.1.tgz#0148c798439b437d145db4756c0c66739749c304"
   dependencies:
     "@mapbox/polylabel" "1.0.2"
     babel-plugin-external-helpers "^6.22.0"

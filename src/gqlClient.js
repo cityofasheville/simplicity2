@@ -21,16 +21,22 @@ const middlewareLink = setContext(
     new Promise((success, fail) => {
       const signedInUser = firebase.auth().currentUser;
       if (signedInUser) {
-        signedInUser.getIdToken()
+        signedInUser.getIdToken(true)
         .then((idToken) => {
           sessionStorage.setItem('token', idToken);
+          setTimeout(() => {
+            success({ headers: {
+              authorization: idToken,
+            } });
+          }, 10);
         });
+      } else {
+        setTimeout(() => {
+          success({ headers: {
+            authorization: sessionStorage.getItem('token') || null,
+          } });
+        }, 10);
       }
-      setTimeout(() => {
-        success({ headers: {
-          authorization: sessionStorage.getItem('token') || null,
-        } });
-      }, 10);
     })
 );
 const link = middlewareLink.concat(httpLink);

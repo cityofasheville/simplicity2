@@ -140,10 +140,10 @@ class AreaChart extends React.Component {
 
                   const minTooltipWidth = (textLines.map(line => line.text).join('').length + 0.5) / textLines.length;
 
-                  return Tooltip(
-                    textLines,
-                    d[this.props.mainAxisDataKey],
-                    {
+                  return (<Tooltip
+                    textLines={textLines}
+                    title={d[this.props.mainAxisDataKey]}
+                    style={{
                       backgroundColor: 'white',
                       border: '1px solid black',
                       position: 'absolute',
@@ -151,7 +151,8 @@ class AreaChart extends React.Component {
                         '1.5rem' :
                         `${-minTooltipWidth - 1.5}rem`,
                       top: `${400 * -0.5}px`,
-                    });
+                    }}
+                  />);
                 }}
               />
               <HorizontalLegend

@@ -65,7 +65,12 @@ class PieChart extends React.Component {
                   text: `${d.column.name}: ${d.pieces[0].magnitude}`,
                   color: d.pieces[0].color,
                 }];
-                return Tooltip(textLine, '', { fontWeight: 'bolder' });
+                return (<Tooltip
+                  textLines={textLine}
+                  style={{
+                    fontWeight: 'bolder',
+                  }}
+                />);
               }}
               type={{
                 type: 'bar',

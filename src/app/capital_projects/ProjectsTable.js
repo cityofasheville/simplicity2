@@ -58,8 +58,6 @@ const dataColumns = [
     Header: (<div>Zip<br />code</div>),
     accessor: 'zip_code',
     maxWidth: 120,
-    headerClassName: 'hidden-sm hidden-xs',
-    className: 'hidden-sm hidden-xs',
     Filter: ({ filter, onChange }) => (
       <input
         onChange={event => onChange(event.target.value)}
@@ -98,8 +96,6 @@ const dataColumns = [
     Header: (<div>Current<br />project budget</div>),
     accessor: 'total_project_funding_budget_document',
     maxWidth: 120,
-    headerClassName: 'hidden-xs',
-    className: 'hidden-xs',
     Filter: ({ filter, onChange }) => (
       <input
         onChange={event => onChange(event.target.value)}
@@ -114,8 +110,6 @@ const dataColumns = [
     id: 'spent',
     accessor: project => (!project.show_pm_fields ? '--' : ['$', parseInt(project.total_spent, 10).toLocaleString()].join('')),
     maxWidth: 120,
-    headerClassName: 'hidden-xs',
-    className: 'hidden-xs',
     Filter: ({ filter, onChange }) => (
       <input
         onChange={event => onChange(event.target.value)}

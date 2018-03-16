@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import mergeProps from './mergeProps';
 
-const getDataColValue = (column) => {
+const getColumnId = (column) => {
   if (column.id) {
     return column.id;
   }
@@ -13,53 +13,20 @@ const getCustomTrGroupProps = () => ({
   role: 'rowgroup',
 });
 
-const getCustomTheadTrProps = () => ({
-  role: 'row',
-});
-
-const getCustomTheadFilterTrProps = () => ({
-  role: 'row',
-});
-
 const getCustomTrProps = () => ({
   role: 'row',
 });
 
 export default function accessibility(WrappedReactTable) {
   class KeyboardNavigableReactTable extends React.Component {
-    // The presence of a subcomponent means there is an expander arrow column.
-    // This line needs to come before the state.
-    hasExpanderCol = !!this.props.SubComponent;
-    // We will always treat the expander column as column 0.
-    columnStartIndex = this.hasExpanderCol ? 0 : 1;
     // Filter row counts as a header row.
     extraHeaderRowCount = this.props.filterable ? 1 : 0;
 
     state = {
       focused: {
-        row: 1,
-        column: 1,
+        row: 1 + this.extraHeaderRowCount,
+        column: 0,
       },
-    };
-
-    getColumns = () => {
-      let columns = this.props.columns;
-      if (columns[0].columns) {
-        // For some reason some of the tables puts the columns array inside of another array.
-        columns = columns[0].columns;
-      }
-      return columns;
-    };
-
-    getColumnId = (colIndex) => {
-      if (colIndex === 0) {
-        return 'rt-expandable';
-      }
-      const column = this.getColumns()[colIndex - 1];
-      if (column.id) {
-        return column.id;
-      }
-      return column.accessor;
     };
 
     onSortedChange = (sorted) => {
@@ -69,10 +36,11 @@ export default function accessibility(WrappedReactTable) {
       });
     };
 
-    onFocus = (rowIndex, column) => () => {
+    onFocus = (rtState, rowIndex, column) => () => {
+      const columnId = getColumnId(column);
       const newFocused = {
         row: rowIndex,
-        column: this.getColumns().findIndex(c => (c.id ? c.id === column.id : c.accessor === column.id)) + 1,
+        column: rtState.allVisibleColumns.findIndex(c => getColumnId(c) === columnId),
       };
 
       this.setState({
@@ -81,18 +49,18 @@ export default function accessibility(WrappedReactTable) {
     };
 
     onKeyDown = rtState => (e) => {
+      const columns = rtState.allVisibleColumns;
       let focusedCol = this.state.focused.column;
       let focusedRow = this.state.focused.row;
-      const columns = this.getColumns();
 
       let changed = false;
       if (e.key === 'ArrowLeft') {
-        if (focusedCol > this.columnStartIndex) {
+        if (focusedCol > 0) {
           changed = true;
           focusedCol -= 1;
         }
       } else if (e.key === 'ArrowRight') {
-        if (focusedCol < columns.length) {
+        if (focusedCol < columns.length - 1) {
           changed = true;
           focusedCol += 1;
         }
@@ -113,9 +81,9 @@ export default function accessibility(WrappedReactTable) {
             focusedRow = 0;
           }
         }
-        if (focusedCol !== this.columnStartIndex) {
+        if (focusedCol !== 0) {
           changed = true;
-          focusedCol = this.columnStartIndex;
+          focusedCol = 0;
         }
       } else if (e.key === 'End') {
         if (e.ctrlKey) {
@@ -124,9 +92,9 @@ export default function accessibility(WrappedReactTable) {
             focusedRow = rtState.endRow + this.extraHeaderRowCount;
           }
         }
-        if (focusedCol !== columns.length) {
+        if (focusedCol !== columns.length - 1) {
           changed = true;
-          focusedCol = columns.length;
+          focusedCol = columns.length - 1;
         }
       } else if (e.key === 'PageUp') {
         if (focusedRow !== 0) {
@@ -145,35 +113,18 @@ export default function accessibility(WrappedReactTable) {
       if (changed) {
         e.preventDefault();
 
-        const nodes = document.querySelectorAll(`[data-row="${focusedRow}"][data-col="${this.getColumnId(focusedCol)}"][data-parent="${this.props.tableId}"]`);
+        const nodes = document.querySelectorAll(`[data-row="${focusedRow}"][data-col="${getColumnId(columns[focusedCol])}"][data-parent="${this.props.tableId}"]`);
         if (nodes[0]) {
           nodes[0].focus();
         }
       }
     };
 
-    isFocused = (row, column) => {
-      const focusedCol = this.state.focused.column;
+    isFocused = (rtState, row, column) => {
       const focusedRow = this.state.focused.row;
+      const focusedCol = this.state.focused.column;
 
-      // Note that column.id is an id and not an index. Unfortunately there is not a column
-      // index in passed in through the params of this function from ReactTable. Likewise, in the
-      // props of the wrapped ReactTable component there is no such concept as a column index.
-      // As such, we are using the position of the column string ids as an index.
-
-      let focused = false;
-      if (focusedRow === row) {
-        if (this.hasExpanderCol && focusedCol === 0) {
-          if (column.expander) {
-            // The expander arrow column doesn't have a column id so it is a special case
-            focused = true;
-          }
-        } else if (this.getColumns()[focusedCol - 1].accessor === column.id) {
-          focused = true;
-        }
-      }
-
-      return focused;
+      return focusedRow === row && rtState.allVisibleColumns[focusedCol] === getColumnId(column);
     };
 
     getCustomTableProps = () => {
@@ -208,22 +159,22 @@ export default function accessibility(WrappedReactTable) {
       return {
         'aria-sort': ariaSort,
         role: 'columnheader',
-        tabIndex: this.isFocused(0, column) ? 0 : -1,
+        tabIndex: this.isFocused(state, 0, column) ? 0 : -1,
         'data-row': 0,
-        'data-col': getDataColValue(column),
+        'data-col': getColumnId(column),
         'data-parent': this.props.tableId,
-        onFocus: this.onFocus(0, column),
+        onFocus: this.onFocus(state, 0, column),
         onKeyDown: this.onKeyDown(state),
       };
     };
 
     getCustomTheadFilterThProps = (state, rowInfo, column) => ({
       role: 'columnheader', // TODO proper role here?
-      tabIndex: this.isFocused(1, column) ? 0 : -1,
+      tabIndex: this.isFocused(state, 1, column) ? 0 : -1,
       'data-row': 1,
-      'data-col': getDataColValue(column),
+      'data-col': getColumnId(column),
       'data-parent': this.props.tableId,
-      onFocus: this.onFocus(1, column),
+      onFocus: this.onFocus(state, 1, column),
       onKeyDown: this.onKeyDown(state),
     });
 
@@ -231,11 +182,11 @@ export default function accessibility(WrappedReactTable) {
       if (rowInfo) {
         return ({
           role: 'gridcell',
-          tabIndex: this.isFocused(rowInfo.viewIndex + 1 + this.extraHeaderRowCount, column) ? 0 : -1,
+          tabIndex: this.isFocused(state, rowInfo.viewIndex + 1 + this.extraHeaderRowCount, column) ? 0 : -1,
           'data-row': rowInfo.viewIndex + 1 + this.extraHeaderRowCount,
-          'data-col': getDataColValue(column),
+          'data-col': getColumnId(column),
           'data-parent': this.props.tableId,
-          onFocus: this.onFocus(rowInfo.viewIndex + 1 + this.extraHeaderRowCount, column),
+          onFocus: this.onFocus(state, rowInfo.viewIndex + 1 + this.extraHeaderRowCount, column),
           onKeyDown: this.onKeyDown(state),
         });
       }
@@ -249,8 +200,8 @@ export default function accessibility(WrappedReactTable) {
       newProps.getTheadProps = mergeProps(getCustomTrGroupProps, this.props.getTheadProps);
       newProps.getTbodyProps = mergeProps(getCustomTrGroupProps, this.props.getTbodyProps);
       newProps.getTheadFilterProps = mergeProps(getCustomTrGroupProps, this.props.getTheadFilterProps);
-      newProps.getTheadTrProps = mergeProps(getCustomTheadTrProps, this.props.getTheadTrProps);
-      newProps.getTheadFilterTrProps = mergeProps(getCustomTheadFilterTrProps, this.props.getTheadFilterTrProps);
+      newProps.getTheadTrProps = mergeProps(getCustomTrProps, this.props.getTheadTrProps);
+      newProps.getTheadFilterTrProps = mergeProps(getCustomTrProps, this.props.getTheadFilterTrProps);
       newProps.getTrProps = mergeProps(getCustomTrProps, this.props.getTrProps);
 
       // Table parts that use stateful prop callbacks

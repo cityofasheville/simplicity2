@@ -4,7 +4,7 @@ import { color } from 'd3-color';
 import { OrdinalFrame } from 'semiotic';
 import HorizontalLegend from './HorizontalLegend';
 import Tooltip from './Tooltip';
-import { formatDataForStackedBar, budgetBarAnnotationRule } from './visUtilities';
+import { formatDataForStackedBar, budgetBarAnnotationRule, labelOrder } from './visUtilities';
 
 
 /*
@@ -95,17 +95,35 @@ class BarChart extends React.Component {
                 hoverAnnotation
                 margin={{ top: 5, right: 40, bottom: 40, left: 60 }}
                 oAccessor={this.props.mainAxisDataKey}
-                oLabel
+                oLabel={d => {
+                  let textAnchor = 'middle';
+                  let transform = 'translate(0,0)';
+                  if (this.props.rotateXLabels && this.props.layout === 'vertical') {
+                    textAnchor = 'end';
+                    transform = 'translate(8,0)'
+                  } else if (this.props.layout === 'horizontal') {
+                    textAnchor = 'end';
+                  }
+
+                  if (this.props.rotateXLabels) { transform += 'rotate(-45)'}
+
+                  return (<text
+                    textAnchor={textAnchor}
+                    transform={transform}
+                  >
+                      {this.props.xAxisTickFormatter(d)}
+                  </text>)
+                }}
                 oPadding={10}
                 projection={this.props.layout}
                 rAccessor="value"
                 rExtent={this.props.domain}
                 type="bar"
-                axis={({
+                axis={[{
                   orient: 'left',
                   tickFormat: d => this.props.yAxisTickFormatter(d),
-                  ticks: 10,
-                })}
+                  ticks: 8,
+                }]}
                 customHoverBehavior={(d) => {
                   d && d.pieces ?
                     this.setState({ hover: d.pieces[0].data[this.props.mainAxisDataKey] }) :
@@ -206,8 +224,10 @@ BarChart.propTypes = {
   layout: PropTypes.string,
   legendLabelFormatter: PropTypes.func,
   mainAxisDataKey: PropTypes.string,
+  rotateXLabels: PropTypes.bool,
   tooltipYValFormatter: PropTypes.func,
   xAxisLabel: PropTypes.string,
+  xAxisTickFormatter: PropTypes.func,
   yAxisTickFormatter: PropTypes.func,
 };
 
@@ -225,8 +245,10 @@ BarChart.defaultProps = {
   layout: 'vertical',
   legendLabelFormatter: val => val,
   mainAxisDataKey: null,
+  rotateXLabels: false,
   tooltipYValFormatter: val => val,
   xAxisLabel: null,
+  xAxisTickFormatter: val => val,
   yAxisTickFormatter: val => val,
 };
 

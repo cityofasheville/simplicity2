@@ -1,24 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { labelOrder } from './visUtilities';
 
 
 const HorizontalLegend = (props) => {
   const rectWidth = 15;
 
-  const labelItems = JSON.parse(JSON.stringify(props.formattedData))
-    .filter((item, pos, thisArray) =>
-      // Limit it to just the first occurrence
-      pos === thisArray.findIndex(d => d.label === item.label && d.color === item.color)
-    ).map((item) => {
-      item.sum = props.formattedData
-        .filter(d => d.label === item.label)
-        .reduce((total, num) => {
-          const returnObj = {};
-          returnObj[props.valueAccessor] = total[props.valueAccessor] + num.value;
-          return returnObj;
-        });
-      return item;
-    }).sort((a, b) => b.sum[props.valueAccessor] - a.sum[props.valueAccessor]);
+  const labelItems = labelOrder(props.formattedData, props.valueAccessor)
 
   return (<div
     style={props.style}

@@ -10,7 +10,7 @@ import PageHeader from '../../../shared/PageHeader';
 import ButtonGroup from '../../../shared/ButtonGroup';
 import Button from '../../../shared/Button';
 import BarChart from '../../../shared/visualization/BarChart';
-import ChartContainer from '../../../shared/visualization/ChartContainer';
+import LineGraph from '../../../shared/visualization/LineGraph';
 import { query } from './SLADashboardQueries';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 
@@ -34,21 +34,31 @@ const DevelopmentSLADashboard = (props) => {
           <div key={[task, index].join('_')}>
             <div className="row" >
               <h3>{task} (First Plan Review)</h3>
-              <div className="col-sm-6">
-                <ChartContainer chartTitle="Percentage meeting SLA" data={aggregateData[task]} dataKeys={[[task, 'Met SLA Percent'].join(' ')]} altText={['Line chart of percentage of records meeting SLA for ', task].join(' ')} mainAxisDataKey="displayDate" toolTipFormatter={value => ([value, '%'].join(''))}>
-                  <LineChart data={aggregateData[task]} margin={{ right: 34 }}>
-                    <XAxis dataKey="displayDate" />
-                    <YAxis domain={[0, 100]} tickFormatter={value => ([value, '%'].join(''))} />
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <Tooltip formatter={value => ([value, '%'].join(''))} />
-                    <Legend />
-                    <ReferenceLine y={85} label="85%" stroke="green" />
-                    <Line type="monotone" dataKey={[task, 'Met SLA Percent'].join(' ')} stroke="#006DDB" strokeWidth={2} />
-                  </LineChart>
-                </ChartContainer>
+              <div className="col-md-6">
+                <LineGraph
+                  annotations={[]}
+                  chartTitle="Percentage meeting SLA"
+                  data={aggregateData[task]}
+                  dataKeys={[[task, 'Met SLA Percent'].join(' ')]}
+                  altText={['Line chart of percentage of records meeting SLA for ', task].join(' ')}
+                  mainAxisDataKey="displayDate"
+                  toolTipFormatter={value => ([value, '%'].join(''))}
+                  data={aggregateData[task]} margin={{ right: 34 }}
+                  colorScheme="bright_colors"
+                />
               </div>
-              <div className="col-sm-6" style={{ marginBotton: '10px' }} >
-                <BarChart chartTitle="Volume" mainAxisDataKey="displayDate" legendHeight={40} dataKeys={[[task, 'Past SLA'].join(' '), [task, 'Met SLA'].join(' ')]} data={aggregateData[task]} stacked altText={['Bar chart of number of records meeting SLA for ', task.split(' Total')[0]].join(' ')} colorScheme="bright_colors" />
+              <div className="col-md-6" style={{ marginBotton: '10px' }} >
+                <BarChart
+                  chartTitle="Volume"
+                  mainAxisDataKey="displayDate"
+                  legendHeight={40}
+                  dataKeys={[[task, 'Past SLA'].join(' '), [task, 'Met SLA'].join(' ')]}
+                  data={aggregateData[task]}
+                  altText={['Bar chart of number of records meeting SLA for ', task.split(' Total')[0]].join(' ')}
+                  colorScheme="bright_colors"
+                  xAxisTickFormatter={d => d.replace('20', '')}
+                  rotateXLabels
+                />
               </div>
             </div>
             <hr />

@@ -28,7 +28,8 @@ const dateFromSlash = (stringDate) => {
   return new Date(splitDate[1], splitDate[0]);
 };
 
-class AreaChart extends React.Component {
+
+class LineGraph extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -44,6 +45,7 @@ class AreaChart extends React.Component {
   }
 
   render() {
+    const lineColor = '#006ddb';
     const formattedData = formatDataForStackedArea(
       this.props.data,
       this.props.dataKeys,
@@ -84,23 +86,20 @@ class AreaChart extends React.Component {
               tabIndex={0}
             >
               <ResponsiveXYFrame
-                /*
-                TODO:
-                  set dimensions meaningfully and adjust tooltip position accordingly
-                  remove logic that only applies to this use case to utils or homelessness folder
-                */
+                annotations={this.props.annotations}
                 size={[1200, 450]}
                 responsiveWidth
                 lines={formattedData}
                 xScaleType={scaleTime()}
                 xAccessor={d => dateFromSlash(d[this.props.mainAxisDataKey])}
                 yAccessor={d => +d.value}
-                lineType="stackedarea"
-                lineStyle={d => ({ fill: d.color })}
-                margin={{ top: 40, right: 40, bottom: 60, left: 40 }}
+                yExtent={[0, 100]}
+                lineStyle={{ stroke: lineColor, strokeWidth: '4px'}}
+                margin={{ top: 40, right: 40, bottom: 60, left: 60 }}
                 axes={[
                   {
                     orient: 'left',
+                    tickFormat: d => `${d}%`,
                     className: 'semiotic-axis',
                   },
                   {
@@ -112,10 +111,9 @@ class AreaChart extends React.Component {
                   },
                 ]}
                 pointStyle={{
-                  fill: 'white',
-                  stroke: 'white',
-                  fillOpacity: '0.25',
-                  strokeWidth: '1.5px',
+                  stroke: lineColor,
+                  fillOpacity: '0',
+                  strokeWidth: '3px',
                 }}
                 hoverAnnotation={[
                   {
@@ -124,26 +122,14 @@ class AreaChart extends React.Component {
                     disable: ['connector', 'note'],
                     className: 'semiotic-yHoverLine',
                   },
-                  { type: 'frame-hover', className: 'disableFrameHover' },
-                  { type: 'vertical-points', r: (d) => { d.yMiddle = d.yTop; return 5; } },
+                  { type: 'frame-hover', className: 'disableFrameHover'},
+                  { type: 'vertical-points', r: () => 5},
                 ]}
                 tooltipContent={(d) => {
-                  const points = formattedData
-                    .map(point => ({
-                      label: point.label,
-                      color: point.color,
-                      data: point.coordinates.find(p => p[this.props.mainAxisDataKey] === d[this.props.mainAxisDataKey]),
-                      dataSum: point.coordinates.reduce((a, c) =>
-                        ({ value: a.value + c.value })),
-                    }))
-                    .sort((a, b) => a.dataSum.value - b.dataSum.value);
-
-                  const textLines = points.map(thisPoint =>
-                    ({
-                      text: `${thisPoint.label}: ${thisPoint.data.value}`,
-                      color: thisPoint.color,
-                    })
-                  );
+                  const textLines = [{
+                      text: `${d.label}: ${d.value}%`,
+                      color: lineColor,
+                    }]
 
                   const minTooltipWidth = (textLines.map(line => line.text).join('').length + 0.5) / textLines.length;
 
@@ -153,21 +139,10 @@ class AreaChart extends React.Component {
                     style={{
                       backgroundColor: 'white',
                       border: '1px solid black',
-                      position: 'absolute',
-                      left: (minTooltipWidth * 16 < 1200 - d.voronoiX) ?
-                        '1.5rem' :
-                        `${-minTooltipWidth - 1.5}rem`,
-                      top: `${400 * -0.5}px`,
                     }}
                   />);
                 }}
-              />
-              <HorizontalLegend
-                formattedData={formattedData.map(d => d.coordinates.map(datum => {datum.color = d.color; return datum; })).reduce((total, curr) => {
-                  return total.concat(curr);
-                })}
-                legendLabelFormatter={this.props.legendLabelFormatter}
-              />
+                />
             </div>
           </div>
         </div>
@@ -191,32 +166,25 @@ class AreaChart extends React.Component {
   }
 }
 
-AreaChart.propTypes = {
-  altText: PropTypes.string,
+LineGraph.propTypes = {
+  data: PropTypes.array, // eslint-disable-line
+  dataKeys: PropTypes.arrayOf(PropTypes.string),
   chartText: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   chartTitle: PropTypes.string,
-  colorScheme: PropTypes.string,
-  data: PropTypes.arrayOf(PropTypes.object),
-  dataKeys: PropTypes.arrayOf(PropTypes.string),
-  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   hideSummary: PropTypes.bool,
-  mainAxisDataKey: PropTypes.string,
-  legendLabelFormatter: PropTypes.func,
-  toolTipFormatter: PropTypes.func,
+  height: PropTypes.string,
+  altText: PropTypes.string,
 };
 
-AreaChart.defaultProps = {
-  altText: null,
-  chartText: '',
-  chartTitle: '',
-  colorScheme: 'new_bright_colors',
+LineGraph.defaultProps = {
   data: [],
   dataKeys: [],
-  height: null,
-  hideSummary: false,
-  mainAxisDataKey: null,
-  legendLabelFormatter: d => d,
+  chartText: '',
+  chartTitle: '',
   toolTipFormatter: null,
+  hideSummary: false,
+  height: '450px',
+  altText: 'Chart',
 };
 
-export default AreaChart;
+export default LineGraph;

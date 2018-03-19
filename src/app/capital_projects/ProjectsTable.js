@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactTable from 'react-table';
+import Measure from 'react-measure';
 import ProjectDetails from './ProjectDetails';
 import { mapProjectToCategory } from './cip_utilities';
 import Icon from '../../shared/Icon';
@@ -29,165 +30,182 @@ const getIcon = (category, isExpanded) => {
   }
 };
 
-const dataColumns = [
-  {
-    Header: 'Project',
-    accessor: 'display_name',
-    Cell: row => (
-      <span>
-        <span title={mapProjectToCategory(row.original)}>{getIcon(row.original.category, row.isExpanded)}</span>
-        {row.original.category.indexOf('Bond') > -1 &&
-          <span title={'Bond project'} style={{ marginLeft: '3px' }}><Icon path={LI_BOLD} size={16} color={row.isExpanded ? '#fff' : '#4077a5'} viewBox="0 0 24 24" /></span>
-        }
-        <span style={{ marginLeft: '5px' }}>{row.value}</span>
-      </span>
-    ),
-    Filter: ({ filter, onChange }) => (
-      <input
-        onChange={event => onChange(event.target.value)}
-        style={{ width: '100%' }}
-        value={filter ? filter.value : ''}
-        placeholder="Search..."
-      />
-    ),
-    getProps: () => ({
-      role: 'rowheader',
-    }),
-  },
-  {
-    Header: (<div>Zip<br />code</div>),
-    accessor: 'zip_code',
-    maxWidth: 120,
-    headerClassName: 'hidden-sm hidden-xs',
-    className: 'hidden-sm hidden-xs',
-    Filter: ({ filter, onChange }) => (
-      <input
-        onChange={event => onChange(event.target.value)}
-        style={{ width: '100%' }}
-        value={filter ? filter.value : ''}
-        placeholder="Search..."
-      />
-    ),
-  },
-  {
-    Header: (<div>Current<br />phase</div>),
-    accessor: 'status',
-    Cell: row => (
-      <span>
-        {!row.original.show_pm_fields || row.original.status === null ?
-          '--'
-          :
-          row.original.status.indexOf('Status: ') > -1 ?
-          row.original.status.split(': ')[1]
-          :
-          row.original.status
-        }
-      </span>
-    ),
-    maxWidth: 120,
-    Filter: ({ filter, onChange }) => (
-      <input
-        onChange={event => onChange(event.target.value)}
-        style={{ width: '100%' }}
-        value={filter ? filter.value : ''}
-        placeholder="Search..."
-      />
-    ),
-  },
-  {
-    Header: (<div>Current<br />project budget</div>),
-    accessor: 'total_project_funding_budget_document',
-    maxWidth: 120,
-    headerClassName: 'hidden-xs',
-    className: 'hidden-xs',
-    Filter: ({ filter, onChange }) => (
-      <input
-        onChange={event => onChange(event.target.value)}
-        style={{ width: '100%' }}
-        value={filter ? filter.value : ''}
-        placeholder="Search..."
-      />
-    ),
-  },
-  {
-    Header: (<div>Spent</div>),
-    id: 'spent',
-    accessor: project => (!project.show_pm_fields ? '--' : ['$', parseInt(project.total_spent, 10).toLocaleString()].join('')),
-    maxWidth: 120,
-    headerClassName: 'hidden-xs',
-    className: 'hidden-xs',
-    Filter: ({ filter, onChange }) => (
-      <input
-        onChange={event => onChange(event.target.value)}
-        style={{ width: '100%' }}
-        value={filter ? filter.value : ''}
-        placeholder="Search..."
-      />
-    ),
-  },
-];
-
-const getColumns = (type, subType) => {
-  if (type === 'Transportation') {
-    return [{
-      Header: subType,
-      columns: dataColumns,
-    }];
-  }
-  return [{
-    Header: type,
-    columns: dataColumns,
-  }];
-};
-
 const ExpandableAccessibleReactTable = expandingRows(accessibility(ReactTable));
 
-const ProjectsTable = props => (
-  <div>
-    <div className="row">
-      <div className="col-sm-12">
-        <div alt={['Table of', props.type, props.subType || '', 'bond project statuses'].join(' ')} style={{ marginTop: '10px' }}>
-          <ExpandableAccessibleReactTable
-            tableId="projects"
-            ariaLabel="Capital Projects"
-            data={props.data}
-            columns={getColumns(props.type, props.subType)}
-            showPagination
-            defaultPageSize={20}
-            filterable
-            defaultFilterMethod={(filter, row) => {
-              const id = filter.pivotId || filter.id;
-              return row[id] !== undefined ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
+class ProjectsTable extends React.Component {
+  state = {};
+
+  dataColumns = state => ([
+    {
+      Header: 'Project',
+      accessor: 'display_name',
+      Cell: row => (
+        <span>
+          <span title={mapProjectToCategory(row.original)}>{getIcon(row.original.category, row.isExpanded)}</span>
+          {row.original.category.indexOf('Bond') > -1 &&
+          <span title={'Bond project'} style={{ marginLeft: '3px' }}><Icon path={LI_BOLD} size={16} color={row.isExpanded ? '#fff' : '#4077a5'} viewBox="0 0 24 24" /></span>
+          }
+          <span style={{ marginLeft: '5px' }}>{row.value}</span>
+        </span>
+      ),
+      Filter: ({ filter, onChange }) => (
+        <input
+          onChange={event => onChange(event.target.value)}
+          style={{ width: '100%' }}
+          value={filter ? filter.value : ''}
+          placeholder="Search..."
+        />
+      ),
+      getProps: () => ({
+        role: 'rowheader',
+      }),
+    },
+    {
+      Header: (<div>Zip<br />code</div>),
+      accessor: 'zip_code',
+      maxWidth: 120,
+      show: state.width >= 940,
+      Filter: ({ filter, onChange }) => (
+        <input
+          onChange={event => onChange(event.target.value)}
+          style={{ width: '100%' }}
+          value={filter ? filter.value : ''}
+          placeholder="Search..."
+        />
+      ),
+    },
+    {
+      Header: (<div>Current<br />phase</div>),
+      accessor: 'status',
+      Cell: row => (
+        <span>
+          {!row.original.show_pm_fields || row.original.status === null ?
+            '--'
+            :
+            row.original.status.indexOf('Status: ') > -1 ?
+              row.original.status.split(': ')[1]
+              :
+              row.original.status
+          }
+        </span>
+      ),
+      maxWidth: 120,
+      Filter: ({ filter, onChange }) => (
+        <input
+          onChange={event => onChange(event.target.value)}
+          style={{ width: '100%' }}
+          value={filter ? filter.value : ''}
+          placeholder="Search..."
+        />
+      ),
+    },
+    {
+      Header: (<div>Current<br />project budget</div>),
+      accessor: 'total_project_funding_budget_document',
+      maxWidth: 120,
+      show: state.width >= 720,
+      Filter: ({ filter, onChange }) => (
+        <input
+          onChange={event => onChange(event.target.value)}
+          style={{ width: '100%' }}
+          value={filter ? filter.value : ''}
+          placeholder="Search..."
+        />
+      ),
+    },
+    {
+      Header: (<div>Spent</div>),
+      id: 'spent',
+      accessor: project => (!project.show_pm_fields ? '--' : ['$', parseInt(project.total_spent, 10).toLocaleString()].join('')),
+      maxWidth: 120,
+      show: state.width >= 720,
+      Filter: ({ filter, onChange }) => (
+        <input
+          onChange={event => onChange(event.target.value)}
+          style={{ width: '100%' }}
+          value={filter ? filter.value : ''}
+          placeholder="Search..."
+        />
+      ),
+    },
+  ]);
+
+  getColumns = (type, subType) => {
+    if (type === 'Transportation') {
+      return [{
+        Header: subType,
+        columns: this.dataColumns(this.state),
+      }];
+    }
+    return [{
+      Header: type,
+      columns: this.dataColumns(this.state),
+    }];
+  };
+
+  render() {
+    return (<div>
+      <div className="row">
+        <div className="col-sm-12">
+          <Measure
+            client
+            onResize={(contentRect) => {
+              this.setState({
+                width: contentRect.client.width,
+              });
             }}
-            getTdProps={() => {
-              return {
-                style: {
-                  whiteSpace: 'normal',
-                },
-              };
-            }}
-            getTrProps={(state, rowInfo) => {
-              return {
-                style: {
-                  cursor: 'pointer',
-                  background: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '#4077a5' : 'none',
-                  color: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '#fff' : '',
-                  fontWeight: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? 'bold' : 'normal',
-                  fontSize: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '1.2em' : '1em',
-                },
-              };
-            }}
-            SubComponent={row => (
-              <div style={{ paddingLeft: '34px', paddingRight: '34px', paddingBottom: '15px', backgroundColor: '#f6fcff', borderRadius: '0px', border: '2px solid #4077a5' }}>
-                <ProjectDetails {...row.original} hideTitle />
-              </div>
+          >
+            {({ measureRef }) => (
+              <ExpandableAccessibleReactTable
+                // ref={measureRef}
+                tableId="projects"
+                ariaLabel="Capital Projects"
+                data={this.props.data}
+                columns={this.getColumns(this.props.type, this.props.subType)}
+                showPagination
+                defaultPageSize={20}
+                filterable
+                defaultFilterMethod={(filter, row) => {
+                  const id = filter.pivotId || filter.id;
+                  return row[id] !== undefined ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
+                }}
+                getTdProps={() => ({
+                  style: {
+                    whiteSpace: 'normal',
+                  },
+                })}
+                getTrProps={(state, rowInfo) => ({
+                  style: {
+                    cursor: 'pointer',
+                    background: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '#4077a5' : 'none',
+                    color: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '#fff' : '',
+                    fontWeight: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? 'bold' : 'normal',
+                    fontSize: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '1.2em' : '1em',
+                  },
+                })}
+                SubComponent={row => (
+                  <div style={{ paddingLeft: '34px', paddingRight: '34px', paddingBottom: '15px', backgroundColor: '#f6fcff', borderRadius: '0px', border: '2px solid #4077a5' }}>
+                    <ProjectDetails {...row.original} hideTitle />
+                  </div>
+                )}
+              >
+                {(state, makeTable) => (
+                  <div
+                    ref={measureRef}
+                    alt={['Table of', this.props.type, this.props.subType || '', 'bond project statuses'].join(' ')}
+                    style={{ marginTop: '10px' }}
+                  >
+                    {makeTable()}
+                  </div>
+                )}
+              </ExpandableAccessibleReactTable>
             )}
-          />
+          </Measure>
         </div>
       </div>
-    </div>
-  </div>
-);
+    </div>);
+  }
+}
 
 ProjectsTable.propTypes = {
   type: PropTypes.string,

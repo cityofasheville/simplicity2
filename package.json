@@ -81,6 +81,7 @@
     "react-leaflet": "^1.7.4",
     "react-leaflet-google": "^3.2.1",
     "react-leaflet-markercluster": "^1.1.7",
+    "react-measure": "^2.0.2",
     "react-radio-group": "^3.0.2",
     "react-router": "^3.0.0",
     "react-table": "^6.7.4",

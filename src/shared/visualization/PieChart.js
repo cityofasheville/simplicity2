@@ -26,9 +26,12 @@ class PieChart extends React.Component {
         className="ordinal-pie-elements"
         role="img"
         tabIndex={0}
-        alt={this.props.altText}
+        aria-label={this.props.altText}
       >
-        {HorizontalLegend(thisData, d => d, { width: '65%', margin: '0 auto', paddingBottom: '10px' })}
+        <HorizontalLegend
+          formattedData={thisData}
+          style={{ width: '65%', margin: '0 auto', paddingBottom: '10px' }}
+        />
         <div
           className="pie-container"
         >
@@ -36,6 +39,7 @@ class PieChart extends React.Component {
             style={{ height: this.props.height, width: this.props.height, margin: '0 auto' }}
           >
             <ResponsiveOrdinalFrame
+              chartTitle={this.props.altText}
               data={thisData}
               dynamicColumnWidth="magnitude"
               hoverAnnotation
@@ -58,10 +62,15 @@ class PieChart extends React.Component {
               })}
               tooltipContent={(d) => {
                 const textLine = [{
-                  text: `${d.column.name}: ${d.pieces[0].magnitude}`,
+                  text: `${d.column.name}: ${this.props.toolTipFormatter(d.pieces[0].magnitude)}`,
                   color: d.pieces[0].color,
                 }];
-                return Tooltip(textLine, '', { fontWeight: 'bolder' });
+                return (<Tooltip
+                  textLines={textLine}
+                  style={{
+                    fontWeight: 'bolder',
+                  }}
+                />);
               }}
               type={{
                 type: 'bar',
@@ -76,23 +85,23 @@ class PieChart extends React.Component {
 }
 
 PieChart.propTypes = {
-  chartTitle: PropTypes.string,
-  data: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
-  height: PropTypes.number,
   altText: PropTypes.string,
-  doughnut: PropTypes.bool,
+  chartTitle: PropTypes.string,
   colorScheme: PropTypes.string,
+  data: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+  doughnut: PropTypes.bool,
+  height: PropTypes.number,
   innerRadius: PropTypes.number,
   toolTipFormatter: PropTypes.func,
 };
 
 PieChart.defaultProps = {
-  data: [],
-  height: 400,
-  defaultLegend: false,
   altText: 'Pie chart',
-  doughnut: false,
+  chartTitle: '',
   colorScheme: 'bright_colors',
+  data: [],
+  doughnut: false,
+  height: 400,
   innerRadius: 0,
   toolTipFormatter: d => d,
 };

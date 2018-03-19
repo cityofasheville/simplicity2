@@ -54,7 +54,7 @@ class BarChart extends React.Component {
     );
 
     return (
-      <div ref={refNode => this.barExist = true}>
+      <div>
         <h4>{this.props.chartTitle}</h4>
         <br />
         <p>
@@ -108,18 +108,18 @@ class BarChart extends React.Component {
                 })}
                 customHoverBehavior={(d) => {
                   d && d.pieces ?
-                  this.setState({ hover: d.pieces[0].data[this.props.mainAxisDataKey] }) :
-                  this.setState({ hover: null });
+                    this.setState({ hover: d.pieces[0].data[this.props.mainAxisDataKey] }) :
+                    this.setState({ hover: null });
                 }}
                 style={d => (
                   this.state.hover === d[this.props.mainAxisDataKey] ?
                   // For the currently hovered bar, return a brighter fill and add a stroke
-                  {
-                    fill: color(d.color).brighter(0.6).toString(),
-                    stroke: color(d.color).toString(),
-                    strokeWidth: 3,
-                  } :
-                  { fill: d.color })
+                    {
+                      fill: color(d.color).brighter(0.6).toString(),
+                      stroke: color(d.color).toString(),
+                      strokeWidth: 3,
+                    } :
+                    { fill: d.color })
                 }
                 svgAnnotationRules={(d) => {
                   // Don't try to fire when there aren't annotations
@@ -159,10 +159,16 @@ class BarChart extends React.Component {
                     })
                   );
                   if (this.props.layout !== 'horizontal') { textLines.reverse(); }
-                  return Tooltip(textLines, d.column.name);
+                  return (<Tooltip
+                    textLines={textLines}
+                    title={d.column.name}
+                  />);
                 }}
               />
-            {HorizontalLegend(formattedData, this.props.legendLabelFormatter, { marginLeft: '60px' })}
+              <HorizontalLegend
+                formattedData={formattedData}
+                legendLabelFormatter={this.props.legendLabelFormatter}
+              />
             </div>
           </div>
         </div>

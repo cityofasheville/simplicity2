@@ -55,6 +55,7 @@ class LineGraph extends React.Component {
     return (
       <div>
         <h4>{this.props.chartTitle}</h4>
+        <br />
         <p>
           {this.props.chartText.isArray &&
             this.props.chartText.map((textChunk, index) => (<span key={index}>{textChunk}</span>))
@@ -63,7 +64,12 @@ class LineGraph extends React.Component {
             this.props.chartText
           }
         </p>
-        <div className="row">
+        <div
+          className="row"
+          role="img"
+          alt={this.state.altText}
+          tabIndex={0}
+        >
           <div
             className="col-sm-12"
             style={{
@@ -81,13 +87,9 @@ class LineGraph extends React.Component {
                 width: '95%',
                 textAlign: 'center',
               }}
-              role="img"
-              aria-label={this.state.altText}
-              tabIndex={0}
             >
               <ResponsiveXYFrame
                 annotations={this.props.annotations}
-                size={[1200, 450]}
                 responsiveWidth
                 lines={formattedData}
                 xScaleType={scaleTime()}
@@ -97,7 +99,7 @@ class LineGraph extends React.Component {
                 yAccessor={d => +d.value}
                 yExtent={[0, 100]}
                 lineStyle={{ stroke: lineColor, strokeWidth: '4px'}}
-                margin={{ top: 40, right: 40, bottom: 60, left: 60 }}
+                margin={{ top: 10, right: 40, bottom: 50, left: 45 }}
                 axes={[
                   {
                     orient: 'left',
@@ -121,6 +123,8 @@ class LineGraph extends React.Component {
                   {
                     type: 'x',
                     color: 'gray',
+                    disable: ['connector', 'note'],
+                    className: 'semiotic-yHoverLine',
                   },
                   { type: 'frame-hover', className: 'disableFrameHover'},
                   { type: 'vertical-points', r: () => 5},
@@ -143,18 +147,6 @@ class LineGraph extends React.Component {
                   />);
                 }}
                 svgAnnotationRules={d => {
-                  if (d.d.type === 'x' && d.screenCoordinates) {
-                    return (<g key={d.d.label}>
-                      <line
-                        stroke={d.d.color}
-                        strokeWidth={3}
-                        x1={d.screenCoordinates[0]}
-                        x2={d.screenCoordinates[0]}
-                        y1={d.xyFrameState.adjustedPosition[1]}
-                        y2={d.xyFrameState.adjustedSize[1]}
-                      />
-                    </g>);
-                  }
                   if (d.d.type === 'y' && d.screenCoordinates[0]) {
                     return (<g key={d.d.label}>
                       <text
@@ -175,12 +167,13 @@ class LineGraph extends React.Component {
                       />
                     </g>);
                   }
-                  console.log(d)
+                  return null
                 }}
               />
             </div>
           </div>
         </div>
+        <br/>
         {!this.props.hideSummary &&
           // TODO: improve keyboard functionality-- a sighted user who relies on the keyboard can't use the button to see the summary very easily
           // see also bar chart (and maybe make this into a component)
@@ -218,7 +211,7 @@ LineGraph.defaultProps = {
   chartTitle: '',
   toolTipFormatter: null,
   hideSummary: false,
-  height: '450px',
+  height: '100%',
   altText: 'Chart',
 };
 

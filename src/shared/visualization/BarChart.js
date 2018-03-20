@@ -68,7 +68,7 @@ class BarChart extends React.Component {
         <div
           className="row"
           role="img"
-          alt={this.props.altText}
+          alt={this.state.altText}
           tabIndex={0}
         >
           <div
@@ -93,7 +93,7 @@ class BarChart extends React.Component {
                 annotations={this.props.annotations}
                 data={formattedData}
                 hoverAnnotation
-                margin={{ top: 5, right: 40, bottom: 40, left: 60 }}
+                margin={{ top: 10, right: 40, bottom: 50, left: 60 }}
                 oAccessor={this.props.mainAxisDataKey}
                 oLabel={d => {
                   let textAnchor = 'middle';
@@ -140,14 +140,10 @@ class BarChart extends React.Component {
                     { fill: d.color })
                 }
                 svgAnnotationRules={(d) => {
-                  // Don't try to fire when there aren't annotations
-                  if (this.props.annotations.length < 1) { return; }
-
                   if (d.d.budgetAnnotation === true) {
                     // todo: separate this out?
                     return budgetBarAnnotationRule(d, this.props.layout);
                   }
-
                   if (d.d.type === 'line' && d.screenCoordinates[0]) {
                     return (<g key={d.d.label}>
                       <text
@@ -168,6 +164,7 @@ class BarChart extends React.Component {
                     </g>
                     );
                   }
+                  return null;
                 }}
                 tooltipContent={(d) => {
                   const textLines = d.pieces.map(piece =>
@@ -240,7 +237,7 @@ BarChart.defaultProps = {
   data: [],
   dataKeys: [],
   domain: [],
-  height: null,
+  height: '100%',
   hideSummary: false,
   layout: 'vertical',
   legendLabelFormatter: val => val,

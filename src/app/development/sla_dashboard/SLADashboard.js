@@ -55,11 +55,10 @@ const DevelopmentSLADashboard = (props) => {
                   colorScheme="bright_colors"
                 />
               </div>
-              <div className="col-md-6" style={{ marginBotton: '10px' }} >
+              <div className="col-md-6">
                 <BarChart
                   chartTitle="Volume"
                   mainAxisDataKey="displayDate"
-                  legendHeight={40}
                   dataKeys={[[task, 'Past SLA'].join(' '), [task, 'Met SLA'].join(' ')]}
                   data={aggregateData[task]}
                   altText={['Bar chart of number of records meeting SLA for ', task.split(' Total')[0]].join(' ')}

@@ -72,6 +72,7 @@
     "graphql-tag": "^2.6.1",
     "leaflet": "^1.2.0",
     "leaflet.markercluster": "^1.2.0",
+    "merge-prop-functions": "^1.0.0",
     "moment": "^2.21.0",
     "prop-types": "^15.5.10",
     "react": "^16.2.0",

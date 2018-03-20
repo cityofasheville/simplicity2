@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { browserHistory } from 'react-router';
 import { graphql } from 'react-apollo';
-import { LineChart, Line, XAxis, YAxis, ReferenceLine, CartesianGrid, Tooltip, Legend } from 'recharts';
 import Icon from '../../../shared/Icon';
 import { IM_OFFICE } from '../../../shared/iconConstants';
 import { getAverageCounts } from './SLA_utilities';
@@ -36,7 +35,16 @@ const DevelopmentSLADashboard = (props) => {
               <h3>{task} (First Plan Review)</h3>
               <div className="col-md-6">
                 <LineGraph
-                  annotations={[]}
+                  annotations={[
+                    {
+                      type: 'y',
+                      label: '85%',
+                      value: 85,
+                      x: 1,
+                      color: 'green',
+                      disable: ['connector'],
+                    }
+                  ]}
                   chartTitle="Percentage meeting SLA"
                   data={aggregateData[task]}
                   dataKeys={[[task, 'Met SLA Percent'].join(' ')]}

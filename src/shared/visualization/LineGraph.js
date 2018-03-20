@@ -91,7 +91,9 @@ class LineGraph extends React.Component {
                 responsiveWidth
                 lines={formattedData}
                 xScaleType={scaleTime()}
-                xAccessor={d => dateFromSlash(d[this.props.mainAxisDataKey])}
+                xAccessor={d => {
+                  return dateFromSlash(d[this.props.mainAxisDataKey])
+                }}
                 yAccessor={d => +d.value}
                 yExtent={[0, 100]}
                 lineStyle={{ stroke: lineColor, strokeWidth: '4px'}}
@@ -119,8 +121,6 @@ class LineGraph extends React.Component {
                   {
                     type: 'x',
                     color: 'gray',
-                    disable: ['connector', 'note'],
-                    className: 'semiotic-yHoverLine',
                   },
                   { type: 'frame-hover', className: 'disableFrameHover'},
                   { type: 'vertical-points', r: () => 5},
@@ -142,7 +142,42 @@ class LineGraph extends React.Component {
                     }}
                   />);
                 }}
-                />
+                svgAnnotationRules={d => {
+                  if (d.d.type === 'x' && d.screenCoordinates) {
+                    return (<g key={d.d.label}>
+                      <line
+                        stroke={d.d.color}
+                        strokeWidth={3}
+                        x1={d.screenCoordinates[0]}
+                        x2={d.screenCoordinates[0]}
+                        y1={d.xyFrameState.adjustedPosition[1]}
+                        y2={d.xyFrameState.adjustedSize[1]}
+                      />
+                    </g>);
+                  }
+                  if (d.d.type === 'y' && d.screenCoordinates[0]) {
+                    return (<g key={d.d.label}>
+                      <text
+                        x={d.xyFrameState.adjustedSize[0] + 16}
+                        y={d.screenCoordinates[1] + 5}
+                        textAnchor="middle"
+                        stroke={d.d.color}
+                      >
+                        {d.d.label}
+                      </text>
+                      <line
+                        stroke={d.d.color}
+                        strokeWidth={2}
+                        x1={d.xyFrameState.adjustedPosition[0]}
+                        x2={d.xyFrameState.adjustedSize[0]}
+                        y1={d.screenCoordinates[1]}
+                        y2={d.screenCoordinates[1]}
+                      />
+                    </g>);
+                  }
+                  console.log(d)
+                }}
+              />
             </div>
           </div>
         </div>

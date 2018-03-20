@@ -69,7 +69,15 @@ const HomelessnessVeteransExitTime = props => (
         />
       </div>
       <div className="col-md-6">
-        <BarChart layout="horizontal" chartTitle="Average days from identification to positive exit: All Grant & Per Diem programs" mainAxisDataKey="month" dataKeys={['GPD']} colorScheme="bright_colors_2" data={props.data} altText="Bar chart of average days from identification to positive exit: All Grant & Per Diem programs" />
+        <BarChart
+          layout="horizontal"
+          chartTitle="Average days from identification to positive exit: All Grant & Per Diem programs"
+          mainAxisDataKey="month"
+          dataKeys={['GPD']}
+          colorScheme="bright_colors_2"
+          data={props.data}
+          altText="Bar chart of average days from identification to positive exit: All Grant & Per Diem programs"
+        />
       </div>
     </div>
   </div>

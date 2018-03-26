@@ -6,10 +6,12 @@ export const searchResolvers = {
       const query = getSearchText;
       const data = {
         searchText: {
+          __typename: 'searchText',
           search: text,
         },
       };
       cache.writeQuery({ query, data });
+      return data.searchText;
     },
   },
 };

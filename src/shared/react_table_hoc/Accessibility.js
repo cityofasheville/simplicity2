@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import mergeProps from './mergeProps';
+import mergeProps from 'merge-prop-functions';
 
 const getColumnId = (column) => {
   if (column.id) {

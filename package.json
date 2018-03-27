@@ -1,6 +1,6 @@
 {
   "name": "simplicity2",
-  "version": "2.2.3",
+  "version": "2.2.4",
   "description": "Version 2 of SimpliCity",
   "main": "index.js",
   "scripts": {
@@ -39,7 +39,7 @@
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.7.0",
     "html-webpack-plugin": "^3.0.6",
-    "node-sass": "^4.5.3",
+    "node-sass": "^4.7.2",
     "sass-loader": "^6.0.3",
     "style-loader": "^0.20.3",
     "webpack": "3.11.0",
@@ -72,6 +72,7 @@
     "graphql-tag": "^2.6.1",
     "leaflet": "^1.2.0",
     "leaflet.markercluster": "^1.2.0",
+    "merge-prop-functions": "^1.0.0",
     "moment": "^2.21.0",
     "prop-types": "^15.5.10",
     "react": "^16.2.0",

@@ -3,16 +3,43 @@ import { Mark } from 'semiotic-mark';
 import { colorSchemes } from './colorSchemes';
 
 
-export const formatDataForStackedBar = (data, dataKeys, mainAxisDataKey, colorScheme) =>
-  dataKeys.map((k, kIndex) => data.map((d) => {
-    const rVal = {};
-    rVal[mainAxisDataKey] = d[mainAxisDataKey];
-    rVal.label = k || '[error]';
-    rVal.value = d[k] ? d[k] : 0;
-    const thisScheme = colorSchemes[colorScheme];
-    rVal.color = thisScheme[kIndex % thisScheme.length];
-    return rVal;
-  })).reduce((p, c) => p.concat(c));
+export const labelOrder = (formattedData, valueAccessor = 'value') => JSON.parse(JSON.stringify(formattedData))
+  .filter((item, pos, thisArray) =>
+    // Limit it to just the first occurrence
+    pos === thisArray.findIndex(d => d.label === item.label && d.color === item.color)
+  ).map((item) => {
+    item.sum = formattedData
+      .filter(d => d.label === item.label)
+      .reduce((total, num) => {
+        const returnObj = {};
+        returnObj[valueAccessor] = total[valueAccessor] + num.value;
+        return returnObj;
+      });
+    return item;
+  }).sort((a, b) => b.sum[valueAccessor] - a.sum[valueAccessor]);
+
+export const formatDataForStackedBar = (data, dataKeys, mainAxisDataKey, colorScheme) => {
+  const formattedData = dataKeys.map((k, kIndex) => {
+    const thisData = data.map((d) => {
+      const rVal = {};
+      rVal[mainAxisDataKey] = d[mainAxisDataKey];
+      rVal.label = k || '[error]';
+      rVal.value = d[k] ? d[k] : 0;
+      const thisScheme = colorSchemes[colorScheme];
+      rVal.color = thisScheme[kIndex % thisScheme.length];
+      return rVal;
+    })
+    const sum = thisData.reduce((total, num) => {
+      const innerReturnObj = {};
+      innerReturnObj.value = total.value + num.value;
+      return innerReturnObj;
+    }).value
+    return {data: thisData, sum}
+  }).sort((a, b) => b.sum - a.sum)
+    .map(d => d.data)
+    .reduce((p, c) => p.concat(c))
+  return formattedData
+}
 
 export const formatDataForStackedArea = (data, dataKeys, mainAxisDataKey, colorScheme) => {
   const thisScheme = colorSchemes[colorScheme];

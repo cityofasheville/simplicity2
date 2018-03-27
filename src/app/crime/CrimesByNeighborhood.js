@@ -108,7 +108,7 @@ const convertToPieData = (crimeData) => {
   return pieData;
 };
 
-const CrimesByNeighborhood = props => {
+const CrimesByNeighborhood = (props) => {
   if (props.data.loading) { // eslint-disable-line react/prop-types
     return <LoadingAnimation />;
   }

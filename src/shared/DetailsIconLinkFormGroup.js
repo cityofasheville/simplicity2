@@ -5,7 +5,7 @@ const DetailsIconLinkFormGroup = props => (
   <div>
     <a href={props.href} title={props.title} target={props.inWindow ? '_self' : '_blank'}>
       <div className="form-group">
-        <div className="col-xs-12" style={{ marginBottom: '10px' }}>
+        <div className={['col-xs-', props.colWidth].join('')} style={{ marginBottom: '10px' }}>
           <span style={{ marginRight: '5px' }}>{props.icon}</span>
           <span style={{ fontWeight: 'bold' }}>{props.label}</span>
         </div>
@@ -20,6 +20,7 @@ DetailsIconLinkFormGroup.propTypes = {
   href: PropTypes.string,
   title: PropTypes.string,
   inWindow: PropTypes.bool,
+  colWidth: PropTypes.string,
 };
 
 DetailsIconLinkFormGroup.defaultProps = {
@@ -28,6 +29,7 @@ DetailsIconLinkFormGroup.defaultProps = {
   href: 'www.ashevillenc.gov',
   title: 'City of Asheville Website',
   inWindow: false,
+  colWidth: '12',
 };
 
 export default DetailsIconLinkFormGroup;

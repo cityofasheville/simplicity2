@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const DetailsFormGroup = props => (
-  <div className="form-group">
-    <div className="col-xs-12" style={{ marginBottom: '10px' }}>
+  <div className="form-group" style={{ marginBottom: '-15px' }}>
+    <div className={['col-xs-', props.colWidth].join('')} style={{ marginBottom: '10px' }}>
       {props.icon !== null &&
       <span style={{ marginRight: '5px' }}>{props.icon}</span>
       }
@@ -21,6 +21,7 @@ DetailsFormGroup.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   icon: PropTypes.node,
   name: PropTypes.string,
+  colWidth: PropTypes.string,
 };
 
 DetailsFormGroup.defaultProps = {
@@ -30,6 +31,7 @@ DetailsFormGroup.defaultProps = {
   value: '',
   icon: null,
   name: '',
+  colWidth: '12',
 };
 
 export default DetailsFormGroup;

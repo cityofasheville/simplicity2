@@ -1,5 +1,5 @@
 import React from 'react';
-import mergeProps from './mergeProps';
+import mergeProps from 'merge-prop-functions';
 
 export default function expandingRows(WrappedReactTable) {
   class ExpandableRowsReactTable extends React.Component {

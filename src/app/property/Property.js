@@ -22,44 +22,6 @@ const getDollars = (value) => {
   return [initialSymbols, Math.abs(value).toLocaleString()].join('');
 };
 
-const dataColumns = [
-  {
-    Header: 'Civic address ID(s)',
-    accessor: 'civic_address_id',
-    width: 150,
-    Filter: ({ filter, onChange }) => (
-      <input
-        onChange={event => onChange(event.target.value)}
-        style={{ width: '100%' }}
-        value={filter ? filter.value : ''}
-        placeholder="Search..."
-      />
-    ),
-    filterMethod: (filter, row) => {
-      const joinedInfo = row._original.pinnum;
-      return row._original !== undefined ? joinedInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
-    },
-  },
-  {
-    Header: 'Address(es)',
-    accessor: 'Address',
-    Cell: row => (
-      <span>{row.original.address}, {row.original.zipcode}</span>
-    ),
-    Filter: ({ filter, onChange }) => (
-      <input
-        onChange={event => onChange(event.target.value)}
-        style={{ width: '100%' }}
-        value={filter ? filter.value : ''}
-        placeholder="Search..."
-      />
-    ),
-    filterMethod: (filter, row) => {
-      const joinedInfo = [row._original.address, row._original.zipcode].join(', ');
-      return row._original !== undefined ? joinedInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
-    },
-  },
-];
 
 const Property = (props) => {
   if (props.data.loading) {
@@ -68,7 +30,7 @@ const Property = (props) => {
   if (props.data.error) {
     return <Error message={props.data.error.message} />;
   }
-
+  
   const propertyData = props.inTable ? props.data : props.data.properties[0];
   const dataForAddressesTable = [];
   for (let i = 0; i < propertyData.civic_address_ids.length; i += 1) {
@@ -78,6 +40,52 @@ const Property = (props) => {
       zipcode: propertyData.zipcode[i],
     });
   }
+  
+  const dataColumns = [
+    {
+      Header: 'Civic address ID(s)',
+      accessor: 'civic_address_id',
+      width: 150,
+      Filter: ({ filter, onChange }) => (
+        <input
+          onChange={event => onChange(event.target.value)}
+          style={{ width: '100%' }}
+          value={filter ? filter.value : ''}
+          placeholder="Search..."
+        />
+      ),
+      filterMethod: (filter, row) => {
+        const joinedInfo = row._original.pinnum;
+        return row._original !== undefined ? joinedInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
+      },
+    },
+    {
+      Header: 'Address(es)',
+      accessor: 'Address',
+      Cell: row => (
+        <span>
+          {
+            props.inTable ?
+              <span>{row.original.address}, {row.original.zipcode}</span>
+              :
+              <a href={`/address?search=${props.location.query.search}&id=${row.original.civic_address_id}&entities=${props.location.query.entities}&entity=address`}>{row.original.address}, {row.original.zipcode}</a>
+          }
+        </span>
+      ),
+      Filter: ({ filter, onChange }) => (
+        <input
+          onChange={event => onChange(event.target.value)}
+          style={{ width: '100%' }}
+          value={filter ? filter.value : ''}
+          placeholder="Search..."
+        />
+      ),
+      filterMethod: (filter, row) => {
+        const joinedInfo = [row._original.address, row._original.zipcode].join(', ');
+        return row._original !== undefined ? joinedInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
+      },
+    },
+  ];
 
   return (
     <div>

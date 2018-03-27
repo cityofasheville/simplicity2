@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const DetailsFormGroup = props => (
-  <div className="form-group">
+  <div className="form-group" style={{ marginBottom: '-15px' }}>
     <div className={['col-xs-', props.colWidth].join('')} style={{ marginBottom: '10px' }}>
       {props.icon !== null &&
       <span style={{ marginRight: '5px' }}>{props.icon}</span>

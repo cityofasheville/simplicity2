@@ -83,7 +83,13 @@ const Address = (props) => {
         <div className="col-sm-7">
           <fieldset className="detailsFieldset">
             <InCityMessage inTheCity={addressData.is_in_city} />
-            <hr style={{ marginTop: '10px', marginBottom: '10px' }} />
+            <div className="col-xs-12" style={{ marginBottom: '15px', marginTop: '10px' }}>
+              <Map
+                height="250px"
+                data={mapData}
+                center={[addressData.y, addressData.x]}
+              />
+            </div>
             <DetailsFormGroup label="Trash collection" name="trash" value={calculateTrash(addressData.trash_day, addressData.is_in_city)} colWidth="5" hasLabel icon={<Icon path={IM_BIN} size={20} />} />
             <DetailsFormGroup label="Recycling collection" name="recycling" value={calculateRecycling(addressData.recycling_pickup_day, addressData.is_in_city, addressData.recycling_pickup_district)} hasLabel colWidth="7" icon={<Icon path={LI_RECYCLE2} size={20} viewBox="0 0 24 24" />} />
             <DetailsFormGroup
@@ -102,15 +108,8 @@ const Address = (props) => {
               hasLabel
               icon={<Icon path={IM_TRAFFIC_CONE} size={20} />}
             />
-            <DetailsIconLinkFormGroup label="Property details" colWidth="5" title="Property details" href={['/property/?fromAddress=', props.location.query.id, '&search=', props.location.query.search, '&id=', addressData.pinnum, '&entities=', props.location.query.entities].join('')} icon={<Icon path={IM_HOME2} size={20} />} inWindow />
+            <DetailsIconLinkFormGroup label="Property information" colWidth="5" title="Property information" href={['/property/?fromAddress=', props.location.query.id, '&search=', props.location.query.search, '&id=', addressData.pinnum, '&entities=', props.location.query.entities].join('')} icon={<Icon path={IM_HOME2} size={20} />} inWindow />
             <DetailsFormGroup label="Owner" name="owner" value={<div><div>{addressData.owner_name}</div><div>{addressData.owner_address}</div></div>} colWidth="7" hasLabel icon={<Icon path={IM_USER} size={20} />} />
-            <div className="col-xs-12">
-              <Map
-                height="250px"
-                data={mapData}
-                center={[addressData.y, addressData.x]}
-              />
-            </div>
           </fieldset>
         </div>
         {addressData.is_in_city &&

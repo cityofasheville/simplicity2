@@ -1,8 +1,8 @@
 import React from 'react';
-import { IndexLink, Link } from 'react-router';
+import { IndexLink, Link, browserHistory } from 'react-router';
 import Icon from '../shared/Icon';
 import { IM_SEARCH } from '../shared/iconConstants';
-import AuthControl from '../utilities/auth/authControl';
+//import AuthControl from '../utilities/auth/authControl';
 
 export default class Navbar extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -57,10 +57,10 @@ export default class Navbar extends React.Component { // eslint-disable-line rea
             </div>
             <div className={[this.state.navbarCollapse, 'navbar-collapse'].join(' ')}>
               <ul className="nav navbar-nav navbar-right">
-                <li><Link to="/my-simplicity" activeClassName="active">My SimpliCity</Link></li>
+                {/* <li><Link to="/my-simplicity" activeClassName="active">My SimpliCity</Link></li> */}
                 <li><Link to="/dashboards" activeClassName="active">Dashboards</Link></li>
-                <li><a href="/search"><Icon path={IM_SEARCH} size={16} /></a></li>
-                <AuthControl />
+                <li><a onClick={() => { browserHistory.push('/search?entities=address,property,neighborhood,street,owner,google') }}><Icon path={IM_SEARCH} size={16} /></a></li>
+                {/* <AuthControl /> */}
               </ul>
             </div>
           </div>

@@ -142,18 +142,18 @@ export const getBoundsFromPolygonData = data => (
   getBounds(getAllPolygonPoints(data))
 );
 
-export const formatMaintenanceData = data => {
+export const formatMaintenanceData = (data) => {
   const maintenanceData = [];
   for (let centerline of data) {
     const segmentInfo = {};
     segmentInfo.line = centerline.line.map(point => [point.y, point.x]);
     if (centerline.maintenance_entities.length === 1) {
       if (centerline.maintenance_entities.indexOf('NCDOT') > -1) {
-        segmentInfo.color = '#920000';
+        segmentInfo.color = '#506aed';
       } else if (centerline.maintenance_entities.indexOf('CITY OF ASHEVILLE') > -1) {
-        segmentInfo.color = '#006DDB';
+        segmentInfo.color = '#6fe8cb';
       } else {
-        segmentInfo.color = '#777777';
+        segmentInfo.color = '#f95eff';
       }
     }
     if (centerline.maintenance_entities.length > 1) {

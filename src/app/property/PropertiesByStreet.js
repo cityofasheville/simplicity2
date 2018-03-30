@@ -9,6 +9,7 @@ import Property from './Property';
 import { getBoundsFromStreetData, convertStreetLinesToLatLngArrays, combinePolygonsFromPropertyList } from '../../utilities/mapUtilities';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import Error from '../../shared/Error';
+import expandingRows from '../../shared/react_table_hoc/ExpandingRows'
 
 const dataColumns = [
   {
@@ -73,6 +74,8 @@ const PropertiesByStreet = props => {
     return <Error message={props.data.error.message} />; // eslint-disable-line react/prop-types
   }
 
+  const ExpandableAccessibleReactTable = expandingRows(AccessibleReactTable);
+
   return (
     <div>
       <div className="row">
@@ -84,7 +87,7 @@ const PropertiesByStreet = props => {
             <div className="alert alert-info">No results found</div>
           :
             <div alt={['Table of addresses'].join(' ')} style={{ marginTop: '10px' }}>
-              <AccessibleReactTable
+              <ExpandableAccessibleReactTable
                 ariaLabel="Street Properties"
                 data={props.data.properties_by_street}
                 columns={dataColumns}
@@ -95,14 +98,8 @@ const PropertiesByStreet = props => {
                   const id = filter.pivotId || filter.id;
                   return row[id] !== undefined ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
                 }}
-                getTdProps={(state, rowInfo) => {
+                getTdProps={() => {
                   return {
-                    onClick: (e, handleOriginal) => {
-                      document.getElementsByClassName('rt-expandable')[rowInfo.viewIndex].click();
-                      if (handleOriginal) {
-                        handleOriginal();
-                      }
-                    },
                     style: {
                       whiteSpace: 'normal',
                     },

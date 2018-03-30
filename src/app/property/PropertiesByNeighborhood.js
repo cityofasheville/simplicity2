@@ -98,14 +98,8 @@ const PropertiesByNeighborhood = (props) => {
                   const id = filter.pivotId || filter.id;
                   return row[id] !== undefined ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
                 }}
-                getTdProps={(state, rowInfo) => {
+                getTdProps={() => {
                   return {
-                    onClick: (e, handleOriginal) => {
-                      document.getElementsByClassName('rt-expandable')[rowInfo.viewIndex].click();
-                      if (handleOriginal) {
-                        handleOriginal();
-                      }
-                    },
                     style: {
                       whiteSpace: 'normal',
                     },

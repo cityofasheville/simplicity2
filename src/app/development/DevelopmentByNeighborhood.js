@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactTable from 'react-table';
 import L from 'leaflet';
 import { graphql } from 'react-apollo';
 import moment from 'moment';

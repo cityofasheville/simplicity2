@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactTable from 'react-table';
+import AccessibleReactTable from 'accessible-react-table';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -84,7 +84,8 @@ const PropertiesByStreet = props => {
             <div className="alert alert-info">No results found</div>
           :
             <div alt={['Table of addresses'].join(' ')} style={{ marginTop: '10px' }}>
-              <ReactTable
+              <AccessibleReactTable
+                ariaLabel="Street Properties"
                 data={props.data.properties_by_street}
                 columns={dataColumns}
                 showPagination={props.data.properties_by_street.length > 20}

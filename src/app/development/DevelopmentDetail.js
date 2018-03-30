@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactTable from 'react-table';
+import { accessibility } from 'accessible-react-table';
 import moment from 'moment';
 import DetailsFormGroup from '../../shared/DetailsFormGroup';
 import Icon from '../../shared/Icon';
@@ -46,6 +47,7 @@ const getContractorData = (contractors, licenses) => {
 
 const DevelopmentDetail = (props) => {
   const contractorData = getContractorData(props.data.contractor_names, props.data.contractor_license_numbers);
+  const AccessibleReactTable = accessibility(ReactTable);
   return (
     <div>
       {props.standalone &&
@@ -82,8 +84,9 @@ const DevelopmentDetail = (props) => {
                 <DetailsFormGroup label="Permit subtype" name="permit_subtype" value={props.data.permit_subtype} hasLabel />
               </div>
             </div>
-            <div alt={['Table of contractors'].join(' ')} style={{ marginRight: '10px', marginLeft: '10px' }}>
-              <ReactTable
+            <div style={{ marginRight: '10px', marginLeft: '10px' }}>
+              <AccessibleReactTable
+                ariaLabel="Contractors"
                 data={contractorData}
                 columns={dataColumns}
                 showPagination={contractorData.length > 5}
@@ -104,7 +107,8 @@ const DevelopmentDetail = (props) => {
             </div>
             {props.data.comments.length > 0 &&
               <div alt={['Table of comments'].join(' ')} style={{ marginTop: '10px', marginRight: '10px', marginLeft: '10px' }}>
-                <ReactTable
+                <AccessibleReactTable
+                  ariaLabel="Comments"
                   data={props.data.comments}
                   getTdProps={(state, rowInfo) => {
                     return {

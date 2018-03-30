@@ -1,7 +1,7 @@
 import React from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import ReactTable from 'react-table';
+import AccessibleReactTable from 'accessible-react-table';
 import EmailDownload from '../../shared/EmailDownload';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import Error from '../../shared/Error';
@@ -82,8 +82,9 @@ const MaintenanceByStreet = (props) => {
         <EmailDownload downloadData={props.data.streets} fileName="maintenance_by_street.csv" />
       </div>
       <div className="col-sm-12">
-        <div id="listView" hidden={props.location.query.view !== 'list'} alt={['Table of addresses'].join(' ')} style={{ marginTop: '10px' }}>
-          <ReactTable
+        <div id="listView" hidden={props.location.query.view !== 'list'} style={{ marginTop: '10px' }}>
+          <AccessibleReactTable
+            ariaLabel="Street Maintenance"
             data={props.data.streets}
             columns={dataColumns}
             showPagination={props.data.streets.length > 20}

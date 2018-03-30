@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import ReactTable from 'react-table';
+import AccessibleReactTable from 'accessible-react-table';
+import expandingRows from '../../shared/react_table_hoc/ExpandingRows';
 import DevelopmentDetail from './DevelopmentDetail';
 import Icon from '../../shared/Icon';
 import { IM_HOME2, IM_MAP5, IM_OFFICE, IM_DIRECTION, IM_LIBRARY2, IM_FIRE, IM_USERS4, IM_COOK, IM_CITY, LI_WALKING, IM_MUG } from '../../shared/iconConstants';
@@ -122,14 +123,17 @@ const DevelopmentTable = (props) => {
     },
   ];
 
+  const ExpandableAccessibleReactTable = expandingRows(AccessibleReactTable);
+
   return (
     <div>
       <div className="col-sm-12">
         {props.data.length < 1 ?
           <div className="alert alert-info">No results found</div>
         :
-          <div alt={['Table of development'].join(' ')} style={{ marginTop: '10px' }}>
-            <ReactTable
+          <div style={{ marginTop: '10px' }}>
+            <ExpandableAccessibleReactTable
+              ariaLabel="Development"
               data={props.data}
               columns={dataColumns}
               showPagination={props.data.length > 20}
@@ -139,14 +143,8 @@ const DevelopmentTable = (props) => {
                 const id = filter.pivotId || filter.id;
                 return row[id] !== undefined ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
               }}
-              getTdProps={(state, rowInfo) => {
+              getTdProps={() => {
                 return {
-                  onClick: (e, handleOriginal) => {
-                    document.getElementsByClassName('rt-expandable')[rowInfo.viewIndex].click();
-                    if (handleOriginal) {
-                      handleOriginal();
-                    }
-                  },
                   style: {
                     whiteSpace: 'normal',
                   },

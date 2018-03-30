@@ -1,6 +1,7 @@
 import React from 'react';
 import { graphql } from 'react-apollo';
 import ReactTable from 'react-table';
+import { accessibility } from 'accessible-react-table';
 import gql from 'graphql-tag';
 import DetailsTable from '../../shared/DetailsTable';
 import DetailsFormGroup from '../../shared/DetailsFormGroup';
@@ -79,6 +80,8 @@ const Property = (props) => {
     });
   }
 
+  const AccessibleReactTable = accessibility(ReactTable);
+
   return (
     <div>
       {props.inTable !== true &&
@@ -101,8 +104,9 @@ const Property = (props) => {
             </div>
             <div className="row">
               <div className="col-xs-12">
-                <div alt={['Table of addresses'].join(' ')} style={{ marginRight: '10px', marginLeft: '10px' }}>
-                  <ReactTable
+                <div style={{ marginRight: '10px', marginLeft: '10px' }}>
+                  <AccessibleReactTable
+                    ariaLabel="Property Addresses"
                     data={dataForAddressesTable}
                     columns={dataColumns}
                     showPagination={dataForAddressesTable.length > 5}

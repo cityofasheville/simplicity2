@@ -64,7 +64,7 @@ const dataColumns = [
   },
 ];
 
-const Owner = props => {
+const Owner = (props) => {
   if (props.data.loading) {
     return <LoadingAnimation />;
   }
@@ -107,7 +107,7 @@ const Owner = props => {
           {
             props.location.query.view === 'map' ?
               <Map bounds={getBoundsFromPropertyList(polygons)} drawPolygon polygonData={combinePolygonsFromPropertyList(props.data.properties)} />
-            :
+              :
               <div style={{ marginTop: '10px' }}>
                 <ExpandableAccessibleReactTable
                   ariaLabel="Owner's Properties"
@@ -139,8 +139,11 @@ const Owner = props => {
                     };
                   }}
                   SubComponent={row => (
-                    <div style={{ paddingLeft: '34px', paddingRight: '34px', paddingTop: '15px', backgroundColor: '#f6fcff', borderRadius: '0px', border: '2px solid #4077a5' }}>
-                      <Property inTable data={row.original} />
+                    <div style={{
+                      paddingLeft: '34px', paddingRight: '34px', paddingTop: '15px', backgroundColor: '#f6fcff', borderRadius: '0px', border: '2px solid #4077a5',
+                    }}
+                    >
+                      <Property inTable data={row.original} location={props.location} />
                     </div>
                   )}
                 />

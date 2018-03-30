@@ -80,7 +80,7 @@ const Map = (props) => {
           {props.drawMaintenance &&
             props.maintenanceData.map((line, index) =>
               <Polyline
-                key={['maintenance_line', index].join('_')} positions={line.line} weight={5} color={line.color}
+                key={['maintenance_line', index].join('_')} positions={line.line} weight={10} opacity={0.8} color={line.color}
               >
                 <Popup>
                   {line.popup}

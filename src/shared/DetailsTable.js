@@ -27,7 +27,7 @@ const DetailsTable = (props) => {
             columns={props.columns}
             defaultPageSize={props.data.length}
             showPagination={false}
-            style={{ marginRight: '10px', marginLeft: '10px' }}
+            style={{ marginRight: '10px', marginLeft: '15px', width: '95%' }}
           />
         </div>
       </div>

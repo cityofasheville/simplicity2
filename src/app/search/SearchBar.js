@@ -35,7 +35,7 @@ class SearchBar extends React.Component {
     this.handleSearchClick = this.handleSearchClick.bind(this);
   }
 
-  handleKeyUp(e) {
+  handleKeyUp(e) { 
     this.setState({
       searchTermToUse: e.target.value,
     });
@@ -49,6 +49,7 @@ class SearchBar extends React.Component {
     this.props.onSearchClick(value);
   }
 
+  
   render() {
     return (
       <div className="col-xs-12">

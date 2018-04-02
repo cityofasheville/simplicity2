@@ -1,9 +1,10 @@
 import React from 'react';
+import { accessibility } from 'accessible-react-table';
 import ReactTable from 'react-table';
 import moment from 'moment';
 
 //const parseNotes = (notes) => {
-  // this function could be improved for matching with the 'Eastern Standard Time' string - 
+  // this function could be improved for matching with the 'Eastern Standard Time' string -
   // now if anyone writes a date in their comment itself it will separate it to a new line
   // also other parsing
 //   const re = /(\d+)(\/)(\d+)(?:\/)(?:(\d+)\s+(\d+):(\d+)(?::(\d+))?(?:\.(\d+))?)?/g;
@@ -106,35 +107,39 @@ const dataColumns = [
   },
 ];
 
-const ProjectFlowTable = props => (
-  <div>
-    <div className="col-sm-12">
-      {props.data.length < 1 ?
-        <div className="alert alert-info">No results found</div>
-      :
-        <div alt={['Table of development'].join(' ')} style={{ marginTop: '10px' }} id={props.id}>
-          <ReactTable
-            data={props.data}
-            columns={dataColumns}
-            showPagination={props.data.length > 8}
-            defaultPageSize={props.data.length <= 8 ? props.data.length : 8}
-            filterable
-            defaultFilterMethod={(filter, row) => {
-              const id = filter.pivotId || filter.id;
-              return row[id] !== undefined ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
-            }}
-            getTdProps={(state, rowInfo) => {
-              return {
-                style: {
-                  whiteSpace: 'normal',
-                },
-              };
-            }}
-          />
-        </div>
-      }
+const ProjectFlowTable = props => {
+  const AccessibleReactTable = accessibility(ReactTable);
+  return (
+    <div>
+      <div className="col-sm-12">
+        {props.data.length < 1 ?
+          <div className="alert alert-info">No results found</div>
+        :
+          <div style={{ marginTop: '10px' }} id={props.id}>
+            <AccessibleReactTable
+              ariaLabel="Projects"
+              data={props.data}
+              columns={dataColumns}
+              showPagination={props.data.length > 8}
+              defaultPageSize={props.data.length <= 8 ? props.data.length : 8}
+              filterable
+              defaultFilterMethod={(filter, row) => {
+                const id = filter.pivotId || filter.id;
+                return row[id] !== undefined ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
+              }}
+              getTdProps={(state, rowInfo) => {
+                return {
+                  style: {
+                    whiteSpace: 'normal',
+                  },
+                };
+              }}
+            />
+          </div>
+        }
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default ProjectFlowTable;

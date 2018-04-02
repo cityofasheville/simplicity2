@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactTable from 'react-table';
+import AccessibleReactTable from 'accessible-react-table';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import LoadingAnimation from '../../shared/LoadingAnimation';
@@ -15,6 +15,7 @@ import { IM_USER } from '../../shared/iconConstants';
 import { getBoundsFromPropertyList, combinePolygonsFromPropertyList } from '../../utilities/mapUtilities';
 import Map from '../../shared/visualization/Map';
 import { refreshLocation } from '../../utilities/generalUtilities';
+import expandingRows from "../../shared/react_table_hoc/ExpandingRows";
 
 const dataColumns = [
   {
@@ -79,6 +80,8 @@ const Owner = (props) => {
 
   const polygons = Object.keys(props.data.properties).map(key => props.data.properties[key].polygons);
 
+  const ExpandableAccessibleReactTable = expandingRows(AccessibleReactTable);
+
   return (
     <div>
       <PageHeader h1={props.data.properties[0].owner} h3="About this owner's properties" icon={<Icon path={IM_USER} size={50} />}>
@@ -105,8 +108,9 @@ const Owner = (props) => {
             props.location.query.view === 'map' ?
               <Map bounds={getBoundsFromPropertyList(polygons)} drawPolygon polygonData={combinePolygonsFromPropertyList(props.data.properties)} />
               :
-              <div alt={['Table of development'].join(' ')} style={{ marginTop: '10px' }}>
-                <ReactTable
+              <div style={{ marginTop: '10px' }}>
+                <ExpandableAccessibleReactTable
+                  ariaLabel="Owner's Properties"
                   data={props.data.properties}
                   columns={dataColumns}
                   showPagination={props.data.properties.length > 20}
@@ -116,14 +120,8 @@ const Owner = (props) => {
                     const id = filter.pivotId || filter.id;
                     return row[id] !== undefined ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
                   }}
-                  getTdProps={(state, rowInfo) => {
+                  getTdProps={() => {
                     return {
-                      onClick: (e, handleOriginal) => {
-                        document.getElementsByClassName('rt-expandable')[rowInfo.viewIndex].click();
-                        if (handleOriginal) {
-                          handleOriginal();
-                        }
-                      },
                       style: {
                         whiteSpace: 'normal',
                       },

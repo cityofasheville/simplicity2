@@ -1,6 +1,7 @@
 import React from 'react';
 import { graphql } from 'react-apollo';
 import ReactTable from 'react-table';
+import { accessibility } from 'accessible-react-table';
 import gql from 'graphql-tag';
 import DetailsTable from '../../shared/DetailsTable';
 import DetailsFormGroup from '../../shared/DetailsFormGroup';
@@ -30,7 +31,7 @@ const Property = (props) => {
   if (props.data.error) {
     return <Error message={props.data.error.message} />;
   }
-  
+
   const propertyData = props.inTable ? props.data : props.data.properties[0];
   const dataForAddressesTable = [];
   for (let i = 0; i < propertyData.civic_address_ids.length; i += 1) {
@@ -40,7 +41,7 @@ const Property = (props) => {
       zipcode: propertyData.zipcode[i],
     });
   }
-  
+
   const dataColumns = [
     {
       Header: 'Civic address ID(s)',
@@ -86,6 +87,8 @@ const Property = (props) => {
       },
     },
   ];
+
+  const AccessibleReactTable = accessibility(ReactTable);
 
   return (
     <div>
@@ -151,8 +154,9 @@ const Property = (props) => {
                     <DetailsFormGroup colWidth="6" label="Tax exempt" name="tax_exempt" value={propertyData.tax_exempt ? 'Yes' : 'No'} hasLabel />
                     <DetailsFormGroup colWidth="6" label="Appraisal area" name="appraisal_area" value={propertyData.appraisal_area} hasLabel />
                     <div className="row">
-                      <div alt={['Table of addresses'].join(' ')} className="col-xs-12" style={{ marginRight: '10px', marginLeft: '15px', width: '95%' }}>
-                        <ReactTable
+                      <div className="col-xs-12" style={{ marginRight: '10px', marginLeft: '15px', width: '95%' }}>
+                        <AccessibleReactTable
+                          ariaLabel="Property Addresses"
                           data={dataForAddressesTable}
                           columns={dataColumns}
                           showPagination={dataForAddressesTable.length > 5}

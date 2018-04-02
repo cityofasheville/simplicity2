@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactTable from 'react-table';
+import AccessibleReactTable from 'accessible-react-table';
 import Measure from 'react-measure';
 import ProjectDetails from './ProjectDetails';
 import { mapProjectToCategory } from './cip_utilities';
 import Icon from '../../shared/Icon';
 import { IM_SHIELD3, IM_TREE, IM_HOME2, IM_BUS, LI_BOLD } from '../../shared/iconConstants';
-import accessibility from '../../shared/react_table_hoc/Accessibility';
 import expandingRows from '../../shared/react_table_hoc/ExpandingRows';
 
 const getIcon = (category, isExpanded) => {
@@ -30,7 +29,7 @@ const getIcon = (category, isExpanded) => {
   }
 };
 
-const ExpandableAccessibleReactTable = expandingRows(accessibility(ReactTable));
+const ExpandableAccessibleReactTable = expandingRows(AccessibleReactTable);
 
 class ProjectsTable extends React.Component {
   state = {};

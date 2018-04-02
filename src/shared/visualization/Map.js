@@ -4,6 +4,7 @@ import L from 'leaflet';
 import { Map as LeafletMap, Marker, TileLayer, Popup, Circle, Polyline, Polygon, LayersControl } from 'react-leaflet';
 import { GoogleLayer } from 'react-leaflet-google';
 import MarkerClusterGroup from 'react-leaflet-markercluster';
+import MapLegendControl from './MapLegendControl';
 
 // using open street map for now because that way can use the clusters, etc.
 
@@ -41,6 +42,16 @@ const Map = (props) => {
   return (
     <div style={{ height: props.height, width: props.width }}>
       <LeafletMap className="markercluster-map" center={shouldZoomToNonCenter ? zoomTo : props.center} zoom={props.zoom} maxZoom={18} bounds={props.bounds === null ? getBounds(shouldZoomToNonCenter ? zoomTo : props.center, shouldZoomToNonCenter ? 83 : props.within) : props.bounds}>
+        <MapLegendControl>
+          <div className="legendIcon">Legend</div>
+          <div className="legend">
+            <div className="closeLegend" onClick={(e) => { e.target.parentNode.style.display = 'none' }}>X</div>
+            <div className="legendItem1">Strong Support</div>
+            <div className="legendItem2">Weak Support</div>
+            <div className="legendItem3">Weak Oppose</div>
+            <div className="legendItem4">Strong Oppose</div>
+          </div>
+        </MapLegendControl>
         <LayersControl position="topright">
           <BaseLayer checked name="OpenStreetMap">
             <TileLayer

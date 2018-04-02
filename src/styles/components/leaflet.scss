@@ -1,3 +1,26 @@
 .leaflet-container {
   height: 100%;
 }
+
+.legend {
+  display: none;
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  background: white;
+  border: 2px solid #c2bfba;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.legendIcon {
+  background: white;
+  border: 2px solid #c2bfba;
+  border-radius: 4px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.closeLegend {
+  cursor: pointer;
+}

@@ -11,6 +11,7 @@
   border: 2px solid #c2bfba;
   border-radius: 4px;
   padding: 10px;
+  overflow-y: auto;
 }
 
 .legendIcon {
@@ -22,5 +23,12 @@
 }
 
 .closeLegend {
+  position: absolute;
+  right: 5px;
+  top: 3px;
   cursor: pointer;
+}
+
+.closeLegend:hover {
+  color: #237cc9  !important;
 }

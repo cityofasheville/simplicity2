@@ -74,6 +74,30 @@ const getMarker = (type) => {
   }
 };
 
+const createLegend = (crimeData) => {
+  const crimeTypes = [];
+  let crimeTypeAlreadyPresent;
+  for (let i = 0; i < crimeData.length; i += 1) {
+    crimeTypeAlreadyPresent = false;
+    for (let j = 0; j < crimeTypes.length; j += 1) {
+      if (crimeTypes[j] === crimeData[i].offense_long_description) {
+        crimeTypeAlreadyPresent = true;
+        break;
+      }
+    }
+    if (!crimeTypeAlreadyPresent) {
+      crimeTypes.push(crimeData[i].offense_long_description);
+    }
+  }
+  return (
+    <div style={{ width: '160px' }}>
+      {crimeTypes.map(type => (
+        <div key={`legendItem-${type}`} style={{ width: '160px', marginBottom: '5px' }}><img src={getMarker(type)} style={{ display: 'inline-block', width: '25px', verticalAlign: 'top' }}></img><span style={{ marginLeft: '5px', display: 'inline-block', width: '130px' }}>{type}</span></div>
+      ))}
+    </div>
+  );
+};
+
 const convertToPieData = (crimeData) => {
   // Group crimes to less categories?? Right now just show top 8 and Other
   let pieData = [];
@@ -167,6 +191,7 @@ const CrimesByAddress = (props) => {
             <Map
               data={mapData}
               showCenter
+              legend={createLegend(props.data.crimes_by_address)}
               center={props.location.query.x !== '' ? [parseFloat(props.location.query.y), parseFloat(props.location.query.x)] : null}
               centerLabel={props.location.query.label}
               drawCircle

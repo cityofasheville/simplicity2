@@ -7,7 +7,7 @@ const Icon = props => {
   const styles = {
     svg: {
       display: 'inline-block',
-      verticalAlign: 'middle',
+      verticalAlign: props.verticalAlign,
     },
     path: {
       fill: props.color || 'currentColor',
@@ -40,10 +40,12 @@ Icon.propTypes = {
   size: PropTypes.number,
   color: PropTypes.string,
   viewBox: PropTypes.string,
+  verticalAlign: PropTypes.string,
 };
 
 Icon.defaultProps = {
   size: 16,
+  verticalAlign: 'middle',
 };
 
 export default Icon;

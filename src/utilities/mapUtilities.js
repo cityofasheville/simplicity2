@@ -1,4 +1,6 @@
 import React from 'react';
+import Icon from '../shared/Icon';
+import { IM_CIRCLE2 } from '../shared/iconConstants'
 
 const getMaintenanceInfo = (entity, comma) => {
   if (entity === null) {
@@ -150,17 +152,44 @@ export const formatMaintenanceData = (data) => {
     if (centerline.maintenance_entities.length === 1) {
       if (centerline.maintenance_entities.indexOf('NCDOT') > -1) {
         segmentInfo.color = '#506aed';
+        segmentInfo.maintenance_entity = 'NCDOT';
       } else if (centerline.maintenance_entities.indexOf('CITY OF ASHEVILLE') > -1) {
         segmentInfo.color = '#6fe8cb';
+        segmentInfo.maintenance_entity = 'CITY OF ASHEVILLE';
       } else {
         segmentInfo.color = '#f95eff';
+        segmentInfo.maintenance_entity = centerline.maintenance_entities[0] === null ? 'NO INFORMATION AVAILABLE' : centerline.maintenance_entities[0];
       }
     }
     if (centerline.maintenance_entities.length > 1) {
       segmentInfo.color = '#DB6D00';
+      segmentInfo.maintenance_entity = 'MULTIPLE';
     }
     segmentInfo.popup = (<div><b>Centerline ID</b><div>{parseInt(centerline.centerline_id, 10)}</div><br /><b>Maintenance</b>{centerline.maintenance_entities.map((item, idx) => <div key={idx}>{getMaintenanceInfo(item, centerline.maintenance_entities.length > 1 && idx < centerline.maintenance_entities.length - 1)}</div>)}<br /></div>);
     maintenanceData.push(segmentInfo);
   }
   return maintenanceData;
+};
+
+export const createMaintenanceLegend = (data) => {
+  const maintenanceEntities = [];
+  const colors = [];
+  let entityAlreadyPresent;
+  for (let i = 0; i < data.length; i += 1) {
+    entityAlreadyPresent = false;
+    if (maintenanceEntities.indexOf(data[i].maintenance_entity) > -1) {
+      entityAlreadyPresent = true;
+    }
+    if (!entityAlreadyPresent) {
+      maintenanceEntities.push(data[i].maintenance_entity);
+      colors.push(data[i].color);
+    }
+  }
+  return (
+    <div style={{ width: '160px' }}>
+      {maintenanceEntities.map((type, index) => (
+        <div key={`legendItem-${type}`} style={{ width: '160px', marginBottom: '5px' }}><Icon path={IM_CIRCLE2} size={16} color={colors[index]} verticalAlign="top" /><span style={{ marginLeft: '5px', display: 'inline-block', width: '130px' }}>{type}</span></div>
+      ))}
+    </div>
+  );
 };

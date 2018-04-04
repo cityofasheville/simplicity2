@@ -6,10 +6,9 @@ import EmailDownload from '../../shared/EmailDownload';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import Error from '../../shared/Error';
 import Map from '../../shared/visualization/Map';
-import { getBoundsFromStreetData, formatMaintenanceData, getBounds } from '../../utilities/mapUtilities';
+import { getBoundsFromStreetData, formatMaintenanceData, getBounds, createMaintenanceLegend } from '../../utilities/mapUtilities';
 import Icon from '../../shared/Icon';
 import { IM_MAP5 } from '../../shared/iconConstants';
-
 
 const getMaintenanceInfo = (entity, comma) => {
   if (entity === null) {
@@ -108,7 +107,7 @@ const MaintenanceByStreet = (props) => {
           {props.data.streets.length === 0 || props.location.query.view === 'list' ?
             <div className="alert alert-info">No results found</div>
             :
-            <Map maintenanceData={formatMaintenanceData(props.data.streets)} drawMaintenance bounds={props.location.query.bounds !== undefined & props.location.query.bounds !== '' ? JSON.parse(props.location.query.bounds) : getBoundsFromStreetData(props.data.streets)} />
+            <Map legend={createMaintenanceLegend(formatMaintenanceData(props.data.streets))} maintenanceData={formatMaintenanceData(props.data.streets)} drawMaintenance bounds={props.location.query.bounds !== undefined & props.location.query.bounds !== '' ? JSON.parse(props.location.query.bounds) : getBoundsFromStreetData(props.data.streets)} />
           }
         </div>
       </div>

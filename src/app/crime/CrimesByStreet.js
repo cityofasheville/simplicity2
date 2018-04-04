@@ -75,6 +75,30 @@ const getMarker = (type) => {
   }
 };
 
+const createLegend = (crimeData) => {
+  const crimeTypes = [];
+  let crimeTypeAlreadyPresent;
+  for (let i = 0; i < crimeData.length; i += 1) {
+    crimeTypeAlreadyPresent = false;
+    for (let j = 0; j < crimeTypes.length; j += 1) {
+      if (crimeTypes[j] === crimeData[i].offense_long_description) {
+        crimeTypeAlreadyPresent = true;
+        break;
+      }
+    }
+    if (!crimeTypeAlreadyPresent) {
+      crimeTypes.push(crimeData[i].offense_long_description);
+    }
+  }
+  return (
+    <div style={{ width: '160px' }}>
+      {crimeTypes.map(type => (
+        <div key={`legendItem-${type}`} style={{ width: '160px', marginBottom: '5px' }}><img src={getMarker(type)} style={{ display: 'inline-block', width: '25px', verticalAlign: 'top' }}></img><span style={{ marginLeft: '5px', display: 'inline-block', width: '130px' }}>{type}</span></div>
+      ))}
+    </div>
+  );
+};
+
 const convertToPieData = (crimeData) => {
   // Group crimes to less categories?? Right now just show top 8 and Other
   let pieData = [];
@@ -165,7 +189,7 @@ const CrimesByStreet = props => {
           {props.data.crimes_by_street.length === 0 || props.location.query.view !== 'map' ?
             <div className="alert alert-info">No results found</div>
             :
-            <Map data={mapData} bounds={getBoundsFromStreetData(props.data.streets)} drawStreet streetData={convertStreetLinesToLatLngArrays(props.data.streets)} zoomToPoint={(props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== '') ? props.location.query.zoomToPoint : null} />
+            <Map data={mapData} legend={createLegend(props.data.crimes_by_street)} bounds={getBoundsFromStreetData(props.data.streets)} drawStreet streetData={convertStreetLinesToLatLngArrays(props.data.streets)} zoomToPoint={(props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== '') ? props.location.query.zoomToPoint : null} />
           }
         </div>
       </div>

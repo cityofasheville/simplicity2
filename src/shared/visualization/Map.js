@@ -43,7 +43,7 @@ const Map = (props) => {
 
   return (
     <div style={{ height: props.height, width: props.width }}>
-      <LeafletMap className="markercluster-map" center={shouldZoomToNonCenter ? zoomTo : props.center} zoom={props.zoom} maxZoom={18} bounds={props.bounds === null ? getBounds(shouldZoomToNonCenter ? zoomTo : props.center, shouldZoomToNonCenter ? 83 : props.within) : props.bounds}>
+      <LeafletMap className="markercluster-map" center={shouldZoomToNonCenter ? zoomTo : props.center} zoom={props.zoom} maxZoom={18} bounds={props.bounds === null ? getBounds(shouldZoomToNonCenter ? zoomTo : props.center, shouldZoomToNonCenter ? 660 : props.within) : props.bounds}>
         <LayersControl position="topright">
           <BaseLayer checked name="OpenStreetMap">
             <TileLayer
@@ -77,7 +77,7 @@ const Map = (props) => {
           }
           {props.drawStreet &&
             props.streetData.map((line, index) =>
-              <Polyline key={['street_line', index].join('_')} positions={line} weight={5} />
+              <Polyline key={['street_line', index].join('_')} positions={line} weight={5} className="noPointer" />
             )
           }
           {props.drawMaintenance &&

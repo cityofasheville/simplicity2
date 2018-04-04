@@ -10,11 +10,13 @@ export const timeOptions = [
 ];
 
 export const extentOptions = [
-  { display: 'a quarter block (27.5 yards)', value: '83' },
-  { display: 'half a block (55 yards)', value: '165' },
+  // { display: 'a quarter block (27.5 yards)', value: '83' },
+  // { display: 'half a block (55 yards)', value: '165' },
   { display: 'a city block (110 yards)', value: '330' },
   { display: 'a couple city blocks (1/8 mile)', value: '660' },
   { display: 'a quarter mile', value: '1320' },
+  { display: 'a half mile', value: '2640' },
+  { display: 'a mile', value: '5280' },
 ];
 
 export const refreshLocation = (updateKeyValues, location) => {

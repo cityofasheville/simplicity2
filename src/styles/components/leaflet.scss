@@ -32,3 +32,8 @@
 .closeLegend:hover {
   color: #237cc9  !important;
 }
+
+.noPointer {
+  cursor: -webkit-grab;
+	cursor: -moz-grab;
+}

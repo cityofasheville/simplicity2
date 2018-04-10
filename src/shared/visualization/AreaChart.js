@@ -132,11 +132,15 @@ class AreaChart extends React.Component {
                   { type: 'vertical-points', r: (d) => { d.yMiddle = d.yTop; return 5; } },
                 ]}
                 tooltipContent={(d) => {
+                  if (!d.parentLine) { return; }
+
+                  const datum = d.data
+
                   const points = formattedData
                     .map(line => ({
                       label: line.label,
                       color: line.color,
-                      data: line.coordinates.find(p => p[this.props.mainAxisDataKey] === d[this.props.mainAxisDataKey]),
+                      data: line.coordinates.find(p => p[this.props.mainAxisDataKey] === datum[this.props.mainAxisDataKey]),
                       dataSum: line.coordinates.reduce((a, c) =>
                         ({ value: a.value + c.value })),
                     }))
@@ -144,7 +148,7 @@ class AreaChart extends React.Component {
 
                   const textLines = points.map(thisPoint =>
                     ({
-                      text: `${thisPoint.label}: ${thisPoint.data.value || thisPoint}`,
+                      text: `${thisPoint.label}: ${thisPoint.data.value || 0}`,
                       color: thisPoint.color,
                     })
                   );
@@ -153,12 +157,12 @@ class AreaChart extends React.Component {
 
                   return (<Tooltip
                     textLines={textLines}
-                    title={d[this.props.mainAxisDataKey]}
+                    title={datum[this.props.mainAxisDataKey]}
                     style={{
                       backgroundColor: 'white',
                       border: '1px solid black',
                       position: 'absolute',
-                      left: (minTooltipWidth * 16 < 1200 - d.voronoiX) ?
+                      left: (minTooltipWidth * 16 < 1200 - datum.voronoiX) ?
                         '1.5rem' :
                         `${-minTooltipWidth - 1.5}rem`,
                       top: `${400 * -0.5}px`,

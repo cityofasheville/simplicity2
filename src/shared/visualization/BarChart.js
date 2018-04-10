@@ -139,7 +139,7 @@ class BarChart extends React.Component {
                     {
                       fill: color(d.color).brighter(0.6).toString(),
                       stroke: color(d.color).toString(),
-                      strokeWidth: 1,
+                      strokeWidth: 3,
                     } :
                     { fill: d.color })
                 }

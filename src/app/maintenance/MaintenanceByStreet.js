@@ -1,15 +1,14 @@
 import React from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import ReactTable from 'react-table';
+import AccessibleReactTable from 'accessible-react-table';
 import EmailDownload from '../../shared/EmailDownload';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import Error from '../../shared/Error';
 import Map from '../../shared/visualization/Map';
-import { getBoundsFromStreetData, formatMaintenanceData, getBounds } from '../../utilities/mapUtilities';
+import { getBoundsFromStreetData, formatMaintenanceData, getBounds, createMaintenanceLegend } from '../../utilities/mapUtilities';
 import Icon from '../../shared/Icon';
 import { IM_MAP5 } from '../../shared/iconConstants';
-
 
 const getMaintenanceInfo = (entity, comma) => {
   if (entity === null) {
@@ -82,8 +81,9 @@ const MaintenanceByStreet = (props) => {
         <EmailDownload downloadData={props.data.streets} fileName="maintenance_by_street.csv" />
       </div>
       <div className="col-sm-12">
-        <div id="listView" hidden={props.location.query.view !== 'list'} alt={['Table of addresses'].join(' ')} style={{ marginTop: '10px' }}>
-          <ReactTable
+        <div id="listView" hidden={props.location.query.view !== 'list'} style={{ marginTop: '10px' }}>
+          <AccessibleReactTable
+            ariaLabel="Street Maintenance"
             data={props.data.streets}
             columns={dataColumns}
             showPagination={props.data.streets.length > 20}
@@ -107,7 +107,7 @@ const MaintenanceByStreet = (props) => {
           {props.data.streets.length === 0 || props.location.query.view === 'list' ?
             <div className="alert alert-info">No results found</div>
             :
-            <Map maintenanceData={formatMaintenanceData(props.data.streets)} drawMaintenance bounds={props.location.query.bounds !== undefined & props.location.query.bounds !== '' ? JSON.parse(props.location.query.bounds) : getBoundsFromStreetData(props.data.streets)} />
+            <Map legend={createMaintenanceLegend(formatMaintenanceData(props.data.streets))} maintenanceData={formatMaintenanceData(props.data.streets)} drawMaintenance bounds={props.location.query.bounds !== undefined & props.location.query.bounds !== '' ? JSON.parse(props.location.query.bounds) : getBoundsFromStreetData(props.data.streets)} />
           }
         </div>
       </div>

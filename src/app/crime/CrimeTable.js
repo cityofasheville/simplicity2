@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactTable from 'react-table';
+import AccessibleReactTable from 'accessible-react-table';
 import moment from 'moment';
 import Icon from '../../shared/Icon';
 import { IM_SHIELD3, IM_MAP5, IM_USER, IM_LIBRARY2, IM_CAR, IM_FENCE, IM_PENCIL7, LI_BILL_DOLLAR, IM_COIN_DOLLAR, IM_AID_KIT2, IM_HAMMER, LI_AMBULANCE, IM_PROFILE, IM_BUBBLE9, IM_GUN_FORBIDDEN } from '../../shared/iconConstants';
@@ -29,7 +29,7 @@ const getIcon = (type, isExpanded) => {
     case 'IMPERSONATE':
       return <Icon path={IM_PROFILE} size={24} color={isExpanded ? '#fff' : '#4077a5'} />;
     case 'CARRYING CONCEALED WEAPON':
-      return <Icon path={IM_GUN_FORBIDDEN} size={24} color={isExpanded ? '#fff' : '#4077a5'} />;      
+      return <Icon path={IM_GUN_FORBIDDEN} size={24} color={isExpanded ? '#fff' : '#4077a5'} />;
     case 'RESIST, DELAY, OBSTRUCT OFFICER':
     case 'CIT INCIDENT':
     case 'DV ASSISTANCE OTHER':
@@ -51,7 +51,7 @@ const getIcon = (type, isExpanded) => {
     case 'DRUG OFFENSE - FELONY':
     case 'DRUG OFFENSE - MISDEMEANOR':
     case 'DRUG PARAPHERNALIA OTHER':
-      return <Icon path={IM_AID_KIT2} size={24} color={isExpanded ? '#fff' : '#4077a5'} />;      
+      return <Icon path={IM_AID_KIT2} size={24} color={isExpanded ? '#fff' : '#4077a5'} />;
     case 'COUNTERFEITING-BUYING/RECEIVING':
       return <Icon path={LI_BILL_DOLLAR} viewBox="0 0 24 24" size={24} color={isExpanded ? '#fff' : '#4077a5'} />;
     case 'LARCENY ALL OTHER':
@@ -160,9 +160,10 @@ const CrimeTable = (props) => {
         {props.data.length < 1 ?
           <div className="alert alert-info">No results found</div>
         :
-          <div alt={['Table of crimes'].join(' ')} style={{ marginTop: '10px' }}>
-            <ReactTable
+          <div style={{ marginTop: '10px' }}>
+            <AccessibleReactTable
               data={props.data}
+              ariaLabel="Crimes"
               columns={dataColumns}
               showPagination={props.data.length > 20}
               defaultPageSize={props.data.length <= 20 ? props.data.length : 20}

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactTable from 'react-table';
 import L from 'leaflet';
 import { graphql } from 'react-apollo';
 import moment from 'moment';
@@ -39,6 +38,30 @@ const getMarker = (type) => {
     default:
       return require('../../shared/Ellipsis.png');
   }
+};
+
+const createLegend = (permitData) => {
+  const permitTypes = [];
+  let permitTypeAlreadyPresent;
+  for (let i = 0; i < permitData.length; i += 1) {
+    permitTypeAlreadyPresent = false;
+    for (let j = 0; j < permitData.length; j += 1) {
+      if (permitTypes[j] === permitData[i].permit_type) {
+        permitTypeAlreadyPresent = true;
+        break;
+      }
+    }
+    if (!permitTypeAlreadyPresent) {
+      permitTypes.push(permitData[i].permit_type);
+    }
+  }
+  return (
+    <div style={{ width: '160px' }}>
+      {permitTypes.map(type => (
+        <div key={`legendItem-${type}`} style={{ width: '160px', marginBottom: '5px' }}><img src={getMarker(type)} style={{ display: 'inline-block', width: '25px', verticalAlign: 'top' }}></img><span style={{ marginLeft: '5px', display: 'inline-block', width: '130px' }}>{type}</span></div>
+      ))}
+    </div>
+  );
 };
 
 const convertToPieData = (permitData) => {
@@ -131,6 +154,7 @@ const DevelopmentByNeighborhood = (props) => {
             <Map
               data={mapData}
               drawPolygon
+              legend={createLegend(props.data.permits_by_neighborhood)}
               polygonData={combinePolygonsFromNeighborhoodList([props.data.neighborhoods[0]])}
               bounds={(props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== '') ? null : getBoundsFromPolygonData([props.data.neighborhoods[0].polygon])}
               within={parseInt(props.location.query.within, 10)}

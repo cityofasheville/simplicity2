@@ -4,6 +4,9 @@ import L from 'leaflet';
 import { Map as LeafletMap, Marker, TileLayer, Popup, Circle, Polyline, Polygon, LayersControl } from 'react-leaflet';
 import { GoogleLayer } from 'react-leaflet-google';
 import MarkerClusterGroup from 'react-leaflet-markercluster';
+import MapLegendControl from './MapLegendControl';
+import Icon from '../Icon';
+import { IM_LIST2 } from '../iconConstants';
 
 // using open street map for now because that way can use the clusters, etc.
 
@@ -40,7 +43,7 @@ const Map = (props) => {
 
   return (
     <div style={{ height: props.height, width: props.width }}>
-      <LeafletMap className="markercluster-map" center={shouldZoomToNonCenter ? zoomTo : props.center} zoom={props.zoom} maxZoom={18} bounds={props.bounds === null ? getBounds(shouldZoomToNonCenter ? zoomTo : props.center, shouldZoomToNonCenter ? 83 : props.within) : props.bounds}>
+      <LeafletMap className="markercluster-map" center={shouldZoomToNonCenter ? zoomTo : props.center} zoom={props.zoom} maxZoom={18} bounds={props.bounds === null ? getBounds(shouldZoomToNonCenter ? zoomTo : props.center, shouldZoomToNonCenter ? 660 : props.within) : props.bounds}>
         <LayersControl position="topright">
           <BaseLayer checked name="OpenStreetMap">
             <TileLayer
@@ -59,13 +62,13 @@ const Map = (props) => {
           }
           {props.showCenter &&
             <Marker
-              position={props.center}
-              icon={L.icon({
-                iconUrl: require('../../shared/marker-icon-2.png'),
-                iconSize: [25, 41],
-                iconAnchor: [12, 41],
-                popupAnchor: [2, -22],
-              })}
+            position={props.center}
+            icon={L.icon({
+              iconUrl: require('../../shared/marker-icon-2.png'),
+              iconSize: [25, 41],
+              iconAnchor: [12, 41],
+              popupAnchor: [2, -22],
+            })}
             >
               <Popup>
                 <div><b>{props.centerLabel}</b></div>
@@ -74,13 +77,13 @@ const Map = (props) => {
           }
           {props.drawStreet &&
             props.streetData.map((line, index) =>
-              <Polyline key={['street_line', index].join('_')} positions={line} weight={5} />
+              <Polyline key={['street_line', index].join('_')} positions={line} weight={5} className="noPointer" />
             )
           }
           {props.drawMaintenance &&
             props.maintenanceData.map((line, index) =>
               <Polyline
-                key={['maintenance_line', index].join('_')} positions={line.line} weight={5} color={line.color}
+              key={['maintenance_line', index].join('_')} positions={line.line} weight={10} opacity={0.8} color={line.color}
               >
                 <Popup>
                   {line.popup}
@@ -101,6 +104,21 @@ const Map = (props) => {
           }
           <MarkerClusterGroup markers={markers} options={markerClusterOptions} />
         </LayersControl>
+        {
+          props.legend &&
+          <MapLegendControl>
+            <div className="legendIcon"><Icon path={IM_LIST2} size={24} color="#828282" /></div>
+            <div className="legend" style={{ maxHeight: parseInt(props.height.split('px')[0], 10) / 2 }}>
+              <div className="closeLegend" style={{ fontWeight: 'bold', fontSize: '14px', color: '#979797' }}
+              onClick={(e) => { 
+                if (e.target.parentNode.style.display === 'block') {
+                  e.target.parentNode.style.display = 'none';
+                }
+              }}>X</div>
+              {props.legend}
+            </div>
+          </MapLegendControl>
+        }
       </LeafletMap>
     </div>
   );

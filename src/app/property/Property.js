@@ -1,6 +1,7 @@
 import React from 'react';
 import { graphql } from 'react-apollo';
 import ReactTable from 'react-table';
+import { accessibility } from 'accessible-react-table';
 import gql from 'graphql-tag';
 import DetailsTable from '../../shared/DetailsTable';
 import DetailsFormGroup from '../../shared/DetailsFormGroup';
@@ -22,44 +23,6 @@ const getDollars = (value) => {
   return [initialSymbols, Math.abs(value).toLocaleString()].join('');
 };
 
-const dataColumns = [
-  {
-    Header: 'Civic address ID(s)',
-    accessor: 'civic_address_id',
-    width: 150,
-    Filter: ({ filter, onChange }) => (
-      <input
-        onChange={event => onChange(event.target.value)}
-        style={{ width: '100%' }}
-        value={filter ? filter.value : ''}
-        placeholder="Search..."
-      />
-    ),
-    filterMethod: (filter, row) => {
-      const joinedInfo = row._original.pinnum;
-      return row._original !== undefined ? joinedInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
-    },
-  },
-  {
-    Header: 'Address(es)',
-    accessor: 'Address',
-    Cell: row => (
-      <span>{row.original.address}, {row.original.zipcode}</span>
-    ),
-    Filter: ({ filter, onChange }) => (
-      <input
-        onChange={event => onChange(event.target.value)}
-        style={{ width: '100%' }}
-        value={filter ? filter.value : ''}
-        placeholder="Search..."
-      />
-    ),
-    filterMethod: (filter, row) => {
-      const joinedInfo = [row._original.address, row._original.zipcode].join(', ');
-      return row._original !== undefined ? joinedInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
-    },
-  },
-];
 
 const Property = (props) => {
   if (props.data.loading) {
@@ -79,6 +42,54 @@ const Property = (props) => {
     });
   }
 
+  const dataColumns = [
+    {
+      Header: 'Civic address ID(s)',
+      accessor: 'civic_address_id',
+      width: 150,
+      Filter: ({ filter, onChange }) => (
+        <input
+          onChange={event => onChange(event.target.value)}
+          style={{ width: '100%' }}
+          value={filter ? filter.value : ''}
+          placeholder="Search..."
+        />
+      ),
+      filterMethod: (filter, row) => {
+        const joinedInfo = row._original.pinnum;
+        return row._original !== undefined ? joinedInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
+      },
+    },
+    {
+      Header: 'Address(es)',
+      accessor: 'Address',
+      Cell: row => (
+        <span>
+          {
+            props.inTable ?
+              <span>{row.original.address}, {row.original.zipcode}</span>
+              :
+              <a href={`/address?search=${props.location.query.search}&id=${row.original.civic_address_id}&entities=${props.location.query.entities}&entity=address`}>{row.original.address}, {row.original.zipcode}</a>
+          }
+        </span>
+      ),
+      Filter: ({ filter, onChange }) => (
+        <input
+          onChange={event => onChange(event.target.value)}
+          style={{ width: '100%' }}
+          value={filter ? filter.value : ''}
+          placeholder="Search..."
+        />
+      ),
+      filterMethod: (filter, row) => {
+        const joinedInfo = [row._original.address, row._original.zipcode].join(', ');
+        return row._original !== undefined ? joinedInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
+      },
+    },
+  ];
+
+  const AccessibleReactTable = accessibility(ReactTable);
+
   return (
     <div>
       {props.inTable !== true &&
@@ -92,80 +103,83 @@ const Property = (props) => {
         </PageHeader>
       }
       <div className="row">
-        <div className="col-sm-6">
+        <div className="col-sm-12">
           <fieldset className="detailsFieldset">
             <div className="row">
               <div className="col-xs-12" style={{ marginBottom: '10px' }}>
                 <InCityMessage inTheCity={propertyData.is_in_city} />
               </div>
             </div>
+            <div className="col-xs-12">
+              <div style={{ marginTop: '10px' }}>
+                <Map bounds={getBoundsFromPropertyPolygons(propertyData.polygons)} drawPolygon polygonData={combinePolygonsFromPropertyList([propertyData])} height="250px" />
+              </div>
+              <DetailsIconLinkFormGroup colWidth="6" label="Deed" title="Deed" href={propertyData.deed_link} icon={<Icon path={IM_CERTIFICATE} size={20} />} />
+              <DetailsIconLinkFormGroup colWidth="6" label="Property card" title="property_card" href={propertyData.property_card_link} icon={<Icon path={IM_PROFILE} size={20} />} />
+              <DetailsIconLinkFormGroup colWidth="6" label="Plat" title="Plat" href={propertyData.plat_link} icon={<Icon path={IM_CHECKBOX_PARTIAL2} size={20} />} />
+              <DetailsIconLinkFormGroup colWidth="6" label="Google map directions" title="Google map directions" href={['https://www.google.com/maps?daddr=', propertyData.latitude, ',', propertyData.longitude].join('')} icon={<Icon path={IM_GOOGLE} size={20} />} />
+            </div>
             <div className="row">
               <div className="col-xs-12">
-                <div alt={['Table of addresses'].join(' ')} style={{ marginRight: '10px', marginLeft: '10px' }}>
-                  <ReactTable
-                    data={dataForAddressesTable}
-                    columns={dataColumns}
-                    showPagination={dataForAddressesTable.length > 5}
-                    defaultPageSize={dataForAddressesTable.length <= 5 ? dataForAddressesTable.length : 5}
-                    filterable={dataForAddressesTable.length > 5}
-                    defaultFilterMethod={(filter, row) => {
-                      const id = filter.pivotId || filter.id;
-                      return row[id] !== undefined ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
-                    }}
-                    getTdProps={(state, rowInfo) => {
-                      return {
-                        style: {
-                          whiteSpace: 'normal',
-                        },
-                      };
-                    }}
-                  />
+                <DetailsTable
+                  data={[
+                    { value_type: 'Building value', amount: getDollars(propertyData.building_value) },
+                    { value_type: 'Land value', amount: getDollars(propertyData.land_value) },
+                    { value_type: 'Appraised value', amount: getDollars(propertyData.appraised_value) },
+                    { value_type: 'Tax value', amount: getDollars(propertyData.tax_value) },
+                    { value_type: 'Total market value', amount: getDollars(propertyData.market_value) },
+                  ]}
+                />
+                <div className="row">
+                  <div className="col-xs-12">
+                    <DetailsFormGroup colWidth="6" label="Owner" name="owner" value={<div><div>{propertyData.owner}</div><div>{propertyData.owner_address}</div></div>} hasLabel />
+                    <DetailsFormGroup colWidth="6" label="Acreage" name="acreage" value={propertyData.acreage} hasLabel />
+                  </div>
+                  <div className="col-xs-12">
+                    <DetailsFormGroup colWidth="6" label="Neighborhood" name="neighborhood" value={propertyData.neighborhood} hasLabel />
+                    <DetailsFormGroup colWidth="6" label="Pin #" name="pinnum" value={propertyData.pinnum} hasLabel />
+                  </div>
+                  <div className="col-xs-12">
+                    <DetailsFormGroup
+                      label="Zoning"
+                      name="zoning"
+                      colWidth="6"
+                      value={
+                        <div>{propertyData.zoning.split(',').map((zone, index) => (
+                          <span key={['zone', index].join('_')}><a href={zoningLinks[zone]} target="_blank">{propertyData.zoning.split(',')[index]}</a>{propertyData.zoning.split(',').length > index + 1 ? ', ' : ''}</span>))}
+                        </div>
+                      }
+                      hasLabel
+                    />
+                    <DetailsFormGroup colWidth="6" label="Tax exempt" name="tax_exempt" value={propertyData.tax_exempt ? 'Yes' : 'No'} hasLabel />
+                    <DetailsFormGroup colWidth="6" label="Appraisal area" name="appraisal_area" value={propertyData.appraisal_area} hasLabel />
+                    <div className="row">
+                      <div className="col-xs-12" style={{ marginRight: '10px', marginLeft: '15px', width: '95%' }}>
+                        <AccessibleReactTable
+                          ariaLabel="Property Addresses"
+                          data={dataForAddressesTable}
+                          columns={dataColumns}
+                          showPagination={dataForAddressesTable.length > 5}
+                          defaultPageSize={dataForAddressesTable.length <= 5 ? dataForAddressesTable.length : 5}
+                          filterable={dataForAddressesTable.length > 5}
+                          defaultFilterMethod={(filter, row) => {
+                            const id = filter.pivotId || filter.id;
+                            return row[id] !== undefined ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
+                          }}
+                          getTdProps={(state, rowInfo) => {
+                            return {
+                              style: {
+                                whiteSpace: 'normal',
+                              },
+                            };
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="col-xs-6">
-                <DetailsFormGroup label="Neighborhood" name="neighborhood" value={propertyData.neighborhood} hasLabel />
-                <DetailsFormGroup label="Appraisal area" name="appraisal_area" value={propertyData.appraisal_area} hasLabel />
-                <DetailsFormGroup
-                  label="Zoning"
-                  name="zoning"
-                  value={<div>{propertyData.zoning.split(',').map((zone, index) => (
-                    <span key={['zone', index].join('_')}><a href={zoningLinks[zone]} target="_blank">{propertyData.zoning.split(',')[index]}</a>{propertyData.zoning.split(',').length > index + 1 ? ', ' : ''}</span>)
-                  )}</div>} hasLabel
-                />
-              </div>
-              <div className="col-xs-6">
-                <DetailsFormGroup label="Pin #" name="pinnum" value={propertyData.pinnum} hasLabel />
-                <DetailsFormGroup label="Tax exempt" name="tax_exempt" value={propertyData.tax_exempt ? 'Yes' : 'No'} hasLabel />
-                <DetailsFormGroup label="Acreage" name="acreage" value={propertyData.acreage} hasLabel />
-              </div>
             </div>
-            <div className="row">
-              <div className="col-xs-6">
-                <DetailsIconLinkFormGroup label="Deed" title="Deed" href={propertyData.deed_link} icon={<Icon path={IM_CERTIFICATE} size={20} />} />
-                <DetailsIconLinkFormGroup label="Property card" title="property_card" href={propertyData.property_card_link} icon={<Icon path={IM_PROFILE} size={20} />} />
-              </div>
-              <div className="col-xs-6">
-                <DetailsIconLinkFormGroup label="Plat" title="Plat" href={propertyData.plat_link} icon={<Icon path={IM_CHECKBOX_PARTIAL2} size={20} />} />
-                <DetailsIconLinkFormGroup label="Google map directions" title="Google map directions" href={['https://www.google.com/maps?daddr=', propertyData.latitude, ',', propertyData.longitude].join('')} icon={<Icon path={IM_GOOGLE} size={20} />} />
-              </div>
-            </div>
-          </fieldset>
-          <fieldset className="detailsFieldset">
-            <DetailsFormGroup label="Owner" name="owner" value={<div><div>{propertyData.owner}</div><div>{propertyData.owner_address}</div></div>} hasLabel icon={<Icon path={IM_USER} size={20} />} />
-          </fieldset>
-        </div>
-        <div className="col-sm-6">
-          <fieldset className="detailsFieldset">
-            <DetailsTable
-              data={[
-                { value_type: 'Building value', amount: getDollars(propertyData.building_value) },
-                { value_type: 'Land value', amount: getDollars(propertyData.land_value) },
-                { value_type: 'Appraised value', amount: getDollars(propertyData.appraised_value) },
-                { value_type: 'Tax value', amount: getDollars(propertyData.tax_value) },
-                { value_type: 'Total market value', amount: getDollars(propertyData.market_value) },
-              ]}
-            />
-            <Map bounds={getBoundsFromPropertyPolygons(propertyData.polygons)} drawPolygon polygonData={combinePolygonsFromPropertyList([propertyData])} height="250px" />
           </fieldset>
         </div>
       </div>

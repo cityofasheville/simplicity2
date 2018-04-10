@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
-import ReactTable from 'react-table';
+import AccessibleReactTable from 'accessible-react-table';
 import { RadioGroup, Radio } from 'react-radio-group';
-import accessibility from '../../shared/react_table_hoc/Accessibility';
 import expandingRows from '../../shared/react_table_hoc/ExpandingRows';
 import Collapsible from '../../shared/Collapsible';
 import { getBudgetTrees } from './graphql/budgetQueries';
@@ -131,7 +130,6 @@ const BudgetDetailsTable = (props) => {
     }
   );
 
-  const AccessibleReactTable = accessibility(ReactTable);
   const ExpandableAccessibleReactTable = expandingRows(AccessibleReactTable);
 
   return (

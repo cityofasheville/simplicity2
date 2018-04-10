@@ -74,6 +74,30 @@ const getMarker = (type) => {
   }
 };
 
+const createLegend = (crimeData) => {
+  const crimeTypes = [];
+  let crimeTypeAlreadyPresent;
+  for (let i = 0; i < crimeData.length; i += 1) {
+    crimeTypeAlreadyPresent = false;
+    for (let j = 0; j < crimeTypes.length; j += 1) {
+      if (crimeTypes[j] === crimeData[i].offense_long_description) {
+        crimeTypeAlreadyPresent = true;
+        break;
+      }
+    }
+    if (!crimeTypeAlreadyPresent) {
+      crimeTypes.push(crimeData[i].offense_long_description);
+    }
+  }
+  return (
+    <div style={{ width: '160px' }}>
+      {crimeTypes.map(type => (
+        <div key={`legendItem-${type}`} style={{ width: '160px', marginBottom: '5px' }}><img src={getMarker(type)} style={{ display: 'inline-block', width: '25px', verticalAlign: 'top' }}></img><span style={{ marginLeft: '5px', display: 'inline-block', width: '130px' }}>{type}</span></div>
+      ))}
+    </div>
+  );
+};
+
 const convertToPieData = (crimeData) => {
   // Group crimes to less categories?? Right now just show top 8 and Other
   let pieData = [];
@@ -167,11 +191,12 @@ const CrimesByAddress = (props) => {
             <Map
               data={mapData}
               showCenter
+              legend={createLegend(props.data.crimes_by_address)}
               center={props.location.query.x !== '' ? [parseFloat(props.location.query.y), parseFloat(props.location.query.x)] : null}
               centerLabel={props.location.query.label}
               drawCircle
-              radius={(props.location.query.within === undefined || props.location.query.within === '') ? 27 : parseInt(props.location.query.within, 10) / 3}
-              within={(props.location.query.within === undefined || props.location.query.within === '') ? 83 : parseInt(props.location.query.within, 10)}
+              radius={(props.location.query.within === undefined || props.location.query.within === '') ? 215 : parseInt(props.location.query.within, 10) / 3}
+              within={(props.location.query.within === undefined || props.location.query.within === '') ? 660 : parseInt(props.location.query.within, 10)}
               zoomToPoint={(props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== '') ? props.location.query.zoomToPoint : null}
             />
           }

@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactTable from 'react-table';
+import AccessibleReactTable from 'accessible-react-table';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -9,6 +9,7 @@ import Property from './Property';
 import { getBoundsFromPolygonData, combinePolygonsFromPropertyList } from '../../utilities/mapUtilities';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import Error from '../../shared/Error';
+import expandingRows from '../../shared/react_table_hoc/ExpandingRows';
 
 const dataColumns = [
   {
@@ -73,6 +74,8 @@ const PropertiesByNeighborhood = (props) => {
     return <Error message={props.data.error.message} />; // eslint-disable-line react/prop-types
   }
 
+  const ExpandableAccessibleReactTable = expandingRows(AccessibleReactTable);
+
   return (
     <div>
       <div className="row">
@@ -83,8 +86,9 @@ const PropertiesByNeighborhood = (props) => {
           {props.data.properties_by_neighborhood.length < 1 ?
             <div className="alert alert-info">No results found</div>
           :
-            <div alt={['Table of addresses'].join(' ')} style={{ marginTop: '10px' }}>
-              <ReactTable
+            <div style={{ marginTop: '10px' }}>
+              <ExpandableAccessibleReactTable
+                ariaLabel="Neighborhood Properties"
                 data={props.data.properties_by_neighborhood}
                 columns={dataColumns}
                 showPagination={props.data.properties_by_neighborhood.length > 20}
@@ -94,14 +98,8 @@ const PropertiesByNeighborhood = (props) => {
                   const id = filter.pivotId || filter.id;
                   return row[id] !== undefined ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
                 }}
-                getTdProps={(state, rowInfo) => {
+                getTdProps={() => {
                   return {
-                    onClick: (e, handleOriginal) => {
-                      document.getElementsByClassName('rt-expandable')[rowInfo.viewIndex].click();
-                      if (handleOriginal) {
-                        handleOriginal();
-                      }
-                    },
                     style: {
                       whiteSpace: 'normal',
                     },

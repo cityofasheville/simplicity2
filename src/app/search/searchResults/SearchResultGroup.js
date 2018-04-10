@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactTable from 'react-table';
+import { accessibility } from 'accessible-react-table';
 import Icon from '../../../shared/Icon';
 import { IM_SHIELD3, IM_OFFICE, IM_ROAD, IM_USER, IM_USERS, IM_LOCATION, IM_HOME2, IM_QUESTION, IM_GOOGLE, IM_SEARCH } from '../../../shared/iconConstants';
 import styles from './searchResultGroup.css';
@@ -113,9 +114,12 @@ const SearchResultGroup = (props) => {
     },
   ];
 
+  const AccessibleReactTable = accessibility(ReactTable);
+
   return (
     <div className={styles.searchResultGroup}>
-      <ReactTable
+      <AccessibleReactTable
+        ariaLabel="Search Results"
         data={props.data.results}
         columns={dataColumns}
         showPagination={props.data.results.length > 5}

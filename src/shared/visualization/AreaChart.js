@@ -35,12 +35,16 @@ class AreaChart extends React.Component {
       altText: this.props.altText || this.props.chartTitle,
       showingLongDesc: this.showLongDesc,
     };
+
+    this.toggleLongDesc = this.toggleLongDesc.bind(this)
   }
 
-  toggleLongDesc() {
-    this.setState({
-      showingLongDesc: !this.state.showingLongDesc,
-    });
+  toggleLongDesc(event) {
+    if (event.key === 'Enter' || event.type === 'click') {
+      this.setState({
+        showingLongDesc: !this.state.showingLongDesc,
+      });
+    }
   }
 
   render() {
@@ -128,19 +132,23 @@ class AreaChart extends React.Component {
                   { type: 'vertical-points', r: (d) => { d.yMiddle = d.yTop; return 5; } },
                 ]}
                 tooltipContent={(d) => {
+                  if (!d.parentLine) { return; }
+
+                  const datum = d.data
+
                   const points = formattedData
-                    .map(point => ({
-                      label: point.label,
-                      color: point.color,
-                      data: point.coordinates.find(p => p[this.props.mainAxisDataKey] === d[this.props.mainAxisDataKey]),
-                      dataSum: point.coordinates.reduce((a, c) =>
+                    .map(line => ({
+                      label: line.label,
+                      color: line.color,
+                      data: line.coordinates.find(p => p[this.props.mainAxisDataKey] === datum[this.props.mainAxisDataKey]),
+                      dataSum: line.coordinates.reduce((a, c) =>
                         ({ value: a.value + c.value })),
                     }))
                     .sort((a, b) => a.dataSum.value - b.dataSum.value);
 
                   const textLines = points.map(thisPoint =>
                     ({
-                      text: `${thisPoint.label}: ${thisPoint.data.value}`,
+                      text: `${thisPoint.label}: ${thisPoint.data.value || 0}`,
                       color: thisPoint.color,
                     })
                   );
@@ -149,12 +157,12 @@ class AreaChart extends React.Component {
 
                   return (<Tooltip
                     textLines={textLines}
-                    title={d[this.props.mainAxisDataKey]}
+                    title={datum[this.props.mainAxisDataKey]}
                     style={{
                       backgroundColor: 'white',
                       border: '1px solid black',
                       position: 'absolute',
-                      left: (minTooltipWidth * 16 < 1200 - d.voronoiX) ?
+                      left: (minTooltipWidth * 16 < 1200 - datum.voronoiX) ?
                         '1.5rem' :
                         `${-minTooltipWidth - 1.5}rem`,
                       top: `${400 * -0.5}px`,
@@ -177,7 +185,13 @@ class AreaChart extends React.Component {
           <div className="row">
             <div className="col-xs-10 col-xs-offset-1">
               <br />
-              <div className="text-center inText" role="button" tabIndex="0" onClick={() => this.toggleLongDesc()}>
+              <div
+                className="text-center inText"
+                role="button"
+                tabIndex="0"
+                onClick={this.toggleLongDesc}
+                onKeyUp={this.toggleLongDesc}
+              >
                 {this.state.showingLongDesc ? 'Hide' : 'Show'} {this.props.chartTitle} area chart summary
               </div>
               <div hidden={!this.state.showingLongDesc}>

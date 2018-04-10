@@ -1,3 +1,39 @@
 .leaflet-container {
   height: 100%;
 }
+
+.legend {
+  display: none;
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  background: white;
+  border: 2px solid #c2bfba;
+  border-radius: 4px;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.legendIcon {
+  background: white;
+  border: 2px solid #c2bfba;
+  border-radius: 4px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.closeLegend {
+  position: absolute;
+  right: 5px;
+  top: 3px;
+  cursor: pointer;
+}
+
+.closeLegend:hover {
+  color: #237cc9  !important;
+}
+
+.noPointer {
+  cursor: -webkit-grab;
+	cursor: -moz-grab;
+}

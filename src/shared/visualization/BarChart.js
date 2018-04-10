@@ -36,12 +36,16 @@ class BarChart extends React.Component {
       altText: this.props.altText || this.props.chartTitle,
       showingLongDesc: this.showLongDesc,
     };
+
+    this.toggleLongDesc = this.toggleLongDesc.bind(this)
   }
 
-  toggleLongDesc() {
-    this.setState({
-      showingLongDesc: !this.state.showingLongDesc,
-    });
+  toggleLongDesc(event) {
+    if (event.key === 'Enter' || event.type === 'click') {
+      this.setState({
+        showingLongDesc: !this.state.showingLongDesc,
+      });
+    }
   }
 
 
@@ -167,7 +171,9 @@ class BarChart extends React.Component {
                   return null;
                 }}
                 tooltipContent={(d) => {
-                  const textLines = d.pieces.map(piece =>
+                  const dPieces = d.pieces || [d.data]
+                  const tooltipTitle = d.column ? d.column.name : d.data[this.props.mainAxisDataKey]
+                  const textLines = dPieces.map(piece =>
                     ({
                       text: `${piece.label}: ${this.props.tooltipYValFormatter(piece.value)}`,
                       color: piece.color,
@@ -176,7 +182,7 @@ class BarChart extends React.Component {
                   if (this.props.layout !== 'horizontal') { textLines.reverse(); }
                   return (<Tooltip
                     textLines={textLines}
-                    title={d.column.name}
+                    title={tooltipTitle}
                   />);
                 }}
               />
@@ -193,7 +199,13 @@ class BarChart extends React.Component {
           <div className="row">
             <div className="col-xs-10 col-xs-offset-1">
               <br />
-              <div className="text-center inText" role="button" tabIndex="0" onClick={() => this.toggleLongDesc()}>
+              <div
+                className="text-center inText"
+                role="button"
+                tabIndex="0"
+                onClick={this.toggleLongDesc}
+                onKeyUp={this.toggleLongDesc}
+              >
                 {this.state.showingLongDesc ? 'Hide' : 'Show'} {this.props.chartTitle} bar chart summary
               </div>
               <div hidden={!this.state.showingLongDesc}>

@@ -25,7 +25,7 @@ const getTopicIcon = (topic) => {
 };
 
 const TopicCard = props => (
-  <Link to={{ pathname: props.topic, query: { entity: props.entity, view: 'map', id: props.id, label: props.label, entities: props.entities, x: props.x, y: props.y, search: props.search } }}>
+  <Link className="topic-card" to={{ pathname: props.topic, query: { entity: props.entity, view: 'map', id: props.id, label: props.label, entities: props.entities, x: props.x, y: props.y, search: props.search } }}>
     <div className={styles.topicCard}>
       <div className="text-primary text-center">{getTopicIcon(props.topic)}</div>
       <div className="text-primary text-center">{props.topic.replace(/_/g, ' ')}</div>

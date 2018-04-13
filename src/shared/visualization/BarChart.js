@@ -66,29 +66,13 @@ class BarChart extends React.Component {
           }
         </p>
         <div
-          className="row"
           role="img"
           alt={this.state.altText}
           tabIndex={0}
+          className="visualization-container"
         >
-          <div
-            className="col-sm-12"
-            style={{
-              width: '100%',
-              display: 'inline-block',
-              margin: '0 auto',
-              textAlign: 'center',
-            }}
-          >
-            <div
-              style={{
-                height: this.props.height,
-                margin: '0 auto',
-                display: 'inline-block',
-                width: '95%',
-                textAlign: 'center',
-              }}
-            >
+          <div>
+            <div>
               <OrdinalFrame
                 annotations={this.props.annotations}
                 data={formattedData}

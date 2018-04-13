@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const DetailsIconLinkFormGroup = props => (
-  <div>
+  <div className="form-group">
     <a href={props.href} title={props.title} target={props.inWindow ? '_self' : '_blank'}>
       <div className="form-group">
-        <div className={['col-xs-', props.colWidth].join('')} style={{ marginBottom: '10px' }}>
-          <span style={{ marginRight: '5px' }}>{props.icon}</span>
-          <span style={{ fontWeight: 'bold' }}>{props.label}</span>
+        <div className="form-group__label">
+          <span>{props.icon}</span>
+          <span>{props.label}</span>
         </div>
       </div>
     </a>

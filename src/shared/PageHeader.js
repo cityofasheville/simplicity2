@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 
 const PageHeader = props => (
-  <div className="row">
+  <div className="row template-header">
     <div className="col-sm-12">
       {props.image &&
         <img alt={props.imageAlt} src={props.image} style={{ width: '100px', float: 'left', marginRight: '10px' }} />
@@ -15,14 +15,18 @@ const PageHeader = props => (
         {props.children}
         {props.h1}
       </h1>
-      {props.externalLink &&
-        <div className="pull-left">
-          <a className="inText" href={props.externalLink} target="_blank">{props.externalLinkText}</a>
-        </div>
-      }
-      {props.dataLinkPath &&
-        <div className="pull-right">
-          <Link className="inText" to={{ pathname: props.dataLinkPath }}>Understand this data</Link>
+      {props.externalLink && props.dataLinkPath &&
+        <div className="template-header__subnav">
+          {props.externalLink &&
+            <div className="pull-left">
+              <a className="inText" href={props.externalLink} target="_blank">{props.externalLinkText}</a>
+            </div>
+          }
+          {props.dataLinkPath &&
+            <div className="pull-right">
+              <Link className="inText" to={{ pathname: props.dataLinkPath }}>Understand this data</Link>
+            </div>
+          }
         </div>
       }
       {props.h2 !== null &&

@@ -61,11 +61,11 @@ let logPageView = () => {
 
 if (window.location.href.indexOf('dashboards.ashevillenc.gov') > -1) {
   ReactGA.initialize('UA-16340971-12');
-} else if (window.location.href.indexOf('simplicity2.ashevillenc.gov') > -1) {
-  ReactGA.initialize('UA-16340971-14');
+} else if (window.location.href.indexOf('simplicity.ashevillenc.gov') > -1) {
+  ReactGA.initialize('UA-16340971-11');
 } else {
   logPageView = null;
-} // later add an else for SimpliCity2
+}
 
 const Routes = () => (
   <ApolloProvider client={client} >

@@ -102,7 +102,7 @@ const Map = (props) => {
               </Polygon>
             )
           }
-          <MarkerClusterGroup markers={markers} options={markerClusterOptions} />
+          <MarkerClusterGroup markers={markers} {...markerClusterOptions} />
         </LayersControl>
         {
           props.legend &&

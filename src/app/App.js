@@ -12,9 +12,13 @@ import AuthProviderModal from '../utilities/auth/authProviderModal';
 import { defaultAuthState } from '../utilities/auth/graphql/authDefaultState';
 
 const displayNavbar = (hideNavbar) => {
-  if (window.location.href.indexOf('dashboards.ashevillenc.gov') < 0 && hideNavbar !== 'true') {
-    return (<Navbar />);
+  if (hideNavbar) {
+    return null
   }
+  if (window.location.href.indexOf('dashboards.ashevillenc.gov') < 0) {
+    return (<Navbar />); /// Navbar is SimpliCity
+  }
+  // CityInfoBar is dashboards
   return (<CityInfoBar />);
 };
 
@@ -95,7 +99,7 @@ class Main extends React.Component {
         <div className="container" id="content">
           { this.props.children }
         </div>
-        <Footer />
+        { !this.props.location.query.hideNavbar && <Footer /> }
         <AuthProviderModal />
       </div>
     );

@@ -76,7 +76,7 @@ class MiniSearch extends React.Component {
           <input
             type="text"
             className="form-control"
-            placeholder="Enter a keyword..."
+            placeholder={this.props.selectedEntity}
             defaultValue={this.state.searchTermToUse}
             onKeyUp={this.handleKeyUp}
             id="searchBox"
@@ -110,6 +110,7 @@ MiniSearch.defaultProps = {
     { label: 'Google places', type: 'google', checked: true },
   ],
   selectedEntities: '',
+  selectedEntity: 'address'
 };
 
 MiniSearch.propTypes = {
@@ -117,6 +118,7 @@ MiniSearch.propTypes = {
   text: PropTypes.string,
   onKeyUp: PropTypes.func,
   onSearchClick: PropTypes.func,
+  selectedEntity: PropTypes.string,
 };
 
 

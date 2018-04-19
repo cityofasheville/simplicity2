@@ -64,9 +64,35 @@ const getEntitiesToSearch = (entities) => {
   return entitiesToSearch;
 };
 
+const getLink = (type, id, search, entities, label, originalSearch) => {
+  switch (type) {
+    case 'address':
+      if (originalSearch) {
+        return `/address?search=${originalSearch}&placeSearch=${search}&id=${id}&entities=${entities}&entity=address`;
+      }
+      return `/address?search=${search}&id=${id}&entities=${entities}&entity=address`;
+    case 'property':
+      return `/property?search=${search}&id=${id}&entities=${entities}&entity=property`;
+    case 'street':
+      return `/street?search=${search}&id=${id}&entities=${entities}&label=${label}&entity=street`;
+    case 'neighborhood':
+      return `/neighborhood?search=${search}&id=${id}&entities=${entities}&label=${label}&entity=neighborhood`;
+    case 'permit':
+      return `/development/detail?search=${search}&id=${id}&entities=${entities}&entity=permit`;
+    case 'crime':
+      return `/crime/detail?search=${search}&id=${id}&entities=${entities}&entity=crime`;
+    case 'owner':
+      return `/owner?search=${search}&id=${id}&entities=${entities}&entity=owner&view=list`;
+    case 'place':
+      return `/search/googlePlaceMatches?search=${search}&placeSearch=${id}&entities=${entities}`;
+    default:
+      return '/';
+  }
+};
+
 const MiniResults = (props) => {
   if (props.data === undefined) {
-    return <div className="alert alert-info alert-sm">Enter a search term above to get results</div>;
+    return null;
   }
   if (props.data.loading) {
     return <LoadingAnimation message="Searching..." />;
@@ -130,19 +156,25 @@ const MiniResults = (props) => {
       );
     }
   }
-
   return (
     <div className="row">
       <div className="col-sm-12">
         {
           formattedResults.length > 0 ?
-          formattedResults.map((resultGroup, index) => (
-            <SearchResultGroup
-              key={[resultGroup.label, index].join('_')}
-              data={resultGroup}
-              searchText={props.searchText}
-              selectedEntities={props.location.query.entities}
-            />
+          formattedResults[0].results.map((result, index) => (
+            <span
+              className="text-primary"
+              style={{ marginLeft: '20px' }}
+              key={index}
+            >
+              <a
+                href={getLink(result.type, result.id, props.searchText, props.selectedEntities, result.label, props.originalSearch)}
+                target='_blank'
+                rel='noopener noreferrer'
+                >
+                {result.label}
+              </a>
+            </span>
           )) :
           props.searchText === undefined || props.searchText.length === 0 ?
             null :

@@ -72,7 +72,7 @@ const Address = (props) => {
   return (
     <div className="address">
       <PageHeader h1={[addressData.address, addressData.zipcode].join(', ')} h3="About this address" icon={<Icon path={IM_LOCATION} size={50} />}>
-        <ButtonGroup>
+        <ButtonGroup alignment="">
           <LinkButton pathname="/search" positionInGroup="left" query={{ entities: props.location.query.entities, search: props.location.query.search, hideNavbar: props.location.query.hideNavbar }}>Back to search</LinkButton>
           {props.location.query.placeSearch &&
             <LinkButton positionInGroup="right" pathname="/search/googlePlaceMatches" query={{ entities: props.location.query.entities, search: props.location.query.search, hideNavbar: props.location.query.hideNavbar, placeSearch: props.location.query.placeSearch }}>Back to place matches</LinkButton>
@@ -115,7 +115,7 @@ const Address = (props) => {
         </div>
         {addressData.is_in_city &&
           <div className="col-sm-5">
-            <div className="row">
+            <div className="row small-padding">
               {['CRIME', 'DEVELOPMENT'].map((topic, i) => (
                 <div className="col-xs-6" key={['topic', i]}>
                   <TopicCard topic={topic} entity="address" id={props.location.query.id} label={[addressData.address, addressData.zipcode].join(', ')} entities={props.location.query.entities} x={addressData.x} y={addressData.y} search={props.location.query.search} />

@@ -172,7 +172,7 @@ const MiniResults = (props) => {
             >
               <div
                 className='text-primary'
-                style={{ display: 'inline-block', minWidth: '40%'}}
+                style={{ display: 'inline-block', minWidth: '30%'}}
               >
                 <a
                   href={getLink(result.type, result.id, props.searchText, props.selectedEntities, result.label, props.originalSearch)}
@@ -183,7 +183,7 @@ const MiniResults = (props) => {
                 </a>
               </div>
               <div
-                style={{ display: 'inline-block', fontSize: '0.65em'}}
+                style={{ display: 'inline-block', fontSize: '0.55em'}}
               >
                 <InCityMessage
                   inTheCity={false}

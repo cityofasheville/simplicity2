@@ -70,7 +70,7 @@ const getDataColumns = (level, expenseOrRevenue) => {
       accessor: 'name',
       width: level === 3 ? 300 - (34 * 2) : 300 - (34 * level),
       getProps: () => ({
-        role: 'rowheader',
+        role: 'rowheader'
       }),
     },
     {
@@ -110,13 +110,13 @@ const getDataColumns = (level, expenseOrRevenue) => {
 
 const tdProps = () => ({
   style: {
-    whiteSpace: 'normal',
+    whiteSpace: 'normal'
   },
 });
 
 const trProps = () => ({
   style: {
-    cursor: 'pointer',
+    cursor: 'pointer'
   },
 });
 

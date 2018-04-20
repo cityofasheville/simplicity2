@@ -2,13 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const DetailsIconLinkFormGroup = props => (
-  <div className="form-group">
+  <div className={props.icon ? 'form-group form-group--has-icon' : 'form-group'}>
     <a href={props.href} title={props.title} target={props.inWindow ? '_self' : '_blank'}>
-      <div className="form-group">
-        <div className="form-group__label">
-          <span>{props.icon}</span>
-          <span>{props.label}</span>
-        </div>
+      <div className="form-group__label"> 
+        <span>{props.icon}</span>
+        <label>{props.label}</label>
       </div>
     </a>
   </div>

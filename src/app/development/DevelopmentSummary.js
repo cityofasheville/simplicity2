@@ -34,7 +34,7 @@ const DevelopmentSummary = (props) => {
     <div>
       {/*<Link to="/development/sla-dashboard">Development Services SLA Dashboard</Link>*/}
       <PageHeader h1="Development" icon={<Icon path={IM_OFFICE} size={35} />}>
-        <ButtonGroup>
+        <ButtonGroup alignment="">
           <Button onClick={browserHistory.goBack}>Back</Button>
         </ButtonGroup>
       </PageHeader>

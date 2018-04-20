@@ -4,27 +4,33 @@ import { Link } from 'react-router';
 
 const PageHeader = props => (
   <div className="row template-header">
-    <div className="col-sm-12">
+    <div className="col-sm-12 template-header__inner">
       {props.image &&
         <img alt={props.imageAlt} src={props.image} style={{ width: '100px', float: 'left', marginRight: '10px' }} />
       }
-      <h1>
-        {props.icon &&
-          <span style={{ marginRight: '5px' }}>{props.icon}</span>
-        }
+      <div className="template-header__title">
+        <h1>
+          {props.icon &&
+            <span className="title__icon">{props.icon}</span>
+          }
+          <span className="title__text">
+            {props.h1}
+          </span>
+        </h1>
+      </div>      
+      <div className="template-header__actions">
         {props.children}
-        {props.h1}
-      </h1>
+      </div>
       {props.externalLink && props.dataLinkPath &&
         <div className="template-header__subnav">
           {props.externalLink &&
-            <div className="pull-left">
-              <a className="inText" href={props.externalLink} target="_blank">{props.externalLinkText}</a>
+            <div>
+              <a href={props.externalLink} target="_blank">{props.externalLinkText}</a>
             </div>
           }
           {props.dataLinkPath &&
-            <div className="pull-right">
-              <Link className="inText" to={{ pathname: props.dataLinkPath }}>Understand this data</Link>
+            <div>
+              <Link to={{ pathname: props.dataLinkPath }}>Understand this data</Link>
             </div>
           }
         </div>

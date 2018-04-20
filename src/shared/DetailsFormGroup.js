@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const DetailsFormGroup = props => (
-  <div className="form-group">
+  <div className={props.icon ? 'form-group form-group--has-icon' : 'form-group'}>
     <div className="form-group__label">
     {props.icon !== null &&
     <span>{props.icon}</span>

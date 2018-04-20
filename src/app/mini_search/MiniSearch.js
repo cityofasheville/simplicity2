@@ -69,7 +69,8 @@ class MiniSearch extends React.Component {
   }
 
   render() {
-    return (<div>
+    return (<div style={{ margin: '2% 0%'}} >
+      <h3>Check whether the address is within city limits</h3>
       <form onSubmit={event => event.preventDefault()}>
         <div className="input-group">
           <label htmlFor="searchBox" className="offscreen">Search terms</label>
@@ -98,8 +99,6 @@ class MiniSearch extends React.Component {
 }
 
 
-
-
 MiniSearch.defaultProps = {
   entities: [
     { label: 'Addresses', type: 'address', checked: true },
@@ -110,7 +109,8 @@ MiniSearch.defaultProps = {
     { label: 'Google places', type: 'google', checked: true },
   ],
   selectedEntities: '',
-  selectedEntity: 'address'
+  selectedEntity: 'address',
+  title: 'Check whether the address is within city limits'
 };
 
 MiniSearch.propTypes = {
@@ -119,6 +119,7 @@ MiniSearch.propTypes = {
   onKeyUp: PropTypes.func,
   onSearchClick: PropTypes.func,
   selectedEntity: PropTypes.string,
+  title: PropTypes.string,
 };
 
 

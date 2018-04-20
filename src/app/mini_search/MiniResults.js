@@ -5,6 +5,7 @@ import gql from 'graphql-tag';
 import SearchResultGroup from '../search/searchResults/SearchResultGroup';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import Error from '../../shared/Error';
+import InCityMessage from '../InCityMessage'
 
 const getResultType = (type) => {
   switch (type) {
@@ -95,7 +96,7 @@ const MiniResults = (props) => {
     return null;
   }
   if (props.data.loading) {
-    return <LoadingAnimation message="Searching..." />;
+    return <LoadingAnimation message='Searching...' />;
   }
   if (props.data.error) {
     return <Error message={props.data.error.message} />;
@@ -157,28 +158,40 @@ const MiniResults = (props) => {
     }
   }
   return (
-    <div className="row">
-      <div className="col-sm-12">
+    <div className='row'>
+      <div className='col-sm-12'>
         {
           formattedResults.length > 0 ?
           formattedResults[0].results.map((result, index) => (
-            <span
-              className="text-primary"
-              style={{ marginLeft: '20px' }}
+            <div
+              style={{
+                width: '100%',
+                margin: '0.25em 20px',
+              }}
               key={index}
             >
-              <a
-                href={getLink(result.type, result.id, props.searchText, props.selectedEntities, result.label, props.originalSearch)}
-                target='_blank'
-                rel='noopener noreferrer'
-                >
-                {result.label}
-              </a>
-            </span>
+              <div
+                className='text-primary'
+                style={{ display: 'inline-block', minWidth: '40%'}}
+              >
+                <a
+                  href={getLink(result.type, result.id, props.searchText, props.selectedEntities, result.label, props.originalSearch)}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  >
+                  {result.label}
+                </a>
+              </div>
+              <div
+                style={{ display: 'inline-block', fontSize: '0.65em'}}
+              >
+                <InCityMessage inTheCity={false} />
+              </div>
+            </div>
           )) :
           props.searchText === undefined || props.searchText.length === 0 ?
             null :
-            <div className="alert alert-warning alert-sm">
+            <div className='alert alert-warning alert-sm'>
               No results found. Try a different search term and/or different search type selections.
             </div>
         }

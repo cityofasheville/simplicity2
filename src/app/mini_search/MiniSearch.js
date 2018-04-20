@@ -69,8 +69,8 @@ class MiniSearch extends React.Component {
   }
 
   render() {
-    return (<div style={{ margin: '2% 0%'}} >
-      <h3>Check whether the address is within city limits</h3>
+    return (<div style={{ margin: '2% 0%', fontSize: '0.75em'}} >
+      <h4>Check whether the address is within city limits</h4>
       <form onSubmit={event => event.preventDefault()}>
         <div className="input-group">
           <label htmlFor="searchBox" className="offscreen">Search terms</label>

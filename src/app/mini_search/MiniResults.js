@@ -166,7 +166,7 @@ const MiniResults = (props) => {
             <div
               style={{
                 width: '100%',
-                margin: '0.25em 20px',
+                margin: '0.25em 1em',
               }}
               key={index}
             >
@@ -185,7 +185,11 @@ const MiniResults = (props) => {
               <div
                 style={{ display: 'inline-block', fontSize: '0.65em'}}
               >
-                <InCityMessage inTheCity={false} />
+                <InCityMessage
+                  inTheCity={false}
+                  text={(inOutBool) => inOutBool ? "In the city" : "Outside of the city"}
+                  icon={false}
+                />
               </div>
             </div>
           )) :

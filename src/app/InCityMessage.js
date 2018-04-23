@@ -8,14 +8,14 @@ const InCityMessage = props => (
   <span className={styles.inCityMessage}>
     {props.inTheCity &&
       <span className={styles.inCity}>
-        <Icon path={IM_LIBRARY2} size={33} />
-        <span> It&apos;s in the city</span>
+        {props.icon && <Icon path={IM_LIBRARY2} size={33} />}
+        <span>{props.text(props.inTheCity)}</span>
       </span>
     }
     {!props.inTheCity &&
       <span className={styles.notInCity}>
-        <Icon path={IM_TARGET} size={33} />
-        <span>It&apos;s outside of the city</span>
+        {props.icon && <Icon path={IM_TARGET} size={33} />}
+        <span>{props.text(props.inTheCity)}</span>
       </span>
     }
   </span>
@@ -23,10 +23,14 @@ const InCityMessage = props => (
 
 InCityMessage.propTypes = {
   inTheCity: PropTypes.bool,
+  text: PropTypes.func,
+  icon: PropTypes.bool,
 };
 
 InCityMessage.defaultProps = {
   inTheCity: true,
+  text: (inOutBool) => inOutBool ? "It's in the city" : "It's outside of the city",
+  icon: true,
 };
 
 export default InCityMessage;

@@ -8,8 +8,10 @@ import { longCategory } from './cip_utilities';
 const CapitalProjectsSummary = (props) => {
   const selectedArr = [];
   const getSelected = () => {
-    if (props.location.query.selected === undefined || props.location.query.selected.length === 0) {
+    if (props.location.query.selected === undefined) {
       return ['Transportation', 'Housing', 'Parks', 'Public Safety', 'Other'];
+    } else if (props.location.query.selected.length === 0) {
+      return selectedArr;
     }
     const selected = props.location.query.selected.split(',');
     for (let category of selected) {

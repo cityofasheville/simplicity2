@@ -110,6 +110,12 @@ const MiniResults = (props) => {
           results: context.results.map((result) => {
             switch (result.type) {
               case 'address':
+                return {
+                  label: result.address,
+                  type: result.type,
+                  id: result.civic_address_id,
+                  is_in_city: result.is_in_city,
+                }
               case 'civicAddressId':
                 return {
                   label: [result.address, result.zipcode].join(', '),
@@ -182,15 +188,17 @@ const MiniResults = (props) => {
                   {result.label}
                 </a>
               </div>
-              <div
-                style={{ display: 'inline-block', fontSize: '0.55em'}}
-              >
-                <InCityMessage
-                  inTheCity={false}
-                  text={(inOutBool) => inOutBool ? "In the city" : "Outside of the city"}
-                  icon={false}
-                />
-              </div>
+              { result.is_in_city !== null &&
+                <div
+                  style={{ display: 'inline-block', fontSize: '0.55em'}}
+                >
+                  <InCityMessage
+                    inTheCity={result.is_in_city}
+                    text={(inOutBool) => inOutBool ? "In the city" : "Outside of the city"}
+                    icon={false}
+                  />
+                </div>
+              }
             </div>
           )) :
           props.searchText === undefined || props.searchText.length === 0 ?
@@ -226,6 +234,7 @@ const searchQuery = gql`
           civic_address_id
           address
           zipcode
+          is_in_city
         }
         ... on PropertyResult {
           pinnum
@@ -261,5 +270,12 @@ const searchQuery = gql`
 
 export default graphql(searchQuery, {
   skip: ownProps => (!ownProps.searchText || ownProps.searchText.trim().length < 4),
-  options: ownProps => ({ variables: { searchString: ownProps.searchText.trim(), searchContexts: getEntitiesToSearch(ownProps.location.query.entities !== undefined ? getEntities(ownProps.location.query.entities) : getEntities('address,property,neighborhood,street,owner,google')) } }),
+  options: ownProps => ({
+    variables: {
+      searchString: ownProps.searchText.trim(),
+      searchContexts: getEntitiesToSearch(ownProps.location.query.entities !== undefined ?
+        getEntities(ownProps.location.query.entities) :
+        getEntities('address,property,neighborhood,street,owner,google'))
+    }
+  }),
 })(MiniResults);

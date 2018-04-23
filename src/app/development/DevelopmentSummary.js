@@ -52,7 +52,7 @@ const DevelopmentSummary = (props) => {
             <div className="form-group">
               <label htmlFor="time" className="col-sm-2 control-label">during</label>
               <div className="col-sm-10">
-                <select value={duringURL} onChange={() => refreshLocation(getNewUrlParams(), props.location)} name="time" id="time" className="form-control" defaultValue={183}>
+                <select value={duringURL} onChange={() => refreshLocation(getNewUrlParams(), props.location)} name="time" id="time" className="form-control">
                   {timeOptions.map((option, i) => (
                     <option value={option.value} key={['time', 'option', i].join('_')} name="time">{option.display}</option>
                   ))}
@@ -62,7 +62,7 @@ const DevelopmentSummary = (props) => {
             <div className="form-group" hidden={props.location.query.entity === 'street' || props.location.query.entity === 'neighborhood'}>
               <label htmlFor="time" className="col-sm-2 control-label">within</label>
               <div className="col-sm-10">
-                <select value={withinURL} onChange={() => refreshLocation(getNewUrlParams(), props.location)} name="extent" id="extent" className="form-control" defaultValue={660}>
+                <select value={withinURL} onChange={() => refreshLocation(getNewUrlParams(), props.location)} name="extent" id="extent" className="form-control">
                   {extentOptions.map((option, i) => (
                     <option value={option.value} key={['extent', 'option', i].join('_')} name="extent">{option.display}</option>
                   ))}

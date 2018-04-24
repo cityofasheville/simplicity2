@@ -50,6 +50,8 @@ import HomelessnessVeteransChronicAssignments from './app/homelessness/Homelessn
 import HomelessnessVeteransExitTime from './app/homelessness/HomelessnessVeteransExitTime';
 import HomelessnessEnrollment from './app/homelessness/HomelessnessEnrollment';
 import HomelessnessData from './app/homelessness/HomelessnessData';
+// MiniSearch
+import MiniSearch from './app/mini_search/MiniSearch';
 
 // Google Analytics
 const ReactGA = require('react-ga');
@@ -61,11 +63,11 @@ let logPageView = () => {
 
 if (window.location.href.indexOf('dashboards.ashevillenc.gov') > -1) {
   ReactGA.initialize('UA-16340971-12');
-} else if (window.location.href.indexOf('simplicity2.ashevillenc.gov') > -1) {
-  ReactGA.initialize('UA-16340971-14');
+} else if (window.location.href.indexOf('simplicity.ashevillenc.gov') > -1) {
+  ReactGA.initialize('UA-16340971-11');
 } else {
   logPageView = null;
-} // later add an else for SimpliCity2
+}
 
 const Routes = () => (
   <ApolloProvider client={client} >
@@ -130,6 +132,9 @@ const Routes = () => (
         </Route>
         <Route path="maintenance">
           <IndexRoute component={Maintenance} />
+        </Route>
+        <Route path="mini_search">
+          <IndexRoute component={MiniSearch} />
         </Route>
       </Route>
     </Router>

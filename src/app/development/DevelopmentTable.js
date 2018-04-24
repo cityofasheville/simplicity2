@@ -34,146 +34,165 @@ const getIcon = (type, isExpanded) => {
   }
 };
 
+class DevelopmentTable extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      urlString: '',
+    };
+  }
 
-const DevelopmentTable = (props) => {
-  const urlString = [props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&entities=', props.location.query.entities, '&label=', props.location.query.label, '&within=', document.getElementById('extent').value, '&during=', document.getElementById('time').value, '&hideNavbar=', props.location.query.hideNavbar, '&search=', props.location.query.search, '&view=map', '&x=', props.location.query.x, '&y=', props.location.query.y].join('');
+  componentDidMount() {
+    this.setState({
+      urlString: [this.props.location.pathname, '?entity=', this.props.location.query.entity, '&id=', this.props.location.query.id, '&entities=', this.props.location.query.entities, '&label=', this.props.location.query.label, '&within=', document.getElementById('extent').value, '&during=', document.getElementById('time').value, '&hideNavbar=', this.props.location.query.hideNavbar, '&search=', this.props.location.query.search, '&view=map', '&x=', this.props.location.query.x, '&y=', this.props.location.query.y].join('')
+    })
+  }
 
-  const dataColumns = [
-    {
-      Header: 'Name',
-      accessor: 'applicant_name',
-      minWidth: 250,
-      Cell: row => (
-        <span>
-          <span> <a title="Click to permit in map" href={[urlString, '&zoomToPoint=', [row.original.y, row.original.x].join(',')].join('')} style={{ color: row.isExpanded ? 'white' : '#4077a5' }}><Icon path={IM_MAP5} size={23} /></a></span>
-          <span style={{ marginLeft: '5px' }}>{row.value}</span>
-        </span>
-      ),
-      Filter: ({ filter, onChange }) => (
-        <input
-          onChange={event => onChange(event.target.value)}
-          style={{ width: '100%' }}
-          value={filter ? filter.value : ''}
-          placeholder="Search..."
-        />
-      ),
-    },
-    {
-      Header: 'Type',
-      accessor: 'permit_type',
-      minWidth: 150,
-      Cell: row => (
-        <span>
-          <span title={row.original.permit_type}>{getIcon(row.value, row.isExpanded)}</span>
-          <span style={{ marginLeft: '5px' }}>{row.value}</span>
-        </span>
-      ),
-      Filter: ({ filter, onChange }) => (
-        <input
-          onChange={event => onChange(event.target.value)}
-          style={{ width: '100%' }}
-          value={filter ? filter.value : ''}
-          placeholder="Search..."
-        />
-      ),
-    },
-    {
-      Header: 'Contractor',
-      accessor: 'contractor_name',
-      minWidth: 150,
-      Filter: ({ filter, onChange }) => (
-        <input
-          onChange={event => onChange(event.target.value)}
-          style={{ width: '100%' }}
-          value={filter ? filter.value : ''}
-          placeholder="Search..."
-        />
-      ),
-    },
-    {
-      Header: 'Applied Date',
-      id: 'applied_date',
-      accessor: permit => (<span>{moment.utc(permit.applied_date).format('M/DD/YYYY')}</span>),
-      width: 110,
-      Filter: ({ filter, onChange }) => (
-        <input
-          onChange={event => onChange(event.target.value)}
-          style={{ width: '100%' }}
-          value={filter ? filter.value : ''}
-          placeholder="Search..."
-        />
-      ),
-      filterMethod: (filter, row) => {
-        const id = filter.pivotId || filter.id;
-        return row[id] !== undefined ? String(row[id].props.children).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
+  render() {
+    const ExpandableAccessibleReactTable = expandingRows(AccessibleReactTable);
+
+    const dataColumns = [
+      {
+        Header: 'Name',
+        accessor: 'applicant_name',
+        minWidth: 250,
+        Cell: row => (
+          <span>
+            <span> <a title="Click to permit in map" href={[this.state.urlString, '&zoomToPoint=', [row.original.y, row.original.x].join(',')].join('')} style={{ color: row.isExpanded ? 'white' : '#4077a5' }}><Icon path={IM_MAP5} size={23} /></a></span>
+            <span style={{ marginLeft: '5px' }}>{row.value}</span>
+          </span>
+        ),
+        Filter: ({ filter, onChange }) => (
+          <input
+            onChange={event => onChange(event.target.value)}
+            style={{ width: '100%' }}
+            value={filter ? filter.value : ''}
+            placeholder="Search..."
+          />
+        ),
       },
-    },
-    {
-      Header: 'Permit #',
-      accessor: 'permit_number',
-      width: 115,
-      Filter: ({ filter, onChange }) => (
-        <input
-          onChange={event => onChange(event.target.value)}
-          style={{ width: '100%' }}
-          value={filter ? filter.value : ''}
-          placeholder="Search..."
-        />
-      ),
-    },
-  ];
+      {
+        Header: 'Type',
+        accessor: 'permit_type',
+        minWidth: 150,
+        Cell: row => (
+          <span>
+            <span title={row.original.permit_type}>{getIcon(row.value, row.isExpanded)}</span>
+            <span style={{ marginLeft: '5px' }}>{row.value}</span>
+          </span>
+        ),
+        Filter: ({ filter, onChange }) => (
+          <input
+            onChange={event => onChange(event.target.value)}
+            style={{ width: '100%' }}
+            value={filter ? filter.value : ''}
+            placeholder="Search..."
+          />
+        ),
+      },
+      {
+        Header: 'Contractor',
+        accessor: 'contractor_name',
+        minWidth: 150,
+        Filter: ({ filter, onChange }) => (
+          <input
+            onChange={event => onChange(event.target.value)}
+            style={{ width: '100%' }}
+            value={filter ? filter.value : ''}
+            placeholder="Search..."
+          />
+        ),
+      },
+      {
+        Header: 'Applied Date',
+        id: 'applied_date',
+        accessor: permit => (<span>{moment.utc(permit.applied_date).format('M/DD/YYYY')}</span>),
+        width: 110,
+        Filter: ({ filter, onChange }) => (
+          <input
+            onChange={event => onChange(event.target.value)}
+            style={{ width: '100%' }}
+            value={filter ? filter.value : ''}
+            placeholder="Search..."
+          />
+        ),
+        filterMethod: (filter, row) => {
+          const id = filter.pivotId || filter.id;
+          return row[id] !== undefined ? String(row[id].props.children).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
+        },
+      },
+      {
+        Header: 'Permit #',
+        accessor: 'permit_number',
+        width: 115,
+        Filter: ({ filter, onChange }) => (
+          <input
+            onChange={event => onChange(event.target.value)}
+            style={{ width: '100%' }}
+            value={filter ? filter.value : ''}
+            placeholder="Search..."
+          />
+        ),
+      },
+    ];
 
-  const ExpandableAccessibleReactTable = expandingRows(AccessibleReactTable);
-
-  return (
-    <div>
-      <div className="col-sm-12">
-        {props.data.length < 1 ?
-          <div className="alert alert-info">No results found</div>
-        :
-          <div style={{ marginTop: '10px' }}>
-            <ExpandableAccessibleReactTable
-              ariaLabel="Development"
-              data={props.data}
-              columns={dataColumns}
-              showPagination={props.data.length > 20}
-              defaultPageSize={props.data.length <= 20 ? props.data.length : 20}
-              filterable
-              defaultFilterMethod={(filter, row) => {
-                const id = filter.pivotId || filter.id;
-                return row[id] !== undefined ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
-              }}
-              getTdProps={() => {
-                return {
-                  style: {
-                    whiteSpace: 'normal',
-                  },
-                };
-              }}
-              getTrProps={(state, rowInfo) => {
-                return {
-                  style: {
-                    cursor: 'pointer',
-                    background: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '#4077a5': 'none',
-                    color: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '#fff': '',
-                    fontWeight: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? 'bold': 'normal',
-                    fontSize: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '1.2em': '1em',
-                  },
-                };
-              }}
-              SubComponent={row => (
-                <div style={{ paddingLeft: '34px', paddingRight: '34px', paddingBottom: '15px', backgroundColor: '#f6fcff', borderRadius: '0px', border: '2px solid #4077a5' }}>
-                  <DevelopmentDetail data={row.original} standalone={false} />
-                </div>
-              )}
-            />
-          </div>
-        }
+    return (
+      <div>
+        <div className="col-sm-12">
+          {this.props.data.length < 1 ?
+            <div className="alert alert-info">No results found</div>
+          :
+            <div style={{ marginTop: '10px' }}>
+              <ExpandableAccessibleReactTable
+                ariaLabel="Development"
+                data={this.props.data}
+                columns={dataColumns}
+                showPagination={this.props.data.length > 20}
+                defaultPageSize={this.props.data.length <= 20 ? this.props.data.length : 20}
+                filterable
+                defaultFilterMethod={(filter, row) => {
+                  const id = filter.pivotId || filter.id;
+                  return row[id] !== undefined ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
+                }}
+                getTdProps={() => {
+                  return {
+                    style: {
+                      whiteSpace: 'normal',
+                    },
+                  };
+                }}
+                getTrProps={(state, rowInfo) => {
+                  return {
+                    style: {
+                      cursor: 'pointer',
+                      background: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '#4077a5' : 'none',
+                      color: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '#fff' : '',
+                      fontWeight: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? 'bold' : 'normal',
+                      fontSize: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '1.2em' : '1em',
+                    },
+                  };
+                }}
+                SubComponent={row => (
+                  <div style={{
+                    paddingLeft: '34px',
+                    paddingRight: '34px',
+                    paddingBottom: '15px',
+                    backgroundColor: '#f6fcff',
+                    borderRadius: '0px',
+                    border: '2px solid #4077a5',
+                  }}
+                  >
+                    <DevelopmentDetail data={row.original} standalone={false} />
+                  </div>
+                )}
+              />
+            </div>
+          }
+        </div>
       </div>
-    </div>
-  );
-};
-
+    );
+  }
+}
 
 DevelopmentTable.propTypes = {
   data: PropTypes.array, // eslint-disable-line

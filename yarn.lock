@@ -172,7 +172,7 @@
   version "0.2.6"
   resolved "https://registry.yarnpkg.com/@firebase/webchannel-wrapper/-/webchannel-wrapper-0.2.6.tgz#a4b81ca8cdeb1acbc7923289a4a514f61b59db86"
 
-"@mapbox/polylabel@1.0.2":
+"@mapbox/polylabel@1":
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@mapbox/polylabel/-/polylabel-1.0.2.tgz#c5714619b65add082638ea06027e69b14500efa6"
   dependencies:
@@ -2198,17 +2198,13 @@ d3-array@1, d3-array@^1.1.1, d3-array@^1.2.0, d3-array@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/d3-array/-/d3-array-1.2.1.tgz#d1ca33de2f6ac31efadb8e050a021d7e2396d5dc"
 
-d3-array@1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/d3-array/-/d3-array-1.2.0.tgz#147d269720e174c4057a7f42be8b0f3f2ba53108"
-
-d3-bboxCollide@1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/d3-bboxCollide/-/d3-bboxCollide-1.0.3.tgz#9c0bce0d6a8c24bdd85d37a859dfb9807def7406"
+d3-bboxCollide@^1.0.3:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/d3-bboxCollide/-/d3-bboxCollide-1.0.4.tgz#817827fd41bb96d19035efbd0a561d1b83bb5f51"
   dependencies:
     d3-quadtree "1.0.1"
 
-d3-brush@1.0.4:
+d3-brush@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/d3-brush/-/d3-brush-1.0.4.tgz#00c2f238019f24f6c0a194a26d41a1530ffe7bc4"
   dependencies:
@@ -2218,28 +2214,24 @@ d3-brush@1.0.4:
     d3-selection "1"
     d3-transition "1"
 
-d3-chord@1.0.4:
+d3-chord@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/d3-chord/-/d3-chord-1.0.4.tgz#7dec4f0ba886f713fe111c45f763414f6f74ca2c"
   dependencies:
     d3-array "1"
     d3-path "1"
 
-d3-collection@1, d3-collection@^1.0.4:
+d3-collection@1, d3-collection@^1.0.1, d3-collection@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/d3-collection/-/d3-collection-1.0.4.tgz#342dfd12837c90974f33f1cc0a785aea570dcdc2"
 
-d3-collection@1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/d3-collection/-/d3-collection-1.0.1.tgz#5b5c5626f731122b600b107d71a08833fec049ad"
-
 d3-color@1:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/d3-color/-/d3-color-1.0.3.tgz#bc7643fca8e53a8347e2fbdaffa236796b58509b"
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/d3-color/-/d3-color-1.1.0.tgz#73957299b63ca935bf19c6c9d835e90066028329"
 
-d3-contour@1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/d3-contour/-/d3-contour-1.1.1.tgz#2fc79994c13437dfa8fdaf22ced8cd1468f81a24"
+d3-contour@^1.1.1:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/d3-contour/-/d3-contour-1.2.0.tgz#de3ea7991bbb652155ee2a803aeafd084be03b63"
   dependencies:
     d3-array "^1.1.1"
 
@@ -2258,9 +2250,9 @@ d3-ease@1, d3-ease@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/d3-ease/-/d3-ease-1.0.3.tgz#68bfbc349338a380c44d8acc4fbc3304aa2d8c0e"
 
-d3-force@1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/d3-force/-/d3-force-1.0.2.tgz#92dbedeacf9a2d3f6686450c8d6375f3c363af66"
+d3-force@^1.0.2:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/d3-force/-/d3-force-1.1.0.tgz#cebf3c694f1078fcc3d4daf8e567b2fbd70d4ea3"
   dependencies:
     d3-collection "1"
     d3-dispatch "1"
@@ -2271,13 +2263,17 @@ d3-format@1:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/d3-format/-/d3-format-1.2.2.tgz#1a39c479c8a57fe5051b2e67a3bee27061a74e7a"
 
-d3-glyphedge@1.2.0:
+d3-glyphedge@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/d3-glyphedge/-/d3-glyphedge-1.2.0.tgz#295367d8405f83cdbe8319171bb1f6636c60f85b"
 
-d3-hierarchy@1.1.3:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/d3-hierarchy/-/d3-hierarchy-1.1.3.tgz#509ec4476683ee038b2300868d5af91c836bcfdb"
+d3-hexbin@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/d3-hexbin/-/d3-hexbin-0.2.2.tgz#9c5837dacfd471ab05337a9e91ef10bfc4f98831"
+
+d3-hierarchy@^1.1.3:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/d3-hierarchy/-/d3-hierarchy-1.1.6.tgz#842c1372090f870b7ea013ebae5c0c8d9f56229c"
 
 d3-interpolate@1, d3-interpolate@^1.1.5:
   version "1.1.6"
@@ -2303,7 +2299,7 @@ d3-quadtree@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/d3-quadtree/-/d3-quadtree-1.0.1.tgz#13be025624f110405ed43536c506aaec199ed591"
 
-d3-sankey-circular@0.23.0, d3-sankey-circular@^0.23.0:
+d3-sankey-circular@^0.23.0:
   version "0.23.0"
   resolved "https://registry.yarnpkg.com/d3-sankey-circular/-/d3-sankey-circular-0.23.0.tgz#27697963e3ce040616c6b26b310782f11126bb32"
   dependencies:
@@ -2343,6 +2339,18 @@ d3-scale@1.0.6:
     d3-time "1"
     d3-time-format "2"
 
+d3-scale@^1.0.3:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/d3-scale/-/d3-scale-1.0.7.tgz#fa90324b3ea8a776422bd0472afab0b252a0945d"
+  dependencies:
+    d3-array "^1.2.0"
+    d3-collection "1"
+    d3-color "1"
+    d3-format "1"
+    d3-interpolate "1"
+    d3-time "1"
+    d3-time-format "2"
+
 d3-selection@1, d3-selection@^1.1.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/d3-selection/-/d3-selection-1.3.0.tgz#d53772382d3dc4f7507bfb28bcd2d6aed2a0ad6d"
@@ -2363,7 +2371,7 @@ d3-shape@1.0.4:
   dependencies:
     d3-path "1"
 
-d3-shape@1.2.0, d3-shape@^1.2.0:
+d3-shape@1.2.0, d3-shape@^1.0.3, d3-shape@^1.0.4, d3-shape@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/d3-shape/-/d3-shape-1.2.0.tgz#45d01538f064bafd05ea3d6d2cb748fd8c41f777"
   dependencies:
@@ -2383,7 +2391,7 @@ d3-timer@1, d3-timer@^1.0.6:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/d3-timer/-/d3-timer-1.0.7.tgz#df9650ca587f6c96607ff4e60cc38229e8dd8531"
 
-d3-transition@1, d3-transition@^1.1.0:
+d3-transition@1, d3-transition@^1.0.3, d3-transition@^1.1.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/d3-transition/-/d3-transition-1.1.1.tgz#d8ef89c3b848735b060e54a39b32aaebaa421039"
   dependencies:
@@ -2405,9 +2413,9 @@ d3-transition@1.0.3:
     d3-selection "1"
     d3-timer "1"
 
-d3-voronoi@1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/d3-voronoi/-/d3-voronoi-1.0.2.tgz#09b1a3a7891c4ed8376d9ffdb2e770430f3f55c3"
+d3-voronoi@^1.0.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/d3-voronoi/-/d3-voronoi-1.1.2.tgz#1687667e8f13a2d158c80c1480c5a29cb0d8973c"
 
 d@1:
   version "1.0.0"
@@ -3370,11 +3378,11 @@ flat-cache@^1.2.1:
     graceful-fs "^4.1.2"
     write "^0.2.1"
 
-flat@^2.0.0:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/flat/-/flat-2.0.1.tgz#70e29188a74be0c3c89409eed1fa9577907ae32f"
+flat@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/flat/-/flat-4.0.0.tgz#3abc7f3b588e64ce77dc42fd59aa35806622fea8"
   dependencies:
-    is-buffer "~1.1.2"
+    is-buffer "~1.1.5"
 
 flatten@^1.0.2:
   version "1.0.2"
@@ -4182,7 +4190,7 @@ is-binary-path@^1.0.0:
   dependencies:
     binary-extensions "^1.0.0"
 
-is-buffer@^1.1.5, is-buffer@~1.1.2:
+is-buffer@^1.1.5, is-buffer@~1.1.5:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/is-buffer/-/is-buffer-1.1.6.tgz#efaa2ea9daa0d7ab2ea13a97b2b8ad51fefbe8be"
 
@@ -4592,19 +4600,19 @@ json-stringify-safe@~5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/json-stringify-safe/-/json-stringify-safe-5.0.1.tgz#1296a2d58fd45f19a0f6ce01d65701e2c735b6eb"
 
-json2csv@3.7.3:
-  version "3.7.4"
-  resolved "https://registry.yarnpkg.com/json2csv/-/json2csv-3.7.3.tgz#dacfdfa7fb0c1b1b163868dc75f3902d023354ec"
+json2csv@3.11.5:
+  version "3.11.5"
+  resolved "https://registry.yarnpkg.com/json2csv/-/json2csv-3.11.5.tgz#088006c3b5c06425a48cb7326ca712a6f8661417"
   dependencies:
     cli-table "^0.3.1"
     commander "^2.8.1"
-    debug "^2.2.0"
-    flat "^2.0.0"
-    lodash.clonedeep "^4.3.0"
-    lodash.flatten "^4.2.0"
-    lodash.get "^4.3.0"
+    debug "^3.1.0"
+    flat "^4.0.0"
+    lodash.clonedeep "^4.5.0"
+    lodash.flatten "^4.4.0"
+    lodash.get "^4.4.0"
     lodash.set "^4.3.0"
-    lodash.uniq "^4.3.0"
+    lodash.uniq "^4.5.0"
     path-is-absolute "^1.0.0"
 
 json3@^3.3.2:
@@ -4813,11 +4821,11 @@ lodash.camelcase@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/lodash.camelcase/-/lodash.camelcase-4.3.0.tgz#b28aa6288a2b9fc651035c7711f65ab6190331a6"
 
-lodash.clonedeep@^4.3.0, lodash.clonedeep@^4.3.2:
+lodash.clonedeep@^4.3.2, lodash.clonedeep@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
 
-lodash.flatten@^4.2.0:
+lodash.flatten@^4.4.0:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/lodash.flatten/-/lodash.flatten-4.4.0.tgz#f31c22225a9632d2bbf8e4addbef240aa765a61f"
 
@@ -4825,7 +4833,7 @@ lodash.flowright@^3.5.0:
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/lodash.flowright/-/lodash.flowright-3.5.0.tgz#2b5fff399716d7e7dc5724fe9349f67065184d67"
 
-lodash.get@^4.3.0:
+lodash.get@^4.4.0:
   version "4.4.2"
   resolved "https://registry.yarnpkg.com/lodash.get/-/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
 
@@ -4853,7 +4861,7 @@ lodash.tail@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/lodash.tail/-/lodash.tail-4.1.1.tgz#d2333a36d9e7717c8ad2f7cacafec7c32b444664"
 
-lodash.uniq@^4.3.0, lodash.uniq@^4.5.0:
+lodash.uniq@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
 
@@ -6327,6 +6335,15 @@ react-dom@^16.2.0:
     object-assign "^4.1.1"
     prop-types "^15.6.0"
 
+react-dom@^16.3.2:
+  version "16.3.2"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.3.2.tgz#cb90f107e09536d683d84ed5d4888e9640e0e4df"
+  dependencies:
+    fbjs "^0.8.16"
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    prop-types "^15.6.0"
+
 react-draggable@3.0.3:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/react-draggable/-/react-draggable-3.0.3.tgz#a6f9b3a7171981b76dadecf238316925cb9eacf4"
@@ -6451,9 +6468,18 @@ react-travel@^1.3.1:
   dependencies:
     prop-types "^15.5.10"
 
-"react@^15.6.2 || ^16.0", react@^16.2.0:
+"react@^15.6.2 || ^16.0":
   version "16.2.0"
   resolved "https://registry.yarnpkg.com/react/-/react-16.2.0.tgz#a31bd2dab89bff65d42134fa187f24d054c273ba"
+  dependencies:
+    fbjs "^0.8.16"
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    prop-types "^15.6.0"
+
+react@^16.3.2:
+  version "16.3.2"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.3.2.tgz#fdc8420398533a1e58872f59091b272ce2f91ea9"
   dependencies:
     fbjs "^0.8.16"
     loose-envify "^1.1.0"
@@ -6860,6 +6886,12 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^2.0.0"
     inherits "^2.0.1"
 
+"roughjs@github:emeeks/rough":
+  version "2.1.1"
+  resolved "https://codeload.github.com/emeeks/rough/tar.gz/b98a98ad3e8d99d88384ccc2d5f41d997fef1bdb"
+  dependencies:
+    babel-runtime "6.26.0"
+
 run-async@^2.0.0, run-async@^2.2.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/run-async/-/run-async-2.3.0.tgz#0371ab4ae0bdd720d4166d7dfda64ff7a445a6c0"
@@ -6968,7 +7000,19 @@ selfsigned@^1.9.1:
   dependencies:
     node-forge "0.7.1"
 
-semiotic-mark@0.1.2, semiotic-mark@^0.1.2:
+semiotic-mark@0.2.6:
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/semiotic-mark/-/semiotic-mark-0.2.6.tgz#504f63e9259152530692b5dc2bf078bf8588f420"
+  dependencies:
+    d3-interpolate "^1.1.5"
+    d3-scale "^1.0.3"
+    d3-selection "^1.1.0"
+    d3-shape "^1.0.3"
+    d3-transition "^1.0.3"
+    prop-types "^15.6.0"
+    roughjs "github:emeeks/rough"
+
+semiotic-mark@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/semiotic-mark/-/semiotic-mark-0.1.2.tgz#0dfd375b001fdb939ec61d20b0016e6715f87e10"
   dependencies:
@@ -6979,34 +7023,36 @@ semiotic-mark@0.1.2, semiotic-mark@^0.1.2:
     d3-transition "1.0.3"
     prop-types "15.6.0"
 
-semiotic@^1.9.1:
-  version "1.9.2"
-  resolved "https://registry.yarnpkg.com/semiotic/-/semiotic-1.9.2.tgz#8ad34965a2091c31a130375f78ab7f96225208f3"
+semiotic@^1.10.0:
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/semiotic/-/semiotic-1.10.0.tgz#b693b9349388bfb7e2e36905ec5f719d6671f6c0"
   dependencies:
-    "@mapbox/polylabel" "1.0.2"
+    "@mapbox/polylabel" "1"
     babel-plugin-external-helpers "^6.22.0"
     babel-runtime "6.26.0"
-    d3-array "1.2.0"
-    d3-bboxCollide "1.0.3"
-    d3-brush "1.0.4"
-    d3-chord "1.0.4"
-    d3-collection "1.0.1"
-    d3-contour "1.1.1"
-    d3-force "1.0.2"
-    d3-glyphedge "1.2.0"
-    d3-hierarchy "1.1.3"
-    d3-interpolate "1.1.5"
-    d3-sankey-circular "0.23.0"
-    d3-scale "1.0.3"
-    d3-selection "1.1.0"
-    d3-shape "1.0.4"
-    d3-voronoi "1.0.2"
+    d3-array "^1.2.0"
+    d3-bboxCollide "^1.0.3"
+    d3-brush "^1.0.4"
+    d3-chord "^1.0.4"
+    d3-collection "^1.0.1"
+    d3-contour "^1.1.1"
+    d3-force "^1.0.2"
+    d3-glyphedge "^1.2.0"
+    d3-hexbin "^0.2.2"
+    d3-hierarchy "^1.1.3"
+    d3-interpolate "^1.1.5"
+    d3-sankey-circular "^0.23.0"
+    d3-scale "^1.0.3"
+    d3-selection "^1.1.0"
+    d3-shape "^1.0.4"
+    d3-voronoi "^1.0.2"
     element-resize-event "github:emeeks/element-resize-event"
-    json2csv "3.7.3"
+    json2csv "3.11.5"
     labella "1.1.4"
     prop-types "15.6.0"
     react-annotation "1.1.1"
-    semiotic-mark "0.1.2"
+    roughjs "github:emeeks/rough"
+    semiotic-mark "0.2.6"
     svg-path-bounding-box "1.0.4"
 
 "semver@2 || 3 || 4 || 5", semver@^5.3.0, semver@^5.5.0:

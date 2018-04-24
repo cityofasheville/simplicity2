@@ -2267,6 +2267,10 @@ d3-glyphedge@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/d3-glyphedge/-/d3-glyphedge-1.2.0.tgz#295367d8405f83cdbe8319171bb1f6636c60f85b"
 
+d3-hexbin@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/d3-hexbin/-/d3-hexbin-0.2.2.tgz#9c5837dacfd471ab05337a9e91ef10bfc4f98831"
+
 d3-hierarchy@^1.1.3:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/d3-hierarchy/-/d3-hierarchy-1.1.6.tgz#842c1372090f870b7ea013ebae5c0c8d9f56229c"
@@ -6331,7 +6335,7 @@ react-dom@^16.2.0:
     object-assign "^4.1.1"
     prop-types "^15.6.0"
 
-react-dom@^16.3.1:
+react-dom@^16.3.2:
   version "16.3.2"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.3.2.tgz#cb90f107e09536d683d84ed5d4888e9640e0e4df"
   dependencies:
@@ -6473,7 +6477,7 @@ react-travel@^1.3.1:
     object-assign "^4.1.1"
     prop-types "^15.6.0"
 
-react@^16.3.1:
+react@^16.3.2:
   version "16.3.2"
   resolved "https://registry.yarnpkg.com/react/-/react-16.3.2.tgz#fdc8420398533a1e58872f59091b272ce2f91ea9"
   dependencies:
@@ -7019,9 +7023,9 @@ semiotic-mark@^0.1.2:
     d3-transition "1.0.3"
     prop-types "15.6.0"
 
-semiotic@^1.9.1:
-  version "1.9.6"
-  resolved "https://registry.yarnpkg.com/semiotic/-/semiotic-1.9.6.tgz#d779f984849f0bc7ff8cf18c008c591bbf9d734c"
+semiotic@^1.10.0:
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/semiotic/-/semiotic-1.10.0.tgz#b693b9349388bfb7e2e36905ec5f719d6671f6c0"
   dependencies:
     "@mapbox/polylabel" "1"
     babel-plugin-external-helpers "^6.22.0"
@@ -7034,6 +7038,7 @@ semiotic@^1.9.1:
     d3-contour "^1.1.1"
     d3-force "^1.0.2"
     d3-glyphedge "^1.2.0"
+    d3-hexbin "^0.2.2"
     d3-hierarchy "^1.1.3"
     d3-interpolate "^1.1.5"
     d3-sankey-circular "^0.23.0"

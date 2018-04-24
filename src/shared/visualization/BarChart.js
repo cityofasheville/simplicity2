@@ -38,7 +38,6 @@ class BarChart extends React.Component {
     };
 
     this.toggleLongDesc = this.toggleLongDesc.bind(this)
-    this.onHover = this.onHover.bind(this)
   }
 
   toggleLongDesc(event) {
@@ -47,12 +46,6 @@ class BarChart extends React.Component {
         showingLongDesc: !this.state.showingLongDesc,
       });
     }
-  }
-
-  onHover(d) {
-    d && d.pieces ?
-      this.setState({ hover: d.pieces[0].data[this.props.mainAxisDataKey] }) :
-      this.setState({ hover: null });
   }
 
   render() {
@@ -192,8 +185,6 @@ class BarChart extends React.Component {
                     this.setState({ hover: null });
                 }}
               />
-          {/*
-          */}
               <HorizontalLegend
                 formattedData={formattedData}
                 legendLabelFormatter={this.props.legendLabelFormatter}

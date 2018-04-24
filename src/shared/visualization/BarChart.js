@@ -48,7 +48,6 @@ class BarChart extends React.Component {
     }
   }
 
-
   render() {
     const formattedData = formatDataForStackedBar(
       this.props.data,
@@ -128,11 +127,6 @@ class BarChart extends React.Component {
                   tickFormat: d => this.props.yAxisTickFormatter(d),
                   ticks: 8,
                 }]}
-                customHoverBehavior={(d) => {
-                  d && d.pieces ?
-                    this.setState({ hover: d.pieces[0].data[this.props.mainAxisDataKey] }) :
-                    this.setState({ hover: null });
-                }}
                 style={d => (
                   this.state.hover === d[this.props.mainAxisDataKey] ?
                   // For the currently hovered bar, return a brighter fill and add a stroke
@@ -143,6 +137,21 @@ class BarChart extends React.Component {
                     } :
                     { fill: d.color })
                 }
+                tooltipContent={(d) => {
+                  const dPieces = d.pieces || [d.data]
+                  const tooltipTitle = d.column ? d.column.name : d.data[this.props.mainAxisDataKey]
+                  const textLines = dPieces.map(piece =>
+                    ({
+                      text: `${piece.label}: ${this.props.tooltipYValFormatter(piece.value)}`,
+                      color: piece.color,
+                    })
+                  );
+                  if (this.props.layout !== 'horizontal') { textLines.reverse(); }
+                  return (<Tooltip
+                    textLines={textLines}
+                    title={tooltipTitle}
+                  />);
+                }}
                 svgAnnotationRules={(d) => {
                   if (d.d.budgetAnnotation === true) {
                     // todo: separate this out?
@@ -170,20 +179,10 @@ class BarChart extends React.Component {
                   }
                   return null;
                 }}
-                tooltipContent={(d) => {
-                  const dPieces = d.pieces || [d.data]
-                  const tooltipTitle = d.column ? d.column.name : d.data[this.props.mainAxisDataKey]
-                  const textLines = dPieces.map(piece =>
-                    ({
-                      text: `${piece.label}: ${this.props.tooltipYValFormatter(piece.value)}`,
-                      color: piece.color,
-                    })
-                  );
-                  if (this.props.layout !== 'horizontal') { textLines.reverse(); }
-                  return (<Tooltip
-                    textLines={textLines}
-                    title={tooltipTitle}
-                  />);
+                customHoverBehavior={(d) => {
+                  d && d.pieces ?
+                    this.setState({ hover: d.pieces[0].data[this.props.mainAxisDataKey] }) :
+                    this.setState({ hover: null });
                 }}
               />
               <HorizontalLegend

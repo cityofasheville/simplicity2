@@ -23,7 +23,7 @@ const Neighborhood = (props) => {
 
   return (
     <div>
-      <PageHeader h1={props.location.query.label} h3="About this neighborhood" icon={<Icon path={IM_FENCE} size={50} />}>
+      <PageHeader h1={props.location.query.label} dataType="Neighborhood" h3="About this neighborhood" icon={<Icon path={IM_FENCE} size={50} />}>
         <ButtonGroup alignment="">
           <LinkButton pathname="/search" query={{ entities: props.location.query.entities, search: props.location.query.search, hideNavbar: props.location.query.hideNavbar }}>Back to search</LinkButton>
         </ButtonGroup>
@@ -34,7 +34,6 @@ const Neighborhood = (props) => {
             <div className="map-container">
               <Map
                 drawPolygon
-                height="250px"
                 polygonData={combinePolygonsFromNeighborhoodList([props.data.neighborhoods[0]])}
                 bounds={getBoundsFromPolygonData([props.data.neighborhoods[0].polygon])}
               />

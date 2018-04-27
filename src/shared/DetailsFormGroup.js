@@ -2,16 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const DetailsFormGroup = props => (
-  <div className={props.icon ? 'form-group form-group--has-icon' : 'form-group'}>
-    <div className="form-group__label">
-    {props.icon !== null &&
-    <span>{props.icon}</span>
-    }
-    {props.hasLabel &&
-      <label htmlFor={props.name}>{props.label}</label>
-    }
+  <div className={props.icon ? 'form-group form-group--has-content form-group--has-icon' : 'form-group form-group--has-content'}>
+    <div className="form-group__inner">
+      <div className="form-group__label">
+      {props.icon !== null &&
+      <span>{props.icon}</span>
+      }
+      {props.hasLabel &&
+        <label htmlFor={props.name}>{props.label}</label>
+      }
+      </div>
+      <div className="form-group__value" name={props.name}>{props.value}</div>
     </div>
-    <div className="form-group__value" name={props.name}>{props.value}</div>
   </div>
 );
 

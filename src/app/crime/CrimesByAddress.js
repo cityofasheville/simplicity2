@@ -157,13 +157,13 @@ const CrimesByAddress = (props) => {
   );
 
   return (
-    <div>
-      <div className="row">
-        <div className="col-xs-12">
-          <div className="pull-left" style={{ marginTop: '10px', marginBottom: '15px' }}>
+    <div className="crimes-template__data">
+      <div className="row template-header">
+        <div className="col-xs-12 template-header__inner">
+          <div className="pull-left">
             <EmailDownload downloadData={props.data.crimes_by_address} fileName="crimes_by_address.csv" />
           </div>
-          <ButtonGroup>
+          <ButtonGroup alignment="">
             <Button onClick={() => refreshLocation(getNewUrlParams('map'), props.location)} active={props.location.query.view === 'map'} positionInGroup="left">Map view</Button>
             <Button onClick={() => refreshLocation(getNewUrlParams('list'), props.location)} active={props.location.query.view === 'list'} positionInGroup="middle">List view</Button>
             <Button onClick={() => refreshLocation(getNewUrlParams('summary'), props.location)} positionInGroup="right" active={props.location.query.view === 'summary'}>Chart</Button>

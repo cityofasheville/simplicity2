@@ -93,7 +93,7 @@ const Property = (props) => {
   return (
     <div>
       {props.inTable !== true &&
-        <PageHeader h1={propertyData.pinnum} h3="About this property" icon={<Icon path={IM_HOME2} size={50} />}>
+        <PageHeader h1={propertyData.pinnum} h3="About this property" dataType="Property" icon={<Icon path={IM_HOME2} size={50} />}>
           <ButtonGroup alignment="">
             {props.location.query.fromAddress &&
               <LinkButton pathname="/address" query={{ entities: props.location.query.entities, search: props.location.query.search, id: props.location.query.fromAddress, hideNavbar: props.location.query.hideNavbar }} positionInGroup="left">Back to address</LinkButton>

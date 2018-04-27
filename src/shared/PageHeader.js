@@ -15,8 +15,13 @@ const PageHeader = props => (
           }
           <span className="title__text">
             {props.h1}
-          </span>
-        </h1>
+            {props.dataType !== null &&
+            <span className="title__type">
+              {props.dataType}
+            </span> 
+            }             
+          </span>                  
+        </h1>        
       </div>      
       <div className="template-header__actions">
         {props.children}
@@ -50,6 +55,7 @@ PageHeader.propTypes = {
   h1: PropTypes.string,
   h2: PropTypes.string,
   h3: PropTypes.string,
+  dataType: PropTypes.string,
   externalLink: PropTypes.string,
   externalLinkText: PropTypes.string,
   dataLinkPath: PropTypes.string,

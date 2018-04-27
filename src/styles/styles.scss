@@ -10,9 +10,7 @@ $tablet-min: $mobile-max + 1;
 $tablet-max: $desktop-min - 1;
 $xs: $mobile-min - 1;
 
-/*MIXINS*/
-
-
+/*GLOBAL STYLES*/
 body, html{
 	font-size: 16px;
 	font-weight: lighter;
@@ -34,9 +32,16 @@ h4{
 	color: #666;
 }
 
+#content.container{
+	z-index: 0;
+	position: relative;
+}
+
 /*MIXINS*/
 
-/*COMMON STYLES & CLASSES*/
+/*************************************************************************************/
+/************************** COMMON STYLES AND CLASSES  *******************************/
+/*************************************************************************************/
 .full-width{
 	display: block;
 	width: 100%;
@@ -71,18 +76,31 @@ h4{
 	font-size: .85rem;
 }
 
-/*COMMON ELEMENTS*/
-
-/*TEMPLATE HEADER*/
-.template-header__inner{
-	display: flex;
-	flex-flow: row wrap;
-	justify-content: space-between;
-	align-items: center;
+.flex-align-left{
+	justify-self: flex-start;
+	margin-left: 0;
+	margin-right: auto;
 }
 
-.template-header__title{
-	flex: 1 0 70%;	
+.flex-align-right{
+	justify-self: flex-end;
+	margin-left: auto;
+	margin-right: 0;
+}
+
+/*************************************************************************************/
+/***************************      COMMON ELEMENTS      *******************************/
+/*************************************************************************************/
+
+/*TEMPLATE HEADER*/
+.template-header{
+	.btn-group{
+		/*float: right;*/
+		margin-top: 1rem;
+	}	
+	.data-link{
+		@extend .flex-align-left;
+	}
 	h1{
 		display: flex;
 		align-items: center;
@@ -98,14 +116,31 @@ h4{
 	.title__text{
 		display: inline-block;
 	}
+	.title__type{
+		display: block;
+		clear: both;
+		font-size: 1rem;
+		color: #a0a0a0;
+	}	
+}
+
+.template-header__inner{
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-between;
+	align-items: center;
+	.data-link{
+		margin-left: 1rem;
+	}
+}
+
+.template-header__title{
+	flex: 1 0 70%;	
 }
 
 .template-header__actions{
 	flex: 1 0 30%;
 	margin: .5rem 0;
-	.btn-group{
-		float: right;
-	}
 }
 
 .template-header__subnav{
@@ -254,6 +289,129 @@ h4{
 	font-size: 2rem;	
 }
 
+/*FOOTER*/
+footer.footer{
+	padding: 1rem 0;
+}
+
+.clear-footer{
+    display: block;
+    padding: 20px;
+    height: 100px;
+    width: 100%;
+}
+
+/*DATA FIELDSET DETAILS*/
+.detailsFieldset{
+	border: 1px solid white;
+	.map-container{
+		@extend .col-md-12;
+		margin-top: 1rem;
+		margin-bottom: 1rem;
+		height: 250px;
+	}
+	.ReactTable{
+		margin: 1rem;
+	}
+}
+.detailsFieldset__details-listings{
+	/*@extend .row;*/
+	display: flex;
+	flex-flow: row wrap;
+	/*justify-content: space-around;*/
+	clear: both;
+	>.form-group{
+		@extend .col-xs-12;
+		@extend .col-md-6;
+		@extend .col-sm-12;
+		display: flex;
+		align-items: stretch;
+	}
+}
+
+.form-group{
+	.btn span{
+		white-space: normal;
+	}	
+}
+
+.form-group__inner{
+	padding: 15px;
+	background: #eee;
+	flex: 100%;
+	max-width: 100%;
+}
+
+.form-group__label{
+	padding-bottom: .25rem;
+	display: flex;
+	align-items: flex-end;
+	font-weight: normal;
+    padding-bottom: 1rem;
+    margin-bottom: .5rem;	
+	label{
+		/*margin-left: .25rem;*/
+		margin-bottom: 0;
+		font-weight: lighter;
+		text-transform: uppercase;
+	}
+	span, label{
+		/*color: #555;*/
+	}
+	a{
+		/*color: #4077a5;*/
+	}
+}
+
+.form-group--has-content{
+	.form-group__label{
+    	border-bottom: 1px solid #ddd;		
+	}
+}
+
+.detailsFieldset__details-listings.detailsFieldset__details-listings--three-column{
+	>.form-group{
+		@extend .col-sm-4;
+	}	
+}
+
+.form-group__value{
+	font-weight: normal;
+}
+
+.form-group--has-icon .form-group__label{
+	label{
+		margin-left: .25rem;
+	}
+}
+
+.form-group__call-to-action{
+	display: block;
+	clear: both;
+	margin-top: .5rem;
+}
+
+/*TOPICCARDS*/
+.topic-card{
+    border-radius: 5px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    margin-bottom: 10px;
+    background: #fbfbfb;
+    /*min-height: 180px;*/
+    display: flex;
+    flex-flow: column;
+    justify-content: center;	
+	svg{
+		max-height: 60px;
+		padding: .5rem 0;
+	}
+}
+
+/*************************************************************************************/
+/***************************         TEMPLATES         *******************************/
+/*************************************************************************************/
+
 /*HOME TEMPLATE*/
 .template__home{
 
@@ -300,102 +458,6 @@ h4{
 
 .visualization-container{
 	max-width: 100%;
-}
-
-/*FOOTER*/
-footer.footer{
-	padding: 1rem 0;
-}
-
-.clear-footer{
-    display: block;
-    padding: 20px;
-    height: 100px;
-    width: 100%;
-}
-
-/*DATA FIELDSET DETAILS*/
-.detailsFieldset{
-	border: 1px solid white;
-	.map-container{
-		@extend .col-md-12;
-		margin-top: 1rem;
-		margin-bottom: 1rem;
-		height: 250px;
-	}
-	.ReactTable{
-		margin: 1rem;
-	}
-}
-.detailsFieldset__details-listings{
-	/*@extend .row;*/
-	display: flex;
-	flex-flow: row wrap;
-	clear: both;
-	>.form-group{
-		margin-bottom: 1.5rem;
-		@extend .col-sm-6;
-		@extend .col-xs-12;
-		/*padding: .5rem 0;*/
-	}
-}
-
-.detailsFieldset__details-listings.detailsFieldset__details-listings--three-column{
-	>.form-group{
-		@extend .col-sm-4;
-	}	
-}
-
-.form-group__label{
-	padding-bottom: .25rem;
-	display: flex;
-	align-items: flex-end;
-	font-weight: normal;
-	label{
-		/*margin-left: .25rem;*/
-		margin-bottom: 0;
-		font-weight: lighter;
-		text-transform: uppercase;
-	}
-	span, label{
-		/*color: #555;*/
-	}
-	a{
-		/*color: #4077a5;*/
-	}
-}
-
-.form-group__value{
-	font-weight: normal;
-}
-
-.form-group--has-icon .form-group__label{
-	label{
-		margin-left: .25rem;
-	}
-}
-
-.form-group__call-to-action{
-	display: block;
-	clear: both;
-	margin-top: .5rem;
-}
-
-/*TOPICCARDS*/
-.topic-card{
-    border-radius: 5px;
-    padding-bottom: 10px;
-    padding-top: 10px;
-    margin-bottom: 10px;
-    background: #fbfbfb;
-    /*min-height: 180px;*/
-    display: flex;
-    flex-flow: column;
-    justify-content: center;	
-	svg{
-		max-height: 60px;
-		padding: .5rem 0;
-	}
 }
 
 
@@ -458,6 +520,17 @@ label {
 	}
 }
 
+/* CRIMES BY X */
+.crimes-template{
+	.data-view-container{
+		margin-top: 1rem;
+	}
+}
+
+/*************************************************************************************/
+/***************************         MOBILE            *******************************/
+/*************************************************************************************/
+
 /*MOBILE STYLES*/
 @media(min-width: $mobile-min){
 	.template-header__actions{
@@ -505,9 +578,11 @@ label {
 	}
 	.template-header__actions{
 		margin-bottom: .5rem;
+	}
+	.template-header{
 		.btn-group{
 			float: none;
-		}
+		}		
 	}
 	.template-header__subnav{
 		flex-flow: column;
@@ -560,4 +635,14 @@ label {
 			margin: .5rem 0 !important;
 		}
 	}
+	.template-header{
+		.btn-group{
+			margin-top: 0;
+		}
+	}
+	.crimes-template__data .template-header{
+		.btn-group{
+			margin-top: 1rem;
+		}	
+	}	
 }

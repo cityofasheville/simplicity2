@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const ButtonGroup = props => (
-  <div className={['btn-group', props.alignment].join('')} style={props.style}>
+  <div className={['btn-group pull-', props.alignment].join('')} style={props.style}>
     { props.children }
   </div>
 );
@@ -14,7 +14,7 @@ ButtonGroup.propTypes = {
 };
 
 ButtonGroup.defaultProps = {
-  alignment: 'right',
+  // alignment: 'right',
 };
 
 export default ButtonGroup;

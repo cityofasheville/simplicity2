@@ -50,6 +50,8 @@ import HomelessnessVeteransChronicAssignments from './app/homelessness/Homelessn
 import HomelessnessVeteransExitTime from './app/homelessness/HomelessnessVeteransExitTime';
 import HomelessnessEnrollment from './app/homelessness/HomelessnessEnrollment';
 import HomelessnessData from './app/homelessness/HomelessnessData';
+// MiniSearch
+import MiniSearch from './app/mini_search/MiniSearch';
 
 // Google Analytics
 const ReactGA = require('react-ga');
@@ -130,6 +132,9 @@ const Routes = () => (
         </Route>
         <Route path="maintenance">
           <IndexRoute component={Maintenance} />
+        </Route>
+        <Route path="mini_search">
+          <IndexRoute component={MiniSearch} />
         </Route>
       </Route>
     </Router>

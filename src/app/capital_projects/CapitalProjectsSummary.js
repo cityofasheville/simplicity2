@@ -9,7 +9,7 @@ const CapitalProjectsSummary = (props) => {
   const selectedArr = [];
   const getSelected = () => {
     if (props.location.query.selected === undefined) {
-      return ['Transportation', 'Housing', 'Parks', 'Public Safety', 'Other'];
+      return [];
     } else if (props.location.query.selected.length === 0) {
       return selectedArr;
     }

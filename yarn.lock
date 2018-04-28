@@ -212,6 +212,12 @@ accepts@~1.3.4, accepts@~1.3.5:
     mime-types "~2.1.18"
     negotiator "0.6.1"
 
+accessible-react-checkbox-group@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/accessible-react-checkbox-group/-/accessible-react-checkbox-group-1.1.5.tgz#cd333c6382aef0a87e3d1ffa8ec8df990fffdcf6"
+  dependencies:
+    merge-prop-functions "^1.1.0"
+
 accessible-react-table@^0.1.3:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/accessible-react-table/-/accessible-react-table-0.1.3.tgz#76e5b07272862bed4198029f340605d7330456a7"
@@ -5025,6 +5031,10 @@ merge-descriptors@1.0.1:
 merge-prop-functions@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/merge-prop-functions/-/merge-prop-functions-1.0.0.tgz#51a8e666acce49eb60b9f9f9bd82422299cfd384"
+
+merge-prop-functions@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/merge-prop-functions/-/merge-prop-functions-1.1.0.tgz#029c83d9722543f9af217ef978a46af984c04913"
 
 methods@~1.1.2:
   version "1.1.2"

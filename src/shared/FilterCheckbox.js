@@ -13,12 +13,13 @@ class FilterCheckbox extends React.Component {
   };
 
   handleClick = (event) => {
-    // event.stopPropagation();
-    this.props.onChange(this.props.value, event);
+    if (!this.props.disabled) {
+      this.props.onChange(this.props.value, event);
+    }
   };
 
   handleKeyDown = (event) => {
-    if (event.key === ' ') {
+    if (!this.props.disabled && event.key === ' ') {
       event.preventDefault();
       event.stopPropagation();
       this.props.onChange(this.props.value, event);
@@ -26,7 +27,7 @@ class FilterCheckbox extends React.Component {
   };
 
   render() {
-    const mainStyle = this.props.disabled ? 'filterCheckboxDisabled' : this.props.checked ? 'filterCheckbox' : 'unchecked';
+    const mainStyle = this.props.disabled ? 'filterCheckboxDisabled disabledCursor' : this.props.checked ? 'filterCheckbox' : 'unchecked';
     const backgroundStyle = this.props.checked ? 'backgroundChecked' : 'backgroundUnchecked';
 
     return (
@@ -35,7 +36,7 @@ class FilterCheckbox extends React.Component {
           id={this.state.parentId}
           className={mainStyle}
           onClick={this.handleClick}
-          tabIndex="0"
+          tabIndex={this.props.disabled ? undefined : '0'}
           onKeyDown={this.handleKeyDown}
           role="checkbox"
           aria-checked={this.props.checked}
@@ -47,18 +48,22 @@ class FilterCheckbox extends React.Component {
                 role="presentation"
                 id={this.state.id}
                 tabIndex="-1"
-                value={this.props.value}
+                value={this.props.disabled ? false : this.props.value}
                 style={{ marginRight: '7px' }}
                 onClick={e => e.stopPropagation()}
                 onMouseDown={e => e.preventDefault()}
                 onMouseUp={() => document.getElementById(this.state.parentId).focus()}
+                disabled={this.props.disabled}
               />
               <label
                 id={this.state.labelId}
                 role="presentation"
                 htmlFor={this.state.id}
                 onClick={e => e.preventDefault()}
-                style={{ fontWeight: 'normal', cursor: 'pointer' }}
+                style={{
+                  fontWeight: 'normal',
+                  cursor: this.props.disabled ? 'not-allowed' : 'pointer',
+                }}
               >
                 {this.props.label}
               </label>

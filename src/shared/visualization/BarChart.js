@@ -36,14 +36,17 @@ class BarChart extends React.Component {
       altText: this.props.altText || this.props.chartTitle,
       showingLongDesc: this.showLongDesc,
     };
+
+    this.toggleLongDesc = this.toggleLongDesc.bind(this)
   }
 
-  toggleLongDesc() {
-    this.setState({
-      showingLongDesc: !this.state.showingLongDesc,
-    });
+  toggleLongDesc(event) {
+    if (event.key === 'Enter' || event.type === 'click') {
+      this.setState({
+        showingLongDesc: !this.state.showingLongDesc,
+      });
+    }
   }
-
 
   render() {
     const formattedData = formatDataForStackedBar(
@@ -108,11 +111,6 @@ class BarChart extends React.Component {
                   tickFormat: d => this.props.yAxisTickFormatter(d),
                   ticks: 8,
                 }]}
-                customHoverBehavior={(d) => {
-                  d && d.pieces ?
-                    this.setState({ hover: d.pieces[0].data[this.props.mainAxisDataKey] }) :
-                    this.setState({ hover: null });
-                }}
                 style={d => (
                   this.state.hover === d[this.props.mainAxisDataKey] ?
                   // For the currently hovered bar, return a brighter fill and add a stroke
@@ -123,6 +121,21 @@ class BarChart extends React.Component {
                     } :
                     { fill: d.color })
                 }
+                tooltipContent={(d) => {
+                  const dPieces = d.pieces || [d.data]
+                  const tooltipTitle = d.column ? d.column.name : d.data[this.props.mainAxisDataKey]
+                  const textLines = dPieces.map(piece =>
+                    ({
+                      text: `${piece.label}: ${this.props.tooltipYValFormatter(piece.value)}`,
+                      color: piece.color,
+                    })
+                  );
+                  if (this.props.layout !== 'horizontal') { textLines.reverse(); }
+                  return (<Tooltip
+                    textLines={textLines}
+                    title={tooltipTitle}
+                  />);
+                }}
                 svgAnnotationRules={(d) => {
                   if (d.d.budgetAnnotation === true) {
                     // todo: separate this out?
@@ -150,18 +163,10 @@ class BarChart extends React.Component {
                   }
                   return null;
                 }}
-                tooltipContent={(d) => {
-                  const textLines = d.pieces.map(piece =>
-                    ({
-                      text: `${piece.label}: ${this.props.tooltipYValFormatter(piece.value)}`,
-                      color: piece.color,
-                    })
-                  );
-                  if (this.props.layout !== 'horizontal') { textLines.reverse(); }
-                  return (<Tooltip
-                    textLines={textLines}
-                    title={d.column.name}
-                  />);
+                customHoverBehavior={(d) => {
+                  d && d.pieces ?
+                    this.setState({ hover: d.pieces[0].data[this.props.mainAxisDataKey] }) :
+                    this.setState({ hover: null });
                 }}
               />
               <HorizontalLegend
@@ -177,7 +182,13 @@ class BarChart extends React.Component {
           <div className="row">
             <div className="col-xs-10 col-xs-offset-1">
               <br />
-              <div className="text-center inText" role="button" tabIndex="0" onClick={() => this.toggleLongDesc()}>
+              <div
+                className="text-center inText"
+                role="button"
+                tabIndex="0"
+                onClick={this.toggleLongDesc}
+                onKeyUp={this.toggleLongDesc}
+              >
                 {this.state.showingLongDesc ? 'Hide' : 'Show'} {this.props.chartTitle} bar chart summary
               </div>
               <div hidden={!this.state.showingLongDesc}>

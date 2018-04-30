@@ -28,20 +28,26 @@ const getCurrentRecyclingWeek = () => {
 };
 
 const calculateRecycling = (dayOfWeek, inCity, week) => {
-  if (inCity) {
+  if (dayOfWeek !== null) {
     if (getCurrentRecyclingWeek() === week) {
       return ['this week on ', dayOfWeek, ' (Recycle Week ', week, ')'].join('');
     }
     return ['next week on ', dayOfWeek, ' (Recycle Week ', week, ')'].join('');
   }
-  return 'No recycling collection information available';
+  if (inCity) {
+    return 'No information available';
+  }
+  return 'No city pickup';
 };
 
 const calculateTrash = (dayOfWeek, inCity) => {
-  if (inCity) {
+  if (dayOfWeek !== null) {
     return ['every', dayOfWeek].join(' ');
   }
-  return 'No trash collection information available';
+  if (inCity) {
+    return 'No information available';
+  }
+  return 'No city pickup';
 };
 
 const getMaintenanceInfo = (entity) => {

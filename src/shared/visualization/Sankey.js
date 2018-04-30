@@ -48,6 +48,11 @@ class Sankey extends React.Component {
           this.setState({ hover: d.name }) : this.setState({ hover: null }))
         }
         svgAnnotationRules={(d) => {
+          if (d.d.source && d.d.target) {
+            // If it's a link
+            return;
+          }
+
           let label = d.d.name;
           const key = `${d.d.name}-${d.i}-nodeLabel`;
           const style = {

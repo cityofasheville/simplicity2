@@ -195,8 +195,8 @@ const CrimesByAddress = (props) => {
               center={props.location.query.x !== '' ? [parseFloat(props.location.query.y), parseFloat(props.location.query.x)] : null}
               centerLabel={props.location.query.label}
               drawCircle
-              radius={(props.location.query.within === undefined || props.location.query.within === '') ? 27 : parseInt(props.location.query.within, 10) / 3}
-              within={(props.location.query.within === undefined || props.location.query.within === '') ? 83 : parseInt(props.location.query.within, 10)}
+              radius={(props.location.query.within === undefined || props.location.query.within === '') ? 215 : parseInt(props.location.query.within, 10) / 3}
+              within={(props.location.query.within === undefined || props.location.query.within === '') ? 660 : parseInt(props.location.query.within, 10)}
               zoomToPoint={(props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== '') ? props.location.query.zoomToPoint : null}
             />
           }

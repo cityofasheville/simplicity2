@@ -21,8 +21,8 @@ const DevelopmentSummary = (props) => {
     }
   );
 
-  const duringURL = (props.location.query.during === '' || props.location.query.during === undefined) ? '30' : props.location.query.during;
-  const withinURL = (props.location.query.within === '' || props.location.query.within === undefined) ? '83' : props.location.query.within;
+  const duringURL = (props.location.query.during === '' || props.location.query.during === undefined) ? '183' : props.location.query.during;
+  const withinURL = (props.location.query.within === '' || props.location.query.within === undefined) ? '660' : props.location.query.within;
 
   const before = moment.utc().format('YYYY-MM-DD');
   let after = '1970-01-01'; // appears crime only goes back to 2013
@@ -52,7 +52,7 @@ const DevelopmentSummary = (props) => {
             <div className="form-group">
               <label htmlFor="time" className="col-sm-2 control-label">during</label>
               <div className="col-sm-10">
-                <select value={duringURL} onChange={() => refreshLocation(getNewUrlParams(), props.location)} name="time" id="time" className="form-control" defaultValue={30}>
+                <select value={duringURL} onChange={() => refreshLocation(getNewUrlParams(), props.location)} name="time" id="time" className="form-control">
                   {timeOptions.map((option, i) => (
                     <option value={option.value} key={['time', 'option', i].join('_')} name="time">{option.display}</option>
                   ))}
@@ -62,7 +62,7 @@ const DevelopmentSummary = (props) => {
             <div className="form-group" hidden={props.location.query.entity === 'street' || props.location.query.entity === 'neighborhood'}>
               <label htmlFor="time" className="col-sm-2 control-label">within</label>
               <div className="col-sm-10">
-                <select value={withinURL} onChange={() => refreshLocation(getNewUrlParams(), props.location)} name="extent" id="extent" className="form-control" defaultValue={83}>
+                <select value={withinURL} onChange={() => refreshLocation(getNewUrlParams(), props.location)} name="extent" id="extent" className="form-control">
                   {extentOptions.map((option, i) => (
                     <option value={option.value} key={['extent', 'option', i].join('_')} name="extent">{option.display}</option>
                   ))}

@@ -28,15 +28,6 @@ const CIPFilter = (props) => {
 
   return (
     <div>
-      <div className="row">
-        <div className="col-sm-6">
-          <ButtonGroup>
-            <Button onClick={() => handleClick(props.categories)}>Select All</Button>
-            <Button onClick={() => handleClick([])}>Deselect All</Button>
-          </ButtonGroup>
-        </div>
-      </div>
-      <hr style={{ marginTop: '5px', marginBottom: '5px' }} />
       <div>
         <CheckboxGroup checkedValues={props.selected} onChange={handleClick}>
           {props.categories.map((category, index) => (
@@ -49,6 +40,10 @@ const CIPFilter = (props) => {
             />
           ))}
         </CheckboxGroup>
+        <div className="col-sm-12">
+          <Button size="sm" style={{ marginRight: '2px' }} onClick={() => handleClick(props.categories)}>Select All</Button>
+          <Button size="sm" onClick={() => handleClick([])}>Deselect All</Button>
+        </div>
         <div className="row">
           <div className="col-sm-6">
             <label style={{ minWidth: '400px', cursor: 'pointer', marginBottom: '0px' }}>

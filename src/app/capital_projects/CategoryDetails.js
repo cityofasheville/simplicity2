@@ -103,7 +103,7 @@ const CategoryDetails = (props) => {
 
   const messageOrTable = (filteredProjects === undefined || filteredProjects.length === 0) ?
     (
-      <div className="alert alert-info alert-sm">
+      <div style={{ marginTop: '20px' }} className="alert alert-info alert-sm">
         Select a category above to show project data
       </div>
     ) : <ProjectsTable data={filteredProjects} />;

@@ -6,7 +6,7 @@ const Topics = props => (
   <div>
     <div className="row">
       <div className="col-sm-12">
-        <h1>View citywide topic <strong>dashboards</strong> about your community.</h1>
+        <h2>View citywide topic <strong>dashboards</strong> about your community.</h2>
       </div>
     </div>
     <div className="row">

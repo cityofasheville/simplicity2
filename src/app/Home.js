@@ -9,6 +9,7 @@ const Homepage = props => (
     <div className="row">
       <SearchBar location={props.location} selectedEntities={props.location.query.entities !== undefined ? props.location.query.entities : 'address,property,neighborhood,street,owner,google'} />
     </div>
+    <hr />
     <Topics />
   </div>
 );

@@ -90,10 +90,7 @@ h4{
 
 .btn-group{
 	.btn{
-		border-right: 1px solid lighten($coa-medBlue, 15%);
-	}
-	a:last-child .btn{
-		border-right: none;
+		border: 1px solid darken($coa-medBlue, 15%);
 	}
 }
 
@@ -549,6 +546,9 @@ label {
 	.data-view-container{
 		margin-top: 1rem;
 	}
+	.template-header__inner{
+		margin-bottom: 1rem;
+	}
 }
 
 .data-filters{
@@ -572,13 +572,7 @@ label {
 	justify-content: space-between;
 	@extend .row;
 	.form-group{
-		@extend .col-md-4;
-		@extend .col-xs-8;
 		margin: 0 !important;
-	}
-	.form-group.thin{
-		@extend .col-md-3;
-		@extend .col-xs-4;
 	}
 	.form-control-static{
 		padding: 0;

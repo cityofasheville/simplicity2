@@ -17,7 +17,7 @@ const renderLabel = (spatialType) => {
 };
 
 const SpatialEventTopicLocationInfo = props => (
-  <div className="form-group thin">
+  <div className="form-group col-md-4 col-xs-12">
     <label htmlFor="extent" className="control-label">{renderLabel(props.spatialType)}: </label>
     <div className="form-group__field">
       <div className="form-control-static" style={{ display: 'block' }}>{props.spatialDescription}

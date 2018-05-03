@@ -56,14 +56,14 @@ const CrimeSummary = (props) => {
           <div className="data-filters__container">
             <div className="data-filters__inner">
               {/*<SpatialEventTopicCategoryFilters spatialEventTopic={props.spatialEventTopic} />*/}
-              <div className="form-group thin">
+              <div className="form-group col-md-3 col-xs-4">
                 <label htmlFor="topicType" className="control-label">View:</label>
                 <div>
                   <div className="form-control-static" style={{ display: 'block' }}>crimes
                   </div>
                 </div>
               </div>
-              <div className="form-group">
+              <div className="form-group col-md-4 col-xs-8">
                 <label htmlFor="time" className="control-label">During:</label>
                 <div>
                   <select value={duringURL} onChange={() => refreshLocation(getNewUrlParams(), props.location)} name="time" id="time" className="form-control">

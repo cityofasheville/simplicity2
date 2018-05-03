@@ -51,40 +51,42 @@ const CrimeSummary = (props) => {
           </ButtonGroup>          
         </div>
       </div>
-      <form className="row form-horizontal">
-        <div className="col-xs-12">
-          <fieldset className={styles.filtersDiv}>
-            {/*<SpatialEventTopicCategoryFilters spatialEventTopic={props.spatialEventTopic} />*/}
-            <div className="form-group">
-              <label htmlFor="topicType" className="col-sm-2 control-label">view</label>
-              <div className="col-sm-10">
-                <div className="form-control-static" style={{ display: 'block' }}>crimes
+      <form className="form-horizontal data-filters data-filters--crime">
+        <fieldset className={styles.filtersDiv + ' data-filters__fieldset'}>
+          <div className="data-filters__container">
+            <div className="data-filters__inner">
+              {/*<SpatialEventTopicCategoryFilters spatialEventTopic={props.spatialEventTopic} />*/}
+              <div className="form-group thin">
+                <label htmlFor="topicType" className="control-label">View:</label>
+                <div>
+                  <div className="form-control-static" style={{ display: 'block' }}>crimes
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="form-group">
-              <label htmlFor="time" className="col-sm-2 control-label">during</label>
-              <div className="col-sm-10">
-                <select value={duringURL} onChange={() => refreshLocation(getNewUrlParams(), props.location)} name="time" id="time" className="form-control">
-                  {timeOptions.map((option, i) => (
-                    <option value={option.value} key={['time', 'option', i].join('_')} name="time">{option.display}</option>
-                  ))}
-                </select>
+              <div className="form-group">
+                <label htmlFor="time" className="control-label">During:</label>
+                <div>
+                  <select value={duringURL} onChange={() => refreshLocation(getNewUrlParams(), props.location)} name="time" id="time" className="form-control">
+                    {timeOptions.map((option, i) => (
+                      <option value={option.value} key={['time', 'option', i].join('_')} name="time">{option.display}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
-            </div>
-            <div className="form-group" hidden={props.location.query.entity === 'street' || props.location.query.entity === 'neighborhood'}>
-              <label htmlFor="time" className="col-sm-2 control-label">within</label>
-              <div className="col-sm-10">
-                <select value={withinURL} onChange={() => refreshLocation(getNewUrlParams(), props.location)} name="extent" id="extent" className="form-control">
-                  {extentOptions.map((option, i) => (
-                    <option value={option.value} key={['extent', 'option', i].join('_')} name="extent">{option.display}</option>
-                  ))}
-                </select>
+              <div className="form-group hidden" hidden={props.location.query.entity === 'street' || props.location.query.entity === 'neighborhood'}>
+                <label htmlFor="time" className="control-label">Within:</label>
+                <div>
+                  <select value={withinURL} onChange={() => refreshLocation(getNewUrlParams(), props.location)} name="extent" id="extent" className="form-control">
+                    {extentOptions.map((option, i) => (
+                      <option value={option.value} key={['extent', 'option', i].join('_')} name="extent">{option.display}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
-            </div>
-            <SpatialEventTopicLocationInfo spatialType={props.location.query.entity} spatialDescription={props.location.query.label} />
-          </fieldset>
-        </div>
+              <SpatialEventTopicLocationInfo spatialType={props.location.query.entity} spatialDescription={props.location.query.label} />
+            </div>            
+          </div>
+        </fieldset>
       </form>
       {props.location.query.entity === 'address' ?
         <CrimesByAddress before={before} after={after} radius={withinURL} location={props.location} />

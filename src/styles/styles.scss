@@ -88,6 +88,15 @@ h4{
 	margin-right: 0;
 }
 
+.btn-group{
+	.btn{
+		border-right: 1px solid lighten($coa-medBlue, 15%);
+	}
+	a:last-child .btn{
+		border-right: none;
+	}
+}
+
 /*************************************************************************************/
 /***************************      COMMON ELEMENTS      *******************************/
 /*************************************************************************************/
@@ -96,7 +105,7 @@ h4{
 .template-header{
 	.btn-group{
 		/*float: right;*/
-		margin-top: 1rem;
+		/*margin-top: 1rem;*/
 	}	
 	.data-link{
 		@extend .flex-align-left;
@@ -314,6 +323,13 @@ footer.footer{
 		margin: 1rem;
 	}
 }
+
+.map-container{
+	>div{
+		max-height: 100%;
+	}
+}
+
 .detailsFieldset__details-listings{
 	/*@extend .row;*/
 	display: flex;
@@ -336,8 +352,6 @@ footer.footer{
 }
 
 .form-group__inner{
-	padding: 15px;
-	background: #eee;
 	flex: 100%;
 	max-width: 100%;
 }
@@ -364,6 +378,10 @@ footer.footer{
 }
 
 .form-group--has-content{
+	.form-group__inner{
+		background: #eee;
+		padding: 15px;
+	}
 	.form-group__label{
     	border-bottom: 1px solid #ddd;		
 	}
@@ -377,6 +395,12 @@ footer.footer{
 
 .form-group__value{
 	font-weight: normal;
+}
+
+.form-group--has-icon .form-group__inner{
+	.btn{
+		width: 100%;
+	}
 }
 
 .form-group--has-icon .form-group__label{
@@ -527,6 +551,44 @@ label {
 	}
 }
 
+.data-filters{
+	@extend .row;
+	margin-bottom: 1rem;
+}
+
+.data-filters__fieldset{
+	@extend .col-md-12;
+}
+
+.data-filters__container{
+	border: 1px solid #eee;
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+.data-filters__inner{
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-between;
+	@extend .row;
+	.form-group{
+		@extend .col-md-4;
+		@extend .col-xs-8;
+		margin: 0 !important;
+	}
+	.form-group.thin{
+		@extend .col-md-3;
+		@extend .col-xs-4;
+	}
+	.form-control-static{
+		padding: 0;
+	}	
+	.control-label{
+		padding: 0;
+		margin-right: .5rem;
+	}
+}
+
 /*************************************************************************************/
 /***************************         MOBILE            *******************************/
 /*************************************************************************************/
@@ -644,5 +706,16 @@ label {
 		.btn-group{
 			margin-top: 1rem;
 		}	
+	}
+	.data-filters{
+		margin-top: 1rem;
+	}
+	.clear-footer{
+		display: none;
 	}	
+	footer.footer{
+		position: relative;
+		padding: .5rem 0;
+		font-size: .85rem;
+	}
 }

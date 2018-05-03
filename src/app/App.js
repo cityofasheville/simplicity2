@@ -91,7 +91,7 @@ class Main extends React.Component {
 
   render() {
     return (
-      <div style={{paddingTop: this.props.location.query.hideNavbar ? '0px' : '90px'}}>
+      <div style={{paddingTop: this.props.location.query.hideNavbar ? '0px' : '0px'}}>
         <div id="skip"><a href="#content">Skip to Main Content</a></div>
         {
           displayNavbar(this.props.location.query.hideNavbar) // eslint-disable-line react/prop-types

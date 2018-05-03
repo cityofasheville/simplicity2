@@ -76,8 +76,13 @@ const getKeyText = categories => (
 );
 
 const getDollars = (value) => {
+  let formatted;
   if (Math.abs(value) > 1000000) {
-    return [value < 0 ? '-$' : '$', (Math.abs(value) / 1000000).toFixed(0).toLocaleString(), ' M'].join('');
+    formatted = (Math.abs(value) / 1000000).toFixed(1).toLocaleString();
+    if (formatted[formatted.length - 1] === '0') {
+      formatted = formatted.slice(0, -2);
+    }
+    return [value < 0 ? '-$' : '$', formatted, ' M'].join('');
   } else if (Math.abs(value) > 1000) {
     return [value < 0 ? '-$' : '$', (Math.abs(value) / 1000).toFixed(0).toLocaleString(), ' k'].join('');
   }

@@ -61,9 +61,11 @@ class PieChart extends React.Component {
                 fillOpacity: d.label === this.state.hover ? '1' : '0.95',
               })}
               tooltipContent={(d) => {
+                const datum = d.column ? d.column.pieceData[0].data : d.data
+
                 const textLine = [{
-                  text: `${d.column.name}: ${this.props.toolTipFormatter(d.pieces[0].magnitude)}`,
-                  color: d.pieces[0].color,
+                  text: `${datum.label}: ${this.props.toolTipFormatter(datum.magnitude)}`,
+                  color: datum.color,
                 }];
                 return (<Tooltip
                   textLines={textLine}

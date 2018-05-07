@@ -59,7 +59,7 @@ class Main extends React.Component {
       if (user) {
         user.getIdToken()
         .then((token) => {
-          sessionStorage.setItem('token', token);
+          localStorage.setItem('token', token);
           this.props.updateUser({
             variables: {
               loggedIn: true,

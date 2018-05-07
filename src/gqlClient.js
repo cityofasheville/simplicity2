@@ -24,7 +24,7 @@ const middlewareLink = setContext(
       if (signedInUser) {
         signedInUser.getIdToken(true)
         .then((idToken) => {
-          sessionStorage.setItem('token', idToken);
+          localStorage.setItem('token', idToken);
           setTimeout(() => {
             success({ headers: {
               authorization: idToken,
@@ -34,7 +34,7 @@ const middlewareLink = setContext(
       } else {
         setTimeout(() => {
           success({ headers: {
-            authorization: sessionStorage.getItem('token') || null,
+            authorization: localStorage.getItem('token') || null,
           } });
         }, 10);
       }

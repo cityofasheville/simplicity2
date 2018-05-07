@@ -6888,9 +6888,9 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
 
 "roughjs@github:emeeks/rough":
   version "2.1.1"
-  resolved "https://codeload.github.com/emeeks/rough/tar.gz/b98a98ad3e8d99d88384ccc2d5f41d997fef1bdb"
+  resolved "https://codeload.github.com/emeeks/rough/tar.gz/337522cf2ccea6218c7b2b8366e85c7d9538fe52"
   dependencies:
-    babel-runtime "6.26.0"
+    babel-runtime "^6.26.0"
 
 run-async@^2.0.0, run-async@^2.2.0:
   version "2.3.0"
@@ -7000,9 +7000,9 @@ selfsigned@^1.9.1:
   dependencies:
     node-forge "0.7.1"
 
-semiotic-mark@0.2.6:
-  version "0.2.6"
-  resolved "https://registry.yarnpkg.com/semiotic-mark/-/semiotic-mark-0.2.6.tgz#504f63e9259152530692b5dc2bf078bf8588f420"
+semiotic-mark@0.2.7:
+  version "0.2.7"
+  resolved "https://registry.yarnpkg.com/semiotic-mark/-/semiotic-mark-0.2.7.tgz#ff63d2a768dbaa256b9217f3702a09b837b9f097"
   dependencies:
     d3-interpolate "^1.1.5"
     d3-scale "^1.0.3"
@@ -7024,8 +7024,8 @@ semiotic-mark@^0.1.2:
     prop-types "15.6.0"
 
 semiotic@^1.10.0:
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/semiotic/-/semiotic-1.10.0.tgz#b693b9349388bfb7e2e36905ec5f719d6671f6c0"
+  version "1.10.2"
+  resolved "https://registry.yarnpkg.com/semiotic/-/semiotic-1.10.2.tgz#a80b95f87fe4f15b8835fa7fb46e599f2a264756"
   dependencies:
     "@mapbox/polylabel" "1"
     babel-plugin-external-helpers "^6.22.0"
@@ -7052,7 +7052,7 @@ semiotic@^1.10.0:
     prop-types "15.6.0"
     react-annotation "1.1.1"
     roughjs "github:emeeks/rough"
-    semiotic-mark "0.2.6"
+    semiotic-mark "0.2.7"
     svg-path-bounding-box "1.0.4"
 
 "semver@2 || 3 || 4 || 5", semver@^5.3.0, semver@^5.5.0:

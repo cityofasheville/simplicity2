@@ -4,7 +4,7 @@ import { color } from 'd3-color';
 import { OrdinalFrame } from 'semiotic';
 import HorizontalLegend from './HorizontalLegend';
 import Tooltip from './Tooltip';
-import { formatDataForStackedBar, budgetBarAnnotationRule, labelOrder } from './visUtilities';
+import { formatDataForStackedBar, budgetBarAnnotationRule } from './visUtilities';
 
 
 /*

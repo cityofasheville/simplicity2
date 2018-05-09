@@ -94,6 +94,11 @@ h4{
 	}
 }
 
+.label-text{
+	font-size: 1rem;
+	color: #a0a0a0;	
+}
+
 /*************************************************************************************/
 /***************************      COMMON ELEMENTS      *******************************/
 /*************************************************************************************/
@@ -221,26 +226,42 @@ h4{
 	color: #fff;
 	background-color: #4077a5;
 	min-width: 10px;
-	display: inline-block;
+	display: flex;
+	align-items: center;
 	/*padding: 0 .25rem;*/
 }
 
-.Collapsible__trigger:before{
-	margin: .25rem 1rem .25rem .25rem;
-	background-color: #fff;
-	color: #4077a5;
-	display: inline-block;
-	min-width: 25px;
-	text-align: center;
+.Collapsible__trigger{
+	.icon{
+		margin: .25rem 1rem .25rem .25rem;
+		background-color: #fff;
+		color: #4077a5;
+		display: inline-block;
+		min-width: 25px;
+		text-align: center;
+	}
+	&.is-closed{
+		.icon.minus{
+			display: none;
+		}
+	}
+	&.is-open{
+		.icon.plus{
+			display: none;
+		}
+	}
+	.trigger-text{
+		white-space: normal;
+	}
 }
 
-.Collapsible__trigger.is-closed::before {
+/*.Collapsible__trigger.is-closed::before {
   content: '+';
 }
 
 .Collapsible__trigger.is-open::before {
   content: '-';
-}
+}*/
 
 /*NAVBAR*/
 /*JESSE MICHEL 4.6.2018 ALL NAVBAR STYLES*/
@@ -538,6 +559,25 @@ label {
 	.header{
 		flex: 100%;
 		margin-bottom: .5rem;
+	}
+}
+
+.funding-summary{
+	@extend .row;
+	h2{
+		span{
+
+		}
+	}
+	.label-text{
+		display: block;
+		clear: both;
+		margin-bottom: .25rem;
+	}	
+	@media(max-width: $xs){
+		h2{
+			/*font-size: 1.25rem;*/
+		}
 	}
 }
 

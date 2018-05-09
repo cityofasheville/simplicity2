@@ -94,7 +94,7 @@ const Owner = (props) => {
           <div className="pull-left" style={{ marginTop: '10px', marginBottom: '15px' }}>
             <EmailDownload downloadData={props.data.properties} fileName="properties_by_owner.csv" text="Download CSV" />
           </div>
-          <ButtonGroup>
+          <ButtonGroup alignment="right">
             <Button onClick={() => refreshLocation(getNewUrlParams('map'), props.location)} active={props.location.query.view === 'map'} positionInGroup="left">Map view</Button>
             <Button onClick={() => refreshLocation(getNewUrlParams('list'), props.location)} active={props.location.query.view === 'list'} positionInGroup="right">List view</Button>
           </ButtonGroup>

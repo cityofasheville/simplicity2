@@ -140,6 +140,7 @@ h4{
 	flex-flow: row wrap;
 	justify-content: space-between;
 	align-items: center;
+	margin-bottom: 1rem;
 	.data-link{
 		margin-left: 1rem;
 	}
@@ -255,14 +256,6 @@ h4{
 	}
 }
 
-/*.Collapsible__trigger.is-closed::before {
-  content: '+';
-}
-
-.Collapsible__trigger.is-open::before {
-  content: '-';
-}*/
-
 /*NAVBAR*/
 /*JESSE MICHEL 4.6.2018 ALL NAVBAR STYLES*/
 .navbar{
@@ -314,18 +307,6 @@ h4{
 
 .navbar-brand{
 	font-size: 2rem;	
-}
-
-/*FOOTER*/
-footer.footer{
-	padding: 1rem 0;
-}
-
-.clear-footer{
-    display: block;
-    padding: 20px;
-    height: 100px;
-    width: 100%;
 }
 
 /*DATA FIELDSET DETAILS*/
@@ -508,6 +489,32 @@ footer.footer{
 	
 }
 
+.city-indicator{
+	font-style: italic;
+	/*font-size: 1em;*/
+	margin-left: 15px;
+	span{
+		margin-left: .25rem;
+		vertical-align: bottom;
+	}
+	>div{
+
+	}
+}
+
+.in-city {
+  color:#18BC9C;
+}
+
+.out-of-city {
+  color: #F39C12;
+}
+
+
+.inCityMessage i {
+  margin-right: 5px;
+}
+
 /*CAPITAL PROJECTS*/
 .checkboxGroup{
 	display: flex;
@@ -586,9 +593,6 @@ label {
 	.data-view-container{
 		margin-top: 1rem;
 	}
-	.template-header__inner{
-		margin-bottom: 1rem;
-	}
 }
 
 .data-filters{
@@ -621,6 +625,23 @@ label {
 		padding: 0;
 		margin-right: .5rem;
 	}
+}
+
+/*************************************************************************************/
+/***************************           FOOTER          *******************************/
+/*************************************************************************************/
+footer.footer{
+	padding: 1rem 0;
+}
+
+.old-version-link{
+}
+
+.clear-footer{
+    display: block;
+    padding: 20px;
+    height: 100px;
+    width: 100%;
 }
 
 /*************************************************************************************/
@@ -744,6 +765,14 @@ label {
 	.data-filters{
 		margin-top: 1rem;
 	}
+	.data-filters__container{
+		.form-group{
+			margin-bottom: .5rem !important;
+			&:last-child{
+				margin-bottom: 0 !important;
+			}
+		}		
+	}	
 	.clear-footer{
 		display: none;
 	}	
@@ -751,5 +780,11 @@ label {
 		position: relative;
 		padding: .5rem 0;
 		font-size: .85rem;
+	}
+	.old-version-link{
+		text-align: center;
+		a{
+			float: none !important;
+		}
 	}
 }

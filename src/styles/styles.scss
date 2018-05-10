@@ -734,7 +734,14 @@ footer.footer{
 }
 
 @media(max-width: $tablet-max){
-
+	.data-filters__container{
+		.form-group{
+			margin-bottom: 1rem !important;
+			&:last-child{
+				margin-bottom: 0 !important;
+			}
+		}		
+	}
 }
 
 @media(max-width: $xs){
@@ -764,14 +771,6 @@ footer.footer{
 	}
 	.data-filters{
 		margin-top: 1rem;
-	}
-	.data-filters__container{
-		.form-group{
-			margin-bottom: .5rem !important;
-			&:last-child{
-				margin-bottom: 0 !important;
-			}
-		}		
 	}	
 	.clear-footer{
 		display: none;

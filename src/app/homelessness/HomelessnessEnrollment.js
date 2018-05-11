@@ -1032,7 +1032,7 @@ class HomelessnessEnrollment extends React.Component {
         <div>
           There are several types of temporary or permanent housing options for people experiencing homelessness or at imminent risk of homelessness in Buncombe County. These options are part of the homelessness system in our community. The below chart shows monthly enrollments in these programs.
           <br />
-          <a href="javascript:void(0);" className="text-center inText" onClick={() => this.toggleLongDesc()}>
+          <a href="" className="text-center inText" onClick={(e) => { e.preventDefault(); this.toggleLongDesc(); }}>
             {this.state.showingDefinitions ? 'Hide' : 'Show'} Program definitions
           </a>
           <div hidden={!this.state.showingDefinitions}>

@@ -93,7 +93,6 @@ class BarChart extends React.Component {
               }}
             >
               <ResponsiveOrdinalFrame
-                size={[500, 500]}
                 responsiveWidth
                 annotations={this.props.annotations}
                 data={formattedData}

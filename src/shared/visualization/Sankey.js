@@ -31,17 +31,22 @@ class Sankey extends React.Component {
     const darkerColor = '#4292c6';
     const nodeColor = scaleSequential(interpolateLab(darkerColor, lighterColor));
 
-    return (<div role="img" aria-label={this.props.altText} tabIndex={0}>
+    return (<div
+      role="img"
+      aria-label={this.props.altText}
+      tabIndex={0}
+      style={{width: '100%', height: this.props.height}}
+    >
       <ResponsiveNetworkFrame
         responsiveWidth
+        responsiveHeight
         annotations={graph.nodes}
         edges={graph.links}
         hoverAnnotation
-        margin={{ top: -200, right: this.props.width / 9, bottom: 25, left: this.props.width / 9 }}
+        margin={{ top: 0, right: 10, bottom: 25, left: 10 }}
         networkType="sankey"
         nodeIdAccessor="id"
         nodes={graph.nodes}
-        size={[+this.props.width, +this.props.height]}
         sourceAccessor="source"
         targetAccessor="target"
         zoomToFit

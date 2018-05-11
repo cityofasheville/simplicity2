@@ -16,9 +16,7 @@ const getTopicIcon = (topic) => {
     case 'HOMELESSNESS':
       return (<Icon path={IM_BED} size={75} />)      
     case 'CAPITAL_PROJECTS':
-      return (<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-        <path d="M45,57a2,2 0 0,1-3,1l-2-3V39l-6,10-11-6l9-18h-6l-8 14l-3-3V33l8-14h20a4,4 0 0,1 4,4zm16,12l-41-34l1-3 42,35 8-10a5,5 0 0,1 9,0l22,29h-57l13-16zm-28-18l7,10 1,25a8,8 0 0,1-6-4l-1-17-8-11-18,31a4,4 0 0,1-2-2l-1-6 17-32zm13-36a7,7 0 0,1 14,0a7,7 0 0,1-14,0" fill="#4077a5" />
-      </svg>)
+      return (<Icon path={IM_CITY} size={75} />)
     default:
       return (<Icon path={IM_LIBRARY2} size={75} />)
   }

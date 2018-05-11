@@ -20,9 +20,6 @@ const getResultType = (type) => {
 };
 
 const getEntities = (selected) => {
-  if (selected === undefined || selected.length === 0) {
-    return [];
-  }
   const entityTypes = selected.split(',');
   const entities = [
     { label: 'Addresses', type: 'address', checked: true },
@@ -32,6 +29,10 @@ const getEntities = (selected) => {
     { label: 'Owners', type: 'owner', checked: true },
     { label: 'Google places', type: 'google', checked: true },
   ];
+  // return all if none
+  if (selected === undefined || selected === 'undefined' || selected.length === 0) {
+    return entities;
+  }
   for (let entity of entities) {
     if (entityTypes.indexOf(entity.type) === -1) {
       entity.checked = false;
@@ -214,5 +215,5 @@ const searchQuery = gql`
 
 export default graphql(searchQuery, {
   skip: ownProps => (!ownProps.searchText || ownProps.searchText.trim().length < 4),
-  options: ownProps => ({ variables: { searchString: ownProps.searchText.trim(), searchContexts: getEntitiesToSearch(ownProps.location.query.entities !== undefined ? getEntities(ownProps.location.query.entities) : getEntities('address,property,neighborhood,street,owner,google')) } }),
+  options: ownProps => ({ variables: { searchString: ownProps.searchText.trim(), searchContexts: getEntitiesToSearch((ownProps.location.query.entities !== undefined && ownProps.location.query.entities !== '') ? getEntities(ownProps.location.query.entities) : getEntities('address,property,neighborhood,street,owner,google')) } }),
 })(SearchResults);

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { scaleSequential } from 'd3-scale';
 import { interpolateLab } from 'd3-interpolate';
-import { NetworkFrame } from 'semiotic';
+import { ResponsiveNetworkFrame } from 'semiotic';
 
 
 /*
@@ -32,7 +32,8 @@ class Sankey extends React.Component {
     const nodeColor = scaleSequential(interpolateLab(darkerColor, lighterColor));
 
     return (<div role="img" aria-label={this.props.altText} tabIndex={0}>
-      <NetworkFrame
+      <ResponsiveNetworkFrame
+        responsiveWidth
         annotations={graph.nodes}
         edges={graph.links}
         hoverAnnotation

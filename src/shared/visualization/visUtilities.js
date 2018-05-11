@@ -28,18 +28,18 @@ export const formatDataForStackedBar = (data, dataKeys, mainAxisDataKey, colorSc
       const thisScheme = colorSchemes[colorScheme];
       rVal.color = thisScheme[kIndex % thisScheme.length];
       return rVal;
-    })
+    });
     const sum = thisData.reduce((total, num) => {
       const innerReturnObj = {};
       innerReturnObj.value = total.value + num.value;
       return innerReturnObj;
-    }).value
-    return {data: thisData, sum}
+    }).value;
+    return { data: thisData, sum };
   }).sort((a, b) => b.sum - a.sum)
     .map(d => d.data)
-    .reduce((p, c) => p.concat(c))
-  return formattedData
-}
+    .reduce((p, c) => p.concat(c));
+  return formattedData;
+};
 
 export const formatDataForStackedArea = (data, dataKeys, mainAxisDataKey, colorScheme) => {
   const thisScheme = colorSchemes[colorScheme];
@@ -75,7 +75,7 @@ export const budgetBarAnnotationRule = (d, layout = 'vertical') => {
     returnMarkX -= ((categoryVals[1].x - categoryVals[0].x) / 2) * (labelMatches.length - 1);
   }
 
-  return <Mark
+  return (<Mark
     markType="text"
     key={`${d.d.label || 'Unknown'}-annotationtext${d.i}`}
     forceUpdate
@@ -85,5 +85,5 @@ export const budgetBarAnnotationRule = (d, layout = 'vertical') => {
     textAnchor="middle"
   >
     {d.d.label}
-  </Mark>;
+  </Mark>);
 };

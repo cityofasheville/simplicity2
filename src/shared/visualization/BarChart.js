@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { color } from 'd3-color';
-import { OrdinalFrame } from 'semiotic';
+import { ResponsiveOrdinalFrame } from 'semiotic';
 import HorizontalLegend from './HorizontalLegend';
 import Tooltip from './Tooltip';
 import { formatDataForStackedBar, budgetBarAnnotationRule } from './visUtilities';
@@ -37,7 +37,7 @@ class BarChart extends React.Component {
       showingLongDesc: this.showLongDesc,
     };
 
-    this.toggleLongDesc = this.toggleLongDesc.bind(this)
+    this.toggleLongDesc = this.toggleLongDesc.bind(this);
   }
 
   toggleLongDesc(event) {
@@ -92,30 +92,39 @@ class BarChart extends React.Component {
                 textAlign: 'center',
               }}
             >
-              <OrdinalFrame
+              <ResponsiveOrdinalFrame
+                size={[500, 500]}
+                responsiveWidth
                 annotations={this.props.annotations}
                 data={formattedData}
                 hoverAnnotation
-                margin={{ top: 10, right: 40, bottom: 50, left: 60 }}
+                margin={{
+                  top: 10,
+                  right: 40,
+                  bottom: 50,
+                  left: 60,
+                }}
                 oAccessor={this.props.mainAxisDataKey}
-                oLabel={d => {
+                oLabel={(d) => {
                   let textAnchor = 'middle';
                   let transform = 'translate(0,0)';
                   if (this.props.rotateXLabels && this.props.layout === 'vertical') {
                     textAnchor = 'end';
-                    transform = 'translate(8,0)'
+                    transform = 'translate(8,0)';
                   } else if (this.props.layout === 'horizontal') {
                     textAnchor = 'end';
                   }
 
-                  if (this.props.rotateXLabels) { transform += 'rotate(-45)'}
+                  if (this.props.rotateXLabels) { transform += 'rotate(-45)' }
 
-                  return (<text
-                    textAnchor={textAnchor}
-                    transform={transform}
-                  >
+                  return (
+                    <text
+                      textAnchor={textAnchor}
+                      transform={transform}
+                    >
                       {this.props.xAxisTickFormatter(d)}
-                  </text>)
+                    </text>
+                  );
                 }}
                 oPadding={10}
                 projection={this.props.layout}
@@ -158,23 +167,24 @@ class BarChart extends React.Component {
                     return budgetBarAnnotationRule(d, this.props.layout);
                   }
                   if (d.d.type === 'line' && d.screenCoordinates[0]) {
-                    return (<g key={d.d.label}>
-                      <text
-                        x={d.screenCoordinates[0]}
-                        y={-5}
-                        textAnchor="middle"
-                      >
-                        {d.d.label}
-                      </text>
-                      <line
-                        stroke="black"
-                        strokeWidth={3}
-                        x1={d.screenCoordinates[0]}
-                        x2={d.screenCoordinates[0]}
-                        y1={0}
-                        y2={d.adjustedSize[1]}
-                      />
-                    </g>
+                    return (
+                      <g key={d.d.label}>
+                        <text
+                          x={d.screenCoordinates[0]}
+                          y={-5}
+                          textAnchor="middle"
+                        >
+                          {d.d.label}
+                        </text>
+                        <line
+                          stroke="black"
+                          strokeWidth={3}
+                          x1={d.screenCoordinates[0]}
+                          x2={d.screenCoordinates[0]}
+                          y1={0}
+                          y2={d.adjustedSize[1]}
+                        />
+                      </g>
                     );
                   }
                   return null;

@@ -49,6 +49,9 @@ class BarChart extends React.Component {
   }
 
   render() {
+
+    console.log(this.props.data)
+
     const formattedData = formatDataForStackedBar(
       this.props.data,
       this.props.dataKeys,
@@ -88,7 +91,7 @@ class BarChart extends React.Component {
                 height: this.props.height,
                 margin: '0 auto',
                 display: 'inline-block',
-                width: '95%',
+                width: '100%',
                 textAlign: 'center',
               }}
             >

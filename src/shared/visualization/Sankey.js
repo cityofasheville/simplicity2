@@ -7,7 +7,6 @@ import { ResponsiveNetworkFrame } from 'semiotic';
 
 /*
  * TODOS
- * Why is downward transformation happening?  Top margin shouldn't be negative
  * Make it vertical on mobile
  * Generally clarify
  */

@@ -1,13 +1,6 @@
 import tree from 'data-tree';
 const objectAssign = require('object-assign');
 
-const last4Yrs = [
-  2015,
-  2016,
-  2017,
-  2018,
-];
-
 // levels for use in the Treemap
 const expenseLevels = [
   'budget_section_id',
@@ -110,7 +103,8 @@ const insertLeafCopies = (flattenedTree) => {
 };
 
 // builds two trees, one for revenue and one for expense, based on the passed in data
-export const buildTrees = (data, last4Years = last4Yrs) => {
+export const buildTrees = (data, budgetParameters) => {
+  const budgetYears = getBudgetYears(budgetParameters);
   const exTree = tree.create();
   const revTree = tree.create();
   let theTree = revTree;
@@ -119,7 +113,7 @@ export const buildTrees = (data, last4Years = last4Yrs) => {
   exTree.insert({ key: 'root' });
   revTree.insert({ key: 'root' });
   for (let i = 0; i < data.length; i += 1) {
-    const yearIndex = last4Years.indexOf(data[i].year);
+    const yearIndex = budgetYears.indexOf(data[i].year);
     if (yearIndex > -1) {
       theTree = data[i].account_type === 'E' ? exTree : revTree;
       theLevels = data[i].account_type === 'E' ? expenseLevels : revenueLevels;
@@ -201,34 +195,21 @@ const createSummaryKeys = (data) => {
 };
 
 // helper function to create list of all potential values for summary data
-const createSummaryValues = (data) => {
-  const values = [];
-  let yearAlreadyPresent;
-  for (let i = 0; i < data.length; i += 1) {
-    if (data[i].account_type === 'E') { // only care about 'E' for now
-      yearAlreadyPresent = false;
-      for (let j = 0; j < values.length; j += 1) {
-        if (values[j].year === data[i].year) {
-          values[j][data[i].category_name] = [2, 3].indexOf(last4Yrs.indexOf(values[j].year)) > -1 ? Math.round(data[i].total_budget) : Math.round(data[i].total_actual);
-          yearAlreadyPresent = true;
-          break;
-        }
-      }
-      if (!yearAlreadyPresent) {
-        values.push({ year: data[i].year, display_year: [data[i].year - 1, data[i].year.toString().slice(2)].join('-'), [data[i].category_name]: [2, 3].indexOf(last4Yrs.indexOf(data[i].year)) > -1 ? Math.round(data[i].total_budget) : Math.round(data[i].total_actual), yearAxisNumeric: (1000 * last4Yrs.indexOf(data[i].year)) / 4 });
-      }
+const createSummaryValues = (data, budgetParameters) => (
+  data.map(item => (
+    {
+      display_year: `${parseInt(item.year, 10) - 1}-${parseInt(item.year, 10).toString().slice(2, 4)}`,
+      label: item.category_name,
+      value: budgetParameters.end_year === item.year ? Math.round(item.total_budget) : Math.round(item.total_actual),
     }
-  }
-  values.sort((a, b) => (
-    ((a.year < b.year) ? -1 : ((a.year > b.year) ? 1 : 0)) // eslint-disable-line
-  ));
-  return values;
-};
+  ))
+);
 
 // this function converts the results of the query into the form that the recharts barchart can handle
 // must have an object with dataKeys (list of string keys), and dataValues (object with one value for each key from dataKeys, and a year)
-export const buildSummaryData = (data) => {
-  const summaryData = { dataKeys: createSummaryKeys(data), dataValues: createSummaryValues(data) };
+export const buildSummaryData = (data, budgetParameters) => {
+  console.log(data);
+  const summaryData = { dataKeys: createSummaryKeys(data), dataValues: createSummaryValues(data, budgetParameters) };
   return summaryData;
 };
 
@@ -246,8 +227,8 @@ export const buildCashFlowData = (data) => {
   let linkAlreadyExists = false;
   const fundsToInclude = ['1100', '6100', '6200', '6260', '6240', '6220', '6500'];
   const fundDisplayNames = ['General Fund', 'Water Resources', 'Parking Services', 'US Cellular Center', 'Stormwater', 'Street Cut', 'Transit Services'];
-  const managementAndSupportDepts = ['Legal Department', 'Human Resources Department', 'Information Technology Dept.', 'Administration Services Dept', 'Finance Department', 'General Services Department'];
-  const communityAndResidentDepts = ['Development Services Dept.', 'Economic Development Departmen', 'Planning & Development Dept', 'Capital Project Management Dep'];
+  const managementAndSupportDepts = ['Legal Department', 'Community & Public Engagement', 'Human Resources Department', 'Information Technology Dept.', 'Administration Services Dept', 'Finance Department', 'General Services Department'];
+  const communityAndResidentDepts = ['Development Services Dept.', 'Community & Economic Dev. Dept', 'Equity & Inclusion', 'Planning & Development Dept', 'Capital Project Management Dep'];
   const convertFundNameToDisplayName = (fundId) => {
     const fundIndex = fundsToInclude.indexOf(fundId);
     return fundIndex === -1 ? 'Other' : fundDisplayNames[fundIndex];
@@ -320,4 +301,27 @@ export const buildCashFlowData = (data) => {
   sankeyNodes = revenueNodes.concat(fundNodes).concat(expenseNodes);
   sankeyNodes = sankeyNodes.map(node => (objectAssign({}, node, { value: Math.round(node.value) })));
   return { sankeyNodes, sankeyLinks };
+};
+
+export const getBudgetYears = (budgetParameters) => {
+  const numYears = parseInt(budgetParameters.end_year, 10) - parseInt(budgetParameters.start_year, 10);
+  const years = [];
+  for (let i = 0; i < numYears + 1; i += 1) {
+    years.push(parseInt(budgetParameters.start_year, 10) + i);
+  }
+  return years;
+};
+
+export const createAnnotations = (budgetParameters) => {
+  const numYears = parseInt(budgetParameters.end_year, 10) - parseInt(budgetParameters.start_year, 10);
+  const annotations = [];
+  for (let i = 0; i < numYears + 1; i += 1) {
+    annotations.push({
+      type: 'or',
+      display_year: `${parseInt(budgetParameters.start_year, 10) + (i - 1)}-${(parseInt(budgetParameters.start_year, 10) + i).toString().slice(2, 4)}`,
+      label: i < numYears ? 'Actual Spent' : (budgetParameters.in_budget_season ? 'Proposed' : 'Adopted'),
+      budgetAnnotation: true,
+    });
+  }
+  return annotations;
 };

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { graphql, compose } from 'react-apollo';
 import BarChart from '../../shared/visualization/BarChart';
+import { createAnnotations } from './budgetUtilities';
 import { getBudgetSummaryDept, getBudgetSummaryUse } from './graphql/budgetQueries';
 
 const getDollars = (value) => {
@@ -43,7 +44,6 @@ const getLongDesc = data => (
   </div>
 );
 
-
 class BudgetSummaryBarChart extends React.Component {
   constructor(props) {
     super(props);
@@ -59,39 +59,13 @@ class BudgetSummaryBarChart extends React.Component {
     });
   }
 
-
   render() {
     return (
       <div>
         <div className="row">
           <div className="col-sm-12">
             <BarChart
-              annotations={[
-                {
-                  type: 'or',
-                  display_year: '2014-15',
-                  label: 'Actual Spent',
-                  budgetAnnotation: true,
-                },
-                {
-                  type: 'or',
-                  display_year: '2015-16',
-                  label: 'Actual Spent',
-                  budgetAnnotation: true,
-                },
-                {
-                  type: 'or',
-                  display_year: '2016-17',
-                  label: 'Adopted',
-                  budgetAnnotation: true,
-                },
-                {
-                  type: 'or',
-                  display_year: '2017-18',
-                  label: 'Proposed',
-                  budgetAnnotation: true,
-                },
-              ]}
+              annotations={createAnnotations(this.props.data.budgetParameters)}
               data={this.state.summaryData.dataValues}
               colorScheme={this.props.colorScheme}
               mainAxisDataKey="display_year"

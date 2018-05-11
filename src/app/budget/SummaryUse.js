@@ -20,7 +20,7 @@ class SummaryUse extends React.Component {
     // if (this.props.summaryUseData.dataKeys !== null) {
     //   return;
     // }
-    const summaryUseData = buildSummaryData(this.props.data.budgetSummary);
+    const summaryUseData = buildSummaryData(this.props.data.budgetSummary, this.props.data.budgetParameters);
     await this.props.updateBudgetSummaryUse({
       variables: {
         budgetSummaryUse: {
@@ -45,6 +45,7 @@ class SummaryUse extends React.Component {
 
     return (
       <div className="row">
+      {console.log(this.props)}
         <div className="col-sm-12">
           <BudgetSummaryBarChart categoryType="use" {...this.props} />
         </div>
@@ -69,6 +70,11 @@ const budgetSummaryUseQuery = gql`
         total_budget,
         total_actual,
         year,
+    }
+    budgetParameters {
+      start_year
+      end_year
+      in_budget_season
     }
   }
 `;

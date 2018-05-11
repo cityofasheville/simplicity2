@@ -22,13 +22,19 @@ export const formatDataForStackedBar = (data, dataKeys, mainAxisDataKey, colorSc
   const formattedData = dataKeys.map((k, kIndex) => {
     const thisData = data.map((d) => {
       const rVal = {};
-      rVal[mainAxisDataKey] = d[mainAxisDataKey];
-      rVal.label = k || '[error]';
-      rVal.value = d[k] ? d[k] : 0;
+      // rVal[mainAxisDataKey] = d[mainAxisDataKey];
+      // rVal.label = k || '[error]';
+      // rVal.value = d[k] ? d[k] : 0;
       const thisScheme = colorSchemes[colorScheme];
-      rVal.color = thisScheme[kIndex % thisScheme.length];
-      return rVal;
-    })
+      if (d.label === k) {
+        return Object.assign({}, d, { color: thisScheme[kIndex % thisScheme.length] });
+      }
+      //d.color = thisScheme[kIndex % thisScheme.length];
+      //return d;
+      // rVal.color = thisScheme[kIndex % thisScheme.length];
+      // return rVal;
+    });
+    console.log(thisData);
     const sum = thisData.reduce((total, num) => {
       const innerReturnObj = {};
       innerReturnObj.value = total.value + num.value;
@@ -36,10 +42,10 @@ export const formatDataForStackedBar = (data, dataKeys, mainAxisDataKey, colorSc
     }).value
     return {data: thisData, sum}
   }).sort((a, b) => b.sum - a.sum)
-    .map(d => d.data)
-    .reduce((p, c) => p.concat(c))
-  return formattedData
-}
+  .map(d => d.data)
+  .reduce((p, c) => p.concat(c))
+  return formattedData;
+};
 
 export const formatDataForStackedArea = (data, dataKeys, mainAxisDataKey, colorScheme) => {
   const thisScheme = colorSchemes[colorScheme];

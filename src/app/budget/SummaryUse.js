@@ -45,7 +45,6 @@ class SummaryUse extends React.Component {
 
     return (
       <div className="row">
-      {console.log(this.props)}
         <div className="col-sm-12">
           <BudgetSummaryBarChart categoryType="use" {...this.props} />
         </div>

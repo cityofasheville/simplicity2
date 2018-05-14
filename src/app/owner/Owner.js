@@ -85,16 +85,16 @@ const Owner = (props) => {
   return (
     <div>
       <PageHeader h1={props.data.properties[0].owner} h3="About this owner's properties" icon={<Icon path={IM_USER} size={50} />}>
-        <ButtonGroup>
+        <ButtonGroup alignment="">
           <LinkButton pathname="/search" query={{ entities: props.location.query.entities, search: props.location.query.search, hideNavbar: props.location.query.hideNavbar }}>Back to search</LinkButton>
         </ButtonGroup>
       </PageHeader>
       <div className="row">
         <div className="col-xs-12">
           <div className="pull-left" style={{ marginTop: '10px', marginBottom: '15px' }}>
-            <EmailDownload downloadData={props.data.properties} fileName="properties_by_owner.csv" />
+            <EmailDownload downloadData={props.data.properties} fileName="properties_by_owner.csv" text="Download CSV" />
           </div>
-          <ButtonGroup>
+          <ButtonGroup alignment="right">
             <Button onClick={() => refreshLocation(getNewUrlParams('map'), props.location)} active={props.location.query.view === 'map'} positionInGroup="left">Map view</Button>
             <Button onClick={() => refreshLocation(getNewUrlParams('list'), props.location)} active={props.location.query.view === 'list'} positionInGroup="right">List view</Button>
           </ButtonGroup>

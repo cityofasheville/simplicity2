@@ -38,53 +38,55 @@ const CrimeSummary = (props) => {
   }
 
   return (
-    <div>
-      <div className="row">
-        <div className="col-sm-12">
+    <div class="crimes-template">
+      <div className="row template-header">
+        <div className="col-sm-12 template-header__inner">
           <h1>
-            <span style={{ marginRight: '5px' }}>{<Icon path={IM_SHIELD3} size={35} />}</span>
-            <span style={{ marginRight: '25px' }}>Crime</span>
-            <a href="https://apdp2c.buncombecounty.org/" target="_blank"><button className="btn btn-xs btn-info">{<Icon path={IM_LIBRARY2} size={16} />}<span style={{ marginLeft: '4px' }}>View APD reports</span></button></a>
-            <ButtonGroup>
-              <Button onClick={browserHistory.goBack}>Back</Button>
-            </ButtonGroup>
+            <span className="title__icon">{<Icon path={IM_SHIELD3} size={35} />}</span>
+            <span className="title__text">Crime</span>
           </h1>
+          <a className="data-link" href="https://apdp2c.buncombecounty.org/" target="_blank"><button className="btn btn-xs btn-info">{<Icon path={IM_LIBRARY2} size={16} />}<span>&nbsp;&nbsp;View APD reports</span></button></a>
+          <ButtonGroup>
+            <Button onClick={browserHistory.goBack}>Back</Button> 
+          </ButtonGroup>          
         </div>
       </div>
-      <form className="row form-horizontal">
-        <div className="col-xs-12">
-          <fieldset className={styles.filtersDiv}>
-            {/*<SpatialEventTopicCategoryFilters spatialEventTopic={props.spatialEventTopic} />*/}
-            <div className="form-group">
-              <label htmlFor="topicType" className="col-sm-2 control-label">view</label>
-              <div className="col-sm-10">
-                <div className="form-control-static" style={{ display: 'block' }}>crimes
+      <form className="form-horizontal data-filters data-filters--crime">
+        <fieldset className={styles.filtersDiv + ' data-filters__fieldset'}>
+          <div className="data-filters__container">
+            <div className="data-filters__inner">
+              {/*<SpatialEventTopicCategoryFilters spatialEventTopic={props.spatialEventTopic} />*/}
+              <div className="form-group col-md-2 col-sm-6 col-xs-4">
+                <label htmlFor="topicType" className="control-label">View:</label>
+                <div>
+                  <div className="form-control-static" style={{ display: 'block' }}>crimes
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="form-group">
-              <label htmlFor="time" className="col-sm-2 control-label">during</label>
-              <div className="col-sm-10">
-                <select value={duringURL} onChange={() => refreshLocation(getNewUrlParams(), props.location)} name="time" id="time" className="form-control">
-                  {timeOptions.map((option, i) => (
-                    <option value={option.value} key={['time', 'option', i].join('_')} name="time">{option.display}</option>
-                  ))}
-                </select>
+              <div className="form-group col-md-3 col-sm-6 col-xs-8">
+                <label htmlFor="time" className="control-label">During:</label>
+                <div>
+                  <select value={duringURL} onChange={() => refreshLocation(getNewUrlParams(), props.location)} name="time" id="time" className="form-control">
+                    {timeOptions.map((option, i) => (
+                      <option value={option.value} key={['time', 'option', i].join('_')} name="time">{option.display}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
-            </div>
-            <div className="form-group" hidden={props.location.query.entity === 'street' || props.location.query.entity === 'neighborhood'}>
-              <label htmlFor="time" className="col-sm-2 control-label">within</label>
-              <div className="col-sm-10">
-                <select value={withinURL} onChange={() => refreshLocation(getNewUrlParams(), props.location)} name="extent" id="extent" className="form-control">
-                  {extentOptions.map((option, i) => (
-                    <option value={option.value} key={['extent', 'option', i].join('_')} name="extent">{option.display}</option>
-                  ))}
-                </select>
+              <div className="form-group col-md-3 col-sm-6 col-xs-12" hidden={props.location.query.entity === 'street' || props.location.query.entity === 'neighborhood'}>
+                <label htmlFor="time" className="control-label">Within:</label>
+                <div>
+                  <select value={withinURL} onChange={() => refreshLocation(getNewUrlParams(), props.location)} name="extent" id="extent" className="form-control">
+                    {extentOptions.map((option, i) => (
+                      <option value={option.value} key={['extent', 'option', i].join('_')} name="extent">{option.display}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
-            </div>
-            <SpatialEventTopicLocationInfo spatialType={props.location.query.entity} spatialDescription={props.location.query.label} />
-          </fieldset>
-        </div>
+              <SpatialEventTopicLocationInfo columnClasses="col-md-4 col-sm-6 col-xs-12" spatialType={props.location.query.entity} spatialDescription={props.location.query.label} />
+            </div>            
+          </div>
+        </fieldset>
       </form>
       {props.location.query.entity === 'address' ?
         <CrimesByAddress before={before} after={after} radius={withinURL} location={props.location} />

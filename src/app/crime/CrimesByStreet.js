@@ -158,7 +158,7 @@ const CrimesByStreet = props => {
   );
 
   return (
-    <div>
+    <div class="crimes-template__data">
       <div className="row">
         <div className="col-xs-12">
           <div className="pull-left" style={{ marginTop: '10px', marginBottom: '15px' }}>

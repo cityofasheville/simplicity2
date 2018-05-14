@@ -208,7 +208,6 @@ const createSummaryValues = (data, budgetParameters) => (
 // this function converts the results of the query into the form that the recharts barchart can handle
 // must have an object with dataKeys (list of string keys), and dataValues (object with one value for each key from dataKeys, and a year)
 export const buildSummaryData = (data, budgetParameters) => {
-  console.log(data);
   const summaryData = { dataKeys: createSummaryKeys(data), dataValues: createSummaryValues(data, budgetParameters) };
   return summaryData;
 };

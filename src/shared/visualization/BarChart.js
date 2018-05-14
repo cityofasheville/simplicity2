@@ -72,7 +72,7 @@ class BarChart extends React.Component {
           role="img"
           alt={this.state.altText}
           tabIndex={0}
-          className="visualization-container"
+          className="row visualization-container"
         >
           <div style={{height: 350}}>
             <div style={{height: this.props.height}}>
@@ -85,7 +85,7 @@ class BarChart extends React.Component {
                 margin={{
                   top: 10,
                   right: 10,
-                  bottom: 50,
+                  bottom: 35,
                   left: 60,
                 }}
                 oAccessor={this.props.mainAxisDataKey}
@@ -179,11 +179,15 @@ class BarChart extends React.Component {
                     this.setState({ hover: null });
                 }}
               />
-              <HorizontalLegend
-                formattedData={formattedData}
-                legendLabelFormatter={this.props.legendLabelFormatter}
-              />
             </div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-xs-10 col-xs-offset-1">
+            <HorizontalLegend
+              formattedData={formattedData}
+              legendLabelFormatter={this.props.legendLabelFormatter}
+            />
           </div>
         </div>
         {!this.props.hideSummary &&

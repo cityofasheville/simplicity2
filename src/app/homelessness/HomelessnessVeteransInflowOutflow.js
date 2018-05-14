@@ -181,17 +181,17 @@ class HomelessnessVeteransInflowOutflow extends React.Component {
             </div>
           </div>
         </div>
-        <div className="row">
-          <div className="col-xs-10 col-xs-offset-2">
-            <br />
-            <a href="" className="text-center inText" onClick={(e) => { e.preventDefault(); this.toggleLongDesc() }}>
-              {this.state.showingLongDesc ? 'Hide' : 'Show'} Veteran homelessness Incoming and Outgoing bar chart summary
-            </a>
-            <div hidden={!this.state.showingLongDesc}>
-              {getLongDesc(this.props.data, this.props.dataKeys, 'month')}
-            </div>
-          </div>
-        </div>
+        {/* <div className="row"> */}
+        {/*   <div className="col-xs-10 col-xs-offset-2"> */}
+        {/*     <br /> */}
+        {/*     <a href="" className="text-center inText" onClick={(e) => { e.preventDefault(); this.toggleLongDesc() }}> */}
+        {/*       {this.state.showingLongDesc ? 'Hide' : 'Show'} Veteran homelessness Incoming and Outgoing bar chart summary */}
+        {/*     </a> */}
+        {/*     <div hidden={!this.state.showingLongDesc}> */}
+        {/*       {getLongDesc(this.props.data, this.props.dataKeys, 'month')} */}
+        {/*     </div> */}
+        {/*   </div> */}
+        {/* </div> */}
       </div>
     );
   }

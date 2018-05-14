@@ -61,8 +61,6 @@ class BudgetSummaryBarChart extends React.Component {
 
 
   render() {
-
-    console.log(this.state)
     return (
       <div className="visualization no-padding">
         <BarChart

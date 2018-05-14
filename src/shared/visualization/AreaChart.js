@@ -93,7 +93,6 @@ class AreaChart extends React.Component {
                   set dimensions meaningfully and adjust tooltip position accordingly
                   remove logic that only applies to this use case to utils or homelessness folder
                 */
-                size={[1200, 450]}
                 responsiveWidth
                 lines={formattedData}
                 xScaleType={scaleTime()}
@@ -101,7 +100,7 @@ class AreaChart extends React.Component {
                 yAccessor={d => +d.value}
                 lineType="stackedarea"
                 lineStyle={d => ({ fill: d.color })}
-                margin={{ top: 40, right: 40, bottom: 60, left: 40 }}
+                margin={{ top: 10, right: 10, bottom: 60, left: 40 }}
                 axes={[
                   {
                     orient: 'left',
@@ -109,7 +108,6 @@ class AreaChart extends React.Component {
                   },
                   {
                     orient: 'bottom',
-                    ticks: 20,
                     rotate: -45,
                     tickFormat: d => `${d.getMonth() + 1}/${d.getFullYear().toString().replace('20', '')}`,
                     className: 'semiotic-axis',

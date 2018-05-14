@@ -34,11 +34,10 @@ class Sankey extends React.Component {
       role="img"
       aria-label={this.props.altText}
       tabIndex={0}
-      style={{width: '100%', height: this.props.height}}
+      style={{width: '100%'}}
     >
       <ResponsiveNetworkFrame
         responsiveWidth
-        responsiveHeight
         annotations={graph.nodes}
         edges={graph.links}
         hoverAnnotation

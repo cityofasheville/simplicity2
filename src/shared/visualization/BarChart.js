@@ -49,9 +49,6 @@ class BarChart extends React.Component {
   }
 
   render() {
-
-    console.log(this.props.data)
-
     const formattedData = formatDataForStackedBar(
       this.props.data,
       this.props.dataKeys,
@@ -77,17 +74,17 @@ class BarChart extends React.Component {
           tabIndex={0}
           className="visualization-container"
         >
-          <div>
-            <div>
-              <OrdinalFrame
+          <div style={{height: 350}}>
+            <div style={{height: this.props.height}}>
               <ResponsiveOrdinalFrame
                 responsiveWidth
+                responsiveHeight
                 annotations={this.props.annotations}
                 data={formattedData}
                 hoverAnnotation
                 margin={{
                   top: 10,
-                  right: 40,
+                  right: 10,
                   bottom: 50,
                   left: 60,
                 }}
@@ -134,8 +131,8 @@ class BarChart extends React.Component {
                     { fill: d.color })
                 }
                 tooltipContent={(d) => {
-                  const dPieces = d.pieces || [d.data]
-                  const tooltipTitle = d.column ? d.column.name : d.data[this.props.mainAxisDataKey]
+                  const dPieces = d.pieces || [d.data];
+                  const tooltipTitle = d.column ? d.column.name : d.data[this.props.mainAxisDataKey];
                   const textLines = dPieces.map(piece =>
                     ({
                       text: `${piece.label}: ${this.props.tooltipYValFormatter(piece.value)}`,

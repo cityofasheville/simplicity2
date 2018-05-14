@@ -39,7 +39,7 @@ const BudgetSummary = (props) => {
         <div tabIndex={0} style={{ fontSize: '12px', textAlign: 'center' }}>Bar chart totals exclude interfund transfers</div>
       </div>
       <hr />
-      {/* <SummaryCashFlow /> */}
+      <SummaryCashFlow />
     </div>
   );
 };

@@ -185,10 +185,10 @@ class BarChart extends React.Component {
                     this.setState({ hover: null });
                 }}
               />
-              {/* <HorizontalLegend
+              <HorizontalLegend
                 formattedData={formattedData}
                 legendLabelFormatter={this.props.legendLabelFormatter}
-              /> */}
+              />
             </div>
           </div>
         </div>

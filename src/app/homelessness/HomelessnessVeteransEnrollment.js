@@ -153,7 +153,7 @@ class HomelessnessVeteransEnrollment extends React.Component {
         <div>
           A by-name is not a waiting list – Veterans on this list may already be accessing programs, waiting for a housing unit, have entered a transitional program, declined assistance or may self-resolve their homelessness. The by-name list is used to determine where Veterans actually are in our homeless assistance system, who needs to be prioritized for services and/or housing and what barriers need to be removed.
           <br />
-          <a href="javascript:void(0);" className="text-center inText" onClick={() => this.toggleDefinitions()}>
+          <a href="" className="text-center inText" onClick={(e) => { e.preventDefault(); this.toggleDefinitions() }}>
             {this.state.showingDefinitions ? 'Hide' : 'Show'} by-name list definitions
           </a>
           <div hidden={!this.state.showingDefinitions}>

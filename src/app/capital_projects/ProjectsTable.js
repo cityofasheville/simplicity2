@@ -60,7 +60,7 @@ class ProjectsTable extends React.Component {
       }),
     },
     {
-      Header: (<div>Zip<br />code</div>),
+      Header: (<div>Zip code</div>),
       accessor: 'zip_code',
       maxWidth: 120,
       show: state.width >= 940,
@@ -74,7 +74,7 @@ class ProjectsTable extends React.Component {
       ),
     },
     {
-      Header: (<div>Current<br />phase</div>),
+      Header: (<div>Current phase</div>),
       accessor: 'status',
       Cell: row => (
         <span>
@@ -99,7 +99,7 @@ class ProjectsTable extends React.Component {
       ),
     },
     {
-      Header: (<div>Current<br />project budget</div>),
+      Header: (<div>Current project budget</div>),
       accessor: 'total_project_funding_budget_document',
       maxWidth: 120,
       show: state.width >= 720,

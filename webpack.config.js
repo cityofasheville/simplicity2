@@ -6,12 +6,14 @@ const Dotenv = require('dotenv-webpack');
 
 const extractSass = new ExtractTextPlugin({
   filename: '[name].[contenthash].css',
-  disable: process.env.NODE_ENV === 'development',
+  // disable: process.env.NODE_ENV === 'development',
+  disable: true
 });
+
+// devtool: 'source-map',
 
 module.exports = {
   context: path.resolve(__dirname),
-  devtool: 'source-map',
   entry: {
     app: path.join(__dirname, 'src', 'index.js'),
   },

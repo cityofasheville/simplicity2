@@ -168,7 +168,7 @@ class HomelessnessVeteransInflowOutflow extends React.Component {
             <div>
               There is an inflow and outflow of homeless Veterans in Buncombe County, and Veteran representation in the homeless community is considerably higher than other communities of similar size in the country. Our exceptional VA Medical Center, large service area and transitional housing availability contribute to this large number of homeless Veterans being attracted to this area. Each month homeless service providers identify new homeless Veterans in Buncombe County and each month various agencies assist homeless Veterans in exiting homelessness. An exit from homelessness in Buncombe County includes rental units, living with family and/or friends, long-term care facilities, and also leaving Buncombe County.
               <br />
-                <a href="javascript:void(0);" className="text-center inText" onClick={() => this.toggleDefinitions()}>
+                <a href="" className="text-center inText" onClick={(e) => { e.preventDefault(); this.toggleDefinitions() }}>
                   {this.state.showingDefinitions ? 'Hide' : 'Show'} Definition of Veteran
                 </a>
                 <div hidden={!this.state.showingDefinitions}>
@@ -208,7 +208,7 @@ class HomelessnessVeteransInflowOutflow extends React.Component {
         <div className="row">
           <div className="col-xs-10 col-xs-offset-2">
             <br />
-            <a href="javascript:void(0);" className="text-center inText" onClick={() => this.toggleLongDesc()}>
+            <a href="" className="text-center inText" onClick={(e) => { e.preventDefault(); this.toggleLongDesc() }}>
               {this.state.showingLongDesc ? 'Hide' : 'Show'} Veteran homelessness Incoming and Outgoing bar chart summary
             </a>
             <div hidden={!this.state.showingLongDesc}>

@@ -26,7 +26,7 @@ const AddressList = (props) => {
       </PageHeader>
       <div className="row">
         <div className="col-sm-12">
-          <ButtonGroup>
+          <ButtonGroup alignment="right">
             <Button onClick={() => refreshLocation(getNewUrlParams('list'), props.location)} active={props.location.query.view !== 'map'} positionInGroup="left">List view</Button>
             <Button onClick={() => refreshLocation(getNewUrlParams('map'), props.location)} active={props.location.query.view === 'map'} positionInGroup="right">Map view</Button>
           </ButtonGroup>

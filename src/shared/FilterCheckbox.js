@@ -27,14 +27,14 @@ class FilterCheckbox extends React.Component {
   };
 
   render() {
-    const mainStyle = this.props.disabled ? 'filterCheckboxDisabled disabledCursor' : this.props.checked ? 'filterCheckbox' : 'unchecked';
-    const backgroundStyle = this.props.checked ? 'backgroundChecked' : 'backgroundUnchecked';
+    const mainStyle = this.props.disabled ? 'filterCheckbox filterCheckbox--disabled' : this.props.checked ? 'filterCheckbox filterCheckbox--checked' : 'filterCheckbox filterCheckbox--unchecked';
+    const backgroundStyle = this.props.checked ? 'filterCheckbox filterCheckbox--backgroundChecked' : 'filterCheckbox filterCheckbox--backgroundUnchecked';
 
     return (
-      <div className="col-lg-2 col-md-3 col-sm-4 col-xs-6" style={{ cursor: 'pointer' }}>
+      <div className="checkboxGroup__checkbox" style={{ cursor: 'pointer' }}>
         <div
           id={this.state.parentId}
-          className={mainStyle}
+          className={`${backgroundStyle} ${mainStyle}`}
           onClick={this.handleClick}
           tabIndex={this.props.disabled ? undefined : '0'}
           onKeyDown={this.handleKeyDown}
@@ -42,8 +42,8 @@ class FilterCheckbox extends React.Component {
           aria-checked={this.props.checked}
           aria-labelledby={this.state.labelId}
         >
-          <div className={backgroundStyle} style={{ paddingTop: '10px' }}>
-            <div className="text-center text-primary" style={{ minHeight: this.props.minHeight }}>
+          <div /* className={backgroundStyle} style={{ paddingTop: '10px' }} */>
+            <div className="text-center text-primary" /* style={{ minHeight: this.props.minHeight }} */>
               <Checkbox
                 role="presentation"
                 id={this.state.id}

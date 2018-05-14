@@ -132,7 +132,7 @@ const convertToPieData = (crimeData) => {
   return pieData;
 };
 
-const CrimesByStreet = props => {
+const CrimesByStreet = (props) => {
   if (props.data.loading) { // eslint-disable-line react/prop-types
     return <LoadingAnimation />;
   }
@@ -158,17 +158,17 @@ const CrimesByStreet = props => {
   );
 
   return (
-    <div>
+    <div class="crimes-template__data">
       <div className="row">
         <div className="col-xs-12">
-          <div className="pull-left" style={{ marginTop: '10px', marginBottom: '15px' }}>
-            <EmailDownload downloadData={props.data.crimes_by_street} fileName="crimes_by_street.csv" />
-          </div>
-          <ButtonGroup>
+          <ButtonGroup alignment="right">
             <Button onClick={() => refreshLocation(getNewUrlParams('map'), props.location)} active={props.location.query.view === 'map'} positionInGroup="left">Map view</Button>
             <Button onClick={() => refreshLocation(getNewUrlParams('list'), props.location)} active={props.location.query.view === 'list'} positionInGroup="middle">List view</Button>
             <Button onClick={() => refreshLocation(getNewUrlParams('summary'), props.location)} positionInGroup="right" active={props.location.query.view === 'summary'}>Chart</Button>
           </ButtonGroup>
+          <div className="pull-left" style={{ marginTop: '10px', marginBottom: '15px' }}>
+            <EmailDownload downloadData={props.data.crimes_by_street} fileName="crimes_by_street.csv" />
+          </div>
         </div>
       </div>
 

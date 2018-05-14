@@ -62,49 +62,45 @@ class BudgetSummaryBarChart extends React.Component {
 
   render() {
     return (
-      <div>
-        <div className="row">
-          <div className="col-sm-12">
-            <BarChart
-              annotations={[
-                {
-                  type: 'or',
-                  display_year: '2014-15',
-                  label: 'Actual Spent',
-                  budgetAnnotation: true,
-                },
-                {
-                  type: 'or',
-                  display_year: '2015-16',
-                  label: 'Actual Spent',
-                  budgetAnnotation: true,
-                },
-                {
-                  type: 'or',
-                  display_year: '2016-17',
-                  label: 'Adopted',
-                  budgetAnnotation: true,
-                },
-                {
-                  type: 'or',
-                  display_year: '2017-18',
-                  label: 'Proposed',
-                  budgetAnnotation: true,
-                },
-              ]}
-              data={this.state.summaryData.dataValues}
-              colorScheme={this.props.colorScheme}
-              mainAxisDataKey="display_year"
-              dataKeys={this.state.summaryData.dataKeys}
-              yAxisTickFormatter={getDollars}
-              tooltipYValFormatter={getDollarsLong}
-              domain={[0, 190000000]}
-              legendLabelFormatter={function(label) {return label.replace(' Department', '')}}
-              altText={['Spending by', this.props.categoryType, 'bar chart'].join(' ')}
-              chartTitle={getTitle(this.props.categoryType)}
-            />
-          </div>
-        </div>
+      <div className="visualization no-padding">
+        <BarChart
+          annotations={[
+            {
+              type: 'or',
+              display_year: '2014-15',
+              label: 'Actual Spent',
+              budgetAnnotation: true,
+            },
+            {
+              type: 'or',
+              display_year: '2015-16',
+              label: 'Actual Spent',
+              budgetAnnotation: true,
+            },
+            {
+              type: 'or',
+              display_year: '2016-17',
+              label: 'Adopted',
+              budgetAnnotation: true,
+            },
+            {
+              type: 'or',
+              display_year: '2017-18',
+              label: 'Proposed',
+              budgetAnnotation: true,
+            },
+          ]}
+          data={this.state.summaryData.dataValues}
+          colorScheme={this.props.colorScheme}
+          mainAxisDataKey="display_year"
+          dataKeys={this.state.summaryData.dataKeys}
+          yAxisTickFormatter={getDollars}
+          tooltipYValFormatter={getDollarsLong}
+          domain={[0, 190000000]}
+          legendLabelFormatter={function(label) {return label.replace(' Department', '')}}
+          altText={['Spending by', this.props.categoryType, 'bar chart'].join(' ')}
+          chartTitle={getTitle(this.props.categoryType)}
+        />
       </div>
     );
   }

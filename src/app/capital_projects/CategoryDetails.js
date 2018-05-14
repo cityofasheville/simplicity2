@@ -76,8 +76,13 @@ const getKeyText = categories => (
 );
 
 const getDollars = (value) => {
+  let formatted;
   if (Math.abs(value) > 1000000) {
-    return [value < 0 ? '-$' : '$', (Math.abs(value) / 1000000).toFixed(0).toLocaleString(), ' M'].join('');
+    formatted = (Math.abs(value) / 1000000).toFixed(1).toLocaleString();
+    if (formatted[formatted.length - 1] === '0') {
+      formatted = formatted.slice(0, -2);
+    }
+    return [value < 0 ? '-$' : '$', formatted, ' M'].join('');
   } else if (Math.abs(value) > 1000) {
     return [value < 0 ? '-$' : '$', (Math.abs(value) / 1000).toFixed(0).toLocaleString(), ' k'].join('');
   }
@@ -112,12 +117,12 @@ const CategoryDetails = (props) => {
     <div>
       <div className="row">
         <div className="col-sm-12">
-          <div className="row" style={{ marginBottom: '10px' }}>
-            <div className="col-sm-6">
-              <h2>Total funding: {getDollars(fundingDetails[0].allocated)}</h2>
+          <div className="funding-summary">
+            <div className="col-sm-6 col-xs-6">
+              <h2><span className="label-text">Total funding:</span> <span className="amount">{getDollars(fundingDetails[0].allocated)}</span></h2>
             </div>
-            <div className="col-sm-6">
-              <h2>Spent: {getDollars(fundingDetails[0]['Expended funds'])}</h2>
+            <div className="col-sm-6 col-xs-6">
+              <h2><span className="label-text">Spent:</span> <span className="amount">{getDollars(fundingDetails[0]['Expended funds'])}</span></h2>
             </div>
           </div>
           <div className="row">

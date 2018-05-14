@@ -5,10 +5,11 @@ import SearchBar from './search/SearchBarLink'; // temporarily using the link ve
 import Topics from './Topics';
 
 const Homepage = props => (
-  <div>
+  <div className="template__home">
     <div className="row">
       <SearchBar location={props.location} selectedEntities={props.location.query.entities !== undefined ? props.location.query.entities : 'address,property,neighborhood,street,owner,google'} />
     </div>
+    <hr />
     <Topics />
   </div>
 );

@@ -129,7 +129,7 @@ class HomelessnessVeteransChronicAssignments extends React.Component {
         <br />
         <div>Program enrollment for all Veterans is tracked on the by-name list but particular attention is paid to those Veterans who are identified as chronically homeless.
           <br />
-          <a href="javascript:void(0);" className="text-center inText" onClick={() => this.toggleDefinitions()}>
+          <a href="" className="text-center inText" onClick={(e) => { e.preventDefault(); this.toggleDefinitions() }}>
             {this.state.showingDefinitions ? 'Hide' : 'Show'} program definitions
           </a>
           <div hidden={!this.state.showingDefinitions}>

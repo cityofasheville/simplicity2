@@ -3,15 +3,15 @@ import PropTypes from 'prop-types';
 import TopicCard from '../shared/TopicCard';
 
 const Topics = props => (
-  <div>
+  <div className="card-container">
     <div className="row">
       <div className="col-sm-12">
-        <h1>View citywide topic <strong>dashboards</strong> about your community.</h1>
+        <h2>View citywide topic <strong>dashboards</strong> about your community.</h2>
       </div>
     </div>
     <div className="row">
       {props.topics.map((topic, i) => (
-        <div className="col-xs-4" key={['topic', i].join('_')}>
+        <div className="card-item" key={['topic', i].join('_')}>
           <TopicCard topic={topic} entity="city" label="City of Asheville" />
         </div>
       ))}

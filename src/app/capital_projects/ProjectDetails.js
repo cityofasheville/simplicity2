@@ -77,7 +77,7 @@ const ProjectDetails = (props) => {
   );
 
   return (
-    <div className="row">
+    <div className="capital-project row">
       <div className="col-sm-12">
         <div className="row" hidden={props.hideTitle}>
           <div className="col-sm-12">
@@ -93,9 +93,9 @@ const ProjectDetails = (props) => {
                 </div>
               </div>
             }
-            <div className="row">
+            <div className="capital-project__specs row">
               <div className="col-xs-5">
-                <div className="text-center" style={{ marginBottom: '10px' }}>
+                <div className="" style={{ marginBottom: '10px' }}>
                   <div style={{ color: '#676873' }}>
                     Current Project Budget
                   </div>
@@ -104,7 +104,7 @@ const ProjectDetails = (props) => {
                   </div>
                 </div>
                 {props.show_pm_fields &&
-                  <div className="text-center" style={{ marginBottom: '10px' }}>
+                  <div className="" style={{ marginBottom: '10px' }}>
                     <div style={{ color: '#676873' }}>
                       Spent
                     </div>
@@ -115,7 +115,7 @@ const ProjectDetails = (props) => {
                 }
               </div>
               <div className="col-xs-7">
-                <div className="text-center" style={{ marginBottom: '10px' }}>
+                <div className="" style={{ marginBottom: '10px' }}>
                   <div style={{ color: '#676873' }}>
                     Zip code
                   </div>
@@ -124,7 +124,7 @@ const ProjectDetails = (props) => {
                   </div>
                 </div>
                 {props.show_pm_fields &&
-                  <div className="text-center" style={{ marginBottom: '20px' }}>
+                  <div className="" style={{ marginBottom: '20px' }}>
                     <div style={{ color: '#676873' }}>
                       Estimated Construction Timeframe
                     </div>
@@ -144,31 +144,31 @@ const ProjectDetails = (props) => {
               </div>
             }*/}
             {props.show_pm_fields && props.status !== null &&
-              <div className="row">
-                <div className="text-center" style={{ marginBottom: '5px', color: '#676873' }}>
+              <div className="capital-project__status">
+                <div className="header">
                   Project phase
                 </div>
-                <div className={props.status === 'Ongoing' ? "col-xs-3" : "col-xs-2"}>
+                <div className="project-status">
                   <Icon path={IM_CIRCLE2} size={25} color={getStageNumber(props.status) >= 1 ? phaseColor(1) : '#ecf0f1'} />
                 </div>
-                <div className={props.status === 'Ongoing' ? "col-xs-3" : "col-xs-2"}>
+                <div className="project-status">
                   <Icon path={IM_CIRCLE2} size={25}  color={getStageNumber(props.status) >= 2 ? phaseColor(2) : '#ecf0f1'} />
                 </div>
-                <div className={props.status === 'Ongoing' ? "col-xs-3" : "col-xs-2"}>
+                <div className="project-status">
                   <Icon path={IM_CIRCLE2} size={25}  color={props.status === 'Ongoing' ? '#FFC107' : getStageNumber(props.status) >= 3 ? phaseColor(3) : '#ecf0f1'} />
                 </div>
                 {props.status !== 'Ongoing' &&
-                  <div className="col-xs-2">
-                    <Icon path={IM_CIRCLE2} size={25} color={getStageNumber(props.status) >= 4 ? phaseColor(4) : '#ecf0f1'} style={{ marginRight: '5px' }} />
+                  <div className="project-status">
+                    <Icon path={IM_CIRCLE2} size={25} color={getStageNumber(props.status) >= 4 ? phaseColor(4) : '#ecf0f1'} />
                   </div>
                 }
-                <div className="col-xs-2" style={{ color: props.status === 'Ongoing' ? '#FFC107' : phaseColor(getStageNumber(props.status)), fontWeight: 'bold' }}>
+                <div style={{ color: props.status === 'Ongoing' ? '#FFC107' : phaseColor(getStageNumber(props.status)) }}>
                   {props.status === 'Ongoing' ? props.status : props.status.split(': ')[1]}
                 </div>
               </div>
             }
-            <div className="row">
-              <div className="col-sm-12" style={{ marginTop: '20px', marginBottom: '10px' }}>
+            <div className="capital-project__description row">
+              <div className="col-sm-12">
                 <hr />
                 {props.project_description}
                 <hr />
@@ -185,9 +185,11 @@ const ProjectDetails = (props) => {
             </div>
           </div>
           <div className="col-sm-5">
-            <Map data={getMyPoints(props.project)} height="230px" bounds={calculateBounds(getMyPoints(props.project))} />
+            <div className="map-container">
+              <Map data={getMyPoints(props.project)} bounds={calculateBounds(getMyPoints(props.project))} height="300px"/>
+            </div>
             <a href={props.photo_url} target="_blank">
-              <img alt="Photo of project" className="img-responsive" src={props.photo_url} style={{ maxHeight: '400px' }} />
+              <img alt="Photo of project" className="img-responsive" src={props.photo_url} />
             </a>
           </div>
         </div>

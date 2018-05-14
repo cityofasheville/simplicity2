@@ -44,10 +44,10 @@ const CIPFilter = (props) => {
           <Button size="sm" style={{ marginRight: '2px' }} onClick={() => handleClick(props.categories)}>Select All</Button>
           <Button size="sm" onClick={() => handleClick([])}>Deselect All</Button>
         </div>
-        <div className="row">
-          <div className="col-sm-6">
-            <label style={{ minWidth: '400px', cursor: 'pointer', marginBottom: '0px' }}>
-              <span style={{ fontSize: '26px', fontWeight: 'normal', marginRight: '10px' }}>Include only bond projects</span>
+        <div className="toggle toggle--table">
+          <div>
+            <label>
+              <span>Include only bond projects</span>
               <Toggle
                 defaultChecked={props.location.query.mode === 'bond'}
                 onChange={() => refreshLocation(toggleMode(), props.location)}

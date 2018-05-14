@@ -19,34 +19,6 @@ export const labelOrder = (formattedData, valueAccessor = 'value') => JSON.parse
   }).sort((a, b) => b.sum[valueAccessor] - a.sum[valueAccessor]);
 
 export const formatDataForStackedBar = (data, dataKeys, mainAxisDataKey, colorScheme) => {
-  const thisScheme = colorSchemes[colorScheme];
-  let formattedData = [];
-
-  dataKeys.forEach((k, kIndex) => {
-    const thisColor = thisScheme[kIndex % thisScheme.length];
-
-    const dataWithColor = data.filter((d) => {
-      return d.label === k;
-    }).map((d) => {
-      const rVal = JSON.parse(JSON.stringify(d));
-      rVal.color = thisColor;
-      return rVal;
-    });
-
-    formattedData = formattedData.concat(dataWithColor);
-  }).sort((a, b))
-
-  //   const sum = thisData.reduce((total, num) => {
-  //     const innerReturnObj = {};
-  //     innerReturnObj.value = total.value + num.value;
-  //     return innerReturnObj;
-  //   }).value
-  //   return {data: thisData, sum}
-  // }).sort((a, b) => b.sum - a.sum)
-  // .map(d => d.data)
-  // .reduce((p, c) => p.concat(c))
-
-  return formattedData;
 };
 
 export const formatDataForStackedArea = (data, dataKeys, mainAxisDataKey, colorScheme) => {

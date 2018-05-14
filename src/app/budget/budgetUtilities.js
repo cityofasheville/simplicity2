@@ -66,7 +66,7 @@ const convertDelta = (flattenedTree) => {
 
 // flatten the tree and export for use by the budget Treemap
 const exportForDetails = (aTree) => {
-  const flattened = aTree.export(data => (objectAssign({}, data, { delta: data.proposed - data.oneYearAgo }, { deltaPercent: calculateDeltaPercent(data.proposed, data.oneYearAgo) })));
+  const flattened = aTree.export(data => (objectAssign({}, data, { delta: data.yearAmounts[data.yearAmounts.length - 1].amount - data.yearAmounts[data.yearAmounts.length - 2].amount }, { deltaPercent: calculateDeltaPercent(data.yearAmounts[data.yearAmounts.length - 1].amount, data.yearAmounts[data.yearAmounts.length - 2].amount) })));
   convertDelta(flattened);
   return flattened;
 };
@@ -93,8 +93,8 @@ const searchChildrenForKey = (aKey, aTreeNode) => {
 const insertLeafCopies = (flattenedTree) => {
   if (flattenedTree.children.length === 0) {
     const splitBreadcrumbPath = flattenedTree.breadcrumbPath.split('>');
-    const splitPath = flattenedTree.path.split('-');
-    flattenedTree.children = [objectAssign({}, flattenedTree, { breadcrumbPath: [flattenedTree.breadcrumbPath, splitBreadcrumbPath[splitBreadcrumbPath.length - 1]].join('>') }, { path: [flattenedTree.path, splitPath[splitPath.length - 1]].join('-') })]; // eslint-disable-linesplitBreadcrumbPath
+    const splitPath = flattenedTree.path.split('_');
+    flattenedTree.children = [objectAssign({}, flattenedTree, { breadcrumbPath: [flattenedTree.breadcrumbPath, splitBreadcrumbPath[splitBreadcrumbPath.length - 1]].join('>') }, { path: [flattenedTree.path, splitPath[splitPath.length - 1]].join('_') })]; // eslint-disable-linesplitBreadcrumbPath
   } else {
     for (let i = 0; i < flattenedTree.children.length; i += 1) {
       insertLeafCopies(flattenedTree.children[i]);
@@ -125,21 +125,34 @@ export const buildTrees = (data, budgetParameters) => {
         let curPath = 'root';
         let breadCrumbPath = 'root';
         for (let k = 0; k <= j; k += 1) {
-          curPath = [curPath, data[i][theLevels[k]]].join('-');
+          curPath = [curPath, encodeURIComponent(data[i][theLevels[k]])].join('_');
           breadCrumbPath = [breadCrumbPath, data[i][theLevelNames[k]]].join('>');
         }
         if (curNode === null) {
-          curNode = theTree.insertToNode(curParent, { key: data[i][theLevels[j]], path: curPath, breadcrumbPath: breadCrumbPath, [theLevels[j]]: data[i][theLevels[j]], name: data[i][theLevelNames[j]], threeYearsAgo: 0, twoYearsAgo: 0, oneYearAgo: 0, proposed: 0, size: 0, amount: 0, account_type: data[i].account_type });
+          curNode = theTree.insertToNode(curParent, {
+            key: data[i][theLevels[j]],
+            path: curPath,
+            breadcrumbPath: breadCrumbPath,
+            [theLevels[j]]: data[i][theLevels[j]],
+            name: data[i][theLevelNames[j]],
+            yearAmounts: budgetYears.map(year => ({
+              year,
+              amount: 0,
+            })),
+            size: 0,
+            amount: 0,
+            account_type: data[i].account_type,
+          });
         }
         curParent = curNode;
-        if (yearIndex === 3) {
-          curNode.data(objectAssign({}, curNode.data(), { proposed: curNode.data().proposed + data[i].budget }, { size: curNode.data().size + data[i].budget }, { amount: curNode.data().amount + data[i].budget }));
-        } else if (yearIndex === 2) {
-          curNode.data(objectAssign({}, curNode.data(), { oneYearAgo: curNode.data().oneYearAgo + data[i].budget })); // but until the last year is actually complete...need budget (?)
-        } else if (yearIndex === 1) {
-          curNode.data(objectAssign({}, curNode.data(), { twoYearsAgo: curNode.data().twoYearsAgo + data[i].actual }));
-        } else if (yearIndex === 0) {
-          curNode.data(objectAssign({}, curNode.data(), { threeYearsAgo: curNode.data().threeYearsAgo + data[i].actual }));
+        curNode.data(objectAssign({}, curNode.data(), { yearAmounts: curNode.data().yearAmounts.map((year, idx) => {
+          if (idx === yearIndex) {
+            return data[i].use_actual === 'true' ? { year: year.year, amount: year.amount + data[i].actual } : { year: year.year, amount: year.amount + data[i].budget };
+          }
+          return year;
+        }) }));
+        if (yearIndex === budgetYears.length - 1) {
+          curNode.data(objectAssign({}, curNode.data(), { amount: data[i].use_actual === 'true' ? curNode.data().amount + data[i].actual : curNode.data().amount + data[i].budget }, { size: data[i].use_actual === 'true' ? curNode.data().size + data[i].actual : curNode.data().size + data[i].budget }));
         }
       }
     }
@@ -161,15 +174,13 @@ export const buildTrees = (data, budgetParameters) => {
 };
 
 const roundTree = (node) => {
-  node.data(objectAssign({},
-                         node.data(),
-                         { proposed: Math.round(node.data().proposed) },
-                         { size: Math.round(node.data().size) },
-                         { amount: Math.round(node.data().amount) },
-                         { oneYearAgo: Math.round(node.data().oneYearAgo) },
-                         { twoYearsAgo: Math.round(node.data().twoYearsAgo) },
-                         { threeYearsAgo: Math.round(node.data().threeYearsAgo) },
-                        ));
+  node.data(objectAssign(
+    {},
+    node.data(),
+    { size: Math.round(node.data().size) },
+    { amount: Math.round(node.data().amount) },
+    { yearAmounts: node.data().yearAmounts ? node.data().yearAmounts.map(yearAmount => ({ year: yearAmount.year, amount: Math.round(yearAmount.amount) })) : [{ year: 1234, amount: 0 }, { year: 1234, amount: 0 }] }, // not great just to get dummy value for root
+  ));
   node.childNodes().forEach(c => roundTree(c));
 };
 

@@ -87,6 +87,7 @@ const budgetHistoryQuery = gql`
         category_id,
         budget_section_name,
         budget_section_id
+        use_actual
     }
     budgetParameters {
       start_year

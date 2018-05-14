@@ -7,7 +7,7 @@ import DetailsIconLinkFormGroup from '../../shared/DetailsIconLinkFormGroup';
 import TopicCard from '../../shared/TopicCard';
 import Icon from '../../shared/Icon';
 import Map from '../../shared/visualization/Map';
-import { IM_ENVELOP3, IM_USERS, IM_HOME2, IM_FENCE } from '../../shared/iconConstants';
+import { IM_ENVELOP3, IM_USERS, IM_HOME2 } from '../../shared/iconConstants';
 import ButtonGroup from '../../shared/ButtonGroup';
 import LinkButton from '../../shared/LinkButton';
 import PageHeader from '../../shared/PageHeader';
@@ -23,7 +23,7 @@ const Neighborhood = (props) => {
 
   return (
     <div>
-      <PageHeader h1={props.location.query.label} dataType="Neighborhood" h3="About this neighborhood" icon={<Icon path={IM_FENCE} size={50} />}>
+      <PageHeader h1={props.location.query.label} dataType="Neighborhood" h3="About this neighborhood" icon={<Icon path={IM_USERS} size={50} />}>
         <ButtonGroup alignment="">
           <LinkButton pathname="/search" query={{ entities: props.location.query.entities, search: props.location.query.search, hideNavbar: props.location.query.hideNavbar }}>Back to search</LinkButton>
         </ButtonGroup>

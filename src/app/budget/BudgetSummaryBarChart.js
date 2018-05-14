@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { graphql, compose } from 'react-apollo';
 import BarChart from '../../shared/visualization/BarChart';
+import { formatBudgetDataForStackedBar } from '../../shared/visualization/visUtilities';
 import { createAnnotations } from './budgetUtilities';
 import { getBudgetSummaryDept, getBudgetSummaryUse } from './graphql/budgetQueries';
 
@@ -76,6 +77,7 @@ class BudgetSummaryBarChart extends React.Component {
               legendLabelFormatter={function(label) {return label.replace(' Department', '')}}
               altText={['Spending by', this.props.categoryType, 'bar chart'].join(' ')}
               chartTitle={getTitle(this.props.categoryType)}
+              dataFormatter={formatBudgetDataForStackedBar}
             />
           </div>
         </div>

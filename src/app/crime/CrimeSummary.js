@@ -57,14 +57,14 @@ const CrimeSummary = (props) => {
             <div className="data-filters__inner">
               {/*<SpatialEventTopicCategoryFilters spatialEventTopic={props.spatialEventTopic} />*/}
               <div className="form-group col-md-2 col-sm-6 col-xs-4">
-                <label htmlFor="topicType" className="control-label">View:</label>
+                <label htmlFor="topicType" className="control-label">view:</label>
                 <div>
                   <div className="form-control-static" style={{ display: 'block' }}>crimes
                   </div>
                 </div>
               </div>
               <div className="form-group col-md-3 col-sm-6 col-xs-8">
-                <label htmlFor="time" className="control-label">During:</label>
+                <label htmlFor="time" className="control-label">during:</label>
                 <div>
                   <select value={duringURL} onChange={() => refreshLocation(getNewUrlParams(), props.location)} name="time" id="time" className="form-control">
                     {timeOptions.map((option, i) => (
@@ -74,7 +74,7 @@ const CrimeSummary = (props) => {
                 </div>
               </div>
               <div className="form-group col-md-3 col-sm-6 col-xs-12" hidden={props.location.query.entity === 'street' || props.location.query.entity === 'neighborhood'}>
-                <label htmlFor="time" className="control-label">Within:</label>
+                <label htmlFor="time" className="control-label">within:</label>
                 <div>
                   <select value={withinURL} onChange={() => refreshLocation(getNewUrlParams(), props.location)} name="extent" id="extent" className="form-control">
                     {extentOptions.map((option, i) => (

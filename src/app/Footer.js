@@ -12,7 +12,6 @@ const Footer = () => (
           </div>
           <div className="text-center" style={{ fontStyle: 'italic', marginBottom: '2px' }}>It&apos;s open source! Fork it on <a href="https://github.com/cityofasheville/simplicity2" target="_blank">GitHub <Icon path={IM_GITHUB} size={23} /></a></div>
         </div>
-        <div className="text-center old-version-link col-xs-12"><a className="inText" href="https://simplicity-old.ashevillenc.gov" target="_blank">View old version</a></div>
       </div>
     </footer>
   </div>

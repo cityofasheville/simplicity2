@@ -23,27 +23,53 @@ const CIPFilter = (props) => {
   };
 
   const handleClick = (checkedValues) => {
-    refreshLocation(getNewUrlParams(checkedValues), props.location);
+    let newValues = checkedValues;
+    if (checkedValues.includes('All') && !visibleSelection.includes('All')) {
+      newValues = [...props.categories];
+    } else if (!checkedValues.includes('All') && visibleSelection.includes('All')) {
+      newValues = [];
+    }
+    refreshLocation(getNewUrlParams(newValues.filter(e => e !== 'All')), props.location);
   };
+
+  const getVisibleSelection = () => {
+    let { selected } = props;
+    if (props.location.query.mode === 'bond') {
+      selected = selected.filter(e => ['Parks', 'Housing', 'Transportation'].indexOf(e) !== -1);
+    }
+    if (selected.length > 0) {
+      selected.push('All');
+    }
+    return selected;
+  };
+
+  const visibleSelection = getVisibleSelection();
+  const realSelection = visibleSelection.filter(e => e !== 'All');
 
   return (
     <div>
       <div>
-        <CheckboxGroup checkedValues={props.selected} onChange={handleClick}>
+        <CheckboxGroup
+          checkedValues={visibleSelection}
+          indeterminateValues={realSelection.length < props.categories.length && realSelection.length > 0 ? ['All'] : []}
+          onChange={handleClick}
+          className="checkboxGroup"
+        >
+          <FilterCheckbox
+            label="All"
+            value="All"
+            // selected={visibleSelection.includes('All')}
+          />
           {props.categories.map((category, index) => (
             <FilterCheckbox
               key={['SummaryCard', category, index].join('_')}
               label={category}
               value={category}
-              selected={props.selected.includes(category) && !(props.location.query.mode === 'bond' && !['Parks', 'Housing', 'Transportation'].includes(category))}
+              // selected={visibleSelection.includes(category)}
               disabled={props.location.query.mode === 'bond' && !['Parks', 'Housing', 'Transportation'].includes(category)}
             />
           ))}
         </CheckboxGroup>
-        <div className="col-sm-12">
-          <Button size="sm" style={{ marginRight: '2px' }} onClick={() => handleClick(props.categories)}>Select All</Button>
-          <Button size="sm" onClick={() => handleClick([])}>Deselect All</Button>
-        </div>
         <div className="toggle toggle--table">
           <div>
             <label>

@@ -31,7 +31,7 @@ class FilterCheckbox extends React.Component {
     const backgroundStyle = this.props.checked ? 'filterCheckbox filterCheckbox--backgroundChecked' : 'filterCheckbox filterCheckbox--backgroundUnchecked';
 
     return (
-      <div className="checkboxGroup__checkbox" style={{ cursor: 'pointer' }}>
+      <div className="checkboxGroup__checkbox disabledCursor" style={{ cursor: 'pointer' }}>
         <div
           id={this.state.parentId}
           className={`${backgroundStyle} ${mainStyle}`}
@@ -41,6 +41,7 @@ class FilterCheckbox extends React.Component {
           role="checkbox"
           aria-checked={this.props.checked}
           aria-labelledby={this.state.labelId}
+          disabled={this.props.disabled}
         >
           <div /* className={backgroundStyle} style={{ paddingTop: '10px' }} */>
             <div className="text-center text-primary" /* style={{ minHeight: this.props.minHeight }} */>
@@ -91,10 +92,9 @@ FilterCheckbox.defaultProps = {
 
 export default props => (
   <CheckboxGroupContext.Consumer>
-    {({ name, checkedValues, onChange }) => (
+    {({ checkedValues, onChange }) => (
       <FilterCheckbox
         {...props}
-        checkboxGroupName={name}
         checked={checkedValues.indexOf(props.value) >= 0}
         onChange={onChange}
       />

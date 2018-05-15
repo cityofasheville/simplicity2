@@ -6,117 +6,131 @@ import { RadioGroup, Radio } from 'react-radio-group';
 import expandingRows from '../../shared/react_table_hoc/ExpandingRows';
 import Collapsible from '../../shared/Collapsible';
 import { getBudgetTrees } from './graphql/budgetQueries';
-import { getBudgetYears } from './budgetUtilities';
 import { refreshLocation } from '../../utilities/generalUtilities';
+
+const last4Years = [
+  2015,
+  2016,
+  2017,
+  2018,
+];
+
+const tableNotes = [
+  'The Internal Audit Division was moved from the Finance Department to the Administration Services Department mid-year, so the 2016-17 Adopted Budget numbers for those department do not match the Original Budget numbers in the budget document.',
+];
+
+const last4YrBudgetTypes = [
+  'Actual',
+  'Actual',
+  'Adopted',
+  'Adopted',
+];
+
+const getDollars = (value) => {
+  const initialSymbols = value < 0 ? '-$' : '$';
+  return [initialSymbols, Math.abs(value).toLocaleString()].join('');
+};
+
+const getYearHeader = year => (
+  <div>
+    { last4Years.indexOf(year) > -1 &&
+    <div>{last4YrBudgetTypes[last4Years.indexOf(year)]}</div>
+    }
+    {[year - 1, year.toString().slice(2)].join('-')}
+  </div>
+);
+
+const getChangeHeader = () => (
+  <div>Change from <br /> past year</div>
+);
+
+const getDataColumnHeader = (level, expenseOrRevenue) => () => {
+  switch (level) {
+    case 0:
+      if (expenseOrRevenue === 'expenditures') {
+        return 'Budget Section';
+      }
+      return 'Budget Category';
+    case 1:
+      return 'Department';
+    case 2:
+      return 'Division';
+    case 3:
+      return 'Account';
+    default:
+      return 'Grouping';
+  }
+};
+
+const getDataColumns = (level, expenseOrRevenue) => {
+  const theHeader = getDataColumnHeader(level, expenseOrRevenue);
+  const dataColumns = [
+    {
+      Header: theHeader,
+      accessor: 'name',
+      width: level === 3 ? 300 - (34 * 2) : 300 - (34 * level),
+      getProps: () => ({
+        role: 'rowheader'
+      }),
+    },
+    {
+      Header: getYearHeader(last4Years[0]),
+      accessor: 'threeYearsAgo',
+      Cell: props => getDollars(props.value),
+      minWidth: 95,
+      style: { textAlign: 'right' },
+    }, {
+      Header: getYearHeader(last4Years[1]),
+      accessor: 'twoYearsAgo',
+      Cell: props => getDollars(props.value),
+      minWidth: 95,
+      style: { textAlign: 'right' },
+    }, {
+      Header: getYearHeader(last4Years[2]),
+      accessor: 'oneYearAgo',
+      Cell: props => getDollars(props.value),
+      minWidth: 95,
+      style: { textAlign: 'right' },
+    }, {
+      Header: getYearHeader(last4Years[3]),
+      accessor: 'proposed',
+      Cell: props => getDollars(props.value),
+      minWidth: 95,
+      style: { textAlign: 'right' },
+    },
+    {
+      Header: getChangeHeader(),
+      accessor: 'deltaPercent',
+      minWidth: 95,
+      style: { textAlign: 'right' },
+    },
+  ];
+  return dataColumns;
+};
+
+const tdProps = () => ({
+  style: {
+    whiteSpace: 'normal'
+  },
+});
+
+const trProps = () => ({
+  style: {
+    cursor: 'pointer'
+  },
+});
 
 const BudgetDetailsTable = (props) => {
   const dataForTable = props.location.query.mode === 'expenditures' || props.location.query.mode === undefined ? props.expenseTree.children : props.revenueTree.children;
+
   const getNewUrlParams = mode => (
     {
       mode,
       nodePath: 'root',
     }
   );
+
   const ExpandableAccessibleReactTable = expandingRows(AccessibleReactTable);
-  const budgetYears = getBudgetYears(props.data.budgetParameters);
-
-  const last4Years = budgetYears;
-  const last4YrBudgetTypes = [];
-
-  for (let i = 0; i < budgetYears.length + 1; i += 1) {
-    last4YrBudgetTypes.push(i < budgetYears.length - 1 ? 'Actual' : (props.data.budgetParameters.in_budget_season ? 'Proposed' : 'Adopted'));
-  }
-  
-  const getDollars = (value) => {
-    const initialSymbols = value < 0 ? '-$' : '$';
-    return [initialSymbols, Math.abs(value).toLocaleString()].join('');
-  };
-  
-  const getYearHeader = year => (
-    <div>
-      { last4Years.indexOf(year) > -1 &&
-      <div>{last4YrBudgetTypes[last4Years.indexOf(year)]}</div>
-      }
-      {[year - 1, year.toString().slice(2)].join('-')}
-    </div>
-  );
-  
-  const getChangeHeader = () => (
-    <div>Change from <br /> past year</div>
-  );
-  
-  const getDataColumnHeader = (level, expenseOrRevenue) => () => {
-    switch (level) {
-      case 0:
-        if (expenseOrRevenue === 'expenditures') {
-          return 'Budget Section';
-        }
-        return 'Budget Category';
-      case 1:
-        return 'Department';
-      case 2:
-        return 'Division';
-      case 3:
-        return 'Account';
-      default:
-        return 'Grouping';
-    }
-  };
-  const getDataColumns = (level, expenseOrRevenue) => {
-    const theHeader = getDataColumnHeader(level, expenseOrRevenue);
-    const dataColumns = [
-      {
-        Header: theHeader,
-        accessor: 'name',
-        width: level === 3 ? 300 - (34 * 2) : 300 - (34 * level),
-        getProps: () => ({
-          role: 'rowheader',
-        }),
-      },
-      {
-        Header: getYearHeader(last4Years[0]),
-        accessor: 'yearAmounts',
-        Cell: years => getDollars(years.value[0].amount),
-        minWidth: 95,
-        style: { textAlign: 'right' },
-      }, {
-        Header: getYearHeader(last4Years[1]),
-        accessor: 'yearAmounts',
-        Cell: years => getDollars(years.value[1].amount),
-        minWidth: 95,
-        style: { textAlign: 'right' },
-      }, {
-        Header: getYearHeader(last4Years[2]),
-        accessor: 'yearAmounts',
-        Cell: years => getDollars(years.value[2].amount),
-        minWidth: 95,
-        style: { textAlign: 'right' },
-      }, {
-        Header: getYearHeader(last4Years[3]),
-        accessor: 'yearAmounts',
-        Cell: years => getDollars(years.value[3].amount),
-        minWidth: 95,
-        style: { textAlign: 'right' },
-      },
-      {
-        Header: getChangeHeader(),
-        accessor: 'deltaPercent',
-        minWidth: 95,
-        style: { textAlign: 'right' },
-      },
-    ];
-    return dataColumns;
-  };
-  const tdProps = () => ({
-    style: {
-      whiteSpace: 'normal',
-    },
-  });
-  const trProps = () => ({
-    style: {
-      cursor: 'pointer',
-    },
-  });
 
   return (
     <div>
@@ -222,9 +236,7 @@ BudgetDetailsTable.propTypes = {
 
 BudgetDetailsTable.defaultProps = {
   data: [],
-  notes: [
-    'The Internal Audit Division was moved from the Finance Department to the Administration Services Department mid-year, so the 2016-17 Adopted Budget numbers for those department do not match the Original Budget numbers in the budget document.',
-  ],
+  notes: tableNotes,
 };
 
 export default graphql(getBudgetTrees, {

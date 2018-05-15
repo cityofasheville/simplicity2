@@ -17,7 +17,7 @@ class SummaryDepartments extends React.Component {
   }
 
   async initializeSummaryDept() {
-    const summaryDeptData = buildSummaryData(this.props.data.budgetSummary, this.props.data.budgetParameters);
+    const summaryDeptData = buildSummaryData(this.props.data.budgetSummary);
     await this.props.updateBudgetSummaryDept({
       variables: {
         budgetSummaryDept: {
@@ -62,11 +62,6 @@ const budgetSummaryDeptQuery = gql`
         total_budget,
         total_actual,
         year,
-    }
-    budgetParameters {
-      start_year
-      end_year
-      in_budget_season
     }
   }
 `;

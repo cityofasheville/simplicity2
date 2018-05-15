@@ -49,7 +49,7 @@ class BarChart extends React.Component {
   }
 
   render() {
-    const formattedData = formatDataForStackedBar(
+    const formattedData = this.props.dataFormatter(
       this.props.data,
       this.props.dataKeys,
       this.props.mainAxisDataKey,
@@ -209,6 +209,7 @@ BarChart.propTypes = {
   chartTitle: PropTypes.string,
   colorScheme: PropTypes.string,
   data: PropTypes.array, // eslint-disable-line
+  dataFormatter: PropTypes.func,
   dataKeys: PropTypes.arrayOf(PropTypes.string),
   domain: PropTypes.arrayOf(PropTypes.number),
   height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -230,6 +231,7 @@ BarChart.defaultProps = {
   chartTitle: '',
   colorScheme: 'new_bright_colors',
   data: [],
+  dataFormatter: formatDataForStackedBar,
   dataKeys: [],
   domain: [],
   height: '100%',

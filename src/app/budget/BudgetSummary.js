@@ -13,6 +13,7 @@ import { IM_COIN_DOLLAR } from '../../shared/iconConstants';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import Error from '../../shared/Error';
 
+
 const BudgetSummary = (props) => {
   if (props.data.loading) {
     return <LoadingAnimation />;
@@ -36,7 +37,7 @@ const BudgetSummary = (props) => {
         <div className="col-md-6">
           <SummaryDepartments />
         </div>
-        <div tabIndex={0} style={{ fontSize: '12px', textAlign: 'center' }}>Bar chart totals exclude interfund transfers</div>
+        <div tabIndex={0} className="note text-center">Bar chart totals exclude interfund transfers</div>
       </div>
       <hr />
       <SummaryCashFlow />

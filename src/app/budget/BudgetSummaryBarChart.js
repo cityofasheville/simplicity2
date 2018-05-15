@@ -62,25 +62,23 @@ class BudgetSummaryBarChart extends React.Component {
 
   render() {
     return (
-      <div>
-        <div className="row">
-          <div className="col-sm-12">
-            <div className="visualization no-padding">
-              <BarChart
-                annotations={createAnnotations(this.props.data.budgetParameters)}
-                data={this.state.summaryData.dataValues}
-                colorScheme={this.props.colorScheme}
-                mainAxisDataKey="display_year"
-                dataKeys={this.state.summaryData.dataKeys}
-                yAxisTickFormatter={getDollars}
-                tooltipYValFormatter={getDollarsLong}
-                domain={[0, 190000000]}
-                legendLabelFormatter={function(label) {return label.replace(' Department', '')}}
-                altText={['Spending by', this.props.categoryType, 'bar chart'].join(' ')}
-                chartTitle={getTitle(this.props.categoryType)}
-                dataFormatter={formatBudgetDataForStackedBar}
-              />
-            </div>
+      <div className="row">
+        <div className="col-sm-12">
+          <div className="visualization no-padding">
+            <BarChart
+              annotations={createAnnotations(this.props.data.budgetParameters)}
+              data={this.state.summaryData.dataValues}
+              colorScheme={this.props.colorScheme}
+              mainAxisDataKey="display_year"
+              dataKeys={this.state.summaryData.dataKeys}
+              yAxisTickFormatter={getDollars}
+              tooltipYValFormatter={getDollarsLong}
+              domain={[0, 190000000]}
+              legendLabelFormatter={function(label) {return label.replace(' Department', '')}}
+              altText={['Spending by', this.props.categoryType, 'bar chart'].join(' ')}
+              chartTitle={getTitle(this.props.categoryType)}
+              dataFormatter={formatBudgetDataForStackedBar}
+            />
           </div>
         </div>
       </div>

@@ -36,7 +36,7 @@ class Sankey extends React.Component {
         annotations={graph.nodes}
         edges={graph.links}
         hoverAnnotation
-        margin={{ top: -200, right: this.props.width / 9, bottom: 25, left: this.props.width / 9 }}
+        margin={{ top: 10, right: this.props.width / 9, bottom: 25, left: this.props.width / 9 }}
         networkType="sankey"
         nodeIdAccessor="id"
         nodes={graph.nodes}

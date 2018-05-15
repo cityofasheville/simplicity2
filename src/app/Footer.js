@@ -4,15 +4,8 @@ import { IM_GITHUB } from '../shared/iconConstants';
 
 const Footer = () => (
   <div>
-    <div
-      style={{
-        display: 'block',
-        padding: '20px',
-        height: '60px',
-        width: '100%',
-      }}
-    />
-    <footer className="footer" style={{ paddingTop: '2px' }}>
+    <div className="clear-footer"></div>
+    <footer className="footer">
       <div className="container">
         <div className="col-sm-12">
           <div style={{ fontStyle: 'italic' }} className="text-center">We strive for full accessibility. Report issues with our <a className="inText" href="https://docs.google.com/a/ashevillenc.gov/forms/d/e/1FAIpQLSdjNwOmoDY3PjQOVreeSL07zgI8otIIPWjY7BnejWMAjci8-w/viewform?c=0&w=1" target="_blank" title="website feedback form">feedback form</a>.

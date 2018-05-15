@@ -158,10 +158,10 @@ const CrimesByNeighborhood = (props) => {
   );
 
   return (
-    <div>
-      <div className="row">
-        <div className="col-xs-12">
-          <div className="pull-left" style={{ marginTop: '10px', marginBottom: '15px' }}>
+    <div className="crimes-template__data">
+      <div className="row template-header">
+        <div className="col-xs-12 template-header__inner">
+          <div className="pull-left">
             <EmailDownload downloadData={props.data.crimes_by_neighborhood} fileName="crimes_by_neighborhood.csv" />
           </div>
           <ButtonGroup>
@@ -172,7 +172,7 @@ const CrimesByNeighborhood = (props) => {
         </div>
       </div>
 
-      <div className="row">
+      <div className="row data-view-container">
         <div id="summaryView" className="col-xs-12" hidden={props.location.query.view !== 'summary'}>
           {pieData.length > 0 ?
             <PieChart data={pieData} altText="Crime pie chart" />

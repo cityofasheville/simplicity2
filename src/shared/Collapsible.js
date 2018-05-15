@@ -184,7 +184,9 @@ class Collapsible extends React.Component {
         <div className={parentClassString.trim()} style={overflowStyle}>
           <a href="#" style={linkStyle} onKeyPress={this.handleKeyUp} onClick={this.handleTriggerClick} onFocus={() => this.setFocusLink(true)} onBlur={() => this.setFocusLink(false)} onMouseEnter={() => this.setFocusLink(true)} onMouseLeave={() => this.setFocusLink(false)}>
             <span className={triggerClassString} >
-              {trigger} <span style={whiteSpaceStyle}>{whiteSpace}</span>
+              <span className="icon plus">+</span>
+              <span className="icon minus">-</span>
+              <span className="trigger-text">{trigger}</span>
             </span>
           </a>
           <div className={outerClassString.trim()} ref="outer" style={dropdownStyle} onTransitionEnd={this.handleTransitionEnd}>

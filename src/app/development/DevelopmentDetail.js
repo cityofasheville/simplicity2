@@ -61,30 +61,24 @@ const DevelopmentDetail = (props) => {
       }
       <div className="row">
         <div className="col-sm-12" style={{ marginTop: '15px' }}>
-          <fieldset>
+          <fieldset className="detailsFieldset">
             <div className="row">
-              <div className="col-sm-12">
-                <DetailsFormGroup label="Description" name="permit_description" value={props.data.permit_description} hasLabel />
-              </div>
-              <div className="col-sm-6">
+              <div className="col-xs-12 detailsFieldset__details-listings">
+                <DetailsFormGroup label="Description" name="permit_description" value={props.data.permit_description} hasLabel />              
                 <div className="form-group">
-                  <div className="col-xs-12" style={{ marginBottom: '10px' }}>
-                    <a href={['https://www.google.com/maps/?q=', [props.data.y, props.data.x].join(',')].join('')} target="_blank" title="Click to view address in Google maps">
-                      <span style={{ marginRight: '5px' }}><Icon path={IM_MAP5} size={20} /></span>
-                      <label htmlFor="address" style={{ cursor: 'pointer' }}>Address</label>
-                    </a>
-                    <div style={{ marginLeft: '15px' }} name="address">{props.data.address}</div>
-                  </div>
+                  <a href={['https://www.google.com/maps/?q=', [props.data.y, props.data.x].join(',')].join('')} target="_blank" title="Click to view address in Google maps">
+                    <span style={{ marginRight: '5px' }}><Icon path={IM_MAP5} size={20} /></span>
+                    <label htmlFor="address" style={{ cursor: 'pointer' }}>Address</label>
+                  </a>
+                  <div name="address">{props.data.address}</div>
                 </div>
                 <DetailsFormGroup label="Permit group" name="permit_group" value={props.data.permit_group} hasLabel />
                 <DetailsFormGroup label="Updated date" name="status_date" value={moment.utc(props.data.status_date).format('M/DD/YYYY')} hasLabel />
-              </div>
-              <div className="col-sm-6">
                 <DetailsFormGroup label="Civic address id" name="civic_address_id" value={props.data.civic_address_id} hasLabel />
                 <DetailsFormGroup label="Permit subtype" name="permit_subtype" value={props.data.permit_subtype} hasLabel />
               </div>
             </div>
-            <div style={{ marginRight: '10px', marginLeft: '10px' }}>
+            <div>
               <AccessibleReactTable
                 ariaLabel="Contractors"
                 data={contractorData}
@@ -106,7 +100,7 @@ const DevelopmentDetail = (props) => {
               />
             </div>
             {props.data.comments.length > 0 &&
-              <div alt={['Table of comments'].join(' ')} style={{ marginTop: '10px', marginRight: '10px', marginLeft: '10px' }}>
+              <div alt={['Table of comments'].join(' ')}>
                 <AccessibleReactTable
                   ariaLabel="Comments"
                   data={props.data.comments}

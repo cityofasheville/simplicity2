@@ -27,12 +27,12 @@ const BudgetDetailsTable = (props) => {
   for (let i = 0; i < budgetYears.length + 1; i += 1) {
     last4YrBudgetTypes.push(i < budgetYears.length - 1 ? 'Actual' : (props.data.budgetParameters.in_budget_season ? 'Proposed' : 'Adopted'));
   }
-  
+
   const getDollars = (value) => {
     const initialSymbols = value < 0 ? '-$' : '$';
     return [initialSymbols, Math.abs(value).toLocaleString()].join('');
   };
-  
+
   const getYearHeader = year => (
     <div>
       { last4Years.indexOf(year) > -1 &&
@@ -41,11 +41,11 @@ const BudgetDetailsTable = (props) => {
       {[year - 1, year.toString().slice(2)].join('-')}
     </div>
   );
-  
+
   const getChangeHeader = () => (
     <div>Change from <br /> past year</div>
   );
-  
+
   const getDataColumnHeader = (level, expenseOrRevenue) => () => {
     switch (level) {
       case 0:

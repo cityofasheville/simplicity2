@@ -18,6 +18,35 @@ export const labelOrder = (formattedData, valueAccessor = 'value') => JSON.parse
     return item;
   }).sort((a, b) => b.sum[valueAccessor] - a.sum[valueAccessor]);
 
+export const formatBudgetDataForStackedBar = (data, dataKeys, mainAxisDataKey, colorScheme) => {
+  const thisScheme = colorSchemes[colorScheme];
+  const dataWithKeys = {};
+  let formattedData = [];
+
+  dataKeys.forEach((k, kIndex) => {
+    const thisColor = thisScheme[kIndex % thisScheme.length];
+
+    const dataWithColor = data.filter((d) => {
+      return d.label === k;
+    }).map((d) => {
+      const rVal = JSON.parse(JSON.stringify(d));
+      rVal.color = thisColor;
+      return rVal;
+    });
+    formattedData = formattedData.concat(dataWithColor);
+    dataWithKeys[k] = dataWithColor;
+  });
+
+  const thisOrder = labelOrder(formattedData).map(d => d.label);
+
+  let returnData = [];
+  thisOrder.forEach(label => {
+    returnData = returnData.concat(dataWithKeys[label]);
+  });
+
+  return returnData;
+};
+
 export const formatDataForStackedBar = (data, dataKeys, mainAxisDataKey, colorScheme) => {
   const formattedData = dataKeys.map((k, kIndex) => {
     const thisData = data.map((d) => {

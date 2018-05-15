@@ -61,6 +61,7 @@ class BudgetSummaryBarChart extends React.Component {
   }
 
   render() {
+    console.log(this.state)
     return (
       <div className="row">
         <div className="col-sm-12">

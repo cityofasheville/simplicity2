@@ -26,6 +26,8 @@ class Sankey extends React.Component {
       links: JSON.parse(JSON.stringify(this.props.links)),
     };
 
+    console.log(graph)
+
     const lighterColor = '#559ecc';
     const darkerColor = '#4292c6';
     const nodeColor = scaleSequential(interpolateLab(darkerColor, lighterColor));

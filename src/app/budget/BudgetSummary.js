@@ -13,7 +13,7 @@ import { IM_COIN_DOLLAR } from '../../shared/iconConstants';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import Error from '../../shared/Error';
 
-<<<<<<< HEAD
+
 const BudgetSummary = (props) => {
   if (props.data.loading) {
     return <LoadingAnimation />;

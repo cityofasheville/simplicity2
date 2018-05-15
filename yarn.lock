@@ -802,12 +802,6 @@ babel-plugin-check-es2015-constants@^6.22.0:
   dependencies:
     babel-runtime "^6.22.0"
 
-babel-plugin-external-helpers@^6.22.0:
-  version "6.22.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-external-helpers/-/babel-plugin-external-helpers-6.22.0.tgz#2285f48b02bd5dede85175caf8c62e86adccefa1"
-  dependencies:
-    babel-runtime "^6.22.0"
-
 babel-plugin-syntax-async-functions@^6.8.0:
   version "6.13.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-syntax-async-functions/-/babel-plugin-syntax-async-functions-6.13.0.tgz#cad9cad1191b5ad634bf30ae0872391e0647be95"
@@ -1265,7 +1259,7 @@ babel-register@^6.26.0, babel-register@^6.9.0:
     mkdirp "^0.5.1"
     source-map-support "^0.4.15"
 
-babel-runtime@6.26.0, babel-runtime@^6.18.0, babel-runtime@^6.22.0, babel-runtime@^6.26.0:
+babel-runtime@^6.18.0, babel-runtime@^6.22.0, babel-runtime@^6.26.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
   dependencies:
@@ -2020,8 +2014,8 @@ core-js@^1.0.0:
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-1.2.7.tgz#652294c14651db28fa93bd2d5ff2983a4f08c636"
 
 core-js@^2.4.0:
-  version "2.5.5"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.5.5.tgz#b14dde936c640c0579a6b50cabcc132dd6127e3b"
+  version "2.5.6"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.5.6.tgz#0fe6d45bf3cac3ac364a9d72de7576f4eb221b9d"
 
 core-js@^2.4.1, core-js@^2.5.0:
   version "2.5.3"
@@ -2243,8 +2237,8 @@ d3-collection@1, d3-collection@^1.0.1, d3-collection@^1.0.4:
   resolved "https://registry.yarnpkg.com/d3-collection/-/d3-collection-1.0.4.tgz#342dfd12837c90974f33f1cc0a785aea570dcdc2"
 
 d3-color@1:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/d3-color/-/d3-color-1.1.0.tgz#73957299b63ca935bf19c6c9d835e90066028329"
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/d3-color/-/d3-color-1.2.0.tgz#d1ea19db5859c86854586276ec892cf93148459a"
 
 d3-contour@^1.1.1:
   version "1.2.0"
@@ -2277,8 +2271,8 @@ d3-force@^1.0.2:
     d3-timer "1"
 
 d3-format@1:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/d3-format/-/d3-format-1.2.2.tgz#1a39c479c8a57fe5051b2e67a3bee27061a74e7a"
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/d3-format/-/d3-format-1.3.0.tgz#a3ac44269a2011cdb87c7b5693040c18cddfff11"
 
 d3-glyphedge@^1.2.0:
   version "1.2.0"
@@ -2293,8 +2287,8 @@ d3-hierarchy@^1.1.3:
   resolved "https://registry.yarnpkg.com/d3-hierarchy/-/d3-hierarchy-1.1.6.tgz#842c1372090f870b7ea013ebae5c0c8d9f56229c"
 
 d3-interpolate@1, d3-interpolate@^1.1.5:
-  version "1.1.6"
-  resolved "https://registry.yarnpkg.com/d3-interpolate/-/d3-interpolate-1.1.6.tgz#2cf395ae2381804df08aa1bf766b7f97b5f68fb6"
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/d3-interpolate/-/d3-interpolate-1.2.0.tgz#40d81bd8e959ff021c5ea7545bc79b8d22331c41"
   dependencies:
     d3-color "1"
 
@@ -2379,12 +2373,6 @@ d3-selection@1.1.0:
 d3-shape@1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/d3-shape/-/d3-shape-1.0.3.tgz#bf685dcfc192ed1d35a39ff69826a409a9385034"
-  dependencies:
-    d3-path "1"
-
-d3-shape@1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/d3-shape/-/d3-shape-1.0.4.tgz#145ee100ccbec42f8e3f1996cd05c786f79fe1c6"
   dependencies:
     d3-path "1"
 
@@ -2750,9 +2738,9 @@ element-resize-detector@^1.1.12:
   dependencies:
     batch-processor "^1.0.0"
 
-"element-resize-event@github:emeeks/element-resize-event":
+"element-resize-event@git://github.com/emeeks/element-resize-event.git":
   version "2.0.8"
-  resolved "https://codeload.github.com/emeeks/element-resize-event/tar.gz/a4f9a050593fa0e38af2eacf018c14e2eacc4066"
+  resolved "git://github.com/emeeks/element-resize-event.git#a4f9a050593fa0e38af2eacf018c14e2eacc4066"
 
 elliptic@^6.0.0:
   version "6.4.0"
@@ -4030,10 +4018,10 @@ iconv-lite@0.4.19, iconv-lite@^0.4.17:
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.19.tgz#f7468f60135f5e5dad3399c0a81be9a1603a082b"
 
 iconv-lite@~0.4.13:
-  version "0.4.21"
-  resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.21.tgz#c47f8733d02171189ebc4a400f3218d348094798"
+  version "0.4.23"
+  resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.23.tgz#297871f63be507adcfbfca715d0cd0eed84e9a63"
   dependencies:
-    safer-buffer "^2.1.0"
+    safer-buffer ">= 2.1.2 < 3"
 
 icss-replace-symbols@^1.1.0:
   version "1.1.0"
@@ -5461,7 +5449,7 @@ oauth-sign@~0.8.1:
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/oauth-sign/-/oauth-sign-0.8.2.tgz#46a6ab7f0aead8deae9ec0565780b7d4efeb9d43"
 
-object-assign@^4.0.1, object-assign@^4.1.0, object-assign@^4.1.1:
+object-assign@4.1.1, object-assign@^4.0.1, object-assign@^4.1.0, object-assign@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
 
@@ -6141,6 +6129,12 @@ promise-polyfill@^7.1.0:
   version "7.1.0"
   resolved "https://registry.yarnpkg.com/promise-polyfill/-/promise-polyfill-7.1.0.tgz#4d749485b44577c14137591c6f36e5d7e2dd3378"
 
+promise@8.0.1:
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/promise/-/promise-8.0.1.tgz#e45d68b00a17647b6da711bf85ed6ed47208f450"
+  dependencies:
+    asap "~2.0.3"
+
 promise@^7.1.1:
   version "7.3.1"
   resolved "https://registry.yarnpkg.com/promise/-/promise-7.3.1.tgz#064b72602b18f90f29192b8b1bc418ffd1ebd3bf"
@@ -6256,7 +6250,7 @@ querystringify@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-1.0.0.tgz#6286242112c5b712fa654e526652bf6a13ff05cb"
 
-raf@^3.2.0:
+raf@3.4.0, raf@^3.2.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/raf/-/raf-3.4.0.tgz#a28876881b4bc2ca9117d4138163ddb80f781575"
   dependencies:
@@ -6311,14 +6305,11 @@ rc@^1.1.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-annotation@1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/react-annotation/-/react-annotation-1.1.1.tgz#cda90dc13fa6d500d9141a8d32124d0d35b61dd8"
+react-annotation@1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/react-annotation/-/react-annotation-1.2.1.tgz#7759e927ac27fa29d60c02efdc68cc70f5e998d6"
   dependencies:
-    classnames "2.2.5"
-    d3-shape "1.0.4"
     prop-types "15.6.0"
-    react-draggable "3.0.3"
     viz-annotation "0.0.1-3"
 
 react-apollo@^2.0.4:
@@ -6358,7 +6349,7 @@ react-csv@^1.0.10:
   version "1.0.14"
   resolved "https://registry.yarnpkg.com/react-csv/-/react-csv-1.0.14.tgz#7c9e444fc4c3ca1e1cf73a81129b1ec032838a71"
 
-react-dom@^16.2.0:
+react-dom@16.2.0, react-dom@^16.2.0:
   version "16.2.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.2.0.tgz#69003178601c0ca19b709b33a83369fe6124c044"
   dependencies:
@@ -6375,13 +6366,6 @@ react-dom@^16.3.2:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     prop-types "^15.6.0"
-
-react-draggable@3.0.3:
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/react-draggable/-/react-draggable-3.0.3.tgz#a6f9b3a7171981b76dadecf238316925cb9eacf4"
-  dependencies:
-    classnames "^2.2.5"
-    prop-types "^15.5.10"
 
 react-ga@^2.2.0:
   version "2.4.1"
@@ -6500,7 +6484,7 @@ react-travel@^1.3.1:
   dependencies:
     prop-types "^15.5.10"
 
-"react@^15.6.2 || ^16.0":
+react@16.2.0, "react@^15.6.2 || ^16.0":
   version "16.2.0"
   resolved "https://registry.yarnpkg.com/react/-/react-16.2.0.tgz#a31bd2dab89bff65d42134fa187f24d054c273ba"
   dependencies:
@@ -6918,11 +6902,11 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^2.0.0"
     inherits "^2.0.1"
 
-"roughjs@github:emeeks/rough":
+"roughjs@git://github.com/emeeks/rough.git":
   version "2.1.1"
-  resolved "https://codeload.github.com/emeeks/rough/tar.gz/b98a98ad3e8d99d88384ccc2d5f41d997fef1bdb"
+  resolved "git://github.com/emeeks/rough.git#337522cf2ccea6218c7b2b8366e85c7d9538fe52"
   dependencies:
-    babel-runtime "6.26.0"
+    babel-runtime "^6.26.0"
 
 run-async@^2.0.0, run-async@^2.2.0:
   version "2.3.0"
@@ -6960,7 +6944,7 @@ safe-regex@^1.1.0:
   dependencies:
     ret "~0.1.10"
 
-safer-buffer@^2.1.0:
+"safer-buffer@>= 2.1.2 < 3":
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/safer-buffer/-/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
 
@@ -7036,9 +7020,9 @@ selfsigned@^1.9.1:
   dependencies:
     node-forge "0.7.1"
 
-semiotic-mark@0.2.6:
-  version "0.2.6"
-  resolved "https://registry.yarnpkg.com/semiotic-mark/-/semiotic-mark-0.2.6.tgz#504f63e9259152530692b5dc2bf078bf8588f420"
+semiotic-mark@0.2.8:
+  version "0.2.8"
+  resolved "https://registry.yarnpkg.com/semiotic-mark/-/semiotic-mark-0.2.8.tgz#7b74dcc6f9bae20ac0836dc270b035828cc214c2"
   dependencies:
     d3-interpolate "^1.1.5"
     d3-scale "^1.0.3"
@@ -7046,7 +7030,7 @@ semiotic-mark@0.2.6:
     d3-shape "^1.0.3"
     d3-transition "^1.0.3"
     prop-types "^15.6.0"
-    roughjs "github:emeeks/rough"
+    roughjs "git://github.com/emeeks/rough"
 
 semiotic-mark@^0.1.2:
   version "0.1.2"
@@ -7060,12 +7044,10 @@ semiotic-mark@^0.1.2:
     prop-types "15.6.0"
 
 semiotic@^1.10.0:
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/semiotic/-/semiotic-1.10.0.tgz#b693b9349388bfb7e2e36905ec5f719d6671f6c0"
+  version "1.10.3"
+  resolved "https://registry.yarnpkg.com/semiotic/-/semiotic-1.10.3.tgz#b9d858d84ccaa650bc613670e9ad6d0276540374"
   dependencies:
     "@mapbox/polylabel" "1"
-    babel-plugin-external-helpers "^6.22.0"
-    babel-runtime "6.26.0"
     d3-array "^1.2.0"
     d3-bboxCollide "^1.0.3"
     d3-brush "^1.0.4"
@@ -7082,14 +7064,20 @@ semiotic@^1.10.0:
     d3-selection "^1.1.0"
     d3-shape "^1.0.4"
     d3-voronoi "^1.0.2"
-    element-resize-event "github:emeeks/element-resize-event"
+    element-resize-event "git://github.com/emeeks/element-resize-event"
     json2csv "3.11.5"
     labella "1.1.4"
+    object-assign "4.1.1"
+    promise "8.0.1"
     prop-types "15.6.0"
-    react-annotation "1.1.1"
-    roughjs "github:emeeks/rough"
-    semiotic-mark "0.2.6"
+    raf "3.4.0"
+    react "16.2.0"
+    react-annotation "1.2.1"
+    react-dom "16.2.0"
+    roughjs "git://github.com/emeeks/rough"
+    semiotic-mark "0.2.8"
     svg-path-bounding-box "1.0.4"
+    whatwg-fetch "2.0.3"
 
 "semver@2 || 3 || 4 || 5", semver@^5.3.0, semver@^5.5.0:
   version "5.5.0"
@@ -7799,8 +7787,8 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
 ua-parser-js@^0.7.9:
-  version "0.7.17"
-  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.17.tgz#e9ec5f9498b9ec910e7ae3ac626a805c4d09ecac"
+  version "0.7.18"
+  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.18.tgz#a7bfd92f56edfb117083b69e31d2aa8882d4b1ed"
 
 uglify-js@3.3.x:
   version "3.3.15"
@@ -8197,6 +8185,10 @@ websocket-driver@>=0.5.1:
 websocket-extensions@>=0.1.1:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/websocket-extensions/-/websocket-extensions-0.1.3.tgz#5d2ff22977003ec687a4b87073dfbbac146ccf29"
+
+whatwg-fetch@2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/whatwg-fetch/-/whatwg-fetch-2.0.3.tgz#9c84ec2dcf68187ff00bc64e1274b442176e1c84"
 
 whatwg-fetch@>=0.10.0:
   version "2.0.4"

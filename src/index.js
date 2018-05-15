@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import 'babel-polyfill';
+// import 'babel-polyfill';
 
 // Import Routes
 import Routes from './routes';

@@ -113,6 +113,16 @@ const ProjectDetails = (props) => {
                     </div>
                   </div>
                 }
+                {props.show_pm_fields &&
+                  <div className="" style={{ marginBottom: '10px' }}>
+                    <div style={{ color: '#676873' }}>
+                      Under contract
+                    </div>
+                    <div>
+                      <strong>{['$', parseInt(props.encumbered).toLocaleString()].join('')}</strong>
+                    </div>
+                  </div>
+                }                
               </div>
               <div className="col-xs-7">
                 <div className="" style={{ marginBottom: '10px' }}>

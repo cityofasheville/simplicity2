@@ -2797,9 +2797,9 @@ element-resize-detector@^1.1.12:
   dependencies:
     batch-processor "^1.0.0"
 
-"element-resize-event@git://github.com/emeeks/element-resize-event":
+"element-resize-event@git://github.com/emeeks/element-resize-event.git":
   version "2.0.8"
-  resolved "git://github.com/emeeks/element-resize-event#a4f9a050593fa0e38af2eacf018c14e2eacc4066"
+  resolved "git://github.com/emeeks/element-resize-event.git#a4f9a050593fa0e38af2eacf018c14e2eacc4066"
 
 elliptic@^6.0.0:
   version "6.4.0"
@@ -7109,9 +7109,9 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
-"roughjs@git://github.com/emeeks/rough":
+"roughjs@git://github.com/emeeks/rough.git":
   version "2.1.1"
-  resolved "git://github.com/emeeks/rough#337522cf2ccea6218c7b2b8366e85c7d9538fe52"
+  resolved "git://github.com/emeeks/rough.git#337522cf2ccea6218c7b2b8366e85c7d9538fe52"
   dependencies:
     babel-runtime "^6.26.0"
 

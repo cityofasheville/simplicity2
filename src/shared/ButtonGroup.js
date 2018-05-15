@@ -14,7 +14,7 @@ ButtonGroup.propTypes = {
 };
 
 ButtonGroup.defaultProps = {
-  alignment: 'right',
+  // alignment: 'right',
 };
 
 export default ButtonGroup;

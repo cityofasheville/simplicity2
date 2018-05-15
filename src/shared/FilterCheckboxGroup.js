@@ -52,7 +52,7 @@ class FilterCheckboxGroup extends React.Component {
 
   render () {
     return (
-      <div className="row" id={this.props.id} style={{backgroundColor: '#ffffff'}} tabIndex="0" onMouseUp={e => e.target.blur()} onKeyDown={this.handleEvent}>
+      <div className="row" id={this.props.id} className="checkboxGroup" style={{backgroundColor: '#ffffff'}} tabIndex="0" onMouseUp={e => e.target.blur()} onKeyDown={this.handleEvent}>
         { this.props.children }
       </div>
     );

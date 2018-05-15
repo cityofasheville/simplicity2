@@ -55,7 +55,7 @@ const getMaintenanceInfo = (entity) => {
     return <div>No information available</div>;
   }
   if (entity === 'CITY OF ASHEVILLE') {
-    return (<div><span><a href="http://www.ashevillenc.gov/departments/street_services/maintenance.htm" target="_blank">{entity}</a></span><span style={{ marginLeft: '10px' }}><a href="http://www.ashevillenc.gov/departments/it/online/service_requests.htm" target="_blank"><button className="btn btn-xs btn-warning">Report with the Asheville App</button></a>
+    return (<div><span><a href="http://www.ashevillenc.gov/departments/street_services/maintenance.htm" target="_blank">{entity}</a></span><span className="form-group__call-to-action"><a href="http://www.ashevillenc.gov/departments/it/online/service_requests.htm" target="_blank"><button className="btn btn-xs btn-warning">Report with the Asheville App</button></a>
     </span></div>);
   }
   if (entity === 'NCDOT') {
@@ -76,10 +76,10 @@ const Address = (props) => {
   const mapData = [Object.assign({}, addressData, { popup: `<b>Address</b><div>${addressData.street_number} ${addressData.street_prefix} ${addressData.street_name} ${addressData.unit || ''}</div><div>${addressData.city}, NC ${addressData.zipcode}</div><br /><b>Owner</b><div>${addressData.owner_name}</div><div>${addressData.owner_address}</div><div>${addressData.owner_cityname}, ${addressData.owner_state} ${addressData.owner_zipcode}</div>` })];
 
   return (
-    <div>
-      <PageHeader h1={[addressData.address, addressData.zipcode].join(', ')} h3="About this address" icon={<Icon path={IM_LOCATION} size={50} />}>
-        <ButtonGroup>
-          <LinkButton pathname="/search" positionInGroup="left" query={{ entities: props.location.query.entities, search: props.location.query.search, hideNavbar: props.location.query.hideNavbar }}>Back to search</LinkButton>
+    <div className="address">
+      <PageHeader h1={[addressData.address, addressData.zipcode].join(', ')} dataType="Address" h3="About this address" icon={<Icon path={IM_LOCATION} size={50} />}>
+        <ButtonGroup alignment="">
+          <LinkButton pathname="/search" positionInGroup={props.location.query.placeSearch ? 'left' : ''} query={{ entities: props.location.query.entities, search: props.location.query.search, hideNavbar: props.location.query.hideNavbar }}>Back to search</LinkButton>
           {props.location.query.placeSearch &&
             <LinkButton positionInGroup="right" pathname="/search/googlePlaceMatches" query={{ entities: props.location.query.entities, search: props.location.query.search, hideNavbar: props.location.query.hideNavbar, placeSearch: props.location.query.placeSearch }}>Back to place matches</LinkButton>
           }
@@ -89,38 +89,39 @@ const Address = (props) => {
         <div className="col-sm-7">
           <fieldset className="detailsFieldset">
             <InCityMessage inTheCity={addressData.is_in_city} />
-            <div className="col-xs-12" style={{ marginBottom: '15px', marginTop: '10px' }}>
+            <div className="map-container">
               <Map
-                height="250px"
                 data={mapData}
                 center={[addressData.y, addressData.x]}
+                height={'100%'}
+                width={'100%'}
               />
             </div>
-            <DetailsFormGroup label="Trash collection" name="trash" value={calculateTrash(addressData.trash_day, addressData.is_in_city)} colWidth="5" hasLabel icon={<Icon path={IM_BIN} size={20} />} />
-            <DetailsFormGroup label="Recycling collection" name="recycling" value={calculateRecycling(addressData.recycling_pickup_day, addressData.is_in_city, addressData.recycling_pickup_district)} hasLabel colWidth="7" icon={<Icon path={LI_RECYCLE2} size={20} viewBox="0 0 24 24" />} />
-            <DetailsFormGroup
-              label="Zoning"
-              name="zoning"
-              colWidth="5"
-              value={<div>{addressData.zoning.split(',').map((zone, index) => (
-                <span key={['zone', index].join('_')}><a href={zoningLinks[zone]} target="_blank">{addressData.zoning.split(',')[index]}</a>{addressData.zoning.split(',').length > index + 1 ? ', ' : ''}</span>)
-            )}</div>} hasLabel icon={<Icon path={IM_LOCATION2} size={20} />}
-            />
-            <DetailsFormGroup
-              label="Street maintenance"
-              name="street_maintenance"
-              colWidth="7"
-              value={getMaintenanceInfo(addressData.street_maintenance)}
-              hasLabel
-              icon={<Icon path={IM_TRAFFIC_CONE} size={20} />}
-            />
-            <DetailsIconLinkFormGroup label="Property information" colWidth="5" title="Property information" href={['/property/?fromAddress=', props.location.query.id, '&search=', props.location.query.search, '&id=', addressData.pinnum, '&entities=', props.location.query.entities].join('')} icon={<Icon path={IM_HOME2} size={20} />} inWindow />
-            <DetailsFormGroup label="Owner" name="owner" value={<div><div>{addressData.owner_name}</div><div>{addressData.owner_address}</div></div>} colWidth="7" hasLabel icon={<Icon path={IM_USER} size={20} />} />
+            <div className="detailsFieldset__details-listings">
+              <DetailsFormGroup label="Trash collection" name="trash" value={calculateTrash(addressData.trash_day, addressData.is_in_city)} hasLabel icon={<Icon path={IM_BIN} size={20} />} />
+              <DetailsFormGroup label="Recycling collection" name="recycling" value={calculateRecycling(addressData.recycling_pickup_day, addressData.is_in_city, addressData.recycling_pickup_district)} hasLabel icon={<Icon path={LI_RECYCLE2} size={20} viewBox="0 0 24 24" />} />
+              <DetailsFormGroup
+                label="Zoning"
+                name="zoning"
+                value={<div>{addressData.zoning.split(',').map((zone, index) => (
+                  <span key={['zone', index].join('_')}><a href={zoningLinks[zone]} target="_blank">{addressData.zoning.split(',')[index]}</a>{addressData.zoning.split(',').length > index + 1 ? ', ' : ''}</span>)
+              )}</div>} hasLabel icon={<Icon path={IM_LOCATION2} size={20} />}
+              />
+              <DetailsFormGroup
+                label="Street maintenance"
+                name="street_maintenance"
+                value={getMaintenanceInfo(addressData.street_maintenance)}
+                hasLabel
+                icon={<Icon path={IM_TRAFFIC_CONE} size={20} />}
+              />
+              <DetailsIconLinkFormGroup label="Property information" title="Property information" href={['/property/?fromAddress=', props.location.query.id, '&search=', props.location.query.search, '&id=', addressData.pinnum, '&entities=', props.location.query.entities].join('')} icon={<Icon path={IM_HOME2} size={20} />} inWindow />
+              <DetailsFormGroup label="Owner" name="owner" value={<div><div>{addressData.owner_name}</div><div>{addressData.owner_address}</div></div>} hasLabel icon={<Icon path={IM_USER} size={20} />} />
+            </div>
           </fieldset>
         </div>
         {addressData.is_in_city &&
           <div className="col-sm-5">
-            <div className="row">
+            <div className="row small-padding">
               {['CRIME', 'DEVELOPMENT'].map((topic, i) => (
                 <div className="col-xs-6" key={['topic', i]}>
                   <TopicCard topic={topic} entity="address" id={props.location.query.id} label={[addressData.address, addressData.zipcode].join(', ')} entities={props.location.query.entities} x={addressData.x} y={addressData.y} search={props.location.query.search} />

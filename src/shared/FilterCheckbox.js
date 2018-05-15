@@ -33,18 +33,18 @@ class FilterCheckbox extends React.Component {
   }
 
   render() {
-    const mainStyle = this.props.disabled ? 'filterCheckboxDisabled' : this.state.checked ? 'filterCheckbox' : 'unchecked';
-    const backgroundStyle = this.state.checked ? 'backgroundChecked' : 'backgroundUnchecked';
+    const mainStyle = this.props.disabled ? 'filterCheckbox filterCheckbox--disabled' : this.state.checked ? 'filterCheckbox filterCheckbox--checked' : 'filterCheckbox filterCheckbox--unchecked';
+    const backgroundStyle = this.state.checked ? 'filterCheckbox filterCheckbox--backgroundChecked' : 'filterCheckbox filterCheckbox--backgroundUnchecked';
 
     return (
-        <div className="col-lg-2 col-md-3 col-sm-4 col-xs-6" style={{cursor: 'pointer'}}
+        <div className="checkboxGroup__checkbox" style={{cursor: 'pointer'}}
              onMouseUp={e => e.target.blur()}
              tabIndex="-1">
-          <div className={mainStyle} onMouseUp={e => e.target.blur()} tabIndex="-1"
+          <div className={backgroundStyle + ' ' + mainStyle} onMouseUp={e => e.target.blur()} tabIndex="-1"
                onClick={this.handleClick}>
-            <div className={backgroundStyle} style={{paddingTop: '10px'}} onMouseUp={e => e.target.blur()} tabIndex="-1">
-              <div className="text-center text-primary" style={{minHeight: '30px'}} onMouseUp={e => e.target.blur()} tabIndex="-1">
-                <input tabIndex="-1" style={{marginRight: '7px'}} type="checkbox" aria-label={this.props.label}
+            <div onMouseUp={e => e.target.blur()} tabIndex="-1">
+              <div className="text-center text-primary" onMouseUp={e => e.target.blur()} tabIndex="-1">
+                <input tabIndex="-1" type="checkbox" aria-label={this.props.label}
                        label={this.props.label} value={this.props.value} checked={this.state.checked} onKeyDown={this.handleKey} onMouseUp={e => e.target.blur()}
                        readOnly/>
                 <label style={{fontWeight: 'normal', cursor: 'pointer'}} onMouseUp={e => e.target.blur()} tabIndex="-1">{this.props.label}</label>

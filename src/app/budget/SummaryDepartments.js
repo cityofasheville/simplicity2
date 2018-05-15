@@ -41,11 +41,7 @@ class SummaryDepartments extends React.Component {
     }
 
     return (
-      <div className="row">
-        <div className="col-sm-12">
-          <BudgetSummaryBarChart categoryType="department" colorScheme="bright_colors_2" {...this.props} />
-        </div>
-      </div>
+      <BudgetSummaryBarChart categoryType="department" colorScheme="bright_colors_2" {...this.props} />
     );
   }
 }

@@ -85,15 +85,15 @@ const SearchResultGroup = (props) => {
       </h2>,
       accessor: 'label',
       Cell: row => (
-        <span style={{ display: 'flex', flexWrap: 'wrap' }}>
-          <a href={getLink(row.original.type, row.original.id, props.searchText, props.selectedEntities, row.original.label, props.originalSearch)} style={props.data.label === 'place' ? { flex: '50' } : { flex: '100' }}>
-            <span className="text-primary" style={{ marginLeft: '20px' }}>
+        <span className="search-results-group__row-inner">
+          <a className="search-results-group__link" href={getLink(row.original.type, row.original.id, props.searchText, props.selectedEntities, row.original.label, props.originalSearch)}>
+            <span className="text-primary">
               {getIcon(row.original.type === 'place' ? 'search' : row.original.type)}
               {row.value}
             </span>
           </a>
           {props.data.label === 'place' &&
-            <span className="text-primary" style={{ flex: '50', marginLeft: '20px' }}>
+            <span className="text-primary">
               <a
                 href={['https://www.google.com/maps/place/?q=place_id:', row.original.place_id].join('')}target="_blank"
               >
@@ -106,9 +106,9 @@ const SearchResultGroup = (props) => {
       Filter: ({ filter, onChange }) => (
         <input
           onChange={event => onChange(event.target.value)}
-          style={{ width: '100%' }}
           value={filter ? filter.value : ''}
           placeholder="Filter results..."
+          className="full-width"
         />
       ),
     },
@@ -117,7 +117,7 @@ const SearchResultGroup = (props) => {
   const AccessibleReactTable = accessibility(ReactTable);
 
   return (
-    <div className={styles.searchResultGroup}>
+    <div className={styles.searchResultGroup + ' search-results-group' + ' search-results-group-'+props.data.label }>
       <AccessibleReactTable
         ariaLabel="Search Results"
         data={props.data.results}

@@ -7,7 +7,7 @@ const Dotenv = require('dotenv-webpack');
 const extractSass = new ExtractTextPlugin({
   filename: '[name].[contenthash].css',
   // disable: process.env.NODE_ENV === 'development',
-  disable: true
+  disable: true,
 });
 
 // devtool: 'source-map',
@@ -15,7 +15,7 @@ const extractSass = new ExtractTextPlugin({
 module.exports = {
   context: path.resolve(__dirname),
   entry: {
-    app: path.join(__dirname, 'src', 'index.js'),
+    app: ['babel-polyfill', path.join(__dirname, 'src', 'index.js')],
   },
   output: {
     path: path.resolve(__dirname, 'dist'),

@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { graphql, compose } from 'react-apollo';
 import BarChart from '../../shared/visualization/BarChart';
+import { formatBudgetDataForStackedBar } from '../../shared/visualization/visUtilities';
+import { createAnnotations } from './budgetUtilities';
 import { getBudgetSummaryDept, getBudgetSummaryUse } from './graphql/budgetQueries';
 
 const getDollars = (value) => {
@@ -43,7 +45,6 @@ const getLongDesc = data => (
   </div>
 );
 
-
 class BudgetSummaryBarChart extends React.Component {
   constructor(props) {
     super(props);
@@ -59,48 +60,27 @@ class BudgetSummaryBarChart extends React.Component {
     });
   }
 
-
   render() {
     return (
-      <div className="visualization no-padding">
-        <BarChart
-          annotations={[
-            {
-              type: 'or',
-              display_year: '2014-15',
-              label: 'Actual Spent',
-              budgetAnnotation: true,
-            },
-            {
-              type: 'or',
-              display_year: '2015-16',
-              label: 'Actual Spent',
-              budgetAnnotation: true,
-            },
-            {
-              type: 'or',
-              display_year: '2016-17',
-              label: 'Adopted',
-              budgetAnnotation: true,
-            },
-            {
-              type: 'or',
-              display_year: '2017-18',
-              label: 'Proposed',
-              budgetAnnotation: true,
-            },
-          ]}
-          data={this.state.summaryData.dataValues}
-          colorScheme={this.props.colorScheme}
-          mainAxisDataKey="display_year"
-          dataKeys={this.state.summaryData.dataKeys}
-          yAxisTickFormatter={getDollars}
-          tooltipYValFormatter={getDollarsLong}
-          domain={[0, 190000000]}
-          legendLabelFormatter={function(label) {return label.replace(' Department', '')}}
-          altText={['Spending by', this.props.categoryType, 'bar chart'].join(' ')}
-          chartTitle={getTitle(this.props.categoryType)}
-        />
+      <div className="row">
+        <div className="col-sm-12">
+          <div className="visualization no-padding">
+            <BarChart
+              annotations={createAnnotations(this.props.data.budgetParameters)}
+              data={this.state.summaryData.dataValues}
+              colorScheme={this.props.colorScheme}
+              mainAxisDataKey="display_year"
+              dataKeys={this.state.summaryData.dataKeys}
+              yAxisTickFormatter={getDollars}
+              tooltipYValFormatter={getDollarsLong}
+              domain={[0, 190000000]}
+              legendLabelFormatter={function(label) {return label.replace(' Department', '')}}
+              altText={['Spending by', this.props.categoryType, 'bar chart'].join(' ')}
+              chartTitle={getTitle(this.props.categoryType)}
+              dataFormatter={formatBudgetDataForStackedBar}
+            />
+          </div>
+        </div>
       </div>
     );
   }

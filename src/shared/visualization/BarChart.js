@@ -12,22 +12,43 @@ import { formatDataForStackedBar, budgetBarAnnotationRule, labelOrder } from './
  * size margins based on where labels are even going (y or x), how long they are, remsize
  */
 
-const getLongDesc = (data, dataKeys, mainAxisKey, valueFormatter) => (
-  <div>
-    {data.map((value, index) => (
-      <div key={[value[mainAxisKey], index].join('_')}>
-        <p>{value[mainAxisKey]}<br />
-          {dataKeys.map(key => (
-            <span key={[value[mainAxisKey], key].join('_')}>
-              {key || '[data error]'}: {valueFormatter !== null ? valueFormatter(value[key]) : value[key]}
-              <br />
-            </span>
-          ))}
-        </p>
-      </div>
-    ))}
-  </div>
-);
+const getLongDesc = (data, dataKeys, mainAxisKey, valueFormatter) => {
+  //need to fix this function to be generic and work for any barchart data sent in.
+  let formattedData = [];
+  if (data.length > 0 && data[0].label === undefined) { //hacky temporary fix so homelessness barcharts still work
+    formattedData = data;
+  } else {
+    for (let item of data) {
+      let yearAlreadyPresent = false;
+      for (let f of formattedData) {
+        if (f.display_year === item.display_year) {
+          f[item.label] = item.value;
+          yearAlreadyPresent = true;
+          break;
+        }
+      }
+      if (!yearAlreadyPresent) {
+        formattedData.push({ display_year: item.display_year, [item.label]: item.value });
+      }
+    }
+  }
+  return (
+    <div>
+      {formattedData.map((value, index) => (
+        <div key={[value[mainAxisKey], index].join('_')}>
+          <p>{value[mainAxisKey]}<br />
+            {dataKeys.map(key => (
+              <span key={[value[mainAxisKey], key].join('_')}>
+                {key || '[data error]'}: {valueFormatter !== null ? valueFormatter(value[key]) : value[key]}
+                <br />
+              </span>
+            ))}
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+};
 
 class BarChart extends React.Component {
   constructor(props) {

@@ -9,9 +9,9 @@ const BudgetSankey = props => (
     nodes={props.nodes}
     links={props.links}
     altText={props.altText}
-    valueFormatter={value => {
-      if (!value || value === 0) {return '$0'}
-      return [value < 0 ? '-$' : '$', Math.abs(value).toLocaleString()].join('')
+    valueFormatter={(value) => {
+      if (!value || value === 0) { return '$0'; }
+      return [value < 0 ? '-$' : '$', Math.abs(value).toLocaleString()].join('');
     }}
   />
 );
@@ -33,6 +33,8 @@ BudgetSankey.propTypes = {
 };
 
 BudgetSankey.defaultProps = {
+  nodes: [],
+  links: [],
   altText: 'Flow diagram',
 };
 

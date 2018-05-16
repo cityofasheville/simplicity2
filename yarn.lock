@@ -2742,9 +2742,9 @@ element-resize-detector@^1.1.12:
   dependencies:
     batch-processor "^1.0.0"
 
-"element-resize-event@git://github.com/emeeks/element-resize-event":
+"element-resize-event@git://github.com/emeeks/element-resize-event.git":
   version "2.0.8"
-  resolved "git://github.com/emeeks/element-resize-event#a4f9a050593fa0e38af2eacf018c14e2eacc4066"
+  resolved "git://github.com/emeeks/element-resize-event.git#a4f9a050593fa0e38af2eacf018c14e2eacc4066"
 
 elliptic@^6.0.0:
   version "6.4.0"
@@ -6912,6 +6912,13 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
   dependencies:
     babel-runtime "^6.26.0"
 
+"roughjs@git://github.com/emeeks/rough.git":
+  version "2.1.1"
+  uid "337522cf2ccea6218c7b2b8366e85c7d9538fe52"
+  resolved "git://github.com/emeeks/rough.git#337522cf2ccea6218c7b2b8366e85c7d9538fe52"
+  dependencies:
+    babel-runtime "^6.26.0"
+
 run-async@^2.0.0, run-async@^2.2.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/run-async/-/run-async-2.3.0.tgz#0371ab4ae0bdd720d4166d7dfda64ff7a445a6c0"
@@ -7047,7 +7054,7 @@ semiotic-mark@^0.1.2:
     d3-transition "1.0.3"
     prop-types "15.6.0"
 
-semiotic@^1.10.0:
+semiotic@^1.10.3:
   version "1.10.3"
   resolved "https://registry.yarnpkg.com/semiotic/-/semiotic-1.10.3.tgz#b9d858d84ccaa650bc613670e9ad6d0276540374"
   dependencies:

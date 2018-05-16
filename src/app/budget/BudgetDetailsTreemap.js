@@ -20,8 +20,8 @@ const getButtonClass = (categoryType, buttonName) => {
 
 const goDeeper = (props) => {
   let curPath = props.path;
-  if (props.path.split('-').length > 5) {
-    curPath = props.path.split('-').slice(0, 5).join('-');
+  if (props.path.split('_').length > 5) {
+    curPath = props.path.split('_').slice(0, 5).join('_');
   }
   let newURL = [props.location.pathname, '?',
     Object.entries(props.location.query).map(([key, value]) => {
@@ -46,19 +46,19 @@ const goUp = (props, numLevels) => {
   if (curPath === 'root') {
     newURL = [newURL, 'nodePath=root'].join('');
   } else {
-    let curNodePathInfo = curPath.split('-');
+    let curNodePathInfo = encodeURIComponent(curPath).split('_');
     let stepsUp = numLevels;
     if (numLevels === undefined) {
       stepsUp = 1;
     }
-    curNodePathInfo = curNodePathInfo.slice(0, curNodePathInfo.length - stepsUp).join('-');
+    curNodePathInfo = curNodePathInfo.slice(0, curNodePathInfo.length - stepsUp).join('_');
     newURL = [newURL, 'nodePath=', curNodePathInfo].join('');
   }
   browserHistory.replace(newURL);
 };
 
 const findTop = (data, path) => {
-  const nodes = path.split('-');
+  const nodes = path.split('_');
   if (nodes.length === 1) {
     return data.children;
   }
@@ -78,7 +78,7 @@ const findTop = (data, path) => {
 
 const renderBreadcrumb = (tree, props) => {
   const path = props.location.query.nodePath || 'root';
-  const nodes = path.split('-');
+  const nodes = path.split('_');
   if (nodes.length === 1) {
     return (<div className="pull-left treeMapBreadcrumb"><span>Top</span></div>);
   }
@@ -110,14 +110,14 @@ const renderBreadcrumb = (tree, props) => {
 
 const BudgetDetailsTreemap = (props) => {
   const myTree = props.location.query.mode === 'expenditures' || props.location.query.mode === undefined ? props.expenseTree : props.revenueTree;
-
+  
   const getNewUrlParams = mode => (
     {
       mode,
       nodePath: 'root',
     }
   );
-
+  
   return (
     <div>
       <div className="row">
@@ -130,7 +130,7 @@ const BudgetDetailsTreemap = (props) => {
       <div className="row">
         <div className="col-sm-12">
           <div style={{ marginBottom: '15px' }}>
-            In the treemap below, the size and color of the rectangles represent important information about the 2017-2018 budget. The size of each rectangle is proportional to the amount of money budgeted for that category. The color of the rectangle shows the change from last year’s budget. Increases are shown in blue, decreases are orange, and white shows no change. The deeper the color, the larger the change. Click a rectangle to see a detailed breakdown for that category, or mouse over it to see the description and total amount.
+            In the treemap below, the size and color of the rectangles represent important information about the {`${parseInt(props.data.budgetParameters.end_year, 10) - 1}-${props.data.budgetParameters.end_year}`} budget. The size of each rectangle is proportional to the amount of money budgeted for that category. The color of the rectangle shows the change from last year’s budget. Increases are shown in blue, decreases are orange, and white shows no change. The deeper the color, the larger the change. Click a rectangle to see a detailed breakdown for that category, or mouse over it to see the description and total amount.
           </div>
         </div>
       </div>

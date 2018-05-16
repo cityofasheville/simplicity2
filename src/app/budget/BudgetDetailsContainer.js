@@ -20,18 +20,19 @@ const renderSubComponent = (props) => {
   }
 };
 
+
 class BudgetDetailsContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       treesInitialized: false,
     };
-
+    
     this.initializeTrees = this.initializeTrees.bind(this);
   }
-
+  
   async initializeTrees() {
-    const trees = buildTrees(this.props.data.budgetHistory);
+    const trees = buildTrees(this.props.data.budgetHistory, this.props.data.budgetParameters);
     await this.props.updateBudgetTrees({
       variables: {
         budgetTrees: {
@@ -44,7 +45,7 @@ class BudgetDetailsContainer extends React.Component {
     });
     this.setState({ treesInitialized: true });
   }
-
+  
   render() {
     if (this.props.data.loading) { // eslint-disable-line react/prop-types
       return (
@@ -86,6 +87,12 @@ const budgetHistoryQuery = gql`
         category_id,
         budget_section_name,
         budget_section_id
+        use_actual
+    }
+    budgetParameters {
+      start_year
+      end_year
+      in_budget_season
     }
   }
 `;

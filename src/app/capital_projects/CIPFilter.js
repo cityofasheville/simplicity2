@@ -32,9 +32,11 @@ const CIPFilter = (props) => {
     refreshLocation(getNewUrlParams(newValues.filter(e => e !== 'All')), props.location);
   };
 
+  const bondOnly = props.location.query.mode === 'bond';
+
   const getVisibleSelection = () => {
     let { selected } = props;
-    if (props.location.query.mode === 'bond') {
+    if (bondOnly) {
       selected = selected.filter(e => ['Parks', 'Housing', 'Transportation'].indexOf(e) !== -1);
     }
     if (selected.length > 0) {
@@ -51,7 +53,7 @@ const CIPFilter = (props) => {
       <div>
         <CheckboxGroup
           checkedValues={visibleSelection}
-          indeterminateValues={realSelection.length < props.categories.length && realSelection.length > 0 ? ['All'] : []}
+          indeterminateValues={realSelection.length < (bondOnly ? props.categories.length - 2 : props.categories.length) && realSelection.length > 0 ? ['All'] : []}
           onChange={handleClick}
           className="checkboxGroup"
         >

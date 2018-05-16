@@ -94,7 +94,7 @@ CIPFilter.propTypes = {
 };
 
 CIPFilter.defaultProps = {
-  selected: [],
+  selected: ['Transportation', 'Housing', 'Parks', 'Public Safety', 'Other'],
   categories: ['Transportation', 'Housing', 'Parks', 'Public Safety', 'Other'],
 };
 

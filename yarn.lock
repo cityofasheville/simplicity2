@@ -2742,9 +2742,9 @@ element-resize-detector@^1.1.12:
   dependencies:
     batch-processor "^1.0.0"
 
-"element-resize-event@git://github.com/emeeks/element-resize-event":
+"element-resize-event@git://github.com/emeeks/element-resize-event.git":
   version "2.0.8"
-  resolved "git://github.com/emeeks/element-resize-event#a4f9a050593fa0e38af2eacf018c14e2eacc4066"
+  resolved "git://github.com/emeeks/element-resize-event.git#a4f9a050593fa0e38af2eacf018c14e2eacc4066"
 
 elliptic@^6.0.0:
   version "6.4.0"
@@ -6906,9 +6906,9 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^2.0.0"
     inherits "^2.0.1"
 
-"roughjs@git://github.com/emeeks/rough":
+"roughjs@git://github.com/emeeks/rough.git":
   version "2.1.1"
-  resolved "git://github.com/emeeks/rough#337522cf2ccea6218c7b2b8366e85c7d9538fe52"
+  resolved "git://github.com/emeeks/rough.git#337522cf2ccea6218c7b2b8366e85c7d9538fe52"
   dependencies:
     babel-runtime "^6.26.0"
 
@@ -7024,9 +7024,9 @@ selfsigned@^1.9.1:
   dependencies:
     node-forge "0.7.1"
 
-semiotic-mark@0.2.8:
-  version "0.2.8"
-  resolved "https://registry.yarnpkg.com/semiotic-mark/-/semiotic-mark-0.2.8.tgz#7b74dcc6f9bae20ac0836dc270b035828cc214c2"
+semiotic-mark@0.2.9:
+  version "0.2.9"
+  resolved "https://registry.yarnpkg.com/semiotic-mark/-/semiotic-mark-0.2.9.tgz#63a7e7d7ff8b5b073411356e85064abb5b1565a2"
   dependencies:
     d3-interpolate "^1.1.5"
     d3-scale "^1.0.3"
@@ -7047,9 +7047,9 @@ semiotic-mark@^0.1.2:
     d3-transition "1.0.3"
     prop-types "15.6.0"
 
-semiotic@^1.10.3:
-  version "1.10.3"
-  resolved "https://registry.yarnpkg.com/semiotic/-/semiotic-1.10.3.tgz#b9d858d84ccaa650bc613670e9ad6d0276540374"
+semiotic@^1.10.5:
+  version "1.10.5"
+  resolved "https://registry.yarnpkg.com/semiotic/-/semiotic-1.10.5.tgz#492a7141e6a1dc28feb8aca3f6d2908961abe783"
   dependencies:
     "@mapbox/polylabel" "1"
     d3-array "^1.2.0"
@@ -7079,7 +7079,7 @@ semiotic@^1.10.3:
     react-annotation "1.2.1"
     react-dom "16.2.0"
     roughjs "git://github.com/emeeks/rough"
-    semiotic-mark "0.2.8"
+    semiotic-mark "0.2.9"
     svg-path-bounding-box "1.0.4"
     whatwg-fetch "2.0.3"
 

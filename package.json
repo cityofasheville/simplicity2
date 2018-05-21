@@ -47,7 +47,7 @@
     "webpack-dev-server": "^2.4.5"
   },
   "dependencies": {
-    "accessible-react-checkbox-group": "2.0.0-beta.2",
+    "accessible-react-checkbox-group": "^2.0.0-beta.3",
     "accessible-react-table": "^0.1.3",
     "apollo-cache-inmemory": "^1.1.9",
     "apollo-client": "^2.2.5",

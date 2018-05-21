@@ -106,16 +106,26 @@ const CategoryDetails = (props) => {
   const filteredProjects = filterProjects(props.data.cip_projects, actualCategories, props.location.query.mode);
   const fundingDetails = getFundsAllocatedAndExpended(filteredProjects, actualCategories, props.location.query.mode);
 
+  const messageOrTable = (filteredProjects === undefined || filteredProjects.length === 0) ?
+    (
+      <div style={{ marginTop: '20px' }} className="alert alert-info alert-sm">
+        Select a category above to show project data
+      </div>
+    ) : <ProjectsTable data={filteredProjects} />;
+
   return (
     <div>
       <div className="row">
         <div className="col-sm-12">
           <div className="funding-summary">
-            <div className="col-sm-6 col-xs-6">
+            <div className="col-sm-4 col-xs-4">
               <h2><span className="label-text">Total funding:</span> <span className="amount">{getDollars(fundingDetails[0].allocated)}</span></h2>
             </div>
-            <div className="col-sm-6 col-xs-6">
+            <div className="col-sm-4 col-xs-4">
               <h2><span className="label-text">Spent:</span> <span className="amount">{getDollars(fundingDetails[0]['Expended funds'])}</span></h2>
+            </div>
+            <div className="col-sm-4 col-xs-4">
+              <h2><span className="label-text">Under contract:</span> <span className="amount">{getDollars(fundingDetails[0]['Under contract'])}</span></h2>
             </div>
           </div>
           <div className="row">
@@ -131,7 +141,7 @@ const CategoryDetails = (props) => {
               </Collapsible>
             </div>
           </div>
-          <ProjectsTable data={filteredProjects} />
+          {messageOrTable}
         </div>
       </div>
     </div>
@@ -159,6 +169,7 @@ const getProjectsQuery = gql`
       email_address
       project_description
       status
+      encumbered
       total_project_funding_budget_document
       total_spent
       target_construction_start

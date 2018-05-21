@@ -128,6 +128,7 @@ export const mapProjectToCategory = (projectData) => {
 export const getFundsAllocatedAndExpended = (projectData, categories, mode) => {
   let totalExpended = 0;
   let totalAllocated = 0;
+  let totalEncumbered = 0;
 
   for (let project of projectData) {
     if (categories.includes(mapProjectToCategory(project))) {
@@ -135,6 +136,7 @@ export const getFundsAllocatedAndExpended = (projectData, categories, mode) => {
       (mode === 'bond' && ['Bond - Parks Program', 'Bond - Housing Program', 'Bond - Transportation Program'].includes(project.category))
     ) {
         totalExpended += parseFloat(project.total_spent);
+        totalEncumbered += parseFloat(project.encumbered);
         if (project.total_project_funding_budget_document.trim() !== '') {
           let allocated = project.total_project_funding_budget_document.indexOf('$') === 0 ? project.total_project_funding_budget_document.slice(1).split(',').join('') : project.total_project_funding_budget_document.split(',').join('');
           totalAllocated += parseFloat(allocated);
@@ -143,7 +145,12 @@ export const getFundsAllocatedAndExpended = (projectData, categories, mode) => {
     }
   }
 
-  return [{ allocated: parseInt(totalAllocated, 10), 'Expended funds': parseInt(totalExpended, 10), 'Remaining funds': parseInt(totalAllocated, 10) - parseInt(totalExpended, 10) }];
+  return [{
+    allocated: parseInt(totalAllocated, 10),
+    'Expended funds': parseInt(totalExpended, 10),
+    'Remaining funds': parseInt(totalAllocated, 10) - parseInt(totalExpended, 10),
+    'Under contract': parseInt(totalEncumbered, 10)
+  }];
 };
 
 export const filterProjects = (projects, categories, mode) => {

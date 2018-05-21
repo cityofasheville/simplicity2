@@ -11,8 +11,10 @@ import { IM_CITY } from '../../shared/iconConstants';
 const CapitalProjectsSummary = (props) => {
   const selectedArr = [];
   const getSelected = () => {
-    if (props.location.query.selected === undefined || props.location.query.selected.length === 0) {
+    if (props.location.query.selected === undefined) {
       return ['Transportation', 'Housing', 'Parks', 'Public Safety', 'Other'];
+    } else if (props.location.query.selected.length === 0) {
+      return selectedArr;
     }
     const selected = props.location.query.selected.split(',');
     for (let category of selected) {
@@ -24,18 +26,18 @@ const CapitalProjectsSummary = (props) => {
     return selectedArr;
   };
 
-  return (  
+  return (
     <div>
-    <PageHeader h1="Capital Projects" externalLinkText="View the City&apos;s General Capital Improvement Plan (CIP)" externalLink="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=28348#page=146" dataLinkPath="/capital_projects/data" icon={<Icon path={IM_CITY} size={60} />}>
-      <span>You can search geographically AND by address:</span>
-      <br></br>
-      <a className="" href="http://arcg.is/Sy5KC" target="_blank">
-        Try our Project Map 
-      </a>   
-    </PageHeader>          
-    <CIPFilter selected={getSelected()} location={props.location} />
-    <hr style={{ marginTop: '5px', marginBottom: '5px' }} />
-    <CategoryDetails location={props.location} categories={getSelected()} />
+      <PageHeader h1="Capital Projects" externalLinkText="View the City&apos;s General Capital Improvement Plan (CIP)" externalLink="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=28348#page=146" dataLinkPath="/capital_projects/data" icon={<Icon path={IM_CITY} size={60} />}>
+        <span>You can search geographically AND by address:</span>
+        <br></br>
+        <a className="" href="http://arcg.is/Sy5KC" target="_blank">
+          Try our Project Map
+        </a>
+      </PageHeader>
+      <CIPFilter selected={getSelected()} location={props.location} />
+      <hr style={{ marginTop: '5px', marginBottom: '5px' }} />
+      <CategoryDetails location={props.location} categories={getSelected()} />
     </div>
   );
 };

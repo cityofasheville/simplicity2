@@ -106,6 +106,13 @@ const CategoryDetails = (props) => {
   const filteredProjects = filterProjects(props.data.cip_projects, actualCategories, props.location.query.mode);
   const fundingDetails = getFundsAllocatedAndExpended(filteredProjects, actualCategories, props.location.query.mode);
 
+  const messageOrTable = (filteredProjects === undefined || filteredProjects.length === 0) ?
+    (
+      <div style={{ marginTop: '20px' }} className="alert alert-info alert-sm">
+        Select a category above to show project data
+      </div>
+    ) : <ProjectsTable data={filteredProjects} />;
+
   return (
     <div>
       <div className="row">
@@ -134,7 +141,7 @@ const CategoryDetails = (props) => {
               </Collapsible>
             </div>
           </div>
-          <ProjectsTable data={filteredProjects} />
+          {messageOrTable}
         </div>
       </div>
     </div>

@@ -212,6 +212,10 @@ accepts@~1.3.4, accepts@~1.3.5:
     mime-types "~2.1.18"
     negotiator "0.6.1"
 
+accessible-react-checkbox-group@^2.0.0-beta.3:
+  version "2.0.0-beta.3"
+  resolved "https://registry.yarnpkg.com/accessible-react-checkbox-group/-/accessible-react-checkbox-group-2.0.0-beta.3.tgz#f0bd14749bd062cd1c59a887a1ef3b3c131e42a0"
+
 accessible-react-table@^0.1.3:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/accessible-react-table/-/accessible-react-table-0.1.3.tgz#76e5b07272862bed4198029f340605d7330456a7"
@@ -7043,7 +7047,7 @@ semiotic-mark@^0.1.2:
     d3-transition "1.0.3"
     prop-types "15.6.0"
 
-semiotic@^1.10.0:
+semiotic@^1.10.3:
   version "1.10.3"
   resolved "https://registry.yarnpkg.com/semiotic/-/semiotic-1.10.3.tgz#b9d858d84ccaa650bc613670e9ad6d0276540374"
   dependencies:

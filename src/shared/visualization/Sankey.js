@@ -12,7 +12,6 @@ import { ResponsiveNetworkFrame } from 'semiotic';
  */
 
 class Sankey extends React.Component {
-
   constructor() {
     super();
     this.state = { hover: null };
@@ -25,8 +24,6 @@ class Sankey extends React.Component {
         .sort((a, b) => b.value - a.value),
       links: JSON.parse(JSON.stringify(this.props.links)),
     };
-
-    console.log(graph)
 
     const lighterColor = '#559ecc';
     const darkerColor = '#4292c6';

@@ -44,12 +44,12 @@ const BudgetSummary = (props) => {
           <SummaryUse />
         </div>
         <div className="col-md-6">
-          {/* <SummaryDepartments /> */}
+          <SummaryDepartments />
         </div>
         <div tabIndex={0} className="note text-center">Bar chart totals exclude interfund transfers</div>
       </div>
       <hr />
-      {/* <SummaryCashFlow /> */}
+      <SummaryCashFlow />
     </div>
   );
 };

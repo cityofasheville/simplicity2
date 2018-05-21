@@ -15,9 +15,9 @@ const getDollars = (value) => {
   return [value < 0 ? '-$' : '$', Math.abs(value).toFixed(0).toLocaleString()].join('');
 };
 
-const getDollarsLong = value => {
-  if (!value || value === 0) {return '$0'}
-  return [value < 0 ? '-$' : '$', Math.abs(value).toLocaleString()].join('')
+const getDollarsLong = (value) => {
+  if (!value || value === 0) { return '$0'; }
+  return [value < 0 ? '-$' : '$', Math.abs(value).toLocaleString()].join('');
 }
 
 const getTitle = (categoryType) => {
@@ -61,14 +61,17 @@ class BudgetSummaryBarChart extends React.Component {
   }
 
   render() {
+    const useData = this.props.data.budgetSummary
     console.log(this.state)
+    console.log(this.props)
+
     return (
       <div className="row">
         <div className="col-sm-12">
           <div className="visualization no-padding">
             <BarChart
-              annotations={createAnnotations(this.props.data.budgetParameters)}
-              data={this.state.summaryData.dataValues}
+              annotations={createAnnotations(useData)}
+              data={useData}
               colorScheme={this.props.colorScheme}
               mainAxisDataKey="display_year"
               dataKeys={this.state.summaryData.dataKeys}

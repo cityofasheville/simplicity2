@@ -123,6 +123,7 @@ a.inText{
 	}
 	.title__icon{
 		margin-right: .5rem;
+        max-width: 50px;
 	}
 	.title__icon svg{
 		height: 40px;
@@ -148,6 +149,11 @@ a.inText{
 	.data-link{
 		margin-left: 1rem;
 	}
+    h3{
+        display: block;
+        clear: both;
+        width: 100%;
+    }
 }
 
 .template-header__title{
@@ -471,7 +477,6 @@ a.inText{
 
 .search-results-group__row-inner{
 	display: flex;
-	flex-flow: row wrap;
 }
 
 /*BUDGET SUMMARY TEMPLATE*/
@@ -774,6 +779,30 @@ footer.footer{
 			}
 		}
 	}
+    .template-header__title{
+        /*flex: 1 0 60%;*/
+    }
+    .template-header__actions{
+        /*flex: 1 0 40%;*/
+        margin: .5rem 0;
+    }
+    .btn-group{
+        button{
+            font-size: .75rem;
+            padding: .5rem;
+        }
+    }
+}
+
+@media(max-width: $mobile-max)and(min-width: $mobile-min){
+    .search-results-group__row-inner{
+        flex-flow: row wrap;
+        flex: 1 0 50%;
+    }
+    .template-header__actions{
+        text-align: left;
+        flex: 1 0 50%;
+    }
 }
 
 @media(max-width: $xs){

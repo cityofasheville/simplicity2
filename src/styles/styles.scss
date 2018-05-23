@@ -581,6 +581,13 @@ input[type="checkbox"],
   }
 }
 
+_:-ms-fullscreen,
+:root input[type="checkbox"],
+:root .checkbox input[type="checkbox"],
+:root .checkbox-inline input[type="checkbox"] {
+  margin-bottom: 0;
+}
+
 label {
   font-weight: normal;
 }

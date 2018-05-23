@@ -9,7 +9,6 @@ import { getBudgetTrees } from './graphql/budgetQueries';
 import { getBudgetYears } from './budgetUtilities';
 import { refreshLocation } from '../../utilities/generalUtilities';
 
-
 const BudgetDetailsTable = (props) => {
   const dataForTable = props.location.query.mode === 'expenditures' || props.location.query.mode === undefined ? props.expenseTree.children : props.revenueTree.children;
   const getNewUrlParams = mode => (

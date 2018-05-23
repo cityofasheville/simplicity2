@@ -1,51 +1,19 @@
 import React from 'react';
 import Icon from '../shared/Icon';
-import { IM_CIRCLE2 } from '../shared/iconConstants';
+import { IM_CIRCLE2 } from '../shared/iconConstants'
 
 const getMaintenanceInfo = (entity, comma) => {
   if (entity === null) {
     return <div>No information available{comma ? ',' : ''}</div>;
   }
   if (entity === 'CITY OF ASHEVILLE') {
-    return (
-      <div>
-        <span>
-          <a
-            href="http://www.ashevillenc.gov/departments/street_services/maintenance.htm"
-            target="_blank"
-          >
-            {entity}
-          </a>
-        </span>
-        <span style={{ marginLeft: '10px' }}>
-          <a
-            href="http://www.ashevillenc.gov/departments/it/online/service_requests.htm"
-            target="_blank"
-          >
-            <button className="btn btn-xs btn-warning">Report with the Asheville App</button>
-          </a>
-        </span>
-      </div>
-    );
+    return (<div><span><a href="http://www.ashevillenc.gov/departments/street_services/maintenance.htm" target="_blank">{entity}</a></span><span style={{ marginLeft: '10px' }}><a href="http://www.ashevillenc.gov/departments/it/online/service_requests.htm" target="_blank"><button className="btn btn-xs btn-warning">Report with the Asheville App</button></a>
+    </span></div>);
   }
   if (entity === 'NCDOT') {
-    return (
-      <div>
-        <span>
-          <a href="https://apps.ncdot.gov/contactus/Home/PostComment?Unit=PIO" target="_blank">
-            {entity}
-          </a>
-          {comma ? ',' : ''}
-        </span>
-      </div>
-    );
+    return <div><span><a href="https://apps.ncdot.gov/contactus/Home/PostComment?Unit=PIO" target="_blank">{entity}</a>{comma ? ',' : ''}</span></div>;
   }
-  return (
-    <div>
-      {entity}
-      {comma ? ',' : ''}
-    </div>
-  );
+  return <div>{entity}{comma ? ',' : ''}</div>;
 };
 
 export const getBounds = (data) => {
@@ -68,26 +36,31 @@ export const getBounds = (data) => {
         yMaxIndex = i;
       }
     }
-    return [[data[yMinIndex].y, data[xMinIndex].x], [data[yMaxIndex].y, data[xMaxIndex].x]];
+    return [
+      [data[yMinIndex].y, data[xMinIndex].x],
+      [data[yMaxIndex].y, data[xMaxIndex].x],
+    ];
   }
   return null;
 };
 
 const getAllStreetPoints = (streetData) => {
   const points = [];
-  for (const street of streetData) {
-    for (const pt of street.line) {
+  for (let street of streetData) {
+    for (let pt of street.line) {
       points.push(pt);
     }
   }
   return points;
 };
 
-export const getBoundsFromStreetData = data => getBounds(getAllStreetPoints(data));
+export const getBoundsFromStreetData = data => (
+  getBounds(getAllStreetPoints(data))
+);
 
 export const convertStreetLinesToLatLngArrays = (streetData) => {
   const lines = [];
-  for (const street of streetData) {
+  for (let street of streetData) {
     lines.push(street.line.map(point => [point.y, point.x]));
   }
   return lines;
@@ -95,11 +68,11 @@ export const convertStreetLinesToLatLngArrays = (streetData) => {
 
 export const convertPolygonsToLatLngArrays = (polygonData) => {
   const polygons = [];
-  for (const poly of polygonData) {
+  for (let poly of polygonData) {
     const latLng = [];
     latLng.push(poly.outer.points.map(pt => [pt.y, pt.x]));
     if (poly.holes && poly.holes.length > 0) {
-      for (const hole of poly.holes) {
+      for (let hole of poly.holes) {
         latLng.push(hole.points.map(pt => [pt.y, pt.x]));
       }
     }
@@ -108,23 +81,23 @@ export const convertPolygonsToLatLngArrays = (polygonData) => {
   return polygons;
 };
 
-// get bounds based on the outer points of polygon/s of a property
+//get bounds based on the outer points of polygon/s of a property
 export const getBoundsFromPropertyPolygons = (polygonData) => {
   const points = [];
-  for (const poly of polygonData) {
-    for (const pt of poly.outer.points) {
+  for (let poly of polygonData) {
+    for (let pt of poly.outer.points) {
       points.push(pt);
     }
   }
   return getBounds(points);
 };
 
-// get bounds based on the outer points of a list of property polygons
+//get bounds based on the outer points of a list of property polygons
 export const getBoundsFromPropertyList = (polygonList) => {
   const points = [];
-  for (const polygon of polygonList) {
-    for (const index of Object.keys(polygon)) {
-      for (const pt of polygon[index].outer.points) {
+  for (let polygon of polygonList) {
+    for (let index of Object.keys(polygon)) {
+      for (let pt of polygon[index].outer.points) {
         points.push(pt);
       }
     }
@@ -132,11 +105,11 @@ export const getBoundsFromPropertyList = (polygonList) => {
   return getBounds(points);
 };
 
-// only getting the outer bounds
+//only getting the outer bounds
 const getAllPolygonPoints = (polygonData) => {
   const points = [];
-  for (const poly of polygonData) {
-    for (const pt of poly.outer.points) {
+  for (let poly of polygonData) {
+    for (let pt of poly.outer.points) {
       points.push(pt);
     }
   }
@@ -145,25 +118,12 @@ const getAllPolygonPoints = (polygonData) => {
 
 export const combinePolygonsFromPropertyList = (propertyList) => {
   const polygons = [];
-  for (const property of propertyList) {
+  for (let property of propertyList) {
     const polygonData = Object.assign({}, property);
     delete polygonData.polygons;
     polygonData.polygons = [];
     polygonData.polygons = convertPolygonsToLatLngArrays(property.polygons);
-    polygonData.popup = (
-      <div>
-        <b>Pin #</b>
-        <div>{property.pinnum}</div>
-        <br />
-        <b>Civic Address ID</b>
-        <div>{property.property_civic_address_id}</div>
-        <br />
-        <b>Address: </b>
-        <div>
-          {property.property_address}, {property.property_zipcode}
-        </div>
-      </div>
-    );
+    polygonData.popup = (<div><b>Pin #</b><div>{property.pinnum}</div><br /><b>Civic Address ID</b><div>{property.property_civic_address_id}</div><br /><b>Address: </b><div>{property.property_address}, {property.property_zipcode}</div></div>);
     polygons.push(polygonData);
   }
   return polygons;
@@ -171,7 +131,7 @@ export const combinePolygonsFromPropertyList = (propertyList) => {
 
 export const combinePolygonsFromNeighborhoodList = (neighborhoodList) => {
   const polygons = [];
-  for (const key of Object.keys(neighborhoodList)) {
+  for (let key of Object.keys(neighborhoodList)) {
     const polygonData = {};
     polygonData.polygons = [];
     polygonData.polygons = convertPolygonsToLatLngArrays([neighborhoodList[key].polygon]);
@@ -180,11 +140,13 @@ export const combinePolygonsFromNeighborhoodList = (neighborhoodList) => {
   return polygons;
 };
 
-export const getBoundsFromPolygonData = data => getBounds(getAllPolygonPoints(data));
+export const getBoundsFromPolygonData = data => (
+  getBounds(getAllPolygonPoints(data))
+);
 
 export const formatMaintenanceData = (data) => {
   const maintenanceData = [];
-  for (const centerline of data) {
+  for (let centerline of data) {
     const segmentInfo = {};
     segmentInfo.line = centerline.line.map(point => [point.y, point.x]);
     if (centerline.maintenance_entities.length === 1) {
@@ -196,34 +158,14 @@ export const formatMaintenanceData = (data) => {
         segmentInfo.maintenance_entity = 'CITY OF ASHEVILLE';
       } else {
         segmentInfo.color = '#f95eff';
-        segmentInfo.maintenance_entity =
-          centerline.maintenance_entities[0] === null
-            ? 'NO INFORMATION AVAILABLE'
-            : centerline.maintenance_entities[0];
+        segmentInfo.maintenance_entity = centerline.maintenance_entities[0] === null ? 'NO INFORMATION AVAILABLE' : centerline.maintenance_entities[0];
       }
     }
     if (centerline.maintenance_entities.length > 1) {
       segmentInfo.color = '#DB6D00';
       segmentInfo.maintenance_entity = 'MULTIPLE';
     }
-    segmentInfo.popup = (
-      <div>
-        <b>Centerline ID</b>
-        <div>{parseInt(centerline.centerline_id, 10)}</div>
-        <br />
-        <b>Maintenance</b>
-        {centerline.maintenance_entities.map((item, idx) => (
-          <div key={idx}>
-            {getMaintenanceInfo(
-              item,
-              centerline.maintenance_entities.length > 1 &&
-                idx < centerline.maintenance_entities.length - 1
-            )}
-          </div>
-        ))}
-        <br />
-      </div>
-    );
+    segmentInfo.popup = (<div><b>Centerline ID</b><div>{parseInt(centerline.centerline_id, 10)}</div><br /><b>Maintenance</b>{centerline.maintenance_entities.map((item, idx) => <div key={idx}>{getMaintenanceInfo(item, centerline.maintenance_entities.length > 1 && idx < centerline.maintenance_entities.length - 1)}</div>)}<br /></div>);
     maintenanceData.push(segmentInfo);
   }
   return maintenanceData;
@@ -246,10 +188,7 @@ export const createMaintenanceLegend = (data) => {
   return (
     <div style={{ width: '160px' }}>
       {maintenanceEntities.map((type, index) => (
-        <div key={`legendItem-${type}`} style={{ width: '160px', marginBottom: '5px' }}>
-          <Icon path={IM_CIRCLE2} size={16} color={colors[index]} verticalAlign="top" />
-          <span style={{ marginLeft: '5px', display: 'inline-block', width: '130px' }}>{type}</span>
-        </div>
+        <div key={`legendItem-${type}`} style={{ width: '160px', marginBottom: '5px' }}><Icon path={IM_CIRCLE2} size={16} color={colors[index]} verticalAlign="top" /><span style={{ marginLeft: '5px', display: 'inline-block', width: '130px' }}>{type}</span></div>
       ))}
     </div>
   );

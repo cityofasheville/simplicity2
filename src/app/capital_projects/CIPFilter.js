@@ -9,9 +9,11 @@ import ButtonGroup from '../../shared/ButtonGroup';
 import Button from '../../shared/Button';
 
 const CIPFilter = (props) => {
-  const toggleMode = () => ({
-    mode: props.location.query.mode === 'bond' ? 'all' : 'bond',
-  });
+  const toggleMode = () => (
+    {
+      mode: props.location.query.mode === 'bond' ? 'all' : 'bond',
+    }
+  );
 
   const getNewUrlParams = (selected) => {
     const newSelected = selected.map(cat => urlCategory(cat));
@@ -51,13 +53,7 @@ const CIPFilter = (props) => {
       <div>
         <CheckboxGroup
           checkedValues={visibleSelection}
-          indeterminateValues={
-            realSelection.length <
-              (bondOnly ? props.categories.length - 2 : props.categories.length) &&
-            realSelection.length > 0
-              ? ['All']
-              : []
-          }
+          indeterminateValues={realSelection.length < (bondOnly ? props.categories.length - 2 : props.categories.length) && realSelection.length > 0 ? ['All'] : []}
           onChange={handleClick}
           className="checkboxGroup"
         >
@@ -72,10 +68,7 @@ const CIPFilter = (props) => {
               label={category}
               value={category}
               // selected={visibleSelection.includes(category)}
-              disabled={
-                props.location.query.mode === 'bond' &&
-                !['Parks', 'Housing', 'Transportation'].includes(category)
-              }
+              disabled={props.location.query.mode === 'bond' && !['Parks', 'Housing', 'Transportation'].includes(category)}
             />
           ))}
         </CheckboxGroup>

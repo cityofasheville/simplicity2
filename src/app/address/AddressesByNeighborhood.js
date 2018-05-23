@@ -5,10 +5,7 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import EmailDownload from '../../shared/EmailDownload';
 import Map from '../../shared/visualization/Map';
-import {
-  getBoundsFromPolygonData,
-  combinePolygonsFromNeighborhoodList,
-} from '../../utilities/mapUtilities';
+import { getBoundsFromPolygonData, combinePolygonsFromNeighborhoodList } from '../../utilities/mapUtilities';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import Error from '../../shared/Error';
 
@@ -18,13 +15,8 @@ const dataColumns = [
     accessor: 'Address',
     Cell: row => (
       <div>
-        <div>
-          {row.original.street_number} {row.original.street_prefix} {row.original.street_name}{' '}
-          {row.original.unit}
-        </div>
-        <div>
-          {row.original.city}, NC {row.original.zipcode}
-        </div>
+        <div>{row.original.street_number} {row.original.street_prefix} {row.original.street_name} {row.original.unit}</div>
+        <div>{row.original.city}, NC {row.original.zipcode}</div>
       </div>
     ),
     Filter: ({ filter, onChange }) => (
@@ -36,19 +28,8 @@ const dataColumns = [
       />
     ),
     filterMethod: (filter, row) => {
-      const joinedAddressInfo = [
-        row._original.street_number,
-        row._original.street_prefix,
-        row._original.street_number,
-        row._original.street_name,
-        row._original.unit,
-        row._original.city,
-        ',NC',
-        row._original.zipcode,
-      ].join(' ');
-      return row._original !== undefined
-        ? joinedAddressInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1
-        : true;
+      const joinedAddressInfo = [row._original.street_number, row._original.street_prefix, row._original.street_number, row._original.street_name, row._original.unit, row._original.city, ',NC', row._original.zipcode].join(' ');
+      return row._original !== undefined ? joinedAddressInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
     },
   },
   {
@@ -58,9 +39,7 @@ const dataColumns = [
       <div>
         <div>{row.original.owner_name}</div>
         <div>{row.original.owner_address}</div>
-        <div>
-          {row.original.owner_cityname}, {row.original.owner_state} {row.original.owner_zipcode}
-        </div>
+        <div>{row.original.owner_cityname}, {row.original.owner_state} {row.original.owner_zipcode}</div>
       </div>
     ),
     Filter: ({ filter, onChange }) => (
@@ -72,88 +51,64 @@ const dataColumns = [
       />
     ),
     filterMethod: (filter, row) => {
-      const joinedOwnerInfo = [
-        row._original.owner_name,
-        row._original.owner_address,
-        row._original.owner_cityname,
-        [',', row._original.owner_state].join(''),
-        row._original.owner_zipcode,
-      ].join(' ');
-      return row._original !== undefined
-        ? joinedOwnerInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1
-        : true;
+      const joinedOwnerInfo = [row._original.owner_name, row._original.owner_address, row._original.owner_cityname, [',', row._original.owner_state].join(''), row._original.owner_zipcode].join(' ');
+      return row._original !== undefined ? joinedOwnerInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
     },
   },
 ];
 
 const AddressesByNeighborhood = (props) => {
-  if (props.data.loading) {
-    // eslint-disable-line react/prop-types
+  if (props.data.loading) { // eslint-disable-line react/prop-types
     return <LoadingAnimation />;
   }
-  if (props.data.error) {
-    // eslint-disable-line react/prop-types
+  if (props.data.error) { // eslint-disable-line react/prop-types
     return <Error message={props.data.error.message} />; // eslint-disable-line react/prop-types
   }
 
-  const mapData = props.data.addresses_by_neighborhood.map(item =>
-    Object.assign({}, item, {
-      popup: `<b>Address</b><div>${item.street_number} ${item.street_prefix} ${
-        item.street_name
-      } ${item.unit || ''}</div><div>${item.city}, NC ${item.zipcode}</div><br /><b>Owner</b><div>${
-        item.owner_name
-      }</div><div>${item.owner_address}</div><div>${item.owner_cityname}, ${item.owner_state} ${
-        item.owner_zipcode
-      }</div>`,
-    }));
+  const mapData = props.data.addresses_by_neighborhood.map(item => (Object.assign({}, item, { popup: `<b>Address</b><div>${item.street_number} ${item.street_prefix} ${item.street_name} ${item.unit || ''}</div><div>${item.city}, NC ${item.zipcode}</div><br /><b>Owner</b><div>${item.owner_name}</div><div>${item.owner_address}</div><div>${item.owner_cityname}, ${item.owner_state} ${item.owner_zipcode}</div>` })
+  ));
 
   return (
     <div>
       <div className="row">
         <div className="col-sm-12">
-          <EmailDownload
-            downloadData={props.data.addresses_by_neighborhood}
-            fileName="addresses_by_neighborhood.csv"
-          />
+          <EmailDownload downloadData={props.data.addresses_by_neighborhood} fileName="addresses_by_neighborhood.csv" />
         </div>
         <div id="listView" hidden={props.location.query.view === 'map'} className="col-sm-12">
-          {props.data.addresses_by_neighborhood.length < 1 ? (
+          {props.data.addresses_by_neighborhood.length < 1 ?
             <div className="alert alert-info">No results found</div>
-          ) : (
+          :
             <div style={{ marginTop: '10px' }}>
               <AccessibleReactTable
                 data={props.data.addresses_by_neighborhood}
                 arialLabel="Neighborhood Addresses"
                 columns={dataColumns}
                 showPagination={props.data.addresses_by_neighborhood.length > 20}
-                defaultPageSize={
-                  props.data.addresses_by_neighborhood.length <= 20
-                    ? props.data.addresses_by_neighborhood.length
-                    : 20
-                }
-                getTdProps={() => ({
-                  style: {
-                    whiteSpace: 'normal',
-                  },
-                })}
+                defaultPageSize={props.data.addresses_by_neighborhood.length <= 20 ? props.data.addresses_by_neighborhood.length : 20}
+                getTdProps={() => {
+                  return {
+                    style: {
+                      whiteSpace: 'normal',
+                    },
+                  };
+                }}
                 filterable
               />
             </div>
-          )}
+          }
         </div>
 
         <div id="mapView" className="col-xs-12" hidden={props.location.query.view !== 'map'}>
-          {props.data.addresses_by_neighborhood.length === 0 ||
-          props.location.query.view !== 'map' ? (
+          {props.data.addresses_by_neighborhood.length === 0 || props.location.query.view !== 'map' ?
             <div className="alert alert-info">No results found</div>
-            ) : (
-              <Map
-                data={mapData}
-                drawPolygon
-                polygonData={combinePolygonsFromNeighborhoodList([props.data.neighborhoods[0]])}
-                bounds={getBoundsFromPolygonData([props.data.neighborhoods[0].polygon])}
-              />
-            )}
+            :
+            <Map
+              data={mapData}
+              drawPolygon
+              polygonData={combinePolygonsFromNeighborhoodList([props.data.neighborhoods[0]])}
+              bounds={getBoundsFromPolygonData([props.data.neighborhoods[0].polygon])}
+            />
+          }
         </div>
       </div>
     </div>
@@ -173,7 +128,7 @@ AddressesByNeighborhood.defaultProps = {
 
 const getAddressesAndNeighborhoodInfoQuery = gql`
   query getAddressesAndStreetInfoQuery($nbrhd_ids: [String]) {
-    addresses_by_neighborhood(nbrhd_ids: $nbrhd_ids) {
+    addresses_by_neighborhood (nbrhd_ids: $nbrhd_ids) {
       civic_address_id
       x
       y
@@ -190,7 +145,7 @@ const getAddressesAndNeighborhoodInfoQuery = gql`
       owner_state
       owner_zipcode
     }
-    neighborhoods(nbrhd_ids: $nbrhd_ids) {
+    neighborhoods (nbrhd_ids: $nbrhd_ids) {
       name
       polygon {
         outer {
@@ -206,7 +161,7 @@ const getAddressesAndNeighborhoodInfoQuery = gql`
           }
         }
       }
-    }
+    } 
   }
 `;
 

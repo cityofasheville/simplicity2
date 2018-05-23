@@ -17,7 +17,7 @@ const CapitalProjectsSummary = (props) => {
       return selectedArr;
     }
     const selected = props.location.query.selected.split(',');
-    for (const category of selected) {
+    for (let category of selected) {
       const longName = longCategory(category);
       if (!selectedArr.includes(longName)) {
         selectedArr.push(longName);
@@ -28,15 +28,9 @@ const CapitalProjectsSummary = (props) => {
 
   return (
     <div>
-      <PageHeader
-        h1="Capital Projects"
-        externalLinkText="View the City&apos;s General Capital Improvement Plan (CIP)"
-        externalLink="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=28348#page=146"
-        dataLinkPath="/capital_projects/data"
-        icon={<Icon path={IM_CITY} size={60} />}
-      >
+      <PageHeader h1="Capital Projects" externalLinkText="View the City&apos;s General Capital Improvement Plan (CIP)" externalLink="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=28348#page=146" dataLinkPath="/capital_projects/data" icon={<Icon path={IM_CITY} size={60} />}>
         <span>You can search geographically AND by address:</span>
-        <br />
+        <br></br>
         <a className="" href="http://arcg.is/Sy5KC" target="_blank">
           Try our Project Map
         </a>

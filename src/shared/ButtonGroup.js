@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 const ButtonGroup = props => (
   <div className={['btn-group pull-', props.alignment].join('')} style={props.style}>
-    {props.children}
+    { props.children }
   </div>
 );
 

@@ -8,6 +8,7 @@ import MiniResults from './MiniResults';
 import { getSearchText } from '../search/graphql/searchQueries';
 import { updateSearchText } from '../search/graphql/searchMutations';
 
+
 let timeout = null;
 
 const getEntities = (selected) => {
@@ -23,7 +24,7 @@ const getEntities = (selected) => {
     { label: 'Owners', type: 'owner', checked: true },
     { label: 'Google places', type: 'google', checked: true },
   ];
-  for (const entity of entities) {
+  for (let entity of entities) {
     if (entityTypes.indexOf(entity.type) === -1) {
       entity.checked = false;
     }
@@ -31,12 +32,12 @@ const getEntities = (selected) => {
   return entities;
 };
 
+
 class MiniSearch extends React.Component {
+
   constructor(props) {
     super(props);
-    this.state = {
-      searchTermToUse: this.props.searchText.search || this.props.location.query.search,
-    };
+    this.state = { searchTermToUse: this.props.searchText.search || this.props.location.query.search };
     this.handleKeyUp = this.handleKeyUp.bind(this);
     this.handleSearchClick = this.handleSearchClick.bind(this);
   }
@@ -64,56 +65,39 @@ class MiniSearch extends React.Component {
       variables: {
         value,
       },
-    });
+    })
   }
 
   render() {
-    return (
-      <div style={{ margin: '2% 0%', fontSize: '0.75em' }}>
-        <h4>Check whether the address is within city limits</h4>
-        <form onSubmit={event => event.preventDefault()}>
-          <div className="input-group">
-            <label htmlFor="searchBox" className="offscreen">
-              Search terms
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder={this.props.selectedEntity}
-              defaultValue={this.state.searchTermToUse}
-              onKeyUp={this.handleKeyUp}
-              id="searchBox"
-              name="searchBox"
-              autoFocus
-            />
-            <span className="input-group-btn">
-              <button
-                className="btn btn-primary"
-                type="button"
-                aria-label="search"
-                onClick={() => this.handleSearchClick(document.getElementById('searchBox').value)}
-              >
-                <Icon path={IM_SEARCH} size={16} />
-              </button>
-            </span>
-          </div>
-          <div style={{ display: 'none' }}>
-            <SearchByEntities
-              entities={getEntities(this.props.location.query.entities)}
-              location={this.props.location}
-            />
-          </div>
-        </form>
-        <br />
-        <MiniResults
-          results={[]}
-          searchText={this.state.searchTermToUse}
-          location={this.props.location}
-        />
-      </div>
-    );
+    return (<div style={{ margin: '2% 0%', fontSize: '0.75em'}} >
+      <h4>Check whether the address is within city limits</h4>
+      <form onSubmit={event => event.preventDefault()}>
+        <div className="input-group">
+          <label htmlFor="searchBox" className="offscreen">Search terms</label>
+          <input
+            type="text"
+            className="form-control"
+            placeholder={this.props.selectedEntity}
+            defaultValue={this.state.searchTermToUse}
+            onKeyUp={this.handleKeyUp}
+            id="searchBox"
+            name="searchBox"
+            autoFocus
+          />
+          <span className="input-group-btn">
+            <button className="btn btn-primary" type="button" aria-label="search" onClick={() => this.handleSearchClick(document.getElementById('searchBox').value)}><Icon path={IM_SEARCH} size={16} /></button>
+          </span>
+        </div>
+        <div style={{display: 'none'}}>
+          <SearchByEntities entities={getEntities(this.props.location.query.entities)} location={this.props.location} />
+        </div>
+      </form>
+      <br/>
+      <MiniResults results={[]} searchText={this.state.searchTermToUse} location={this.props.location}></MiniResults>
+    </div>)
   }
 }
+
 
 MiniSearch.defaultProps = {
   entities: [
@@ -126,7 +110,7 @@ MiniSearch.defaultProps = {
   ],
   selectedEntities: '',
   selectedEntity: 'address',
-  title: 'Check whether the address is within city limits',
+  title: 'Check whether the address is within city limits'
 };
 
 MiniSearch.propTypes = {
@@ -138,6 +122,7 @@ MiniSearch.propTypes = {
   title: PropTypes.string,
 };
 
+
 export default compose(
   graphql(updateSearchText, { name: 'updateSearchText' }),
   graphql(getSearchText, {
@@ -146,3 +131,4 @@ export default compose(
     }),
   })
 )(MiniSearch);
+

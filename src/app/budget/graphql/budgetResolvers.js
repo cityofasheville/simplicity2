@@ -1,9 +1,4 @@
-import {
-  getSankeyData,
-  getBudgetTrees,
-  getBudgetSummaryDept,
-  getBudgetSummaryUse,
-} from './budgetQueries';
+import { getSankeyData, getBudgetTrees, getBudgetSummaryDept, getBudgetSummaryUse } from './budgetQueries';
 
 export const budgetResolvers = {
   Mutation: {

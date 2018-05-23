@@ -14,7 +14,9 @@ const CheckboxOption = props => (
       checked={props.isChecked}
       readOnly
     />
-    <div className="react-select-option__label">{props.children}</div>
+    <div className="react-select-option__label">
+      {props.children}
+    </div>
   </Option>
 );
 
@@ -59,30 +61,21 @@ class MultiSelect extends React.Component {
     const { defaultValue, currentValues } = this.state;
     return (
       <div className="form-control multiSelect" name={this.name}>
-        <Select multiple onChange={this.handleChange}>
+        <Select
+          multiple
+          onChange={this.handleChange}
+        >
           <Trigger>
-            {currentValues.length > 0
-              ? currentValues.map((value, i) => (
-                <div className="selectedMultiOption" key={i}>
-                  {value}
-                </div>
-              ))
-              : defaultValue}
-            {currentValues.length > 0 ? (
-              <i className="fa fa-refresh multiSelectRefresh" onClick={this.resetToDefault} />
-            ) : (
-              ''
-            )}
+            { currentValues.length > 0 ?
+              currentValues.map((value, i) => (
+                <div className="selectedMultiOption" key={i}>{value}</div>
+              )) : defaultValue
+            }
+            { currentValues.length > 0 ? <i className="fa fa-refresh multiSelectRefresh" onClick={this.resetToDefault}></i> : ''}
           </Trigger>
           <OptionList tag="ul" className="react-select-menu">
             {this.options.map((option, i) => (
-              <CheckboxOption
-                key={[this.name, 'option', i].join('_')}
-                value={option.value}
-                isChecked={currentValues.includes(option.value)}
-              >
-                {option.display}
-              </CheckboxOption>
+              <CheckboxOption key={[this.name, 'option', i].join('_')} value={option.value} isChecked={currentValues.includes(option.value)}>{option.display}</CheckboxOption>
             ))}
           </OptionList>
         </Select>

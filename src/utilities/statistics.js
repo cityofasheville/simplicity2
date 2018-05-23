@@ -1,8 +1,11 @@
+
 class Statistics {
+
   inDateRange(inDate, start, end) {
     let inRange = true;
     const date = new Date(inDate).getTime();
-    if ((start && date < start.getTime()) || (end && date > end.getTime())) {
+    if ((start && date < start.getTime()) ||
+        (end && date > end.getTime())) {
       inRange = false;
     }
     return inRange;
@@ -20,7 +23,7 @@ class Statistics {
             break;
 
           case 'truthy_in_set':
-            if (!(item[field] in values) || !values[item[field]]) include = false;
+            if (!(item[field] in values) || !(values[item[field]])) include = false;
             break;
 
           default:

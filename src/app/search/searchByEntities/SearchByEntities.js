@@ -8,10 +8,7 @@ const SearchByEntities = (props) => {
   const getNewUrlParams = (entity) => {
     let newSelected = '';
     const useLocation = props.location.query.entities !== undefined;
-    const curSelected = (useLocation
-      ? props.location.query.entities
-      : props.selectedEntities
-    ).split(',');
+    const curSelected = (useLocation ? props.location.query.entities : props.selectedEntities).split(',');
     const alreadySelected = curSelected.indexOf(entity) > -1;
     if (alreadySelected) {
       newSelected = curSelected.filter(ent => ent !== entity);
@@ -29,14 +26,8 @@ const SearchByEntities = (props) => {
       <span className="offscreen">Entities to search by</span>
       <ul className={styles.searchEntitiesUL}>
         {props.entities.map((entity, i) => (
-          <li
-            key={['entity', i].join('_')}
-            className={entity.checked ? 'text-primary' : styles.unchecked}
-          >
-            <SearchByEntity
-              entity={entity}
-              onClick={() => refreshLocation(getNewUrlParams(entity.type), props.location)}
-            />
+          <li key={['entity', i].join('_')} className={entity.checked ? 'text-primary' : styles.unchecked}>
+            <SearchByEntity entity={entity} onClick={() => refreshLocation(getNewUrlParams(entity.type), props.location)} />
           </li>
         ))}
       </ul>
@@ -68,3 +59,4 @@ SearchByEntities.defaultProps = {
 };
 
 export default SearchByEntities;
+

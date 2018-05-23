@@ -70,42 +70,42 @@ if (window.location.href.indexOf('dashboards.ashevillenc.gov') > -1) {
 }
 
 const Routes = () => (
-  <ApolloProvider client={client}>
+  <ApolloProvider client={client} >
     <Router history={browserHistory} onUpdate={logPageView === null ? null : () => logPageView()}>
       <Route path="/" component={App}>
         <IndexRoute component={Home} />
         <Route path="search">
           <IndexRoute component={Search} />
-          <Route path="googlePlaceMatches" component={GooglePlaceResults} />
+          <Route path="googlePlaceMatches" component={GooglePlaceResults}></Route>
         </Route>
-        <Route path="my-simplicity" component={MySimpliCity} />
+        <Route path="my-simplicity" component={MySimpliCity}></Route>
         <Route path="locations" component={Locations} />
         <Route path="address">
           <IndexRoute component={Address} />
-          <Route path="addressList" component={AddressList} />
+          <Route path="addressList" component={AddressList}></Route>
         </Route>
         <Route path="property">
           <IndexRoute component={Property} />
-          <Route path="properties" component={Properties} />
+          <Route path="properties" component={Properties}></Route>
         </Route>
-        <Route path="street" component={Street} />
-        <Route path="neighborhood" component={Neighborhood} />
-        <Route path="owner" component={Owner} />
+        <Route path="street" component={Street}></Route>
+        <Route path="neighborhood" component={Neighborhood}></Route>
+        <Route path="owner" component={Owner}></Route>
         <Route path="dashboards" component={Topics} />
         <Route path="budget">
           <IndexRoute component={BudgetSummary} />
-          <Route path="details" component={BudgetDetailsContainer} />
-          <Route path="summaryUse" component={SummaryUse} />
-          <Route path="summaryDepartments" component={SummaryDepartments} />
-          <Route path="summaryCashFlow" component={SummaryCashFlow} />
-          <Route path="detailsTreemap" component={BudgetDetailsContainer} />
-          <Route path="detailsTable" component={BudgetDetailsContainer} />
-          <Route path="data" component={BudgetData} />
+          <Route path="details" component={BudgetDetailsContainer}></Route>
+          <Route path="summaryUse" component={SummaryUse}></Route>
+          <Route path="summaryDepartments" component={SummaryDepartments}></Route>
+          <Route path="summaryCashFlow" component={SummaryCashFlow}></Route>
+          <Route path="detailsTreemap" component={BudgetDetailsContainer}></Route>
+          <Route path="detailsTable" component={BudgetDetailsContainer}></Route>
+          <Route path="data" component={BudgetData}></Route>
         </Route>
         <Route path="capital_projects">
           <IndexRoute component={CapitalProjectsSummary} />
-          <Route path="details" component={CategoryDetails} />
-          <Route path="data" component={CIPData} />
+          <Route path="details" component={CategoryDetails}></Route>
+          <Route path="data" component={CIPData}></Route>
         </Route>
         <Route path="crime">
           <IndexRoute component={CrimeSummary} />
@@ -115,23 +115,20 @@ const Routes = () => (
         </Route>
         <Route path="development">
           <IndexRoute component={DevelopmentSummary} />
-          <Route path="detail" component={DevelopmentDetail} />
-          <Route path="sla-dashboard" component={DevelopmentSLADashboard} />
+          <Route path="detail" component={DevelopmentDetail}></Route>
+          <Route path="sla-dashboard" component={DevelopmentSLADashboard}></Route>
         </Route>
         <Route path="homelessness">
           <IndexRoute component={HomelessnessSummary} />
-          <Route path="veterans" component={HomelessnessVeterans} />
-          <Route path="data" component={HomelessnessData} />
-          <Route path="veteranEnrollments" component={HomelessnessVeteransEnrollment} />
-          <Route
-            path="veteranChronicAssignments"
-            component={HomelessnessVeteransChronicAssignments}
-          />
-          <Route path="veteranInflowOutflow" component={HomelessnessVeteransInflowOutflow} />
-          <Route path="veteranExitTime" component={HomelessnessVeteransExitTime} />
-          <Route path="counts" component={HomelessnessCounts} />
-          <Route path="demographics" component={HomelessnessDemographics} />
-          <Route path="enrollments" component={HomelessnessEnrollment} />
+          <Route path="veterans" component={HomelessnessVeterans}></Route>
+          <Route path="data" component={HomelessnessData}></Route>
+          <Route path="veteranEnrollments" component={HomelessnessVeteransEnrollment}></Route>
+          <Route path="veteranChronicAssignments" component={HomelessnessVeteransChronicAssignments}></Route>
+          <Route path="veteranInflowOutflow" component={HomelessnessVeteransInflowOutflow}></Route>
+          <Route path="veteranExitTime" component={HomelessnessVeteransExitTime}></Route>
+          <Route path="counts" component={HomelessnessCounts}></Route>
+          <Route path="demographics" component={HomelessnessDemographics}></Route>
+          <Route path="enrollments" component={HomelessnessEnrollment}></Route>
         </Route>
         <Route path="maintenance">
           <IndexRoute component={Maintenance} />
@@ -145,3 +142,4 @@ const Routes = () => (
 );
 
 export default Routes;
+

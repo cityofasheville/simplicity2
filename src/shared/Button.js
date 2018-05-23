@@ -20,24 +20,14 @@ const getButtonStyle = (positionInGroup, extraStyle) => {
     case 'right':
       return { borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px', ...extraStyle };
     case 'middle':
-      return {
-        borderTopRightRadius: '0px',
-        borderBottomRightRadius: '0px',
-        borderTopLeftRadius: '0px',
-        borderBottomLeftRadius: '0px',
-        ...extraStyle,
-      };
+      return { borderTopRightRadius: '0px', borderBottomRightRadius: '0px', borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px', ...extraStyle };
     default:
       return extraStyle;
   }
 };
 
 const Button = props => (
-  <button
-    className={getButtonClass(props.size, props.type, props.active)}
-    style={getButtonStyle(props.positionInGroup, props.style)}
-    onClick={props.onClick}
-  >
+  <button className={getButtonClass(props.size, props.type, props.active)} style={getButtonStyle(props.positionInGroup, props.style)} onClick={props.onClick} >
     {props.children}
   </button>
 );

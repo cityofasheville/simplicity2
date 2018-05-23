@@ -3,18 +3,7 @@ import PropTypes from 'prop-types';
 import ReactTable from 'react-table';
 import { accessibility } from 'accessible-react-table';
 import Icon from '../../../shared/Icon';
-import {
-  IM_SHIELD3,
-  IM_OFFICE,
-  IM_ROAD,
-  IM_USER,
-  IM_USERS,
-  IM_LOCATION,
-  IM_HOME2,
-  IM_QUESTION,
-  IM_GOOGLE,
-  IM_SEARCH,
-} from '../../../shared/iconConstants';
+import { IM_SHIELD3, IM_OFFICE, IM_ROAD, IM_USER, IM_USERS, IM_LOCATION, IM_HOME2, IM_QUESTION, IM_GOOGLE, IM_SEARCH } from '../../../shared/iconConstants';
 import styles from './searchResultGroup.css';
 
 const getLink = (type, id, search, entities, label, originalSearch) => {
@@ -60,121 +49,58 @@ const SearchResultGroup = (props) => {
   const getIcon = (type) => {
     switch (type) {
       case 'address':
-        return (
-          <span style={{ marginRight: '5px' }}>
-            <Icon path={IM_LOCATION} size={26} />
-          </span>
-        );
+        return (<span style={{ marginRight: '5px' }}><Icon path={IM_LOCATION} size={26} /></span>);
       case 'property':
-        return (
-          <span style={{ marginRight: '5px' }}>
-            <Icon path={IM_HOME2} size={26} />
-          </span>
-        );
+        return (<span style={{ marginRight: '5px' }}><Icon path={IM_HOME2} size={26} /></span>);
       case 'street':
-        return (
-          <span style={{ marginRight: '5px' }}>
-            <Icon path={IM_ROAD} size={26} />
-          </span>
-        );
+        return (<span style={{ marginRight: '5px' }}><Icon path={IM_ROAD} size={26} /></span>);
       case 'neighborhood':
-        return (
-          <span style={{ marginRight: '5px' }}>
-            <Icon path={IM_USERS} size={26} />
-          </span>
-        );
+        return (<span style={{ marginRight: '5px' }}><Icon path={IM_USERS} size={26} /></span>);
       case 'permit':
-        return (
-          <span style={{ marginRight: '5px' }}>
-            <Icon path={IM_OFFICE} size={26} />
-          </span>
-        );
+        return (<span style={{ marginRight: '5px' }}><Icon path={IM_OFFICE} size={26} /></span>);
       case 'crime':
-        return (
-          <span style={{ marginRight: '5px' }}>
-            <Icon path={IM_SHIELD3} size={26} />
-          </span>
-        );
+        return (<span style={{ marginRight: '5px' }}><Icon path={IM_SHIELD3} size={26} /></span>);
       case 'owner':
-        return (
-          <span style={{ marginRight: '5px' }}>
-            <Icon path={IM_USER} size={26} />
-          </span>
-        );
+        return (<span style={{ marginRight: '5px' }}><Icon path={IM_USER} size={26} /></span>);
       case 'place':
-        return (
-          <span style={{ marginRight: '5px' }}>
-            <Icon path={IM_GOOGLE} size={26} />
-          </span>
-        );
+        return (<span style={{ marginRight: '5px' }}><Icon path={IM_GOOGLE} size={26} /></span>);
       case 'search':
-        return (
-          <span style={{ marginRight: '5px' }}>
-            <Icon path={IM_SEARCH} size={26} />
-          </span>
-        );
+        return (<span style={{ marginRight: '5px' }}><Icon path={IM_SEARCH} size={26} /></span>);
       default:
-        return (
-          <span style={{ marginRight: '5px' }}>
-            <Icon path={IM_QUESTION} size={26} />
-          </span>
-        );
+        return (<span style={{ marginRight: '5px' }}><Icon path={IM_QUESTION} size={26} /></span>);
     }
   };
 
   const dataColumns = [
     {
       headerStyle: { boxShadow: 'none' },
-      Header: (
-        <h2 className="pull-left">
-          {getIcon(props.data.label)}
-          {getPlural(props.data.label)}
-          <span className="offscreen">Number of results</span>
-          <span className="badge">{props.data.results.length}</span>
-          {props.data.label === 'place' && (
-            <img
-              src={require('./powered_by_google_on_white.png')}
-              alt="Powered by Google"
-              style={{ marginLeft: '20px' }}
-            />
-          )}
-        </h2>
-      ),
+      Header: <h2 className="pull-left">
+        {getIcon(props.data.label)}
+        {getPlural(props.data.label)}
+        <span className="offscreen">Number of results</span>
+        <span className="badge">{props.data.results.length}</span>
+        {props.data.label === 'place' &&
+          <img src={require('./powered_by_google_on_white.png')} alt="Powered by Google" style={{ marginLeft: '20px' }}></img>
+        }
+      </h2>,
       accessor: 'label',
       Cell: row => (
         <span className="search-results-group__row-inner">
-          <a
-            className="search-results-group__link"
-            href={getLink(
-              row.original.type,
-              row.original.id,
-              props.searchText,
-              props.selectedEntities,
-              row.original.label,
-              props.originalSearch
-            )}
-          >
+          <a className="search-results-group__link" href={getLink(row.original.type, row.original.id, props.searchText, props.selectedEntities, row.original.label, props.originalSearch)}>
             <span className="text-primary">
               {getIcon(row.original.type === 'place' ? 'search' : row.original.type)}
               {row.value}
             </span>
           </a>
-          {props.data.label === 'place' && (
+          {props.data.label === 'place' &&
             <span className="text-primary">
               <a
-                href={[
-                  'https://www.google.com/maps/place/?q=place_id:',
-                  row.original.place_id,
-                ].join('')}
-                target="_blank"
+                href={['https://www.google.com/maps/place/?q=place_id:', row.original.place_id].join('')}target="_blank"
               >
-                <span style={{ marginRight: '5px' }}>
-                  <Icon path={IM_GOOGLE} size={26} />
-                </span>
-                {row.original.place_name}
+                <span style={{ marginRight: '5px' }}><Icon path={IM_GOOGLE} size={26} /></span>{row.original.place_name}
               </a>
             </span>
-          )}
+          }
         </span>
       ),
       Filter: ({ filter, onChange }) => (
@@ -191,14 +117,7 @@ const SearchResultGroup = (props) => {
   const AccessibleReactTable = accessibility(ReactTable);
 
   return (
-    <div
-      className={
-        `${styles.searchResultGroup
-        } search-results-group` +
-        ` search-results-group-${
-          props.data.label}`
-      }
-    >
+    <div className={styles.searchResultGroup + ' search-results-group' + ' search-results-group-'+props.data.label }>
       <AccessibleReactTable
         ariaLabel="Search Results"
         data={props.data.results}
@@ -209,11 +128,7 @@ const SearchResultGroup = (props) => {
         sortable={false}
         defaultFilterMethod={(filter, row) => {
           const id = filter.pivotId || filter.id;
-          return row[id] !== undefined
-            ? String(row[id])
-              .toLowerCase()
-              .indexOf(filter.value.toLowerCase()) > -1
-            : true;
+          return row[id] !== undefined ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
         }}
       />
     </div>

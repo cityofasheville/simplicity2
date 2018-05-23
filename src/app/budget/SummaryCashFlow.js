@@ -27,12 +27,10 @@ class SummaryCashFlow extends React.Component {
   }
 
   render() {
-    if (this.props.data.loading) {
-      // eslint-disable-line react/prop-types
+    if (this.props.data.loading) { // eslint-disable-line react/prop-types
       return <LoadingAnimation />;
     }
-    if (this.props.data.error) {
-      // eslint-disable-line react/prop-types
+    if (this.props.data.error) { // eslint-disable-line react/prop-types
       return <Error message={this.props.data.error.message} />; // eslint-disable-line react/prop-types
     }
 
@@ -45,9 +43,7 @@ class SummaryCashFlow extends React.Component {
         <div className="col-sm-12">
           <h3>Cash flow diagram: Revenues to expenditures</h3>
           <div>
-            The chart below shows how revenue flows through the City’s key funds to the various
-            departments. The thickness of each flow is proportional to the amount of money
-            represented. Mouse over the rectangles and flows to see actual amounts.
+            The chart below shows how revenue flows through the City’s key funds to the various departments. The thickness of each flow is proportional to the amount of money represented. Mouse over the rectangles and flows to see actual amounts.
           </div>
           <BudgetSankey altText="Cash flow diagram" />
         </div>
@@ -59,22 +55,22 @@ class SummaryCashFlow extends React.Component {
 const glBudgetCashFlowQuery = gql`
   query glBudgetCashFlowQuery {
     glBudgetCashFlowExpenses: budgetCashFlow(accountType: "E") {
-      account_type
-      dept_id
-      department_name
-      fund_id
-      fund_name
-      budget
-      year
-    }
+        account_type,
+        dept_id,
+        department_name,
+        fund_id,
+        fund_name,
+        budget,
+        year,
+    },
     glBudgetCashFlowRevenues: budgetCashFlow(accountType: "R") {
-      account_type
-      category_id
-      category_name
-      fund_id
-      fund_name
-      budget
-      year
+        account_type,
+        category_id,
+        category_name,
+        fund_id,
+        fund_name,
+        budget,
+        year,
     }
   }
 `;
@@ -86,5 +82,5 @@ export default compose(
       sankeyData,
     }),
   }),
-  graphql(updateSankeyData, { name: 'updateSankeyData' })
+  graphql(updateSankeyData, { name: 'updateSankeyData' }),
 )(SummaryCashFlow);

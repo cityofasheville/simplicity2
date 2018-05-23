@@ -1,4 +1,4 @@
-// Baesd on  glennflanagan react-collapsible (https://github.com/glennflanagan/react-collapsible)
+//Baesd on  glennflanagan react-collapsible (https://github.com/glennflanagan/react-collapsible)
 
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -43,8 +43,7 @@ class Collapsible extends React.Component {
     }
 
     if (prevState.height === 'auto' && this.state.shouldSwitchAutoOnNextCycle === true) {
-      window.setTimeout(() => {
-        // Set small timeout to ensure a true re-render
+      window.setTimeout(() => { // Set small timeout to ensure a true re-render
         this.setState({
           height: 0,
           overflow: 'hidden',
@@ -152,71 +151,45 @@ class Collapsible extends React.Component {
     };
     const overflowStyle = { overflow: 'hidden' };
 
-    const whiteSpace =
-      'white-space-white-space-white-space-white-space-white-space-white-space-white-space-white-space' +
+
+    const whiteSpace = 'white-space-white-space-white-space-white-space-white-space-white-space-white-space-white-space' +
       '-white-space-white-space-white-space-white-space-white-space-white-space-white-space-white-space-white-space';
 
     const openClass = this.state.isClosed ? 'is-closed' : 'is-open';
     const disabledClass = this.props.triggerDisabled ? 'is-disabled' : '';
 
     // If user wants different text when tray is open
-    const trigger =
-      this.state.isClosed === false && this.props.triggerWhenOpen !== undefined
-        ? this.props.triggerWhenOpen
-        : this.props.trigger;
+    const trigger = (this.state.isClosed === false) && (this.props.triggerWhenOpen !== undefined)
+      ? this.props.triggerWhenOpen
+      : this.props.trigger;
 
     // Don't render children until the first opening of the Collapsible if lazy rendering is enabled
-    const children =
-      this.props.lazyRender &&
-      !this.state.hasBeenOpened &&
-      this.state.isClosed &&
-      !this.state.inTransition
-        ? null
-        : this.props.children;
+    const children = this.props.lazyRender
+    && !this.state.hasBeenOpened
+    && this.state.isClosed
+    && !this.state.inTransition ? null : this.props.children;
 
     // Construct CSS classes strings
-    const triggerClassString = `${
-      this.props.classParentString
-    }__trigger ${openClass} ${disabledClass} ${
+    const triggerClassString = `${this.props.classParentString}__trigger ${openClass} ${disabledClass} ${
       this.state.isClosed ? this.props.triggerClassName : this.props.triggerOpenedClassName
-    }`;
+      }`;
     const parentClassString = `${this.props.classParentString} ${
       this.state.isClosed ? this.props.className : this.props.openedClassName
-    }`;
-    const outerClassString = `${this.props.classParentString}__contentOuter ${
-      this.props.contentOuterClassName
-    }`;
-    const innerClassString = `${this.props.classParentString}__contentInner ${
-      this.props.contentInnerClassName
-    }`;
+      }`;
+    const outerClassString = `${this.props.classParentString}__contentOuter ${this.props.contentOuterClassName}`;
+    const innerClassString = `${this.props.classParentString}__contentInner ${this.props.contentInnerClassName}`;
 
     return (
-      <div
-        style={{ outline: '#4579B3 3px solid', outlineOffset: this.state.hover ? '3px' : '-1px' }}
-      >
+      <div style={{ outline: '#4579B3 3px solid', outlineOffset: this.state.hover ? '3px' : '-1px' }}>
         <div className={parentClassString.trim()} style={overflowStyle}>
-          <a
-            href="#"
-            style={linkStyle}
-            onKeyPress={this.handleKeyUp}
-            onClick={this.handleTriggerClick}
-            onFocus={() => this.setFocusLink(true)}
-            onBlur={() => this.setFocusLink(false)}
-            onMouseEnter={() => this.setFocusLink(true)}
-            onMouseLeave={() => this.setFocusLink(false)}
-          >
-            <span className={triggerClassString}>
+          <a href="#" style={linkStyle} onKeyPress={this.handleKeyUp} onClick={this.handleTriggerClick} onFocus={() => this.setFocusLink(true)} onBlur={() => this.setFocusLink(false)} onMouseEnter={() => this.setFocusLink(true)} onMouseLeave={() => this.setFocusLink(false)}>
+            <span className={triggerClassString} >
               <span className="icon plus">+</span>
               <span className="icon minus">-</span>
               <span className="trigger-text">{trigger}</span>
             </span>
           </a>
-          <div
-            className={outerClassString.trim()}
-            ref="outer"
-            style={dropdownStyle}
-            onTransitionEnd={this.handleTransitionEnd}
-          >
+          <div className={outerClassString.trim()} ref="outer" style={dropdownStyle} onTransitionEnd={this.handleTransitionEnd}>
             <div className={innerClassString.trim()} ref="inner">
               {children}
             </div>
@@ -238,7 +211,10 @@ Collapsible.propTypes = {
   triggerOpenedClassName: PropTypes.string,
   contentOuterClassName: PropTypes.string,
   contentInnerClassName: PropTypes.string,
-  accordionPosition: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  accordionPosition: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
   handleTriggerClick: PropTypes.func,
   handleKeyUp: PropTypes.func,
   className: PropTypes.string,
@@ -246,8 +222,14 @@ Collapsible.propTypes = {
   onClose: PropTypes.func,
   onOpening: PropTypes.func,
   onClosing: PropTypes.func,
-  trigger: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
-  triggerWhenOpen: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+  trigger: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.element,
+  ]),
+  triggerWhenOpen: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.element,
+  ]),
   triggerDisabled: PropTypes.bool,
   lazyRender: PropTypes.bool,
   overflowWhenOpen: PropTypes.oneOf([

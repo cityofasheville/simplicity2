@@ -8,32 +8,17 @@ import { getBudgetSummaryDept, getBudgetSummaryUse } from './graphql/budgetQueri
 
 const getDollars = (value) => {
   if (Math.abs(value) > 1000000) {
-    return [
-      value < 0 ? '-$' : '$',
-      (Math.abs(value) / 1000000).toFixed(0).toLocaleString(),
-      ' M',
-    ].join('');
+    return [value < 0 ? '-$' : '$', (Math.abs(value) / 1000000).toFixed(0).toLocaleString(), ' M'].join('');
   } else if (Math.abs(value) > 1000) {
-    return [
-      value < 0 ? '-$' : '$',
-      (Math.abs(value) / 1000).toFixed(0).toLocaleString(),
-      ' k',
-    ].join('');
+    return [value < 0 ? '-$' : '$', (Math.abs(value) / 1000).toFixed(0).toLocaleString(), ' k'].join('');
   }
-  return [
-    value < 0 ? '-$' : '$',
-    Math.abs(value)
-      .toFixed(0)
-      .toLocaleString(),
-  ].join('');
+  return [value < 0 ? '-$' : '$', Math.abs(value).toFixed(0).toLocaleString()].join('');
 };
 
-const getDollarsLong = (value) => {
-  if (!value || value === 0) {
-    return '$0';
-  }
-  return [value < 0 ? '-$' : '$', Math.abs(value).toLocaleString()].join('');
-};
+const getDollarsLong = value => {
+  if (!value || value === 0) {return '$0'}
+  return [value < 0 ? '-$' : '$', Math.abs(value).toLocaleString()].join('')
+}
 
 const getTitle = (categoryType) => {
   switch (categoryType) {
@@ -50,14 +35,9 @@ const getLongDesc = data => (
   <div>
     {data.dataValues.map((value, index) => (
       <div key={[value.display_year, index].join('_')}>
-        <p>
-          {value.display_year}
-          <br />
+        <p>{value.display_year}<br />
           {data.dataKeys.map(key => (
-            <span key={[value.display_year, key].join('_')}>
-              {key}: {getDollarsLong(value[key])}
-              <br />
-            </span>
+            <span key={[value.display_year, key].join('_')}>{key}: {getDollarsLong(value[key])}<br /></span>
           ))}
         </p>
       </div>
@@ -94,9 +74,7 @@ class BudgetSummaryBarChart extends React.Component {
               yAxisTickFormatter={getDollars}
               tooltipYValFormatter={getDollarsLong}
               domain={[0, 190000000]}
-              legendLabelFormatter={function (label) {
-                return label.replace(' Department', '');
-              }}
+              legendLabelFormatter={function(label) {return label.replace(' Department', '')}}
               altText={['Spending by', this.props.categoryType, 'bar chart'].join(' ')}
               chartTitle={getTitle(this.props.categoryType)}
               dataFormatter={formatBudgetDataForStackedBar}
@@ -121,7 +99,7 @@ BudgetSummaryBarChart.defaultProps = {
   showLongDesc: false,
 };
 
-// not that efficient...
+//not that efficient...
 export default compose(
   graphql(getBudgetSummaryDept, {
     props: ({ data: { budgetSummaryDept } }) => ({
@@ -132,5 +110,5 @@ export default compose(
     props: ({ data: { budgetSummaryUse } }) => ({
       summaryUseData: budgetSummaryUse,
     }),
-  })
+  }),
 )(BudgetSummaryBarChart);

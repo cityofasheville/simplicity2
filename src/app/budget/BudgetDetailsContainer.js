@@ -10,17 +10,16 @@ import { buildTrees } from './budgetUtilities';
 import { updateBudgetTrees } from './graphql/budgetMutations';
 
 const renderSubComponent = (props) => {
-  switch (
-    props.location.pathname // eslint-disable-line react/prop-types
-  ) {
+  switch (props.location.pathname) { // eslint-disable-line react/prop-types
     case '/budget/detailsTreemap':
-      return <BudgetDetailsTreemap {...props} />;
+      return (<BudgetDetailsTreemap {...props} />);
     case '/budget/detailsTable':
-      return <BudgetDetailsTable {...props} />;
+      return (<BudgetDetailsTable {...props} />);
     default:
-      return <BudgetSummaryDetails {...props} />;
+      return (<BudgetSummaryDetails {...props} />);
   }
 };
+
 
 class BudgetDetailsContainer extends React.Component {
   constructor(props) {
@@ -28,10 +27,10 @@ class BudgetDetailsContainer extends React.Component {
     this.state = {
       treesInitialized: false,
     };
-
+    
     this.initializeTrees = this.initializeTrees.bind(this);
   }
-
+  
   async initializeTrees() {
     const trees = buildTrees(this.props.data.budgetHistory, this.props.data.budgetParameters);
     await this.props.updateBudgetTrees({
@@ -46,16 +45,14 @@ class BudgetDetailsContainer extends React.Component {
     });
     this.setState({ treesInitialized: true });
   }
-
+  
   render() {
-    if (this.props.data.loading) {
-      // eslint-disable-line react/prop-types
+    if (this.props.data.loading) { // eslint-disable-line react/prop-types
       return (
         <LoadingAnimation message="Loading...Thank you for your patience. The full budget data can take several moments to load" />
       );
     }
-    if (this.props.data.error) {
-      // eslint-disable-line react/prop-types
+    if (this.props.data.error) { // eslint-disable-line react/prop-types
       return <Error message={this.props.data.error.message} />; // eslint-disable-line react/prop-types
     }
 
@@ -63,30 +60,34 @@ class BudgetDetailsContainer extends React.Component {
       this.initializeTrees();
     }
 
-    return <div>{renderSubComponent(this.props)}</div>;
+    return (
+      <div>
+        {renderSubComponent(this.props)}
+      </div>
+    );
   }
 }
 
 const budgetHistoryQuery = gql`
   query budgetHistoryQuery {
     budgetHistory {
-      account_type
-      func_id
-      dept_id
-      div_id
-      obj_id
-      function_name
-      department_name
-      division_name
-      year
-      actual
-      budget
-      account_name
-      category_name
-      category_id
-      budget_section_name
-      budget_section_id
-      use_actual
+        account_type,
+        func_id,
+        dept_id,
+        div_id,
+        obj_id,
+        function_name,
+        department_name,
+        division_name,
+        year,
+        actual,
+        budget,
+        account_name,
+        category_name,
+        category_id,
+        budget_section_name,
+        budget_section_id
+        use_actual
     }
     budgetParameters {
       start_year
@@ -98,5 +99,5 @@ const budgetHistoryQuery = gql`
 
 export default compose(
   graphql(budgetHistoryQuery, {}),
-  graphql(updateBudgetTrees, { name: 'updateBudgetTrees' })
+  graphql(updateBudgetTrees, { name: 'updateBudgetTrees' }),
 )(BudgetDetailsContainer);

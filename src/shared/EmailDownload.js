@@ -9,9 +9,7 @@ import Button from './Button';
 const EmailDownload = props => (
   <div className="email-download">
     <CSVLink data={props.downloadData} filename={props.fileName || 'data.csv'}>
-      <Button type="success" size="xs">
-        <Icon path={IM_DOWNLOAD7} /> {props.text ? props.text : 'download'}
-      </Button>
+      <Button type="success" size="xs"><Icon path={IM_DOWNLOAD7} /> { props.text ? props.text : 'download' }</Button>
     </CSVLink>
     {/* <ButtonGroup style={{ marginBottom: '5px', marginRight: '5px' }}>
       <Button type="success" onClick={props.emailFunction}><Icon path={IM_ENVELOP5} /> Email</Button>
@@ -23,7 +21,7 @@ EmailDownload.propTypes = {
   emailFunction: PropTypes.func,
   downloadData: PropTypes.array,
   fileName: PropTypes.string,
-  text: PropTypes.string,
+  text: PropTypes.string
 };
 
 EmailDownload.defaultProps = {

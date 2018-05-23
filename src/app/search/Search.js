@@ -24,13 +24,11 @@ const Search = props => (
             });
           }, 500);
         }}
-        onSearchClick={text =>
-          props.updateSearchText({
-            variables: {
-              text,
-            },
-          })
-        }
+        onSearchClick={text => props.updateSearchText({
+          variables: {
+            text,
+          },
+        })}
         location={props.location}
       />
     </div>
@@ -45,3 +43,4 @@ export default compose(
     }),
   })
 )(Search);
+

@@ -12,14 +12,7 @@ const crimeCategorySelects = [
       { value: 'Robbery', display: 'Robbery' },
       { value: 'Vandalism', display: 'Vandalism' },
     ],
-    values: [
-      'Aggravated assault',
-      'Burglary',
-      'Larceny',
-      'Larceny of a Motor Vehicle',
-      'Robbery',
-      'Vandalism',
-    ],
+    values: ['Aggravated assault', 'Burglary', 'Larceny', 'Larceny of a Motor Vehicle', 'Robbery', 'Vandalism'],
     placeholder: 'All crimes',
     id: 'crimes',
     name: 'crimes',
@@ -58,41 +51,27 @@ const renderCategories = (spatialEventTopic) => {
     case 'crime':
       return (
         <div>
-          {crimeCategorySelects.map((select, i) => (
-            <div key={select.id === undefined ? i : select.id}>
-              <label htmlFor={select.id === undefined ? i : select.id} className="offscreen">
-                view
-              </label>
-              <MultiSelect
-                options={select.options}
-                values={select.values}
-                placeholder={select.placeholder}
-                allowNoneSelected={select.allowNoneSelected}
-                id={select.id}
-                name={select.name}
-              />
-            </div>
-          ))}
+          {
+            crimeCategorySelects.map((select, i) => (
+              <div key={select.id === undefined ? i : select.id}>
+                <label htmlFor={select.id === undefined ? i : select.id} className="offscreen">view</label>
+                <MultiSelect options={select.options} values={select.values} placeholder={select.placeholder} allowNoneSelected={select.allowNoneSelected} id={select.id} name={select.name} />
+              </div>
+            ))
+          }
         </div>
       );
     case 'development':
       return (
         <div>
-          {developmentCategorySelects.map((select, i) => (
-            <div key={select.id === undefined ? i : select.id}>
-              <label htmlFor={select.id} className="offscreen">
-                view
-              </label>
-              <MultiSelect
-                options={select.options}
-                values={select.values}
-                placeholder={select.placeholder}
-                allowNoneSelected={select.allowNoneSelected}
-                id={select.id}
-                name={select.name}
-              />
-            </div>
-          ))}
+          {
+            developmentCategorySelects.map((select, i) => (
+              <div key={select.id === undefined ? i : select.id} >
+                <label htmlFor={select.id} className="offscreen">view</label>
+                <MultiSelect options={select.options} values={select.values} placeholder={select.placeholder} allowNoneSelected={select.allowNoneSelected} id={select.id} name={select.name} />
+              </div>
+            ))
+          }
         </div>
       );
     default:
@@ -102,10 +81,10 @@ const renderCategories = (spatialEventTopic) => {
 
 const SpatialEventTopicCategoryFilters = props => (
   <div className="form-group">
-    <label htmlFor="MultiSelects" className="col-sm-2 control-label">
-      view
-    </label>
-    <div className="col-sm-10">{renderCategories(props.spatialEventTopic.toLowerCase())}</div>
+    <label htmlFor="MultiSelects" className="col-sm-2 control-label">view</label>
+    <div className="col-sm-10">
+      {renderCategories(props.spatialEventTopic.toLowerCase())}
+    </div>
   </div>
 );
 

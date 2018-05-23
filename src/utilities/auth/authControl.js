@@ -6,58 +6,49 @@ import { updateAuthDropdown, updateUser, updateAuthModal } from './graphql/authM
 import { defaultAuthState } from './graphql/authDefaultState';
 
 const AuthControl = (props) => {
-  const displayName = props.user.name ? props.user.name : props.user.email;
+  const displayName = (props.user.name) ? props.user.name : props.user.email;
 
   if (props.user.loggedIn === true) {
     return (
       <li className={['dropdown', props.dropdownOpen ? 'open' : ''].join(' ')}>
         <a
           className="dropdown-toggle"
-          onClick={() =>
-            props.updateAuthDropdown({
-              variables: {
-                open: !props.dropdownOpen,
-              },
-            })
-          }
+          onClick={() => props.updateAuthDropdown({
+            variables: {
+              open: !props.dropdownOpen,
+            },
+          })}
           data-toggle="dropdown"
           role="button"
           aria-haspopup="true"
           aria-expanded="false"
-        >
-          {displayName}
-          <span className="caret" />
+        >{displayName}
+          <span className="caret"></span>
         </a>
         <ul className="dropdown-menu">
-          <li>
+          <li >
             <a
               href="#"
               onClick={(e) => {
                 e.preventDefault();
-                firebase
-                  .auth()
-                  .signOut()
-                  .then(
-                    () => {
-                      const defaultUser = defaultAuthState.user;
-                      props.updateUser({
-                        variables: {
-                          loggedIn: defaultUser.loggedIn,
-                          privilege: defaultUser.privilege,
-                          name: defaultUser.name,
-                          email: defaultUser.email,
-                          provider: defaultUser.provider,
-                        },
-                      });
+                firebase.auth().signOut()
+                .then(() => {
+                  const defaultUser = defaultAuthState.user;
+                  props.updateUser({
+                    variables: {
+                      loggedIn: defaultUser.loggedIn,
+                      privilege: defaultUser.privilege,
+                      name: defaultUser.name,
+                      email: defaultUser.email,
+                      provider: defaultUser.provider,
                     },
-                    (error) => {
-                      console.log(error);
-                    }
-                  );
+                  });
+                }, (error) => {
+                  console.log(error);
+                });
               }}
               className=""
-            >
-              Log Out
+            >Log Out
             </a>
           </li>
         </ul>
@@ -78,9 +69,8 @@ const AuthControl = (props) => {
           });
         }}
         className=""
-      >
-        Log In
-      </a>
+      >Log In
+    </a>
     </li>
   );
 };
@@ -107,3 +97,4 @@ const AuthControlComposed = compose(
 )(AuthControl);
 
 export default withApollo(AuthControlComposed);
+

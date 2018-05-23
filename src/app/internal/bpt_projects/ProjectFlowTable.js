@@ -3,10 +3,10 @@ import { accessibility } from 'accessible-react-table';
 import ReactTable from 'react-table';
 import moment from 'moment';
 
-// const parseNotes = (notes) => {
-// this function could be improved for matching with the 'Eastern Standard Time' string -
-// now if anyone writes a date in their comment itself it will separate it to a new line
-// also other parsing
+//const parseNotes = (notes) => {
+  // this function could be improved for matching with the 'Eastern Standard Time' string -
+  // now if anyone writes a date in their comment itself it will separate it to a new line
+  // also other parsing
 //   const re = /(\d+)(\/)(\d+)(?:\/)(?:(\d+)\s+(\d+):(\d+)(?::(\d+))?(?:\.(\d+))?)?/g;
 //   const indices = [];
 //   let result;
@@ -58,7 +58,7 @@ const dataColumns = [
   {
     Header: 'Requested Date',
     id: 'RequestedDate',
-    accessor: item => <span>{moment.utc(item.RequestedDate).format('M/DD/YYYY')}</span>,
+    accessor: item => (<span>{moment.utc(item.RequestedDate).format('M/DD/YYYY')}</span>),
     width: 115,
     Filter: ({ filter, onChange }) => (
       <input
@@ -107,14 +107,14 @@ const dataColumns = [
   },
 ];
 
-const ProjectFlowTable = (props) => {
+const ProjectFlowTable = props => {
   const AccessibleReactTable = accessibility(ReactTable);
   return (
     <div>
       <div className="col-sm-12">
-        {props.data.length < 1 ? (
+        {props.data.length < 1 ?
           <div className="alert alert-info">No results found</div>
-        ) : (
+        :
           <div style={{ marginTop: '10px' }} id={props.id}>
             <AccessibleReactTable
               ariaLabel="Projects"
@@ -125,20 +125,18 @@ const ProjectFlowTable = (props) => {
               filterable
               defaultFilterMethod={(filter, row) => {
                 const id = filter.pivotId || filter.id;
-                return row[id] !== undefined
-                  ? String(row[id])
-                    .toLowerCase()
-                    .indexOf(filter.value.toLowerCase()) > -1
-                  : true;
+                return row[id] !== undefined ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
               }}
-              getTdProps={(state, rowInfo) => ({
-                style: {
-                  whiteSpace: 'normal',
-                },
-              })}
+              getTdProps={(state, rowInfo) => {
+                return {
+                  style: {
+                    whiteSpace: 'normal',
+                  },
+                };
+              }}
             />
           </div>
-        )}
+        }
       </div>
     </div>
   );

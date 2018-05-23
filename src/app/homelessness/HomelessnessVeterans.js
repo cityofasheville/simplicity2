@@ -13,7 +13,7 @@ import HomelessnessVeteransChronicAssignments from './HomelessnessVeteransChroni
 
 const dataKeys = [
   'Incoming',
-  //'Remaining to be housed',
+  // 'Remaining to be housed',
   'Outgoing',
 ];
 
@@ -107,12 +107,41 @@ const data = [
   // { month: 5/2017, 'Remaining to be housed': 99 },
 ];
 
-const HomelessnessVeterans = (props) => (
+const HomelessnessVeterans = props => (
   <div>
-    <PageHeader h1="Ending Veteran Homelessness" dataLinkPath="/homelessness/data" externalLink="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=27777" externalLinkText="Five Year Strategic Plan on Homelessness in Buncombe County" icon={<Icon path={IM_BED} size={50} />}>
+    <PageHeader
+      h1="Ending Veteran Homelessness"
+      dataLinkPath="/homelessness/data"
+      externalLink="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=27777"
+      externalLinkText="Five Year Strategic Plan on Homelessness in Buncombe County"
+      icon={<Icon path={IM_BED} size={50} />}
+    >
       <ButtonGroup>
-        <LinkButton pathname="/homelessness" query={{ entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, hideNavbar: props.location.query.hideNavbar }} positionInGroup="left">Overview</LinkButton>
-        <LinkButton pathname="/homelessness/veterans" query={{ entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, hideNavbar: props.location.query.hideNavbar }} positionInGroup="right" active>Veterans</LinkButton>
+        <LinkButton
+          pathname="/homelessness"
+          query={{
+            entity: props.location.query.entity,
+            id: props.location.query.id,
+            label: props.location.query.label,
+            hideNavbar: props.location.query.hideNavbar,
+          }}
+          positionInGroup="left"
+        >
+          Overview
+        </LinkButton>
+        <LinkButton
+          pathname="/homelessness/veterans"
+          query={{
+            entity: props.location.query.entity,
+            id: props.location.query.id,
+            label: props.location.query.label,
+            hideNavbar: props.location.query.hideNavbar,
+          }}
+          positionInGroup="right"
+          active
+        >
+          Veterans
+        </LinkButton>
       </ButtonGroup>
     </PageHeader>
     <div className="row" style={{ marginTop: '15px' }}>
@@ -128,7 +157,15 @@ const HomelessnessVeterans = (props) => (
       <div className="col-sm-12">
         <h3>How are homeless Veterans being helped?</h3>
         <p>
-          Buncombe County is comprised of many agencies and organizations assisting and serving our Veteran homeless population in conjunction with the VA Medical Center. Outreach specialists identify areas throughout the community where homeless Veterans congregate and camp. Veterans are identified and assessed using a standardized vulnerability index tool to help identify the most appropriate housing intervention available for that Veteran. Agency representatives meet weekly to review referrals and ensure that every eligible homeless Veteran is matched with an appropriate housing intervention. Homeless military Veterans of low and extremely low income in Buncombe County are eligible for case management, service referral or may receive housing assistance through VA funded programs.
+          Buncombe County is comprised of many agencies and organizations assisting and serving our
+          Veteran homeless population in conjunction with the VA Medical Center. Outreach
+          specialists identify areas throughout the community where homeless Veterans congregate and
+          camp. Veterans are identified and assessed using a standardized vulnerability index tool
+          to help identify the most appropriate housing intervention available for that Veteran.
+          Agency representatives meet weekly to review referrals and ensure that every eligible
+          homeless Veteran is matched with an appropriate housing intervention. Homeless military
+          Veterans of low and extremely low income in Buncombe County are eligible for case
+          management, service referral or may receive housing assistance through VA funded programs.
         </p>
       </div>
     </div>

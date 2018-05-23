@@ -4,7 +4,7 @@ import PageHeader from '../../shared/PageHeader';
 import ButtonGroup from '../../shared/ButtonGroup';
 import Button from '../../shared/Button';
 import Icon from '../../shared/Icon';
-import { IM_COIN_DOLLAR } from '../../shared/iconConstants'
+import { IM_COIN_DOLLAR } from '../../shared/iconConstants';
 
 const BudgetData = () => (
   <div>
@@ -15,7 +15,10 @@ const BudgetData = () => (
     </PageHeader>
     <div className="row">
       <div className="col-sm-12">
-        <p>Some explanation of the data and limitations of the data, and some links to more detailed reports</p>
+        <p>
+          Some explanation of the data and limitations of the data, and some links to more detailed
+          reports
+        </p>
       </div>
     </div>
   </div>

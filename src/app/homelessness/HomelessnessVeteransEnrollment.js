@@ -147,13 +147,28 @@ class HomelessnessVeteransEnrollment extends React.Component {
       <div>
         <h3>Veterans on the by-name list</h3>
         <div>
-          The Veteran By-Name List is a comprehensive list of homeless Veterans in the community that is populated through information from street and VA outreach, HMIS, community shelters, VA-funded programs including GPD providers, and any other provider who may work with Veterans experiencing homelessness. The list is updated regularly – in most cases, daily – in order to ensure it has the most up-to-date information.
+          The Veteran By-Name List is a comprehensive list of homeless Veterans in the community
+          that is populated through information from street and VA outreach, HMIS, community
+          shelters, VA-funded programs including GPD providers, and any other provider who may work
+          with Veterans experiencing homelessness. The list is updated regularly – in most cases,
+          daily – in order to ensure it has the most up-to-date information.
         </div>
         <br />
         <div>
-          A by-name is not a waiting list – Veterans on this list may already be accessing programs, waiting for a housing unit, have entered a transitional program, declined assistance or may self-resolve their homelessness. The by-name list is used to determine where Veterans actually are in our homeless assistance system, who needs to be prioritized for services and/or housing and what barriers need to be removed.
+          A by-name is not a waiting list – Veterans on this list may already be accessing programs,
+          waiting for a housing unit, have entered a transitional program, declined assistance or
+          may self-resolve their homelessness. The by-name list is used to determine where Veterans
+          actually are in our homeless assistance system, who needs to be prioritized for services
+          and/or housing and what barriers need to be removed.
           <br />
-          <a href="" className="text-center inText" onClick={(e) => { e.preventDefault(); this.toggleDefinitions() }}>
+          <a
+            href=""
+            className="text-center inText"
+            onClick={(e) => {
+              e.preventDefault();
+              this.toggleDefinitions();
+            }}
+          >
             {this.state.showingDefinitions ? 'Hide' : 'Show'} by-name list definitions
           </a>
           <div hidden={!this.state.showingDefinitions}>
@@ -164,7 +179,9 @@ class HomelessnessVeteransEnrollment extends React.Component {
                     <strong>Emergency Shelter</strong>
                   </div>
                   <div>
-                    A facility that’s primary purpose is to provide temporary shelter for the general homeless population or those that serve a specific client base such as Domestic Violence victims or youth under 18 years of age.
+                    A facility that’s primary purpose is to provide temporary shelter for the
+                    general homeless population or those that serve a specific client base such as
+                    Domestic Violence victims or youth under 18 years of age.
                   </div>
                 </li>
                 <li>
@@ -172,7 +189,13 @@ class HomelessnessVeteransEnrollment extends React.Component {
                     <strong>Intake</strong>
                   </div>
                   <div>
-                    Once a Veteran has been identified, a determination is made as to eligibility for VA programs and the Veteran is offered a choice for a housing intervention. If no immediate bed is available in the non-clinical GPD program, the Veteran moves to an intake bed until a GPD bed is available. The Veteran may elect to enroll in a housing program and enter GPD for a short duration (Bridge Housing) while housing is located or enter the long term service intensive transitional program.
+                    Once a Veteran has been identified, a determination is made as to eligibility
+                    for VA programs and the Veteran is offered a choice for a housing intervention.
+                    If no immediate bed is available in the non-clinical GPD program, the Veteran
+                    moves to an intake bed until a GPD bed is available. The Veteran may elect to
+                    enroll in a housing program and enter GPD for a short duration (Bridge Housing)
+                    while housing is located or enter the long term service intensive transitional
+                    program.
                   </div>
                 </li>
                 <li>
@@ -180,7 +203,11 @@ class HomelessnessVeteransEnrollment extends React.Component {
                     <strong>Other</strong>
                   </div>
                   <div>
-                    This category covers Veterans that have been outreached, identified and placed on the by-name list but who may be temporarily in an institutional setting like an inpatient treatment center or hospital or detained in the local jail so they cannot be fully engaged in housing related services until current issue is resolved.
+                    This category covers Veterans that have been outreached, identified and placed
+                    on the by-name list but who may be temporarily in an institutional setting like
+                    an inpatient treatment center or hospital or detained in the local jail so they
+                    cannot be fully engaged in housing related services until current issue is
+                    resolved.
                   </div>
                 </li>
                 <li>
@@ -188,7 +215,12 @@ class HomelessnessVeteransEnrollment extends React.Component {
                     <strong>MIA</strong>
                   </div>
                   <div>
-                    If a Veteran on the active by-name list can no longer be located after repeated attempts, the Veteran’s status is then changed from “active” to “missing in action” and after 90 days or more, are then removed from the list for purposes of calculating these benchmarks. If the Veteran is located at a later date and is still experiencing homelessness, the date of the most recent contact becomes the new date of identification.
+                    If a Veteran on the active by-name list can no longer be located after repeated
+                    attempts, the Veteran’s status is then changed from “active” to “missing in
+                    action” and after 90 days or more, are then removed from the list for purposes
+                    of calculating these benchmarks. If the Veteran is located at a later date and
+                    is still experiencing homelessness, the date of the most recent contact becomes
+                    the new date of identification.
                   </div>
                 </li>
                 <li>
@@ -196,7 +228,21 @@ class HomelessnessVeteransEnrollment extends React.Component {
                     <strong>Grant &amp; Per Diem</strong>
                   </div>
                   <div>
-                    Since 1994, the VA's Homeless Providers Grant and Per Diem Program (GPD) has offered Veterans Affairs Health Care for Homeless Veterans (HCHV) Programs to community agencies providing services to homeless Veterans. The purpose of GPD is to promote the development and provision of supportive housing and/or supportive services with the goal of helping homeless Veterans achieve residential stability, increase their skill levels and/or income, and obtain greater self-determination. In 2017, the VA designated several program types within GPD: Healthcare to Home, Low Barrier, Clinical, Bridge Housing and Service-Intensive Transitional Housing (SITH). Whereas most GPD programs provide short lengths of stay in transitional housing facilities and provide rapid connections to permanent housing, SITH provides up to 24 months of transitional housing in which homeless Veterans are actively working with the assistance of appropriate services and supports to achieve permanent housing. In Buncombe County, Veterans are offered a choice at identification as to whether a housing intervention or a Grant and Per Diem program meets their needs.
+                    Since 1994, the VA's Homeless Providers Grant and Per Diem Program (GPD) has
+                    offered Veterans Affairs Health Care for Homeless Veterans (HCHV) Programs to
+                    community agencies providing services to homeless Veterans. The purpose of GPD
+                    is to promote the development and provision of supportive housing and/or
+                    supportive services with the goal of helping homeless Veterans achieve
+                    residential stability, increase their skill levels and/or income, and obtain
+                    greater self-determination. In 2017, the VA designated several program types
+                    within GPD: Healthcare to Home, Low Barrier, Clinical, Bridge Housing and
+                    Service-Intensive Transitional Housing (SITH). Whereas most GPD programs provide
+                    short lengths of stay in transitional housing facilities and provide rapid
+                    connections to permanent housing, SITH provides up to 24 months of transitional
+                    housing in which homeless Veterans are actively working with the assistance of
+                    appropriate services and supports to achieve permanent housing. In Buncombe
+                    County, Veterans are offered a choice at identification as to whether a housing
+                    intervention or a Grant and Per Diem program meets their needs.
                   </div>
                 </li>
                 <li>
@@ -204,7 +250,8 @@ class HomelessnessVeteransEnrollment extends React.Component {
                     <strong>NOTE:</strong>
                   </div>
                   <div>
-                    If it is determined that an individual on the active by-name list is not a Veteran, that individual is removed from the list and not included in this data.
+                    If it is determined that an individual on the active by-name list is not a
+                    Veteran, that individual is removed from the list and not included in this data.
                   </div>
                 </li>
               </ul>
@@ -213,7 +260,13 @@ class HomelessnessVeteransEnrollment extends React.Component {
         </div>
         <div className="row">
           <div className="col-sm-12">
-            <AreaChart data={this.props.data} mainAxisDataKey="month" dataKeys={this.props.dataKeys} altText={'Area chart of Veterans on the by-name list'} colorScheme="bright_colors_2" />
+            <AreaChart
+              data={this.props.data}
+              mainAxisDataKey="month"
+              dataKeys={this.props.dataKeys}
+              altText="Area chart of Veterans on the by-name list"
+              colorScheme="bright_colors_2"
+            />
           </div>
         </div>
       </div>

@@ -37,5 +37,3 @@ export const getBudgetSummaryDept = gql`
     }
   }
 `;
-
-

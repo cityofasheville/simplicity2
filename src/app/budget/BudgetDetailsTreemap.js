@@ -12,7 +12,8 @@ import { refreshLocation } from '../../utilities/generalUtilities';
 const getButtonClass = (categoryType, buttonName) => {
   if (
     (categoryType === 'use' && buttonName === 'use') ||
-    (categoryType === 'department' && buttonName === 'department')) {
+    (categoryType === 'department' && buttonName === 'department')
+  ) {
     return 'btn btn-primary btn-xs active';
   }
   return 'btn btn-primary btn-xs';
@@ -21,28 +22,41 @@ const getButtonClass = (categoryType, buttonName) => {
 const goDeeper = (props) => {
   let curPath = props.path;
   if (props.path.split('_').length > 5) {
-    curPath = props.path.split('_').slice(0, 5).join('_');
+    curPath = props.path
+      .split('_')
+      .slice(0, 5)
+      .join('_');
   }
-  let newURL = [props.location.pathname, '?',
-    Object.entries(props.location.query).map(([key, value]) => {
-      if (key !== 'nodePath') {
-        return [key, '=', value, '&'].join('');
-      }
-      return '';
-    }).join('')].join('');
+  let newURL = [
+    props.location.pathname,
+    '?',
+    Object.entries(props.location.query)
+      .map(([key, value]) => {
+        if (key !== 'nodePath') {
+          return [key, '=', value, '&'].join('');
+        }
+        return '';
+      })
+      .join(''),
+  ].join('');
   newURL = [newURL, 'nodePath=', curPath].join('');
   props.history.replace(newURL);
 };
 
 const goUp = (props, numLevels) => {
   const curPath = props.location.query.nodePath || 'root';
-  let newURL = [props.location.pathname, '?',
-    Object.entries(props.location.query).map(([key, value]) => {
-      if (key !== 'nodePath') {
-        return [key, '=', value, '&'].join('');
-      }
-      return '';
-    }).join('')].join('');
+  let newURL = [
+    props.location.pathname,
+    '?',
+    Object.entries(props.location.query)
+      .map(([key, value]) => {
+        if (key !== 'nodePath') {
+          return [key, '=', value, '&'].join('');
+        }
+        return '';
+      })
+      .join(''),
+  ].join('');
   if (curPath === 'root') {
     newURL = [newURL, 'nodePath=root'].join('');
   } else {
@@ -73,14 +87,20 @@ const findTop = (data, path) => {
       }
     }
   }
-  return ((curNode.children === undefined || curNode.children.length === 0) ? prevNode.children : curNode.children);
+  return curNode.children === undefined || curNode.children.length === 0
+    ? prevNode.children
+    : curNode.children;
 };
 
 const renderBreadcrumb = (tree, props) => {
   const path = props.location.query.nodePath || 'root';
   const nodes = path.split('_');
   if (nodes.length === 1) {
-    return (<div className="pull-left treeMapBreadcrumb"><span>Top</span></div>);
+    return (
+      <div className="pull-left treeMapBreadcrumb">
+        <span>Top</span>
+      </div>
+    );
   }
   let curNode = tree;
   for (let i = 0; i < nodes.length; i += 1) {
@@ -94,58 +114,89 @@ const renderBreadcrumb = (tree, props) => {
   const levels = curNode.breadcrumbPath.slice(5).split('>');
   return (
     <div className="pull-left treeMapBreadcrumb">
-      <span className="treeMapBreadcrumbLink" onClick={props.jumpUp ? () => props.jumpUp(props, levels.length) : null}>Top</span><span> &gt; </span>
-      {levels.map((level, index) => {
-        return (
-          <div key={['breadcrumbLevel', index].join('_')} style={{ display: 'inline-block' }}>
-            <span className={index < levels.length - 1 ? 'treeMapBreadcrumbLink' : ''} onClick={props.jumpUp ? () => props.jumpUp(props, levels.length - index - 1) : null}>{level}</span>
-            {index < levels.length - 1 && <span> &gt;&nbsp;</span>}
-          </div>
-        );
-      })}
+      <span
+        className="treeMapBreadcrumbLink"
+        onClick={props.jumpUp ? () => props.jumpUp(props, levels.length) : null}
+      >
+        Top
+      </span>
+      <span> &gt; </span>
+      {levels.map((level, index) => (
+        <div key={['breadcrumbLevel', index].join('_')} style={{ display: 'inline-block' }}>
+          <span
+            className={index < levels.length - 1 ? 'treeMapBreadcrumbLink' : ''}
+            onClick={props.jumpUp ? () => props.jumpUp(props, levels.length - index - 1) : null}
+          >
+            {level}
+          </span>
+          {index < levels.length - 1 && <span> &gt;&nbsp;</span>}
+        </div>
+      ))}
     </div>
   );
 };
 
-
 const BudgetDetailsTreemap = (props) => {
-  const myTree = props.location.query.mode === 'expenditures' || props.location.query.mode === undefined ? props.expenseTree : props.revenueTree;
-  
-  const getNewUrlParams = mode => (
-    {
-      mode,
-      nodePath: 'root',
-    }
-  );
-  
+  const myTree =
+    props.location.query.mode === 'expenditures' || props.location.query.mode === undefined
+      ? props.expenseTree
+      : props.revenueTree;
+
+  const getNewUrlParams = mode => ({
+    mode,
+    nodePath: 'root',
+  });
+
   return (
     <div>
       <div className="row">
         <div className="col-sm-12">
-          <h3>
-            Treemap of {props.location.query.mode || 'expenditures'}
-          </h3>
+          <h3>Treemap of {props.location.query.mode || 'expenditures'}</h3>
         </div>
       </div>
       <div className="row">
         <div className="col-sm-12">
           <div style={{ marginBottom: '15px' }}>
-            In the treemap below, the size and color of the rectangles represent important information about the {`${parseInt(props.data.budgetParameters.end_year, 10) - 1}-${props.data.budgetParameters.end_year}`} budget. The size of each rectangle is proportional to the amount of money budgeted for that category. The color of the rectangle shows the change from last year’s budget. Increases are shown in blue, decreases are orange, and white shows no change. The deeper the color, the larger the change. Click a rectangle to see a detailed breakdown for that category, or mouse over it to see the description and total amount.
+            In the treemap below, the size and color of the rectangles represent important
+            information about the{' '}
+            {`${parseInt(props.data.budgetParameters.end_year, 10) - 1}-${
+              props.data.budgetParameters.end_year
+            }`}{' '}
+            budget. The size of each rectangle is proportional to the amount of money budgeted for
+            that category. The color of the rectangle shows the change from last year’s budget.
+            Increases are shown in blue, decreases are orange, and white shows no change. The deeper
+            the color, the larger the change. Click a rectangle to see a detailed breakdown for that
+            category, or mouse over it to see the description and total amount.
           </div>
         </div>
       </div>
       <div className="row">
         <div className="col-sm-12">
           <div className="btn-group pull-left" style={{ marginRight: '3px', marginBottom: '3px' }}>
-            <button className="btn btn-primary btn-xs" onClick={props.jumpUp ? () => props.jumpUp(props) : null} disabled={props.location.query.nodePath === 'root' || props.location.query.nodePath === undefined}><Icon path={IM_ARROW_UP8} size={16} /></button>
+            <button
+              className="btn btn-primary btn-xs"
+              onClick={props.jumpUp ? () => props.jumpUp(props) : null}
+              disabled={
+                props.location.query.nodePath === 'root' ||
+                props.location.query.nodePath === undefined
+              }
+            >
+              <Icon path={IM_ARROW_UP8} size={16} />
+            </button>
           </div>
           {renderBreadcrumb(myTree, props)}
-          <div className="btn-group pull-left" style={{ display: 'none' }} >
+          <div className="btn-group pull-left" style={{ display: 'none' }}>
             <button className={getButtonClass(props.categoryType, 'use')}>Use</button>
-            <button className={getButtonClass(props.categoryType, 'department')}>Departments</button>
+            <button className={getButtonClass(props.categoryType, 'department')}>
+              Departments
+            </button>
           </div>
           <div className="radioGroup pull-right" style={{ marginLeft: '10px' }}>
-            <RadioGroup name="treemapRadios" selectedValue={props.location.query.mode || 'expenditures'} onChange={value => refreshLocation(getNewUrlParams(value), props.location)}>
+            <RadioGroup
+              name="treemapRadios"
+              selectedValue={props.location.query.mode || 'expenditures'}
+              onChange={value => refreshLocation(getNewUrlParams(value), props.location)}
+            >
               <label>
                 <Radio value="expenditures" />Expenditures
               </label>
@@ -154,7 +205,14 @@ const BudgetDetailsTreemap = (props) => {
               </label>
             </RadioGroup>
           </div>
-          <Treemap data={findTop(myTree, props.location.query.nodePath || 'root')} altText={['Treemap of', (props.location.query.mode || 'expenditures')].join(' ')} diveDeeper={props.diveDeeper} differenceColors history={browserHistory} location={props.location} />
+          <Treemap
+            data={findTop(myTree, props.location.query.nodePath || 'root')}
+            altText={['Treemap of', props.location.query.mode || 'expenditures'].join(' ')}
+            diveDeeper={props.diveDeeper}
+            differenceColors
+            history={browserHistory}
+            location={props.location}
+          />
         </div>
       </div>
     </div>
@@ -172,8 +230,12 @@ BudgetDetailsTreemap.propTypes = {
 
 BudgetDetailsTreemap.defaultProps = {
   categoryType: 'department',
-  expenseTree: { amount: 0, size: 0, name: 'no data', children: [] },
-  revenueTree: { amount: 0, size: 0, name: 'no data', children: [] },
+  expenseTree: {
+    amount: 0, size: 0, name: 'no data', children: [],
+  },
+  revenueTree: {
+    amount: 0, size: 0, name: 'no data', children: [],
+  },
   diveDeeper: goDeeper,
   jumpUp: goUp,
 };

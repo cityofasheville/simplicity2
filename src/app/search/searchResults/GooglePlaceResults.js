@@ -7,9 +7,7 @@ import SearchResultGroup from './SearchResultGroup';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import Error from '../../../shared/Error';
 
-const getEntitiesToSearch = () => (
-  ['address']
-);
+const getEntitiesToSearch = () => ['address'];
 
 const GooglePlaceResults = (props) => {
   if (props.data === undefined) {
@@ -23,39 +21,46 @@ const GooglePlaceResults = (props) => {
   }
 
   const formattedResults = [];
-  for (let context of props.data.search) {
+  for (const context of props.data.search) {
     if (context !== null && context.results.length > 0) {
-      formattedResults.push(
-        {
-          label: 'address',
-          results: context.results.map(result => (
-            {
-              label: [result.address, result.zipcode].join(', '),
-              type: 'address',
-              id: result.civic_address_id,
-            }
-          )),
-        }
-      );
+      formattedResults.push({
+        label: 'address',
+        results: context.results.map(result => ({
+          label: [result.address, result.zipcode].join(', '),
+          type: 'address',
+          id: result.civic_address_id,
+        })),
+      });
     }
   }
 
   const renderResults = () => {
     if (formattedResults[0].results.length === 0) {
-      return (
-        <div className="alert alert-info alert-sm">
-        No results found.
-      </div>
-      );
+      return <div className="alert alert-info alert-sm">No results found.</div>;
     }
     if (formattedResults[0].results.length === 1) {
-     browserHistory.push(['/address', '?entity=address', '&id=', formattedResults[0].results[0].id, '&label=', props.placeSearch, '&hideNavbar=', props.location.query.hideNavbar, '&search=', props.location.query.search, '&entities=', props.location.query.entities].join(''));
+      browserHistory.push([
+        '/address',
+        '?entity=address',
+        '&id=',
+        formattedResults[0].results[0].id,
+        '&label=',
+        props.placeSearch,
+        '&hideNavbar=',
+        props.location.query.hideNavbar,
+        '&search=',
+        props.location.query.search,
+        '&entities=',
+        props.location.query.entities,
+      ].join(''));
     }
     return (
       <div>
         <h2>Multiple addresses found</h2>
         <p>
-          <i>{props.location.query.placeSearch}</i>, the address from Google associated with the search <i>{props.location.query.search}</i>, returned multiple results in SimpliCity. Explore the potential matches below.
+          <i>{props.location.query.placeSearch}</i>, the address from Google associated with the
+          search <i>{props.location.query.search}</i>, returned multiple results in SimpliCity.
+          Explore the potential matches below.
         </p>
         {formattedResults.map((resultGroup, index) => (
           <SearchResultGroup
@@ -72,11 +77,7 @@ const GooglePlaceResults = (props) => {
 
   return (
     <div className="row">
-      <div className="col-sm-12">
-        {
-          renderResults()
-        }
-      </div>
+      <div className="col-sm-12">{renderResults()}</div>
     </div>
   );
 };
@@ -110,6 +111,11 @@ const searchQuery = gql`
 `;
 
 export default graphql(searchQuery, {
-  skip: ownProps => (!ownProps.location.query.placeSearch),
-  options: ownProps => ({ variables: { searchString: ownProps.location.query.placeSearch.trim(), searchContexts: getEntitiesToSearch() } }),
+  skip: ownProps => !ownProps.location.query.placeSearch,
+  options: ownProps => ({
+    variables: {
+      searchString: ownProps.location.query.placeSearch.trim(),
+      searchContexts: getEntitiesToSearch(),
+    },
+  }),
 })(GooglePlaceResults);

@@ -5,7 +5,10 @@ import { graphql } from 'react-apollo';
 import moment from 'moment';
 import gql from 'graphql-tag';
 import Map from '../../shared/visualization/Map';
-import { getBoundsFromStreetData, convertStreetLinesToLatLngArrays } from '../../utilities/mapUtilities';
+import {
+  getBoundsFromStreetData,
+  convertStreetLinesToLatLngArrays,
+} from '../../utilities/mapUtilities';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import Error from '../../shared/Error';
 import PieChart from '../../shared/visualization/PieChart';
@@ -58,7 +61,13 @@ const createLegend = (permitData) => {
   return (
     <div style={{ width: '160px' }}>
       {permitTypes.map(type => (
-        <div key={`legendItem-${type}`} style={{ width: '160px', marginBottom: '5px' }}><img src={getMarker(type)} style={{ display: 'inline-block', width: '25px', verticalAlign: 'top' }}></img><span style={{ marginLeft: '5px', display: 'inline-block', width: '130px' }}>{type}</span></div>
+        <div key={`legendItem-${type}`} style={{ width: '160px', marginBottom: '5px' }}>
+          <img
+            src={getMarker(type)}
+            style={{ display: 'inline-block', width: '25px', verticalAlign: 'top' }}
+          />
+          <span style={{ marginLeft: '5px', display: 'inline-block', width: '130px' }}>{type}</span>
+        </div>
       ))}
     </div>
   );
@@ -81,9 +90,9 @@ const convertToPieData = (permitData) => {
     }
   }
 
-  pieData.sort((a, b) => (
-    ((a.value > b.value) ? -1 : ((a.value < b.value) ? 1 : 0)) // eslint-disable-line
-  ));
+  pieData.sort((a, b) =>
+      (a.value > b.value ? -1 : a.value < b.value ? 1 : 0) // eslint-disable-line
+  );
 
   let otherCount = 0;
   for (let i = 9; i < pieData.length; i += 1) {
@@ -96,50 +105,90 @@ const convertToPieData = (permitData) => {
   return pieData;
 };
 
-const DevelopmentByStreet = props => {
-  if (props.data.loading) { // eslint-disable-line react/prop-types
+const DevelopmentByStreet = (props) => {
+  if (props.data.loading) {
+    // eslint-disable-line react/prop-types
     return <LoadingAnimation />;
   }
-  if (props.data.error) { // eslint-disable-line react/prop-types
+  if (props.data.error) {
+    // eslint-disable-line react/prop-types
     return <Error message={props.data.error.message} />; // eslint-disable-line react/prop-types
   }
 
-  const mapData = props.data.permits_by_street.map(item => (Object.assign({}, item, { popup: `<div><b>${item.permit_type}</b><p>${moment.utc(item.applied_date).format('M/DD/YYYY')}</p><p><b>Applicant</b>:<div>${item.applicant_name}</div></p><p><b>Contractor(s):</b> ${item.contractor_names.map((contractor, index) => `<div>${contractor}: ${item.contractor_license_numbers[index]}</div>`).join('')}</p></div>`, options: { icon: L.icon({
-    iconUrl: getMarker(item.permit_type),
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [2, -22],
-  }) } })
-  ));
+  const mapData = props.data.permits_by_street.map(item =>
+    Object.assign({}, item, {
+      popup: `<div><b>${item.permit_type}</b><p>${moment
+        .utc(item.applied_date)
+        .format('M/DD/YYYY')}</p><p><b>Applicant</b>:<div>${
+        item.applicant_name
+      }</div></p><p><b>Contractor(s):</b> ${item.contractor_names
+        .map((contractor, index) =>
+          `<div>${contractor}: ${item.contractor_license_numbers[index]}</div>`)
+        .join('')}</p></div>`,
+      options: {
+        icon: L.icon({
+          iconUrl: getMarker(item.permit_type),
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [2, -22],
+        }),
+      },
+    }));
 
-  const getNewUrlParams = view => (
-    {
-      view,
-    }
-  );
+  const getNewUrlParams = view => ({
+    view,
+  });
 
   return (
     <div>
       <div className="row">
         <div className="col-xs-12 template-header__inner">
           <div className="pull-left" style={{ marginTop: '10px', marginBottom: '15px' }}>
-            <EmailDownload downloadData={props.data.permits_by_street} fileName="permits_by_street.csv" />
+            <EmailDownload
+              downloadData={props.data.permits_by_street}
+              fileName="permits_by_street.csv"
+            />
           </div>
           <ButtonGroup alignment="right">
-            <Button onClick={() => refreshLocation(getNewUrlParams('map'), props.location)} active={props.location.query.view === 'map'} positionInGroup="left">Map view</Button>
-            <Button onClick={() => refreshLocation(getNewUrlParams('list'), props.location)} active={props.location.query.view === 'list'} positionInGroup="middle">List view</Button>
-            <Button onClick={() => refreshLocation(getNewUrlParams('summary'), props.location)} positionInGroup="right" active={props.location.query.view === 'summary'}>Chart</Button>
+            <Button
+              onClick={() => refreshLocation(getNewUrlParams('map'), props.location)}
+              active={props.location.query.view === 'map'}
+              positionInGroup="left"
+            >
+              Map view
+            </Button>
+            <Button
+              onClick={() => refreshLocation(getNewUrlParams('list'), props.location)}
+              active={props.location.query.view === 'list'}
+              positionInGroup="middle"
+            >
+              List view
+            </Button>
+            <Button
+              onClick={() => refreshLocation(getNewUrlParams('summary'), props.location)}
+              positionInGroup="right"
+              active={props.location.query.view === 'summary'}
+            >
+              Chart
+            </Button>
           </ButtonGroup>
         </div>
       </div>
 
       <div className="row">
-        <div id="summaryView" className="col-xs-12" hidden={props.location.query.view !== 'summary'}>
-          {props.data.permits_by_street.length === 0 ?
+        <div
+          id="summaryView"
+          className="col-xs-12"
+          hidden={props.location.query.view !== 'summary'}
+        >
+          {props.data.permits_by_street.length === 0 ? (
             <div className="alert alert-info">No results found</div>
-            :
-            <PieChart data={convertToPieData(props.data.permits_by_street)} altText="Development pie chart" />
-          }
+          ) : (
+            <PieChart
+              data={convertToPieData(props.data.permits_by_street)}
+              altText="Development pie chart"
+            />
+          )}
         </div>
 
         <div id="listView" hidden={props.location.query.view !== 'list'}>
@@ -147,11 +196,24 @@ const DevelopmentByStreet = props => {
         </div>
 
         <div id="mapView" className="col-xs-12" hidden={props.location.query.view !== 'map'}>
-          {props.data.permits_by_street.length === 0 || props.location.query.view !== 'map' ?
+          {props.data.permits_by_street.length === 0 || props.location.query.view !== 'map' ? (
             <div className="alert alert-info">No results found</div>
-            :
-            <Map data={mapData} legend={createLegend(props.data.permits_by_street)} within={props.location.query.within} bounds={getBoundsFromStreetData(props.data.streets)} drawStreet streetData={convertStreetLinesToLatLngArrays(props.data.streets)} zoomToPoint={(props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== '') ? props.location.query.zoomToPoint : null} />
-          }
+          ) : (
+            <Map
+              data={mapData}
+              legend={createLegend(props.data.permits_by_street)}
+              within={props.location.query.within}
+              bounds={getBoundsFromStreetData(props.data.streets)}
+              drawStreet
+              streetData={convertStreetLinesToLatLngArrays(props.data.streets)}
+              zoomToPoint={
+                props.location.query.zoomToPoint !== undefined &&
+                props.location.query.zoomToPoint !== ''
+                  ? props.location.query.zoomToPoint
+                  : null
+              }
+            />
+          )}
         </div>
       </div>
     </div>
@@ -170,8 +232,18 @@ DevelopmentByStreet.defaultProps = {
 };
 
 const getPermitsAndStreetInfoQuery = gql`
-  query getPermitsAndStreetInfoQuery($centerline_ids: [Float], $radius: Int, $before: String, $after: String) {
-    permits_by_street (centerline_ids: $centerline_ids, radius: $radius, before: $before, after: $after) {
+  query getPermitsAndStreetInfoQuery(
+    $centerline_ids: [Float]
+    $radius: Int
+    $before: String
+    $after: String
+  ) {
+    permits_by_street(
+      centerline_ids: $centerline_ids
+      radius: $radius
+      before: $before
+      after: $after
+    ) {
       permit_number
       permit_group
       permit_type
@@ -192,15 +264,15 @@ const getPermitsAndStreetInfoQuery = gql`
         comments
       }
     }
-    streets (centerline_ids: $centerline_ids) {
+    streets(centerline_ids: $centerline_ids) {
       centerline_id
-        left_zipcode
-        right_zipcode
-        line {
-          x
-          y
-        }
-    }    
+      left_zipcode
+      right_zipcode
+      line {
+        x
+        y
+      }
+    }
   }
 `;
 

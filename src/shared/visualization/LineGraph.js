@@ -6,14 +6,18 @@ import HorizontalLegend from './HorizontalLegend';
 import Tooltip from './Tooltip';
 import { formatDataForStackedArea } from './visUtilities';
 
-
 const getLongDesc = (data, dataKeys, mainAxisKey, valueFormatter) => (
   <div>
     {data.map((value, index) => (
       <div key={[value[mainAxisKey], index].join('_')}>
-        <p>{value[mainAxisKey]}<br />
+        <p>
+          {value[mainAxisKey]}
+          <br />
           {dataKeys.map(key => (
-            <span key={[value[mainAxisKey], key].join('_')}>{key}: {valueFormatter !== null ? valueFormatter(value[key]) : value[key]}<br /></span>
+            <span key={[value[mainAxisKey], key].join('_')}>
+              {key}: {valueFormatter !== null ? valueFormatter(value[key]) : value[key]}
+              <br />
+            </span>
           ))}
         </p>
       </div>
@@ -24,10 +28,11 @@ const getLongDesc = (data, dataKeys, mainAxisKey, valueFormatter) => (
 const dateFromSlash = (stringDate) => {
   const splitDate = stringDate.split('/');
   splitDate[0] = (splitDate[0] - 1).toString();
-  if (splitDate[0].length < 2) { splitDate[0] = `0${splitDate[0]}`; }
+  if (splitDate[0].length < 2) {
+    splitDate[0] = `0${splitDate[0]}`;
+  }
   return new Date(splitDate[1], splitDate[0]);
 };
-
 
 class LineGraph extends React.Component {
   constructor(props) {
@@ -50,7 +55,7 @@ class LineGraph extends React.Component {
       this.props.data,
       this.props.dataKeys,
       this.props.mainAxisDataKey,
-      this.props.colorScheme,
+      this.props.colorScheme
     );
     return (
       <div>
@@ -58,18 +63,10 @@ class LineGraph extends React.Component {
         <br />
         <p>
           {this.props.chartText.isArray &&
-            this.props.chartText.map((textChunk, index) => (<span key={index}>{textChunk}</span>))
-          }
-          {!this.props.chartText.isArray &&
-            this.props.chartText
-          }
+            this.props.chartText.map((textChunk, index) => <span key={index}>{textChunk}</span>)}
+          {!this.props.chartText.isArray && this.props.chartText}
         </p>
-        <div
-          className="row"
-          role="img"
-          alt={this.state.altText}
-          tabIndex={0}
-        >
+        <div className="row" role="img" alt={this.state.altText} tabIndex={0}>
           <div
             className="col-sm-12"
             style={{
@@ -93,13 +90,13 @@ class LineGraph extends React.Component {
                 responsiveWidth
                 lines={formattedData}
                 xScaleType={scaleTime()}
-                xAccessor={d => {
-                  return dateFromSlash(d[this.props.mainAxisDataKey])
-                }}
+                xAccessor={d => dateFromSlash(d[this.props.mainAxisDataKey])}
                 yAccessor={d => +d.value}
                 yExtent={[0, 100]}
-                lineStyle={{ stroke: lineColor, strokeWidth: '4px'}}
-                margin={{ top: 10, right: 40, bottom: 50, left: 45 }}
+                lineStyle={{ stroke: lineColor, strokeWidth: '4px' }}
+                margin={{
+                  top: 10, right: 40, bottom: 50, left: 45,
+                }}
                 axes={[
                   {
                     orient: 'left',
@@ -110,7 +107,11 @@ class LineGraph extends React.Component {
                     orient: 'bottom',
                     ticks: 20,
                     rotate: -45,
-                    tickFormat: d => `${d.getMonth() + 1}/${d.getFullYear().toString().replace('20', '')}`,
+                    tickFormat: d =>
+                      `${d.getMonth() + 1}/${d
+                        .getFullYear()
+                        .toString()
+                        .replace('20', '')}`,
                     className: 'semiotic-axis',
                   },
                 ]}
@@ -126,69 +127,87 @@ class LineGraph extends React.Component {
                     disable: ['connector', 'note'],
                     className: 'semiotic-yHoverLine',
                   },
-                  { type: 'frame-hover', className: 'disableFrameHover'},
-                  { type: 'vertical-points', r: () => 5},
+                  { type: 'frame-hover', className: 'disableFrameHover' },
+                  { type: 'vertical-points', r: () => 5 },
                 ]}
                 tooltipContent={(d) => {
-                  const textLines = [{
+                  const textLines = [
+                    {
                       text: `${d.label}: ${d.value}%`,
                       color: lineColor,
-                    }]
+                    },
+                  ];
 
-                  const minTooltipWidth = (textLines.map(line => line.text).join('').length + 0.5) / textLines.length;
+                  const minTooltipWidth =
+                    (textLines.map(line => line.text).join('').length + 0.5) / textLines.length;
 
-                  return (<Tooltip
-                    textLines={textLines}
-                    title={d[this.props.mainAxisDataKey]}
-                    style={{
-                      backgroundColor: 'white',
-                      border: '1px solid black',
-                    }}
-                  />);
+                  return (
+                    <Tooltip
+                      textLines={textLines}
+                      title={d[this.props.mainAxisDataKey]}
+                      style={{
+                        backgroundColor: 'white',
+                        border: '1px solid black',
+                      }}
+                    />
+                  );
                 }}
-                svgAnnotationRules={d => {
+                svgAnnotationRules={(d) => {
                   if (d.d.type === 'y' && d.screenCoordinates[0]) {
-                    return (<g key={d.d.label}>
-                      <text
-                        x={d.xyFrameState.adjustedSize[0] + 16}
-                        y={d.screenCoordinates[1] + 5}
-                        textAnchor="middle"
-                        stroke={d.d.color}
-                      >
-                        {d.d.label}
-                      </text>
-                      <line
-                        stroke={d.d.color}
-                        strokeWidth={2}
-                        x1={d.xyFrameState.adjustedPosition[0]}
-                        x2={d.xyFrameState.adjustedSize[0]}
-                        y1={d.screenCoordinates[1]}
-                        y2={d.screenCoordinates[1]}
-                      />
-                    </g>);
+                    return (
+                      <g key={d.d.label}>
+                        <text
+                          x={d.xyFrameState.adjustedSize[0] + 16}
+                          y={d.screenCoordinates[1] + 5}
+                          textAnchor="middle"
+                          stroke={d.d.color}
+                        >
+                          {d.d.label}
+                        </text>
+                        <line
+                          stroke={d.d.color}
+                          strokeWidth={2}
+                          x1={d.xyFrameState.adjustedPosition[0]}
+                          x2={d.xyFrameState.adjustedSize[0]}
+                          y1={d.screenCoordinates[1]}
+                          y2={d.screenCoordinates[1]}
+                        />
+                      </g>
+                    );
                   }
-                  return null
+                  return null;
                 }}
               />
             </div>
           </div>
         </div>
-        <br/>
-        {!this.props.hideSummary &&
+        <br />
+        {!this.props.hideSummary && (
           // TODO: improve keyboard functionality-- a sighted user who relies on the keyboard can't use the button to see the summary very easily
           // see also bar chart (and maybe make this into a component)
           <div className="row">
             <div className="col-xs-10 col-xs-offset-1">
               <br />
-              <div className="text-center inText" role="button" tabIndex="0" onClick={() => this.toggleLongDesc()}>
-                {this.state.showingLongDesc ? 'Hide' : 'Show'} {this.props.chartTitle} area chart summary
+              <div
+                className="text-center inText"
+                role="button"
+                tabIndex="0"
+                onClick={() => this.toggleLongDesc()}
+              >
+                {this.state.showingLongDesc ? 'Hide' : 'Show'} {this.props.chartTitle} area chart
+                summary
               </div>
               <div hidden={!this.state.showingLongDesc}>
-                {getLongDesc(this.props.data, this.props.dataKeys, this.props.mainAxisDataKey, this.props.toolTipFormatter)}
+                {getLongDesc(
+                  this.props.data,
+                  this.props.dataKeys,
+                  this.props.mainAxisDataKey,
+                  this.props.toolTipFormatter
+                )}
               </div>
             </div>
           </div>
-        }
+        )}
       </div>
     );
   }

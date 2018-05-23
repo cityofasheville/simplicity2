@@ -2,12 +2,7 @@ import tree from 'data-tree';
 const objectAssign = require('object-assign');
 
 // levels for use in the Treemap
-const expenseLevels = [
-  'budget_section_id',
-  'dept_id',
-  'div_id',
-  'obj_id',
-];
+const expenseLevels = ['budget_section_id', 'dept_id', 'div_id', 'obj_id'];
 
 // level names for use in the Treemap
 const expenseLevelNames = [
@@ -18,21 +13,10 @@ const expenseLevelNames = [
 ];
 
 // levels for use in the Treemap
-const revenueLevels = [
-  'category_id',
-  'dept_id',
-  'div_id',
-  'obj_id',
-];
+const revenueLevels = ['category_id', 'dept_id', 'div_id', 'obj_id'];
 
 // level names for use in the Treemap
-const revenueLevelNames = [
-  'category_name',
-  'department_name',
-  'division_name',
-  'account_name',
-];
-
+const revenueLevelNames = ['category_name', 'department_name', 'division_name', 'account_name'];
 
 // this function calculates the delta percent that will be shown in the details Table
 const calculateDeltaPercent = (proposed, oneYearAgo) => {
@@ -45,7 +29,7 @@ const calculateDeltaPercent = (proposed, oneYearAgo) => {
   if (proposed === oneYearAgo) {
     return '0.00%';
   }
-  const percentChange = proposed === 0 ? -1 : ((proposed - oneYearAgo) / proposed);
+  const percentChange = proposed === 0 ? -1 : (proposed - oneYearAgo) / proposed;
   if (percentChange < 0) {
     return [(percentChange * 100).toFixed(2), '%'].join('');
   }
@@ -57,7 +41,7 @@ const calculateDeltaPercent = (proposed, oneYearAgo) => {
 // be colored accordingly
 const convertDelta = (flattenedTree) => {
   for (let i = 0; i < flattenedTree.children.length; i += 1) {
-    const maxDelta = Math.max.apply(Math, flattenedTree.children.map(child => Math.abs(child.delta))); // eslint-disable-line
+    const maxDelta = Math.max(...flattenedTree.children.map(child => Math.abs(child.delta))); // eslint-disable-line
     const factor = maxDelta === 0 ? 0 : 1 / maxDelta;
     flattenedTree.children[i].delta *= factor; // eslint-disable-line no-param-reassign
     convertDelta(flattenedTree.children[i]);
@@ -66,13 +50,28 @@ const convertDelta = (flattenedTree) => {
 
 // flatten the tree and export for use by the budget Treemap
 const exportForDetails = (aTree) => {
-  const flattened = aTree.export(data => (objectAssign({}, data, { delta: data.yearAmounts[data.yearAmounts.length - 1].amount - data.yearAmounts[data.yearAmounts.length - 2].amount }, { deltaPercent: calculateDeltaPercent(data.yearAmounts[data.yearAmounts.length - 1].amount, data.yearAmounts[data.yearAmounts.length - 2].amount) })));
+  const flattened = aTree.export(data =>
+    objectAssign(
+      {},
+      data,
+      {
+        delta:
+          data.yearAmounts[data.yearAmounts.length - 1].amount -
+          data.yearAmounts[data.yearAmounts.length - 2].amount,
+      },
+      {
+        deltaPercent: calculateDeltaPercent(
+          data.yearAmounts[data.yearAmounts.length - 1].amount,
+          data.yearAmounts[data.yearAmounts.length - 2].amount
+        ),
+      }
+    ));
   convertDelta(flattened);
   return flattened;
 };
 
 const removeZerosFromFlattened = (flattenedTree) => {
-  flattenedTree.children = flattenedTree.children.filter(child => (child.amount !== 0)); // eslint-disable-line no-param-reassign
+  flattenedTree.children = flattenedTree.children.filter(child => child.amount !== 0); // eslint-disable-line no-param-reassign
   for (let i = 0; i < flattenedTree.children.length; i += 1) {
     removeZerosFromFlattened(flattenedTree.children[i]);
   }
@@ -94,7 +93,19 @@ const insertLeafCopies = (flattenedTree) => {
   if (flattenedTree.children.length === 0) {
     const splitBreadcrumbPath = flattenedTree.breadcrumbPath.split('>');
     const splitPath = flattenedTree.path.split('_');
-    flattenedTree.children = [objectAssign({}, flattenedTree, { breadcrumbPath: [flattenedTree.breadcrumbPath, splitBreadcrumbPath[splitBreadcrumbPath.length - 1]].join('>') }, { path: [flattenedTree.path, splitPath[splitPath.length - 1]].join('_') })]; // eslint-disable-linesplitBreadcrumbPath
+    flattenedTree.children = [
+      objectAssign(
+        {},
+        flattenedTree,
+        {
+          breadcrumbPath: [
+            flattenedTree.breadcrumbPath,
+            splitBreadcrumbPath[splitBreadcrumbPath.length - 1],
+          ].join('>'),
+        },
+        { path: [flattenedTree.path, splitPath[splitPath.length - 1]].join('_') }
+      ),
+    ]; // eslint-disable-linesplitBreadcrumbPath
   } else {
     for (let i = 0; i < flattenedTree.children.length; i += 1) {
       insertLeafCopies(flattenedTree.children[i]);
@@ -145,14 +156,33 @@ export const buildTrees = (data, budgetParameters) => {
           });
         }
         curParent = curNode;
-        curNode.data(objectAssign({}, curNode.data(), { yearAmounts: curNode.data().yearAmounts.map((year, idx) => {
-          if (idx === yearIndex) {
-            return data[i].use_actual === 'true' ? { year: year.year, amount: year.amount + data[i].actual } : { year: year.year, amount: year.amount + data[i].budget };
-          }
-          return year;
-        }) }));
+        curNode.data(objectAssign({}, curNode.data(), {
+          yearAmounts: curNode.data().yearAmounts.map((year, idx) => {
+            if (idx === yearIndex) {
+              return data[i].use_actual === 'true'
+                ? { year: year.year, amount: year.amount + data[i].actual }
+                : { year: year.year, amount: year.amount + data[i].budget };
+            }
+            return year;
+          }),
+        }));
         if (yearIndex === budgetYears.length - 1) {
-          curNode.data(objectAssign({}, curNode.data(), { amount: data[i].use_actual === 'true' ? curNode.data().amount + data[i].actual : curNode.data().amount + data[i].budget }, { size: data[i].use_actual === 'true' ? curNode.data().size + data[i].actual : curNode.data().size + data[i].budget }));
+          curNode.data(objectAssign(
+            {},
+            curNode.data(),
+            {
+              amount:
+                  data[i].use_actual === 'true'
+                    ? curNode.data().amount + data[i].actual
+                    : curNode.data().amount + data[i].budget,
+            },
+            {
+              size:
+                  data[i].use_actual === 'true'
+                    ? curNode.data().size + data[i].actual
+                    : curNode.data().size + data[i].budget,
+            }
+          ));
         }
       }
     }
@@ -179,7 +209,16 @@ const roundTree = (node) => {
     node.data(),
     { size: Math.round(node.data().size) },
     { amount: Math.round(node.data().amount) },
-    { yearAmounts: node.data().yearAmounts ? node.data().yearAmounts.map(yearAmount => ({ year: yearAmount.year, amount: Math.round(yearAmount.amount) })) : [{ year: 1234, amount: 0 }, { year: 1234, amount: 0 }] }, // not great just to get dummy value for root
+    {
+      yearAmounts: node.data().yearAmounts
+        ? node
+          .data()
+          .yearAmounts.map(yearAmount => ({
+            year: yearAmount.year,
+            amount: Math.round(yearAmount.amount),
+          }))
+        : [{ year: 1234, amount: 0 }, { year: 1234, amount: 0 }],
+    } // not great just to get dummy value for root
   ));
   node.childNodes().forEach(c => roundTree(c));
 };
@@ -189,7 +228,8 @@ const createSummaryKeys = (data) => {
   const keys = [];
   let keyAlreadyPresent;
   for (let i = 0; i < data.length; i += 1) {
-    if (data[i].account_type === 'E') { // only care about 'E' for now
+    if (data[i].account_type === 'E') {
+      // only care about 'E' for now
       keyAlreadyPresent = false;
       for (let j = 0; j < keys.length; j += 1) {
         if (keys[j] === data[i].category_name) {
@@ -206,20 +246,25 @@ const createSummaryKeys = (data) => {
 };
 
 // helper function to create list of all potential values for summary data
-const createSummaryValues = (data, budgetParameters) => (
-  data.map(item => (
-    {
-      display_year: `${parseInt(item.year, 10) - 1}-${parseInt(item.year, 10).toString().slice(2, 4)}`,
-      label: item.category_name,
-      value: budgetParameters.end_year === item.year ? Math.round(item.total_budget) : Math.round(item.total_actual),
-    }
-  ))
-);
+const createSummaryValues = (data, budgetParameters) =>
+  data.map(item => ({
+    display_year: `${parseInt(item.year, 10) - 1}-${parseInt(item.year, 10)
+      .toString()
+      .slice(2, 4)}`,
+    label: item.category_name,
+    value:
+      budgetParameters.end_year === item.year
+        ? Math.round(item.total_budget)
+        : Math.round(item.total_actual),
+  }));
 
 // this function converts the results of the query into the form that the recharts barchart can handle
 // must have an object with dataKeys (list of string keys), and dataValues (object with one value for each key from dataKeys, and a year)
 export const buildSummaryData = (data, budgetParameters) => {
-  const summaryData = { dataKeys: createSummaryKeys(data), dataValues: createSummaryValues(data, budgetParameters) };
+  const summaryData = {
+    dataKeys: createSummaryKeys(data),
+    dataValues: createSummaryValues(data, budgetParameters),
+  };
   return summaryData;
 };
 
@@ -236,9 +281,31 @@ export const buildCashFlowData = (data) => {
   let allExpenseRevenueRows = data.glBudgetCashFlowExpenses.concat(data.glBudgetCashFlowRevenues);
   let linkAlreadyExists = false;
   const fundsToInclude = ['1100', '6100', '6200', '6260', '6240', '6220', '6500'];
-  const fundDisplayNames = ['General Fund', 'Water Resources', 'Parking Services', 'US Cellular Center', 'Stormwater', 'Street Cut', 'Transit Services'];
-  const managementAndSupportDepts = ['Legal Department', 'Community & Public Engagement', 'Human Resources Department', 'Information Technology Dept.', 'Administration Services Dept', 'Finance Department', 'General Services Department'];
-  const communityAndResidentDepts = ['Development Services Dept.', 'Community & Economic Dev. Dept', 'Equity & Inclusion', 'Planning & Development Dept', 'Capital Project Management Dep'];
+  const fundDisplayNames = [
+    'General Fund',
+    'Water Resources',
+    'Parking Services',
+    'US Cellular Center',
+    'Stormwater',
+    'Street Cut',
+    'Transit Services',
+  ];
+  const managementAndSupportDepts = [
+    'Legal Department',
+    'Community & Public Engagement',
+    'Human Resources Department',
+    'Information Technology Dept.',
+    'Administration Services Dept',
+    'Finance Department',
+    'General Services Department',
+  ];
+  const communityAndResidentDepts = [
+    'Development Services Dept.',
+    'Community & Economic Dev. Dept',
+    'Equity & Inclusion',
+    'Planning & Development Dept',
+    'Capital Project Management Dep',
+  ];
   const convertFundNameToDisplayName = (fundId) => {
     const fundIndex = fundsToInclude.indexOf(fundId);
     return fundIndex === -1 ? 'Other' : fundDisplayNames[fundIndex];
@@ -251,12 +318,25 @@ export const buildCashFlowData = (data) => {
         return deptName;
     }
   };
-  allExpenseRevenueRows = allExpenseRevenueRows.filter(item => (fundsToInclude.indexOf(item.fund_id) > -1)).map((item) => {
-    if (item.account_type === 'E') {
-      return objectAssign({}, item, { name: managementAndSupportDepts.indexOf(item.department_name) > -1 ? 'Management & Support Services' : (communityAndResidentDepts.indexOf(item.department_name) > -1 ? 'Other Community & Resident Services' : convertDeptNameToDisplayName(item.department_name)), fund_name: convertFundNameToDisplayName(item.fund_id) }); // eslint-disable-line
-    }
-    return objectAssign({}, item, { name: item.category_name, fund_name: convertFundNameToDisplayName(item.fund_id) });
-  });
+  allExpenseRevenueRows = allExpenseRevenueRows
+    .filter(item => fundsToInclude.indexOf(item.fund_id) > -1)
+    .map((item) => {
+      if (item.account_type === 'E') {
+        return objectAssign({}, item, {
+          name:
+            managementAndSupportDepts.indexOf(item.department_name) > -1
+              ? 'Management & Support Services'
+              : communityAndResidentDepts.indexOf(item.department_name) > -1
+                ? 'Other Community & Resident Services'
+                : convertDeptNameToDisplayName(item.department_name),
+          fund_name: convertFundNameToDisplayName(item.fund_id),
+        }); // eslint-disable-line
+      }
+      return objectAssign({}, item, {
+        name: item.category_name,
+        fund_name: convertFundNameToDisplayName(item.fund_id),
+      });
+    });
   // group expenses, revenues, and funds into their department, category, and funds - because the nodes are only one per
   // fund_name, category, and fund
   for (let i = 0; i < allExpenseRevenueRows.length; i += 1) {
@@ -285,36 +365,55 @@ export const buildCashFlowData = (data) => {
       // link is source index, target index, and value
       // must find if there is already a link from the source to the target, and if so, then just add the value to the sum instead of pushing
       for (let j = 0; j < sankeyLinks.length; j += 1) {
-        if (sankeyLinks[j].source === categoryNames.indexOf(allExpenseRevenueRows[i].name) + revenueOffset && sankeyLinks[j].target === fundNames.indexOf(allExpenseRevenueRows[i].fund_name) + fundsOffset) {
+        if (
+          sankeyLinks[j].source ===
+            categoryNames.indexOf(allExpenseRevenueRows[i].name) + revenueOffset &&
+          sankeyLinks[j].target ===
+            fundNames.indexOf(allExpenseRevenueRows[i].fund_name) + fundsOffset
+        ) {
           sankeyLinks[j].value += allExpenseRevenueRows[i].budget;
           linkAlreadyExists = true;
           break;
         }
       }
       if (!linkAlreadyExists) {
-        sankeyLinks.push({ source: categoryNames.indexOf(allExpenseRevenueRows[i].name) + revenueOffset, target: fundNames.indexOf(allExpenseRevenueRows[i].fund_name) + fundsOffset, value: allExpenseRevenueRows[i].budget });
+        sankeyLinks.push({
+          source: categoryNames.indexOf(allExpenseRevenueRows[i].name) + revenueOffset,
+          target: fundNames.indexOf(allExpenseRevenueRows[i].fund_name) + fundsOffset,
+          value: allExpenseRevenueRows[i].budget,
+        });
       }
     } else {
       for (let j = 0; j < sankeyLinks.length; j += 1) {
-        if (sankeyLinks[j].source === fundNames.indexOf(allExpenseRevenueRows[i].fund_name) + fundsOffset && sankeyLinks[j].target === departmentNames.indexOf(allExpenseRevenueRows[i].name) + expensesOffset) {
+        if (
+          sankeyLinks[j].source ===
+            fundNames.indexOf(allExpenseRevenueRows[i].fund_name) + fundsOffset &&
+          sankeyLinks[j].target ===
+            departmentNames.indexOf(allExpenseRevenueRows[i].name) + expensesOffset
+        ) {
           sankeyLinks[j].value += allExpenseRevenueRows[i].budget;
           linkAlreadyExists = true;
           break;
         }
       }
       if (!linkAlreadyExists) {
-        sankeyLinks.push({ source: fundNames.indexOf(allExpenseRevenueRows[i].fund_name) + fundsOffset, target: departmentNames.indexOf(allExpenseRevenueRows[i].name) + expensesOffset, value: allExpenseRevenueRows[i].budget });
+        sankeyLinks.push({
+          source: fundNames.indexOf(allExpenseRevenueRows[i].fund_name) + fundsOffset,
+          target: departmentNames.indexOf(allExpenseRevenueRows[i].name) + expensesOffset,
+          value: allExpenseRevenueRows[i].budget,
+        });
       }
     }
   }
   // combine the revenues, funds, expenses nodes into one array
   sankeyNodes = revenueNodes.concat(fundNodes).concat(expenseNodes);
-  sankeyNodes = sankeyNodes.map(node => (objectAssign({}, node, { value: Math.round(node.value) })));
+  sankeyNodes = sankeyNodes.map(node => objectAssign({}, node, { value: Math.round(node.value) }));
   return { sankeyNodes, sankeyLinks };
 };
 
 export const getBudgetYears = (budgetParameters) => {
-  const numYears = parseInt(budgetParameters.end_year, 10) - parseInt(budgetParameters.start_year, 10);
+  const numYears =
+    parseInt(budgetParameters.end_year, 10) - parseInt(budgetParameters.start_year, 10);
   const years = [];
   for (let i = 0; i < numYears + 1; i += 1) {
     years.push(parseInt(budgetParameters.start_year, 10) + i);
@@ -323,13 +422,19 @@ export const getBudgetYears = (budgetParameters) => {
 };
 
 export const createAnnotations = (budgetParameters) => {
-  const numYears = parseInt(budgetParameters.end_year, 10) - parseInt(budgetParameters.start_year, 10);
+  const numYears =
+    parseInt(budgetParameters.end_year, 10) - parseInt(budgetParameters.start_year, 10);
   const annotations = [];
   for (let i = 0; i < numYears + 1; i += 1) {
     annotations.push({
       type: 'or',
-      display_year: `${parseInt(budgetParameters.start_year, 10) + (i - 1)}-${(parseInt(budgetParameters.start_year, 10) + i).toString().slice(2, 4)}`,
-      label: i < numYears ? 'Actual Spent' : (budgetParameters.in_budget_season ? 'Proposed' : 'Adopted'),
+      display_year: `${parseInt(budgetParameters.start_year, 10) + (i - 1)}-${(
+        parseInt(budgetParameters.start_year, 10) + i
+      )
+        .toString()
+        .slice(2, 4)}`,
+      label:
+        i < numYears ? 'Actual Spent' : budgetParameters.in_budget_season ? 'Proposed' : 'Adopted',
       budgetAnnotation: true,
     });
   }

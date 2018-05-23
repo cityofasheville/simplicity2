@@ -1,7 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import L from 'leaflet';
-import { Map as LeafletMap, Marker, TileLayer, Popup, Circle, Polyline, Polygon, LayersControl } from 'react-leaflet';
+import {
+  Map as LeafletMap,
+  Marker,
+  TileLayer,
+  Popup,
+  Circle,
+  Polyline,
+  Polygon,
+  LayersControl,
+} from 'react-leaflet';
 import { GoogleLayer } from 'react-leaflet-google';
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 import MapLegendControl from './MapLegendControl';
@@ -20,12 +29,15 @@ const markerClusterOptions = {
 
 const getBounds = (center, within) => {
   const degToAdd = parseInt(within, 10) / 500000;
-  return [[center[0] - degToAdd, center[1] - degToAdd], [center[0] + degToAdd, center[1] + degToAdd]];
+  return [
+    [center[0] - degToAdd, center[1] - degToAdd],
+    [center[0] + degToAdd, center[1] + degToAdd],
+  ];
 };
 
 const Map = (props) => {
   const markers = [];
-  for (let pt of props.data) {
+  for (const pt of props.data) {
     markers.push({
       position: [pt.y, pt.x],
       popup: pt.popup || null,
@@ -43,82 +55,106 @@ const Map = (props) => {
 
   return (
     <div style={{ height: props.height, width: props.width }}>
-      <LeafletMap className="markercluster-map" center={shouldZoomToNonCenter ? zoomTo : props.center} zoom={props.zoom} maxZoom={18} bounds={props.bounds === null ? getBounds(shouldZoomToNonCenter ? zoomTo : props.center, shouldZoomToNonCenter ? 660 : props.within) : props.bounds}>
+      <LeafletMap
+        className="markercluster-map"
+        center={shouldZoomToNonCenter ? zoomTo : props.center}
+        zoom={props.zoom}
+        maxZoom={18}
+        bounds={
+          props.bounds === null
+            ? getBounds(
+              shouldZoomToNonCenter ? zoomTo : props.center,
+              shouldZoomToNonCenter ? 660 : props.within
+            )
+            : props.bounds
+        }
+      >
         <LayersControl position="topright">
           <BaseLayer checked name="OpenStreetMap">
             <TileLayer
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
             />
           </BaseLayer>
           <BaseLayer name="Google Maps Satellite">
             <GoogleLayer googlekey={mapKey} maptype={satellite} />
           </BaseLayer>
-          {props.drawCircle &&
+          {props.drawCircle && (
             <Circle center={props.center} radius={props.radius} fillOpacity={0.15} />
-          }
-          {shouldZoomToNonCenter &&
+          )}
+          {shouldZoomToNonCenter && (
             <Circle center={zoomTo} radius={15} fillOpacity={0.15} color="red" />
-          }
-          {props.showCenter &&
+          )}
+          {props.showCenter && (
             <Marker
-            position={props.center}
-            icon={L.icon({
-              iconUrl: require('../../shared/marker-icon-2.png'),
-              iconSize: [25, 41],
-              iconAnchor: [12, 41],
-              popupAnchor: [2, -22],
-            })}
+              position={props.center}
+              icon={L.icon({
+                iconUrl: require('../../shared/marker-icon-2.png'),
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [2, -22],
+              })}
             >
               <Popup>
-                <div><b>{props.centerLabel}</b></div>
+                <div>
+                  <b>{props.centerLabel}</b>
+                </div>
               </Popup>
             </Marker>
-          }
+          )}
           {props.drawStreet &&
-            props.streetData.map((line, index) =>
-              <Polyline key={['street_line', index].join('_')} positions={line} weight={5} className="noPointer" />
-            )
-          }
-          {props.drawMaintenance &&
-            props.maintenanceData.map((line, index) =>
+            props.streetData.map((line, index) => (
               <Polyline
-              key={['maintenance_line', index].join('_')} positions={line.line} weight={10} opacity={0.8} color={line.color}
+                key={['street_line', index].join('_')}
+                positions={line}
+                weight={5}
+                className="noPointer"
+              />
+            ))}
+          {props.drawMaintenance &&
+            props.maintenanceData.map((line, index) => (
+              <Polyline
+                key={['maintenance_line', index].join('_')}
+                positions={line.line}
+                weight={10}
+                opacity={0.8}
+                color={line.color}
               >
-                <Popup>
-                  {line.popup}
-                </Popup>
+                <Popup>{line.popup}</Popup>
               </Polyline>
-            )
-          }
+            ))}
           {props.drawPolygon &&
-            props.polygonData.map((poly, index) =>
+            props.polygonData.map((poly, index) => (
               <Polygon key={['polygon', index].join('_')} positions={poly.polygons}>
-                {poly.popup &&
-                  <Popup>
-                    {poly.popup}
-                  </Popup>
-                }
+                {poly.popup && <Popup>{poly.popup}</Popup>}
               </Polygon>
-            )
-          }
+            ))}
           <MarkerClusterGroup markers={markers} {...markerClusterOptions} />
         </LayersControl>
-        {
-          props.legend &&
+        {props.legend && (
           <MapLegendControl>
-            <div className="legendIcon"><Icon path={IM_LIST2} size={24} color="#828282" /></div>
-            <div className="legend" style={{ maxHeight: parseInt(props.height.split('px')[0], 10) / 2 }}>
-              <div className="closeLegend" style={{ fontWeight: 'bold', fontSize: '14px', color: '#979797' }}
-              onClick={(e) => { 
-                if (e.target.parentNode.style.display === 'block') {
-                  e.target.parentNode.style.display = 'none';
-                }
-              }}>X</div>
+            <div className="legendIcon">
+              <Icon path={IM_LIST2} size={24} color="#828282" />
+            </div>
+            <div
+              className="legend"
+              style={{ maxHeight: parseInt(props.height.split('px')[0], 10) / 2 }}
+            >
+              <div
+                className="closeLegend"
+                style={{ fontWeight: 'bold', fontSize: '14px', color: '#979797' }}
+                onClick={(e) => {
+                  if (e.target.parentNode.style.display === 'block') {
+                    e.target.parentNode.style.display = 'none';
+                  }
+                }}
+              >
+                X
+              </div>
               {props.legend}
             </div>
           </MapLegendControl>
-        }
+        )}
       </LeafletMap>
     </div>
   );

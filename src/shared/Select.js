@@ -21,9 +21,18 @@ class Select extends React.Component {
 
   render() {
     return (
-      <select value={this.state.value} onChange={this.handleChange} name={this.name} id={this.id} className="form-control" defaultValue={this.value}>
+      <select
+        value={this.state.value}
+        onChange={this.handleChange}
+        name={this.name}
+        id={this.id}
+        className="form-control"
+        defaultValue={this.value}
+      >
         {this.options.map((option, i) => (
-          <option value={option.value} key={[this.name, 'option', i].join('_')} name={this.name}>{option.display}</option>
+          <option value={option.value} key={[this.name, 'option', i].join('_')} name={this.name}>
+            {option.display}
+          </option>
         ))}
       </select>
     );
@@ -43,4 +52,3 @@ Select.propTypes = {
 };
 
 export default Select;
-

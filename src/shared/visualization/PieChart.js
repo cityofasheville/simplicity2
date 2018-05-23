@@ -5,7 +5,6 @@ import { colorSchemes } from './colorSchemes';
 import HorizontalLegend from './HorizontalLegend';
 import Tooltip from './Tooltip';
 
-
 class PieChart extends React.Component {
   constructor() {
     super();
@@ -22,22 +21,13 @@ class PieChart extends React.Component {
     }));
 
     return (
-      <div
-        className="ordinal-pie-elements"
-        role="img"
-        tabIndex={0}
-        aria-label={this.props.altText}
-      >
+      <div className="ordinal-pie-elements" role="img" tabIndex={0} aria-label={this.props.altText}>
         <HorizontalLegend
           formattedData={thisData}
           style={{ width: '65%', margin: '0 auto', paddingBottom: '10px' }}
         />
-        <div
-          className="pie-container"
-        >
-          <div
-            style={{ height: this.props.height, width: this.props.height, margin: '0 auto' }}
-          >
+        <div className="pie-container">
+          <div style={{ height: this.props.height, width: this.props.height, margin: '0 auto' }}>
             <ResponsiveOrdinalFrame
               chartTitle={this.props.altText}
               data={thisData}
@@ -48,9 +38,9 @@ class PieChart extends React.Component {
               projection="radial"
               title={this.props.chartTitle}
               customHoverBehavior={(d) => {
-                d && d.pieces ?
-                this.setState({ hover: d.pieces[0].data.label }) :
-                this.setState({ hover: null });
+                d && d.pieces
+                  ? this.setState({ hover: d.pieces[0].data.label })
+                  : this.setState({ hover: null });
               }}
               size={[this.props.height - 20, this.props.height - 20]}
               style={d => ({
@@ -61,18 +51,22 @@ class PieChart extends React.Component {
                 fillOpacity: d.label === this.state.hover ? '1' : '0.95',
               })}
               tooltipContent={(d) => {
-                const datum = d.column ? d.column.pieceData[0].data : d.data
+                const datum = d.column ? d.column.pieceData[0].data : d.data;
 
-                const textLine = [{
-                  text: `${datum.label}: ${this.props.toolTipFormatter(datum.magnitude)}`,
-                  color: datum.color,
-                }];
-                return (<Tooltip
-                  textLines={textLine}
-                  style={{
-                    fontWeight: 'bolder',
-                  }}
-                />);
+                const textLine = [
+                  {
+                    text: `${datum.label}: ${this.props.toolTipFormatter(datum.magnitude)}`,
+                    color: datum.color,
+                  },
+                ];
+                return (
+                  <Tooltip
+                    textLines={textLine}
+                    style={{
+                      fontWeight: 'bolder',
+                    }}
+                  />
+                );
               }}
               type={{
                 type: 'bar',

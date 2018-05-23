@@ -2,10 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import BarChart from '../../shared/visualization/BarChart';
 
-const days_exit_keys = [
-  'Non-GPD',
-  'SITH',
-];
+const days_exit_keys = ['Non-GPD', 'SITH'];
 
 const days_exit_data = [
   {
@@ -45,7 +42,18 @@ const HomelessnessVeteransExitTime = props => (
     <div className="row">
       <div className="col-sm-12">
         <h3>How long does it take to house a Veteran?</h3>
-        <p>The City of Asheville and Buncombe County are striving to achieve &quot;functional zero&quot; for Veteran homelessness, as defined for NC 501, Asheville-Buncombe Continuum of Care. Functional zero would be achieved when every newly identified homeless Veteran in Asheville-Buncombe is connected with an appropriate housing intervention within 30 days and is permanently housed within 90 days after signing a Declaration of Housing Preference form, unless the Veteran elects to enter a long term transitional housing program (known as Grant and Per Diem programs, GPD). Veterans who choose to enter GPD programs can remain in those programs for up to two years. We connect newly identified homeless Veterans who wish to be connected with a housing intervention within two weeks. The below charts show how many days to a positive exit from homelessness.</p>
+        <p>
+          The City of Asheville and Buncombe County are striving to achieve &quot;functional
+          zero&quot; for Veteran homelessness, as defined for NC 501, Asheville-Buncombe Continuum
+          of Care. Functional zero would be achieved when every newly identified homeless Veteran in
+          Asheville-Buncombe is connected with an appropriate housing intervention within 30 days
+          and is permanently housed within 90 days after signing a Declaration of Housing Preference
+          form, unless the Veteran elects to enter a long term transitional housing program (known
+          as Grant and Per Diem programs, GPD). Veterans who choose to enter GPD programs can remain
+          in those programs for up to two years. We connect newly identified homeless Veterans who
+          wish to be connected with a housing intervention within two weeks. The below charts show
+          how many days to a positive exit from homelessness.
+        </p>
       </div>
     </div>
     <div className="row">
@@ -95,6 +103,6 @@ HomelessnessVeteransExitTime.propTypes = {
 
 HomelessnessVeteransExitTime.defaultProps = {
   data: days_exit_data,
-}
+};
 
 export default HomelessnessVeteransExitTime;

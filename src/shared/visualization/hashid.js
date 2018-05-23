@@ -32,10 +32,7 @@ const UNIQUE_RETRIES = 9999;
  * @return {String} friendly ID.
  */
 export const generate = (options) => {
-  const {
-    alphabet = DEFAULT_ALPHABET,
-    idLength = DEFAULT_ID_LENGTH,
-  } = Object.assign({}, options);
+  const { alphabet = DEFAULT_ALPHABET, idLength = DEFAULT_ID_LENGTH } = Object.assign({}, options);
 
   let rtn = '';
   for (let i = 0; i < idLength; i++) {

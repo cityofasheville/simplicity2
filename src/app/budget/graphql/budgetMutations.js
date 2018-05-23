@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 export const updateSankeyData = gql`
-  mutation updateSankeyData($sankeyData: sankeyData, ) {
+  mutation updateSankeyData($sankeyData: sankeyData) {
     updateSankeyData(sankeyData: $sankeyData) @client {
       nodes
       links

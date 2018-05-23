@@ -2,7 +2,9 @@ import { getUser, getModalOpen, getDropdownOpen } from './authQueries';
 
 export const authResolvers = {
   Mutation: {
-    updateUser: (_, { loggedIn, privilege, name, email, provider }, { cache }) => {
+    updateUser: (_, {
+      loggedIn, privilege, name, email, provider,
+    }, { cache }) => {
       const data = {
         user: {
           __typename: 'user',

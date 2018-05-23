@@ -4,7 +4,6 @@ import { Checkbox, CheckboxGroupContext } from 'accessible-react-checkbox-group'
 import { generate } from 'namor';
 import '../styles/components/filterCheckbox.scss';
 
-
 class FilterCheckbox extends React.Component {
   state = {
     id: generate({ words: 2 }),
@@ -27,8 +26,14 @@ class FilterCheckbox extends React.Component {
   };
 
   render() {
-    const mainStyle = this.props.disabled ? 'filterCheckbox filterCheckbox--disabled' : this.props.checked ? 'filterCheckbox filterCheckbox--checked' : 'filterCheckbox filterCheckbox--unchecked';
-    const backgroundStyle = this.props.checked ? 'filterCheckbox filterCheckbox--backgroundChecked' : 'filterCheckbox filterCheckbox--backgroundUnchecked';
+    const mainStyle = this.props.disabled
+      ? 'filterCheckbox filterCheckbox--disabled'
+      : this.props.checked
+        ? 'filterCheckbox filterCheckbox--checked'
+        : 'filterCheckbox filterCheckbox--unchecked';
+    const backgroundStyle = this.props.checked
+      ? 'filterCheckbox filterCheckbox--backgroundChecked'
+      : 'filterCheckbox filterCheckbox--backgroundUnchecked';
 
     return (
       <div className="checkboxGroup__checkbox disabledCursor" style={{ cursor: 'pointer' }}>
@@ -43,7 +48,9 @@ class FilterCheckbox extends React.Component {
           aria-labelledby={this.state.labelId}
           disabled={this.props.disabled}
         >
-          <div className="text-center text-primary" /* style={{ minHeight: this.props.minHeight }} */>
+          <div
+            className="text-center text-primary" /* style={{ minHeight: this.props.minHeight }} */
+          >
             <Checkbox
               role="presentation"
               id={this.state.id}

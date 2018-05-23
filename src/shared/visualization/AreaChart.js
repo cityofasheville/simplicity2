@@ -6,14 +6,18 @@ import HorizontalLegend from './HorizontalLegend';
 import Tooltip from './Tooltip';
 import { formatDataForStackedArea } from './visUtilities';
 
-
 const getLongDesc = (data, dataKeys, mainAxisKey, valueFormatter) => (
   <div>
     {data.map((value, index) => (
       <div key={[value[mainAxisKey], index].join('_')}>
-        <p>{value[mainAxisKey]}<br />
+        <p>
+          {value[mainAxisKey]}
+          <br />
           {dataKeys.map(key => (
-            <span key={[value[mainAxisKey], key].join('_')}>{key}: {valueFormatter !== null ? valueFormatter(value[key]) : value[key]}<br /></span>
+            <span key={[value[mainAxisKey], key].join('_')}>
+              {key}: {valueFormatter !== null ? valueFormatter(value[key]) : value[key]}
+              <br />
+            </span>
           ))}
         </p>
       </div>
@@ -24,7 +28,9 @@ const getLongDesc = (data, dataKeys, mainAxisKey, valueFormatter) => (
 const dateFromSlash = (stringDate) => {
   const splitDate = stringDate.split('/');
   splitDate[0] = (splitDate[0] - 1).toString();
-  if (splitDate[0].length < 2) { splitDate[0] = `0${splitDate[0]}`; }
+  if (splitDate[0].length < 2) {
+    splitDate[0] = `0${splitDate[0]}`;
+  }
   return new Date(splitDate[1], splitDate[0]);
 };
 
@@ -36,7 +42,7 @@ class AreaChart extends React.Component {
       showingLongDesc: this.showLongDesc,
     };
 
-    this.toggleLongDesc = this.toggleLongDesc.bind(this)
+    this.toggleLongDesc = this.toggleLongDesc.bind(this);
   }
 
   toggleLongDesc(event) {
@@ -52,18 +58,15 @@ class AreaChart extends React.Component {
       this.props.data,
       this.props.dataKeys,
       this.props.mainAxisDataKey,
-      this.props.colorScheme,
+      this.props.colorScheme
     );
     return (
       <div>
         <h4>{this.props.chartTitle}</h4>
         <p>
           {this.props.chartText.isArray &&
-            this.props.chartText.map((textChunk, index) => (<span key={index}>{textChunk}</span>))
-          }
-          {!this.props.chartText.isArray &&
-            this.props.chartText
-          }
+            this.props.chartText.map((textChunk, index) => <span key={index}>{textChunk}</span>)}
+          {!this.props.chartText.isArray && this.props.chartText}
         </p>
         <div className="row">
           <div
@@ -101,7 +104,9 @@ class AreaChart extends React.Component {
                 yAccessor={d => +d.value}
                 lineType="stackedarea"
                 lineStyle={d => ({ fill: d.color })}
-                margin={{ top: 40, right: 40, bottom: 60, left: 40 }}
+                margin={{
+                  top: 40, right: 40, bottom: 60, left: 40,
+                }}
                 axes={[
                   {
                     orient: 'left',
@@ -111,7 +116,11 @@ class AreaChart extends React.Component {
                     orient: 'bottom',
                     ticks: 20,
                     rotate: -45,
-                    tickFormat: d => `${d.getMonth() + 1}/${d.getFullYear().toString().replace('20', '')}`,
+                    tickFormat: d =>
+                      `${d.getMonth() + 1}/${d
+                        .getFullYear()
+                        .toString()
+                        .replace('20', '')}`,
                     className: 'semiotic-axis',
                   },
                 ]}
@@ -129,57 +138,70 @@ class AreaChart extends React.Component {
                     className: 'semiotic-yHoverLine',
                   },
                   { type: 'frame-hover', className: 'disableFrameHover' },
-                  { type: 'vertical-points', r: (d) => { d.yMiddle = d.yTop; return 5; } },
+                  {
+                    type: 'vertical-points',
+                    r: (d) => {
+                      d.yMiddle = d.yTop;
+                      return 5;
+                    },
+                  },
                 ]}
                 tooltipContent={(d) => {
-                  if (!d.parentLine) { return; }
+                  if (!d.parentLine) {
+                    return;
+                  }
 
-                  const datum = d.data
+                  const datum = d.data;
 
                   const points = formattedData
                     .map(line => ({
                       label: line.label,
                       color: line.color,
                       data: line.coordinates.find(p => p[this.props.mainAxisDataKey] === datum[this.props.mainAxisDataKey]),
-                      dataSum: line.coordinates.reduce((a, c) =>
-                        ({ value: a.value + c.value })),
+                      dataSum: line.coordinates.reduce((a, c) => ({ value: a.value + c.value })),
                     }))
                     .sort((a, b) => a.dataSum.value - b.dataSum.value);
 
-                  const textLines = points.map(thisPoint =>
-                    ({
-                      text: `${thisPoint.label}: ${thisPoint.data.value || 0}`,
-                      color: thisPoint.color,
-                    })
+                  const textLines = points.map(thisPoint => ({
+                    text: `${thisPoint.label}: ${thisPoint.data.value || 0}`,
+                    color: thisPoint.color,
+                  }));
+
+                  const minTooltipWidth =
+                    (textLines.map(line => line.text).join('').length + 0.5) / textLines.length;
+
+                  return (
+                    <Tooltip
+                      textLines={textLines}
+                      title={datum[this.props.mainAxisDataKey]}
+                      style={{
+                        backgroundColor: 'white',
+                        border: '1px solid black',
+                        position: 'absolute',
+                        left:
+                          minTooltipWidth * 16 < 1200 - datum.voronoiX
+                            ? '1.5rem'
+                            : `${-minTooltipWidth - 1.5}rem`,
+                        top: `${400 * -0.5}px`,
+                      }}
+                    />
                   );
-
-                  const minTooltipWidth = (textLines.map(line => line.text).join('').length + 0.5) / textLines.length;
-
-                  return (<Tooltip
-                    textLines={textLines}
-                    title={datum[this.props.mainAxisDataKey]}
-                    style={{
-                      backgroundColor: 'white',
-                      border: '1px solid black',
-                      position: 'absolute',
-                      left: (minTooltipWidth * 16 < 1200 - datum.voronoiX) ?
-                        '1.5rem' :
-                        `${-minTooltipWidth - 1.5}rem`,
-                      top: `${400 * -0.5}px`,
-                    }}
-                  />);
                 }}
               />
               <HorizontalLegend
-                formattedData={formattedData.map(d => d.coordinates.map(datum => {datum.color = d.color; return datum; })).reduce((total, curr) => {
-                  return total.concat(curr);
-                })}
+                formattedData={formattedData
+                  .map(d =>
+                    d.coordinates.map((datum) => {
+                      datum.color = d.color;
+                      return datum;
+                    }))
+                  .reduce((total, curr) => total.concat(curr))}
                 legendLabelFormatter={this.props.legendLabelFormatter}
               />
             </div>
           </div>
         </div>
-        {!this.props.hideSummary &&
+        {!this.props.hideSummary && (
           // TODO: improve keyboard functionality-- a sighted user who relies on the keyboard can't use the button to see the summary very easily
           // see also bar chart (and maybe make this into a component)
           <div className="row">
@@ -192,14 +214,20 @@ class AreaChart extends React.Component {
                 onClick={this.toggleLongDesc}
                 onKeyUp={this.toggleLongDesc}
               >
-                {this.state.showingLongDesc ? 'Hide' : 'Show'} {this.props.chartTitle} area chart summary
+                {this.state.showingLongDesc ? 'Hide' : 'Show'} {this.props.chartTitle} area chart
+                summary
               </div>
               <div hidden={!this.state.showingLongDesc}>
-                {getLongDesc(this.props.data, this.props.dataKeys, this.props.mainAxisDataKey, this.props.toolTipFormatter)}
+                {getLongDesc(
+                  this.props.data,
+                  this.props.dataKeys,
+                  this.props.mainAxisDataKey,
+                  this.props.toolTipFormatter
+                )}
               </div>
             </div>
           </div>
-        }
+        )}
       </div>
     );
   }

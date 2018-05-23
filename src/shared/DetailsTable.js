@@ -12,13 +12,11 @@ const DetailsTable = (props) => {
 
   return (
     <div>
-      {props.hasTitle &&
+      {props.hasTitle && (
         <div className={styles.titleDiv}>
-          {props.hasTitleIcon &&
-            props.titleIcon
-          } {props.title}
+          {props.hasTitleIcon && props.titleIcon} {props.title}
         </div>
-      }
+      )}
       <div className={['row'].join(' ')}>
         <div className="col-xs-12">
           <AccessibleReactTable

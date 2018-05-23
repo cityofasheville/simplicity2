@@ -57,13 +57,7 @@ const createLegend = (permitData) => {
   return (
     <div style={{ width: '160px' }}>
       {permitTypes.map(type => (
-        <div key={`legendItem-${type}`} style={{ width: '160px', marginBottom: '5px' }}>
-          <img
-            src={getMarker(type)}
-            style={{ display: 'inline-block', width: '25px', verticalAlign: 'top' }}
-          />
-          <span style={{ marginLeft: '5px', display: 'inline-block', width: '130px' }}>{type}</span>
-        </div>
+        <div key={`legendItem-${type}`} style={{ width: '160px', marginBottom: '5px' }}><img src={getMarker(type)} style={{ display: 'inline-block', width: '25px', verticalAlign: 'top' }}></img><span style={{ marginLeft: '5px', display: 'inline-block', width: '130px' }}>{type}</span></div>
       ))}
     </div>
   );
@@ -86,9 +80,9 @@ const convertToPieData = (permitData) => {
     }
   }
 
-  pieData.sort((a, b) =>
-      (a.value > b.value ? -1 : a.value < b.value ? 1 : 0) // eslint-disable-line
-  );
+  pieData.sort((a, b) => (
+    ((a.value > b.value) ? -1 : ((a.value < b.value) ? 1 : 0)) // eslint-disable-line
+  ));
 
   let otherCount = 0;
   for (let i = 9; i < pieData.length; i += 1) {
@@ -102,89 +96,49 @@ const convertToPieData = (permitData) => {
 };
 
 const DevelopmentByAddress = (props) => {
-  if (props.data.loading) {
-    // eslint-disable-line react/prop-types
+  if (props.data.loading) { // eslint-disable-line react/prop-types
     return <LoadingAnimation />;
   }
-  if (props.data.error) {
-    // eslint-disable-line react/prop-types
+  if (props.data.error) { // eslint-disable-line react/prop-types
     return <Error message={props.data.error.message} />; // eslint-disable-line react/prop-types
   }
 
-  const mapData = props.data.permits_by_address.map(item =>
-    Object.assign({}, item, {
-      popup: `<div><b>${item.permit_type}</b><p>${moment
-        .utc(item.applied_date)
-        .format('M/DD/YYYY')}</p><p><b>Applicant</b>:<div>${
-        item.applicant_name
-      }</div></p><p><b>Contractor(s):</b> ${item.contractor_names
-        .map((contractor, index) =>
-          `<div>${contractor}: ${item.contractor_license_numbers[index]}</div>`)
-        .join('')}</p></div>`,
-      options: {
-        icon: L.icon({
-          iconUrl: getMarker(item.permit_type),
-          iconSize: [25, 41],
-          iconAnchor: [12, 41],
-          popupAnchor: [2, -22],
-        }),
-      },
-    }));
+  const mapData = props.data.permits_by_address.map(item => (Object.assign({}, item, { popup: `<div><b>${item.permit_type}</b><p>${moment.utc(item.applied_date).format('M/DD/YYYY')}</p><p><b>Applicant</b>:<div>${item.applicant_name}</div></p><p><b>Contractor(s):</b> ${item.contractor_names.map((contractor, index) => `<div>${contractor}: ${item.contractor_license_numbers[index]}</div>`).join('')}</p></div>`, options: { icon: L.icon({
+    iconUrl: getMarker(item.permit_type),
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [2, -22],
+  }) } })
+  ));
 
-  const getNewUrlParams = view => ({
-    view,
-  });
+  const getNewUrlParams = view => (
+    {
+      view,
+    }
+  );
 
   return (
     <div>
       <div className="row">
         <div className="col-xs-12 template-header__inner">
           <div className="pull-left" style={{ marginTop: '10px', marginBottom: '15px' }}>
-            <EmailDownload
-              downloadData={props.data.permits_by_address}
-              fileName="permits_by_address.csv"
-            />
+            <EmailDownload downloadData={props.data.permits_by_address} fileName="permits_by_address.csv" />
           </div>
           <ButtonGroup alignment="right">
-            <Button
-              onClick={() => refreshLocation(getNewUrlParams('map'), props.location)}
-              active={props.location.query.view === 'map'}
-              positionInGroup="left"
-            >
-              Map view
-            </Button>
-            <Button
-              onClick={() => refreshLocation(getNewUrlParams('list'), props.location)}
-              active={props.location.query.view === 'list'}
-              positionInGroup="middle"
-            >
-              List view
-            </Button>
-            <Button
-              onClick={() => refreshLocation(getNewUrlParams('summary'), props.location)}
-              positionInGroup="right"
-              active={props.location.query.view === 'summary'}
-            >
-              Chart
-            </Button>
+            <Button onClick={() => refreshLocation(getNewUrlParams('map'), props.location)} active={props.location.query.view === 'map'} positionInGroup="left">Map view</Button>
+            <Button onClick={() => refreshLocation(getNewUrlParams('list'), props.location)} active={props.location.query.view === 'list'} positionInGroup="middle">List view</Button>
+            <Button onClick={() => refreshLocation(getNewUrlParams('summary'), props.location)} positionInGroup="right" active={props.location.query.view === 'summary'}>Chart</Button>
           </ButtonGroup>
         </div>
       </div>
 
       <div className="row">
-        <div
-          id="summaryView"
-          className="col-xs-12"
-          hidden={props.location.query.view !== 'summary'}
-        >
-          {props.data.permits_by_address.length === 0 ? (
+        <div id="summaryView" className="col-xs-12" hidden={props.location.query.view !== 'summary'}>
+          {props.data.permits_by_address.length === 0 ?
             <div className="alert alert-info">No results found</div>
-          ) : (
-            <PieChart
-              data={convertToPieData(props.data.permits_by_address)}
-              altText="Development pie chart"
-            />
-          )}
+            :
+            <PieChart data={convertToPieData(props.data.permits_by_address)} altText="Development pie chart" />
+          }
         </div>
 
         <div id="listView" hidden={props.location.query.view !== 'list'}>
@@ -192,38 +146,21 @@ const DevelopmentByAddress = (props) => {
         </div>
 
         <div id="mapView" className="col-xs-12" hidden={props.location.query.view !== 'map'}>
-          {props.data.permits_by_address.length === 0 || props.location.query.view !== 'map' ? (
+          {props.data.permits_by_address.length === 0 || props.location.query.view !== 'map' ?
             <div className="alert alert-info">No results found</div>
-          ) : (
+            :
             <Map
               data={mapData}
               showCenter
               legend={createLegend(props.data.permits_by_address)}
-              center={
-                props.location.query.y !== ''
-                  ? [parseFloat(props.location.query.y), parseFloat(props.location.query.x)]
-                  : null
-              }
+              center={props.location.query.y !== '' ? [parseFloat(props.location.query.y), parseFloat(props.location.query.x)] : null}
               centerLabel={props.location.query.label}
               drawCircle
-              radius={
-                props.location.query.within === undefined || props.location.query.within === ''
-                  ? 215
-                  : parseInt(props.location.query.within, 10) / 3
-              }
-              within={
-                props.location.query.within === undefined || props.location.query.within === ''
-                  ? 660
-                  : parseInt(props.location.query.within, 10)
-              }
-              zoomToPoint={
-                props.location.query.zoomToPoint !== undefined &&
-                props.location.query.zoomToPoint !== ''
-                  ? props.location.query.zoomToPoint
-                  : null
-              }
+              radius={(props.location.query.within === undefined || props.location.query.within === '') ? 215 : parseInt(props.location.query.within, 10) / 3}
+              within={(props.location.query.within === undefined || props.location.query.within === '') ? 660 : parseInt(props.location.query.within, 10)}
+              zoomToPoint={(props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== '') ? props.location.query.zoomToPoint : null}
             />
-          )}
+          }
         </div>
       </div>
     </div>
@@ -243,12 +180,7 @@ DevelopmentByAddress.defaultProps = {
 
 const getPermitsQuery = gql`
   query getPermitsQuery($civicaddress_id: Int!, $radius: Int, $before: String, $after: String) {
-    permits_by_address(
-      civicaddress_id: $civicaddress_id
-      radius: $radius
-      before: $before
-      after: $after
-    ) {
+    permits_by_address (civicaddress_id: $civicaddress_id, radius: $radius, before: $before, after: $after) {
       permit_number
       permit_group
       permit_type

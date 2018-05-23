@@ -7,11 +7,11 @@ const LoadingAnimation = (props) => {
       return (
         <div style={{ marginTop: props.marginTop, textAlign: 'center' }}>
           <div style={{ marginTop: '30px' }} className="cssload-loader-small">
-            <div className="cssload-dot-small" />
-            <div className="cssload-dot-small" />
-            <div className="cssload-dot-small" />
-            <div className="cssload-dot-small" />
-            <div className="cssload-dot-small" />
+            <div className="cssload-dot-small"></div>
+            <div className="cssload-dot-small"></div>
+            <div className="cssload-dot-small"></div>
+            <div className="cssload-dot-small"></div>
+            <div className="cssload-dot-small"></div>
           </div>
           <div style={{ paddingTop: '250px' }}>{props.message}</div>
         </div>
@@ -20,11 +20,11 @@ const LoadingAnimation = (props) => {
       return (
         <div style={{ marginTop: props.marginTop, textAlign: 'center' }}>
           <div style={{ marginTop: '30px' }} className="cssload-loader">
-            <div className="cssload-dot" />
-            <div className="cssload-dot" />
-            <div className="cssload-dot" />
-            <div className="cssload-dot" />
-            <div className="cssload-dot" />
+            <div className="cssload-dot"></div>
+            <div className="cssload-dot"></div>
+            <div className="cssload-dot"></div>
+            <div className="cssload-dot"></div>
+            <div className="cssload-dot"></div>
           </div>
           <div style={{ paddingTop: '250px' }}>{props.message}</div>
         </div>

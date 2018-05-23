@@ -13,6 +13,7 @@ import { IM_COIN_DOLLAR } from '../../shared/iconConstants';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import Error from '../../shared/Error';
 
+
 const BudgetSummary = (props) => {
   if (props.data.loading) {
     return <LoadingAnimation />;
@@ -23,48 +24,10 @@ const BudgetSummary = (props) => {
 
   return (
     <div className="template__budget-summary">
-      <PageHeader
-        h1={
-          props.data.budgetParameters.in_budget_season
-            ? `Proposed Budget ${parseInt(props.data.budgetParameters.end_year, 10) - 1}-${
-              props.data.budgetParameters.end_year
-            }`
-            : `Budget ${parseInt(props.data.budgetParameters.end_year, 10) - 1}-${
-              props.data.budgetParameters.end_year
-            }`
-        }
-        externalLinkText="Full budget document"
-        externalLink="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=30387"
-        dataLinkPath="/budget/data"
-        icon={<Icon path={IM_COIN_DOLLAR} size={60} />}
-      >
+      <PageHeader h1={props.data.budgetParameters.in_budget_season ? `Proposed Budget ${parseInt(props.data.budgetParameters.end_year, 10) - 1}-${props.data.budgetParameters.end_year}` : `Budget ${parseInt(props.data.budgetParameters.end_year, 10) - 1}-${props.data.budgetParameters.end_year}`} externalLinkText="Full budget document" externalLink="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=30387" dataLinkPath="/budget/data" icon={<Icon path={IM_COIN_DOLLAR} size={60} />}>
         <ButtonGroup alignment="">
-          <LinkButton
-            pathname="/budget"
-            query={{
-              entity: props.location.query.entity,
-              id: props.location.query.id,
-              label: props.location.query.label,
-              hideNavbar: props.location.query.hideNavbar,
-            }}
-            active
-            positionInGroup="left"
-          >
-            Summary
-          </LinkButton>
-          <LinkButton
-            pathname="/budget/details"
-            query={{
-              entity: props.location.query.entity,
-              id: props.location.query.id,
-              label: props.location.query.label,
-              mode: props.location.query.mode || 'expenditures',
-              hideNavbar: props.location.query.hideNavbar,
-            }}
-            positionInGroup="right"
-          >
-            Details
-          </LinkButton>
+          <LinkButton pathname="/budget" query={{ entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, hideNavbar: props.location.query.hideNavbar }} active positionInGroup="left">Summary</LinkButton>
+          <LinkButton pathname="/budget/details" query={{ entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, mode: props.location.query.mode || 'expenditures', hideNavbar: props.location.query.hideNavbar }} positionInGroup="right">Details</LinkButton>
         </ButtonGroup>
       </PageHeader>
       <div className="row">
@@ -74,9 +37,7 @@ const BudgetSummary = (props) => {
         <div className="col-md-6">
           <SummaryDepartments />
         </div>
-        <div tabIndex={0} className="note text-center">
-          Bar chart totals exclude interfund transfers
-        </div>
+        <div tabIndex={0} className="note text-center">Bar chart totals exclude interfund transfers</div>
       </div>
       <hr />
       <SummaryCashFlow />

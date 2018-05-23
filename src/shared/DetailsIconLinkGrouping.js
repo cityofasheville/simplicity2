@@ -10,8 +10,7 @@ const DetailsIconLinkGrouping = (props) => {
   const subTitlesArrays = [];
   const subHrefsArrays = [];
 
-  for (let i = 0, j = props.dataLabels.length; i < j; i += subArraySize) {
-    // step 2, split into subarrays
+  for (let i = 0, j = props.dataLabels.length; i < j; i += subArraySize) { // step 2, split into subarrays
     subLabelsArrays.push(props.dataLabels.slice(i, i + subArraySize));
     subIconsArrays.push(props.dataIcons.slice(i, i + subArraySize));
     subTitlesArrays.push(props.dataTitles.slice(i, i + subArraySize));
@@ -22,13 +21,7 @@ const DetailsIconLinkGrouping = (props) => {
       {subLabelsArrays.map((values, i) => (
         <div key={i} className={['col-xs-', props.colWidth].join('')}>
           {values.map((value, j) => (
-            <DetailsIconLinkFormGroup
-              key={[i, j].join('_')}
-              label={subLabelsArrays[i][j]}
-              icon={subIconsArrays[i][j]}
-              title={subTitlesArrays[i][j]}
-              href={subHrefsArrays[i][j]}
-            />
+            <DetailsIconLinkFormGroup key={[i, j].join('_')} label={subLabelsArrays[i][j]} icon={subIconsArrays[i][j]} title={subTitlesArrays[i][j]} href={subHrefsArrays[i][j]} />
           ))}
         </div>
       ))}

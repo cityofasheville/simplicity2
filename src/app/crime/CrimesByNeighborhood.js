@@ -12,10 +12,7 @@ import CrimeTable from '../crime/CrimeTable';
 import EmailDownload from '../../shared/EmailDownload';
 import ButtonGroup from '../../shared/ButtonGroup';
 import Button from '../../shared/Button';
-import {
-  getBoundsFromPolygonData,
-  combinePolygonsFromNeighborhoodList,
-} from '../../utilities/mapUtilities';
+import { getBoundsFromPolygonData, combinePolygonsFromNeighborhoodList } from '../../utilities/mapUtilities';
 import { refreshLocation } from '../../utilities/generalUtilities';
 
 const getMarker = (type) => {
@@ -64,7 +61,7 @@ const getMarker = (type) => {
     case 'DRUG OFFENSE - FELONY':
     case 'DRUG OFFENSE - MISDEMEANOR':
     case 'DRUG PARAPHERNALIA OTHER':
-      return require('../../shared/AidKit2.png');
+      return require('../../shared/AidKit2.png');     
     case 'COUNTERFEITING-BUYING/RECEIVING':
       return require('../../shared/BillDollar.png');
     case 'LARCENY ALL OTHER':
@@ -96,9 +93,9 @@ const convertToPieData = (crimeData) => {
     }
   }
 
-  pieData.sort((a, b) =>
-      (a.value > b.value ? -1 : a.value < b.value ? 1 : 0) // eslint-disable-line
-  );
+  pieData.sort((a, b) => (
+    ((a.value > b.value) ? -1 : ((a.value < b.value) ? 1 : 0)) // eslint-disable-line
+  ));
 
   let otherCount = 0;
   for (let i = 9; i < pieData.length; i += 1) {
@@ -129,95 +126,59 @@ const createLegend = (crimeData) => {
   return (
     <div style={{ width: '160px' }}>
       {crimeTypes.map(type => (
-        <div key={`legendItem-${type}`} style={{ width: '160px', marginBottom: '5px' }}>
-          <img
-            src={getMarker(type)}
-            style={{ display: 'inline-block', width: '25px', verticalAlign: 'top' }}
-          />
-          <span style={{ marginLeft: '5px', display: 'inline-block', width: '130px' }}>{type}</span>
-        </div>
+        <div key={`legendItem-${type}`} style={{ width: '160px', marginBottom: '5px' }}><img src={getMarker(type)} style={{ display: 'inline-block', width: '25px', verticalAlign: 'top' }}></img><span style={{ marginLeft: '5px', display: 'inline-block', width: '130px' }}>{type}</span></div>
       ))}
     </div>
   );
 };
 
 const CrimesByNeighborhood = (props) => {
-  if (props.data.loading) {
-    // eslint-disable-line react/prop-types
+  if (props.data.loading) { // eslint-disable-line react/prop-types
     return <LoadingAnimation />;
   }
-  if (props.data.error) {
-    // eslint-disable-line react/prop-types
+  if (props.data.error) { // eslint-disable-line react/prop-types
     return <Error message={props.data.error.message} />; // eslint-disable-line react/prop-types
   }
 
   const pieData = convertToPieData(props.data.crimes_by_neighborhood);
-  const mapData = props.data.crimes_by_neighborhood.map(item =>
-    Object.assign({}, item, {
-      popup: `<div><b>${item.address}</b><p>${moment
-        .utc(item.date_occurred)
-        .format('M/DD/YYYY')}</p><p>${item.offense_long_description}</p></div>`,
-      options: {
-        icon: L.icon({
-          iconUrl: getMarker(item.offense_long_description),
-          iconSize: [25, 41],
-          iconAnchor: [12, 41],
-          popupAnchor: [2, -22],
-        }),
-      },
-    }));
+  const mapData = props.data.crimes_by_neighborhood.map(item => (Object.assign({}, item, {
+    popup: `<div><b>${item.address}</b><p>${moment.utc(item.date_occurred).format('M/DD/YYYY')}</p><p>${item.offense_long_description}</p></div>`,
+    options: { icon: L.icon({
+      iconUrl: getMarker(item.offense_long_description),
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [2, -22],
+    }) } })
+  ));
 
-  const getNewUrlParams = view => ({
-    view,
-  });
+  const getNewUrlParams = view => (
+    {
+      view,
+    }
+  );
 
   return (
     <div className="crimes-template__data">
       <div className="row template-header">
         <div className="col-xs-12 template-header__inner">
           <div className="pull-left">
-            <EmailDownload
-              downloadData={props.data.crimes_by_neighborhood}
-              fileName="crimes_by_neighborhood.csv"
-            />
+            <EmailDownload downloadData={props.data.crimes_by_neighborhood} fileName="crimes_by_neighborhood.csv" />
           </div>
           <ButtonGroup>
-            <Button
-              onClick={() => refreshLocation(getNewUrlParams('map'), props.location)}
-              active={props.location.query.view === 'map'}
-              positionInGroup="left"
-            >
-              Map view
-            </Button>
-            <Button
-              onClick={() => refreshLocation(getNewUrlParams('list'), props.location)}
-              active={props.location.query.view === 'list'}
-              positionInGroup="middle"
-            >
-              List view
-            </Button>
-            <Button
-              onClick={() => refreshLocation(getNewUrlParams('summary'), props.location)}
-              positionInGroup="right"
-              active={props.location.query.view === 'summary'}
-            >
-              Chart
-            </Button>
+            <Button onClick={() => refreshLocation(getNewUrlParams('map'), props.location)} active={props.location.query.view === 'map'} positionInGroup="left">Map view</Button>
+            <Button onClick={() => refreshLocation(getNewUrlParams('list'), props.location)} active={props.location.query.view === 'list'} positionInGroup="middle">List view</Button>
+            <Button onClick={() => refreshLocation(getNewUrlParams('summary'), props.location)} positionInGroup="right" active={props.location.query.view === 'summary'}>Chart</Button>
           </ButtonGroup>
         </div>
       </div>
 
       <div className="row data-view-container">
-        <div
-          id="summaryView"
-          className="col-xs-12"
-          hidden={props.location.query.view !== 'summary'}
-        >
-          {pieData.length > 0 ? (
+        <div id="summaryView" className="col-xs-12" hidden={props.location.query.view !== 'summary'}>
+          {pieData.length > 0 ?
             <PieChart data={pieData} altText="Crime pie chart" />
-          ) : (
+            :
             <div className="alert alert-info">No results found</div>
-          )}
+          }
         </div>
 
         <div id="listView" hidden={props.location.query.view !== 'list'}>
@@ -225,29 +186,19 @@ const CrimesByNeighborhood = (props) => {
         </div>
 
         <div id="mapView" className="col-xs-12" hidden={props.location.query.view !== 'map'}>
-          {props.data.crimes_by_neighborhood.length === 0 || props.location.query.view !== 'map' ? (
+          {props.data.crimes_by_neighborhood.length === 0 || props.location.query.view !== 'map' ?
             <div className="alert alert-info">No results found</div>
-          ) : (
+            :
             <Map
               data={mapData}
               legend={createLegend(props.data.crimes_by_neighborhood)}
               drawPolygon
               polygonData={combinePolygonsFromNeighborhoodList([props.data.neighborhoods[0]])}
-              bounds={
-                props.location.query.zoomToPoint !== undefined &&
-                props.location.query.zoomToPoint !== ''
-                  ? null
-                  : getBoundsFromPolygonData([props.data.neighborhoods[0].polygon])
-              }
+              bounds={(props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== '') ? null : getBoundsFromPolygonData([props.data.neighborhoods[0].polygon])}
               within={parseInt(props.location.query.within, 10)}
-              zoomToPoint={
-                props.location.query.zoomToPoint !== undefined &&
-                props.location.query.zoomToPoint !== ''
-                  ? props.location.query.zoomToPoint
-                  : null
-              }
+              zoomToPoint={(props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== '') ? props.location.query.zoomToPoint : null}
             />
-          )}
+          }
         </div>
       </div>
     </div>
@@ -265,7 +216,7 @@ CrimesByNeighborhood.defaultProps = {
 
 const getCrimesQuery = gql`
   query getCrimesQuery($nbrhd_ids: [String], $before: String, $after: String) {
-    crimes_by_neighborhood(nbrhd_ids: $nbrhd_ids, before: $before, after: $after) {
+    crimes_by_neighborhood (nbrhd_ids: $nbrhd_ids, before: $before, after: $after) {
       case_number
       date_occurred
       address
@@ -275,7 +226,7 @@ const getCrimesQuery = gql`
       x
       y
     }
-    neighborhoods(nbrhd_ids: $nbrhd_ids) {
+    neighborhoods (nbrhd_ids: $nbrhd_ids) {
       name
       polygon {
         outer {
@@ -291,7 +242,7 @@ const getCrimesQuery = gql`
           }
         }
       }
-    }
+    } 
   }
 `;
 

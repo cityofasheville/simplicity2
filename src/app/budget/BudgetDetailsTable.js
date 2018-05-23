@@ -9,15 +9,15 @@ import { getBudgetTrees } from './graphql/budgetQueries';
 import { getBudgetYears } from './budgetUtilities';
 import { refreshLocation } from '../../utilities/generalUtilities';
 
+
 const BudgetDetailsTable = (props) => {
-  const dataForTable =
-    props.location.query.mode === 'expenditures' || props.location.query.mode === undefined
-      ? props.expenseTree.children
-      : props.revenueTree.children;
-  const getNewUrlParams = mode => ({
-    mode,
-    nodePath: 'root',
-  });
+  const dataForTable = props.location.query.mode === 'expenditures' || props.location.query.mode === undefined ? props.expenseTree.children : props.revenueTree.children;
+  const getNewUrlParams = mode => (
+    {
+      mode,
+      nodePath: 'root',
+    }
+  );
   const ExpandableAccessibleReactTable = expandingRows(AccessibleReactTable);
   const budgetYears = getBudgetYears(props.data.budgetParameters);
 
@@ -25,11 +25,7 @@ const BudgetDetailsTable = (props) => {
   const last4YrBudgetTypes = [];
 
   for (let i = 0; i < budgetYears.length + 1; i += 1) {
-    last4YrBudgetTypes.push(i < budgetYears.length - 1
-      ? 'Actual'
-      : props.data.budgetParameters.in_budget_season
-        ? 'Proposed'
-        : 'Adopted');
+    last4YrBudgetTypes.push(i < budgetYears.length - 1 ? 'Actual' : (props.data.budgetParameters.in_budget_season ? 'Proposed' : 'Adopted'));
   }
 
   const getDollars = (value) => {
@@ -39,15 +35,15 @@ const BudgetDetailsTable = (props) => {
 
   const getYearHeader = year => (
     <div>
-      {last4Years.indexOf(year) > -1 && <div>{last4YrBudgetTypes[last4Years.indexOf(year)]}</div>}
+      { last4Years.indexOf(year) > -1 &&
+      <div>{last4YrBudgetTypes[last4Years.indexOf(year)]}</div>
+      }
       {[year - 1, year.toString().slice(2)].join('-')}
     </div>
   );
 
   const getChangeHeader = () => (
-    <div>
-      Change from <br /> past year
-    </div>
+    <div>Change from <br /> past year</div>
   );
 
   const getDataColumnHeader = (level, expenseOrRevenue) => () => {
@@ -73,7 +69,7 @@ const BudgetDetailsTable = (props) => {
       {
         Header: theHeader,
         accessor: 'name',
-        width: level === 3 ? 300 - 34 * 2 : 300 - 34 * level,
+        width: level === 3 ? 300 - (34 * 2) : 300 - (34 * level),
         getProps: () => ({
           role: 'rowheader',
         }),
@@ -84,22 +80,19 @@ const BudgetDetailsTable = (props) => {
         Cell: years => getDollars(years.value[0].amount),
         minWidth: 95,
         style: { textAlign: 'right' },
-      },
-      {
+      }, {
         Header: getYearHeader(last4Years[1]),
         accessor: 'yearAmounts',
         Cell: years => getDollars(years.value[1].amount),
         minWidth: 95,
         style: { textAlign: 'right' },
-      },
-      {
+      }, {
         Header: getYearHeader(last4Years[2]),
         accessor: 'yearAmounts',
         Cell: years => getDollars(years.value[2].amount),
         minWidth: 95,
         style: { textAlign: 'right' },
-      },
-      {
+      }, {
         Header: getYearHeader(last4Years[3]),
         accessor: 'yearAmounts',
         Cell: years => getDollars(years.value[3].amount),
@@ -130,30 +123,16 @@ const BudgetDetailsTable = (props) => {
     <div>
       <div className="row">
         <div className="col-sm-12">
-          <h3 id="budget-details-table-label">{`Table of ${props.location.query.mode ||
-            'expenditures'}`}
-          </h3>
+          <h3 id={'budget-details-table-label'}>{`Table of ${props.location.query.mode || 'expenditures'}`}</h3>
           <div style={{ marginBottom: '15px' }}>
-            You may explore the full dataset in the table below, or{' '}
-            <a
-              className="inText"
-              href="http://data.ashevillenc.gov/datasets?q=budget&sort_by=relevance"
-              target="_blank"
-            >
-              download here
-            </a>. Click the triangles at left to expand rows for more detail.
+            You may explore the full dataset in the table below, or <a className="inText" href="http://data.ashevillenc.gov/datasets?q=budget&sort_by=relevance" target="_blank">download here</a>. Click the triangles at left to expand rows for more detail.
           </div>
         </div>
       </div>
       <div className="row">
         <div className="col-sm-12">
           <div className="radioGroup pull-right" style={{ marginBottom: '3px' }}>
-            <RadioGroup
-              name="tableRadios"
-              id="tableRadios"
-              selectedValue={props.location.query.mode || 'expenditures'}
-              onChange={value => refreshLocation(getNewUrlParams(value), props.location)}
-            >
+            <RadioGroup name="tableRadios" id="tableRadios" selectedValue={props.location.query.mode || 'expenditures'} onChange={value => refreshLocation(getNewUrlParams(value), props.location)}>
               <label>
                 <Radio value="expenditures" />Expenditures
               </label>
@@ -167,13 +146,15 @@ const BudgetDetailsTable = (props) => {
       <div className="row">
         <div className="col-sm-12">
           <Collapsible trigger="Notes">
-            {props.notes.map((item, index) => <p key={['notes', index].join('_')}>{item}</p>)}
+            {props.notes.map((item, index) => (
+              <p key={['notes', index].join('_')}>{item}</p>
+            ))}
           </Collapsible>
         </div>
       </div>
       <div className="row">
         <div className="col-sm-12">
-          <div alt={['Table of', props.location.query.mode || 'expenditures'].join(' ')}>
+          <div alt={['Table of', (props.location.query.mode || 'expenditures')].join(' ')}>
             <ExpandableAccessibleReactTable
               data={dataForTable}
               columns={getDataColumns(0, props.location.query.mode)}
@@ -181,8 +162,8 @@ const BudgetDetailsTable = (props) => {
               showPagination={false}
               getTdProps={tdProps}
               getTrProps={trProps}
-              tableId="table-1"
-              ariaLabelledBy="budget-details-table-label"
+              tableId={'table-1'}
+              ariaLabelledBy={'budget-details-table-label'}
               SubComponent={innerRow1 => (
                 <div style={{ paddingLeft: '34px' }}>
                   <ExpandableAccessibleReactTable
@@ -192,52 +173,39 @@ const BudgetDetailsTable = (props) => {
                     showPagination={false}
                     getTdProps={tdProps}
                     getTrProps={trProps}
-                    tableId="table-2"
+                    tableId={'table-2'}
                     ariaLabel={`${getDataColumnHeader(1, props.location.query.mode)()} subtable`}
                     SubComponent={innerRow2 => (
                       <div style={{ paddingLeft: '34px' }}>
                         <ExpandableAccessibleReactTable
                           data={dataForTable[innerRow1.index].children[innerRow2.index].children}
                           columns={getDataColumns(2, props.location.query.mode)}
-                          defaultPageSize={
-                            dataForTable[innerRow1.index].children[innerRow2.index].children.length
-                          }
+                          defaultPageSize={dataForTable[innerRow1.index].children[innerRow2.index].children.length}
                           showPagination={false}
                           getTdProps={tdProps}
                           getTrProps={trProps}
-                          tableId="table-3"
-                          ariaLabel={`${getDataColumnHeader(
-                            2,
-                            props.location.query.mode
-                          )()} subtable`}
+                          tableId={'table-3'}
+                          ariaLabel={`${getDataColumnHeader(2, props.location.query.mode)()} subtable`}
                           SubComponent={innerRow3 => (
                             <div style={{ paddingLeft: '34px' }}>
                               <AccessibleReactTable
-                                data={
-                                  dataForTable[innerRow1.index].children[innerRow2.index].children[
-                                    innerRow3.index
-                                  ].children
-                                }
+                                data={dataForTable[innerRow1.index].children[innerRow2.index].children[innerRow3.index].children}
                                 columns={getDataColumns(3, props.location.query.mode)}
-                                defaultPageSize={
-                                  dataForTable[innerRow1.index].children[innerRow2.index].children[
-                                    innerRow3.index
-                                  ].children.length
-                                }
+                                defaultPageSize={dataForTable[innerRow1.index].children[innerRow2.index].children[innerRow3.index].children.length}
                                 showPagination={false}
-                                ariaLabel={`${getDataColumnHeader(
-                                  3,
-                                  props.location.query.mode
-                                )()} subtable`}
+                                ariaLabel={`${getDataColumnHeader(3, props.location.query.mode)()} subtable`}
                               />
                             </div>
-                          )}
+                          )
+                          }
                         />
                       </div>
-                    )}
+                    )
+                    }
                   />
                 </div>
-              )}
+              )
+              }
             />
           </div>
         </div>

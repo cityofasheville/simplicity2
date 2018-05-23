@@ -17,30 +17,29 @@ if (process.env.USE_LOCAL_API === 'true') {
 
 const httpLink = createHttpLink({ uri: SERVER_URL, fetch });
 
-const middlewareLink = setContext(request =>
-  new Promise((success, fail) => {
-    const signedInUser = firebase.auth().currentUser;
-    if (signedInUser) {
-      signedInUser.getIdToken(true).then((idToken) => {
-        localStorage.setItem('token', idToken);
-        setTimeout(() => {
-          success({
-            headers: {
+const middlewareLink = setContext(
+  request =>
+    new Promise((success, fail) => {
+      const signedInUser = firebase.auth().currentUser;
+      if (signedInUser) {
+        signedInUser.getIdToken(true)
+        .then((idToken) => {
+          localStorage.setItem('token', idToken);
+          setTimeout(() => {
+            success({ headers: {
               authorization: idToken,
-            },
-          });
-        }, 10);
-      });
-    } else {
-      setTimeout(() => {
-        success({
-          headers: {
-            authorization: localStorage.getItem('token') || null,
-          },
+            } });
+          }, 10);
         });
-      }, 10);
-    }
-  }));
+      } else {
+        setTimeout(() => {
+          success({ headers: {
+            authorization: localStorage.getItem('token') || null,
+          } });
+        }, 10);
+      }
+    })
+);
 const link = middlewareLink.concat(httpLink);
 
 const fragmentMatcher = new IntrospectionFragmentMatcher({
@@ -56,10 +55,14 @@ const stateLink = withClientState({
 });
 
 const aClient = new ApolloClient({
-  link: ApolloLink.from([stateLink, link]),
+  link: ApolloLink.from([
+    stateLink,
+    link,
+  ]),
   cache,
 });
 
 aClient.onResetStore(stateLink.writeDefaults);
 
 export const client = aClient;
+

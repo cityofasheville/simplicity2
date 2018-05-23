@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from '../../shared/Icon';
 import { IM_SEARCH } from '../../shared/iconConstants';
-// import SearchByEntities from './searchByEntities/SearchByEntities';
+//import SearchByEntities from './searchByEntities/SearchByEntities';
 import SearchResults from './searchResults/SearchResults';
 
 // const getEntities = (selected) => {
@@ -49,15 +49,14 @@ class SearchBar extends React.Component {
     this.props.onSearchClick(value);
   }
 
+
   render() {
     return (
       <div className="col-xs-12">
         <h2>Enter address for trash pickup day, property details, and more</h2>
         <form onSubmit={event => event.preventDefault()}>
           <div className="input-group">
-            <label htmlFor="searchBox" className="offscreen">
-              Search terms
-            </label>
+            <label htmlFor="searchBox" className="offscreen">Search terms</label>
             <input
               type="text"
               className="form-control"
@@ -69,28 +68,15 @@ class SearchBar extends React.Component {
               autoFocus
             />
             <span className="input-group-btn">
-              <button
-                className="btn btn-primary"
-                type="button"
-                aria-label="search"
-                onClick={() => this.handleSearchClick(document.getElementById('searchBox').value)}
-              >
-                <Icon path={IM_SEARCH} size={16} />
-              </button>
+              <button className="btn btn-primary" type="button" aria-label="search" onClick={() => this.handleSearchClick(document.getElementById('searchBox').value)}><Icon path={IM_SEARCH} size={16} /></button>
             </span>
           </div>
           <div>
-            <h3 className="text-center" style={{ marginBottom: '20px' }}>
-              <i>Or search by: owner, neighborhood, pin number, or street</i>
-            </h3>
+            <h3 className="text-center" style={{ marginBottom: '20px' }}><i>Or search by: owner, neighborhood, pin number, or street</i></h3>
           </div>
           {/* <SearchByEntities entities={getEntities(this.props.selectedEntities)} location={this.props.location} /> */}
         </form>
-        <SearchResults
-          results={[]}
-          searchText={this.state.searchTermToUse}
-          location={this.props.location}
-        />
+        <SearchResults results={[]} searchText={this.state.searchTermToUse} location={this.props.location}></SearchResults>
       </div>
     );
   }

@@ -7,7 +7,7 @@ export const updateUser = gql`
     $name: String
     $email: String
     $provider: String
-  ) {
+   ) {
     updateUser(
       loggedIn: $loggedIn
       privilege: $privilege
@@ -39,3 +39,4 @@ export const updateAuthDropdown = gql`
     }
   }
 `;
+

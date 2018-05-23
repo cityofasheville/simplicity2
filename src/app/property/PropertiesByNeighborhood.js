@@ -6,10 +6,7 @@ import gql from 'graphql-tag';
 import Map from '../../shared/visualization/Map';
 import EmailDownload from '../../shared/EmailDownload';
 import Property from './Property';
-import {
-  getBoundsFromPolygonData,
-  combinePolygonsFromPropertyList,
-} from '../../utilities/mapUtilities';
+import { getBoundsFromPolygonData, combinePolygonsFromPropertyList } from '../../utilities/mapUtilities';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import Error from '../../shared/Error';
 import expandingRows from '../../shared/react_table_hoc/ExpandingRows';
@@ -19,7 +16,9 @@ const dataColumns = [
     Header: 'Pin #',
     accessor: 'pinnum',
     width: 175,
-    Cell: row => <span>{row.original.pinnum}</span>,
+    Cell: row => (
+      <span>{row.original.pinnum}</span>
+    ),
     Filter: ({ filter, onChange }) => (
       <input
         onChange={event => onChange(event.target.value)}
@@ -30,9 +29,7 @@ const dataColumns = [
     ),
     filterMethod: (filter, row) => {
       const joinedInfo = row._original.pinnum;
-      return row._original !== undefined
-        ? joinedInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1
-        : true;
+      return row._original !== undefined ? joinedInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
     },
   },
   {
@@ -52,9 +49,7 @@ const dataColumns = [
     Header: 'Address',
     accessor: 'Address',
     Cell: row => (
-      <span>
-        {row.original.property_address}, {row.original.property_zipcode}
-      </span>
+      <span>{row.original.property_address}, {row.original.property_zipcode}</span>
     ),
     Filter: ({ filter, onChange }) => (
       <input
@@ -66,20 +61,16 @@ const dataColumns = [
     ),
     filterMethod: (filter, row) => {
       const joinedInfo = [row._original.address, row._original.zipcode].join(', ');
-      return row._original !== undefined
-        ? joinedInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1
-        : true;
+      return row._original !== undefined ? joinedInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
     },
   },
 ];
 
 const PropertiesByNeighborhood = (props) => {
-  if (props.data.loading) {
-    // eslint-disable-line react/prop-types
+  if (props.data.loading) { // eslint-disable-line react/prop-types
     return <LoadingAnimation />;
   }
-  if (props.data.error) {
-    // eslint-disable-line react/prop-types
+  if (props.data.error) { // eslint-disable-line react/prop-types
     return <Error message={props.data.error.message} />; // eslint-disable-line react/prop-types
   }
 
@@ -89,99 +80,58 @@ const PropertiesByNeighborhood = (props) => {
     <div>
       <div className="row">
         <div className="col-sm-12">
-          <EmailDownload
-            downloadData={props.data.properties_by_neighborhood}
-            fileName="properties_by_neighborhodd.csv"
-          />
+          <EmailDownload downloadData={props.data.properties_by_neighborhood} fileName="properties_by_neighborhodd.csv" />
         </div>
         <div id="listView" className="col-sm-12" hidden={props.location.query.view !== 'list'}>
-          {props.data.properties_by_neighborhood.length < 1 ? (
+          {props.data.properties_by_neighborhood.length < 1 ?
             <div className="alert alert-info">No results found</div>
-          ) : (
+          :
             <div style={{ marginTop: '10px' }}>
               <ExpandableAccessibleReactTable
                 ariaLabel="Neighborhood Properties"
                 data={props.data.properties_by_neighborhood}
                 columns={dataColumns}
                 showPagination={props.data.properties_by_neighborhood.length > 20}
-                defaultPageSize={
-                  props.data.properties_by_neighborhood.length <= 20
-                    ? props.data.properties_by_neighborhood.length
-                    : 20
-                }
+                defaultPageSize={props.data.properties_by_neighborhood.length <= 20 ? props.data.properties_by_neighborhood.length : 20}
                 filterable
                 defaultFilterMethod={(filter, row) => {
                   const id = filter.pivotId || filter.id;
-                  return row[id] !== undefined
-                    ? String(row[id])
-                      .toLowerCase()
-                      .indexOf(filter.value.toLowerCase()) > -1
-                    : true;
+                  return row[id] !== undefined ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
                 }}
-                getTdProps={() => ({
-                  style: {
-                    whiteSpace: 'normal',
-                  },
-                })}
-                getTrProps={(state, rowInfo) => ({
-                  style: {
-                    cursor: 'pointer',
-                    background:
-                        rowInfo !== undefined &&
-                        Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) &&
-                        state.expanded[rowInfo.viewIndex]
-                          ? '#4077a5'
-                          : 'none',
-                    color:
-                        rowInfo !== undefined &&
-                        Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) &&
-                        state.expanded[rowInfo.viewIndex]
-                          ? '#fff'
-                          : '',
-                    fontWeight:
-                        rowInfo !== undefined &&
-                        Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) &&
-                        state.expanded[rowInfo.viewIndex]
-                          ? 'bold'
-                          : 'normal',
-                    fontSize:
-                        rowInfo !== undefined &&
-                        Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) &&
-                        state.expanded[rowInfo.viewIndex]
-                          ? '1.2em'
-                          : '1em',
-                  },
-                })}
+                getTdProps={() => {
+                  return {
+                    style: {
+                      whiteSpace: 'normal',
+                    },
+                  };
+                }}
+                getTrProps={(state, rowInfo) => {
+                  return {
+                    style: {
+                      cursor: 'pointer',
+                      background: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '#4077a5': 'none',
+                      color: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '#fff': '',
+                      fontWeight: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? 'bold': 'normal',
+                      fontSize: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '1.2em': '1em',
+                    },
+                  };
+                }}
                 SubComponent={row => (
-                  <div
-                    style={{
-                      paddingLeft: '34px',
-                      paddingRight: '34px',
-                      paddingBottom: '15px',
-                      backgroundColor: '#f6fcff',
-                      borderRadius: '0px',
-                      border: '2px solid #4077a5',
-                    }}
-                  >
-                    <Property data={row.original} hideHeader inTable />
+                  <div style={{ paddingLeft: '34px', paddingRight: '34px', paddingBottom: '15px', backgroundColor: '#f6fcff', borderRadius: '0px', border: '2px solid #4077a5' }}>
+                    <Property data={row.original} hideHeader={true} inTable />
                   </div>
                 )}
               />
             </div>
-          )}
+          }
         </div>
 
         <div id="mapView" className="col-xs-12" hidden={props.location.query.view === 'list'}>
-          {props.data.properties_by_neighborhood.length === 0 ||
-          props.location.query.view === 'list' ? (
+          {props.data.properties_by_neighborhood.length === 0 || props.location.query.view === 'list' ?
             <div className="alert alert-info">No results found</div>
-            ) : (
-              <Map
-                bounds={getBoundsFromPolygonData([props.data.neighborhoods[0].polygon])}
-                drawPolygon
-                polygonData={combinePolygonsFromPropertyList(props.data.properties_by_neighborhood)}
-              />
-            )}
+            :
+            <Map bounds={getBoundsFromPolygonData([props.data.neighborhoods[0].polygon])} drawPolygon polygonData={combinePolygonsFromPropertyList(props.data.properties_by_neighborhood)} />
+          }
         </div>
       </div>
     </div>
@@ -201,7 +151,7 @@ PropertiesByNeighborhood.defaultProps = {
 
 const getPropertiesByNeighborhoodQuery = gql`
   query getPropertiesByNeighborhoodQuery($nbrhd_ids: [String]) {
-    properties_by_neighborhood(nbrhd_ids: $nbrhd_ids) {
+    properties_by_neighborhood (nbrhd_ids: $nbrhd_ids) {
       civic_address_ids
       property_civic_address_id
       pinnum
@@ -244,7 +194,7 @@ const getPropertiesByNeighborhoodQuery = gql`
         }
       }
     }
-    neighborhoods(nbrhd_ids: $nbrhd_ids) {
+    neighborhoods (nbrhd_ids: $nbrhd_ids) {
       name
       polygon {
         outer {
@@ -260,7 +210,7 @@ const getPropertiesByNeighborhoodQuery = gql`
           }
         }
       }
-    }
+    } 
   }
 `;
 

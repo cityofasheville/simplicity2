@@ -20,10 +20,7 @@ class SummaryUse extends React.Component {
     // if (this.props.summaryUseData.dataKeys !== null) {
     //   return;
     // }
-    const summaryUseData = buildSummaryData(
-      this.props.data.budgetSummary,
-      this.props.data.budgetParameters
-    );
+    const summaryUseData = buildSummaryData(this.props.data.budgetSummary, this.props.data.budgetParameters);
     await this.props.updateBudgetSummaryUse({
       variables: {
         budgetSummaryUse: {
@@ -35,12 +32,10 @@ class SummaryUse extends React.Component {
   }
 
   render() {
-    if (this.props.data.loading) {
-      // eslint-disable-line react/prop-types
+    if (this.props.data.loading) { // eslint-disable-line react/prop-types
       return <LoadingAnimation size="small" />;
     }
-    if (this.props.data.error) {
-      // eslint-disable-line react/prop-types
+    if (this.props.data.error) { // eslint-disable-line react/prop-types
       return <Error message={this.props.data.error.message} />; // eslint-disable-line react/prop-types
     }
 
@@ -69,11 +64,11 @@ SummaryUse.defaultProps = {
 const budgetSummaryUseQuery = gql`
   query budgetSummaryUseQuery {
     budgetSummary(breakdown: "use", maxCategories: 5) {
-      account_type
-      category_name
-      total_budget
-      total_actual
-      year
+        account_type,
+        category_name,
+        total_budget,
+        total_actual,
+        year,
     }
     budgetParameters {
       start_year
@@ -90,5 +85,5 @@ export default compose(
       summaryUseData: budgetSummaryUse,
     }),
   }),
-  graphql(updateBudgetSummaryUse, { name: 'updateBudgetSummaryUse' })
+  graphql(updateBudgetSummaryUse, { name: 'updateBudgetSummaryUse' }),
 )(SummaryUse);

@@ -1,4 +1,5 @@
 export default class TimeSeriesSet {
+
   constructor(series) {
     this.series = {};
     if (series) {
@@ -30,7 +31,7 @@ export default class TimeSeriesSet {
   addTimePoint(seriesName, index, value) {
     if (!(seriesName in this.series)) this.addSeries(seriesName);
     const set = this.series[seriesName];
-    if (!set.data[index]) {
+    if (!(set.data[index])) {
       set.data[index] = 0;
       set.labels[index] = value;
       set.minIndex = Math.min(set.minIndex, index);

@@ -1,25 +1,29 @@
-export const getTasks = () => ['Addressing', 'Building Review', 'Fire Review', 'Zoning Review'];
+export const getTasks = () => (
+  [
+    'Addressing',
+    'Building Review',
+    'Fire Review',
+    'Zoning Review',
+  ]
+);
 
 export const getAverageCounts = (slaData) => {
   const formattedData = {};
-  for (const task of getTasks()) {
+  for (let task of getTasks()) {
     formattedData[task] = [];
   }
-  for (const record of slaData) {
-    const item = Object.assign(
-      {},
-      {
-        month: record.month,
-        year: record.year,
-        displayDate: [record.month, record.year].join('/'),
-      }
-    );
+  for (let record of slaData) {
+    const item = Object.assign({}, {
+      month: record.month,
+      year: record.year,
+      displayDate: [record.month, record.year].join('/')
+    });
     item[[record.task, 'Met SLA'].join(' ')] = record.met_sla;
     item[[record.task, 'Past SLA'].join(' ')] = record.past_sla;
     item[[record.task, 'Met SLA Percent'].join(' ')] = Math.round(record.met_sla_percent);
     formattedData[record.task].push(item);
   }
-  for (const task of getTasks()) {
+  for (let task of getTasks()) {
     formattedData[task].sort((a, b) => {
       if (a.year < b.year) {
         return -1;
@@ -27,7 +31,7 @@ export const getAverageCounts = (slaData) => {
       if (a.year > b.year) {
         return 1;
       }
-      return a.month < b.month ? -1 : a.month > b.month ? 1 : 0; // eslint-disable-line
+      return ((a.month < b.month) ? -1 : ((a.month > b.month) ? 1 : 0)) // eslint-disable-line
     });
   }
   return formattedData;

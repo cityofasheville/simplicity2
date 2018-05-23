@@ -1030,19 +1030,9 @@ class HomelessnessEnrollment extends React.Component {
       <div>
         <h3>Homeless program enrollments: a closer look</h3>
         <div>
-          There are several types of temporary or permanent housing options for people experiencing
-          homelessness or at imminent risk of homelessness in Buncombe County. These options are
-          part of the homelessness system in our community. The below chart shows monthly
-          enrollments in these programs.
+          There are several types of temporary or permanent housing options for people experiencing homelessness or at imminent risk of homelessness in Buncombe County. These options are part of the homelessness system in our community. The below chart shows monthly enrollments in these programs.
           <br />
-          <a
-            href=""
-            className="text-center inText"
-            onClick={(e) => {
-              e.preventDefault();
-              this.toggleLongDesc();
-            }}
-          >
+          <a href="" className="text-center inText" onClick={(e) => { e.preventDefault(); this.toggleLongDesc(); }}>
             {this.state.showingDefinitions ? 'Hide' : 'Show'} Program definitions
           </a>
           <div hidden={!this.state.showingDefinitions}>
@@ -1052,9 +1042,7 @@ class HomelessnessEnrollment extends React.Component {
                   <strong>Emergency Shelter</strong>
                 </div>
                 <div>
-                  A facility that’s primary purpose is to provide temporary shelter for the general
-                  homeless population or those that serve a specific client base such as Domestic
-                  Violence victims or youth under 18 years of age.
+                  A facility that’s primary purpose is to provide temporary shelter for the general homeless population or those that serve a specific client base such as Domestic Violence victims or youth under 18 years of age.
                 </div>
               </li>
               <li>
@@ -1062,9 +1050,7 @@ class HomelessnessEnrollment extends React.Component {
                   <strong>Transitional Housing</strong>
                 </div>
                 <div>
-                  Housing projects that are designed to provide temporary housing and appropriate
-                  supportive services to homeless persons like Veterans or persons with substance
-                  abuse disorders to facilitate movement to independent living within 24 months.
+                  Housing projects that are designed to provide temporary housing and appropriate supportive services to homeless persons like Veterans or persons with substance abuse disorders to facilitate movement to independent living within 24 months.
                 </div>
               </li>
               <li>
@@ -1072,10 +1058,7 @@ class HomelessnessEnrollment extends React.Component {
                   <strong>Rapid Re-Housing (RRH)</strong>
                 </div>
                 <div>
-                  Provides for short-and/or medium term rental assistance to help a homeless
-                  individual or family or a household that is at imminent risk of homelessness
-                  (Homelessness Prevention) move into housing or stabilize their existing housing
-                  quickly and achieve housing stability and self-sufficiency in that housing.
+                  Provides for short-and/or medium term rental assistance to help a homeless individual or family or a household that is at imminent risk of homelessness (Homelessness Prevention) move into housing or stabilize their existing housing quickly and achieve housing stability and self-sufficiency in that housing.
                 </div>
               </li>
               <li>
@@ -1083,11 +1066,7 @@ class HomelessnessEnrollment extends React.Component {
                   <strong>Permanent Supportive Housing (PSH)</strong>
                 </div>
                 <div>
-                  Describes housing that is coupled with voluntary supportive services that are
-                  appropriate to the level of need and preferences of residents on a long-term
-                  basis. Subsidies and services may be long or short term in duration. PSH is
-                  usually appropriate and/or mandated by HUD for persons that are chronically
-                  homeless, have severe service needs and a disability.
+                  Describes housing that is coupled with voluntary supportive services that are appropriate to the level of need and preferences of residents on a long-term basis. Subsidies and services may be long or short term in duration. PSH is usually appropriate and/or mandated by HUD for persons that are chronically homeless, have severe service needs and a disability.
                 </div>
               </li>
             </ul>
@@ -1099,7 +1078,7 @@ class HomelessnessEnrollment extends React.Component {
               data={this.props.summaryData}
               mainAxisDataKey="Date"
               dataKeys={dataKeys}
-              altText="Area chart of HMIS enrollments"
+              altText={'Area chart of HMIS enrollments'}
               colorScheme="bright_colors_2"
             />
           </div>

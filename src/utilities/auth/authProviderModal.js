@@ -5,7 +5,7 @@ import { getModalOpen } from './graphql/authQueries';
 import { updateAuthModal } from './graphql/authMutations';
 
 const AuthProviderModal = (props) => {
-  const display = props.open ? { display: 'block' } : { display: 'none' };
+  const display = (props.open) ? { display: 'block' } : { display: 'none' };
 
   return (
     <div className="">
@@ -17,19 +17,17 @@ const AuthProviderModal = (props) => {
                 type="button"
                 className="close"
                 aria-label="Close"
-                onClick={() =>
-                  props.updateAuthModal({
-                    variables: {
-                      open: !props.open,
-                    },
-                  })
-                }
+                onClick={() => props.updateAuthModal({
+                  variables: {
+                    open: !props.open,
+                  },
+                })}
               >
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div className="modal-body">
-              <div id="firebaseui-auth-container" />
+              <div id="firebaseui-auth-container"></div>
             </div>
           </div>
         </div>

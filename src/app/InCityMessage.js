@@ -5,19 +5,19 @@ import { IM_LIBRARY2, IM_TARGET } from '../shared/iconConstants';
 import styles from './inCityMessage.css';
 
 const InCityMessage = props => (
-  <div className={`city-indicator${props.inTheCity ? ' in-city' : ' out-of-city'}`}>
-    {props.inTheCity && (
+  <div className={"city-indicator" + (props.inTheCity ? " in-city" : " out-of-city")}>
+    {props.inTheCity &&
       <div className="inner">
         {props.icon && <Icon path={IM_LIBRARY2} size={33} />}
         <span>{props.text(props.inTheCity)}</span>
       </div>
-    )}
-    {!props.inTheCity && (
+    }
+    {!props.inTheCity &&
       <div className="inner">
         {props.icon && <Icon path={IM_TARGET} size={33} />}
         <span>{props.text(props.inTheCity)}</span>
       </div>
-    )}
+    }
   </div>
 );
 
@@ -29,7 +29,7 @@ InCityMessage.propTypes = {
 
 InCityMessage.defaultProps = {
   inTheCity: true,
-  text: inOutBool => (inOutBool ? "It's in the city" : "It's outside of the city"),
+  text: (inOutBool) => inOutBool ? "It's in the city" : "It's outside of the city",
   icon: true,
 };
 

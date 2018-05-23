@@ -5,42 +5,26 @@ import BarChart from '../../shared/visualization/BarChart';
 
 const getDollars = (value) => {
   if (Math.abs(value) > 1000000) {
-    return [
-      value < 0 ? '-$' : '$',
-      (Math.abs(value) / 1000000).toFixed(0).toLocaleString(),
-      ' M',
-    ].join('');
+    return [value < 0 ? '-$' : '$', (Math.abs(value) / 1000000).toFixed(0).toLocaleString(), ' M'].join('');
   } else if (Math.abs(value) > 1000) {
-    return [
-      value < 0 ? '-$' : '$',
-      (Math.abs(value) / 1000).toFixed(0).toLocaleString(),
-      ' k',
-    ].join('');
+    return [value < 0 ? '-$' : '$', (Math.abs(value) / 1000).toFixed(0).toLocaleString(), ' k'].join('');
   }
-  return [
-    value < 0 ? '-$' : '$',
-    Math.abs(value)
-      .toFixed(0)
-      .toLocaleString(),
-  ].join('');
+  return [value < 0 ? '-$' : '$', Math.abs(value).toFixed(0).toLocaleString()].join('');
 };
 
-const getDollarsLong = value => [value < 0 ? '-$' : '$', Math.abs(value).toLocaleString()].join('');
+const getDollarsLong = value => (
+  [value < 0 ? '-$' : '$', Math.abs(value).toLocaleString()].join('')
+);
 
 const ProjectExpendedBarChart = props => (
   <div>
-    {props.type === 'Transportation' && (
+    {props.type === 'Transportation' &&
       <div className="row">
         <div className="col-sm-12">
           <div className="pull-right radioGroup">
-            <RadioGroup
-              name="barChartRadios"
-              selectedValue={props.subType}
-              onChange={props.radioCallback}
-            >
+            <RadioGroup name="barChartRadios" selectedValue={props.subType} onChange={props.radioCallback}>
               <label>
-                <Radio value="Road Resurfacing and Sidewalk Improvements" />Road & Sidewalk
-                Improvements
+                <Radio value="Road Resurfacing and Sidewalk Improvements" />Road & Sidewalk Improvements
               </label>
               <label>
                 <Radio value="New Sidewalks and Greenways" />New Sidewalks & Greenways
@@ -51,25 +35,11 @@ const ProjectExpendedBarChart = props => (
             </RadioGroup>
           </div>
         </div>
-      </div>
-    )}
+      </div>}
     <div className="row">
       <div className="col-sm-12">
         <div style={{ clear: 'both' }}>
-          <BarChart
-            data={props.data}
-            layout="vertical"
-            secondaryTickFormatter={getDollars}
-            toolTipFormatter={getDollarsLong}
-            mainAxisDataKey="name"
-            dataKeys={['Remaining funds', 'Expended funds']}
-            colorScheme="bright_colors_2"
-            altText={[props.type, 'bond project funds expended by project'].join(' ')}
-            stacked
-            yAxisWidth={200}
-            barGap={10}
-            height={500}
-          />
+          <BarChart data={props.data} layout="vertical" secondaryTickFormatter={getDollars} toolTipFormatter={getDollarsLong} mainAxisDataKey="name" dataKeys={['Remaining funds', 'Expended funds']} colorScheme="bright_colors_2" altText={[props.type, 'bond project funds expended by project'].join(' ')} stacked yAxisWidth={200} barGap={10} height={500} />
         </div>
       </div>
     </div>

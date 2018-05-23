@@ -5,7 +5,7 @@ import gql from 'graphql-tag';
 import SearchResultGroup from '../search/searchResults/SearchResultGroup';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import Error from '../../shared/Error';
-import InCityMessage from '../InCityMessage'
+import InCityMessage from '../InCityMessage';
 
 const getResultType = (type) => {
   switch (type) {
@@ -33,7 +33,7 @@ const getEntities = (selected) => {
     { label: 'Owners', type: 'owner', checked: true },
     { label: 'Google places', type: 'google', checked: true },
   ];
-  for (let entity of entities) {
+  for (const entity of entities) {
     if (entityTypes.indexOf(entity.type) === -1) {
       entity.checked = false;
     }
@@ -43,7 +43,7 @@ const getEntities = (selected) => {
 
 const getEntitiesToSearch = (entities) => {
   const entitiesToSearch = [];
-  for (let entity of entities) {
+  for (const entity of entities) {
     if (entity.checked) {
       if (entity.type === 'address') {
         entitiesToSearch.push('address');
@@ -96,78 +96,83 @@ const MiniResults = (props) => {
     return null;
   }
   if (props.data.loading) {
-    return <LoadingAnimation message='Searching...' />;
+    return <LoadingAnimation message="Searching..." />;
   }
   if (props.data.error) {
     return <Error message={props.data.error.message} />;
   }
   const formattedResults = [];
-  for (let context of props.data.search) {
+  for (const context of props.data.search) {
     if (context !== null && context.results.length > 0) {
-      formattedResults.push(
-        {
-          label: getResultType(context.results[0].type),
-          results: context.results.map((result) => {
-            switch (result.type) {
-              case 'address':
-                return {
-                  label: result.address,
-                  type: result.type,
-                  id: result.civic_address_id,
-                  is_in_city: result.is_in_city,
-                }
-              case 'civicAddressId':
-                return {
-                  label: [result.address, result.zipcode].join(', '),
-                  type: 'address',
-                  id: result.civic_address_id,
-                };
-              case 'property':
-              case 'pin':
-                return {
-                  label: [[result.pinnum, ' -- '].join(''), result.address, ', ', result.zipcode].join(''),
-                  type: 'property',
-                  id: result.pinnum,
-                };
-              case 'street':
-                return {
-                  label: result.zip_code === null ? result.full_street_name : [result.full_street_name, result.zip_code].join(', '),
-                  type: 'street',
-                  id: result.centerline_ids.join(','),
-                };
-              case 'neighborhood':
-                return {
-                  label: result.name,
-                  type: 'neighborhood',
-                  id: result.nbhd_id,
-                };
-              case 'owner':
-                return {
-                  label: result.ownerName,
-                  type: 'owner',
-                  id: result.pinnums.join(','),
-                };
-              case 'place':
-                return {
-                  label: result.address,
-                  type: 'place',
-                  id: result.address,
-                  place_name: result.placeName,
-                  place_id: result.place_id,
-                };
-              default:
-                return result;
-            }
-          }),
-        }
-      );
+      formattedResults.push({
+        label: getResultType(context.results[0].type),
+        results: context.results.map((result) => {
+          switch (result.type) {
+            case 'address':
+              return {
+                label: result.address,
+                type: result.type,
+                id: result.civic_address_id,
+                is_in_city: result.is_in_city,
+              };
+            case 'civicAddressId':
+              return {
+                label: [result.address, result.zipcode].join(', '),
+                type: 'address',
+                id: result.civic_address_id,
+              };
+            case 'property':
+            case 'pin':
+              return {
+                label: [
+                  [result.pinnum, ' -- '].join(''),
+                  result.address,
+                  ', ',
+                  result.zipcode,
+                ].join(''),
+                type: 'property',
+                id: result.pinnum,
+              };
+            case 'street':
+              return {
+                label:
+                  result.zip_code === null
+                    ? result.full_street_name
+                    : [result.full_street_name, result.zip_code].join(', '),
+                type: 'street',
+                id: result.centerline_ids.join(','),
+              };
+            case 'neighborhood':
+              return {
+                label: result.name,
+                type: 'neighborhood',
+                id: result.nbhd_id,
+              };
+            case 'owner':
+              return {
+                label: result.ownerName,
+                type: 'owner',
+                id: result.pinnums.join(','),
+              };
+            case 'place':
+              return {
+                label: result.address,
+                type: 'place',
+                id: result.address,
+                place_name: result.placeName,
+                place_id: result.place_id,
+              };
+            default:
+              return result;
+          }
+        }),
+      });
     }
   }
   return (
-    <div className='row'>
-      <div className='col-sm-12'>
-        {
-          formattedResults.length > 0 ?
+    <div className="row">
+      <div className="col-sm-12">
+        {formattedResults.length > 0 ? (
           formattedResults[0].results.map((result, index) => (
             <div
               style={{
@@ -176,37 +181,38 @@ const MiniResults = (props) => {
               }}
               key={index}
             >
-              <div
-                className='text-primary'
-                style={{ display: 'inline-block', minWidth: '40%'}}
-              >
+              <div className="text-primary" style={{ display: 'inline-block', minWidth: '40%' }}>
                 <a
-                  href={getLink(result.type, result.id, props.searchText, props.selectedEntities, result.label, props.originalSearch)}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  >
+                  href={getLink(
+                    result.type,
+                    result.id,
+                    props.searchText,
+                    props.selectedEntities,
+                    result.label,
+                    props.originalSearch
+                  )}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   {result.label}
                 </a>
               </div>
-              { result.is_in_city !== null &&
-                <div
-                  style={{ display: 'inline-block', fontSize: '0.55em'}}
-                >
+              {result.is_in_city !== null && (
+                <div style={{ display: 'inline-block', fontSize: '0.55em' }}>
                   <InCityMessage
                     inTheCity={result.is_in_city}
-                    text={(inOutBool) => inOutBool ? "In the city" : "Outside of the city"}
+                    text={inOutBool => (inOutBool ? 'In the city' : 'Outside of the city')}
                     icon={false}
                   />
                 </div>
-              }
+              )}
             </div>
-          )) :
-          props.searchText === undefined || props.searchText.length === 0 ?
-            null :
-            <div className='alert alert-warning alert-sm'>
-              No results found. Try a different search term and/or different search type selections.
-            </div>
-        }
+          ))
+        ) : props.searchText === undefined || props.searchText.length === 0 ? null : (
+          <div className="alert alert-warning alert-sm">
+            No results found. Try a different search term and/or different search type selections.
+          </div>
+        )}
       </div>
     </div>
   );
@@ -269,13 +275,13 @@ const searchQuery = gql`
 `;
 
 export default graphql(searchQuery, {
-  skip: ownProps => (!ownProps.searchText || ownProps.searchText.trim().length < 4),
+  skip: ownProps => !ownProps.searchText || ownProps.searchText.trim().length < 4,
   options: ownProps => ({
     variables: {
       searchString: ownProps.searchText.trim(),
-      searchContexts: getEntitiesToSearch(ownProps.location.query.entities !== undefined ?
-        getEntities(ownProps.location.query.entities) :
-        getEntities('address,property,neighborhood,street,owner,google'))
-    }
+      searchContexts: getEntitiesToSearch(ownProps.location.query.entities !== undefined
+        ? getEntities(ownProps.location.query.entities)
+        : getEntities('address,property,neighborhood,street,owner,google')),
+    },
   }),
 })(MiniResults);

@@ -1,13 +1,19 @@
 export const getCategoryBarChartData = (projectData, categories, mode) => {
   const categoryBarData = {};
-  for (let cat of categories) {
+  for (const cat of categories) {
     categoryBarData[cat] = 0;
   }
 
-  for (let project of projectData) {
+  for (const project of projectData) {
     if (categories.includes(mapProjectToCategory(project))) {
-      if (mode !== 'bond' ||
-        ( mode === 'bond' && ['Bond - Parks Program', 'Bond - Housing Program', 'Bond - Transportation Program'].includes(project.Category) )
+      if (
+        mode !== 'bond' ||
+        (mode === 'bond' &&
+          [
+            'Bond - Parks Program',
+            'Bond - Housing Program',
+            'Bond - Transportation Program',
+          ].includes(project.Category))
       ) {
         categoryBarData[mapProjectToCategory(project)] += 1;
       }
@@ -24,10 +30,16 @@ export const getPhaseBarChartData = (projectData, categories, mode) => {
   let numCompleted = 0;
   let numOngoing = 0;
 
-  for (let project of projectData) {
+  for (const project of projectData) {
     if (categories.includes(mapProjectToCategory(project))) {
-      if (mode !== 'bond' ||
-        (mode === 'bond' && ['Bond - Parks Program', 'Bond - Housing Program', 'Bond - Transportation Program'].includes(project.Category))
+      if (
+        mode !== 'bond' ||
+        (mode === 'bond' &&
+          [
+            'Bond - Parks Program',
+            'Bond - Housing Program',
+            'Bond - Transportation Program',
+          ].includes(project.Category))
       ) {
         switch (project.status) {
           case 'Status: Planning':
@@ -49,13 +61,15 @@ export const getPhaseBarChartData = (projectData, categories, mode) => {
     }
   }
 
-  const barData = [{
-    Ongoing: numOngoing,
-    Design: numInDesign,
-    Planning: numInPlanning,
-    Constuction: numInConstruction,
-    Completed: numCompleted,
-  }];
+  const barData = [
+    {
+      Ongoing: numOngoing,
+      Design: numInDesign,
+      Planning: numInPlanning,
+      Constuction: numInConstruction,
+      Completed: numCompleted,
+    },
+  ];
 
   return barData;
 };
@@ -67,10 +81,16 @@ export const getPhasePieChartData = (projectData, categories, mode) => {
   let numCompleted = 0;
   let numOngoing = 0;
 
-  for (let project of projectData) {
+  for (const project of projectData) {
     if (categories.includes(mapProjectToCategory(project))) {
-      if (mode !== 'bond' ||
-        (mode === 'bond' && ['Bond - Parks Program', 'Bond - Housing Program', 'Bond - Transportation Program'].includes(project.category))
+      if (
+        mode !== 'bond' ||
+        (mode === 'bond' &&
+          [
+            'Bond - Parks Program',
+            'Bond - Housing Program',
+            'Bond - Transportation Program',
+          ].includes(project.category))
       ) {
         switch (project.status) {
           case 'Status: Planning':
@@ -130,35 +150,55 @@ export const getFundsAllocatedAndExpended = (projectData, categories, mode) => {
   let totalAllocated = 0;
   let totalEncumbered = 0;
 
-  for (let project of projectData) {
+  for (const project of projectData) {
     if (categories.includes(mapProjectToCategory(project))) {
-      if (mode !== 'bond' ||
-      (mode === 'bond' && ['Bond - Parks Program', 'Bond - Housing Program', 'Bond - Transportation Program'].includes(project.category))
-    ) {
+      if (
+        mode !== 'bond' ||
+        (mode === 'bond' &&
+          [
+            'Bond - Parks Program',
+            'Bond - Housing Program',
+            'Bond - Transportation Program',
+          ].includes(project.category))
+      ) {
         totalExpended += parseFloat(project.total_spent);
         totalEncumbered += parseFloat(project.encumbered);
         if (project.total_project_funding_budget_document.trim() !== '') {
-          let allocated = project.total_project_funding_budget_document.indexOf('$') === 0 ? project.total_project_funding_budget_document.slice(1).split(',').join('') : project.total_project_funding_budget_document.split(',').join('');
+          const allocated =
+            project.total_project_funding_budget_document.indexOf('$') === 0
+              ? project.total_project_funding_budget_document
+                .slice(1)
+                .split(',')
+                .join('')
+              : project.total_project_funding_budget_document.split(',').join('');
           totalAllocated += parseFloat(allocated);
         }
       }
     }
   }
 
-  return [{
-    allocated: parseInt(totalAllocated, 10),
-    'Expended funds': parseInt(totalExpended, 10),
-    'Remaining funds': parseInt(totalAllocated, 10) - parseInt(totalExpended, 10),
-    'Under contract': parseInt(totalEncumbered, 10)
-  }];
+  return [
+    {
+      allocated: parseInt(totalAllocated, 10),
+      'Expended funds': parseInt(totalExpended, 10),
+      'Remaining funds': parseInt(totalAllocated, 10) - parseInt(totalExpended, 10),
+      'Under contract': parseInt(totalEncumbered, 10),
+    },
+  ];
 };
 
 export const filterProjects = (projects, categories, mode) => {
   const filteredProjects = [];
-  for (let project of projects) {
+  for (const project of projects) {
     if (categories.includes(mapProjectToCategory(project))) {
       if (mode === 'bond') {
-        if (['Bond - Parks Program', 'Bond - Housing Program', 'Bond - Transportation Program'].includes(project.category)) {
+        if (
+          [
+            'Bond - Parks Program',
+            'Bond - Housing Program',
+            'Bond - Transportation Program',
+          ].includes(project.category)
+        ) {
           filteredProjects.push(project);
         }
       } else {
@@ -201,7 +241,7 @@ export const longCategory = (category) => {
 
 export const longCategories = (categories) => {
   const longCats = [];
-  for (let cat of categories) {
+  for (const cat of categories) {
     const lowerCat = cat.toLowerCase();
     if (lowerCat === 'housing') {
       longCats.push('CIP - Affordable Housing');

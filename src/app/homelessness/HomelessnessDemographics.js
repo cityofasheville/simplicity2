@@ -157,11 +157,7 @@ const family_keys = [
   'In a household with only children',
 ];
 
-const target_pop_keys = [
-  'Veterans',
-  'Chronically homeless',
-  'Families and children',
-];
+const target_pop_keys = ['Veterans', 'Chronically homeless', 'Families and children'];
 
 // todo get this data from graphql
 const target_pop_data = [
@@ -245,10 +241,7 @@ const target_pop_data = [
   // },
 ];
 
-const family_situation_keys = [
-  'Adults without children',
-  'Families and children',
-];
+const family_situation_keys = ['Adults without children', 'Families and children'];
 
 // todo get this data from graphql
 const family_situation_data = [
@@ -285,7 +278,7 @@ const family_situation_data = [
   {
     date: '2011',
     'Families and children': 24,
-    'Adults without children':  437,
+    'Adults without children': 437,
   },
   {
     date: '2012',
@@ -316,7 +309,9 @@ const family_situation_data = [
 
 const targetPopsText = ['This chart shows the breakdown among the primary demographic groupings.'];
 
-const familyUnitsText = ['This chart shows how many homeless individuals were single adults and how many were in households including children by year.'];
+const familyUnitsText = [
+  'This chart shows how many homeless individuals were single adults and how many were in households including children by year.',
+];
 
 class HomelessnessDemographics extends React.Component {
   constructor(props) {
@@ -337,40 +332,126 @@ class HomelessnessDemographics extends React.Component {
           <div className="col-sm-12">
             <h3>Who is homeless?</h3>
             <p>
-              Our community is unusual for its high concentration of homeless Veterans, while we have fewer than average families with children compared to other cities in NC. Addressing the challenges of homelessness effectively requires understanding the particular needs of particular subpopulations. Our <a className="inText" href="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=27777" target="_blank">Five Year Strategic Plan</a> focuses on the two largest sub-populations in Buncombe County: homeless Veterans and those defined as chronically homeless by the US Department of Housing and Urban Development (HUD).
+              Our community is unusual for its high concentration of homeless Veterans, while we
+              have fewer than average families with children compared to other cities in NC.
+              Addressing the challenges of homelessness effectively requires understanding the
+              particular needs of particular subpopulations. Our{' '}
+              <a
+                className="inText"
+                href="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=27777"
+                target="_blank"
+              >
+                Five Year Strategic Plan
+              </a>{' '}
+              focuses on the two largest sub-populations in Buncombe County: homeless Veterans and
+              those defined as chronically homeless by the US Department of Housing and Urban
+              Development (HUD).
               <br />
-              <a className="text-center inText" onClick={(e) => { e.preventDefault(); this.toggleDefinition()}}>
+              <a
+                className="text-center inText"
+                onClick={(e) => {
+                  e.preventDefault();
+                  this.toggleDefinition();
+                }}
+              >
                 {this.state.showingDefinition ? 'Hide' : 'Show'} chronically homeless definition
               </a>
               <span hidden={!this.state.showingDefinition}>
                 <br />
-                <strong>Chronically Homeless</strong>: As defined since January 15, 2016, a person who is chronically homeless is one who lives in a place not meant for human habitation or in an emergency shelter and has been homeless as described continuously for at least 12 months or on at least four separate occasions in the last 3 years meets that description, as long as the combined occasions total at least 12 months and have a disability (42 U.S.C. 11360(9)). In the past 10 years, there have been several changes to the definition of chronically homeless by US Department of Housing and Urban Devlopment (HUD).
+                <strong>Chronically Homeless</strong>: As defined since January 15, 2016, a person
+                who is chronically homeless is one who lives in a place not meant for human
+                habitation or in an emergency shelter and has been homeless as described
+                continuously for at least 12 months or on at least four separate occasions in the
+                last 3 years meets that description, as long as the combined occasions total at
+                least 12 months and have a disability (42 U.S.C. 11360(9)). In the past 10 years,
+                there have been several changes to the definition of chronically homeless by US
+                Department of Housing and Urban Devlopment (HUD).
               </span>
             </p>
-            <p>View the <Link to="/homelessness/veterans" className="inText">Veterans page</Link> to see detailed information about homeless Veterans.</p>
+            <p>
+              View the{' '}
+              <Link to="/homelessness/veterans" className="inText">
+                Veterans page
+              </Link>{' '}
+              to see detailed information about homeless Veterans.
+            </p>
           </div>
         </div>
         <div className="row" style={{ marginBottom: '10px' }}>
           <div className="col-md-6">
-            <BarChart chartTitle="Families and children" layout="horizontal" mainAxisDataKey="Year" legendHeight={60} dataKeys={family_keys} colorScheme="bright_colors" data={historical_pit} stacked altText="Bar chart of families" domain={[0, 650]} />
+            <BarChart
+              chartTitle="Families and children"
+              layout="horizontal"
+              mainAxisDataKey="Year"
+              legendHeight={60}
+              dataKeys={family_keys}
+              colorScheme="bright_colors"
+              data={historical_pit}
+              stacked
+              altText="Bar chart of families"
+              domain={[0, 650]}
+            />
           </div>
-          <div className="col-md-6" style={{ paddingLeft: '10px'}}>
+          <div className="col-md-6" style={{ paddingLeft: '10px' }}>
             <p>
               <br />
               <br />
-              The graphs on this page reflect the literally homeless as defined by HUD. The Public education systems operate under a different definition of homelessness that includes individuals who lack a fixed, regular, and adequate nighttime residence. This includes what is commonly referred to as ‘doubled-up’ – 2 or more families living in the same unit, often because of economic hardship. The public school systems track this data for the community and it can be viewed at the following links: <a href="http://www.ashevillecityschools.net/pages/Asheville_City_Schools/Student_Services/Education_for_Homeless_Childre" target="_blank" className="inText">Asheville City Schools homelessness information</a> and <a href="https://buncombeschools.org/cms/One.aspx?portalId=92531&pageId=255538" target="_blank" className="inText">Buncombe County Schools homelessness information</a>.
+              The graphs on this page reflect the literally homeless as defined by HUD. The Public
+              education systems operate under a different definition of homelessness that includes
+              individuals who lack a fixed, regular, and adequate nighttime residence. This includes
+              what is commonly referred to as ‘doubled-up’ – 2 or more families living in the same
+              unit, often because of economic hardship. The public school systems track this data
+              for the community and it can be viewed at the following links:{' '}
+              <a
+                href="http://www.ashevillecityschools.net/pages/Asheville_City_Schools/Student_Services/Education_for_Homeless_Childre"
+                target="_blank"
+                className="inText"
+              >
+                Asheville City Schools homelessness information
+              </a>{' '}
+              and{' '}
+              <a
+                href="https://buncombeschools.org/cms/One.aspx?portalId=92531&pageId=255538"
+                target="_blank"
+                className="inText"
+              >
+                Buncombe County Schools homelessness information
+              </a>.
             </p>
             <p>
-              The &quot;Household with only children&quot; category was introduced in the 2011 PIT Count. Prior to 2011, these households were included in the &quot;Households without Dependent Children&quot; household type (now called &quot;Households without Children&quot;).
+              The &quot;Household with only children&quot; category was introduced in the 2011 PIT
+              Count. Prior to 2011, these households were included in the &quot;Households without
+              Dependent Children&quot; household type (now called &quot;Households without
+              Children&quot;).
             </p>
           </div>
         </div>
         <div className="row">
           <div className="col-md-6">
-            <BarChart chartTitle="Veterans" layout="horizontal" mainAxisDataKey="Year" legendHeight={20} dataKeys={['Veteran', 'Civilian']} colorScheme="bright_colors_2" data={historical_pit} stacked altText="Bar chart of homeless Veterans" />
+            <BarChart
+              chartTitle="Veterans"
+              layout="horizontal"
+              mainAxisDataKey="Year"
+              legendHeight={20}
+              dataKeys={['Veteran', 'Civilian']}
+              colorScheme="bright_colors_2"
+              data={historical_pit}
+              stacked
+              altText="Bar chart of homeless Veterans"
+            />
           </div>
           <div className="col-md-6">
-            <BarChart chartTitle="Chronically homeless" layout="horizontal" mainAxisDataKey="Year" legendHeight={20} dataKeys={['Chronically homeless', 'Not chronically homeless']} colorScheme="bright_colors" data={historical_pit} stacked altText="Bar chart of chronically homeless individuals" />
+            <BarChart
+              chartTitle="Chronically homeless"
+              layout="horizontal"
+              mainAxisDataKey="Year"
+              legendHeight={20}
+              dataKeys={['Chronically homeless', 'Not chronically homeless']}
+              colorScheme="bright_colors"
+              data={historical_pit}
+              stacked
+              altText="Bar chart of chronically homeless individuals"
+            />
           </div>
         </div>
       </div>

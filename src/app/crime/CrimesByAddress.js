@@ -60,7 +60,7 @@ const getMarker = (type) => {
     case 'DRUG OFFENSE - FELONY':
     case 'DRUG OFFENSE - MISDEMEANOR':
     case 'DRUG PARAPHERNALIA OTHER':
-      return require('../../shared/AidKit2.png');     
+      return require('../../shared/AidKit2.png');
     case 'COUNTERFEITING-BUYING/RECEIVING':
       return require('../../shared/BillDollar.png');
     case 'LARCENY ALL OTHER':
@@ -92,7 +92,13 @@ const createLegend = (crimeData) => {
   return (
     <div style={{ width: '160px' }}>
       {crimeTypes.map(type => (
-        <div key={`legendItem-${type}`} style={{ width: '160px', marginBottom: '5px' }}><img src={getMarker(type)} style={{ display: 'inline-block', width: '25px', verticalAlign: 'top' }}></img><span style={{ marginLeft: '5px', display: 'inline-block', width: '130px' }}>{type}</span></div>
+        <div key={`legendItem-${type}`} style={{ width: '160px', marginBottom: '5px' }}>
+          <img
+            src={getMarker(type)}
+            style={{ display: 'inline-block', width: '25px', verticalAlign: 'top' }}
+          />
+          <span style={{ marginLeft: '5px', display: 'inline-block', width: '130px' }}>{type}</span>
+        </div>
       ))}
     </div>
   );
@@ -116,9 +122,9 @@ const convertToPieData = (crimeData) => {
     }
   }
 
-  pieData.sort((a, b) => (
-    ((a.value > b.value) ? -1 : ((a.value < b.value) ? 1 : 0)) // eslint-disable-line
-  ));
+  pieData.sort((a, b) =>
+      (a.value > b.value ? -1 : a.value < b.value ? 1 : 0) // eslint-disable-line
+  );
 
   let otherCount = 0;
   for (let i = 9; i < pieData.length; i += 1) {
@@ -132,52 +138,82 @@ const convertToPieData = (crimeData) => {
 };
 
 const CrimesByAddress = (props) => {
-  if (props.data.loading) { // eslint-disable-line react/prop-types
+  if (props.data.loading) {
+    // eslint-disable-line react/prop-types
     return <LoadingAnimation />;
   }
-  if (props.data.error) { // eslint-disable-line react/prop-types
+  if (props.data.error) {
+    // eslint-disable-line react/prop-types
     return <Error message={props.data.error.message} />; // eslint-disable-line react/prop-types
   }
 
   const pieData = convertToPieData(props.data.crimes_by_address);
-  const mapData = props.data.crimes_by_address.map(item => (Object.assign({}, item, {
-    popup: `<div><b>${item.address}</b><p>${moment.utc(item.date_occurred).format('M/DD/YYYY')}</p><p>${item.offense_long_description}</p></div>`,
-    options: { icon: L.icon({
-      iconUrl: getMarker(item.offense_long_description),
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-      popupAnchor: [2, -22],
-    }) } })
-  ));
+  const mapData = props.data.crimes_by_address.map(item =>
+    Object.assign({}, item, {
+      popup: `<div><b>${item.address}</b><p>${moment
+        .utc(item.date_occurred)
+        .format('M/DD/YYYY')}</p><p>${item.offense_long_description}</p></div>`,
+      options: {
+        icon: L.icon({
+          iconUrl: getMarker(item.offense_long_description),
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [2, -22],
+        }),
+      },
+    }));
 
-  const getNewUrlParams = view => (
-    {
-      view,
-    }
-  );
+  const getNewUrlParams = view => ({
+    view,
+  });
 
   return (
     <div className="crimes-template__data">
       <div className="row template-header">
         <div className="col-xs-12 template-header__inner">
           <div className="pull-left">
-            <EmailDownload downloadData={props.data.crimes_by_address} fileName="crimes_by_address.csv" />
+            <EmailDownload
+              downloadData={props.data.crimes_by_address}
+              fileName="crimes_by_address.csv"
+            />
           </div>
           <ButtonGroup alignment="">
-            <Button onClick={() => refreshLocation(getNewUrlParams('map'), props.location)} active={props.location.query.view === 'map'} positionInGroup="left">Map view</Button>
-            <Button onClick={() => refreshLocation(getNewUrlParams('list'), props.location)} active={props.location.query.view === 'list'} positionInGroup="middle">List view</Button>
-            <Button onClick={() => refreshLocation(getNewUrlParams('summary'), props.location)} positionInGroup="right" active={props.location.query.view === 'summary'}>Chart</Button>
+            <Button
+              onClick={() => refreshLocation(getNewUrlParams('map'), props.location)}
+              active={props.location.query.view === 'map'}
+              positionInGroup="left"
+            >
+              Map view
+            </Button>
+            <Button
+              onClick={() => refreshLocation(getNewUrlParams('list'), props.location)}
+              active={props.location.query.view === 'list'}
+              positionInGroup="middle"
+            >
+              List view
+            </Button>
+            <Button
+              onClick={() => refreshLocation(getNewUrlParams('summary'), props.location)}
+              positionInGroup="right"
+              active={props.location.query.view === 'summary'}
+            >
+              Chart
+            </Button>
           </ButtonGroup>
         </div>
       </div>
 
       <div className="row">
-        <div id="summaryView" className="col-xs-12" hidden={props.location.query.view !== 'summary'}>
-          {pieData.length > 0 ?
+        <div
+          id="summaryView"
+          className="col-xs-12"
+          hidden={props.location.query.view !== 'summary'}
+        >
+          {pieData.length > 0 ? (
             <PieChart data={pieData} altText="Crime pie chart" />
-            :
+          ) : (
             <div className="alert alert-info">No results found</div>
-          }
+          )}
         </div>
 
         <div id="listView" hidden={props.location.query.view !== 'list'}>
@@ -185,21 +221,38 @@ const CrimesByAddress = (props) => {
         </div>
 
         <div id="mapView" className="col-xs-12" hidden={props.location.query.view !== 'map'}>
-          {props.data.crimes_by_address.length === 0 || props.location.query.view !== 'map' ?
+          {props.data.crimes_by_address.length === 0 || props.location.query.view !== 'map' ? (
             <div className="alert alert-info">No results found</div>
-            :
+          ) : (
             <Map
               data={mapData}
               showCenter
               legend={createLegend(props.data.crimes_by_address)}
-              center={props.location.query.x !== '' ? [parseFloat(props.location.query.y), parseFloat(props.location.query.x)] : null}
+              center={
+                props.location.query.x !== ''
+                  ? [parseFloat(props.location.query.y), parseFloat(props.location.query.x)]
+                  : null
+              }
               centerLabel={props.location.query.label}
               drawCircle
-              radius={(props.location.query.within === undefined || props.location.query.within === '') ? 215 : parseInt(props.location.query.within, 10) / 3}
-              within={(props.location.query.within === undefined || props.location.query.within === '') ? 660 : parseInt(props.location.query.within, 10)}
-              zoomToPoint={(props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== '') ? props.location.query.zoomToPoint : null}
+              radius={
+                props.location.query.within === undefined || props.location.query.within === ''
+                  ? 215
+                  : parseInt(props.location.query.within, 10) / 3
+              }
+              within={
+                props.location.query.within === undefined || props.location.query.within === ''
+                  ? 660
+                  : parseInt(props.location.query.within, 10)
+              }
+              zoomToPoint={
+                props.location.query.zoomToPoint !== undefined &&
+                props.location.query.zoomToPoint !== ''
+                  ? props.location.query.zoomToPoint
+                  : null
+              }
             />
-          }
+          )}
         </div>
       </div>
     </div>
@@ -217,7 +270,12 @@ CrimesByAddress.defaultProps = {
 
 const getCrimesQuery = gql`
   query getCrimesQuery($civicaddress_id: Int!, $radius: Int, $before: String, $after: String) {
-    crimes_by_address (civicaddress_id: $civicaddress_id, radius: $radius, before: $before, after: $after) {
+    crimes_by_address(
+      civicaddress_id: $civicaddress_id
+      radius: $radius
+      before: $before
+      after: $after
+    ) {
       case_number
       date_occurred
       address

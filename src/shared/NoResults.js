@@ -1,13 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const NoResults = props => (
-	<div className="alert alert-info">No results found</div>
-);
+const NoResults = props => <div className="alert alert-info">No results found</div>;
 
-NoResults.propTypes = {
-
-};
+NoResults.propTypes = {};
 
 ButtonGroup.defaultProps = {
   // alignment: 'right',

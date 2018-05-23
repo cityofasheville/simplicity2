@@ -17,7 +17,10 @@ class SummaryDepartments extends React.Component {
   }
 
   async initializeSummaryDept() {
-    const summaryDeptData = buildSummaryData(this.props.data.budgetSummary, this.props.data.budgetParameters);
+    const summaryDeptData = buildSummaryData(
+      this.props.data.budgetSummary,
+      this.props.data.budgetParameters
+    );
     await this.props.updateBudgetSummaryDept({
       variables: {
         budgetSummaryDept: {
@@ -29,10 +32,12 @@ class SummaryDepartments extends React.Component {
   }
 
   render() {
-    if (this.props.data.loading) { // eslint-disable-line react/prop-types
+    if (this.props.data.loading) {
+      // eslint-disable-line react/prop-types
       return <LoadingAnimation size="small" />;
     }
-    if (this.props.data.error) { // eslint-disable-line react/prop-types
+    if (this.props.data.error) {
+      // eslint-disable-line react/prop-types
       return <Error message={this.props.data.error.message} />; // eslint-disable-line react/prop-types
     }
 
@@ -41,7 +46,11 @@ class SummaryDepartments extends React.Component {
     }
 
     return (
-      <BudgetSummaryBarChart categoryType="department" colorScheme="bright_colors_2" {...this.props} />
+      <BudgetSummaryBarChart
+        categoryType="department"
+        colorScheme="bright_colors_2"
+        {...this.props}
+      />
     );
   }
 }
@@ -57,11 +66,11 @@ SummaryDepartments.defaultProps = {
 const budgetSummaryDeptQuery = gql`
   query budgetSummaryDeptQuery {
     budgetSummary(breakdown: "dept", maxCategories: 7) {
-        account_type,
-        category_name,
-        total_budget,
-        total_actual,
-        year,
+      account_type
+      category_name
+      total_budget
+      total_actual
+      year
     }
     budgetParameters {
       start_year
@@ -78,5 +87,5 @@ export default compose(
       summaryDeptData: budgetSummaryDept,
     }),
   }),
-  graphql(updateBudgetSummaryDept, { name: 'updateBudgetSummaryDept' }),
+  graphql(updateBudgetSummaryDept, { name: 'updateBudgetSummaryDept' })
 )(SummaryDepartments);

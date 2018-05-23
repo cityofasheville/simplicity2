@@ -1,11 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ResponsiveContainer, ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import {
+  ResponsiveContainer,
+  ComposedChart,
+  Line,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+} from 'recharts';
 import { colorSchemes } from '../../shared/visualization/colorSchemes';
 
 const dataKeysArr = [
   'Incoming',
-  //'Remaining to be housed',
+  // 'Remaining to be housed',
   'Outgoing',
 ];
 
@@ -131,9 +141,14 @@ const getLongDesc = (data, dataKeys, mainAxisKey) => (
   <div>
     {data.map((value, index) => (
       <div key={[value[mainAxisKey], index].join('_')}>
-        <p>{value[mainAxisKey]}<br />
+        <p>
+          {value[mainAxisKey]}
+          <br />
           {dataKeys.map(key => (
-            <span key={[value[mainAxisKey], key].join('_')}>{key}: {value[key]}<br /></span>
+            <span key={[value[mainAxisKey], key].join('_')}>
+              {key}: {value[key]}
+              <br />
+            </span>
           ))}
         </p>
       </div>
@@ -144,7 +159,10 @@ const getLongDesc = (data, dataKeys, mainAxisKey) => (
 class HomelessnessVeteransInflowOutflow extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { showingLongDesc: this.showLongDesc, showingDefinitions: this.showingDefinitions };
+    this.state = {
+      showingLongDesc: this.showLongDesc,
+      showingDefinitions: this.showingDefinitions,
+    };
   }
 
   toggleLongDesc() {
@@ -166,27 +184,76 @@ class HomelessnessVeteransInflowOutflow extends React.Component {
           <div className="col-sm-12">
             <h4>Incoming and outgoing Veterans</h4>
             <div>
-              There is an inflow and outflow of homeless Veterans in Buncombe County, and Veteran representation in the homeless community is considerably higher than other communities of similar size in the country. Our exceptional VA Medical Center, large service area and transitional housing availability contribute to this large number of homeless Veterans being attracted to this area. Each month homeless service providers identify new homeless Veterans in Buncombe County and each month various agencies assist homeless Veterans in exiting homelessness. An exit from homelessness in Buncombe County includes rental units, living with family and/or friends, long-term care facilities, and also leaving Buncombe County.
+              There is an inflow and outflow of homeless Veterans in Buncombe County, and Veteran
+              representation in the homeless community is considerably higher than other communities
+              of similar size in the country. Our exceptional VA Medical Center, large service area
+              and transitional housing availability contribute to this large number of homeless
+              Veterans being attracted to this area. Each month homeless service providers identify
+              new homeless Veterans in Buncombe County and each month various agencies assist
+              homeless Veterans in exiting homelessness. An exit from homelessness in Buncombe
+              County includes rental units, living with family and/or friends, long-term care
+              facilities, and also leaving Buncombe County.
               <br />
-                <a href="" className="text-center inText" onClick={(e) => { e.preventDefault(); this.toggleDefinitions() }}>
-                  {this.state.showingDefinitions ? 'Hide' : 'Show'} Definition of Veteran
-                </a>
-                <div hidden={!this.state.showingDefinitions}>
-                  <div>
-                    <ul>
-                      <li>
-                        <div>
-                          <strong>Veteran</strong>
-                        </div>
-                        <div>
-                          The Veteran Health Administration classifies a homeless Veteran by the following: (1) An individual or family who lacks a fixed, regular, and adequate nighttime residence; (2) An individual or family with a primary nighttime residence that is a public or private place not designed for or ordinarily used as a regular sleeping accommodation for human beings, including a car, park, abandoned building, bus or train station, airport, or camping ground; (3) An individual or family living in a supervised publicly or privately operated shelter designated to provide temporary living arrangements (including hotels and motels paid for by Federal, state, or local government programs for low-income individuals or by charitable organizations, congregate shelters, and transitional housing); (4) An individual who resided in a shelter or place not meant for human habitation and who is exiting an institution where the individual temporarily resided; (5) An individual or family who: (a) Will imminently lose their housing, including housing they own, rent, or live in without paying rent, are sharing with others, and rooms in hotels or motels not paid for by Federal, state, or local government programs for low-income individuals or by charitable organizations, as evidenced by: 1. A court order resulting from an eviction action that notifies the individual or family that they must leave within 14 days; 2. The individual or family having a primary nighttime residence that is a room in a hotel or motel and where they lack the resources necessary to reside there for more than 14 days; or 3. Credible evidence indicating that the owner or renter of the housing will not allow the individual or family to stay for more than 14 days, and any oral statement from an individual or family seeking homeless assistance that is found to be credible shall be considered credible evidence for purposes of this clause if the Veteran (b) has no subsequent residence identified and/or (c) lacks the resources or support networks needed to obtain other permanent housing.<br /><br />
-
-                          (6) Notwithstanding any other provision of this paragraph, VA shall consider to be homeless any individual or family who is fleeing, or is attempting to flee, domestic violence, dating violence, sexual assault, stalking, or other dangerous or life threatening conditions in the individual's or family's current housing situation, including where the health and safety of children are jeopardized, and who have no other residence and lack the resources or support networks to obtain other permanent housing.
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
+              <a
+                href=""
+                className="text-center inText"
+                onClick={(e) => {
+                  e.preventDefault();
+                  this.toggleDefinitions();
+                }}
+              >
+                {this.state.showingDefinitions ? 'Hide' : 'Show'} Definition of Veteran
+              </a>
+              <div hidden={!this.state.showingDefinitions}>
+                <div>
+                  <ul>
+                    <li>
+                      <div>
+                        <strong>Veteran</strong>
+                      </div>
+                      <div>
+                        The Veteran Health Administration classifies a homeless Veteran by the
+                        following: (1) An individual or family who lacks a fixed, regular, and
+                        adequate nighttime residence; (2) An individual or family with a primary
+                        nighttime residence that is a public or private place not designed for or
+                        ordinarily used as a regular sleeping accommodation for human beings,
+                        including a car, park, abandoned building, bus or train station, airport, or
+                        camping ground; (3) An individual or family living in a supervised publicly
+                        or privately operated shelter designated to provide temporary living
+                        arrangements (including hotels and motels paid for by Federal, state, or
+                        local government programs for low-income individuals or by charitable
+                        organizations, congregate shelters, and transitional housing); (4) An
+                        individual who resided in a shelter or place not meant for human habitation
+                        and who is exiting an institution where the individual temporarily resided;
+                        (5) An individual or family who: (a) Will imminently lose their housing,
+                        including housing they own, rent, or live in without paying rent, are
+                        sharing with others, and rooms in hotels or motels not paid for by Federal,
+                        state, or local government programs for low-income individuals or by
+                        charitable organizations, as evidenced by: 1. A court order resulting from
+                        an eviction action that notifies the individual or family that they must
+                        leave within 14 days; 2. The individual or family having a primary nighttime
+                        residence that is a room in a hotel or motel and where they lack the
+                        resources necessary to reside there for more than 14 days; or 3. Credible
+                        evidence indicating that the owner or renter of the housing will not allow
+                        the individual or family to stay for more than 14 days, and any oral
+                        statement from an individual or family seeking homeless assistance that is
+                        found to be credible shall be considered credible evidence for purposes of
+                        this clause if the Veteran (b) has no subsequent residence identified and/or
+                        (c) lacks the resources or support networks needed to obtain other permanent
+                        housing.<br />
+                        <br />
+                        (6) Notwithstanding any other provision of this paragraph, VA shall consider
+                        to be homeless any individual or family who is fleeing, or is attempting to
+                        flee, domestic violence, dating violence, sexual assault, stalking, or other
+                        dangerous or life threatening conditions in the individual's or family's
+                        current housing situation, including where the health and safety of children
+                        are jeopardized, and who have no other residence and lack the resources or
+                        support networks to obtain other permanent housing.
+                      </div>
+                    </li>
+                  </ul>
                 </div>
+              </div>
             </div>
             <div style={{ height: 450 }}>
               <ResponsiveContainer>
@@ -197,9 +264,22 @@ class HomelessnessVeteransInflowOutflow extends React.Component {
                   <Tooltip />
                   <Legend />
                   {this.props.dataKeys.map((barDataKey, i) => (
-                    <Bar key={barDataKey} dataKey={barDataKey} fill={colorSchemes.bright_colors_2[i % colorSchemes.pink_green_diverging.length]} animationDuration={50} />
+                    <Bar
+                      key={barDataKey}
+                      dataKey={barDataKey}
+                      fill={
+                        colorSchemes.bright_colors_2[i % colorSchemes.pink_green_diverging.length]
+                      }
+                      animationDuration={50}
+                    />
                   ))}
-                  <Line dataKey="Net change" stroke="black" fill="white" strokeWidth={3} dot={{ stroke: 'black', strokeWidth: 5, r: 5 }} />
+                  <Line
+                    dataKey="Net change"
+                    stroke="black"
+                    fill="white"
+                    strokeWidth={3}
+                    dot={{ stroke: 'black', strokeWidth: 5, r: 5 }}
+                  />
                 </ComposedChart>
               </ResponsiveContainer>
             </div>
@@ -208,8 +288,16 @@ class HomelessnessVeteransInflowOutflow extends React.Component {
         <div className="row">
           <div className="col-xs-10 col-xs-offset-2">
             <br />
-            <a href="" className="text-center inText" onClick={(e) => { e.preventDefault(); this.toggleLongDesc() }}>
-              {this.state.showingLongDesc ? 'Hide' : 'Show'} Veteran homelessness Incoming and Outgoing bar chart summary
+            <a
+              href=""
+              className="text-center inText"
+              onClick={(e) => {
+                e.preventDefault();
+                this.toggleLongDesc();
+              }}
+            >
+              {this.state.showingLongDesc ? 'Hide' : 'Show'} Veteran homelessness Incoming and
+              Outgoing bar chart summary
             </a>
             <div hidden={!this.state.showingLongDesc}>
               {getLongDesc(this.props.data, this.props.dataKeys, 'month')}
@@ -219,7 +307,7 @@ class HomelessnessVeteransInflowOutflow extends React.Component {
       </div>
     );
   }
-};
+}
 
 const dataShape = {
   month: PropTypes.string,

@@ -1,5 +1,4 @@
 export default class CounterSet {
-
   constructor(counters) {
     this.counters = {};
     if (counters) {
@@ -7,7 +6,12 @@ export default class CounterSet {
         if (typeof counter === 'string') {
           this.counters[counter] = { type: 'simple', total: 0 };
         } else {
-          this.counters[counter.name] = { type: counter.type, total: 0, count: [], stats: [0, 0, 0] };
+          this.counters[counter.name] = {
+            type: counter.type,
+            total: 0,
+            count: [],
+            stats: [0, 0, 0],
+          };
         }
       });
     }
@@ -17,7 +21,9 @@ export default class CounterSet {
     if (type === 'simple') {
       if (!(name in this.counters)) this.counters[name] = { type: 'simple', total: 0 };
     } else if (!(name in this.counters)) {
-      this.counters[name] = { type: 'full', total: 0, count: [], stats: [0, 0, 0] };
+      this.counters[name] = {
+        type: 'full', total: 0, count: [], stats: [0, 0, 0],
+      };
     }
   }
 
@@ -45,7 +51,7 @@ export default class CounterSet {
 
   finalizeCounter(name) {
     if ('count' in this.counters[name] && this.counters[name].count.length > 0) {
-      this.counters[name].count.sort((val1, val2) => (Number(val1) - Number(val2)));
+      this.counters[name].count.sort((val1, val2) => Number(val1) - Number(val2));
       this.counters[name].stats = [
         this.counters[name].count[Math.floor(this.counters[name].count.length / 2)],
         this.counters[name].count[0],

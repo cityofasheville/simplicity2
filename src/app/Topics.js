@@ -6,7 +6,9 @@ const Topics = props => (
   <div className="card-container">
     <div className="row">
       <div className="col-sm-12">
-        <h2>View citywide topic <strong>dashboards</strong> about your community.</h2>
+        <h2>
+          View citywide topic <strong>dashboards</strong> about your community.
+        </h2>
       </div>
     </div>
     <div className="row">
@@ -27,8 +29,8 @@ Topics.defaultProps = {
   topics: [
     'BUDGET',
     'CAPITAL_PROJECTS',
-    //'CRIME',
-    //'DEVELOPMENT',
+    // 'CRIME',
+    // 'DEVELOPMENT',
     'HOMELESSNESS',
   ],
 };

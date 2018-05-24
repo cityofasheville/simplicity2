@@ -2,7 +2,7 @@ import React from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import Icon from '../../shared/Icon';
-import { IM_LOCATION, IM_BIN, LI_RECYCLE2, IM_USER, IM_LOCATION2, IM_HOME2, IM_TRAFFIC_CONE } from '../../shared/iconConstants';
+import { IM_LOCATION, IM_BIN, LI_RECYCLE2, IM_USER, IM_USERS, IM_LOCATION2, IM_HOME2, IM_TRAFFIC_CONE, IM_LEAF } from '../../shared/iconConstants';
 import { zoningLinks } from './zoning';
 import PageHeader from '../../shared/PageHeader';
 import ButtonGroup from '../../shared/ButtonGroup';
@@ -33,6 +33,19 @@ const calculateRecycling = (dayOfWeek, inCity, week) => {
       return ['this week on ', dayOfWeek, ' (Recycle Week ', week, ')'].join('');
     }
     return ['next week on ', dayOfWeek, ' (Recycle Week ', week, ')'].join('');
+  }
+  if (inCity) {
+    return 'No information available';
+  }
+  return 'No city pickup';
+};
+
+const calculateBrushDay = (dayOfWeek, inCity, week) => {
+  if (dayOfWeek !== null) {
+    if (getCurrentRecyclingWeek() === week) {
+      return ['this week on ', dayOfWeek, ' (Brush Week ', week, ')'].join('');
+    }
+    return ['next week on ', dayOfWeek, ' (Brush Week ', week, ')'].join('');
   }
   if (inCity) {
     return 'No information available';
@@ -100,19 +113,21 @@ const Address = (props) => {
             <div className="detailsFieldset__details-listings">
               <DetailsFormGroup label="Trash collection" name="trash" value={calculateTrash(addressData.trash_day, addressData.is_in_city)} hasLabel icon={<Icon path={IM_BIN} size={20} />} />
               <DetailsFormGroup label="Recycling collection" name="recycling" value={calculateRecycling(addressData.recycling_pickup_day, addressData.is_in_city, addressData.recycling_pickup_district)} hasLabel icon={<Icon path={LI_RECYCLE2} size={20} viewBox="0 0 24 24" />} />
-              <DetailsFormGroup
-                label="Zoning"
-                name="zoning"
-                value={<div>{addressData.zoning.split(',').map((zone, index) => (
-                  <span key={['zone', index].join('_')}><a href={zoningLinks[zone]} target="_blank">{addressData.zoning.split(',')[index]}</a>{addressData.zoning.split(',').length > index + 1 ? ', ' : ''}</span>)
-              )}</div>} hasLabel icon={<Icon path={IM_LOCATION2} size={20} />}
-              />
+              <DetailsFormGroup label="Brush collection" name="brush" value={calculateBrushDay(addressData.recycling_pickup_day, addressData.is_in_city, addressData.brushweek)} hasLabel icon={<Icon path={IM_LEAF} size={20} />} />
               <DetailsFormGroup
                 label="Street maintenance"
                 name="street_maintenance"
                 value={getMaintenanceInfo(addressData.street_maintenance)}
                 hasLabel
                 icon={<Icon path={IM_TRAFFIC_CONE} size={20} />}
+              />
+              <DetailsFormGroup label="Neighborhood" name="neighborhood" value={addressData.neighborhood === null ? 'No neighborhood name' : addressData.neighborhood} hasLabel icon={<Icon path={IM_USERS} size={20} />} />
+              <DetailsFormGroup
+                label="Zoning"
+                name="zoning"
+                value={<div>{addressData.zoning.split(',').map((zone, index) => (
+                  <span key={['zone', index].join('_')}><a href={zoningLinks[zone]} target="_blank">{addressData.zoning.split(',')[index]}</a>{addressData.zoning.split(',').length > index + 1 ? ', ' : ''}</span>)
+              )}</div>} hasLabel icon={<Icon path={IM_LOCATION2} size={20} />}
               />
               <DetailsIconLinkFormGroup label="Property information" title="Property information" href={['/property/?fromAddress=', props.location.query.id, '&search=', props.location.query.search, '&id=', addressData.pinnum, '&entities=', props.location.query.entities].join('')} icon={<Icon path={IM_HOME2} size={20} />} inWindow />
               <DetailsFormGroup label="Owner" name="owner" value={<div><div>{addressData.owner_name}</div><div>{addressData.owner_address}</div></div>} hasLabel icon={<Icon path={IM_USER} size={20} />} />
@@ -141,6 +156,7 @@ const addressQuery = gql`
       address
       zipcode
       trash_day
+      brushweek
       zoning
       owner_name
       owner_address
@@ -157,6 +173,7 @@ const addressQuery = gql`
       street_prefix
       street_name
       city
+      neighborhood
       owner_cityname
       owner_state
       owner_zipcode

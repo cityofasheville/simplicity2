@@ -121,7 +121,10 @@ const Address = (props) => {
                 hasLabel
                 icon={<Icon path={IM_TRAFFIC_CONE} size={20} />}
               />
-              <DetailsFormGroup label="Neighborhood" name="neighborhood" value={addressData.neighborhood === null ? 'No neighborhood name' : addressData.neighborhood} hasLabel icon={<Icon path={IM_USERS} size={20} />} />
+              {
+                addressData.is_in_city &&
+                <DetailsFormGroup label="Neighborhood" name="neighborhood" value={addressData.neighborhood === null ? 'No neighborhood name' : addressData.neighborhood} hasLabel icon={<Icon path={IM_USERS} size={20} />} />
+              }
               <DetailsFormGroup
                 label="Zoning"
                 name="zoning"

@@ -107,8 +107,8 @@ const pCardQuery = gql`
 const PCardComplianceWithData = graphql(pCardQuery, {
   options: ownProps => ({
     variables: {
-      before: '2018-05-01',
-      after: '2017-04-01', //TODO: generalize
+      before: '2018-05-24',
+      after: '2017-04-24', //TODO: generalize
     },
   }),
 })(PCardCompliance);

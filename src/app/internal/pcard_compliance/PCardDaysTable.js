@@ -72,7 +72,7 @@ const innerDataColumns = [
     accessor: 'cardholder',
     width: 250,
   }, {
-    Header: '0-30 days',
+    Header: '0-30',
     accessor: 'under_30',
     width: 80,
     headerStyle: {
@@ -86,7 +86,7 @@ const innerDataColumns = [
       },
     }),
   }, {
-    Header: '31-60 days',
+    Header: '31-60',
     accessor: 'under_60',
     width: 80,
     headerStyle: {
@@ -100,7 +100,7 @@ const innerDataColumns = [
       },
     }),
   }, {
-    Header: '61-90 days',
+    Header: '61-90',
     accessor: 'under_90',
     width: 80,
     headerStyle: {
@@ -114,7 +114,7 @@ const innerDataColumns = [
       },
     }),
   }, {
-    Header: '> 90 days',
+    Header: '> 90',
     accessor: 'over_90',
     width: 80,
     headerStyle: {

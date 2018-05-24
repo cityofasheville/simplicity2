@@ -30,34 +30,49 @@ const PCardCompliance = (props) => {
           <LinkButton pathname="/" positionInGroup={props.location.query.placeSearch ? 'left' : ''} query={{ entities: props.location.query.entities, search: props.location.query.search, hideNavbar: props.location.query.hideNavbar }}>Back</LinkButton>
         </ButtonGroup>
       </PageHeader>
-      <div className="row">
-        <div className="col-sm-12">
+      <div>
+        <div className="data-filters__container">
+          <div className="data-filters__inner">
+            <div className="form-group">
+              <label htmlFor="department" class="control-label">view:</label>
+              <div>
+                <select name="department" id="department" class="form-control"><option value="finance" name="department">Finance department</option></select>
+              </div>
+            </div>
+            <div className="form-group">
+              <label htmlFor="time" class="control-label">during:</label>
+              <div>
+                <select name="time" id="time" class="form-control"><option value="30" name="time">the last 30 days</option><option value="183" name="time">the last 60 days</option><option value="365" name="time">the last 90 days</option></select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          marginTop: '20px',
+        }}
+      >
+        <PCardDaysCirclePack data={{ key: 'root', children: filteredStatements }} />
+        <div
+          style={{
+            flexBasis: '65%',
+          }}
+        >
           <div
             style={{
               display: 'flex',
               flexWrap: 'wrap',
             }}
           >
-            <PCardDaysCirclePack data={{ key: 'root', children: filteredStatements }} title={'Finance'} />
             <div
-              style={{
-                flexBasis: '65%',
-              }}
+              style={{ height: '250px', background: '#f1f1f1', flexBasis: '80%', paddingLeft: '5px' }}
             >
-              <div
-                style={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                }}
-              >
-                <div
-                  style={{ height: '250px', background: '#f1f1f1', flexBasis: '80%' }}
-                >
-                  Hover over the circlepack visualization to see breakdowns.
-                </div>
-                <PCardDaysTable data={filteredStatements} />
-              </div>
+              <p>Hover over the circlepack visualization to see details.</p>
             </div>
+            <PCardDaysTable data={filteredStatements} />
           </div>
         </div>
       </div>

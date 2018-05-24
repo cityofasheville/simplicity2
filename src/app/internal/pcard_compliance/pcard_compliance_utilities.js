@@ -125,7 +125,7 @@ export const buildTree = (data) => {
           under_90: 0,
           over_90: 0,
           total_count: 0,
-          statements: [],
+          //statements: [],
         });
       }
       curParent = curNode;
@@ -154,22 +154,22 @@ export const buildTree = (data) => {
           {
             total_count: curNode.data().total_count + 1,
           },
-          {
-            statements: curNode.data().statements.concat([{
-              statement_code: data[i].statement_code,
-              statement_id: data[i].statement_id,
-              statement_status: data[i].statement_status,
-              fiscal_year: data[i].fiscal_year,
-              fiscal_period: data[i].fiscal_period,
-              invoiced_date: data[i].invoiced_date,
-              reconciled_date: data[i].reconciled_date,
-              days_invoiced_to_reconciled: data[i].days_invoiced_to_reconciled,
-              approved_date: data[i].approved_date,
-              days_reconciled_to_approved: data[i].days_reconciled_to_approved,
-              days_since_invoiced: data[i].days_since_invoiced,
-              days_since_reconciled: data[i].days_since_reconciled,
-            }]),
-          }
+          // {
+          //   statements: curNode.data().statements.concat([{
+          //     statement_code: data[i].statement_code,
+          //     statement_id: data[i].statement_id,
+          //     statement_status: data[i].statement_status,
+          //     fiscal_year: data[i].fiscal_year,
+          //     fiscal_period: data[i].fiscal_period,
+          //     invoiced_date: data[i].invoiced_date,
+          //     reconciled_date: data[i].reconciled_date,
+          //     days_invoiced_to_reconciled: data[i].days_invoiced_to_reconciled,
+          //     approved_date: data[i].approved_date,
+          //     days_reconciled_to_approved: data[i].days_reconciled_to_approved,
+          //     days_since_invoiced: data[i].days_since_invoiced,
+          //     days_since_reconciled: data[i].days_since_reconciled,
+          //   }]),
+          // }
         ));
     }
   }

@@ -162,6 +162,8 @@ const getProjectsQuery = gql`
     cip_projects (categories: $categories) {
       project
       display_name
+      type
+      administering_department
       zip_code
       category
       coa_contact
@@ -179,7 +181,6 @@ const getProjectsQuery = gql`
       project_webpage_more_information
       photo_url
       contact
-      show_pm_fields
       latitude
       longitude
     }

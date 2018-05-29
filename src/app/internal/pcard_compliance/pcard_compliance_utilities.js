@@ -175,6 +175,29 @@ export const buildTree = (data) => {
   }
   const exTree = exportForDetails(theTree);
   insertLeafCopies(exTree);
+  exTree.children.sort((a, b) => {
+    let compareA = null;
+    let compareB = null;
+    if (a === null || a.name === null) {
+      compareA = '';
+    }
+    if (b === null || b.name === null) {
+      compareB = '';
+    }
+    if (compareA !== '') {
+      compareA = a.name.toLowerCase();
+    }
+    if (compareB !== '') {
+      compareB = b.name.toLowerCase();
+    }
+    if (compareA < compareB) {
+      return -1;
+    }
+    if (compareA > compareB) {
+      return 1;
+    }
+    return 0;
+  });
   return exTree;
 };
 

@@ -6868,6 +6868,13 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^2.0.0"
     inherits "^2.0.1"
 
+"roughjs@git://github.com/emeeks/rough":
+  version "2.1.1"
+  uid "337522cf2ccea6218c7b2b8366e85c7d9538fe52"
+  resolved "git://github.com/emeeks/rough#337522cf2ccea6218c7b2b8366e85c7d9538fe52"
+  dependencies:
+    babel-runtime "^6.26.0"
+
 "roughjs@git://github.com/emeeks/rough.git":
   version "2.1.1"
   resolved "git://github.com/emeeks/rough.git#337522cf2ccea6218c7b2b8366e85c7d9538fe52"
@@ -7005,9 +7012,9 @@ semiotic-mark@^0.1.2:
     d3-transition "1.0.3"
     prop-types "15.6.0"
 
-semiotic@^1.10.5:
-  version "1.10.5"
-  resolved "https://registry.yarnpkg.com/semiotic/-/semiotic-1.10.5.tgz#492a7141e6a1dc28feb8aca3f6d2908961abe783"
+semiotic@^1.11.1:
+  version "1.11.1"
+  resolved "https://registry.yarnpkg.com/semiotic/-/semiotic-1.11.1.tgz#02bb7228075d082a2882050c2a377f4ebbeb6d20"
   dependencies:
     "@mapbox/polylabel" "1"
     d3-array "^1.2.0"

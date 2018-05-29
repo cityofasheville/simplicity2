@@ -11,8 +11,16 @@ import Error from '../../../shared/Error';
 import { buildTree, findTop } from './pcard_compliance_utilities';
 import PCardDaysCirclePack from './PCardDaysCirclePack';
 import PCardDaysTable from './PCardDaysTable';
+import { refreshLocation } from '../../../utilities/generalUtilities';
 
 const PCardCompliance = (props) => {
+  const getNewUrlParams = (nodePath, time) => (
+    {
+      nodePath,
+      time,
+    }
+  );
+
   if (props.data.loading) {
     return <LoadingAnimation />;
   }
@@ -34,15 +42,40 @@ const PCardCompliance = (props) => {
         <div className="data-filters__container">
           <div className="data-filters__inner">
             <div className="form-group">
-              <label htmlFor="department" class="control-label">view:</label>
+              <label htmlFor="department" className="control-label">view:</label>
               <div>
-                <select name="department" id="department" class="form-control"><option value="finance" name="department">Finance department</option></select>
+                <select
+                  name="department"
+                  id="department"
+                  className="form-control"
+                  selected={props.location.query.dept}
+                  onChange={(event) => {
+                    refreshLocation(getNewUrlParams(event.target.value, document.getElementById('time').value), props.location);
+                  }}
+                >
+                  {
+                    pcard_statements_status.children.map((dept) => {
+                      if (dept.key !== null) {
+                        return <option value={dept.path} name={dept.name} key={dept.key}>{dept.name}</option>;
+                      }
+                      return null;
+                    })
+                  }
+                </select>
               </div>
             </div>
             <div className="form-group">
-              <label htmlFor="time" class="control-label">during:</label>
+              <label htmlFor="time" className="control-label">
+                during:
+              </label>
               <div>
-                <select name="time" id="time" class="form-control"><option value="30" name="time">the last 30 days</option><option value="183" name="time">the last 60 days</option><option value="365" name="time">the last 90 days</option></select>
+                <select name="time" id="time" className="form-control" onChange={(event) => {
+                  refreshLocation(getNewUrlParams(document.getElementById('department').value, event.target.value), props.location);
+                }}>
+                  <option value="30" name="time">the last 30 days</option>
+                  <option value="60" name="time">the last 60 days</option>
+                  <option value="90" name="time">the last 90 days</option>
+                </select>
               </div>
             </div>
           </div>
@@ -55,7 +88,8 @@ const PCardCompliance = (props) => {
           marginTop: '20px',
         }}
       >
-        <PCardDaysCirclePack data={{ key: 'root', children: filteredStatements }} />
+        {/* TODO - instead of root use the user's department */}
+        <PCardDaysCirclePack data={{ key: 'root', children: findTop(pcard_statements_status, props.location.query.nodePath || 'root') }} />
         <div
           style={{
             flexBasis: '65%',
@@ -72,7 +106,7 @@ const PCardCompliance = (props) => {
             >
               <p>Hover over the circlepack visualization to see details.</p>
             </div>
-            <PCardDaysTable data={filteredStatements} />
+            <PCardDaysTable data={findTop(pcard_statements_status, props.location.query.nodePath || 'root')} />
           </div>
         </div>
       </div>

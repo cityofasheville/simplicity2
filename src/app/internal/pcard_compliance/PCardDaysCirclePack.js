@@ -61,7 +61,7 @@ const PCardDaysCirclePack = props => (
             }}
           >
             {d.parent ? <p>{d.parent.data.name}</p> : undefined}
-            <p>{d.data.name}</p>
+            <p>{d.data.name}{console.log(d)}</p>
             <div
               style={{ width: '420px', height: '250px' }}
             >

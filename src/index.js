@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-// import 'babel-polyfill';
+import 'babel-polyfill';
 
 // Import Routes
 import Routes from './routes';
@@ -8,6 +8,7 @@ import Routes from './routes';
 // Import styles
 require('./styles/styles.scss');
 
-render((
-  <Routes />
-), document.getElementById('app'));
+render(
+  (<Routes />),
+  document.getElementById('app'),
+);

@@ -65,47 +65,53 @@ class DivergingLineBar extends React.Component {
             <ResponsiveOrdinalFrame
               responsiveWidth
               margin={margin}
-              domain={yDomain}
+              // domain={yDomain}
               size={size}
               data={formattedData}
               type="bar"
               projection="vertical"
               oAccessor={(d) => {
-                const datum = d.data ? d.data : d;
-                return this.props.xAccessor(datum);
+                if (d && !d.pieces) {
+                  const datum = d.data ? d.data : d;
+                  return this.props.xAccessor(datum);
+                }
               }}
-              oLabel={d => (
-                <text
-                  textAnchor="middle"
-                >
-                  {`${d.getMonth() + 1}/${d.getFullYear()}`}
-                </text>
-              )}
-              rAccessor="value"
+              // oLabel={(d) => {
+              //   const label = `${d.getMonth() + 1}/${d.getFullYear()}`;
+              //   return (
+              //     <text
+              //       textAnchor="middle"
+              //       key={label}
+              //     >
+              //       {label}
+              //     </text>
+              //   );
+              // }}
+              rAccessor={(d) => {
+                if (d) {
+                  return d.value;
+                }
+              }}
               style={d => ({ fill: d.color })}
               oPadding={8}
               axis={{ orient: 'left' }}
-              pieceHoverAnnotation={[
-                {
-                  type: 'highlight',
-                  style: { fill: 'pink' },
-                },
-              ]}
+              // pieceIDAccessor={d => `${d.label}${d.renderKey}`}
+              hoverAnnotation
             />
           </div>
-          {/* <div style={{ position: 'absolute', width: '100%' }}> */}
-          {/*   <ResponsiveXYFrame */}
-          {/*     yExtent={yDomain} */}
-          {/*     responsiveWidth */}
-          {/*     margin={margin} */}
-          {/*     size={size} */}
-          {/*     lines={[this.props.data]} */}
-          {/*     lineStyle={{ stroke: 'black', strokeWidth: '2px' }} */}
-          {/*     xAccessor={d => this.props.xAccessor(d)} */}
-          {/*     yAccessor={d => d['Net change']} */}
-          {/*     showLinePoints */}
-          {/*   /> */}
-          {/* </div> */}
+          <div style={{ position: 'absolute', width: '100%' }}>
+            {/* <ResponsiveXYFrame */}
+            {/*   yExtent={yDomain} */}
+            {/*   responsiveWidth */}
+            {/*   margin={margin} */}
+            {/*   size={size} */}
+            {/*   lines={[this.props.data]} */}
+            {/*   lineStyle={{ stroke: 'black', strokeWidth: '2px' }} */}
+            {/*   xAccessor={d => this.props.xAccessor(d)} */}
+            {/*   yAccessor={d => d['Net change']} */}
+            {/*   svgAnnotationRules={d => (console.log(d))} */}
+            {/* /> */}
+          </div>
         </div>
         <div
           className="row"

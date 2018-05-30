@@ -132,7 +132,7 @@ class AreaChart extends React.Component {
                 tooltipContent={(d) => {
                   if (!d.parentLine) { return; }
 
-                  const datum = d.data
+                  const datum = d.data;
 
                   const points = formattedData
                     .map(line => ({

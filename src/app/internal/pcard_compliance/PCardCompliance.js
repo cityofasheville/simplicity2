@@ -1,5 +1,6 @@
 import React from 'react';
 import { graphql } from 'react-apollo';
+import moment from 'moment';
 import gql from 'graphql-tag';
 import Icon from '../../../shared/Icon';
 import { IM_CREDIT_CARD } from '../../../shared/iconConstants';
@@ -13,13 +14,19 @@ import PCardDaysCirclePack from './PCardDaysCirclePack';
 import PCardDaysTable from './PCardDaysTable';
 import { refreshLocation } from '../../../utilities/generalUtilities';
 
+const getStartDate = numDays => (
+  moment.utc().subtract(numDays, 'd').format('YYYY-MM-DD')
+);
+
 const PCardCompliance = (props) => {
-  const getNewUrlParams = (nodePath, time) => (
-    {
+  const getNewUrlParams = (nodePath, time) => {
+    const dept = document.getElementById('department');
+    return {
       nodePath,
       time,
-    }
-  );
+      dept: dept.options[dept.selectedIndex].getAttribute('name'),
+    };
+  };
 
   if (props.data.loading) {
     return <LoadingAnimation />;
@@ -29,7 +36,7 @@ const PCardCompliance = (props) => {
   }
 
   const pcard_statements_status = buildTree(props.data.pcard_statements_status);
-  const filteredStatements = findTop(pcard_statements_status, 'root_03');
+  const filteredStatements = findTop(pcard_statements_status, 'root_01');
 
   return (
     <div>
@@ -89,7 +96,7 @@ const PCardCompliance = (props) => {
         }}
       >
         {/* TODO - instead of root use the user's department */}
-        <PCardDaysCirclePack data={{ key: 'root', children: findTop(pcard_statements_status, props.location.query.nodePath || 'root') }} />
+        <PCardDaysCirclePack data={{ key: 'root', children: findTop(pcard_statements_status, props.location.query.nodePath || 'root'), dept: props.location.query.dept || 'Multiple Departments' }} />
         <div
           style={{
             flexBasis: '65%',
@@ -141,8 +148,8 @@ const pCardQuery = gql`
 const PCardComplianceWithData = graphql(pCardQuery, {
   options: ownProps => ({
     variables: {
-      before: '2018-05-24',
-      after: '2017-04-24', //TODO: generalize
+      before: moment.utc().format('YYYY-MM-DD'),
+      after: getStartDate(ownProps.location.query.time ? parseInt(ownProps.location.query.time, 10) : 30),
     },
   }),
 })(PCardCompliance);

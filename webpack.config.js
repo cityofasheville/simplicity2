@@ -6,11 +6,8 @@ const Dotenv = require('dotenv-webpack');
 
 const extractSass = new ExtractTextPlugin({
   filename: '[name].[contenthash].css',
-  // disable: process.env.NODE_ENV === 'development',
-  disable: true,
+  disable: process.env.NODE_ENV === 'development',
 });
-
-// devtool: 'source-map',
 
 module.exports = {
   context: path.resolve(__dirname),
@@ -22,6 +19,7 @@ module.exports = {
     filename: '[name].[chunkhash].bundle.js',
     publicPath: '/',
   },
+  devtool: process.env.NODE_ENV === 'development' ? 'eval-source-map' : 'source-map',
   module: {
     rules: [
       {

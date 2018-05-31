@@ -15,24 +15,24 @@ const getColor = (d) => {
   if (d.under_90 > 0) {
     return '#f46d43';
   }
-  if (d.under_60 > 0) {
+  if (d.under60 > 0) {
     return '#fdae61';
   }
   return '#4575b4';
 };
-  //'#d73027', '#fdae61', '#abd939', ];
+  // '#d73027', '#fdae61', '#abd939', ];
 
 const sumChildren = (d) => {
-  let under_30 = 0;
-  let under_60 = 0;
-  let under_90 = 0;
-  let over_90 = 0;
+  let under30 = 0;
+  let under60 = 0;
+  let under90 = 0;
+  let over90 = 0;
 
   d.children.forEach((child) => {
-    under_30 += child.under_30;
-    under_60 += child.under_60;
-    under_90 += child.under_90;
-    over_90 += child.over_90;
+    under30 += child.under30;
+    under60 += child.under60;
+    under90 += child.under90;
+    over90 += child.over90;
   });
 
   return (
@@ -40,32 +40,32 @@ const sumChildren = (d) => {
       className="pull-right"
       style={{ fontWeight: 200, marginRight: '10px' }}
     >
-      <div style={{ color: colorHash['0-30 days'] }}>0-30 days: {under_30}</div>
-      <div style={{ color: colorHash['31-60 days'] }}>31-60 days: {under_60}</div>
-      <div style={{ color: colorHash['61-90 days'] }}>61-90 days: {under_90}</div>
-      <div style={{ color: colorHash['>90 days'] }}>&gt;90 days: {over_90}</div>
+      <div style={{ color: colorHash['0-30 days'] }}>0-30 days: {under30}</div>
+      <div style={{ color: colorHash['31-60 days'] }}>31-60 days: {under60}</div>
+      <div style={{ color: colorHash['61-90 days'] }}>61-90 days: {under90}</div>
+      <div style={{ color: colorHash['>90 days'] }}>&gt;90 days: {over90}</div>
     </div>
   );
 };
 
 const sumPieData = (d) => {
-  let under_30 = 0;
-  let under_60 = 0;
-  let under_90 = 0;
-  let over_90 = 0;
+  let under30 = 0;
+  let under60 = 0;
+  let under90 = 0;
+  let over90 = 0;
 
   d.children.forEach((child) => {
-    under_30 += child.under_30;
-    under_60 += child.under_60;
-    under_90 += child.under_90;
-    over_90 += child.over_90;
+    under30 += child.under30;
+    under60 += child.under60;
+    under90 += child.under90;
+    over90 += child.over90;
   });
 
   return [
-    { days: '0-30 days', count: under_30 },
-    { days: '31-60 days', count: under_60 },
-    { days: '61-90 days', count: under_90 },
-    { days: '>90 days', count: over_90 },
+    { days: '0-30 days', count: under30 },
+    { days: '31-60 days', count: under60 },
+    { days: '61-90 days', count: under90 },
+    { days: '>90 days', count: over90 },
   ];
 };
 
@@ -77,22 +77,22 @@ const PCardDaysCirclePack = props => (
       <NetworkFrame
         size={[400, 400]}
         edges={props.data}
-        nodeStyle={(d, i) => ({
+        nodeStyle={d => ({
           fill: getColor(d),
-          stroke: "black",
+          stroke: 'black',
           strokeOpacity: 0.25,
-          fillOpacity: 0.25
+          fillOpacity: 0.25,
         })}
-        edgeStyle={(d, i) => ({
+        edgeStyle={d => ({
           fill: getColor(d),
           stroke: getColor(d),
-          opacity: 0.5
+          opacity: 0.5,
         })}
         networkType={{
-          type: "circlepack",
-          projection: "vertical",
+          type: 'circlepack',
+          projection: 'vertical',
           padding: 0,
-          hierarchySum: d => d.total_count,
+          hierarchySum: d => d.totalCount,
         }}
         nodeIDAccessor="name"
         hoverAnnotation
@@ -123,34 +123,33 @@ const PCardDaysCirclePack = props => (
                   size={[175, 175]}
                   data={
                     d.parent ?
-                    [
-                      { days: '0-30 days', count: d.data.under_30 },
-                      { days: '31-60 days', count: d.data.under_60 },
-                      { days: '61-90 days', count: d.data.under_90 },
-                      { days: '>90 days', count: d.data.over_90 },
-                    ]
-                    :
-                    sumPieData(d)
+                      [
+                        { days: '0-30 days', count: d.data.under30 },
+                        { days: '31-60 days', count: d.data.under60 },
+                        { days: '61-90 days', count: d.data.under90 },
+                        { days: '>90 days', count: d.data.over90 },
+                      ]
+                      :
+                      sumPieData(d)
                   }
-                  oAccessor={"days"}
-                  dynamicColumnWidth={"count"}
-                  style={pd => ({ fill: colorHash[pd.days], stroke: "white" })}
-                  type={"bar"}
-                  projection={"radial"}
+                  oAccessor="days"
+                  dynamicColumnWidth="count"
+                  style={pd => ({ fill: colorHash[pd.days], stroke: 'white' })}
+                  type="bar"
+                  projection="radial"
                   oLabel={false}
                 />
               </div>
               {
-                d.parent
-                  ?
+                d.parent ?
                   <div
                     className="pull-right"
                     style={{ fontWeight: 200, marginRight: '10px' }}
                   >
-                    <div style={{ color: colorHash['0-30 days'] }}>0-30 days: {d.data.under_30}</div>
-                    <div style={{ color: colorHash['31-60 days'] }}>31-60 days: {d.data.under_60}</div>
-                    <div style={{ color: colorHash['61-90 days'] }}>61-90 days: {d.data.under_90}</div>
-                    <div style={{ color: colorHash['>90 days'] }}>&gt;90 days: {d.data.over_90}</div>
+                    <div style={{ color: colorHash['0-30 days'] }}>0-30 days: {d.data.under30}</div>
+                    <div style={{ color: colorHash['31-60 days'] }}>31-60 days: {d.data.under60}</div>
+                    <div style={{ color: colorHash['61-90 days'] }}>61-90 days: {d.data.under90}</div>
+                    <div style={{ color: colorHash['>90 days'] }}>&gt;90 days: {d.data.over90}</div>
                   </div>
                   :
                   sumChildren(d)

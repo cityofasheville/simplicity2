@@ -64,8 +64,8 @@ const PCardCompliance = props => (
       };
 
       const statements = buildTree(data.pcard_statements_status);
-      const filteredStatements = findTop(statements, props.location.query.nodePath || 'root_01')
-      
+      const filteredStatements = findTop(statements, props.location.query.nodePath || 'root_01');
+
       return (
         <div>
           <PageHeader h1="P card compliance" icon={<Icon path={IM_CREDIT_CARD} size={50} />}>
@@ -79,45 +79,41 @@ const PCardCompliance = props => (
               <div className="data-filters__inner">
                 <div className="form-group">
                   <label htmlFor="department" className="control-label">view:</label>
-                  <div>
-                    <select
-                      name="department"
-                      id="department"
-                      className="form-control"
-                      onChange={(event) => {
-                        refreshLocation(getNewUrlParams(event.target.value, document.getElementById('time').value), props.location);
-                      }}
-                      >
-                      {
-                        statements.children.map((dept) => {
-                          if (dept.key !== null) {
-                            return <option value={dept.path} name={dept.name} key={dept.key} selected={props.location.query.dept === dept.name}>{dept.name}</option>;
-                          }
-                          return null;
-                        })
-                      }
-                    </select>
-                  </div>
+                  <select
+                    name="department"
+                    id="department"
+                    className="form-control"
+                    onChange={(event) => {
+                      refreshLocation(getNewUrlParams(event.target.value, document.getElementById('time').value), props.location);
+                    }}
+                  >
+                    {
+                      statements.children.map((dept) => {
+                        if (dept.key !== null) {
+                          return <option value={dept.path} name={dept.name} key={dept.key} selected={props.location.query.dept === dept.name}>{dept.name}</option>;
+                        }
+                        return null;
+                      })
+                    }
+                  </select>
                 </div>
                 <div className="form-group">
                   <label htmlFor="time" className="control-label">
                     during:
                   </label>
-                  <div>
-                    <select
-                      name="time"
-                      id="time"
-                      className="form-control"
-                      
-                      onChange={(event) => {
-                        refreshLocation(getNewUrlParams(document.getElementById('department').value, event.target.value), props.location);
-                      }}
-                      >
-                      <option value="30" name="days" selected={props.location.query.time === '30'}>the last 30 days</option>
-                      <option value="60" name="days" selected={props.location.query.time === '60'}>the last 60 days</option>
-                      <option value="90" name="days" selected={props.location.query.time === '90'}>the last 90 days</option>
-                    </select>
-                  </div>
+                  <select
+                    name="time"
+                    id="time"
+                    className="form-control"
+                    
+                    onChange={(event) => {
+                      refreshLocation(getNewUrlParams(document.getElementById('department').value, event.target.value), props.location);
+                    }}
+                  >
+                    <option value="30" name="days" selected={props.location.query.time === '30'}>the last 30 days</option>
+                    <option value="60" name="days" selected={props.location.query.time === '60'}>the last 60 days</option>
+                    <option value="90" name="days" selected={props.location.query.time === '90'}>the last 90 days</option>
+                  </select>
                 </div>
               </div>
             </div>
@@ -128,23 +124,28 @@ const PCardCompliance = props => (
               flexWrap: 'wrap',
               marginTop: '20px',
             }}
-            >
+          >
             {/* TODO - instead of root use the user's department */}
             <PCardDaysCirclePack data={{ key: 'root', children: filteredStatements, dept: props.location.query.dept || 'Multiple Departments' }} />
             <div
               style={{
                 flexBasis: '65%',
               }}
-              >
+            >
               <div
                 style={{
                   display: 'flex',
                   flexWrap: 'wrap',
                 }}
-                >
+              >
                 <div
-                  style={{ height: '250px', background: '#f1f1f1', flexBasis: '80%', paddingLeft: '5px' }}
-                  >
+                  style={{
+                    height: '250px',
+                    background: '#f1f1f1',
+                    flexBasis: '80%',
+                    paddingLeft: '5px',
+                  }}
+                >
                   <p>Hover over the circlepack visualization to see details.</p>
                 </div>
                 <PCardDaysTable data={filteredStatements} />

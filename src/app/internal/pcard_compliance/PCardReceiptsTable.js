@@ -17,7 +17,7 @@ const mainDataColumns = [
     },
     getProps: (state, rowInfo) => ({
       style: {
-        backgroundColor: rowInfo.row.under_30 > 0 ? '#4575b4' : '#d1dded',
+        backgroundColor: rowInfo.row.under30 > 0 ? '#4575b4' : '#d1dded',
         textAlign: 'right',
       },
     }),
@@ -53,7 +53,7 @@ const innerDataColumns = [
     },
     getProps: (state, rowInfo) => ({
       style: {
-        backgroundColor: rowInfo.row.under_30 > 0 ? '#4575b4' : '#d1dded',
+        backgroundColor: rowInfo.row.under30 > 0 ? '#4575b4' : '#d1dded',
         textAlign: 'right',
       },
     }),

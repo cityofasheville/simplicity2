@@ -5,7 +5,7 @@ const levels = [
   'dept_id',
   'div_id',
   'cardholder',
-  //'statement_id',
+  // 'statement_id',
 ];
 
 // level names
@@ -13,7 +13,7 @@ const levelNames = [
   'department',
   'division',
   'cardholder',
-  //'statement_id',
+  // 'statement_id',
 ];
 
 // flatten the tree and export for use by the budget Treemap
@@ -38,7 +38,7 @@ const insertLeafCopies = (flattenedTree) => {
   if (flattenedTree.children.length === 0) {
     const splitBreadcrumbPath = flattenedTree.breadcrumbPath.split('>');
     const splitPath = flattenedTree.path.split('_');
-    flattenedTree.children = [objectAssign({}, flattenedTree, { breadcrumbPath: [flattenedTree.breadcrumbPath, splitBreadcrumbPath[splitBreadcrumbPath.length - 1]].join('>') }, { path: [flattenedTree.path, splitPath[splitPath.length - 1]].join('_') })]; // eslint-disable-linesplitBreadcrumbPath
+    flattenedTree.children = [objectAssign({}, flattenedTree, { breadcrumbPath: [flattenedTree.breadcrumbPath, splitBreadcrumbPath[splitBreadcrumbPath.length - 1]].join('>') }, { path: [flattenedTree.path, splitPath[splitPath.length - 1]].join('_') })];
   } else {
     for (let i = 0; i < flattenedTree.children.length; i += 1) {
       insertLeafCopies(flattenedTree.children[i]);
@@ -73,20 +73,19 @@ export const buildReceiptsTree = (data) => {
         });
       }
       curParent = curNode;
-      curNode.data(
-        objectAssign(
-          {},
-          curNode.data(),
-          {
-            has_itemized_receipt: data[i].receipt === 'Y' ? curNode.data().has_itemized_receipt + 1 : curNode.data().has_itemized_receipt,
-          },
-          {
-            missing_itemized_receipt: data[i].receipt !== 'Y' ? curNode.data().missing_itemized_receipt + 1 : curNode.data().missing_itemized_receipt,
-          },
-          {
-            total_receipts: curNode.data().total_receipts + 1,
-          }
-        ));
+      curNode.data(objectAssign(
+        {},
+        curNode.data(),
+        {
+          has_itemized_receipt: data[i].receipt === 'Y' ? curNode.data().has_itemized_receipt + 1 : curNode.data().has_itemized_receipt,
+        },
+        {
+          missing_itemized_receipt: data[i].receipt !== 'Y' ? curNode.data().missing_itemized_receipt + 1 : curNode.data().missing_itemized_receipt,
+        },
+        {
+          total_receipts: curNode.data().total_receipts + 1,
+        }
+      ));
     }
   }
   const exTree = exportForDetails(theTree);
@@ -140,11 +139,11 @@ export const buildTree = (data) => {
           breadcrumbPath: breadCrumbPath,
           [levels[j]]: data[i][levels[j]],
           name: data[i][levelNames[j]],
-          under_30: 0,
-          under_60: 0,
-          under_90: 0,
-          over_90: 0,
-          total_count: 0,
+          under30: 0,
+          under60: 0,
+          under90: 0,
+          over90: 0,
+          totalCount: 0,
           //statements: [],
         });
       }
@@ -155,42 +154,43 @@ export const buildTree = (data) => {
       } else {
         daysOpen = data[i].days_since_reconciled;
       }
-      curNode.data(
-        objectAssign(
-          {},
-          curNode.data(),
-          {
-            under_30: daysOpen <= 30 ? curNode.data().under_30 + 1 : curNode.data().under_30,
-          },
-          {
-            under_60: daysOpen > 30 && daysOpen <= 60 ? curNode.data().under_60 + 1 : curNode.data().under_60,
-          },
-          {
-            under_90: daysOpen > 60 && daysOpen <= 90 ? curNode.data().under_90 + 1 : curNode.data().under_90,
-          },
-          {
-            over_90: daysOpen > 90 ? curNode.data().over_90 + 1 : curNode.data().over_90,
-          },
-          {
-            total_count: curNode.data().total_count + 1,
-          },
-          // {
-          //   statements: curNode.data().statements.concat([{
-          //     statement_code: data[i].statement_code,
-          //     statement_id: data[i].statement_id,
-          //     statement_status: data[i].statement_status,
-          //     fiscal_year: data[i].fiscal_year,
-          //     fiscal_period: data[i].fiscal_period,
-          //     invoiced_date: data[i].invoiced_date,
-          //     reconciled_date: data[i].reconciled_date,
-          //     days_invoiced_to_reconciled: data[i].days_invoiced_to_reconciled,
-          //     approved_date: data[i].approved_date,
-          //     days_reconciled_to_approved: data[i].days_reconciled_to_approved,
-          //     days_since_invoiced: data[i].days_since_invoiced,
-          //     days_since_reconciled: data[i].days_since_reconciled,
-          //   }]),
-          // }
-        ));
+      curNode.data(objectAssign(
+        {},
+        curNode.data(),
+        {
+          under30: daysOpen <= 30 ? curNode.data().under30 + 1 : curNode.data().under30,
+        },
+        {
+          under60: daysOpen > 30 && daysOpen <= 60 ?
+            curNode.data().under60 + 1 : curNode.data().under60,
+        },
+        {
+          under90: daysOpen > 60 && daysOpen <= 90 ?
+            curNode.data().under90 + 1 : curNode.data().under90,
+        },
+        {
+          over90: daysOpen > 90 ? curNode.data().over90 + 1 : curNode.data().over90,
+        },
+        {
+          totalCount: curNode.data().totalCount + 1,
+        },
+        // {
+        //   statements: curNode.data().statements.concat([{
+        //     statement_code: data[i].statement_code,
+        //     statement_id: data[i].statement_id,
+        //     statement_status: data[i].statement_status,
+        //     fiscal_year: data[i].fiscal_year,
+        //     fiscal_period: data[i].fiscal_period,
+        //     invoiced_date: data[i].invoiced_date,
+        //     reconciled_date: data[i].reconciled_date,
+        //     days_invoiced_to_reconciled: data[i].days_invoiced_to_reconciled,
+        //     approved_date: data[i].approved_date,
+        //     days_reconciled_to_approved: data[i].days_reconciled_to_approved,
+        //     days_since_invoiced: data[i].days_since_invoiced,
+        //     days_since_reconciled: data[i].days_since_reconciled,
+        //   }]),
+        // }
+      ));
     }
   }
   const exTree = exportForDetails(theTree);
@@ -238,5 +238,6 @@ export const findTop = (data, path) => {
       }
     }
   }
-  return ((curNode.children === undefined || curNode.children.length === 0) ? prevNode.children : curNode.children);
+  return ((curNode.children === undefined || curNode.children.length === 0) ?
+    prevNode.children : curNode.children);
 };

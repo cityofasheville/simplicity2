@@ -12,15 +12,15 @@ const getColor = (d) => {
   }
   return '#4575b4';
 };
-  //'#d73027', '#fdae61', '#abd939', ];
+  // '#d73027', '#fdae61', '#abd939', ];
 
 const sumChildren = (d) => {
-  let has_itemized_receipt = 0;
-  let missing_itemized_receipt = 0;
+  let hasReceipt = 0;
+  let missingReceipt = 0;
 
   d.children.forEach((child) => {
-    has_itemized_receipt += child.has_itemized_receipt;
-    missing_itemized_receipt += child.missing_itemized_receipt;
+    hasReceipt += child.has_itemized_receipt;
+    missingReceipt += child.missing_itemized_receipt;
   });
 
   return (
@@ -28,24 +28,24 @@ const sumChildren = (d) => {
       className="pull-right"
       style={{ fontWeight: 200, marginRight: '10px' }}
     >
-      <div style={{ color: colorHash['Has receipt'] }}>Has receipt: {has_itemized_receipt}</div>
-      <div style={{ color: colorHash['Missing receipt'] }}>Missing receipt: {missing_itemized_receipt}</div>
+      <div style={{ color: colorHash['Has receipt'] }}>Has receipt: {hasReceipt}</div>
+      <div style={{ color: colorHash['Missing receipt'] }}>Missing receipt: {missingReceipt}</div>
     </div>
   );
 };
 
 const sumPieData = (d) => {
-  let has_itemized_receipt = 0;
-  let missing_itemized_receipt = 0;
+  let hasReceipt = 0;
+  let missingReceipt = 0;
 
   d.children.forEach((child) => {
-    has_itemized_receipt += child.has_itemized_receipt;
-    missing_itemized_receipt += child.missing_itemized_receipt;
+    hasReceipt += child.has_itemized_receipt;
+    missingReceipt += child.missing_itemized_receipt;
   });
 
   return [
-    { receipt: 'Has receipt', count: has_itemized_receipt },
-    { receipt: 'Missing receipt', count: missing_itemized_receipt },
+    { receipt: 'Has receipt', count: hasReceipt },
+    { receipt: 'Missing receipt', count: missingReceipt },
   ];
 };
 
@@ -57,20 +57,20 @@ const PCardReceiptsCirclePack = props => (
       <NetworkFrame
         size={[400, 400]}
         edges={props.data}
-        nodeStyle={(d, i) => ({
+        nodeStyle={d => ({
           fill: getColor(d),
-          stroke: "black",
+          stroke: 'black',
           strokeOpacity: 0.25,
-          fillOpacity: 0.25
+          fillOpacity: 0.25,
         })}
-        edgeStyle={(d, i) => ({
+        edgeStyle={d => ({
           fill: getColor(d),
           stroke: getColor(d),
-          opacity: 0.5
+          opacity: 0.5,
         })}
         networkType={{
-          type: "circlepack",
-          projection: "vertical",
+          type: 'circlepack',
+          projection: 'vertical',
           padding: 0,
           hierarchySum: d => d.total_receipts,
         }}
@@ -103,24 +103,23 @@ const PCardReceiptsCirclePack = props => (
                   size={[175, 175]}
                   data={
                     d.parent ?
-                    [
-                      { receipt: 'Has receipt', count: d.data.has_itemized_receipt },
-                      { receipt: 'Missing receipt', count: d.data.missing_itemized_receipt },
-                    ]
-                    :
-                    sumPieData(d)
+                      [
+                        { receipt: 'Has receipt', count: d.data.has_itemized_receipt },
+                        { receipt: 'Missing receipt', count: d.data.missing_itemized_receipt },
+                      ]
+                      :
+                      sumPieData(d)
                   }
-                  oAccessor={"receipt"}
-                  dynamicColumnWidth={"count"}
-                  style={pd => ({ fill: colorHash[pd.receipt], stroke: "white" })}
-                  type={"bar"}
-                  projection={"radial"}
+                  oAccessor="receipt"
+                  dynamicColumnWidth="count"
+                  style={pd => ({ fill: colorHash[pd.receipt], stroke: 'white' })}
+                  type="bar"
+                  projection="radial"
                   oLabel={false}
                 />
               </div>
               {
-                d.parent
-                  ?
+                d.parent ?
                   <div
                     className="pull-right"
                     style={{ fontWeight: 200, marginRight: '10px' }}

@@ -9,7 +9,7 @@ const mainDataColumns = [
     width: 250,
   }, {
     Header: '0-30',
-    accessor: 'under_30',
+    accessor: 'under30',
     width: 80,
     headerStyle: {
       background: '#4575b4',
@@ -17,13 +17,13 @@ const mainDataColumns = [
     },
     getProps: (state, rowInfo) => ({
       style: {
-        backgroundColor: rowInfo.row.under_30 > 0 ? '#4575b4' : '#d1dded',
+        backgroundColor: rowInfo.row.under30 > 0 ? '#4575b4' : '#d1dded',
         textAlign: 'right',
       },
     }),
   }, {
     Header: '31-60',
-    accessor: 'under_60',
+    accessor: 'under60',
     width: 80,
     headerStyle: {
       background: '#fdae61',
@@ -31,13 +31,13 @@ const mainDataColumns = [
     },
     getProps: (state, rowInfo) => ({
       style: {
-        backgroundColor: rowInfo.row.under_60 > 0 ? '#fdae61' : '#ffdebf',
+        backgroundColor: rowInfo.row.under60 > 0 ? '#fdae61' : '#ffdebf',
         textAlign: 'right',
       },
     }),
   }, {
     Header: '61-90',
-    accessor: 'under_90',
+    accessor: 'under90',
     width: 80,
     headerStyle: {
       background: '#f46d43',
@@ -51,7 +51,7 @@ const mainDataColumns = [
     }),
   }, {
     Header: '> 90',
-    accessor: 'over_90',
+    accessor: 'over90',
     width: 80,
     headerStyle: {
       background: '#d73027',
@@ -73,7 +73,7 @@ const innerDataColumns = [
     width: 250,
   }, {
     Header: '0-30',
-    accessor: 'under_30',
+    accessor: 'under30',
     width: 80,
     headerStyle: {
       background: '#4575b4',
@@ -81,13 +81,13 @@ const innerDataColumns = [
     },
     getProps: (state, rowInfo) => ({
       style: {
-        backgroundColor: rowInfo.row.under_30 > 0 ? '#4575b4' : '#d1dded',
+        backgroundColor: rowInfo.row.under30 > 0 ? '#4575b4' : '#d1dded',
         textAlign: 'right',
       },
     }),
   }, {
     Header: '31-60',
-    accessor: 'under_60',
+    accessor: 'under60',
     width: 80,
     headerStyle: {
       background: '#fdae61',
@@ -95,13 +95,13 @@ const innerDataColumns = [
     },
     getProps: (state, rowInfo) => ({
       style: {
-        backgroundColor: rowInfo.row.under_60 > 0 ? '#fdae61' : '#ffdebf',
+        backgroundColor: rowInfo.row.under60 > 0 ? '#fdae61' : '#ffdebf',
         textAlign: 'right',
       },
     }),
   }, {
     Header: '61-90',
-    accessor: 'under_90',
+    accessor: 'under90',
     width: 80,
     headerStyle: {
       background: '#f46d43',
@@ -115,7 +115,7 @@ const innerDataColumns = [
     }),
   }, {
     Header: '> 90',
-    accessor: 'over_90',
+    accessor: 'over90',
     width: 80,
     headerStyle: {
       background: '#d73027',
@@ -123,7 +123,7 @@ const innerDataColumns = [
     },
     getProps: (state, rowInfo) => ({
       style: {
-        backgroundColor: rowInfo.row.over_90 > 0 ? '#d73027' : '#ce524b69',
+        backgroundColor: rowInfo.row.over90 > 0 ? '#d73027' : '#ce524b69',
         textAlign: 'right',
       },
     }),
@@ -171,7 +171,7 @@ const PCardDaysTable = (props) => {
     <div
       alt="Table of days to reconcile"
     >
-      <h3 id={'pcard-compliance-days-to-reconcile-label'}>{`Table of days to reconcile`}</h3>
+      <h3 id="pcard-compliance-days-to-reconcile-label">Table of days to reconcile</h3>
       <ExpandableAccessibleReactTable
         data={props.data}
         columns={mainDataColumns}
@@ -179,8 +179,8 @@ const PCardDaysTable = (props) => {
         showPagination={false}
         getTdProps={tdProps}
         getTrProps={trProps}
-        tableId={'table-1'}
-        ariaLabelledBy={'pcard-compliance-days-to-reconcile-label'}
+        tableId="table-1"
+        ariaLabelledBy="pcard-compliance-days-to-reconcile-label"
         SubComponent={innerRow1 => (
           <div style={{ paddingLeft: '34px', marginTop: '15px' }}>
             <AccessibleReactTable

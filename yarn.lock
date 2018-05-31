@@ -2379,6 +2379,14 @@ d3-quadtree@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/d3-quadtree/-/d3-quadtree-1.0.1.tgz#13be025624f110405ed43536c506aaec199ed591"
 
+d3-sankey-circular@0.25.0:
+  version "0.25.0"
+  resolved "https://registry.yarnpkg.com/d3-sankey-circular/-/d3-sankey-circular-0.25.0.tgz#9c31be18e507862fe0c9c4b80ed509c965a8f15e"
+  dependencies:
+    d3-array "^1.2.1"
+    d3-collection "^1.0.4"
+    d3-shape "^1.2.0"
+
 d3-sankey-circular@^0.23.0:
   version "0.23.0"
   resolved "https://registry.yarnpkg.com/d3-sankey-circular/-/d3-sankey-circular-0.23.0.tgz#27697963e3ce040616c6b26b310782f11126bb32"
@@ -2818,9 +2826,9 @@ element-resize-detector@^1.1.12:
   dependencies:
     batch-processor "^1.0.0"
 
-"element-resize-event@git://github.com/emeeks/element-resize-event":
+"element-resize-event@git://github.com/emeeks/element-resize-event.git":
   version "2.0.8"
-  resolved "git://github.com/emeeks/element-resize-event#a4f9a050593fa0e38af2eacf018c14e2eacc4066"
+  resolved "git://github.com/emeeks/element-resize-event.git#a4f9a050593fa0e38af2eacf018c14e2eacc4066"
 
 elliptic@^6.0.0:
   version "6.4.0"
@@ -7124,9 +7132,9 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
-"roughjs@git://github.com/emeeks/rough":
+"roughjs@git://github.com/emeeks/rough.git":
   version "2.1.1"
-  resolved "git://github.com/emeeks/rough#337522cf2ccea6218c7b2b8366e85c7d9538fe52"
+  resolved "git://github.com/emeeks/rough.git#337522cf2ccea6218c7b2b8366e85c7d9538fe52"
   dependencies:
     babel-runtime "^6.26.0"
 
@@ -7275,9 +7283,9 @@ semiotic-mark@^0.1.2:
     d3-transition "1.0.3"
     prop-types "15.6.0"
 
-semiotic@^1.11.1:
-  version "1.11.1"
-  resolved "https://registry.yarnpkg.com/semiotic/-/semiotic-1.11.1.tgz#02bb7228075d082a2882050c2a377f4ebbeb6d20"
+semiotic@^1.11.2:
+  version "1.11.2"
+  resolved "https://registry.yarnpkg.com/semiotic/-/semiotic-1.11.2.tgz#333cf9fd0edad5610177fe18e6d75bccdd957e7a"
   dependencies:
     "@mapbox/polylabel" "1"
     d3-array "^1.2.0"
@@ -7291,7 +7299,7 @@ semiotic@^1.11.1:
     d3-hexbin "^0.2.2"
     d3-hierarchy "^1.1.3"
     d3-interpolate "^1.1.5"
-    d3-sankey-circular "^0.23.0"
+    d3-sankey-circular "0.25.0"
     d3-scale "^1.0.3"
     d3-selection "^1.1.0"
     d3-shape "^1.0.4"

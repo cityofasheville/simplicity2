@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { color } from 'd3-color';
 import { ResponsiveOrdinalFrame, ResponsiveXYFrame } from 'semiotic';
 import HorizontalLegend from './HorizontalLegend';
 import Tooltip from './Tooltip';
@@ -64,6 +65,11 @@ class DivergingLineBar extends React.Component {
           <div style={{ position: 'absolute', width: '100%' }}>
             <ResponsiveOrdinalFrame
               responsiveWidth
+              annotations={formattedData.map(d => {
+                d.type = 'or';
+                d.makeLine = true;
+                return d;
+              })}
               margin={margin}
               // domain={yDomain}
               size={size}
@@ -76,42 +82,56 @@ class DivergingLineBar extends React.Component {
                   return this.props.xAccessor(datum);
                 }
               }}
-              // oLabel={(d) => {
-              //   const label = `${d.getMonth() + 1}/${d.getFullYear()}`;
-              //   return (
-              //     <text
-              //       textAnchor="middle"
-              //       key={label}
-              //     >
-              //       {label}
-              //     </text>
-              //   );
-              // }}
+              oLabel={(d) => {
+                const label = `${d.getMonth() + 1}/${d.getFullYear()}`;
+                return (
+                  <text
+                    textAnchor="middle"
+                    key={label}
+                  >
+                    {label}
+                  </text>
+                );
+              }}
               rAccessor={(d) => {
                 if (d) {
                   return d.value;
                 }
               }}
-              style={d => ({ fill: d.color })}
+              style={(d) => {
+                return this.state.hover && this.state.hover.getTime() === this.props.xAccessor(d).getTime() ?
+                // For the currently hovered bar, return a brighter fill and add a stroke
+                  {
+                    fill: color(d.color).brighter(0.6).toString(),
+                    stroke: color(d.color).toString(),
+                    strokeWidth: 3,
+                  } :
+                  { fill: d.color };
+              }
+              }
               oPadding={8}
               axis={{ orient: 'left' }}
-              // pieceIDAccessor={d => `${d.label}${d.renderKey}`}
-              hoverAnnotation
+              pieceHoverAnnotation
+              customHoverBehavior={(d) => {
+                d ?
+                  this.setState({ hover: this.props.xAccessor(d) }) :
+                  this.setState({ hover: null });
+              }}
             />
           </div>
-          <div style={{ position: 'absolute', width: '100%' }}>
-            {/* <ResponsiveXYFrame */}
-            {/*   yExtent={yDomain} */}
-            {/*   responsiveWidth */}
-            {/*   margin={margin} */}
-            {/*   size={size} */}
-            {/*   lines={[this.props.data]} */}
-            {/*   lineStyle={{ stroke: 'black', strokeWidth: '2px' }} */}
-            {/*   xAccessor={d => this.props.xAccessor(d)} */}
-            {/*   yAccessor={d => d['Net change']} */}
-            {/*   svgAnnotationRules={d => (console.log(d))} */}
-            {/* /> */}
-          </div>
+          {/* <div style={{ position: 'absolute', width: '100%' }}> */}
+          {/*   <ResponsiveXYFrame */}
+          {/*     yExtent={yDomain} */}
+          {/*     responsiveWidth */}
+          {/*     margin={margin} */}
+          {/*     size={size} */}
+          {/*     lines={[this.props.data]} */}
+          {/*     lineStyle={{ stroke: 'black', strokeWidth: '2px' }} */}
+          {/*     xAccessor={d => this.props.xAccessor(d)} */}
+          {/*     yAccessor={d => d['Net change']} */}
+          {/*     svgAnnotationRules={d => (console.log(d))} */}
+          {/*   /> */}
+          {/* </div> */}
         </div>
         <div
           className="row"

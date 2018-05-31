@@ -9,16 +9,16 @@ import ButtonGroup from '../../../shared/ButtonGroup';
 import LinkButton from '../../../shared/LinkButton';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import Error from '../../../shared/Error';
-import { buildTree, findTop } from './pcard_compliance_utilities';
-import PCardDaysCirclePack from './PCardDaysCirclePack';
-import PCardDaysTable from './PCardDaysTable';
+import { buildReceiptsTree, findTop } from './pcard_compliance_utilities';
+import PCardReceiptsCirclePack from './PCardReceiptsCirclePack';
+import PCardReceiptsTable from './PCardReceiptsTable';
 import { refreshLocation } from '../../../utilities/generalUtilities';
 
 const getStartDate = numDays => (
   moment.utc().subtract(numDays, 'd').format('YYYY-MM-DD')
 );
 
-const PCardCompliance = (props) => {
+const PCardComplianceReceipts = (props) => {
   const getNewUrlParams = (nodePath, time) => {
     const dept = document.getElementById('department');
     return {
@@ -35,15 +35,15 @@ const PCardCompliance = (props) => {
     return <Error message={props.data.error.message} />;
   }
 
-  const pcard_statements_status = buildTree(props.data.pcard_statements_status);
-  const filteredStatements = findTop(pcard_statements_status, props.location.query.nodePath || 'root_01')
+  const pcard_transactions = buildReceiptsTree(props.data.pcard_transactions);
+  const filteredTransactions = findTop(pcard_transactions, props.location.query.nodePath || 'root_01')
 
   return (
     <div>
       <PageHeader h1="P card compliance" icon={<Icon path={IM_CREDIT_CARD} size={50} />}>
         <ButtonGroup alignment="">
-          <LinkButton pathname="/pcard_compliance" positionInGroup="left" active query={{ nodePath: props.location.query.nodePath || 'root_01', time: props.location.query.time || '30', dept: props.location.query.dept || 'Administration Services' }}>Reconcilation</LinkButton>
-          <LinkButton pathname="/pcard_compliance/receipts" positionInGroup="right" query={{ nodePath: props.location.query.nodePath || 'root_01', time: props.location.query.time || '30', dept: props.location.query.dept || 'Administration Services' }}>Receipts</LinkButton>
+          <LinkButton pathname="/pcard_compliance" positionInGroup="left" query={{ nodePath: props.location.query.nodePath || 'root_01', time: props.location.query.time || '30', dept: props.location.query.dept || 'Administration Services' }}>Reconcilation</LinkButton>
+          <LinkButton pathname="/pcard_compliance/receipts" positionInGroup="right" active query={{ nodePath: props.location.query.nodePath || 'root_01', time: props.location.query.time || '30', dept: props.location.query.dept || 'Administration Services' }}>Receipts</LinkButton>
         </ButtonGroup>
       </PageHeader>
       <div>
@@ -61,7 +61,7 @@ const PCardCompliance = (props) => {
                   }}
                 >
                   {
-                    pcard_statements_status.children.map((dept) => {
+                    pcard_transactions.children.map((dept) => {
                       if (dept.key !== null) {
                         return <option value={dept.path} name={dept.name} key={dept.key} selected={props.location.query.dept === dept.name}>{dept.name}</option>;
                       }
@@ -102,7 +102,7 @@ const PCardCompliance = (props) => {
         }}
       >
         {/* TODO - instead of root use the user's department */}
-        <PCardDaysCirclePack data={{ key: 'root', children: filteredStatements, dept: props.location.query.dept || 'Multiple Departments' }} />
+        <PCardReceiptsCirclePack data={{ key: 'root', children: filteredTransactions, dept: props.location.query.dept || 'Multiple Departments' }} />
         <div
           style={{
             flexBasis: '65%',
@@ -119,7 +119,7 @@ const PCardCompliance = (props) => {
             >
               <p>Hover over the circlepack visualization to see details.</p>
             </div>
-            <PCardDaysTable data={filteredStatements} />
+            <PCardReceiptsTable data={filteredTransactions} />
           </div>
         </div>
       </div>
@@ -127,37 +127,32 @@ const PCardCompliance = (props) => {
   );
 };
 
-const pCardQuery = gql`
-  query pCardQuery($before: String, $after: String) {
-    pcard_statements_status (before: $before, after: $after) {
+const pCardTransactionQuery = gql`
+  query pCardTransactionQuery($before: String, $after: String) {
+    pcard_transactions  (before: $before, after: $after) {
       dept_id
       department
       div_id
       division
       cardholder
-      statement_code
       statement_id
-      statement_status
-      fiscal_year
-      fiscal_period
-      invoiced_date
-      reconciled_date
-      days_invoiced_to_reconciled
-      approved_date
-      days_reconciled_to_approved
-      days_since_invoiced
-      days_since_reconciled
+      charge_date
+      amount
+      vendor_id
+      vendor_name
+      description
+      receipt
     }
   }
 `;
 
-const PCardComplianceWithData = graphql(pCardQuery, {
+const PCardComplianceReceiptsWithData = graphql(pCardTransactionQuery, {
   options: ownProps => ({
     variables: {
       before: moment.utc().format('YYYY-MM-DD'),
       after: getStartDate(ownProps.location.query.time ? parseInt(ownProps.location.query.time, 10) : 30),
     },
   }),
-})(PCardCompliance);
+})(PCardComplianceReceipts);
 
-export default PCardComplianceWithData;
+export default PCardComplianceReceiptsWithData;

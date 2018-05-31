@@ -54,6 +54,7 @@ import HomelessnessData from './app/homelessness/HomelessnessData';
 import MiniSearch from './app/mini_search/MiniSearch';
 // Finance
 import PCardCompliance from './app/internal/pcard_compliance/PCardCompliance';
+import PCardComplianceReceipts from './app/internal/pcard_compliance/PCardComplianceReceipts';
 
 // Google Analytics
 const ReactGA = require('react-ga');
@@ -117,6 +118,7 @@ const Routes = () => (
         </Route>
         <Route path="pcard_compliance">
           <IndexRoute component={PCardCompliance} />
+          <Route path="receipts" component={PCardComplianceReceipts} />
         </Route>
         <Route path="development">
           <IndexRoute component={DevelopmentSummary} />

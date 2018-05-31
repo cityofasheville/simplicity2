@@ -46,57 +46,77 @@ const insertLeafCopies = (flattenedTree) => {
   }
 };
 
-// builds the tree
-// export const buildTree = (data) => {
-//   const theTree = tree.create();
-//   theTree.insert({ key: 'root' });
-//   for (let i = 0; i < data.length; i += 1) {
-//     let curNode = theTree.rootNode();
-//     let curParent = theTree.rootNode();
-//     for (let j = 0; j < levels.length; j += 1) {
-//       let curPath = 'root';
-//       let breadCrumbPath = 'root';
-//       let myDays = 'under30';
-//       if (data[i].days_invoiced_to_reconciled <= 30) {
-//         myDays = 'under30';
-//       } else if (data[i].days_invoiced_to_reconciled <= 60) {
-//         myDays = 'under60';
-//       } else if (data[i].days_invoiced_to_reconciled <= 90) {
-//         myDays = 'under90';
-//       } else {
-//         myDays = 'over90';
-//       }
-//       curNode = searchChildrenForKey(`${data[i][levels[j]]}|${myDays}`, curParent);
-//       for (let k = 0; k <= j; k += 1) {
-//         curPath = `${curPath}_${encodeURIComponent(data[i][levels[k]])}|${myDays}`;
-//         breadCrumbPath = `${breadCrumbPath}>${data[i][levelNames[k]]}|${myDays}`;
-//       }
-//       if (curNode === null) {
-//         curNode = theTree.insertToNode(curParent, {
-//           key: `${data[i][levels[j]]}|${myDays}`,
-//           path: curPath,
-//           breadcrumbPath: breadCrumbPath,
-//           [levels[j]]: data[i][levels[j]],
-//           name: `${data[i][levelNames[j]]} ${myDays}`,
-//           myDays,
-//           total_count: 0,
-//         });
-//       }
-//       curParent = curNode;
-//       curNode.data(
-//         objectAssign(
-//           {},
-//           curNode.data(),
-//           {
-//             total_count: curNode.data().total_count + 1,
-//           },
-//         ));
-//     }
-//   }
-//   const exTree = exportForDetails(theTree);
-//   insertLeafCopies(exTree);
-//   return exTree;
-// };
+export const buildReceiptsTree = (data) => {
+  const theTree = tree.create();
+  theTree.insert({ key: 'root' });
+  for (let i = 0; i < data.length; i += 1) {
+    let curNode = theTree.rootNode();
+    let curParent = theTree.rootNode();
+    for (let j = 0; j < levels.length; j += 1) {
+      curNode = searchChildrenForKey(data[i][levels[j]], curParent);
+      let curPath = 'root';
+      let breadCrumbPath = 'root';
+      for (let k = 0; k <= j; k += 1) {
+        curPath = [curPath, encodeURIComponent(data[i][levels[k]])].join('_');
+        breadCrumbPath = [breadCrumbPath, data[i][levelNames[k]]].join('>');
+      }
+      if (curNode === null) {
+        curNode = theTree.insertToNode(curParent, {
+          key: data[i][levels[j]],
+          path: curPath,
+          breadcrumbPath: breadCrumbPath,
+          [levels[j]]: data[i][levels[j]],
+          name: data[i][levelNames[j]],
+          has_itemized_receipt: 0,
+          missing_itemized_receipt: 0,
+          total_receipts: 0,
+        });
+      }
+      curParent = curNode;
+      curNode.data(
+        objectAssign(
+          {},
+          curNode.data(),
+          {
+            has_itemized_receipt: data[i].receipt === 'Y' ? curNode.data().has_itemized_receipt + 1 : curNode.data().has_itemized_receipt,
+          },
+          {
+            missing_itemized_receipt: data[i].receipt !== 'Y' ? curNode.data().missing_itemized_receipt + 1 : curNode.data().missing_itemized_receipt,
+          },
+          {
+            total_receipts: curNode.data().total_receipts + 1,
+          }
+        ));
+    }
+  }
+  const exTree = exportForDetails(theTree);
+  insertLeafCopies(exTree);
+  exTree.children.sort((a, b) => {
+    let compareA = null;
+    let compareB = null;
+    if (a === null || a.name === null) {
+      compareA = '';
+    }
+    if (b === null || b.name === null) {
+      compareB = '';
+    }
+    if (compareA !== '') {
+      compareA = a.name.toLowerCase();
+    }
+    if (compareB !== '') {
+      compareB = b.name.toLowerCase();
+    }
+    if (compareA < compareB) {
+      return -1;
+    }
+    if (compareA > compareB) {
+      return 1;
+    }
+    return 0;
+  });
+
+  return exTree;
+};
 
 // builds the tree
 export const buildTree = (data) => {

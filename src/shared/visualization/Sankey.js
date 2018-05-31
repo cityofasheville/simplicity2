@@ -33,23 +33,28 @@ class Sankey extends React.Component {
       role="img"
       aria-label={this.props.altText}
       tabIndex={0}
-      style={{width: '100%'}}
+      style={{ width: '100%' }}
     >
       <ResponsiveNetworkFrame
         responsiveWidth
         annotations={graph.nodes}
         edges={graph.links}
         hoverAnnotation
-        margin={{ top: 0, right: 10, bottom: 25, left: 10 }}
+        margin={{
+          top: 0,
+          right: 10,
+          bottom: 25,
+          left: 10,
+        }}
         networkType="sankey"
-        nodeIdAccessor="id"
+        nodeIDAccessor="id"
         nodes={graph.nodes}
         sourceAccessor="source"
         targetAccessor="target"
         zoomToFit
-        customHoverBehavior={d => (d && d.name ?
-          this.setState({ hover: d.name }) : this.setState({ hover: null }))
-        }
+        customHoverBehavior={(d) => {
+          d && d.name ? this.setState({ hover: d.name }) : this.setState({ hover: null });
+        }}
         svgAnnotationRules={(d) => {
           if (d.d.source && d.d.target) {
             // If it's a link
@@ -120,7 +125,13 @@ class Sankey extends React.Component {
           nodeColor.domain(colorDomain);
           const strokeOpacity = d.name === this.state.hover ? 1 : 0.5;
           const strokeWidth = d.name === this.state.hover ? 5 : 1;
-          return { stroke: darkerColor, strokeWidth: `${strokeWidth}px`, strokeOpacity, fill: nodeColor(d.value), fillOpacity: strokeOpacity };
+          return {
+            stroke: darkerColor,
+            strokeWidth: `${strokeWidth}px`,
+            strokeOpacity,
+            fill: nodeColor(d.value),
+            fillOpacity: strokeOpacity,
+          };
         }}
         tooltipContent={() => ''}
       />

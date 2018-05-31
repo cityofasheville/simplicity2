@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { color } from 'd3-color';
-import { ResponsiveOrdinalFrame, ResponsiveXYFrame } from 'semiotic';
+import { ResponsiveOrdinalFrame } from 'semiotic';
 import HorizontalLegend from './HorizontalLegend';
 import Tooltip from './Tooltip';
-import { formatDataForStackedBar, labelOrder } from './visUtilities';
+import { formatDataForStackedBar } from './visUtilities';
 
 
 // const getLongDesc = (data, dataKeys, mainAxisKey) => (
@@ -51,12 +51,13 @@ class DivergingLineBar extends React.Component {
       left: 35,
     };
 
-    const rawData = formattedData.map(d => d.value);
-
-    const yDomain = [
-      Math.min(...rawData),
-      Math.max(...rawData),
-    ];
+    const annotations = this.props.data.map((d) => {
+      return {
+        type: 'or',
+        month: d.month,
+        value: d['Net change'],
+      };
+    });
 
     // https://emeeks.github.io/semiotic/#/semiotic/creatingpcrosshighlight
     return (
@@ -65,13 +66,8 @@ class DivergingLineBar extends React.Component {
           <div style={{ position: 'absolute', width: '100%' }}>
             <ResponsiveOrdinalFrame
               responsiveWidth
-              annotations={formattedData.map(d => {
-                d.type = 'or';
-                d.makeLine = true;
-                return d;
-              })}
+              annotations={annotations}
               margin={margin}
-              // domain={yDomain}
               size={size}
               data={formattedData}
               type="bar"
@@ -113,25 +109,29 @@ class DivergingLineBar extends React.Component {
               axis={{ orient: 'left' }}
               pieceHoverAnnotation
               customHoverBehavior={(d) => {
-                d ?
-                  this.setState({ hover: this.props.xAccessor(d) }) :
+                if (d) {
+                  this.setState({ hover: this.props.xAccessor(d) });
+                } else {
                   this.setState({ hover: null });
+                }
+              }}
+              svgAnnotationRules={(d) => {
+                if (!d.type === 'or') {
+                  return;
+                }
+                return (
+                  <g key={`${d.i}${d.d.type}`}>
+                    <circle
+                      cx={d.screenCoordinates[0]}
+                      cy={d.screenCoordinates[1]}
+                      r={5}
+                      style={{ fill: 'black' }}
+                    />
+                  </g>
+                );
               }}
             />
           </div>
-          {/* <div style={{ position: 'absolute', width: '100%' }}> */}
-          {/*   <ResponsiveXYFrame */}
-          {/*     yExtent={yDomain} */}
-          {/*     responsiveWidth */}
-          {/*     margin={margin} */}
-          {/*     size={size} */}
-          {/*     lines={[this.props.data]} */}
-          {/*     lineStyle={{ stroke: 'black', strokeWidth: '2px' }} */}
-          {/*     xAccessor={d => this.props.xAccessor(d)} */}
-          {/*     yAccessor={d => d['Net change']} */}
-          {/*     svgAnnotationRules={d => (console.log(d))} */}
-          {/*   /> */}
-          {/* </div> */}
         </div>
         <div
           className="row"

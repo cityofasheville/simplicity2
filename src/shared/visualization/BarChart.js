@@ -195,9 +195,11 @@ class BarChart extends React.Component {
                   return null;
                 }}
                 customHoverBehavior={(d) => {
-                  d && d.pieces ?
-                    this.setState({ hover: d.pieces[0].data[this.props.mainAxisDataKey] }) :
+                  if (d && d.pieces) {
+                    this.setState({ hover: d.pieces[0].data[this.props.mainAxisDataKey] });
+                  } else {
                     this.setState({ hover: null });
+                  }
                 }}
               />
             </div>

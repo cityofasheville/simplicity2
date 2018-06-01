@@ -167,7 +167,9 @@ class DivergingLineBar extends React.Component {
                 );
               }}
               tooltipContent={(d) => {
-                const textLines = formattedData.filter(el => el.month === d.month).map(inOut => ({
+                const datum = d.data ? d.data : d;
+
+                const textLines = formattedData.filter(el => el.month === datum.month).map(inOut => ({
                   color: inOut.color,
                   text: `${inOut.label}: ${inOut.value}`,
                 }));
@@ -175,14 +177,14 @@ class DivergingLineBar extends React.Component {
                 textLines.push({
                   color: 'black',
                   text: `Net Change: ${
-                    this.props.data.find(el => el.month === d.month)['Net change']
+                    this.props.data.find(el => el.month === datum.month)['Net change']
                   }`,
                 });
 
                 return (
                   <Tooltip
                     textLines={textLines}
-                    title={d.month}
+                    title={datum.month}
                   />
                 );
               }}

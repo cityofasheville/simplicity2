@@ -60,6 +60,7 @@
     "apollo-link-state": "^0.4.0",
     "babel-polyfill": "^6.23.0",
     "cross-env": "^5.1.6",
+    "d3-color": "^1.2.0",
     "d3-drag": "^1.0.4",
     "d3-ease": "^1.0.3",
     "d3-sankey": "^0.7.1",

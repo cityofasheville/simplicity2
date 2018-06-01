@@ -97,7 +97,7 @@ class DivergingLineBar extends React.Component {
                 textAnchor = 'end';
               }
 
-              if (this.props.rotateXLabels) { transform += 'rotate(-45)' }
+              if (this.props.rotateXLabels) { transform += 'rotate(-45)'; }
 
               const label = `${d.getMonth() + 1}/${d.getFullYear()}`;
 
@@ -111,11 +111,7 @@ class DivergingLineBar extends React.Component {
                 </text>
               );
             }}
-            rAccessor={(d) => {
-              if (d) {
-                return d.value;
-              }
-            }}
+            rAccessor={(d) => { return d ? d.value : null; }}
             style={(d) => {
               return this.state.hover && this.state.hover.getTime() === this.props.xAccessor(d).getTime() ?
               // For the currently hovered bar, return a brighter fill and add a stroke

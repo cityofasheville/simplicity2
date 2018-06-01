@@ -133,7 +133,7 @@ class DivergingLineBar extends React.Component {
                     <line
                       key={`${d.d.type}-${d.i}`}
                       stroke="black"
-                      strokeWidth={2}
+                      strokeWidth={1.5}
                       x1={d.screenCoordinates[0][0]}
                       x2={d.screenCoordinates[1][0]}
                       y1={d.screenCoordinates[0][1]}
@@ -142,17 +142,25 @@ class DivergingLineBar extends React.Component {
                   );
                 }
 
+                const circleStyle = {
+                  stroke: 'black',
+                  strokeWidth: 1.5,
+                  fill: 'none',
+                };
+
+                if (this.state.hover && this.state.hover.getTime() === this.props.xAccessor(d.d).getTime()) {
+                  circleStyle.strokeWidth = 2;
+                  circleStyle.fill = 'white';
+                  circleStyle.fillOpacity = 0.5;
+                }
+
                 return (
                   <circle
                     key={d.i + d.d.month}
                     cx={d.screenCoordinates[0]}
                     cy={d.screenCoordinates[1]}
                     r={5}
-                    style={{
-                      stroke: 'black',
-                      strokeWidth: 2,
-                      fill: 'none',
-                    }}
+                    style={circleStyle}
                   />
                 );
               }}

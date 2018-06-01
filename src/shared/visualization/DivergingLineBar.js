@@ -7,6 +7,8 @@ import Tooltip from './Tooltip';
 import { formatDataForStackedBar } from './visUtilities';
 
 
+// TODO: abstract out all the stuff that is specific to the HomelessnessVeteransExitTime chart
+
 // const getLongDesc = (data, dataKeys, mainAxisKey) => (
 //   <div>
 //     {data.map((value, index) => (
@@ -67,7 +69,6 @@ class DivergingLineBar extends React.Component {
       });
     });
 
-    // https://emeeks.github.io/semiotic/#/semiotic/creatingpcrosshighlight
     return (
       <div>
         <div className="row visualization-container">
@@ -228,7 +229,7 @@ DivergingLineBar.propTypes = {
 };
 
 DivergingLineBar.defaultProps = {
-  colorScheme: 'pink_green_diverging',
+  colorScheme: 'orange_purple_diverging',
   data: [],
   dataKeys: [],
   xAccessor: d => d,

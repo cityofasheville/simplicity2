@@ -173,9 +173,9 @@ class HomelessnessVeteransInflowOutflow extends React.Component {
                 data={this.props.data}
                 dataKeys={this.props.dataKeys}
                 mainAxisDataKey='month'
-                xAccessor={d => {
-                  const arrDate = d.month.split('/')
-                  return new Date(arrDate[1], arrDate[0])
+                xAccessor={(d) => {
+                  const arrDate = d.month.split('/');
+                  return new Date(arrDate[1], arrDate[0] - 1);
                 }}
               />
             </div>

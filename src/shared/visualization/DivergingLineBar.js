@@ -56,7 +56,15 @@ class DivergingLineBar extends React.Component {
         type: 'or',
         month: d.month,
         value: d['Net change'],
+        linePoint: true,
       };
+    });
+
+    annotations.slice(0, annotations.length - 1).forEach((a, i) => {
+      annotations.push({
+        type: 'line',
+        coordinates: [a, annotations[i + 1]],
+      });
     });
 
     // https://emeeks.github.io/semiotic/#/semiotic/creatingpcrosshighlight
@@ -73,7 +81,7 @@ class DivergingLineBar extends React.Component {
               type="bar"
               projection="vertical"
               oAccessor={(d) => {
-                if (d && !d.pieces) {
+                if (d && !d.piece) {
                   const datum = d.data ? d.data : d;
                   return this.props.xAccessor(datum);
                 }
@@ -116,18 +124,36 @@ class DivergingLineBar extends React.Component {
                 }
               }}
               svgAnnotationRules={(d) => {
-                if (!d.type === 'or') {
-                  return;
+                if (d.d.type !== 'line' && !d.d.linePoint) {
+                  return null;
                 }
-                return (
-                  <g key={`${d.i}${d.d.type}`}>
-                    <circle
-                      cx={d.screenCoordinates[0]}
-                      cy={d.screenCoordinates[1]}
-                      r={5}
-                      style={{ fill: 'black' }}
+
+                if (d.d.type === 'line') {
+                  return (
+                    <line
+                      key={`${d.d.type}-${d.i}`}
+                      stroke="black"
+                      strokeWidth={2}
+                      x1={d.screenCoordinates[0][0]}
+                      x2={d.screenCoordinates[1][0]}
+                      y1={d.screenCoordinates[0][1]}
+                      y2={d.screenCoordinates[1][1]}
                     />
-                  </g>
+                  );
+                }
+
+                return (
+                  <circle
+                    key={d.i + d.d.month}
+                    cx={d.screenCoordinates[0]}
+                    cy={d.screenCoordinates[1]}
+                    r={5}
+                    style={{
+                      stroke: 'black',
+                      strokeWidth: 2,
+                      fill: 'none',
+                    }}
+                  />
                 );
               }}
             />

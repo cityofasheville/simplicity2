@@ -22,7 +22,7 @@
     ],
     "import/imports-first": 0,
     "import/newline-after-import": 0,
-    "import/no-extraneous-dependencies": 0,
+    "import/no-extraneous-dependencies": 2,
     "import/no-named-as-default": 0,
     "import/no-unresolved": 2,
     "import/prefer-default-export": 0,

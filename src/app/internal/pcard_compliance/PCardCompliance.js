@@ -1,6 +1,6 @@
 import React from 'react';
 import gql from 'graphql-tag';
-import { Query } from 'react-apollo';
+import { graphql, compose, Query, withApollo } from 'react-apollo';
 import moment from 'moment';
 import { refreshLocation } from '../../../utilities/generalUtilities';
 import PageHeader from '../../../shared/PageHeader';
@@ -13,6 +13,7 @@ import { IM_CREDIT_CARD } from '../../../shared/iconConstants';
 import { buildTree, findTop } from './pcard_compliance_utilities';
 import PCardDaysCirclePack from './PCardDaysCirclePack';
 import PCardDaysTable from './PCardDaysTable';
+import { getUser } from '../../../utilities/auth/graphql/authQueries';
 
 const getStartDate = numDays => (
   moment.utc().subtract(numDays, 'd').format('YYYY-MM-DD')
@@ -53,6 +54,9 @@ const PCardCompliance = props => (
     {({ loading, error, data }) => {
       if (loading) return <LoadingAnimation />;
       if (error) return <Error message={error.message} />;
+      if (!props.user.loggedIn || ['fruiz@ashevillenc.gov', 'fmcgowan@ashevillenc.gov', 'tmartin@ashevillenc.gov', 'bking3@ashevillenc.gov', 'bwhitehorn@ashevillenc.gov', 'ejackson@ashevillenc.gov', 'mmazanec@ashevillenc.gov', 'jwood@ashevillenc.gov'].indexOf(props.user.email) === -1) {
+        return <Error message="You are not authorized to view this page" />;
+      }
 
       const getNewUrlParams = (nodePath, time) => {
         const dept = document.getElementById('department');
@@ -158,4 +162,17 @@ const PCardCompliance = props => (
   </Query>
 );
 
-export default PCardCompliance;
+// TODO: this part should NOT be necessary!!
+// should be able to do user @client in the Query component query... could be artefact of
+// how overall architecture is still setup half 'old' apollo... ??
+// redo it all with the 'new' apollo way and the schema and then should
+// in theory no longer have to manually wrap this comonent in withApollo...
+const PCardComplianceComposed = compose(
+  graphql(getUser, {
+    props: ({ data: { user } }) => ({
+      user,
+    }),
+  })
+)(PCardCompliance);
+
+export default withApollo(PCardComplianceComposed);

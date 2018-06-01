@@ -17,7 +17,7 @@ const mainDataColumns = [
     },
     getProps: (state, rowInfo) => ({
       style: {
-        backgroundColor: rowInfo.row.under30 > 0 ? '#4575b4' : '#d1dded',
+        backgroundColor: rowInfo.row.has_itemized_receipt > 0 ? '#4575b4' : '#d1dded',
         textAlign: 'right',
       },
     }),
@@ -31,7 +31,7 @@ const mainDataColumns = [
     },
     getProps: (state, rowInfo) => ({
       style: {
-        backgroundColor: rowInfo.row.over_90 > 0 ? '#d73027' : '#ce524b69',
+        backgroundColor: rowInfo.row.missing_itemized_receipt > 0 ? '#d73027' : '#ce524b69',
         textAlign: 'right',
       },
     }),
@@ -53,7 +53,7 @@ const innerDataColumns = [
     },
     getProps: (state, rowInfo) => ({
       style: {
-        backgroundColor: rowInfo.row.under30 > 0 ? '#4575b4' : '#d1dded',
+        backgroundColor: rowInfo.row.has_itemized_receipt > 0 ? '#4575b4' : '#d1dded',
         textAlign: 'right',
       },
     }),
@@ -67,7 +67,7 @@ const innerDataColumns = [
     },
     getProps: (state, rowInfo) => ({
       style: {
-        backgroundColor: rowInfo.row.over_90 > 0 ? '#d73027' : '#ce524b69',
+        backgroundColor: rowInfo.row.missing_itemized_receipt > 0 ? '#d73027' : '#ce524b69',
         textAlign: 'right',
       },
     }),

@@ -96,7 +96,7 @@ const PCardReceiptsCirclePack = props => (
               }
             </p>
             <div
-              style={{ width: '420px', height: '250px' }}
+              style={{ width: '435px', height: '250px' }}
             >
               <div className="pull-left">
                 <OrdinalFrame

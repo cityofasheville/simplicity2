@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ResponsiveContainer, ComposedChart, Line, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-import DivergingLineBar from '../../shared/visualization/DivergingLineBar'
-import { colorSchemes } from '../../shared/visualization/colorSchemes';
+import DivergingLineBar from '../../shared/visualization/DivergingLineBar';
 
 const dataKeysArr = [
   'Incoming',
@@ -181,34 +179,10 @@ class HomelessnessVeteransInflowOutflow extends React.Component {
             </div>
           </div>
         </div>
-        {/* <div className="row"> */}
-        {/*   <div className="col-xs-10 col-xs-offset-2"> */}
-        {/*     <br /> */}
-        {/*     <a href="" className="text-center inText" onClick={(e) => { e.preventDefault(); this.toggleLongDesc() }}> */}
-        {/*       {this.state.showingLongDesc ? 'Hide' : 'Show'} Veteran homelessness Incoming and Outgoing bar chart summary */}
-        {/*     </a> */}
-        {/*     <div hidden={!this.state.showingLongDesc}> */}
-        {/*       {getLongDesc(this.props.data, this.props.dataKeys, 'month')} */}
-        {/*     </div> */}
-        {/*   </div> */}
-        {/* </div> */}
       </div>
     );
   }
-};
-              // <ResponsiveContainer>
-              //   <ComposedChart data={this.props.data} barGap="-77%">
-              //     <XAxis dataKey="month" />
-              //     <YAxis />
-              //     <CartesianGrid strokeDasharray="3 3" />
-              //     <Tooltip />
-              //     <Legend />
-              //     {this.props.dataKeys.map((barDataKey, i) => (
-              //       <Bar key={barDataKey} dataKey={barDataKey} fill={colorSchemes.bright_colors_2[i % colorSchemes.pink_green_diverging.length]} animationDuration={50} />
-              //     ))}
-              //     <Line dataKey="Net change" stroke="black" fill="white" strokeWidth={3} dot={{ stroke: 'black', strokeWidth: 5, r: 5 }} />
-              //   </ComposedChart>
-              // </ResponsiveContainer>
+}
 
 const dataShape = {
   month: PropTypes.string,

@@ -1,5 +1,4 @@
 import tree from 'data-tree';
-const objectAssign = require('object-assign');
 
 const levels = [
   'dept_id',
@@ -18,7 +17,7 @@ const levelNames = [
 
 // flatten the tree and export for use by the budget Treemap
 const exportForDetails = (aTree) => {
-  const flattened = aTree.export(data => (objectAssign({}, data)));
+  const flattened = aTree.export(data => (Object.assign({}, data)));
   return flattened;
 };
 
@@ -38,7 +37,7 @@ const insertLeafCopies = (flattenedTree) => {
   if (flattenedTree.children.length === 0) {
     const splitBreadcrumbPath = flattenedTree.breadcrumbPath.split('>');
     const splitPath = flattenedTree.path.split('_');
-    flattenedTree.children = [objectAssign({}, flattenedTree, { breadcrumbPath: [flattenedTree.breadcrumbPath, splitBreadcrumbPath[splitBreadcrumbPath.length - 1]].join('>') }, { path: [flattenedTree.path, splitPath[splitPath.length - 1]].join('_') })];
+    flattenedTree.children = [Object.assign({}, flattenedTree, { breadcrumbPath: [flattenedTree.breadcrumbPath, splitBreadcrumbPath[splitBreadcrumbPath.length - 1]].join('>') }, { path: [flattenedTree.path, splitPath[splitPath.length - 1]].join('_') })];
   } else {
     for (let i = 0; i < flattenedTree.children.length; i += 1) {
       insertLeafCopies(flattenedTree.children[i]);
@@ -73,7 +72,7 @@ export const buildReceiptsTree = (data) => {
         });
       }
       curParent = curNode;
-      curNode.data(objectAssign(
+      curNode.data(Object.assign(
         {},
         curNode.data(),
         {
@@ -154,7 +153,7 @@ export const buildTree = (data) => {
       } else {
         daysOpen = data[i].days_since_reconciled;
       }
-      curNode.data(objectAssign(
+      curNode.data(Object.assign(
         {},
         curNode.data(),
         {

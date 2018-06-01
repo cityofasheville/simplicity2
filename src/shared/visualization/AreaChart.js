@@ -59,7 +59,9 @@ class AreaChart extends React.Component {
         <h4>{this.props.chartTitle}</h4>
         <p>
           {this.props.chartText.isArray &&
-            this.props.chartText.map((textChunk, index) => (<span key={index}>{textChunk}</span>))
+            this.props.chartText.map((textChunk, index) => (
+              <span key={index}>{textChunk}</span>
+            ))
           }
           {!this.props.chartText.isArray &&
             this.props.chartText
@@ -109,7 +111,8 @@ class AreaChart extends React.Component {
                   {
                     orient: 'bottom',
                     rotate: -45,
-                    tickFormat: d => `${d.getMonth() + 1}/${d.getFullYear().toString().replace('20', '')}`,
+                    tickFormat: d =>
+                      `${d.getMonth() + 1}/${d.getFullYear().toString().replace('20', '')}`,
                     className: 'semiotic-axis',
                   },
                 ]}

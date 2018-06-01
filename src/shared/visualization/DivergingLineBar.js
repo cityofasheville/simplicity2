@@ -87,10 +87,24 @@ class DivergingLineBar extends React.Component {
               }
             }}
             oLabel={(d) => {
+
+              let textAnchor = 'middle';
+              let transform = 'translate(0,0)';
+              if (this.props.rotateXLabels && this.props.layout === 'vertical') {
+                textAnchor = 'end';
+                transform = 'translate(8,0)';
+              } else if (this.props.layout === 'horizontal') {
+                textAnchor = 'end';
+              }
+
+              if (this.props.rotateXLabels) { transform += 'rotate(-45)' }
+
               const label = `${d.getMonth() + 1}/${d.getFullYear()}`;
+
               return (
                 <text
-                  textAnchor="middle"
+                  textAnchor={textAnchor}
+                  transform={transform}
                   key={label}
                 >
                   {label}
@@ -114,7 +128,9 @@ class DivergingLineBar extends React.Component {
             }
             }
             oPadding={8}
-            axis={{ orient: 'left' }}
+            axis={{
+              orient: 'left',
+            }}
             pieceHoverAnnotation
             // hoverAnnotation
             customHoverBehavior={(d) => {
@@ -229,16 +245,20 @@ DivergingLineBar.propTypes = {
   colorScheme: PropTypes.string,
   data: PropTypes.array,
   dataKeys: PropTypes.arrayOf(PropTypes.string),
-  xAccessor: PropTypes.func,
+  layout: PropTypes.string,
   mainAxisDataKey: PropTypes.string,
+  rotateXLabels: PropTypes.bool,
+  xAccessor: PropTypes.func,
 };
 
 DivergingLineBar.defaultProps = {
   colorScheme: 'orange_purple_diverging',
   data: [],
   dataKeys: [],
-  xAccessor: d => d,
+  layout: 'vertical',
   mainAxisDataKey: null,
+  rotateXLabels: true,
+  xAccessor: d => d,
 };
 
 export default DivergingLineBar;

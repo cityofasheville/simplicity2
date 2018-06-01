@@ -116,6 +116,7 @@ class DivergingLineBar extends React.Component {
               oPadding={8}
               axis={{ orient: 'left' }}
               pieceHoverAnnotation
+              // hoverAnnotation
               customHoverBehavior={(d) => {
                 if (d) {
                   this.setState({ hover: this.props.xAccessor(d) });
@@ -161,6 +162,26 @@ class DivergingLineBar extends React.Component {
                     cy={d.screenCoordinates[1]}
                     r={5}
                     style={circleStyle}
+                  />
+                );
+              }}
+              tooltipContent={(d) => {
+                const textLines = formattedData.filter(el => el.month === d.month).map(inOut => ({
+                  color: inOut.color,
+                  text: `${inOut.label}: ${inOut.value}`,
+                }));
+
+                textLines.push({
+                  color: 'black',
+                  text: `Net Change: ${
+                    this.props.data.find(el => el.month === d.month)['Net change']
+                  }`,
+                });
+
+                return (
+                  <Tooltip
+                    textLines={textLines}
+                    title={d.month}
                   />
                 );
               }}

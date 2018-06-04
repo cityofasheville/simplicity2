@@ -13,13 +13,13 @@ const getIcon = (category) => {
 
 const getStageNumber = (stage) => {
   switch (stage) {
-    case 'Status: Planning':
+    case 'Planning':
       return 1;
-    case 'Status: Design':
+    case 'Design':
       return 2;
-    case 'Status: Construction':
+    case 'Construction':
       return 3;
-    case 'Status: Completed':
+    case 'Completed':
       return 4;
     case 'Ongoing':
       return 5;
@@ -72,7 +72,12 @@ const calculateBounds = (points) => {
 const ProjectDetails = (props) => {
   const getMyPoints = () => (
     props.latitude.map((y, index) => (
-      Object.assign({}, {}, { x: props.longitude[index], y: y, name: props.display_name, popup: `<div><b>${props.display_name}</b><p>Latitude: ${y}</p><p>Longitude: ${props.longitude[index]}</p></div>` })
+      Object.assign({}, {}, {
+        x: props.longitude[index],
+        y,
+        name: props.display_name,
+        popup: `<div><b>${props.display_name}</b><p>Latitude: ${y}</p><p>Longitude: ${props.longitude[index]}</p></div>`,
+      })
     ))
   );
 
@@ -103,23 +108,25 @@ const ProjectDetails = (props) => {
                     <strong>{props.total_project_funding_budget_document}</strong>
                   </div>
                 </div>
-                {props.show_pm_fields &&
+                {/* TODO: alter logic for new coa_project_manages */}
+                {props &&
                   <div className="" style={{ marginBottom: '10px' }}>
                     <div style={{ color: '#676873' }}>
                       Spent
                     </div>
                     <div>
-                      <strong>{['$', parseInt(props.total_spent).toLocaleString()].join('')}</strong>
+                      <strong>{['$', parseInt(props.total_spent, 10).toLocaleString()].join('')}</strong>
                     </div>
                   </div>
                 }
-                {props.show_pm_fields &&
+                {/* TODO: alter logic for new coa_project_manages */}
+                {props &&
                   <div className="" style={{ marginBottom: '10px' }}>
                     <div style={{ color: '#676873' }}>
                       Under contract
                     </div>
                     <div>
-                      <strong>{['$', parseInt(props.encumbered).toLocaleString()].join('')}</strong>
+                      <strong>{['$', parseInt(props.encumbered, 10).toLocaleString()].join('')}</strong>
                     </div>
                   </div>
                 }                
@@ -133,7 +140,8 @@ const ProjectDetails = (props) => {
                     <strong>{props.zip_code || '?'}</strong>
                   </div>
                 </div>
-                {props.show_pm_fields &&
+                {/* TODO: alter logic for new coa_project_manages */}
+                {props &&
                   <div className="" style={{ marginBottom: '20px' }}>
                     <div style={{ color: '#676873' }}>
                       Estimated Construction Timeframe
@@ -153,7 +161,8 @@ const ProjectDetails = (props) => {
               </div>
               </div>
             }*/}
-            {props.show_pm_fields && props.status !== null &&
+            {/* TODO: alter logic for new coa_project_manages */}
+            {props.status !== null &&
               <div className="capital-project__status">
                 <div className="header">
                   Project phase
@@ -162,10 +171,10 @@ const ProjectDetails = (props) => {
                   <Icon path={IM_CIRCLE2} size={25} color={getStageNumber(props.status) >= 1 ? phaseColor(1) : '#ecf0f1'} />
                 </div>
                 <div className="project-status">
-                  <Icon path={IM_CIRCLE2} size={25}  color={getStageNumber(props.status) >= 2 ? phaseColor(2) : '#ecf0f1'} />
+                  <Icon path={IM_CIRCLE2} size={25} color={getStageNumber(props.status) >= 2 ? phaseColor(2) : '#ecf0f1'} />
                 </div>
                 <div className="project-status">
-                  <Icon path={IM_CIRCLE2} size={25}  color={props.status === 'Ongoing' ? '#FFC107' : getStageNumber(props.status) >= 3 ? phaseColor(3) : '#ecf0f1'} />
+                  <Icon path={IM_CIRCLE2} size={25} color={props.status === 'Ongoing' ? '#FFC107' : getStageNumber(props.status) >= 3 ? phaseColor(3) : '#ecf0f1'} />
                 </div>
                 {props.status !== 'Ongoing' &&
                   <div className="project-status">
@@ -173,7 +182,7 @@ const ProjectDetails = (props) => {
                   </div>
                 }
                 <div style={{ color: props.status === 'Ongoing' ? '#FFC107' : phaseColor(getStageNumber(props.status)) }}>
-                  {props.status === 'Ongoing' ? props.status : props.status.split(': ')[1]}
+                  {props.status}
                 </div>
               </div>
             }

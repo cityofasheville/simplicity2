@@ -1,6 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { graphql } from 'react-apollo';
+import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import Collapsible from '../../shared/Collapsible';
 import ProjectsTable from './ProjectsTable';
@@ -63,7 +62,9 @@ const getKeyText = categories => (
       </span>
       <span style={{ marginLeft: '5px' }}>{categories.slice(0, categories.length - 1).join(', ')} {categories.length > 1 ? 'and' : ''} {categories[categories.length - 1]} projects within the City’s General Capital Improvement Program (CIP) are funded with a combination of general tax revenue, municipal debt and external grants or partnerships.</span>
       {categories.includes('Other') &&
-        <span>&nbsp;Projects categorized as &quot;Other&quot; support facility upgrades and economic development initiatives.</span>
+        <span>&nbsp;Projects categorized as &quot;Other&quot;
+          support facility upgrades and economic development initiatives.
+        </span>
       }
     </p>
     { ['Transportation', 'Housing', 'Parks'].map((cat, index) => {
@@ -89,81 +90,14 @@ const getDollars = (value) => {
   return [value < 0 ? '-$' : '$', Math.abs(value).toFixed(0).toLocaleString()].join('');
 };
 
-const CategoryDetails = (props) => {
-  if (props.data.loading) { // eslint-disable-line react/prop-types
-    return <LoadingAnimation />;
-  }
-  if (props.data.error) { // eslint-disable-line react/prop-types
-    return <Error message={props.data.error.message} />; // eslint-disable-line react/prop-types
-  }
-
-  let actualCategories = Array.from(props.categories);
-  if (props.location.query.mode === 'bond') {
-    actualCategories = actualCategories.filter(cat => (['Transportation', 'Parks', 'Housing'].includes(cat)));
-  }
-  const sortedCats = ['Transportation', 'Housing', 'Parks', 'Public Safety', 'Other'];
-  actualCategories.sort((a, b) => sortedCats.indexOf(a) > sortedCats.indexOf(b));
-  const filteredProjects = filterProjects(props.data.cip_projects, actualCategories, props.location.query.mode);
-  const fundingDetails = getFundsAllocatedAndExpended(filteredProjects, actualCategories, props.location.query.mode);
-
-  const messageOrTable = (filteredProjects === undefined || filteredProjects.length === 0) ?
-    (
-      <div style={{ marginTop: '20px' }} className="alert alert-info alert-sm">
-        Select a category above to show project data
-      </div>
-    ) : <ProjectsTable data={filteredProjects} />;
-
-  return (
-    <div>
-      <div className="row">
-        <div className="col-sm-12">
-          <div className="funding-summary">
-            <div className="col-sm-4 col-xs-4">
-              <h2><span className="label-text">Total funding:</span> <span className="amount">{getDollars(fundingDetails[0].allocated)}</span></h2>
-            </div>
-            <div className="col-sm-4 col-xs-4">
-              <h2><span className="label-text">Spent:</span> <span className="amount">{getDollars(fundingDetails[0]['Expended funds'])}</span></h2>
-            </div>
-            <div className="col-sm-4 col-xs-4">
-              <h2><span className="label-text">Under contract:</span> <span className="amount">{getDollars(fundingDetails[0]['Under contract'])}</span></h2>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-sm-12">
-              <Collapsible trigger="Click here to learn how projects in each category are supported">
-                {getKeyText(actualCategories, props.location.query.mode)}
-                <div style={{ marginTop: '15px' }}>
-                  <div>
-                    <p><span style={{ fontStyle: 'italic' }}>Please note: Current project budgets include prior year funding and may change throughout the life of the project.</span></p>
-                    <p><span style={{ fontStyle: 'italic' }}>Ongoing programs and regular maintenance projects may not be represented in this dashboard. For a complete list including ongoing and maintenance projects within the City&apos;s General CIP, please view the adopted <a className="inText" href="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=28348#page=146%20" target="_blank">FY 17-18 Annual Budget</a>.</span></p>
-                  </div>
-                </div>
-              </Collapsible>
-            </div>
-          </div>
-          {messageOrTable}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-CategoryDetails.propTypes = {
-  categories: PropTypes.arrayOf(PropTypes.string),
-  location: PropTypes.object, // eslint-disable-line
-};
-
-CategoryDetails.defaultProps = {
-  categories: ['Housing', 'Transportation', 'Parks', 'Public Safety', 'Other'],
-};
-
-const getProjectsQuery = gql`
-  query getProjectsQuery($categories: [String]) {
+const GET_PROJECTS = gql`
+  query cip_projects($categories: [String]) {
     cip_projects (categories: $categories) {
       project
       display_name
       type
       administering_department
+      owner_department
       zip_code
       category
       coa_contact
@@ -177,22 +111,86 @@ const getProjectsQuery = gql`
       target_construction_start
       target_construction_end
       actual_construction_end
+      amount_behind_schedule
       estimated_construction_duration
       project_webpage_more_information
+      communication_plan
       photo_url
-      contact
       latitude
       longitude
     }
   }
 `;
 
-const CategoryDetailsGQL = graphql(getProjectsQuery, {
-  options: ownProps => ({
-    variables: {
-      categories: longCategories(Array.from(ownProps.categories)),
-    },
-  }),
-})(CategoryDetails);
+const CategoryDetails = props => (
+  <Query
+    query={GET_PROJECTS}
+    variables={{
+      categories: longCategories(Array.from(props.categories)),
+    }}
+  >
+    {({ loading, error, data }) => {
+      if (loading) return <LoadingAnimation />;
+      if (error) return <Error message={error.message} />;
 
-export default CategoryDetailsGQL;
+      let actualCategories = Array.from(props.categories);
+      if (props.location.query.mode === 'bond') {
+        actualCategories = actualCategories.filter(cat => (['Transportation', 'Parks', 'Housing'].includes(cat)));
+      }
+      const sortedCats = ['Transportation', 'Housing', 'Parks', 'Public Safety', 'Other'];
+      actualCategories.sort((a, b) =>
+        sortedCats.indexOf(a) > sortedCats.indexOf(b));
+      const filteredProjects = filterProjects(
+        data.cip_projects,
+        actualCategories, props.location.query.mode
+      );
+      const fundingDetails = getFundsAllocatedAndExpended(
+        filteredProjects,
+        actualCategories,
+        props.location.query.mode
+      );
+      const messageOrTable = (filteredProjects === undefined || filteredProjects.length === 0) ?
+        (
+          <div style={{ marginTop: '20px' }} className="alert alert-info alert-sm">
+            Select a category above to show project data
+          </div>
+        ) : <ProjectsTable data={filteredProjects} />;
+
+      return (
+        <div>
+          <div className="row">
+            <div className="col-sm-12">
+              <div className="funding-summary">
+                <div className="col-sm-4 col-xs-4">
+                  <h2><span className="label-text">Total funding:</span> <span className="amount">{getDollars(fundingDetails[0].allocated)}</span></h2>
+                </div>
+                <div className="col-sm-4 col-xs-4">
+                  <h2><span className="label-text">Spent:</span> <span className="amount">{getDollars(fundingDetails[0]['Expended funds'])}</span></h2>
+                </div>
+                <div className="col-sm-4 col-xs-4">
+                  <h2><span className="label-text">Under contract:</span> <span className="amount">{getDollars(fundingDetails[0]['Under contract'])}</span></h2>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-sm-12">
+                  <Collapsible trigger="Click here to learn how projects in each category are supported">
+                    {getKeyText(actualCategories, props.location.query.mode)}
+                    <div style={{ marginTop: '15px' }}>
+                      <div>
+                        <p><span style={{ fontStyle: 'italic' }}>Please note: Current project budgets include prior year funding and may change throughout the life of the project.</span></p>
+                        <p><span style={{ fontStyle: 'italic' }}>Ongoing programs and regular maintenance projects may not be represented in this dashboard. For a complete list including ongoing and maintenance projects within the City&apos;s General CIP, please view the adopted <a className="inText" href="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=28348#page=146%20" target="_blank">FY 17-18 Annual Budget</a>.</span></p>
+                      </div>
+                    </div>
+                  </Collapsible>
+                </div>
+              </div>
+              {messageOrTable}
+            </div>
+          </div>
+        </div>
+      );
+    }}
+  </Query>
+);
+
+export default CategoryDetails;

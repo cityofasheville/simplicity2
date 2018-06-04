@@ -5,8 +5,6 @@ import { CheckboxGroup } from 'accessible-react-checkbox-group';
 import { urlCategory } from './cip_utilities';
 import FilterCheckbox from '../../shared/FilterCheckbox';
 import { refreshLocation } from '../../utilities/generalUtilities';
-import ButtonGroup from '../../shared/ButtonGroup';
-import Button from '../../shared/Button';
 
 const CIPFilter = (props) => {
   const toggleMode = () => (

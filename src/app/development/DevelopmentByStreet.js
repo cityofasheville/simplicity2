@@ -121,11 +121,11 @@ const DevelopmentByStreet = props => {
   return (
     <div>
       <div className="row">
-        <div className="col-xs-12">
+        <div className="col-xs-12 template-header__inner">
           <div className="pull-left" style={{ marginTop: '10px', marginBottom: '15px' }}>
             <EmailDownload downloadData={props.data.permits_by_street} fileName="permits_by_street.csv" />
           </div>
-          <ButtonGroup>
+          <ButtonGroup alignment="right">
             <Button onClick={() => refreshLocation(getNewUrlParams('map'), props.location)} active={props.location.query.view === 'map'} positionInGroup="left">Map view</Button>
             <Button onClick={() => refreshLocation(getNewUrlParams('list'), props.location)} active={props.location.query.view === 'list'} positionInGroup="middle">List view</Button>
             <Button onClick={() => refreshLocation(getNewUrlParams('summary'), props.location)} positionInGroup="right" active={props.location.query.view === 'summary'}>Chart</Button>

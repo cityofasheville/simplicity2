@@ -69,7 +69,7 @@ const AuthControl = (props) => {
           });
         }}
         className=""
-      >Log In
+      >Log in
     </a>
     </li>
   );

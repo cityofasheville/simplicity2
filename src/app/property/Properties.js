@@ -36,7 +36,7 @@ const Properties = (props) => {
       </PageHeader>
       <div className="row">
         <div className="col-sm-12">
-          <ButtonGroup>
+          <ButtonGroup alignment="right">
             <Button onClick={() => refreshLocation(getNewUrlParams('map'), props.location)} active={props.location.query.view !== 'list'} positionInGroup="left">Map view</Button>
             <Button onClick={() => refreshLocation(getNewUrlParams('list'), props.location)} active={props.location.query.view === 'list'} positionInGroup="right">List view</Button>
           </ButtonGroup>

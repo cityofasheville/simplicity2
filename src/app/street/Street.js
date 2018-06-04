@@ -24,7 +24,7 @@ const Street = (props) => {
 
   return (
     <div>
-      <PageHeader h1={props.location.query.label} h3="About this street" icon={<Icon path={IM_ROAD} size={50} />}>
+      <PageHeader h1={props.location.query.label} dataType="Street" h3="About this street" icon={<Icon path={IM_ROAD} size={50} />}>
         <ButtonGroup>
           <LinkButton pathname="/search" query={{ entities: props.location.query.entities, search: props.location.query.search, hideNavbar: props.location.query.hideNavbar }}>Back to search</LinkButton>
         </ButtonGroup>
@@ -32,12 +32,14 @@ const Street = (props) => {
       <div className="row">
         <div className="col-sm-6">
           <fieldset className="detailsFieldset">
-            <div className="col-xs-12" style={{ marginBottom: '15px' }}>
+            <div className="map-container">
               <Map height="250px" legend={createMaintenanceLegend(formatMaintenanceData(props.data.streets))} maintenanceData={formatMaintenanceData(props.data.streets)} drawMaintenance bounds={props.location.query.bounds !== undefined & props.location.query.bounds !== '' ? JSON.parse(props.location.query.bounds) : getBoundsFromStreetData(props.data.streets)} />
             </div>
-            <DetailsIconLinkFormGroup label="Address & Owner Mailing Lists" icon={<Icon path={IM_ENVELOP3} size={24} />} href={['address/addressList', '?entity=', props.location.query.entity, '&entities=', props.location.query.entities, '&id=', props.location.query.id, '&label=', props.location.query.label, '&search=', props.location.query.search, '&hideNavbar=', props.location.query.hideNavbar].join('')} title="Address & Owner Mailing Lists" inWindow />
-            <DetailsIconLinkFormGroup label="Properties" icon={<Icon path={IM_HOME2} size={24} />} href={['property/properties', '?entity=', props.location.query.entity, '&entities=', props.location.query.entities, '&id=', props.location.query.id, '&search=', props.location.query.search, '&label=', props.location.query.label, '&hideNavbar=', props.location.query.hideNavbar].join('')} title="Properties" inWindow />
-            <DetailsIconLinkFormGroup label="Maintenance" icon={<Icon path={IM_TRAFFIC_CONE} size={24} />} href={['maintenance', '?entity=', props.location.query.entity, '&entities=', props.location.query.entities, '&search=', props.location.query.search, '&id=', props.location.query.id, '&label=', props.location.query.label, '&hideNavbar=', props.location.query.hideNavbar, '&view=map'].join('')} title="Maintenance" inWindow />
+            <div className="detailsFieldset__details-listings">
+              <DetailsIconLinkFormGroup label="Address & Owner Mailing Lists" icon={<Icon path={IM_ENVELOP3} size={24} />} href={['address/addressList', '?entity=', props.location.query.entity, '&entities=', props.location.query.entities, '&id=', props.location.query.id, '&label=', props.location.query.label, '&search=', props.location.query.search, '&hideNavbar=', props.location.query.hideNavbar].join('')} title="Address & Owner Mailing Lists" inWindow />
+              <DetailsIconLinkFormGroup label="Properties" icon={<Icon path={IM_HOME2} size={24} />} href={['property/properties', '?entity=', props.location.query.entity, '&entities=', props.location.query.entities, '&id=', props.location.query.id, '&search=', props.location.query.search, '&label=', props.location.query.label, '&hideNavbar=', props.location.query.hideNavbar].join('')} title="Properties" inWindow />
+              <DetailsIconLinkFormGroup label="Maintenance" icon={<Icon path={IM_TRAFFIC_CONE} size={24} />} href={['maintenance', '?entity=', props.location.query.entity, '&entities=', props.location.query.entities, '&search=', props.location.query.search, '&id=', props.location.query.id, '&label=', props.location.query.label, '&hideNavbar=', props.location.query.hideNavbar, '&view=map'].join('')} title="Maintenance" inWindow />
+            </div>
           </fieldset>
         </div>
         <div className="col-sm-6">

@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
-// import { connect } from 'react-redux';
 import BudgetSummaryBarChart from './BudgetSummaryBarChart';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import Error from '../../shared/Error';
@@ -20,7 +19,9 @@ class SummaryUse extends React.Component {
     // if (this.props.summaryUseData.dataKeys !== null) {
     //   return;
     // }
-    const summaryUseData = buildSummaryData(this.props.data.budgetSummary);
+
+    const summaryUseData = buildSummaryData(this.props.data.budgetSummary, this.props.data.budgetParameters);
+
     await this.props.updateBudgetSummaryUse({
       variables: {
         budgetSummaryUse: {
@@ -38,9 +39,9 @@ class SummaryUse extends React.Component {
     if (this.props.data.error) { // eslint-disable-line react/prop-types
       return <Error message={this.props.data.error.message} />; // eslint-disable-line react/prop-types
     }
-
     if (this.props.summaryUseData.dataKeys === null) {
       this.initializeSummaryUse();
+      return <LoadingAnimation size="small" />;
     }
 
     return (
@@ -69,6 +70,11 @@ const budgetSummaryUseQuery = gql`
         total_budget,
         total_actual,
         year,
+    }
+    budgetParameters {
+      start_year
+      end_year
+      in_budget_season
     }
   }
 `;

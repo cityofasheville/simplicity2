@@ -36,6 +36,7 @@ class SummaryCashFlow extends React.Component {
 
     if (this.props.sankeyData.nodes === null) {
       this.initializeSankey();
+      return <LoadingAnimation />;
     }
 
     return (

@@ -6,7 +6,7 @@ import { labelOrder } from './visUtilities';
 const HorizontalLegend = (props) => {
   const rectWidth = 15;
 
-  const labelItems = labelOrder(props.formattedData, props.valueAccessor)
+  const labelItems = labelOrder(props.formattedData, props.valueAccessor);
 
   return (<div
     style={props.style}
@@ -54,6 +54,7 @@ HorizontalLegend.propTypes = {
 };
 
 HorizontalLegend.defaultProps = {
+  formattedData: [],
   legendLabelFormatter: d => d,
   valueAccessor: 'value',
 };

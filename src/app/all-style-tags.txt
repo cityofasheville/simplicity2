@@ -1,0 +1,1357 @@
+/Users/jessemichel/Documents/git/simplicity2/src/app/CityInfoBar.js:
+    4  const CityInfoBar = () => (
+    5    <div>
+    6:     <div className="navbar navbar-default text-primary navbar-fixed-top" style={{ fontSize: '30px', backgroundColor: '#f6fcff' }}>
+    7:       <div className="pull-left" style={{ marginRight: '5px', marginTop: '5px', marginBottom: '5px', marginLeft: '15px' }}>
+    8          <IndexLink to="/"><img src={require('./citylogo-flatblue.png')} width="80px" height="80px" alt="City of Asheville logo"></img></IndexLink>
+    9        </div>
+   10        <div className="navbar-header">
+   11          <div className="pull-left">
+   12:           <div style={{ marginTop: '10px', marginBottom: '-22px' }}>Dashboards</div>
+   13:           <IndexLink to="/" style={{ fontSize: '12px', fontStyle: 'italic' }}>City of Asheville, NC</IndexLink>
+   14          </div>
+   15        </div>
+   16      </div>
+   17:     <div className="pull-right" style={{ color: '#bf1bbf', fontStyle: 'italic', float: 'right', fontSize: '19px', padding: '5px 15px', lineHeight: '1' }}>
+   18        Beta:&nbsp;
+   19:       <a href="https://docs.google.com/a/ashevillenc.gov/forms/d/e/1FAIpQLSdjNwOmoDY3PjQOVreeSL07zgI8otIIPWjY7BnejWMAjci8-w/viewform?c=0&w=1" target="_blank" style={{ color: '#bf1bbf', fontStyle: 'italic', fontSize: '16px' }}>Click here to give feedback or sign up for user testing</a>
+   20      </div>
+   21    </div>
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/Footer.js:
+    6    <div>
+    7      <div
+    8:       style={{
+    9          display: 'block',
+   10          padding: '20px',
+   ..
+   13        }}
+   14      />
+   15:     <footer className="footer" style={{ paddingTop: '2px' }}>
+   16        <div className="container">
+   17:         <div style={{ fontStyle: 'italic' }} className="text-center">We strive for full accessibility. Report issues with our <a className="inText" href="https://docs.google.com/a/ashevillenc.gov/forms/d/e/1FAIpQLSdjNwOmoDY3PjQOVreeSL07zgI8otIIPWjY7BnejWMAjci8-w/viewform?c=0&w=1" target="_blank" title="website feedback form">feedback form</a>.
+   18          </div>
+   19:         <div className="text-center" style={{ fontStyle: 'italic', marginBottom: '2px' }}>It&apos;s open source! Fork it on <a href="https://github.com/cityofasheville/simplicity2" target="_blank">GitHub <Icon path={IM_GITHUB} size={23} /></a></div>
+   20        </div>
+   21      </footer>
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/Navbar.js:
+   35    render() {
+   36      return (
+   37:       <div style={{ display: this.state.navbarDisplay }}>
+   38:         <nav className="navbar navbar-default navbar-fixed-top" style={{ backgroundColor: '#f6fcff', borderBottom: '1px solid #e7eaff'}}>
+   39            <div className="container-fluid">
+   40              <IndexLink to="/">
+   41:               <div className="pull-left" style={{ marginRight: '5px', marginTop: '5px', marginBottom: '5px' }}>
+   42                  <img src={require('./citylogo-flatblue.png')} width="80px" height="80px" alt="City of Asheville logo"></img>
+   43                </div>
+   ..
+   51                </button>
+   52                <div className="pull-left">
+   53:                 <IndexLink to="/" className="navbar-brand" style={{ fontSize: '30px', marginBottom: '-10px' }}>SimpliCity</IndexLink>
+   54                  <br />
+   55:                 <IndexLink to="/" style={{ fontSize: '12px', fontStyle: 'italic' }}>City of Asheville, NC</IndexLink>
+   56                </div>
+   57              </div>
+   ..
+   67          </nav>
+   68          {window.location.href.indexOf('dashboards.ashevillenc.gov') === -1 &&
+   69:           <div style={{ color: '#bf1bbf', fontStyle: 'italic', float: 'right', fontSize: '19px', padding: '5px 15px', lineHeight: '1' }}>
+   70:             <a href="https://docs.google.com/a/ashevillenc.gov/forms/d/e/1FAIpQLSdjNwOmoDY3PjQOVreeSL07zgI8otIIPWjY7BnejWMAjci8-w/viewform?c=0&w=1" target="_blank" style={{ color: '#bf1bbf', fontStyle: 'italic', fontSize: '16px' }}>Click here to give feedback or sign up for user testing</a>
+   71  
+   72            </div>
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/address/Address.js:
+   50    }
+   51    if (entity === 'CITY OF ASHEVILLE') {
+   52:     return (<div><span><a href="http://www.ashevillenc.gov/departments/street_services/maintenance.htm" target="_blank">{entity}</a></span><span style={{ marginLeft: '10px' }}><a href="http://www.ashevillenc.gov/departments/it/online/service_requests.htm" target="_blank"><button className="btn btn-xs btn-warning">Report with the Asheville App</button></a>
+   53      </span></div>);
+   54    }
+   ..
+   84            <fieldset className="detailsFieldset">
+   85              <InCityMessage inTheCity={addressData.is_in_city} />
+   86:             <div className="col-xs-12" style={{ marginBottom: '15px', marginTop: '10px' }}>
+   87                <Map
+   88                  height="250px"
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/address/AddressesByNeighborhood.js:
+   23        <input
+   24          onChange={event => onChange(event.target.value)}
+   25:         style={{ width: '100%' }}
+   26          value={filter ? filter.value : ''}
+   27          placeholder="Search..."
+   ..
+   46        <input
+   47          onChange={event => onChange(event.target.value)}
+   48:         style={{ width: '100%' }}
+   49          value={filter ? filter.value : ''}
+   50          placeholder="Search..."
+   ..
+   79              <div className="alert alert-info">No results found</div>
+   80            :
+   81:             <div style={{ marginTop: '10px' }}>
+   82                <AccessibleReactTable
+   83                  data={props.data.addresses_by_neighborhood}
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/address/AddressesByStreet.js:
+   23        <input
+   24          onChange={event => onChange(event.target.value)}
+   25:         style={{ width: '100%' }}
+   26          value={filter ? filter.value : ''}
+   27          placeholder="Search..."
+   ..
+   46        <input
+   47          onChange={event => onChange(event.target.value)}
+   48:         style={{ width: '100%' }}
+   49          value={filter ? filter.value : ''}
+   50          placeholder="Search..."
+   ..
+   79              <div className="alert alert-info">No results found</div>
+   80            :
+   81:             <div style={{ marginTop: '10px' }}>
+   82                <AccessibleReactTable
+   83                  data={props.data.addresses_by_street}
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/budget/BudgetDetailsTable.js:
+  138          <div className="col-sm-12">
+  139            <h3 id={'budget-details-table-label'}>{`Table of ${props.location.query.mode || 'expenditures'}`}</h3>
+  140:           <div style={{ marginBottom: '15px' }}>
+  141              You may explore the full dataset in the table below, or <a className="inText" href="http://data.ashevillenc.gov/datasets?q=budget&sort_by=relevance" target="_blank">download here</a>. Click the triangles at left to expand rows for more detail.
+  142            </div>
+  ...
+  145        <div className="row">
+  146          <div className="col-sm-12">
+  147:           <div className="radioGroup pull-right" style={{ marginBottom: '3px' }}>
+  148              <RadioGroup name="tableRadios" id="tableRadios" selectedValue={props.location.query.mode || 'expenditures'} onChange={value => refreshLocation(getNewUrlParams(value), props.location)}>
+  149                <label>
+  ...
+  179                ariaLabelledBy={'budget-details-table-label'}
+  180                SubComponent={innerRow1 => (
+  181:                 <div style={{ paddingLeft: '34px' }}>
+  182                    <ExpandableAccessibleReactTable
+  183                      data={dataForTable[innerRow1.index].children}
+  ...
+  190                      ariaLabel={`${getDataColumnHeader(1, props.location.query.mode)()} subtable`}
+  191                      SubComponent={innerRow2 => (
+  192:                       <div style={{ paddingLeft: '34px' }}>
+  193                          <ExpandableAccessibleReactTable
+  194                            data={dataForTable[innerRow1.index].children[innerRow2.index].children}
+  ...
+  201                            ariaLabel={`${getDataColumnHeader(2, props.location.query.mode)()} subtable`}
+  202                            SubComponent={innerRow3 => (
+  203:                             <div style={{ paddingLeft: '34px' }}>
+  204                                <AccessibleReactTable
+  205                                  data={dataForTable[innerRow1.index].children[innerRow2.index].children[innerRow3.index].children}
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/budget/BudgetDetailsTreemap.js:
+   98        {levels.map((level, index) => {
+   99          return (
+  100:           <div key={['breadcrumbLevel', index].join('_')} style={{ display: 'inline-block' }}>
+  101              <span className={index < levels.length - 1 ? 'treeMapBreadcrumbLink' : ''} onClick={props.jumpUp ? () => props.jumpUp(props, levels.length - index - 1) : null}>{level}</span>
+  102              {index < levels.length - 1 && <span> &gt;&nbsp;</span>}
+  ...
+  130        <div className="row">
+  131          <div className="col-sm-12">
+  132:           <div style={{ marginBottom: '15px' }}>
+  133              In the treemap below, the size and color of the rectangles represent important information about the 2017-2018 budget. The size of each rectangle is proportional to the amount of money budgeted for that category. The color of the rectangle shows the change from last year’s budget. Increases are shown in blue, decreases are orange, and white shows no change. The deeper the color, the larger the change. Click a rectangle to see a detailed breakdown for that category, or mouse over it to see the description and total amount.
+  134            </div>
+  ...
+  137        <div className="row">
+  138          <div className="col-sm-12">
+  139:           <div className="btn-group pull-left" style={{ marginRight: '3px', marginBottom: '3px' }}>
+  140              <button className="btn btn-primary btn-xs" onClick={props.jumpUp ? () => props.jumpUp(props) : null} disabled={props.location.query.nodePath === 'root' || props.location.query.nodePath === undefined}><Icon path={IM_ARROW_UP8} size={16} /></button>
+  141            </div>
+  142            {renderBreadcrumb(myTree, props)}
+  143:           <div className="btn-group pull-left" style={{ display: 'none' }} >
+  144              <button className={getButtonClass(props.categoryType, 'use')}>Use</button>
+  145              <button className={getButtonClass(props.categoryType, 'department')}>Departments</button>
+  146            </div>
+  147:           <div className="radioGroup pull-right" style={{ marginLeft: '10px' }}>
+  148              <RadioGroup name="treemapRadios" selectedValue={props.location.query.mode || 'expenditures'} onChange={value => refreshLocation(getNewUrlParams(value), props.location)}>
+  149                <label>
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/budget/BudgetSummaryDetails.js:
+   19        </PageHeader>
+   20        <BudgetDetailsTreemap categoryType="department" {...props} />
+   21:       <hr style={{ marginTop: '20px' }}></hr>
+   22        <BudgetDetailsTable {...props} />
+   23      </div>
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/capital_projects/CapitalProjectsSummary.js:
+   27          <div className="col-sm-12">
+   28            <h1>
+   29:             <a href="http://arcg.is/Sy5KC" className="pull-right" target="_blank" style={{ fontSize: '16px' }}>
+   30:               <div className="alert alert-success alert-sm" style={{ cursor: 'pointer', zIndex: '1000' }}>Try our Project Map to search geographically and by address.
+   31                </div>
+   32              </a>
+   33:             <span style={{ marginRight: '5px' }}>
+   34                <svg xmlns="http://www.w3.org/2000/svg" width="69" height="69">
+   35                  <path d="M45,57a2,2 0 0,1-3,1l-2-3V39l-6,10-11-6l9-18h-6l-8 14l-3-3V33l8-14h20a4,4 0 0,1 4,4zm16,12l-41-34l1-3 42,35 8-10a5,5 0 0,1 9,0l22,29h-57l13-16zm-28-18l7,10 1,25a8,8 0 0,1-6-4l-1-17-8-11-18,31a4,4 0 0,1-2-2l-1-6 17-32zm13-36a7,7 0 0,1 14,0a7,7 0 0,1-14,0" fill="#4077a5" />
+   ..
+   46          </div>
+   47        </div>
+   48:       <hr style={{ marginBottom: '10px' }} />
+   49        <CIPFilter selected={getSelected()} location={props.location} />
+   50:       <hr style={{ marginTop: '5px', marginBottom: '5px' }} />
+   51        <CategoryDetails location={props.location} categories={getSelected()} />
+   52      </div>
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/capital_projects/CategoryDetails.js:
+   56          { ['Transportation', 'Housing', 'Parks', 'Public Safety', 'Other'].map((cat, index) => {
+   57            if (categories.includes(cat)) {
+   58:             return <span key={index} style={categories.indexOf(cat) !== 0 ? { marginLeft: '10px', color: '#4077a5' } : { marginLeft: '0px', color: '#4077a5' }}>{getIcon(cat)}&nbsp;<b>{cat}</b></span>;
+   59            }
+   60            return null;
+   ..
+   62          )}
+   63        </span>
+   64:       <span style={{ marginLeft: '5px' }}>{categories.slice(0, categories.length - 1).join(', ')} {categories.length > 1 ? 'and' : ''} {categories[categories.length - 1]} projects within the City’s General Capital Improvement Program (CIP) are funded with a combination of general tax revenue, municipal debt and external grants or partnerships.</span>
+   65        {categories.includes('Other') &&
+   66          <span>&nbsp;Projects categorized as &quot;Other&quot; support facility upgrades and economic development initiatives.</span>
+   ..
+   69      { ['Transportation', 'Housing', 'Parks'].map((cat, index) => {
+   70        if (categories.includes(cat)) {
+   71:         return <p key={index} ><span style={{ color: '#4077a5' }}>{getIcon(cat, true)}&nbsp;<b>{cat} Bond</b></span><span style={{ marginLeft: '5px' }}>{getBondText(cat)}</span></p>;
+   72        }
+   73        return null;
+   ..
+  106        <div className="row">
+  107          <div className="col-sm-12">
+  108:           <div className="row" style={{ marginBottom: '10px' }}>
+  109              <div className="col-sm-6">
+  110                <h2>Total funding: {getDollars(fundingDetails[0].allocated)}</h2>
+  ...
+  118                <Collapsible trigger="Click here to learn how projects in each category are supported">
+  119                  {getKeyText(actualCategories, props.location.query.mode)}
+  120:                 <div style={{ marginTop: '15px' }}>
+  121                    <div>
+  122:                     <p><span style={{ fontStyle: 'italic' }}>Please note: Current project budgets include prior year funding and may change throughout the life of the project.</span></p>
+  123:                     <p><span style={{ fontStyle: 'italic' }}>Ongoing programs and regular maintenance projects may not be represented in this dashboard. For a complete list including ongoing and maintenance projects within the City&apos;s General CIP, please view the adopted <a className="inText" href="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=28348#page=146%20" target="_blank">FY 17-18 Annual Budget</a>.</span></p>
+  124                    </div>
+  125                  </div>
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/capital_projects/CIPFilter.js:
+   42        <div className="row">
+   43          <div className="col-sm-6">
+   44:           <label style={{ minWidth: '400px', cursor: 'pointer', marginBottom: '0px' }}>
+   45:             <span style={{ fontSize: '26px', fontWeight: 'normal', marginRight: '10px' }}>Include only bond projects</span>
+   46              <Toggle
+   47                defaultChecked={props.location.query.mode === 'bond'}
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/capital_projects/ProjectDetails.js:
+   85            </div>
+   86          </div>
+   87:         <div className="row" style={props.hideTitle ? { marginTop: '15px' } : null}>
+   88            <div className="col-sm-7">
+   89              {props.project_webpage_more_information !== null &&
+   90                <div className="row">
+   91:                 <div className="col-sm-12" style={{ marginTop: '5px' }}>
+   92:                   <div className="pull-left" style={{ marginRight: '10px', marginBottom: '20px' }}> <a title="View project web site" href={props.project_webpage_more_information} target="_blank"><Icon path={IM_SPHERE3} size={20} /> Project Website</a></div>
+   93                  </div>
+   94                </div>
+   ..
+   96              <div className="row">
+   97                <div className="col-xs-5">
+   98:                 <div className="text-center" style={{ marginBottom: '10px' }}>
+   99:                   <div style={{ color: '#676873' }}>
+  100                      Current Project Budget
+  101                    </div>
+  ...
+  105                  </div>
+  106                  {props.show_pm_fields &&
+  107:                   <div className="text-center" style={{ marginBottom: '10px' }}>
+  108:                     <div style={{ color: '#676873' }}>
+  109                        Spent
+  110                      </div>
+  ...
+  116                </div>
+  117                <div className="col-xs-7">
+  118:                 <div className="text-center" style={{ marginBottom: '10px' }}>
+  119:                   <div style={{ color: '#676873' }}>
+  120                      Zip code
+  121                    </div>
+  ...
+  125                  </div>
+  126                  {props.show_pm_fields &&
+  127:                   <div className="text-center" style={{ marginBottom: '20px' }}>
+  128:                     <div style={{ color: '#676873' }}>
+  129                        Estimated Construction Timeframe
+  130                      </div>
+  ...
+  146              {props.show_pm_fields && props.status !== null &&
+  147                <div className="row">
+  148:                 <div className="text-center" style={{ marginBottom: '5px', color: '#676873' }}>
+  149                    Project phase
+  150                  </div>
+  ...
+  160                  {props.status !== 'Ongoing' &&
+  161                    <div className="col-xs-2">
+  162:                     <Icon path={IM_CIRCLE2} size={25} color={getStageNumber(props.status) >= 4 ? phaseColor(4) : '#ecf0f1'} style={{ marginRight: '5px' }} />
+  163                    </div>
+  164                  }
+  165:                 <div className="col-xs-2" style={{ color: props.status === 'Ongoing' ? '#FFC107' : phaseColor(getStageNumber(props.status)), fontWeight: 'bold' }}>
+  166                    {props.status === 'Ongoing' ? props.status : props.status.split(': ')[1]}
+  167                  </div>
+  ...
+  169              }
+  170              <div className="row">
+  171:               <div className="col-sm-12" style={{ marginTop: '20px', marginBottom: '10px' }}>
+  172                  <hr />
+  173                  {props.project_description}
+  ...
+  188              <Map data={getMyPoints(props.project)} height="230px" bounds={calculateBounds(getMyPoints(props.project))} />
+  189              <a href={props.photo_url} target="_blank">
+  190:               <img alt="Photo of project" className="img-responsive" src={props.photo_url} style={{ maxHeight: '400px' }} />
+  191              </a>
+  192            </div>
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/capital_projects/ProjectExpendedBarChart.js:
+   39      <div className="row">
+   40        <div className="col-sm-12">
+   41:         <div style={{ clear: 'both' }}>
+   42            <BarChart data={props.data} layout="vertical" secondaryTickFormatter={getDollars} toolTipFormatter={getDollarsLong} mainAxisDataKey="name" dataKeys={['Remaining funds', 'Expended funds']} colorScheme="bright_colors_2" altText={[props.type, 'bond project funds expended by project'].join(' ')} stacked yAxisWidth={200} barGap={10} height={500} />
+   43          </div>
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/capital_projects/ProjectsTable.js:
+   43            <span title={mapProjectToCategory(row.original)}>{getIcon(row.original.category, row.isExpanded)}</span>
+   44            {row.original.category.indexOf('Bond') > -1 &&
+   45:           <span title={'Bond project'} style={{ marginLeft: '3px' }}><Icon path={LI_BOLD} size={16} color={row.isExpanded ? '#fff' : '#4077a5'} viewBox="0 0 24 24" /></span>
+   46            }
+   47:           <span style={{ marginLeft: '5px' }}>{row.value}</span>
+   48          </span>
+   49        ),
+   ..
+   51          <input
+   52            onChange={event => onChange(event.target.value)}
+   53:           style={{ width: '100%' }}
+   54            value={filter ? filter.value : ''}
+   55            placeholder="Search..."
+   ..
+   68          <input
+   69            onChange={event => onChange(event.target.value)}
+   70:           style={{ width: '100%' }}
+   71            value={filter ? filter.value : ''}
+   72            placeholder="Search..."
+   ..
+   93          <input
+   94            onChange={event => onChange(event.target.value)}
+   95:           style={{ width: '100%' }}
+   96            value={filter ? filter.value : ''}
+   97            placeholder="Search..."
+   ..
+  107          <input
+  108            onChange={event => onChange(event.target.value)}
+  109:           style={{ width: '100%' }}
+  110            value={filter ? filter.value : ''}
+  111            placeholder="Search..."
+  ...
+  122          <input
+  123            onChange={event => onChange(event.target.value)}
+  124:           style={{ width: '100%' }}
+  125            value={filter ? filter.value : ''}
+  126            placeholder="Search..."
+  ...
+  184                  })}
+  185                  SubComponent={row => (
+  186:                   <div style={{ paddingLeft: '34px', paddingRight: '34px', paddingBottom: '15px', backgroundColor: '#f6fcff', borderRadius: '0px', border: '2px solid #4077a5' }}>
+  187                      <ProjectDetails {...row.original} hideTitle />
+  188                    </div>
+  ...
+  193                      ref={measureRef}
+  194                      alt={['Table of', this.props.type, this.props.subType || '', 'bond project statuses'].join(' ')}
+  195:                     style={{ marginTop: '10px' }}
+  196                    >
+  197                      {makeTable()}
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/crime/CrimesByAddress.js:
+   91    }
+   92    return (
+   93:     <div style={{ width: '160px' }}>
+   94        {crimeTypes.map(type => (
+   95:         <div key={`legendItem-${type}`} style={{ width: '160px', marginBottom: '5px' }}><img src={getMarker(type)} style={{ display: 'inline-block', width: '25px', verticalAlign: 'top' }}></img><span style={{ marginLeft: '5px', display: 'inline-block', width: '130px' }}>{type}</span></div>
+   96        ))}
+   97      </div>
+   ..
+  161        <div className="row">
+  162          <div className="col-xs-12">
+  163:           <div className="pull-left" style={{ marginTop: '10px', marginBottom: '15px' }}>
+  164              <EmailDownload downloadData={props.data.crimes_by_address} fileName="crimes_by_address.csv" />
+  165            </div>
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/crime/CrimesByNeighborhood.js:
+  125    }
+  126    return (
+  127:     <div style={{ width: '160px' }}>
+  128        {crimeTypes.map(type => (
+  129:         <div key={`legendItem-${type}`} style={{ width: '160px', marginBottom: '5px' }}><img src={getMarker(type)} style={{ display: 'inline-block', width: '25px', verticalAlign: 'top' }}></img><span style={{ marginLeft: '5px', display: 'inline-block', width: '130px' }}>{type}</span></div>
+  130        ))}
+  131      </div>
+  ...
+  162        <div className="row">
+  163          <div className="col-xs-12">
+  164:           <div className="pull-left" style={{ marginTop: '10px', marginBottom: '15px' }}>
+  165              <EmailDownload downloadData={props.data.crimes_by_neighborhood} fileName="crimes_by_neighborhood.csv" />
+  166            </div>
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/crime/CrimesByStreet.js:
+   92    }
+   93    return (
+   94:     <div style={{ width: '160px' }}>
+   95        {crimeTypes.map(type => (
+   96:         <div key={`legendItem-${type}`} style={{ width: '160px', marginBottom: '5px' }}><img src={getMarker(type)} style={{ display: 'inline-block', width: '25px', verticalAlign: 'top' }}></img><span style={{ marginLeft: '5px', display: 'inline-block', width: '130px' }}>{type}</span></div>
+   97        ))}
+   98      </div>
+   ..
+  162        <div className="row">
+  163          <div className="col-xs-12">
+  164:           <div className="pull-left" style={{ marginTop: '10px', marginBottom: '15px' }}>
+  165              <EmailDownload downloadData={props.data.crimes_by_street} fileName="crimes_by_street.csv" />
+  166            </div>
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/crime/CrimeSummary.js:
+   43          <div className="col-sm-12">
+   44            <h1>
+   45:             <span style={{ marginRight: '5px' }}>{<Icon path={IM_SHIELD3} size={35} />}</span>
+   46:             <span style={{ marginRight: '25px' }}>Crime</span>
+   47:             <a href="https://apdp2c.buncombecounty.org/" target="_blank"><button className="btn btn-xs btn-info">{<Icon path={IM_LIBRARY2} size={16} />}<span style={{ marginLeft: '4px' }}>View APD reports</span></button></a>
+   48              <ButtonGroup>
+   49                <Button onClick={browserHistory.goBack}>Back</Button>
+   ..
+   59                <label htmlFor="topicType" className="col-sm-2 control-label">view</label>
+   60                <div className="col-sm-10">
+   61:                 <div className="form-control-static" style={{ display: 'block' }}>crimes
+   62                  </div>
+   63                </div>
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/crime/CrimeTable.js:
+   78          <span>
+   79            <span title={row.original.crime}>{getIcon(row.value, row.isExpanded)}</span>
+   80:           <span style={{ marginLeft: '5px' }}>{row.value}</span>
+   81          </span>
+   82        ),
+   ..
+   84          <input
+   85            onChange={event => onChange(event.target.value)}
+   86:           style={{ width: '100%' }}
+   87            value={filter ? filter.value : ''}
+   88            placeholder="Search..."
+   ..
+   98          <input
+   99            onChange={event => onChange(event.target.value)}
+  100:           style={{ width: '100%' }}
+  101            value={filter ? filter.value : ''}
+  102            placeholder="Search..."
+  ...
+  115          <span>
+  116            <span> <a title="Click to crime in map" href={[urlString, '&zoomToPoint=', [row.original.y, row.original.x].join(',')].join('')}><Icon path={IM_MAP5} size={23} /></a></span>
+  117:           <span style={{ marginLeft: '5px' }}>{row.value}</span>
+  118          </span>
+  119        ),
+  ...
+  121          <input
+  122            onChange={event => onChange(event.target.value)}
+  123:           style={{ width: '100%' }}
+  124            value={filter ? filter.value : ''}
+  125            placeholder="Search..."
+  ...
+  134          <input
+  135            onChange={event => onChange(event.target.value)}
+  136:           style={{ width: '100%' }}
+  137            value={filter ? filter.value : ''}
+  138            placeholder="Search..."
+  ...
+  147          <input
+  148            onChange={event => onChange(event.target.value)}
+  149:           style={{ width: '100%' }}
+  150            value={filter ? filter.value : ''}
+  151            placeholder="Search..."
+  ...
+  161            <div className="alert alert-info">No results found</div>
+  162          :
+  163:           <div style={{ marginTop: '10px' }}>
+  164              <AccessibleReactTable
+  165                data={props.data}
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/development/DevelopmentByAddress.js:
+   56    }
+   57    return (
+   58:     <div style={{ width: '160px' }}>
+   59        {permitTypes.map(type => (
+   60:         <div key={`legendItem-${type}`} style={{ width: '160px', marginBottom: '5px' }}><img src={getMarker(type)} style={{ display: 'inline-block', width: '25px', verticalAlign: 'top' }}></img><span style={{ marginLeft: '5px', display: 'inline-block', width: '130px' }}>{type}</span></div>
+   61        ))}
+   62      </div>
+   ..
+  122        <div className="row">
+  123          <div className="col-xs-12">
+  124:           <div className="pull-left" style={{ marginTop: '10px', marginBottom: '15px' }}>
+  125              <EmailDownload downloadData={props.data.permits_by_address} fileName="permits_by_address.csv" />
+  126            </div>
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/development/DevelopmentByNeighborhood.js:
+   57    }
+   58    return (
+   59:     <div style={{ width: '160px' }}>
+   60        {permitTypes.map(type => (
+   61:         <div key={`legendItem-${type}`} style={{ width: '160px', marginBottom: '5px' }}><img src={getMarker(type)} style={{ display: 'inline-block', width: '25px', verticalAlign: 'top' }}></img><span style={{ marginLeft: '5px', display: 'inline-block', width: '130px' }}>{type}</span></div>
+   62        ))}
+   63      </div>
+   ..
+  124        <div className="row">
+  125          <div className="col-xs-12">
+  126:           <div className="pull-left" style={{ marginTop: '10px', marginBottom: '15px' }}>
+  127              <EmailDownload downloadData={props.data.permits_by_neighborhood} fileName="permits_by_neighborhood.csv" />
+  128            </div>
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/development/DevelopmentByStreet.js:
+   57    }
+   58    return (
+   59:     <div style={{ width: '160px' }}>
+   60        {permitTypes.map(type => (
+   61:         <div key={`legendItem-${type}`} style={{ width: '160px', marginBottom: '5px' }}><img src={getMarker(type)} style={{ display: 'inline-block', width: '25px', verticalAlign: 'top' }}></img><span style={{ marginLeft: '5px', display: 'inline-block', width: '130px' }}>{type}</span></div>
+   62        ))}
+   63      </div>
+   ..
+  123        <div className="row">
+  124          <div className="col-xs-12">
+  125:           <div className="pull-left" style={{ marginTop: '10px', marginBottom: '15px' }}>
+  126              <EmailDownload downloadData={props.data.permits_by_street} fileName="permits_by_street.csv" />
+  127            </div>
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/development/DevelopmentDetail.js:
+   15        <input
+   16          onChange={event => onChange(event.target.value)}
+   17:         style={{ width: '100%' }}
+   18          value={filter ? filter.value : ''}
+   19          placeholder="Search..."
+   ..
+   27        <input
+   28          onChange={event => onChange(event.target.value)}
+   29:         style={{ width: '100%' }}
+   30          value={filter ? filter.value : ''}
+   31          placeholder="Search..."
+   ..
+   61        }
+   62        <div className="row">
+   63:         <div className="col-sm-12" style={{ marginTop: '15px' }}>
+   64            <fieldset>
+   65              <div className="row">
+   ..
+   69                <div className="col-sm-6">
+   70                  <div className="form-group">
+   71:                   <div className="col-xs-12" style={{ marginBottom: '10px' }}>
+   72                      <a href={['https://www.google.com/maps/?q=', [props.data.y, props.data.x].join(',')].join('')} target="_blank" title="Click to view address in Google maps">
+   73:                       <span style={{ marginRight: '5px' }}><Icon path={IM_MAP5} size={20} /></span>
+   74:                       <label htmlFor="address" style={{ cursor: 'pointer' }}>Address</label>
+   75                      </a>
+   76:                     <div style={{ marginLeft: '15px' }} name="address">{props.data.address}</div>
+   77                    </div>
+   78                  </div>
+   ..
+   85                </div>
+   86              </div>
+   87:             <div style={{ marginRight: '10px', marginLeft: '10px' }}>
+   88                <AccessibleReactTable
+   89                  ariaLabel="Contractors"
+   ..
+  107              </div>
+  108              {props.data.comments.length > 0 &&
+  109:               <div alt={['Table of comments'].join(' ')} style={{ marginTop: '10px', marginRight: '10px', marginLeft: '10px' }}>
+  110                  <AccessibleReactTable
+  111                    ariaLabel="Comments"
+  ...
+  127                        <input
+  128                          onChange={event => onChange(event.target.value)}
+  129:                         style={{ width: '100%' }}
+  130                          value={filter ? filter.value : ''}
+  131                          placeholder="Search..."
+  ...
+  139                        <input
+  140                          onChange={event => onChange(event.target.value)}
+  141:                         style={{ width: '100%' }}
+  142                          value={filter ? filter.value : ''}
+  143                          placeholder="Search..."
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/development/DevelopmentSummary.js:
+   46                <label htmlFor="topicType" className="col-sm-2 control-label">view</label>
+   47                <div className="col-sm-10">
+   48:                 <div className="form-control-static" style={{ display: 'block' }}>development
+   49                  </div>
+   50                </div>
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/development/DevelopmentTable.js:
+   46        Cell: row => (
+   47          <span>
+   48:           <span> <a title="Click to permit in map" href={[urlString, '&zoomToPoint=', [row.original.y, row.original.x].join(',')].join('')} style={{ color: row.isExpanded ? 'white' : '#4077a5' }}><Icon path={IM_MAP5} size={23} /></a></span>
+   49:           <span style={{ marginLeft: '5px' }}>{row.value}</span>
+   50          </span>
+   51        ),
+   ..
+   53          <input
+   54            onChange={event => onChange(event.target.value)}
+   55:           style={{ width: '100%' }}
+   56            value={filter ? filter.value : ''}
+   57            placeholder="Search..."
+   ..
+   66          <span>
+   67            <span title={row.original.permit_type}>{getIcon(row.value, row.isExpanded)}</span>
+   68:           <span style={{ marginLeft: '5px' }}>{row.value}</span>
+   69          </span>
+   70        ),
+   ..
+   72          <input
+   73            onChange={event => onChange(event.target.value)}
+   74:           style={{ width: '100%' }}
+   75            value={filter ? filter.value : ''}
+   76            placeholder="Search..."
+   ..
+   85          <input
+   86            onChange={event => onChange(event.target.value)}
+   87:           style={{ width: '100%' }}
+   88            value={filter ? filter.value : ''}
+   89            placeholder="Search..."
+   ..
+   99          <input
+  100            onChange={event => onChange(event.target.value)}
+  101:           style={{ width: '100%' }}
+  102            value={filter ? filter.value : ''}
+  103            placeholder="Search..."
+  ...
+  116          <input
+  117            onChange={event => onChange(event.target.value)}
+  118:           style={{ width: '100%' }}
+  119            value={filter ? filter.value : ''}
+  120            placeholder="Search..."
+  ...
+  132            <div className="alert alert-info">No results found</div>
+  133          :
+  134:           <div style={{ marginTop: '10px' }}>
+  135              <ExpandableAccessibleReactTable
+  136                ariaLabel="Development"
+  ...
+  163                }}
+  164                SubComponent={row => (
+  165:                 <div style={{ paddingLeft: '34px', paddingRight: '34px', paddingBottom: '15px', backgroundColor: '#f6fcff', borderRadius: '0px', border: '2px solid #4077a5' }}>
+  166                    <DevelopmentDetail data={row.original} standalone={false} />
+  167                  </div>
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/homelessness/HomelessnessDemographics.js:
+  351            </div>
+  352          </div>
+  353:         <div className="row" style={{ marginBottom: '10px' }}>
+  354            <div className="col-md-6">
+  355              <BarChart chartTitle="Families and children" layout="horizontal" mainAxisDataKey="Year" legendHeight={60} dataKeys={family_keys} colorScheme="bright_colors" data={historical_pit} stacked altText="Bar chart of families" domain={[0, 650]} />
+  356            </div>
+  357:           <div className="col-md-6" style={{ paddingLeft: '10px'}}>
+  358              <p>
+  359                <br />
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/homelessness/HomelessnessSummary.js:
+   18        </ButtonGroup>
+   19      </PageHeader>
+   20:     <div className="row" style={{ marginTop: '15px' }}>
+   21        <div className="col-sm-12">
+   22          <a href="http://www.nc211.org" title="NC 211 homelessness resourses" target="_blank">
+   23:           <div className="alert alert-warning" style={{ marginBottom: '0px' }}>
+   24              Are you homeless? Do you need help finding housing? Click here for resources.
+   25            </div>
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/homelessness/HomelessnessVeterans.js:
+  116        </ButtonGroup>
+  117      </PageHeader>
+  118:     <div className="row" style={{ marginTop: '15px' }}>
+  119        <div className="col-sm-12">
+  120          <a href="http://www.nc211.org" title="NC 211 homelessness resourses" target="_blank">
+  121:           <div className="alert alert-warning" style={{ marginBottom: '0px' }}>
+  122              Are you homeless? Do you need help finding housing? Click here for resources.
+  123            </div>
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/homelessness/HomelessnessVeteransInflowOutflow.js:
+  189                  </div>
+  190              </div>
+  191:             <div style={{ height: 450 }}>
+  192                <ResponsiveContainer>
+  193                  <ComposedChart data={this.props.data} barGap="-77%">
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/internal/bpt_projects/ProjectFlow.js:
+  105                return (
+  106                  <div className="row" key={`projects-${idx}`}>
+  107:                   <h1 style={{ marginTop: '40px' }}>{displayName}
+  108:                     <div className="radioGroup pull-right" style={{ marginBottom: '3px' }}>
+  109:                       <RadioGroup name={['viewRadio', `projects-${idx}`].join('_')} selectedValue={props.location.query.view || 'kanban'} onChange={(value) => refreshLocation(getNewUrlParams(value), props.location)} style={{ fontSize: '16px', marginTop: '15px', color: 'black' }}>
+  110                          <label>
+  111                            <Radio value="kanban" />kanban
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/internal/bpt_projects/ProjectFlowTable.js:
+   37        <input
+   38          onChange={event => onChange(event.target.value)}
+   39:         style={{ width: '100%' }}
+   40          value={filter ? filter.value : ''}
+   41          placeholder="Search..."
+   ..
+   50        <input
+   51          onChange={event => onChange(event.target.value)}
+   52:         style={{ width: '100%' }}
+   53          value={filter ? filter.value : ''}
+   54          placeholder="Search..."
+   ..
+   64        <input
+   65          onChange={event => onChange(event.target.value)}
+   66:         style={{ width: '100%' }}
+   67          value={filter ? filter.value : ''}
+   68          placeholder="Search..."
+   ..
+   76        <input
+   77          onChange={event => onChange(event.target.value)}
+   78:         style={{ width: '100%' }}
+   79          value={filter ? filter.value : ''}
+   80          placeholder="Search..."
+   ..
+   88        <input
+   89          onChange={event => onChange(event.target.value)}
+   90:         style={{ width: '100%' }}
+   91          value={filter ? filter.value : ''}
+   92          placeholder="Search..."
+   ..
+  100        <input
+  101          onChange={event => onChange(event.target.value)}
+  102:         style={{ width: '100%' }}
+  103          value={filter ? filter.value : ''}
+  104          placeholder="Search..."
+  ...
+  116            <div className="alert alert-info">No results found</div>
+  117          :
+  118:           <div style={{ marginTop: '10px' }} id={props.id}>
+  119              <AccessibleReactTable
+  120                ariaLabel="Projects"
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/maintenance/MaintenanceByStreet.js:
+   16    }
+   17    if (entity === 'CITY OF ASHEVILLE') {
+   18:     return (<div><span><a href="http://www.ashevillenc.gov/departments/street_services/maintenance.htm" target="_blank">{entity}</a></span><span style={{ marginLeft: '10px' }}><a href="http://www.ashevillenc.gov/departments/it/online/service_requests.htm" target="_blank"><button className="btn btn-xs btn-warning">Report with the Asheville App</button></a>
+   19      </span></div>);
+   20    }
+   ..
+   42          <span>
+   43            <span><a title="Click to centerline in map" href={[urlString, '&bounds=', JSON.stringify(getBounds(row.original.line))].join('')}><Icon path={IM_MAP5} size={23} /></a></span>
+   44:           <span style={{ marginLeft: '5px' }}>{parseInt(row.value, 10)}</span>
+   45          </span>
+   46        ),
+   ..
+   49          <input
+   50            onChange={event => onChange(event.target.value)}
+   51:           style={{ width: '100%' }}
+   52            value={filter ? filter.value : ''}
+   53            placeholder="Search..."
+   ..
+   64          <input
+   65            onChange={event => onChange(event.target.value)}
+   66:           style={{ width: '100%' }}
+   67            value={filter ? filter.value : ''}
+   68            placeholder="Search..."
+   ..
+   82        </div>
+   83        <div className="col-sm-12">
+   84:         <div id="listView" hidden={props.location.query.view !== 'list'} style={{ marginTop: '10px' }}>
+   85            <AccessibleReactTable
+   86              ariaLabel="Street Maintenance"
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/neighborhood/Neighborhood.js:
+   32          <div className="col-sm-7">
+   33            <fieldset className="detailsFieldset">
+   34:             <div className="col-xs-12" style={{ marginBottom: '15px' }}>
+   35                <Map
+   36                  drawPolygon
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/owner/Owner.js:
+   27        <input
+   28          onChange={event => onChange(event.target.value)}
+   29:         style={{ width: '100%' }}
+   30          value={filter ? filter.value : ''}
+   31          placeholder="Search..."
+   ..
+   40        <input
+   41          onChange={event => onChange(event.target.value)}
+   42:         style={{ width: '100%' }}
+   43          value={filter ? filter.value : ''}
+   44          placeholder="Search..."
+   ..
+   57        <input
+   58          onChange={event => onChange(event.target.value)}
+   59:         style={{ width: '100%' }}
+   60          value={filter ? filter.value : ''}
+   61          placeholder="Search..."
+   ..
+   92        <div className="row">
+   93          <div className="col-xs-12">
+   94:           <div className="pull-left" style={{ marginTop: '10px', marginBottom: '15px' }}>
+   95              <EmailDownload downloadData={props.data.properties} fileName="properties_by_owner.csv" />
+   96            </div>
+   ..
+  109                <Map bounds={getBoundsFromPropertyList(polygons)} drawPolygon polygonData={combinePolygonsFromPropertyList(props.data.properties)} />
+  110                :
+  111:               <div style={{ marginTop: '10px' }}>
+  112                  <ExpandableAccessibleReactTable
+  113                    ariaLabel="Owner's Properties"
+  ...
+  140                    }}
+  141                    SubComponent={row => (
+  142:                     <div style={{
+  143                        paddingLeft: '34px', paddingRight: '34px', paddingTop: '15px', backgroundColor: '#f6fcff', borderRadius: '0px', border: '2px solid #4077a5',
+  144                      }}
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/property/PropertiesByNeighborhood.js:
+   23        <input
+   24          onChange={event => onChange(event.target.value)}
+   25:         style={{ width: '100%' }}
+   26          value={filter ? filter.value : ''}
+   27          placeholder="Search..."
+   ..
+   40        <input
+   41          onChange={event => onChange(event.target.value)}
+   42:         style={{ width: '100%' }}
+   43          value={filter ? filter.value : ''}
+   44          placeholder="Search..."
+   ..
+   55        <input
+   56          onChange={event => onChange(event.target.value)}
+   57:         style={{ width: '100%' }}
+   58          value={filter ? filter.value : ''}
+   59          placeholder="Search..."
+   ..
+   87              <div className="alert alert-info">No results found</div>
+   88            :
+   89:             <div style={{ marginTop: '10px' }}>
+   90                <ExpandableAccessibleReactTable
+   91                  ariaLabel="Neighborhood Properties"
+   ..
+  118                  }}
+  119                  SubComponent={row => (
+  120:                   <div style={{ paddingLeft: '34px', paddingRight: '34px', paddingBottom: '15px', backgroundColor: '#f6fcff', borderRadius: '0px', border: '2px solid #4077a5' }}>
+  121                      <Property data={row.original} hideHeader={true} inTable />
+  122                    </div>
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/property/PropertiesByStreet.js:
+   23        <input
+   24          onChange={event => onChange(event.target.value)}
+   25:         style={{ width: '100%' }}
+   26          value={filter ? filter.value : ''}
+   27          placeholder="Search..."
+   ..
+   40        <input
+   41          onChange={event => onChange(event.target.value)}
+   42:         style={{ width: '100%' }}
+   43          value={filter ? filter.value : ''}
+   44          placeholder="Search..."
+   ..
+   55        <input
+   56          onChange={event => onChange(event.target.value)}
+   57:         style={{ width: '100%' }}
+   58          value={filter ? filter.value : ''}
+   59          placeholder="Search..."
+   ..
+   87              <div className="alert alert-info">No results found</div>
+   88            :
+   89:             <div alt={['Table of addresses'].join(' ')} style={{ marginTop: '10px' }}>
+   90                <ExpandableAccessibleReactTable
+   91                  ariaLabel="Street Properties"
+   ..
+  118                  }}
+  119                  SubComponent={row => (
+  120:                   <div style={{ paddingLeft: '34px', paddingRight: '34px', paddingBottom: '15px', backgroundColor: '#f6fcff', borderRadius: '0px', border: '2px solid #4077a5' }}>
+  121                      <Property data={row.original} hideHeader={true} inTable />
+  122                    </div>
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/property/Property.js:
+   51          <input
+   52            onChange={event => onChange(event.target.value)}
+   53:           style={{ width: '100%' }}
+   54            value={filter ? filter.value : ''}
+   55            placeholder="Search..."
+   ..
+   77          <input
+   78            onChange={event => onChange(event.target.value)}
+   79:           style={{ width: '100%' }}
+   80            value={filter ? filter.value : ''}
+   81            placeholder="Search..."
+   ..
+  107            <fieldset className="detailsFieldset">
+  108              <div className="row">
+  109:               <div className="col-xs-12" style={{ marginBottom: '10px' }}>
+  110                  <InCityMessage inTheCity={propertyData.is_in_city} />
+  111                </div>
+  112              </div>
+  113              <div className="col-xs-12">
+  114:               <div style={{ marginTop: '10px' }}>
+  115                  <Map bounds={getBoundsFromPropertyPolygons(propertyData.polygons)} drawPolygon polygonData={combinePolygonsFromPropertyList([propertyData])} height="250px" />
+  116                </div>
+  ...
+  155                      <DetailsFormGroup colWidth="6" label="Appraisal area" name="appraisal_area" value={propertyData.appraisal_area} hasLabel />
+  156                      <div className="row">
+  157:                       <div className="col-xs-12" style={{ marginRight: '10px', marginLeft: '15px', width: '95%' }}>
+  158                          <AccessibleReactTable
+  159                            ariaLabel="Property Addresses"
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/search/searchByEntities/SearchByEntity.js:
+    8    switch (entityType) {
+    9      case 'neighborhood':
+   10:       return <span style={{ marginLeft: '3px'}}><Icon path={IM_USERS} size={26} /></span>;
+   11      case 'street':
+   12:       return <span style={{ marginLeft: '3px'}}><Icon path={IM_ROAD} size={26} /></span>;
+   13      case 'address':
+   14        return <Icon path={IM_LOCATION} size={26} />;
+   15      case 'owner':
+   16:       return <span style={{ marginLeft: '3px'}}><Icon path={IM_USER} size={26} /></span>;
+   17      case 'google':
+   18:       return <span style={{ marginLeft: '4px'}}><Icon path={IM_GOOGLE} size={26} /></span>;
+   19      case 'property':
+   20:       return <span style={{ marginLeft: '4px'}}><Icon path={IM_HOME2} size={26} /></span>;
+   21      default:
+   22:       return <span style={{ marginLeft: '3px'}}><Icon path={IM_LIBRARY2} size={26} /></span>;
+   23    }
+   24  };
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/search/searchResults/SearchResultGroup.js:
+   50      switch (type) {
+   51        case 'address':
+   52:         return (<span style={{ marginRight: '5px' }}><Icon path={IM_LOCATION} size={26} /></span>);
+   53        case 'property':
+   54:         return (<span style={{ marginRight: '5px' }}><Icon path={IM_HOME2} size={26} /></span>);
+   55        case 'street':
+   56:         return (<span style={{ marginRight: '5px' }}><Icon path={IM_ROAD} size={26} /></span>);
+   57        case 'neighborhood':
+   58:         return (<span style={{ marginRight: '5px' }}><Icon path={IM_USERS} size={26} /></span>);
+   59        case 'permit':
+   60:         return (<span style={{ marginRight: '5px' }}><Icon path={IM_OFFICE} size={26} /></span>);
+   61        case 'crime':
+   62:         return (<span style={{ marginRight: '5px' }}><Icon path={IM_SHIELD3} size={26} /></span>);
+   63        case 'owner':
+   64:         return (<span style={{ marginRight: '5px' }}><Icon path={IM_USER} size={26} /></span>);
+   65        case 'place':
+   66:         return (<span style={{ marginRight: '5px' }}><Icon path={IM_GOOGLE} size={26} /></span>);
+   67        case 'search':
+   68:         return (<span style={{ marginRight: '5px' }}><Icon path={IM_SEARCH} size={26} /></span>);
+   69        default:
+   70:         return (<span style={{ marginRight: '5px' }}><Icon path={IM_QUESTION} size={26} /></span>);
+   71      }
+   72    };
+   ..
+   81          <span className="badge">{props.data.results.length}</span>
+   82          {props.data.label === 'place' &&
+   83:           <img src={require('./powered_by_google_on_white.png')} alt="Powered by Google" style={{ marginLeft: '20px' }}></img>
+   84          }
+   85        </h2>,
+   86        accessor: 'label',
+   87        Cell: row => (
+   88:         <span style={{ display: 'flex', flexWrap: 'wrap' }}>
+   89:           <a href={getLink(row.original.type, row.original.id, props.searchText, props.selectedEntities, row.original.label, props.originalSearch)} style={props.data.label === 'place' ? { flex: '50' } : { flex: '100' }}>
+   90:             <span className="text-primary" style={{ marginLeft: '20px' }}>
+   91                {getIcon(row.original.type === 'place' ? 'search' : row.original.type)}
+   92                {row.value}
+   ..
+   94            </a>
+   95            {props.data.label === 'place' &&
+   96:             <span className="text-primary" style={{ flex: '50', marginLeft: '20px' }}>
+   97                <a
+   98                  href={['https://www.google.com/maps/place/?q=place_id:', row.original.place_id].join('')}target="_blank"
+   99                >
+  100:                 <span style={{ marginRight: '5px' }}><Icon path={IM_GOOGLE} size={26} /></span>{row.original.place_name}
+  101                </a>
+  102              </span>
+  ...
+  107          <input
+  108            onChange={event => onChange(event.target.value)}
+  109:           style={{ width: '100%' }}
+  110            value={filter ? filter.value : ''}
+  111            placeholder="Filter results..."
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/spatial_event_topic_summary/SpatialEventTopicLocationInfo.js:
+   21      <label htmlFor="extent" className="col-sm-2 control-label">{renderLabel(props.spatialType)}</label>
+   22      <div className="col-sm-10">
+   23:       <div className="form-control-static" style={{ display: 'block' }}>{props.spatialDescription}
+   24          {/*<span className="pull-right"><a title="Change location"><Icon path={IM_SEARCH} /> Change location</a></span>*/}
+   25        </div>
+
+/Users/jessemichel/Documents/git/simplicity2/src/app/street/Street.js:
+   33          <div className="col-sm-6">
+   34            <fieldset className="detailsFieldset">
+   35:             <div className="col-xs-12" style={{ marginBottom: '15px' }}>
+   36                <Map height="250px" legend={createMaintenanceLegend(formatMaintenanceData(props.data.streets))} maintenanceData={formatMaintenanceData(props.data.streets)} drawMaintenance bounds={props.location.query.bounds !== undefined & props.location.query.bounds !== '' ? JSON.parse(props.location.query.bounds) : getBoundsFromStreetData(props.data.streets)} />
+   37              </div>
+
+/Users/jessemichel/Documents/git/simplicity2/src/shared/Button.js:
+   28  
+   29  const Button = props => (
+   30:   <button className={getButtonClass(props.size, props.type, props.active)} style={getButtonStyle(props.positionInGroup)} onClick={props.onClick} >
+   31      {props.children}
+   32    </button>
+
+/Users/jessemichel/Documents/git/simplicity2/src/shared/ButtonGroup.js:
+    3  
+    4  const ButtonGroup = props => (
+    5:   <div className={['btn-group pull-', props.alignment].join('')} style={props.style}>
+    6      { props.children }
+    7    </div>
+
+/Users/jessemichel/Documents/git/simplicity2/src/shared/Collapsible.js:
+  181  
+  182      return (
+  183:       <div style={{ outline: '#4579B3 3px solid', outlineOffset: this.state.hover ? '3px' : '-1px' }}>
+  184:         <div className={parentClassString.trim()} style={overflowStyle}>
+  185:           <a href="#" style={linkStyle} onKeyPress={this.handleKeyUp} onClick={this.handleTriggerClick} onFocus={() => this.setFocusLink(true)} onBlur={() => this.setFocusLink(false)} onMouseEnter={() => this.setFocusLink(true)} onMouseLeave={() => this.setFocusLink(false)}>
+  186              <span className={triggerClassString} >
+  187:               {trigger} <span style={whiteSpaceStyle}>{whiteSpace}</span>
+  188              </span>
+  189            </a>
+  190:           <div className={outerClassString.trim()} ref="outer" style={dropdownStyle} onTransitionEnd={this.handleTransitionEnd}>
+  191              <div className={innerClassString.trim()} ref="inner">
+  192                {children}
+
+/Users/jessemichel/Documents/git/simplicity2/src/shared/DetailsFormGroup.js:
+    3  
+    4  const DetailsFormGroup = props => (
+    5:   <div className="form-group" style={{ marginBottom: '-15px' }}>
+    6:     <div className={['col-xs-', props.colWidth].join('')} style={{ marginBottom: '10px' }}>
+    7        {props.icon !== null &&
+    8:       <span style={{ marginRight: '5px' }}>{props.icon}</span>
+    9        }
+   10        {props.hasLabel &&
+   11          <label htmlFor={props.name}>{props.label}</label>
+   12        }
+   13:       <div style={{ marginLeft: '15px' }} name={props.name}>{props.value}</div>
+   14      </div>
+   15    </div>
+
+/Users/jessemichel/Documents/git/simplicity2/src/shared/DetailsIconLinkFormGroup.js:
+    6      <a href={props.href} title={props.title} target={props.inWindow ? '_self' : '_blank'}>
+    7        <div className="form-group">
+    8:         <div className={['col-xs-', props.colWidth].join('')} style={{ marginBottom: '10px' }}>
+    9:           <span style={{ marginRight: '5px' }}>{props.icon}</span>
+   10:           <span style={{ fontWeight: 'bold' }}>{props.label}</span>
+   11          </div>
+   12        </div>
+
+/Users/jessemichel/Documents/git/simplicity2/src/shared/DetailsTable.js:
+   28              defaultPageSize={props.data.length}
+   29              showPagination={false}
+   30:             style={{ marginRight: '10px', marginLeft: '15px', width: '95%' }}
+   31            />
+   32          </div>
+
+/Users/jessemichel/Documents/git/simplicity2/src/shared/EmailDownload.js:
+    8  
+    9  const EmailDownload = props => (
+   10:   <div style={{ marginBottom: '5px' }}>
+   11      <CSVLink data={props.downloadData} filename={props.fileName || 'data.csv'}>
+   12        <Button type="success" size="xs"><Icon path={IM_DOWNLOAD7} /> Download</Button>
+   13      </CSVLink>
+   14:     {/* <ButtonGroup style={{ marginBottom: '5px', marginRight: '5px' }}>
+   15        <Button type="success" onClick={props.emailFunction}><Icon path={IM_ENVELOP5} /> Email</Button>
+   16      </ButtonGroup> */}
+
+/Users/jessemichel/Documents/git/simplicity2/src/shared/Error.js:
+    7        <div className="alert alert-danger alert-sm">
+    8          <p>
+    9:           There was an error reaching the server. You may report issues using <a href="https://docs.google.com/a/ashevillenc.gov/forms/d/e/1FAIpQLSdjNwOmoDY3PjQOVreeSL07zgI8otIIPWjY7BnejWMAjci8-w/viewform?c=0&w=1" target="_blank" style={{ color: '#fff', textDecoration: 'underline' }}>this form</a>.
+   10          </p>
+   11          <p>
+
+/Users/jessemichel/Documents/git/simplicity2/src/shared/FilterCheckbox.js:
+   38  
+   39      return (
+   40:         <div className="col-lg-2 col-md-3 col-sm-4 col-xs-6" style={{cursor: 'pointer'}}
+   41               onMouseUp={e => e.target.blur()}
+   42               tabIndex="-1">
+   43            <div className={mainStyle} onMouseUp={e => e.target.blur()} tabIndex="-1"
+   44                 onClick={this.handleClick}>
+   45:             <div className={backgroundStyle} style={{paddingTop: '10px'}} onMouseUp={e => e.target.blur()} tabIndex="-1">
+   46:               <div className="text-center text-primary" style={{minHeight: '30px'}} onMouseUp={e => e.target.blur()} tabIndex="-1">
+   47:                 <input tabIndex="-1" style={{marginRight: '7px'}} type="checkbox" aria-label={this.props.label}
+   48                         label={this.props.label} value={this.props.value} checked={this.state.checked} onKeyDown={this.handleKey} onMouseUp={e => e.target.blur()}
+   49                         readOnly/>
+   50:                 <label style={{fontWeight: 'normal', cursor: 'pointer'}} onMouseUp={e => e.target.blur()} tabIndex="-1">{this.props.label}</label>
+   51                </div>
+   52              </div>
+
+/Users/jessemichel/Documents/git/simplicity2/src/shared/FilterCheckboxGroup.js:
+   53    render () {
+   54      return (
+   55:       <div className="row" id={this.props.id} style={{backgroundColor: '#ffffff'}} tabIndex="0" onMouseUp={e => e.target.blur()} onKeyDown={this.handleEvent}>
+   56          { this.props.children }
+   57        </div>
+
+/Users/jessemichel/Documents/git/simplicity2/src/shared/Icon.js:
+   17    return (
+   18      <svg
+   19:       style={styles.svg}
+   20        width={`${props.size}px`}
+   21        height={`${props.size}px`}
+   ..
+   27            <path
+   28              key={['path', index].join('_')}
+   29:             style={styles.path}
+   30              d={path}
+   31            ></path>
+
+/Users/jessemichel/Documents/git/simplicity2/src/shared/LoadingAnimation.js:
+    6      case 'small':
+    7        return (
+    8:         <div style={{ marginTop: props.marginTop, textAlign: 'center' }}>
+    9:           <div style={{ marginTop: '30px' }} className="cssload-loader-small">
+   10              <div className="cssload-dot-small"></div>
+   11              <div className="cssload-dot-small"></div>
+   ..
+   14              <div className="cssload-dot-small"></div>
+   15            </div>
+   16:           <div style={{ paddingTop: '250px' }}>{props.message}</div>
+   17          </div>
+   18        );
+   19      default:
+   20        return (
+   21:         <div style={{ marginTop: props.marginTop, textAlign: 'center' }}>
+   22:           <div style={{ marginTop: '30px' }} className="cssload-loader">
+   23              <div className="cssload-dot"></div>
+   24              <div className="cssload-dot"></div>
+   ..
+   27              <div className="cssload-dot"></div>
+   28            </div>
+   29:           <div style={{ paddingTop: '250px' }}>{props.message}</div>
+   30          </div>
+   31        );
+
+/Users/jessemichel/Documents/git/simplicity2/src/shared/PageHeader.js:
+    7      <div className="col-sm-12">
+    8        {props.image &&
+    9:         <img alt={props.imageAlt} src={props.image} style={{ width: '100px', float: 'left', marginRight: '10px' }} />
+   10        }
+   11        <h1>
+   12          {props.icon &&
+   13:           <span style={{ marginRight: '5px' }}>{props.icon}</span>
+   14          }
+   15          {props.children}
+
+/Users/jessemichel/Documents/git/simplicity2/src/shared/visualization/AreaChart.js:
+   65            <div
+   66              className="col-sm-12"
+   67:             style={{
+   68                width: '100%',
+   69                display: 'inline-block',
+   ..
+   73            >
+   74              <div
+   75:               style={{
+   76                  height: this.props.height,
+   77                  margin: '0 auto',
+   ..
+   97                  yAccessor={d => +d.value}
+   98                  lineType="stackedarea"
+   99:                 lineStyle={d => ({ fill: d.color })}
+  100                  margin={{ top: 40, right: 40, bottom: 60, left: 40 }}
+  101                  axes={[
+  ...
+  112                    },
+  113                  ]}
+  114:                 pointStyle={{
+  115                    fill: 'white',
+  116                    stroke: 'white',
+  ...
+  151                      textLines={textLines}
+  152                      title={d[this.props.mainAxisDataKey]}
+  153:                     style={{
+  154                        backgroundColor: 'white',
+  155                        border: '1px solid black',
+
+/Users/jessemichel/Documents/git/simplicity2/src/shared/visualization/BarChart.js:
+  113                      this.setState({ hover: null });
+  114                  }}
+  115:                 style={d => (
+  116                    this.state.hover === d[this.props.mainAxisDataKey] ?
+  117                    // For the currently hovered bar, return a brighter fill and add a stroke
+
+/Users/jessemichel/Documents/git/simplicity2/src/shared/visualization/HorizontalLegend.js:
+   10  
+   11    return (<div
+   12:     style={props.style}
+   13    >
+   14      {labelItems.map((item, index) => {
+   ..
+   16        return (<div
+   17          key={`${label}-legendItem-${index}`}
+   18:         style={{
+   19            padding: `0px ${rectWidth / 3}px 0px 0px`,
+   20            whiteSpace: 'normal',
+   ..
+   26            height={rectWidth}
+   27            width={rectWidth}
+   28:           style={{
+   29              margin: `0px ${rectWidth / 4}px`,
+   30            }}
+   31          >
+   32            <rect
+   33:             style={{
+   34                fill: item.color,
+   35              }}
+
+/Users/jessemichel/Documents/git/simplicity2/src/shared/visualization/LineGraph.js:
+   73            <div
+   74              className="col-sm-12"
+   75:             style={{
+   76                width: '100%',
+   77                display: 'inline-block',
+   ..
+   81            >
+   82              <div
+   83:               style={{
+   84                  height: this.props.height,
+   85                  margin: '0 auto',
+   ..
+   99                  yAccessor={d => +d.value}
+  100                  yExtent={[0, 100]}
+  101:                 lineStyle={{ stroke: lineColor, strokeWidth: '4px'}}
+  102                  margin={{ top: 10, right: 40, bottom: 50, left: 45 }}
+  103                  axes={[
+  ...
+  115                    },
+  116                  ]}
+  117:                 pointStyle={{
+  118                    stroke: lineColor,
+  119                    fillOpacity: '0',
+  ...
+  141                      textLines={textLines}
+  142                      title={d[this.props.mainAxisDataKey]}
+  143:                     style={{
+  144                        backgroundColor: 'white',
+  145                        border: '1px solid black',
+
+/Users/jessemichel/Documents/git/simplicity2/src/shared/visualization/Map.js:
+   43  
+   44    return (
+   45:     <div style={{ height: props.height, width: props.width }}>
+   46        <LeafletMap className="markercluster-map" center={shouldZoomToNonCenter ? zoomTo : props.center} zoom={props.zoom} maxZoom={18} bounds={props.bounds === null ? getBounds(shouldZoomToNonCenter ? zoomTo : props.center, shouldZoomToNonCenter ? 83 : props.within) : props.bounds}>
+   47          <LayersControl position="topright">
+   ..
+  109            <MapLegendControl>
+  110              <div className="legendIcon"><Icon path={IM_LIST2} size={24} color="#828282" /></div>
+  111:             <div className="legend" style={{ maxHeight: parseInt(props.height.split('px')[0], 10) / 2 }}>
+  112:               <div className="closeLegend" style={{ fontWeight: 'bold', fontSize: '14px', color: '#979797' }}
+  113                onClick={(e) => { 
+  114                  if (e.target.parentNode.style.display === 'block') {
+
+/Users/jessemichel/Documents/git/simplicity2/src/shared/visualization/PieChart.js:
+   31          <HorizontalLegend
+   32            formattedData={thisData}
+   33:           style={{ width: '65%', margin: '0 auto', paddingBottom: '10px' }}
+   34          />
+   35          <div
+   ..
+   37          >
+   38            <div
+   39:             style={{ height: this.props.height, width: this.props.height, margin: '0 auto' }}
+   40            >
+   41              <ResponsiveOrdinalFrame
+   ..
+   54                }}
+   55                size={[this.props.height - 20, this.props.height - 20]}
+   56:               style={d => ({
+   57                  position: 'absolute',
+   58                  fill: d.color,
+   ..
+   68                  return (<Tooltip
+   69                    textLines={textLine}
+   70:                   style={{
+   71                      fontWeight: 'bolder',
+   72                    }}
+
+/Users/jessemichel/Documents/git/simplicity2/src/shared/visualization/Sankey.js:
+   70              return (<text
+   71                key={key}
+   72:               style={style}
+   73                x={d.d.x - (4 * label.length)}
+   74                y={d.d.y}
+   ..
+   82              return (<text
+   83                key={key}
+   84:               style={style}
+   85                x={d.d.x - (4 * label.length)}
+   86                y={d.d.y}
+   ..
+   95            return (<text
+   96              key={key}
+   97:             style={style}
+   98              x={d.d.x - (4 * label.length)}
+   99              y={d.d.y}
+  ...
+  103            </text>);
+  104          }}
+  105:         edgeStyle={(d) => {
+  106            // If source or target is hovered node, opacity should be darker
+  107            const opacity = (this.state.hover === d.source.name || this.state.hover === d.target.name) ? '0.75' : '0.15';
+  108            return { stroke: 'none', fill: 'gray', fillOpacity: opacity };
+  109          }}
+  110:         nodeStyle={(d) => {
+  111            const colorDomain = [graph.nodes[graph.nodes.length - 1].value, graph.nodes[0].value];
+  112            nodeColor.domain(colorDomain);
+
+/Users/jessemichel/Documents/git/simplicity2/src/shared/visualization/Tooltip.js:
+   12    );
+   13    styles.minWidth = `${minWidth / 2}em`;
+   14:   return (<div style={styles}>
+   15:     <div style={{ fontWeight: 'bolder', textAlign: 'center' }}>
+   16        {props.title}
+   17      </div>
+   18      {props.textLines.map((lineObj, i) =>
+   19:       <div key={`textLine-${i}`} style={{ color: lineObj.color }}>{lineObj.text}</div>
+   20      )}
+   21    </div>);
+
+/Users/jessemichel/Documents/git/simplicity2/src/shared/visualization/Treemap.js:
+   92    }
+   93    return (
+   94:     <text x={x + 4} y={y + 17} fill={fill} stroke="none" style={{ fontWeight: 'bold' }}>
+   95        {lines.map((word, index) => (<tspan key={[name, 'line', index].join('_')} dy={16} x={x + 4}>{word}</tspan>))}
+   96      </text>
+   ..
+  107          <title>{[name, getDollarsForTooltips(amount)].join(' ')}</title>
+  108          <path className="recharts-rectangle" d={myD} onClick={diveDeeper !== undefined && depth === 1 ? () => diveDeeper(props) : null}
+  109:           style={{
+  110              cursor: 'pointer',
+  111              fill: differenceColors ? getFill(delta) : COLORS[Math.floor(index % root.children.length)],
+  ...
+  113            }} />
+  114          { showingLabels && (width * height > 500) && (width > 75 && height > 40) ?
+  115:           <text x={x + 4} y={y + 16} fill={delta < 0.5 ? "black" : "white"} stroke="none" style={{ fontWeight: 'bold' }}>
+  116              {getDollars(amount)}
+  117            </text>
+  ...
+  163    render() {
+  164      return (
+  165:       <div style={{ height: this.props.height }} onClick={this.toggleLabels} alt={this.altText}>
+  166          <ResponsiveContainer>
+  167            <RechartsTreemap
+  ...
+  175            />
+  176          </ResponsiveContainer>
+  177:         <button className="btn btn-primary btn-xs pull-right" style={{ marginTop: '3px' }} id="toggleLabels">{this.state.showingLabels === true ? 'Hide labels' : 'Show labels'}</button>
+  178        </div>
+  179      );
+
+/Users/jessemichel/Documents/git/simplicity2/src/utilities/mapUtilities.js:
+    8    }
+    9    if (entity === 'CITY OF ASHEVILLE') {
+   10:     return (<div><span><a href="http://www.ashevillenc.gov/departments/street_services/maintenance.htm" target="_blank">{entity}</a></span><span style={{ marginLeft: '10px' }}><a href="http://www.ashevillenc.gov/departments/it/online/service_requests.htm" target="_blank"><button className="btn btn-xs btn-warning">Report with the Asheville App</button></a>
+   11      </span></div>);
+   12    }
+   ..
+  187    }
+  188    return (
+  189:     <div style={{ width: '160px' }}>
+  190        {maintenanceEntities.map((type, index) => (
+  191:         <div key={`legendItem-${type}`} style={{ width: '160px', marginBottom: '5px' }}><Icon path={IM_CIRCLE2} size={16} color={colors[index]} verticalAlign="top" /><span style={{ marginLeft: '5px', display: 'inline-block', width: '130px' }}>{type}</span></div>
+  192        ))}
+  193      </div>
+
+/Users/jessemichel/Documents/git/simplicity2/src/utilities/auth/authProviderModal.js:
+   10    return (
+   11      <div className="">
+   12:       <div className="modal fade in" style={display} tabIndex="-1" role="dialog">
+   13          <div className="modal-dialog" role="document">
+   14            <div className="modal-content">

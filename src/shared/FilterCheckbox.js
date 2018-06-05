@@ -1,78 +1,101 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Checkbox, CheckboxGroupContext } from 'accessible-react-checkbox-group';
+import { generate } from 'namor';
 import '../styles/components/filterCheckbox.scss';
 
+
 class FilterCheckbox extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      checked: props.selected
-    };
-    this.handleClick = this.handleClick.bind(this);
-    this.handleKey = this.handleKey.bind(this);
-  }
+  state = {
+    id: generate({ words: 2 }),
+    parentId: generate({ words: 2 }),
+    labelId: generate({ words: 2 }),
+  };
 
-  handleClick(event) {
-    //event.preventDefault();
-    if(this.props.handleChange != null)
-      this.props.handleChange();
-    this.setState({
-      checked: !this.state.checked,
-    });
-  }
-
-  handleKey(event) {
-    if(event.keyCode === 13) {
-      event.preventDefault();
-      if(this.props.handleChange != null)
-        this.props.handleChange();
-      this.setState({
-        checked: !this.state.checked,
-      });
+  handleClick = (event) => {
+    if (!this.props.disabled) {
+      this.props.onChange(this.props.value, event);
     }
-  }
+  };
+
+  handleKeyDown = (event) => {
+    if (!this.props.disabled && event.key === ' ') {
+      event.preventDefault();
+      event.stopPropagation();
+      this.props.onChange(this.props.value, event);
+    }
+  };
 
   render() {
-    const mainStyle = this.props.disabled ? 'filterCheckboxDisabled' : this.state.checked ? 'filterCheckbox' : 'unchecked';
-    const backgroundStyle = this.state.checked ? 'backgroundChecked' : 'backgroundUnchecked';
+    const mainStyle = this.props.disabled ? 'filterCheckbox filterCheckbox--disabled' : this.props.checked ? 'filterCheckbox filterCheckbox--checked' : 'filterCheckbox filterCheckbox--unchecked';
+    const backgroundStyle = this.props.checked ? 'filterCheckbox filterCheckbox--backgroundChecked' : 'filterCheckbox filterCheckbox--backgroundUnchecked';
 
     return (
-        <div className="col-lg-2 col-md-3 col-sm-4 col-xs-6" style={{cursor: 'pointer'}}
-             onMouseUp={e => e.target.blur()}
-             tabIndex="-1">
-          <div className={mainStyle} onMouseUp={e => e.target.blur()} tabIndex="-1"
-               onClick={this.handleClick}>
-            <div className={backgroundStyle} style={{paddingTop: '10px'}} onMouseUp={e => e.target.blur()} tabIndex="-1">
-              <div className="text-center text-primary" style={{minHeight: '30px'}} onMouseUp={e => e.target.blur()} tabIndex="-1">
-                <input tabIndex="-1" style={{marginRight: '7px'}} type="checkbox" aria-label={this.props.label}
-                       label={this.props.label} value={this.props.value} checked={this.state.checked} onKeyDown={this.handleKey} onMouseUp={e => e.target.blur()}
-                       readOnly/>
-                <label style={{fontWeight: 'normal', cursor: 'pointer'}} onMouseUp={e => e.target.blur()} tabIndex="-1">{this.props.label}</label>
-              </div>
-            </div>
+      <div className="checkboxGroup__checkbox disabledCursor" style={{ cursor: 'pointer' }}>
+        <div
+          id={this.state.parentId}
+          className={`${backgroundStyle} ${mainStyle}`}
+          onClick={this.handleClick}
+          tabIndex={this.props.disabled ? undefined : '0'}
+          onKeyDown={this.handleKeyDown}
+          role="checkbox"
+          aria-checked={this.props.checked}
+          aria-labelledby={this.state.labelId}
+          disabled={this.props.disabled}
+        >
+          <div className="text-center text-primary" /* style={{ minHeight: this.props.minHeight }} */>
+            <Checkbox
+              role="presentation"
+              id={this.state.id}
+              tabIndex="-1"
+              value={this.props.disabled ? false : this.props.value}
+              style={{ marginRight: '7px' }}
+              onClick={e => e.stopPropagation()}
+              onMouseDown={e => e.preventDefault()}
+              onMouseUp={() => document.getElementById(this.state.parentId).focus()}
+              disabled={this.props.disabled}
+            />
+            <label
+              id={this.state.labelId}
+              role="presentation"
+              htmlFor={this.state.id}
+              onClick={e => e.preventDefault()}
+              style={{
+                fontWeight: 'normal',
+                cursor: this.props.disabled ? 'not-allowed' : 'pointer',
+              }}
+            >
+              {this.props.label}
+            </label>
           </div>
         </div>
-      )
+      </div>
+    );
   }
 }
 
 FilterCheckbox.propTypes = {
-  label: PropTypes.string,  //category
-  value: PropTypes.string,  //text
-  selected: PropTypes.bool,
+  label: PropTypes.string,
+  value: PropTypes.string,
   disabled: PropTypes.bool,
-  handleChange: PropTypes.func,
   minHeight: PropTypes.string,
-  focus: PropTypes.bool,
 };
 
 FilterCheckbox.defaultProps = {
-  selected: false,
+  label: undefined,
+  value: undefined,
   disabled: false,
-  handleChange: null,
   minHeight: '30px',
-  focus: false,
+};
 
-}
-
-export default FilterCheckbox;
+export default props => (
+  <CheckboxGroupContext.Consumer>
+    {({ checkedValues, onChange }) => (
+      <FilterCheckbox
+        {...props}
+        checked={checkedValues.indexOf(props.value) >= 0}
+        onChange={onChange}
+      />
+    )}
+  </CheckboxGroupContext.Consumer>
+);

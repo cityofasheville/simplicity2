@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { color } from 'd3-color';
-import { OrdinalFrame } from 'semiotic';
+import { ResponsiveOrdinalFrame } from 'semiotic';
 import HorizontalLegend from './HorizontalLegend';
 import Tooltip from './Tooltip';
-import { formatDataForStackedBar, budgetBarAnnotationRule, labelOrder } from './visUtilities';
+import { formatDataForStackedBar, budgetBarAnnotationRule } from './visUtilities';
 
 
 /*
@@ -12,22 +12,43 @@ import { formatDataForStackedBar, budgetBarAnnotationRule, labelOrder } from './
  * size margins based on where labels are even going (y or x), how long they are, remsize
  */
 
-const getLongDesc = (data, dataKeys, mainAxisKey, valueFormatter) => (
-  <div>
-    {data.map((value, index) => (
-      <div key={[value[mainAxisKey], index].join('_')}>
-        <p>{value[mainAxisKey]}<br />
-          {dataKeys.map(key => (
-            <span key={[value[mainAxisKey], key].join('_')}>
-              {key || '[data error]'}: {valueFormatter !== null ? valueFormatter(value[key]) : value[key]}
-              <br />
-            </span>
-          ))}
-        </p>
-      </div>
-    ))}
-  </div>
-);
+const getLongDesc = (data, dataKeys, mainAxisKey, valueFormatter) => {
+  //need to fix this function to be generic and work for any barchart data sent in.
+  let formattedData = [];
+  if (data.length > 0 && data[0].label === undefined) { //hacky temporary fix so homelessness barcharts still work
+    formattedData = data;
+  } else {
+    for (let item of data) {
+      let yearAlreadyPresent = false;
+      for (let f of formattedData) {
+        if (f.display_year === item.display_year) {
+          f[item.label] = item.value;
+          yearAlreadyPresent = true;
+          break;
+        }
+      }
+      if (!yearAlreadyPresent) {
+        formattedData.push({ display_year: item.display_year, [item.label]: item.value });
+      }
+    }
+  }
+  return (
+    <div>
+      {formattedData.map((value, index) => (
+        <div key={[value[mainAxisKey], index].join('_')}>
+          <p>{value[mainAxisKey]}<br />
+            {dataKeys.map(key => (
+              <span key={[value[mainAxisKey], key].join('_')}>
+                {key || '[data error]'}: {valueFormatter !== null ? valueFormatter(value[key]) : value[key]}
+                <br />
+              </span>
+            ))}
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+};
 
 class BarChart extends React.Component {
   constructor(props) {
@@ -37,7 +58,7 @@ class BarChart extends React.Component {
       showingLongDesc: this.showLongDesc,
     };
 
-    this.toggleLongDesc = this.toggleLongDesc.bind(this)
+    this.toggleLongDesc = this.toggleLongDesc.bind(this);
   }
 
   toggleLongDesc(event) {
@@ -49,7 +70,7 @@ class BarChart extends React.Component {
   }
 
   render() {
-    const formattedData = formatDataForStackedBar(
+    const formattedData = this.props.dataFormatter(
       this.props.data,
       this.props.dataKeys,
       this.props.mainAxisDataKey,
@@ -69,53 +90,46 @@ class BarChart extends React.Component {
           }
         </p>
         <div
-          className="row"
           role="img"
           alt={this.state.altText}
           tabIndex={0}
+          className="row visualization-container"
         >
-          <div
-            className="col-sm-12"
-            style={{
-              width: '100%',
-              display: 'inline-block',
-              margin: '0 auto',
-              textAlign: 'center',
-            }}
-          >
-            <div
-              style={{
-                height: this.props.height,
-                margin: '0 auto',
-                display: 'inline-block',
-                width: '95%',
-                textAlign: 'center',
-              }}
-            >
-              <OrdinalFrame
+          <div style={{height: 350}}>
+            <div style={{height: this.props.height}}>
+              <ResponsiveOrdinalFrame
+                responsiveWidth
+                responsiveHeight
                 annotations={this.props.annotations}
                 data={formattedData}
                 hoverAnnotation
-                margin={{ top: 10, right: 40, bottom: 50, left: 60 }}
+                margin={{
+                  top: 10,
+                  right: 10,
+                  bottom: 35,
+                  left: 60,
+                }}
                 oAccessor={this.props.mainAxisDataKey}
-                oLabel={d => {
+                oLabel={(d) => {
                   let textAnchor = 'middle';
                   let transform = 'translate(0,0)';
                   if (this.props.rotateXLabels && this.props.layout === 'vertical') {
                     textAnchor = 'end';
-                    transform = 'translate(8,0)'
+                    transform = 'translate(8,0)';
                   } else if (this.props.layout === 'horizontal') {
                     textAnchor = 'end';
                   }
 
-                  if (this.props.rotateXLabels) { transform += 'rotate(-45)'}
+                  if (this.props.rotateXLabels) { transform += 'rotate(-45)' }
 
-                  return (<text
-                    textAnchor={textAnchor}
-                    transform={transform}
-                  >
+                  return (
+                    <text
+                      textAnchor={textAnchor}
+                      transform={transform}
+                    >
                       {this.props.xAxisTickFormatter(d)}
-                  </text>)
+                    </text>
+                  );
                 }}
                 oPadding={10}
                 projection={this.props.layout}
@@ -138,8 +152,8 @@ class BarChart extends React.Component {
                     { fill: d.color })
                 }
                 tooltipContent={(d) => {
-                  const dPieces = d.pieces || [d.data]
-                  const tooltipTitle = d.column ? d.column.name : d.data[this.props.mainAxisDataKey]
+                  const dPieces = d.pieces || [d.data];
+                  const tooltipTitle = d.column ? d.column.name : d.data[this.props.mainAxisDataKey];
                   const textLines = dPieces.map(piece =>
                     ({
                       text: `${piece.label}: ${this.props.tooltipYValFormatter(piece.value)}`,
@@ -158,38 +172,45 @@ class BarChart extends React.Component {
                     return budgetBarAnnotationRule(d, this.props.layout);
                   }
                   if (d.d.type === 'line' && d.screenCoordinates[0]) {
-                    return (<g key={d.d.label}>
-                      <text
-                        x={d.screenCoordinates[0]}
-                        y={-5}
-                        textAnchor="middle"
-                      >
-                        {d.d.label}
-                      </text>
-                      <line
-                        stroke="black"
-                        strokeWidth={3}
-                        x1={d.screenCoordinates[0]}
-                        x2={d.screenCoordinates[0]}
-                        y1={0}
-                        y2={d.adjustedSize[1]}
-                      />
-                    </g>
+                    return (
+                      <g key={d.d.label}>
+                        <text
+                          x={d.screenCoordinates[0]}
+                          y={-5}
+                          textAnchor="middle"
+                        >
+                          {d.d.label}
+                        </text>
+                        <line
+                          stroke="black"
+                          strokeWidth={3}
+                          x1={d.screenCoordinates[0]}
+                          x2={d.screenCoordinates[0]}
+                          y1={0}
+                          y2={d.adjustedSize[1]}
+                        />
+                      </g>
                     );
                   }
                   return null;
                 }}
                 customHoverBehavior={(d) => {
-                  d && d.pieces ?
-                    this.setState({ hover: d.pieces[0].data[this.props.mainAxisDataKey] }) :
+                  if (d && d.pieces) {
+                    this.setState({ hover: d.pieces[0].data[this.props.mainAxisDataKey] });
+                  } else {
                     this.setState({ hover: null });
+                  }
                 }}
               />
-              <HorizontalLegend
-                formattedData={formattedData}
-                legendLabelFormatter={this.props.legendLabelFormatter}
-              />
             </div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-xs-10 col-xs-offset-1">
+            <HorizontalLegend
+              formattedData={formattedData}
+              legendLabelFormatter={this.props.legendLabelFormatter}
+            />
           </div>
         </div>
         {!this.props.hideSummary &&
@@ -225,6 +246,7 @@ BarChart.propTypes = {
   chartTitle: PropTypes.string,
   colorScheme: PropTypes.string,
   data: PropTypes.array, // eslint-disable-line
+  dataFormatter: PropTypes.func,
   dataKeys: PropTypes.arrayOf(PropTypes.string),
   domain: PropTypes.arrayOf(PropTypes.number),
   height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -246,6 +268,7 @@ BarChart.defaultProps = {
   chartTitle: '',
   colorScheme: 'new_bright_colors',
   data: [],
+  dataFormatter: formatDataForStackedBar,
   dataKeys: [],
   domain: [],
   height: '100%',

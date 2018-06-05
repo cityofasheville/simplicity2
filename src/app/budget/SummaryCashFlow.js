@@ -36,13 +36,14 @@ class SummaryCashFlow extends React.Component {
 
     if (this.props.sankeyData.nodes === null) {
       this.initializeSankey();
+      return <LoadingAnimation />;
     }
 
     return (
       <div className="row">
         <div className="col-sm-12">
           <h3>Cash flow diagram: Revenues to expenditures</h3>
-          <div style={{ marginBottom: '5px' }}>
+          <div>
             The chart below shows how revenue flows through the City’s key funds to the various departments. The thickness of each flow is proportional to the amount of money represented. Mouse over the rectangles and flows to see actual amounts.
           </div>
           <BudgetSankey altText="Cash flow diagram" />

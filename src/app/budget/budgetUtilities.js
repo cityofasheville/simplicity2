@@ -1,12 +1,4 @@
 import tree from 'data-tree';
-const objectAssign = require('object-assign');
-
-const last4Yrs = [
-  2015,
-  2016,
-  2017,
-  2018,
-];
 
 // levels for use in the Treemap
 const expenseLevels = [
@@ -73,7 +65,7 @@ const convertDelta = (flattenedTree) => {
 
 // flatten the tree and export for use by the budget Treemap
 const exportForDetails = (aTree) => {
-  const flattened = aTree.export(data => (objectAssign({}, data, { delta: data.proposed - data.oneYearAgo }, { deltaPercent: calculateDeltaPercent(data.proposed, data.oneYearAgo) })));
+  const flattened = aTree.export(data => (Object.assign({}, data, { delta: data.yearAmounts[data.yearAmounts.length - 1].amount - data.yearAmounts[data.yearAmounts.length - 2].amount }, { deltaPercent: calculateDeltaPercent(data.yearAmounts[data.yearAmounts.length - 1].amount, data.yearAmounts[data.yearAmounts.length - 2].amount) })));
   convertDelta(flattened);
   return flattened;
 };
@@ -100,8 +92,8 @@ const searchChildrenForKey = (aKey, aTreeNode) => {
 const insertLeafCopies = (flattenedTree) => {
   if (flattenedTree.children.length === 0) {
     const splitBreadcrumbPath = flattenedTree.breadcrumbPath.split('>');
-    const splitPath = flattenedTree.path.split('-');
-    flattenedTree.children = [objectAssign({}, flattenedTree, { breadcrumbPath: [flattenedTree.breadcrumbPath, splitBreadcrumbPath[splitBreadcrumbPath.length - 1]].join('>') }, { path: [flattenedTree.path, splitPath[splitPath.length - 1]].join('-') })]; // eslint-disable-linesplitBreadcrumbPath
+    const splitPath = flattenedTree.path.split('_');
+    flattenedTree.children = [Object.assign({}, flattenedTree, { breadcrumbPath: [flattenedTree.breadcrumbPath, splitBreadcrumbPath[splitBreadcrumbPath.length - 1]].join('>') }, { path: [flattenedTree.path, splitPath[splitPath.length - 1]].join('_') })]; // eslint-disable-linesplitBreadcrumbPath
   } else {
     for (let i = 0; i < flattenedTree.children.length; i += 1) {
       insertLeafCopies(flattenedTree.children[i]);
@@ -110,7 +102,8 @@ const insertLeafCopies = (flattenedTree) => {
 };
 
 // builds two trees, one for revenue and one for expense, based on the passed in data
-export const buildTrees = (data, last4Years = last4Yrs) => {
+export const buildTrees = (data, budgetParameters) => {
+  const budgetYears = getBudgetYears(budgetParameters);
   const exTree = tree.create();
   const revTree = tree.create();
   let theTree = revTree;
@@ -119,7 +112,7 @@ export const buildTrees = (data, last4Years = last4Yrs) => {
   exTree.insert({ key: 'root' });
   revTree.insert({ key: 'root' });
   for (let i = 0; i < data.length; i += 1) {
-    const yearIndex = last4Years.indexOf(data[i].year);
+    const yearIndex = budgetYears.indexOf(data[i].year);
     if (yearIndex > -1) {
       theTree = data[i].account_type === 'E' ? exTree : revTree;
       theLevels = data[i].account_type === 'E' ? expenseLevels : revenueLevels;
@@ -131,21 +124,34 @@ export const buildTrees = (data, last4Years = last4Yrs) => {
         let curPath = 'root';
         let breadCrumbPath = 'root';
         for (let k = 0; k <= j; k += 1) {
-          curPath = [curPath, data[i][theLevels[k]]].join('-');
+          curPath = [curPath, encodeURIComponent(data[i][theLevels[k]])].join('_');
           breadCrumbPath = [breadCrumbPath, data[i][theLevelNames[k]]].join('>');
         }
         if (curNode === null) {
-          curNode = theTree.insertToNode(curParent, { key: data[i][theLevels[j]], path: curPath, breadcrumbPath: breadCrumbPath, [theLevels[j]]: data[i][theLevels[j]], name: data[i][theLevelNames[j]], threeYearsAgo: 0, twoYearsAgo: 0, oneYearAgo: 0, proposed: 0, size: 0, amount: 0, account_type: data[i].account_type });
+          curNode = theTree.insertToNode(curParent, {
+            key: data[i][theLevels[j]],
+            path: curPath,
+            breadcrumbPath: breadCrumbPath,
+            [theLevels[j]]: data[i][theLevels[j]],
+            name: data[i][theLevelNames[j]],
+            yearAmounts: budgetYears.map(year => ({
+              year,
+              amount: 0,
+            })),
+            size: 0,
+            amount: 0,
+            account_type: data[i].account_type,
+          });
         }
         curParent = curNode;
-        if (yearIndex === 3) {
-          curNode.data(objectAssign({}, curNode.data(), { proposed: curNode.data().proposed + data[i].budget }, { size: curNode.data().size + data[i].budget }, { amount: curNode.data().amount + data[i].budget }));
-        } else if (yearIndex === 2) {
-          curNode.data(objectAssign({}, curNode.data(), { oneYearAgo: curNode.data().oneYearAgo + data[i].budget })); // but until the last year is actually complete...need budget (?)
-        } else if (yearIndex === 1) {
-          curNode.data(objectAssign({}, curNode.data(), { twoYearsAgo: curNode.data().twoYearsAgo + data[i].actual }));
-        } else if (yearIndex === 0) {
-          curNode.data(objectAssign({}, curNode.data(), { threeYearsAgo: curNode.data().threeYearsAgo + data[i].actual }));
+        curNode.data(Object.assign({}, curNode.data(), { yearAmounts: curNode.data().yearAmounts.map((year, idx) => {
+          if (idx === yearIndex) {
+            return data[i].use_actual === 'true' ? { year: year.year, amount: year.amount + data[i].actual } : { year: year.year, amount: year.amount + data[i].budget };
+          }
+          return year;
+        }) }));
+        if (yearIndex === budgetYears.length - 1) {
+          curNode.data(Object.assign({}, curNode.data(), { amount: data[i].use_actual === 'true' ? curNode.data().amount + data[i].actual : curNode.data().amount + data[i].budget }, { size: data[i].use_actual === 'true' ? curNode.data().size + data[i].actual : curNode.data().size + data[i].budget }));
         }
       }
     }
@@ -167,15 +173,13 @@ export const buildTrees = (data, last4Years = last4Yrs) => {
 };
 
 const roundTree = (node) => {
-  node.data(objectAssign({},
-                         node.data(),
-                         { proposed: Math.round(node.data().proposed) },
-                         { size: Math.round(node.data().size) },
-                         { amount: Math.round(node.data().amount) },
-                         { oneYearAgo: Math.round(node.data().oneYearAgo) },
-                         { twoYearsAgo: Math.round(node.data().twoYearsAgo) },
-                         { threeYearsAgo: Math.round(node.data().threeYearsAgo) },
-                        ));
+  node.data(Object.assign(
+    {},
+    node.data(),
+    { size: Math.round(node.data().size) },
+    { amount: Math.round(node.data().amount) },
+    { yearAmounts: node.data().yearAmounts ? node.data().yearAmounts.map(yearAmount => ({ year: yearAmount.year, amount: Math.round(yearAmount.amount) })) : [{ year: 1234, amount: 0 }, { year: 1234, amount: 0 }] }, // not great just to get dummy value for root
+  ));
   node.childNodes().forEach(c => roundTree(c));
 };
 
@@ -201,34 +205,20 @@ const createSummaryKeys = (data) => {
 };
 
 // helper function to create list of all potential values for summary data
-const createSummaryValues = (data) => {
-  const values = [];
-  let yearAlreadyPresent;
-  for (let i = 0; i < data.length; i += 1) {
-    if (data[i].account_type === 'E') { // only care about 'E' for now
-      yearAlreadyPresent = false;
-      for (let j = 0; j < values.length; j += 1) {
-        if (values[j].year === data[i].year) {
-          values[j][data[i].category_name] = [2, 3].indexOf(last4Yrs.indexOf(values[j].year)) > -1 ? Math.round(data[i].total_budget) : Math.round(data[i].total_actual);
-          yearAlreadyPresent = true;
-          break;
-        }
-      }
-      if (!yearAlreadyPresent) {
-        values.push({ year: data[i].year, display_year: [data[i].year - 1, data[i].year.toString().slice(2)].join('-'), [data[i].category_name]: [2, 3].indexOf(last4Yrs.indexOf(data[i].year)) > -1 ? Math.round(data[i].total_budget) : Math.round(data[i].total_actual), yearAxisNumeric: (1000 * last4Yrs.indexOf(data[i].year)) / 4 });
-      }
+const createSummaryValues = (data, budgetParameters) => (
+  data.map(item => (
+    {
+      display_year: `${parseInt(item.year, 10) - 1}-${parseInt(item.year, 10).toString().slice(2, 4)}`,
+      label: item.category_name,
+      value: budgetParameters.end_year === item.year ? Math.round(item.total_budget) : Math.round(item.total_actual),
     }
-  }
-  values.sort((a, b) => (
-    ((a.year < b.year) ? -1 : ((a.year > b.year) ? 1 : 0)) // eslint-disable-line
-  ));
-  return values;
-};
+  ))
+);
 
 // this function converts the results of the query into the form that the recharts barchart can handle
 // must have an object with dataKeys (list of string keys), and dataValues (object with one value for each key from dataKeys, and a year)
-export const buildSummaryData = (data) => {
-  const summaryData = { dataKeys: createSummaryKeys(data), dataValues: createSummaryValues(data) };
+export const buildSummaryData = (data, budgetParameters) => {
+  const summaryData = { dataKeys: createSummaryKeys(data), dataValues: createSummaryValues(data, budgetParameters) };
   return summaryData;
 };
 
@@ -246,8 +236,8 @@ export const buildCashFlowData = (data) => {
   let linkAlreadyExists = false;
   const fundsToInclude = ['1100', '6100', '6200', '6260', '6240', '6220', '6500'];
   const fundDisplayNames = ['General Fund', 'Water Resources', 'Parking Services', 'US Cellular Center', 'Stormwater', 'Street Cut', 'Transit Services'];
-  const managementAndSupportDepts = ['Legal Department', 'Human Resources Department', 'Information Technology Dept.', 'Administration Services Dept', 'Finance Department', 'General Services Department'];
-  const communityAndResidentDepts = ['Development Services Dept.', 'Economic Development Departmen', 'Planning & Development Dept', 'Capital Project Management Dep'];
+  const managementAndSupportDepts = ['Legal Department', 'Community & Public Engagement', 'Human Resources Department', 'Information Technology Dept.', 'Administration Services Dept', 'Finance Department', 'General Services Department'];
+  const communityAndResidentDepts = ['Development Services Dept.', 'Community & Economic Dev. Dept', 'Equity & Inclusion', 'Planning & Development Dept', 'Capital Project Management Dep'];
   const convertFundNameToDisplayName = (fundId) => {
     const fundIndex = fundsToInclude.indexOf(fundId);
     return fundIndex === -1 ? 'Other' : fundDisplayNames[fundIndex];
@@ -262,9 +252,9 @@ export const buildCashFlowData = (data) => {
   };
   allExpenseRevenueRows = allExpenseRevenueRows.filter(item => (fundsToInclude.indexOf(item.fund_id) > -1)).map((item) => {
     if (item.account_type === 'E') {
-      return objectAssign({}, item, { name: managementAndSupportDepts.indexOf(item.department_name) > -1 ? 'Management & Support Services' : (communityAndResidentDepts.indexOf(item.department_name) > -1 ? 'Other Community & Resident Services' : convertDeptNameToDisplayName(item.department_name)), fund_name: convertFundNameToDisplayName(item.fund_id) }); // eslint-disable-line
+      return Object.assign({}, item, { name: managementAndSupportDepts.indexOf(item.department_name) > -1 ? 'Management & Support Services' : (communityAndResidentDepts.indexOf(item.department_name) > -1 ? 'Other Community & Resident Services' : convertDeptNameToDisplayName(item.department_name)), fund_name: convertFundNameToDisplayName(item.fund_id) }); // eslint-disable-line
     }
-    return objectAssign({}, item, { name: item.category_name, fund_name: convertFundNameToDisplayName(item.fund_id) });
+    return Object.assign({}, item, { name: item.category_name, fund_name: convertFundNameToDisplayName(item.fund_id) });
   });
   // group expenses, revenues, and funds into their department, category, and funds - because the nodes are only one per
   // fund_name, category, and fund
@@ -318,6 +308,29 @@ export const buildCashFlowData = (data) => {
   }
   // combine the revenues, funds, expenses nodes into one array
   sankeyNodes = revenueNodes.concat(fundNodes).concat(expenseNodes);
-  sankeyNodes = sankeyNodes.map(node => (objectAssign({}, node, { value: Math.round(node.value) })));
+  sankeyNodes = sankeyNodes.map(node => (Object.assign({}, node, { value: Math.round(node.value) })));
   return { sankeyNodes, sankeyLinks };
+};
+
+export const getBudgetYears = (budgetParameters) => {
+  const numYears = parseInt(budgetParameters.end_year, 10) - parseInt(budgetParameters.start_year, 10);
+  const years = [];
+  for (let i = 0; i < numYears + 1; i += 1) {
+    years.push(parseInt(budgetParameters.start_year, 10) + i);
+  }
+  return years;
+};
+
+export const createAnnotations = (budgetParameters) => {
+  const numYears = parseInt(budgetParameters.end_year, 10) - parseInt(budgetParameters.start_year, 10);
+  const annotations = [];
+  for (let i = 0; i < numYears + 1; i += 1) {
+    annotations.push({
+      type: 'or',
+      display_year: `${parseInt(budgetParameters.start_year, 10) + (i - 1)}-${(parseInt(budgetParameters.start_year, 10) + i).toString().slice(2, 4)}`,
+      label: i < numYears ? 'Actual Spent' : (budgetParameters.in_budget_season ? 'Proposed' : 'Adopted'),
+      budgetAnnotation: true,
+    });
+  }
+  return annotations;
 };

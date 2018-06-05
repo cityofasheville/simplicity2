@@ -11,15 +11,15 @@ const extractSass = new ExtractTextPlugin({
 
 module.exports = {
   context: path.resolve(__dirname),
-  devtool: 'source-map',
   entry: {
-    app: path.join(__dirname, 'src', 'index.js'),
+    app: ['babel-polyfill', path.join(__dirname, 'src', 'index.js')],
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].[chunkhash].bundle.js',
     publicPath: '/',
   },
+  devtool: process.env.NODE_ENV === 'development' ? 'eval-source-map' : 'source-map',
   module: {
     rules: [
       {

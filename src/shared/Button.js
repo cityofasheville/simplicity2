@@ -13,21 +13,21 @@ const getButtonClass = (size, type, active) => {
   }
 };
 
-const getButtonStyle = (positionInGroup) => {
+const getButtonStyle = (positionInGroup, extraStyle) => {
   switch (positionInGroup) {
     case 'left':
-      return { borderTopRightRadius: '0px', borderBottomRightRadius: '0px' };
+      return { borderTopRightRadius: '0px', borderBottomRightRadius: '0px', ...extraStyle };
     case 'right':
-      return { borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px' };
+      return { borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px', ...extraStyle };
     case 'middle':
-      return { borderTopRightRadius: '0px', borderBottomRightRadius: '0px', borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px' };
+      return { borderTopRightRadius: '0px', borderBottomRightRadius: '0px', borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px', ...extraStyle };
     default:
-      return null;
+      return extraStyle;
   }
 };
 
 const Button = props => (
-  <button className={getButtonClass(props.size, props.type, props.active)} style={getButtonStyle(props.positionInGroup)} onClick={props.onClick} >
+  <button className={getButtonClass(props.size, props.type, props.active)} style={getButtonStyle(props.positionInGroup, props.style)} onClick={props.onClick} >
     {props.children}
   </button>
 );
@@ -35,6 +35,7 @@ const Button = props => (
 Button.propTypes = {
   size: PropTypes.string,
   type: PropTypes.string,
+  style: PropTypes.object,
   children: PropTypes.node,
   onClick: PropTypes.func,
   active: PropTypes.bool,
@@ -47,6 +48,8 @@ Button.defaultProps = {
   active: false,
   positionInGroup: null, // left, middle, right
   onClick: null,
+  style: {},
+  children: undefined,
 };
 
 export default Button;

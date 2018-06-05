@@ -18,10 +18,11 @@ fieldset {
 }
 
 fieldset.detailsFieldset {
-  border: 2px solid #ddd;
+  /*border: 2px solid #ddd;*/
   border-radius: 4px;
   padding-top: 15px;
   margin-bottom: 10px;
+  background: #fbfbfb;
 }
 
 legend {

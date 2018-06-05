@@ -22,7 +22,7 @@ const SearchByEntities = (props) => {
   };
 
   return (
-    <div>
+    <div className="searchbar-entities">
       <span className="offscreen">Entities to search by</span>
       <ul className={styles.searchEntitiesUL}>
         {props.entities.map((entity, i) => (

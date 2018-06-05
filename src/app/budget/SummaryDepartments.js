@@ -17,7 +17,7 @@ class SummaryDepartments extends React.Component {
   }
 
   async initializeSummaryDept() {
-    const summaryDeptData = buildSummaryData(this.props.data.budgetSummary);
+    const summaryDeptData = buildSummaryData(this.props.data.budgetSummary, this.props.data.budgetParameters);
     await this.props.updateBudgetSummaryDept({
       variables: {
         budgetSummaryDept: {
@@ -38,14 +38,11 @@ class SummaryDepartments extends React.Component {
 
     if (this.props.summaryDeptData.dataKeys === null) {
       this.initializeSummaryDept();
+      return <LoadingAnimation size="small" />;
     }
 
     return (
-      <div className="row">
-        <div className="col-sm-12">
-          <BudgetSummaryBarChart categoryType="department" colorScheme="bright_colors_2" {...this.props} />
-        </div>
-      </div>
+      <BudgetSummaryBarChart categoryType="department" colorScheme="bright_colors_2" {...this.props} />
     );
   }
 }
@@ -66,6 +63,11 @@ const budgetSummaryDeptQuery = gql`
         total_budget,
         total_actual,
         year,
+    }
+    budgetParameters {
+      start_year
+      end_year
+      in_budget_season
     }
   }
 `;

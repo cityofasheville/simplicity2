@@ -27,10 +27,10 @@ class BudgetDetailsContainer extends React.Component {
     this.state = {
       treesInitialized: false,
     };
-    
+
     this.initializeTrees = this.initializeTrees.bind(this);
   }
-  
+
   async initializeTrees() {
     const trees = buildTrees(this.props.data.budgetHistory, this.props.data.budgetParameters);
     await this.props.updateBudgetTrees({
@@ -45,7 +45,7 @@ class BudgetDetailsContainer extends React.Component {
     });
     this.setState({ treesInitialized: true });
   }
-  
+
   render() {
     if (this.props.data.loading) { // eslint-disable-line react/prop-types
       return (
@@ -58,6 +58,9 @@ class BudgetDetailsContainer extends React.Component {
 
     if (!this.state.treesInitialized) {
       this.initializeTrees();
+      return (
+        <LoadingAnimation message="Loading...Thank you for your patience. The full budget data can take several moments to load" />
+      );
     }
 
     return (

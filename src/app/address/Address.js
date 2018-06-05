@@ -2,7 +2,17 @@ import React from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import Icon from '../../shared/Icon';
-import { IM_LOCATION, IM_BIN, LI_RECYCLE2, IM_USER, IM_USERS, IM_LOCATION2, IM_HOME2, IM_TRAFFIC_CONE, IM_LEAF } from '../../shared/iconConstants';
+import {
+  IM_LOCATION,
+  IM_BIN,
+  LI_RECYCLE2,
+  IM_USER,
+  IM_USERS,
+  IM_LOCATION2,
+  IM_HOME2,
+  IM_TRAFFIC_CONE,
+  IM_LEAF,
+} from '../../shared/iconConstants';
 import { zoningLinks } from './zoning';
 import PageHeader from '../../shared/PageHeader';
 import ButtonGroup from '../../shared/ButtonGroup';
@@ -14,6 +24,7 @@ import InCityMessage from '../InCityMessage';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import Error from '../../shared/Error';
 import Map from '../../shared/visualization/Map';
+import { content } from './spanish';
 
 const getCurrentRecyclingWeek = () => {
   const d = new Date(); // current time
@@ -30,49 +41,80 @@ const getCurrentRecyclingWeek = () => {
 const calculateRecycling = (dayOfWeek, inCity, week) => {
   if (dayOfWeek !== null) {
     if (getCurrentRecyclingWeek() === week) {
-      return ['this week on ', dayOfWeek, ' (Recycle Week ', week, ')'].join('');
+      return `${content.weekdays[dayOfWeek]} ${content.of_this_week} (${content.recycle_week} ${week})`;
     }
-    return ['next week on ', dayOfWeek, ' (Recycle Week ', week, ')'].join('');
+    return `${content.weekdays[dayOfWeek]} ${content.of_next_week} (${content.recycle_week} ${week})`;
   }
   if (inCity) {
-    return 'No information available';
+    return content.no_information_available;
   }
-  return 'No city pickup';
+  return content.no_city_pickup;
 };
 
 const calculateBrushDay = (dayOfWeek, inCity, week) => {
   if (dayOfWeek !== null) {
     if (getCurrentRecyclingWeek() === week) {
-      return ['this week on ', dayOfWeek, ' (Brush Week ', week, ')'].join('');
+      return `${content.weekdays[dayOfWeek]} ${content.of_this_week} (${content.brush_week} ${week})`;
     }
-    return ['next week on ', dayOfWeek, ' (Brush Week ', week, ')'].join('');
+    return `${content.weekdays[dayOfWeek]} ${content.of_next_week} (${content.brush_week} ${week})`;
   }
   if (inCity) {
-    return 'No information available';
+    return content.no_information_available;
   }
-  return 'No city pickup';
+  return content.no_city_pickup;
 };
 
 const calculateTrash = (dayOfWeek, inCity) => {
   if (dayOfWeek !== null) {
-    return ['every', dayOfWeek].join(' ');
+    return `${content.every} ${content.weekdays[dayOfWeek]}`;
   }
   if (inCity) {
-    return 'No information available';
+    return content.no_information_available;
   }
-  return 'No city pickup';
+  return content.no_city_pickup;
 };
 
 const getMaintenanceInfo = (entity) => {
   if (entity === null) {
-    return <div>No information available</div>;
+    return <div>{content.no_information_available}</div>;
   }
   if (entity === 'CITY OF ASHEVILLE') {
-    return (<div><span><a href="http://www.ashevillenc.gov/departments/street_services/maintenance.htm" target="_blank">{entity}</a></span><span className="form-group__call-to-action"><a href="http://www.ashevillenc.gov/departments/it/online/service_requests.htm" target="_blank"><button className="btn btn-xs btn-warning">Report with the Asheville App</button></a>
-    </span></div>);
+    return (
+      <div>
+        <span>
+          <a
+            href="http://www.ashevillenc.gov/departments/street_services/maintenance.htm"
+            target="_blank"
+          >
+            {entity}
+          </a>
+        </span>
+        <span className="form-group__call-to-action">
+          <a
+            href="http://www.ashevillenc.gov/departments/it/online/service_requests.htm"
+            target="_blank"
+          >
+            <button className="btn btn-xs btn-warning">
+              {content.report_with_the_asheville_app}
+            </button>
+          </a>
+        </span>
+      </div>
+    );
   }
   if (entity === 'NCDOT') {
-    return <div><span><a href="https://apps.ncdot.gov/contactus/Home/PostComment?Unit=PIO" target="_blank">{entity}</a></span></div>;
+    return (
+      <div>
+        <span>
+          <a
+            href="https://apps.ncdot.gov/contactus/Home/PostComment?Unit=PIO"
+            target="_blank"
+          >
+            {entity}
+          </a>
+        </span>
+      </div>
+    );
   }
   return <div>{entity}</div>;
 };
@@ -90,11 +132,11 @@ const Address = (props) => {
 
   return (
     <div className="address">
-      <PageHeader h1={[addressData.address, addressData.zipcode].join(', ')} dataType="Address" h3="About this address" icon={<Icon path={IM_LOCATION} size={50} />}>
+      <PageHeader h1={[addressData.address, addressData.zipcode].join(', ')} dataType={content.data_type} h3={content.about_this_address} icon={<Icon path={IM_LOCATION} size={50} />}>
         <ButtonGroup alignment="">
-          <LinkButton pathname="/search" positionInGroup={props.location.query.placeSearch ? 'left' : ''} query={{ entities: props.location.query.entities, search: props.location.query.search, hideNavbar: props.location.query.hideNavbar }}>Back to search</LinkButton>
+          <LinkButton pathname="/search" positionInGroup={props.location.query.placeSearch ? 'left' : ''} query={{ entities: props.location.query.entities, search: props.location.query.search, hideNavbar: props.location.query.hideNavbar }}>{content.back_to_search}</LinkButton>
           {props.location.query.placeSearch &&
-            <LinkButton positionInGroup="right" pathname="/search/googlePlaceMatches" query={{ entities: props.location.query.entities, search: props.location.query.search, hideNavbar: props.location.query.hideNavbar, placeSearch: props.location.query.placeSearch }}>Back to place matches</LinkButton>
+            <LinkButton positionInGroup="right" pathname="/search/googlePlaceMatches" query={{ entities: props.location.query.entities, search: props.location.query.search, hideNavbar: props.location.query.hideNavbar, placeSearch: props.location.query.placeSearch }}>{content.back_to_place_matches}</LinkButton>
           }
         </ButtonGroup>
       </PageHeader>
@@ -111,11 +153,11 @@ const Address = (props) => {
               />
             </div>
             <div className="detailsFieldset__details-listings">
-              <DetailsFormGroup label="Trash collection" name="trash" value={calculateTrash(addressData.trash_day, addressData.is_in_city)} hasLabel icon={<Icon path={IM_BIN} size={20} />} />
-              <DetailsFormGroup label="Recycling collection" name="recycling" value={calculateRecycling(addressData.recycling_pickup_day, addressData.is_in_city, addressData.recycling_pickup_district)} hasLabel icon={<Icon path={LI_RECYCLE2} size={20} viewBox="0 0 24 24" />} />
-              <DetailsFormGroup label="Brush collection" name="brush" value={calculateBrushDay(addressData.recycling_pickup_day, addressData.is_in_city, addressData.brushweek)} hasLabel icon={<Icon path={IM_LEAF} size={20} />} />
+              <DetailsFormGroup label={content.trash_collection} name="trash" value={calculateTrash(addressData.trash_day, addressData.is_in_city)} hasLabel icon={<Icon path={IM_BIN} size={20} />} />
+              <DetailsFormGroup label={content.recycling_collection} name="recycling" value={calculateRecycling(addressData.recycling_pickup_day, addressData.is_in_city, addressData.recycling_pickup_district)} hasLabel icon={<Icon path={LI_RECYCLE2} size={20} viewBox="0 0 24 24" />} />
+              <DetailsFormGroup label={content.brush_collection} name="brush" value={calculateBrushDay(addressData.recycling_pickup_day, addressData.is_in_city, addressData.brushweek)} hasLabel icon={<Icon path={IM_LEAF} size={20} />} />
               <DetailsFormGroup
-                label="Street maintenance"
+                label={content.street_maintenance}
                 name="street_maintenance"
                 value={getMaintenanceInfo(addressData.street_maintenance)}
                 hasLabel
@@ -123,17 +165,17 @@ const Address = (props) => {
               />
               {
                 addressData.is_in_city &&
-                <DetailsFormGroup label="Neighborhood" name="neighborhood" value={addressData.neighborhood === null ? 'No neighborhood name' : addressData.neighborhood} hasLabel icon={<Icon path={IM_USERS} size={20} />} />
+                <DetailsFormGroup label={content.neighborhood} name="neighborhood" value={addressData.neighborhood === null ? content.no_neighborhood_name : addressData.neighborhood} hasLabel icon={<Icon path={IM_USERS} size={20} />} />
               }
               <DetailsFormGroup
-                label="Zoning"
+                label={content.zoning}
                 name="zoning"
                 value={<div>{addressData.zoning.split(',').map((zone, index) => (
                   <span key={['zone', index].join('_')}><a href={zoningLinks[zone]} target="_blank">{addressData.zoning.split(',')[index]}</a>{addressData.zoning.split(',').length > index + 1 ? ', ' : ''}</span>)
               )}</div>} hasLabel icon={<Icon path={IM_LOCATION2} size={20} />}
               />
-              <DetailsIconLinkFormGroup label="Property information" title="Property information" href={['/property/?fromAddress=', props.location.query.id, '&search=', props.location.query.search, '&id=', addressData.pinnum, '&entities=', props.location.query.entities].join('')} icon={<Icon path={IM_HOME2} size={20} />} inWindow />
-              <DetailsFormGroup label="Owner" name="owner" value={<div><div>{addressData.owner_name}</div><div>{addressData.owner_address}</div></div>} hasLabel icon={<Icon path={IM_USER} size={20} />} />
+              <DetailsIconLinkFormGroup label={content.property_information} title={content.property_information} href={['/property/?fromAddress=', props.location.query.id, '&search=', props.location.query.search, '&id=', addressData.pinnum, '&entities=', props.location.query.entities].join('')} icon={<Icon path={IM_HOME2} size={20} />} inWindow />
+              <DetailsFormGroup label={content.owner} name="owner" value={<div><div>{addressData.owner_name}</div><div>{addressData.owner_address}</div></div>} hasLabel icon={<Icon path={IM_USER} size={20} />} />
             </div>
           </fieldset>
         </div>

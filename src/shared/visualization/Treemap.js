@@ -1,6 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ResponsiveContainer, Treemap as RechartsTreemap } from 'recharts';
+// import { ResponsiveContainer, Treemap as RechartsTreemap } from 'recharts';
+import { ResponsiveNetworkFrame } from 'semiotic';
+import { scaleSequential } from 'd3-scale';
+import { interpolateLab } from 'd3-interpolate';
+
 
 const COLORS = ['#9C27B0', '#03A9F4', '#FFC107', '#b71c1c', '#4CAF50', '#E91E63', '#9E9E9E'];
 
@@ -142,6 +146,12 @@ CustomTreemap.propTypes = {
   showingLabels: PropTypes.bool,
 };
 
+
+const positiveColor = scaleSequential(interpolateLab('#ffffff', '#0099ff')).domain([0, 100]);
+const negativeColor = scaleSequential(interpolateLab('#ffffff', '#ff9933')).domain([0, -100]);
+const percentToFloat = percent => parseFloat(percent.replace('%', '')) / 100.0
+
+
 class Treemap extends React.Component {
   constructor(props) {
     super(props);
@@ -161,19 +171,50 @@ class Treemap extends React.Component {
   }
 
   render() {
+
+    const filteredData = getTopLevelOnly(this.props.data).map((d) => {
+      d.floatDeltaPercent = percentToFloat(d.deltaPercent);
+      return d;
+    })
+    const deltaDomain = filteredData.map(d => d.floatDeltaPercent);
+    const positiveMax = deltaDomain.filter(d => d > 0).sort((a, b) => b - a);
+    const negativeMin = deltaDomain.filter(d => d <= 0).sort((a, b) => a - b);
+    positiveMax.length > 0 && positiveColor.domain([0, positiveMax[0]]);
+    negativeMin.length > 0 && negativeColor.domain([0, negativeMin[0]]);
+
+    console.log(filteredData)
+
     return (
       <div style={{ height: this.props.height }} onClick={this.toggleLabels} alt={this.altText}>
-        <ResponsiveContainer>
-          <RechartsTreemap
-            data={getTopLevelOnly(this.props.data)}
-            dataKey="size"
-            stroke="#fff"
-            fill="#000"
-            isAnimationActive={false}
-            animationDuration={200}
-            content={<CustomTreemap {...this.props} showingLabels={this.state.showingLabels} />}
-          />
-        </ResponsiveContainer>
+        <ResponsiveNetworkFrame
+          responsiveWidth
+          edges={{ key: 'parent', children: filteredData }}
+          nodeStyle={(d, i) => {
+            if (!d.floatDeltaPercent) {
+              return {
+                cursor: 'pointer',
+                fill: 'white',
+                stroke: 'gray',
+                strokeWidth: '2px',
+              };
+            }
+            return {
+              cursor: 'pointer',
+              fill: d.floatDeltaPercent > 0 ? positiveColor(d.floatDeltaPercent) : negativeColor(d.floatDeltaPercent),
+              stroke: d.floatDeltaPercent ? (d.floatDeltaPercent > 0 ? '#0099ff' : '#ff9933') : 'gray',
+              strokeWidth: '2px',
+            };
+          }}
+          nodeIDAccessor="key"
+          networkType={{
+            type: 'treemap',
+            projection: 'vertical',
+            nodePadding: 2,
+            hierarchySum: d => d.size,
+          }}
+          hoverAnnotation
+          customClickBehavior={d => console.log('anything at all')}
+        />
         <button className="btn btn-primary btn-xs pull-right" style={{ marginTop: '3px' }} id="toggleLabels">{this.state.showingLabels === true ? 'Hide labels' : 'Show labels'}</button>
       </div>
     );

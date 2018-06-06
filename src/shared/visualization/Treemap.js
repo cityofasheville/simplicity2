@@ -213,6 +213,12 @@ class Treemap extends React.Component {
             hierarchySum: d => d.size,
           }}
           hoverAnnotation
+          customHoverBehavior={d => console.log('on hover')}
+          svgAnnotationRules={(d) => {
+            // console.log(d);
+            return null;
+          }}
+          tooltipContent={() => 'content'}
           customClickBehavior={d => console.log('anything at all')}
         />
         <button className="btn btn-primary btn-xs pull-right" style={{ marginTop: '3px' }} id="toggleLabels">{this.state.showingLabels === true ? 'Hide labels' : 'Show labels'}</button>

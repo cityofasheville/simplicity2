@@ -1,6 +1,6 @@
 import React from 'react';
-import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
 import Icon from '../../shared/Icon';
 import {
   IM_LOCATION,
@@ -41,9 +41,9 @@ const getCurrentRecyclingWeek = () => {
 const calculateRecycling = (dayOfWeek, inCity, week) => {
   if (dayOfWeek !== null) {
     if (getCurrentRecyclingWeek() === week) {
-      return `${content.weekdays[dayOfWeek]} ${content.of_this_week} (${content.recycle_week} ${week})`;
+      return `${content.weekdays[dayOfWeek]} ${content.of_this_week} (${content.recycle_week} ${week})`; // eslint-disable-line
     }
-    return `${content.weekdays[dayOfWeek]} ${content.of_next_week} (${content.recycle_week} ${week})`;
+    return `${content.weekdays[dayOfWeek]} ${content.of_next_week} (${content.recycle_week} ${week})`; // eslint-disable-line
   }
   if (inCity) {
     return content.no_information_available;
@@ -54,7 +54,7 @@ const calculateRecycling = (dayOfWeek, inCity, week) => {
 const calculateBrushDay = (dayOfWeek, inCity, week) => {
   if (dayOfWeek !== null) {
     if (getCurrentRecyclingWeek() === week) {
-      return `${content.weekdays[dayOfWeek]} ${content.of_this_week} (${content.brush_week} ${week})`;
+      return `${content.weekdays[dayOfWeek]} ${content.of_this_week} (${content.brush_week} ${week})`; // eslint-disable-line
     }
     return `${content.weekdays[dayOfWeek]} ${content.of_next_week} (${content.brush_week} ${week})`;
   }
@@ -119,84 +119,8 @@ const getMaintenanceInfo = (entity) => {
   return <div>{entity}</div>;
 };
 
-const Address = (props) => {
-  if (props.data.loading) {
-    return <LoadingAnimation />;
-  }
-  if (props.data.error) {
-    return <Error message={props.data.error.message} />;
-  }
-
-  const addressData = props.data.addresses[0];
-  const mapData = [Object.assign({}, addressData, { popup: `<b>Address</b><div>${addressData.street_number} ${addressData.street_prefix} ${addressData.street_name} ${addressData.unit || ''}</div><div>${addressData.city}, NC ${addressData.zipcode}</div><br /><b>Owner</b><div>${addressData.owner_name}</div><div>${addressData.owner_address}</div><div>${addressData.owner_cityname}, ${addressData.owner_state} ${addressData.owner_zipcode}</div>` })];
-
-  return (
-    <div className="address">
-      <PageHeader h1={[addressData.address, addressData.zipcode].join(', ')} dataType={content.data_type} h3={content.about_this_address} icon={<Icon path={IM_LOCATION} size={50} />}>
-        <ButtonGroup alignment="">
-          <LinkButton pathname="/search" positionInGroup={props.location.query.placeSearch ? 'left' : ''} query={{ entities: props.location.query.entities, search: props.location.query.search, hideNavbar: props.location.query.hideNavbar }}>{content.back_to_search}</LinkButton>
-          {props.location.query.placeSearch &&
-            <LinkButton positionInGroup="right" pathname="/search/googlePlaceMatches" query={{ entities: props.location.query.entities, search: props.location.query.search, hideNavbar: props.location.query.hideNavbar, placeSearch: props.location.query.placeSearch }}>{content.back_to_place_matches}</LinkButton>
-          }
-        </ButtonGroup>
-      </PageHeader>
-      <div className="row">
-        <div className="col-sm-7">
-          <fieldset className="detailsFieldset">
-            <InCityMessage inTheCity={addressData.is_in_city} />
-            <div className="map-container">
-              <Map
-                data={mapData}
-                center={[addressData.y, addressData.x]}
-                height={'100%'}
-                width={'100%'}
-              />
-            </div>
-            <div className="detailsFieldset__details-listings">
-              <DetailsFormGroup label={content.trash_collection} name="trash" value={calculateTrash(addressData.trash_day, addressData.is_in_city)} hasLabel icon={<Icon path={IM_BIN} size={20} />} />
-              <DetailsFormGroup label={content.recycling_collection} name="recycling" value={calculateRecycling(addressData.recycling_pickup_day, addressData.is_in_city, addressData.recycling_pickup_district)} hasLabel icon={<Icon path={LI_RECYCLE2} size={20} viewBox="0 0 24 24" />} />
-              <DetailsFormGroup label={content.brush_collection} name="brush" value={calculateBrushDay(addressData.recycling_pickup_day, addressData.is_in_city, addressData.brushweek)} hasLabel icon={<Icon path={IM_LEAF} size={20} />} />
-              <DetailsFormGroup
-                label={content.street_maintenance}
-                name="street_maintenance"
-                value={getMaintenanceInfo(addressData.street_maintenance)}
-                hasLabel
-                icon={<Icon path={IM_TRAFFIC_CONE} size={20} />}
-              />
-              {
-                addressData.is_in_city &&
-                <DetailsFormGroup label={content.neighborhood} name="neighborhood" value={addressData.neighborhood === null ? content.no_neighborhood_name : addressData.neighborhood} hasLabel icon={<Icon path={IM_USERS} size={20} />} />
-              }
-              <DetailsFormGroup
-                label={content.zoning}
-                name="zoning"
-                value={<div>{addressData.zoning.split(',').map((zone, index) => (
-                  <span key={['zone', index].join('_')}><a href={zoningLinks[zone]} target="_blank">{addressData.zoning.split(',')[index]}</a>{addressData.zoning.split(',').length > index + 1 ? ', ' : ''}</span>)
-              )}</div>} hasLabel icon={<Icon path={IM_LOCATION2} size={20} />}
-              />
-              <DetailsIconLinkFormGroup label={content.property_information} title={content.property_information} href={['/property/?fromAddress=', props.location.query.id, '&search=', props.location.query.search, '&id=', addressData.pinnum, '&entities=', props.location.query.entities].join('')} icon={<Icon path={IM_HOME2} size={20} />} inWindow />
-              <DetailsFormGroup label={content.owner} name="owner" value={<div><div>{addressData.owner_name}</div><div>{addressData.owner_address}</div></div>} hasLabel icon={<Icon path={IM_USER} size={20} />} />
-            </div>
-          </fieldset>
-        </div>
-        {addressData.is_in_city &&
-          <div className="col-sm-5">
-            <div className="row small-padding">
-              {['CRIME', 'DEVELOPMENT'].map((topic, i) => (
-                <div className="col-xs-6" key={['topic', i]}>
-                  <TopicCard topic={topic} entity="address" id={props.location.query.id} label={[addressData.address, addressData.zipcode].join(', ')} entities={props.location.query.entities} x={addressData.x} y={addressData.y} search={props.location.query.search} />
-                </div>
-              ))}
-            </div>
-          </div>
-        }
-      </div>
-    </div>
-  );
-};
-
-const addressQuery = gql`
-  query addressQuery($civicaddress_ids: [String]!) {
+const GET_ADDRESSES = gql`
+  query addresses($civicaddress_ids: [String]!) {
     addresses(civicaddress_ids: $civicaddress_ids) {
       address
       zipcode
@@ -226,8 +150,194 @@ const addressQuery = gql`
   }
 `;
 
-const AddressWithData = graphql(addressQuery, {
-  options: ownProps => ({ variables: { civicaddress_ids: [ownProps.location.query.id.trim()] } }),
-})(Address);
+const Address = props => (
+  <Query
+    query={GET_ADDRESSES}
+    variables={{
+      civicaddress_ids: [props.location.query.id.trim()]
+    }}
+  >
+    {({ loading, error, data }) => {
+      if (loading) return <LoadingAnimation />;
+      if (error) return <Error message={error.message} />;
+      const addressData = data.addresses[0];
+      const mapData = [Object.assign(
+        {},
+        addressData,
+        { popup: `<b>Address</b><div>${addressData.street_number} ${addressData.street_prefix} ${addressData.street_name} ${addressData.unit || ''}</div><div>${addressData.city}, NC ${addressData.zipcode}</div><br /><b>Owner</b><div>${addressData.owner_name}</div><div>${addressData.owner_address}</div><div>${addressData.owner_cityname}, ${addressData.owner_state} ${addressData.owner_zipcode}</div>` } // eslint-disable-line
+      )];
 
-export default AddressWithData;
+      return (
+        <div className="address">
+          <PageHeader
+            h1={`${addressData.address}, ${addressData.zipcode}`}
+            dataType={content.data_type}
+            h3={content.about_this_address}
+            icon={<Icon path={IM_LOCATION} size={50} />}
+          >
+            <ButtonGroup alignment="">
+              <LinkButton
+                pathname="/search"
+                positionInGroup={props.location.query.placeSearch ? 'left' : ''}
+                query={{
+                  entities: props.location.query.entities,
+                  search: props.location.query.search,
+                  hideNavbar: props.location.query.hideNavbar,
+                }}
+              >
+                {content.back_to_search}
+              </LinkButton>
+              {props.location.query.placeSearch &&
+                <LinkButton
+                  positionInGroup="right"
+                  pathname="/search/googlePlaceMatches"
+                  query={{
+                    entities: props.location.query.entities,
+                    search: props.location.query.search,
+                    hideNavbar: props.location.query.hideNavbar,
+                    placeSearch: props.location.query.placeSearch,
+                  }}
+                >
+                  {content.back_to_place_matches}
+                </LinkButton>
+              }
+            </ButtonGroup>
+          </PageHeader>
+          <div className="row">
+            <div className="col-sm-7">
+              <fieldset className="detailsFieldset">
+                <InCityMessage inTheCity={addressData.is_in_city} />
+                <div className="map-container">
+                  <Map
+                    data={mapData}
+                    center={[addressData.y, addressData.x]}
+                    height="100%"
+                    width="100%"
+                  />
+                </div>
+                <div className="detailsFieldset__details-listings">
+                  <DetailsFormGroup
+                    label={content.trash_collection}
+                    name="trash"
+                    value={calculateTrash(addressData.trash_day, addressData.is_in_city)}
+                    hasLabel
+                    icon={<Icon path={IM_BIN} size={20} />}
+                  />
+                  <DetailsFormGroup
+                    label={content.recycling_collection}
+                    name="recycling"
+                    value={calculateRecycling(
+                      addressData.recycling_pickup_day,
+                      addressData.is_in_city,
+                      addressData.recycling_pickup_district
+                    )}
+                    hasLabel
+                    icon={<Icon path={LI_RECYCLE2} size={20} viewBox="0 0 24 24" />}
+                  />
+                  <DetailsFormGroup
+                    label={content.brush_collection}
+                    name="brush"
+                    value={calculateBrushDay(
+                      addressData.recycling_pickup_day,
+                      addressData.is_in_city,
+                      addressData.brushweek
+                    )}
+                    hasLabel
+                    icon={<Icon path={IM_LEAF} size={20} />}
+                  />
+                  <DetailsFormGroup
+                    label={content.street_maintenance}
+                    name="street_maintenance"
+                    value={getMaintenanceInfo(addressData.street_maintenance)}
+                    hasLabel
+                    icon={<Icon path={IM_TRAFFIC_CONE} size={20} />}
+                  />
+                  {
+                    addressData.is_in_city &&
+                    <DetailsFormGroup
+                      label={content.neighborhood}
+                      name="neighborhood"
+                      value={addressData.neighborhood === null ?
+                        content.no_neighborhood_name
+                        :
+                        addressData.neighborhood}
+                      hasLabel
+                      icon={<Icon path={IM_USERS} size={20} />}
+                    />
+                  }
+                  <DetailsFormGroup
+                    label={content.zoning}
+                    name="zoning"
+                    value={
+                      <div>
+                        {addressData.zoning.split(',').map((zone, index) => (
+                          <span
+                            key={`zone_${index}`}
+                          >
+                            <a
+                              href={zoningLinks[zone]}
+                              target="_blank"
+                            >
+                              {addressData.zoning.split(',')[index]}
+                            </a>
+                            {addressData.zoning.split(',').length > index + 1 ? ', ' : ''}
+                          </span>))}
+                      </div>}
+                    hasLabel
+                    icon={<Icon path={IM_LOCATION2} size={20} />
+                    }
+                  />
+                  <DetailsIconLinkFormGroup
+                    label={content.property_information}
+                    title={content.property_information}
+                    href={`/property/?fromAddress=${props.location.query.id}&search=${props.location.query.search}&id=${addressData.pinnum}&entities=${props.location.query.entities}`} // eslint-disable-line
+                    icon={<Icon path={IM_HOME2} size={20} />}
+                    inWindow
+                  />
+                  <DetailsFormGroup
+                    label={content.owner}
+                    name="owner"
+                    value={
+                      <div>
+                        <div>
+                          {addressData.owner_name}
+                        </div>
+                        <div>
+                          {addressData.owner_address}
+                        </div>
+                      </div>
+                    }
+                    hasLabel
+                    icon={<Icon path={IM_USER} size={20} />}
+                  />
+                </div>
+              </fieldset>
+            </div>
+            {addressData.is_in_city &&
+              <div className="col-sm-5">
+                <div className="row small-padding">
+                  {['CRIME', 'DEVELOPMENT'].map((topic, i) => (
+                    <div className="col-xs-6" key={['topic', i]}>
+                      <TopicCard
+                        topic={topic}
+                        entity="address"
+                        id={props.location.query.id}
+                        label={`${addressData.address}, ${addressData.zipcode}`}
+                        entities={props.location.query.entities}
+                        x={addressData.x}
+                        y={addressData.y}
+                        search={props.location.query.search}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      );
+    }}
+  </Query>
+);
+
+export default Address;

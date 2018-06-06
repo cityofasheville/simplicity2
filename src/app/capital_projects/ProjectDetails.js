@@ -108,8 +108,7 @@ const ProjectDetails = (props) => {
                     <strong>{props.total_project_funding_budget_document}</strong>
                   </div>
                 </div>
-                {/* TODO: alter logic for new coa_project_manages */}
-                {props &&
+                {props.show_pm_fields &&
                   <div className="" style={{ marginBottom: '10px' }}>
                     <div style={{ color: '#676873' }}>
                       Spent
@@ -119,8 +118,7 @@ const ProjectDetails = (props) => {
                     </div>
                   </div>
                 }
-                {/* TODO: alter logic for new coa_project_manages */}
-                {props &&
+                {props.show_pm_fields &&
                   <div className="" style={{ marginBottom: '10px' }}>
                     <div style={{ color: '#676873' }}>
                       Under contract
@@ -129,7 +127,7 @@ const ProjectDetails = (props) => {
                       <strong>{['$', parseInt(props.encumbered, 10).toLocaleString()].join('')}</strong>
                     </div>
                   </div>
-                }                
+                }
               </div>
               <div className="col-xs-7">
                 <div className="" style={{ marginBottom: '10px' }}>
@@ -153,7 +151,7 @@ const ProjectDetails = (props) => {
                 }
               </div>
             </div>
-            {/*{props.Category.indexOf('Bond') > -1 &&
+            { /*{props.Category.indexOf('Bond') > -1 &&
               <div className="row">
               <div className="col-sm-12">
               <Icon path={IM_CERTIFICATE} size={25} color="#4077a5" /> 
@@ -161,8 +159,8 @@ const ProjectDetails = (props) => {
               </div>
               </div>
             }*/}
-            {/* TODO: alter logic for new coa_project_manages */}
-            {props.status !== null &&
+            {console.log(props)}
+            {props.show_pm_fields && props.status !== null &&
               <div className="capital-project__status">
                 <div className="header">
                   Project phase
@@ -208,7 +206,7 @@ const ProjectDetails = (props) => {
               <Map data={getMyPoints(props.project)} bounds={calculateBounds(getMyPoints(props.project))} height="300px"/>
             </div>
             <a href={props.photo_url} target="_blank">
-              <img alt="Photo of project" className="img-responsive" src={props.photo_url} />
+              <img alt="Project" className="img-responsive" src={props.photo_url} />
             </a>
           </div>
         </div>

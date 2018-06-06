@@ -7,7 +7,7 @@ export const getCategoryBarChartData = (projectData, categories, mode) => {
   for (let project of projectData) {
     if (categories.includes(mapProjectToCategory(project))) {
       if (mode !== 'bond' ||
-        (mode === 'bond' && project.type === 'Bond')
+        (mode === 'bond' && project.type.toLowerCase() === 'bond')
       ) {
         categoryBarData[mapProjectToCategory(project)] += 1;
       }
@@ -27,7 +27,7 @@ export const getPhaseBarChartData = (projectData, categories, mode) => {
   for (let project of projectData) {
     if (categories.includes(mapProjectToCategory(project))) {
       if (mode !== 'bond' ||
-        (mode === 'bond' && project.type === 'Bond')
+        (mode === 'bond' && project.type.toLowerCase() === 'bond')
       ) {
         switch (project.status) {
           case 'Planning':
@@ -70,7 +70,7 @@ export const getPhasePieChartData = (projectData, categories, mode) => {
   for (let project of projectData) {
     if (categories.includes(mapProjectToCategory(project))) {
       if (mode !== 'bond' ||
-        (mode === 'bond' && project.type === 'Bond')
+        (mode === 'bond' && project.type.toLowerCase() === 'bond')
       ) {
         switch (project.status) {
           case 'Planning':
@@ -133,7 +133,7 @@ export const getFundsAllocatedAndExpended = (projectData, categories, mode) => {
   for (let project of projectData) {
     if (categories.includes(mapProjectToCategory(project))) {
       if (mode !== 'bond' ||
-      (mode === 'bond' && project.type === 'Bond')
+      (mode === 'bond' && project.type.toLowerCase() === 'bond')
       ) {
         totalExpended += parseFloat(project.total_spent);
         totalEncumbered += parseFloat(project.encumbered);
@@ -158,7 +158,7 @@ export const filterProjects = (projects, categories, mode) => {
   for (let project of projects) {
     if (categories.includes(mapProjectToCategory(project))) {
       if (mode === 'bond') {
-        if (project.type === 'Bond') {
+        if (project.type.toLowerCase() === 'bond') {
           filteredProjects.push(project);
         }
       } else {

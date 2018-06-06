@@ -57,8 +57,7 @@ const getKeyText = categories => (
             return <span key={index} style={categories.indexOf(cat) !== 0 ? { marginLeft: '10px', color: '#4077a5' } : { marginLeft: '0px', color: '#4077a5' }}>{getIcon(cat)}&nbsp;<b>{cat}</b></span>;
           }
           return null;
-        }
-        )}
+        })}
       </span>
       <span style={{ marginLeft: '5px' }}>{categories.slice(0, categories.length - 1).join(', ')} {categories.length > 1 ? 'and' : ''} {categories[categories.length - 1]} projects within the City’s General Capital Improvement Program (CIP) are funded with a combination of general tax revenue, municipal debt and external grants or partnerships.</span>
       {categories.includes('Other') &&
@@ -106,6 +105,7 @@ const GET_PROJECTS = gql`
       project_description
       status
       encumbered
+      show_pm_fields
       total_project_funding_budget_document
       total_spent
       target_construction_start

@@ -5,65 +5,12 @@ import gql from 'graphql-tag';
 import SearchResultGroup from './SearchResultGroup';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import Error from '../../../shared/Error';
+import {
+  formatSearchResults,
+  getEntities,
+  getEntitiesToSearch,
+} from './searchResultsUtils';
 
-const getResultType = (type) => {
-  switch (type) {
-    case 'address':
-    case 'civicAddressId':
-      return 'address';
-    case 'property':
-    case 'pin':
-      return 'property';
-    default:
-      return type;
-  }
-};
-
-const getEntities = (selected) => {
-  const entityTypes = selected.split(',');
-  const entities = [
-    { label: 'Addresses', type: 'address', checked: true },
-    { label: 'Properties', type: 'property', checked: true },
-    { label: 'Neighborhoods', type: 'neighborhood', checked: true },
-    { label: 'Streets', type: 'street', checked: true },
-    { label: 'Owners', type: 'owner', checked: true },
-    { label: 'Google places', type: 'google', checked: true },
-  ];
-  // return all if none
-  if (selected === undefined || selected === 'undefined' || selected.length === 0) {
-    return entities;
-  }
-  for (let entity of entities) {
-    if (entityTypes.indexOf(entity.type) === -1) {
-      entity.checked = false;
-    }
-  }
-  return entities;
-};
-
-const getEntitiesToSearch = (entities) => {
-  const entitiesToSearch = [];
-  for (let entity of entities) {
-    if (entity.checked) {
-      if (entity.type === 'address') {
-        entitiesToSearch.push('address');
-        entitiesToSearch.push('civicAddressId');
-      } else if (entity.type === 'property') {
-        entitiesToSearch.push('pin');
-        entitiesToSearch.push('property');
-      } else if (entity.type === 'neighborhood') {
-        entitiesToSearch.push('neighborhood');
-      } else if (entity.type === 'street') {
-        entitiesToSearch.push('street');
-      } else if (entity.type === 'owner') {
-        entitiesToSearch.push('owner');
-      } else if (entity.type === 'google') {
-        entitiesToSearch.push('place');
-      }
-    }
-  }
-  return entitiesToSearch;
-};
 
 const SearchResults = (props) => {
   if (props.data === undefined) {
@@ -75,62 +22,8 @@ const SearchResults = (props) => {
   if (props.data.error) {
     return <Error message={props.data.error.message} />;
   }
-  const formattedResults = [];
-  for (let context of props.data.search) {
-    if (context !== null && context.results.length > 0) {
-      formattedResults.push(
-        {
-          label: getResultType(context.results[0].type),
-          results: context.results.map((result) => {
-            switch (result.type) {
-              case 'address':
-              case 'civicAddressId':
-                return {
-                  label: [result.address, result.zipcode].join(', '),
-                  type: 'address',
-                  id: result.civic_address_id,
-                };
-              case 'property':
-              case 'pin':
-                return {
-                  label: [[result.pinnum, ' -- '].join(''), result.address, ', ', result.zipcode].join(''),
-                  type: 'property',
-                  id: result.pinnum,
-                };
-              case 'street':
-                return {
-                  label: result.zip_code === null ? result.full_street_name : [result.full_street_name, result.zip_code].join(', '),
-                  type: 'street',
-                  id: result.centerline_ids.join(','),
-                };
-              case 'neighborhood':
-                return {
-                  label: result.name,
-                  type: 'neighborhood',
-                  id: result.nbhd_id,
-                };
-              case 'owner':
-                return {
-                  label: result.ownerName,
-                  type: 'owner',
-                  id: result.pinnums.join(','),
-                };
-              case 'place':
-                return {
-                  label: result.address,
-                  type: 'place',
-                  id: result.address,
-                  place_name: result.placeName,
-                  place_id: result.place_id,
-                };
-              default:
-                return result;
-            }
-          }),
-        }
-      );
-    }
-  }
+
+  const formattedResults = formatSearchResults(props.data.search);
 
   return (
     <div className="row">

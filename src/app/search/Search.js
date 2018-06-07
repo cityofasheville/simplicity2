@@ -9,7 +9,7 @@ let timeout = null;
 
 const Search = props => (
   <div>
-    <div className="row">
+    <div className="row catcatcat">
       <SearchBar
         text={props.searchText.search || props.location.query.search}
         selectedEntities={props.location.query.entities}

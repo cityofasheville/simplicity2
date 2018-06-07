@@ -5,45 +5,8 @@ import { accessibility } from 'accessible-react-table';
 import Icon from '../../../shared/Icon';
 import { IM_SHIELD3, IM_OFFICE, IM_ROAD, IM_USER, IM_USERS, IM_LOCATION, IM_HOME2, IM_QUESTION, IM_GOOGLE, IM_SEARCH } from '../../../shared/iconConstants';
 import styles from './searchResultGroup.css';
+import { getLink, getPlural } from './searchResultsUtils';
 
-const getLink = (type, id, search, entities, label, originalSearch) => {
-  switch (type) {
-    case 'address':
-      if (originalSearch) {
-        return `/address?search=${originalSearch}&placeSearch=${search}&id=${id}&entities=${entities}&entity=address`;
-      }
-      return `/address?search=${search}&id=${id}&entities=${entities}&entity=address`;
-    case 'property':
-      return `/property?search=${search}&id=${id}&entities=${entities}&entity=property`;
-    case 'street':
-      return `/street?search=${search}&id=${id}&entities=${entities}&label=${label}&entity=street`;
-    case 'neighborhood':
-      return `/neighborhood?search=${search}&id=${id}&entities=${entities}&label=${label}&entity=neighborhood`;
-    case 'permit':
-      return `/development/detail?search=${search}&id=${id}&entities=${entities}&entity=permit`;
-    case 'crime':
-      return `/crime/detail?search=${search}&id=${id}&entities=${entities}&entity=crime`;
-    case 'owner':
-      return `/owner?search=${search}&id=${id}&entities=${entities}&entity=owner&view=list`;
-    case 'place':
-      return `/search/googlePlaceMatches?search=${search}&placeSearch=${id}&entities=${entities}`;
-    default:
-      return '/';
-  }
-};
-
-const getPlural = (type) => {
-  switch (type) {
-    case 'address':
-      return 'Addresses';
-    case 'property':
-      return 'Properties';
-    case 'owner':
-      return 'Owners';
-    default:
-      return [type.charAt(0).toUpperCase(), type.slice(1), 's'].join('');
-  }
-};
 
 const SearchResultGroup = (props) => {
   const getIcon = (type) => {

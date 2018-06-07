@@ -69,7 +69,7 @@ class MiniSearch extends React.Component {
   }
 
   render() {
-    return (<div style={{ margin: '2% 0%', fontSize: '0.75em'}} >
+    return (<div style={{ margin: '2% 0%', fontSize: '0.85em' }} >
       <h4>Check whether the address is within city limits</h4>
       <form onSubmit={event => event.preventDefault()}>
         <div className="input-group">
@@ -85,16 +85,30 @@ class MiniSearch extends React.Component {
             autoFocus
           />
           <span className="input-group-btn">
-            <button className="btn btn-primary" type="button" aria-label="search" onClick={() => this.handleSearchClick(document.getElementById('searchBox').value)}><Icon path={IM_SEARCH} size={16} /></button>
+            <button
+              className="btn btn-primary"
+              type="button"
+              aria-label="search"
+              onClick={() => this.handleSearchClick(document.getElementById('searchBox').value)}
+            >
+              <Icon path={IM_SEARCH} size={16} />
+            </button>
           </span>
         </div>
-        <div style={{display: 'none'}}>
-          <SearchByEntities entities={getEntities(this.props.location.query.entities)} location={this.props.location} />
+        <div style={{ display: 'none' }}>
+          <SearchByEntities
+            entities={getEntities(this.props.location.query.entities)}
+            location={this.props.location}
+          />
         </div>
       </form>
-      <br/>
-      <MiniResults results={[]} searchText={this.state.searchTermToUse} location={this.props.location}></MiniResults>
-    </div>)
+      <br />
+      <MiniResults
+        results={[]}
+        searchText={this.state.searchTermToUse}
+        location={this.props.location}
+      />
+    </div>);
   }
 }
 

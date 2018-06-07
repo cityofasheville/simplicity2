@@ -1,5 +1,51 @@
 import React from 'react';
+import gql from 'graphql-tag';
+import { IM_SHIELD3, IM_OFFICE, IM_ROAD, IM_USER, IM_USERS, IM_LOCATION, IM_HOME2, IM_QUESTION, IM_GOOGLE, IM_SEARCH } from '../../../shared/iconConstants';
+import Icon from '../../../shared/Icon';
 
+
+export const searchQuery = gql`
+  query searchQuery($searchString: String!, $searchContexts: [String]) {
+    search(searchString: $searchString, searchContexts: $searchContexts) {
+      type
+      results {
+        type
+        ... on AddressResult {
+          civic_address_id
+          address
+          zipcode
+        }
+        ... on PropertyResult {
+          pinnum
+          address
+          city
+          zipcode
+        }
+        ... on StreetResult {
+          full_street_name
+          zip_code
+          centerline_ids
+        }
+        ... on NeighborhoodResult {
+          name
+          nbhd_id
+        }
+        ... on OwnerResult {
+          ownerName: name
+          pinnums
+        }
+        ... on PlaceResult {
+          type
+          placeName: name
+          id
+          place_id
+          address
+          types
+        }
+      }
+    }
+  }
+`;
 
 export const getResultType = (type) => {
   switch (type) {
@@ -156,4 +202,29 @@ export const formatSearchResults = (search) => {
     }
   }
   return formattedResults;
+};
+
+export const getIcon = (type) => {
+  switch (type) {
+    case 'address':
+      return (<span style={{ marginRight: '5px' }}><Icon path={IM_LOCATION} size={26} /></span>);
+    case 'property':
+      return (<span style={{ marginRight: '5px' }}><Icon path={IM_HOME2} size={26} /></span>);
+    case 'street':
+      return (<span style={{ marginRight: '5px' }}><Icon path={IM_ROAD} size={26} /></span>);
+    case 'neighborhood':
+      return (<span style={{ marginRight: '5px' }}><Icon path={IM_USERS} size={26} /></span>);
+    case 'permit':
+      return (<span style={{ marginRight: '5px' }}><Icon path={IM_OFFICE} size={26} /></span>);
+    case 'crime':
+      return (<span style={{ marginRight: '5px' }}><Icon path={IM_SHIELD3} size={26} /></span>);
+    case 'owner':
+      return (<span style={{ marginRight: '5px' }}><Icon path={IM_USER} size={26} /></span>);
+    case 'place':
+      return (<span style={{ marginRight: '5px' }}><Icon path={IM_GOOGLE} size={26} /></span>);
+    case 'search':
+      return (<span style={{ marginRight: '5px' }}><Icon path={IM_SEARCH} size={26} /></span>);
+    default:
+      return (<span style={{ marginRight: '5px' }}><Icon path={IM_QUESTION} size={26} /></span>);
+  }
 };

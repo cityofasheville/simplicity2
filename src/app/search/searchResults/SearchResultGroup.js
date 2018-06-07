@@ -3,37 +3,12 @@ import PropTypes from 'prop-types';
 import ReactTable from 'react-table';
 import { accessibility } from 'accessible-react-table';
 import Icon from '../../../shared/Icon';
-import { IM_SHIELD3, IM_OFFICE, IM_ROAD, IM_USER, IM_USERS, IM_LOCATION, IM_HOME2, IM_QUESTION, IM_GOOGLE, IM_SEARCH } from '../../../shared/iconConstants';
 import styles from './searchResultGroup.css';
-import { getLink, getPlural } from './searchResultsUtils';
+import { getLink, getPlural, getIcon } from './searchResultsUtils';
+import { IM_GOOGLE } from '../../../shared/iconConstants';
 
 
 const SearchResultGroup = (props) => {
-  const getIcon = (type) => {
-    switch (type) {
-      case 'address':
-        return (<span style={{ marginRight: '5px' }}><Icon path={IM_LOCATION} size={26} /></span>);
-      case 'property':
-        return (<span style={{ marginRight: '5px' }}><Icon path={IM_HOME2} size={26} /></span>);
-      case 'street':
-        return (<span style={{ marginRight: '5px' }}><Icon path={IM_ROAD} size={26} /></span>);
-      case 'neighborhood':
-        return (<span style={{ marginRight: '5px' }}><Icon path={IM_USERS} size={26} /></span>);
-      case 'permit':
-        return (<span style={{ marginRight: '5px' }}><Icon path={IM_OFFICE} size={26} /></span>);
-      case 'crime':
-        return (<span style={{ marginRight: '5px' }}><Icon path={IM_SHIELD3} size={26} /></span>);
-      case 'owner':
-        return (<span style={{ marginRight: '5px' }}><Icon path={IM_USER} size={26} /></span>);
-      case 'place':
-        return (<span style={{ marginRight: '5px' }}><Icon path={IM_GOOGLE} size={26} /></span>);
-      case 'search':
-        return (<span style={{ marginRight: '5px' }}><Icon path={IM_SEARCH} size={26} /></span>);
-      default:
-        return (<span style={{ marginRight: '5px' }}><Icon path={IM_QUESTION} size={26} /></span>);
-    }
-  };
-
   const dataColumns = [
     {
       headerStyle: { boxShadow: 'none' },

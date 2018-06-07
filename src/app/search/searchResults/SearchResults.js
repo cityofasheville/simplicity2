@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
 import SearchResultGroup from './SearchResultGroup';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import Error from '../../../shared/Error';
@@ -9,6 +8,7 @@ import {
   formatSearchResults,
   getEntities,
   getEntitiesToSearch,
+  searchQuery,
 } from './searchResultsUtils';
 
 
@@ -62,49 +62,6 @@ SearchResults.propTypes = {
   searchText: PropTypes.string,
   searchEntities: PropTypes.arrayOf(PropTypes.shape({ label: PropTypes.string, type: PropTypes.string, check: PropTypes.bool })),
 };
-
-const searchQuery = gql`
-  query searchQuery($searchString: String!, $searchContexts: [String]) {
-    search(searchString: $searchString, searchContexts: $searchContexts) {
-      type
-      results {
-        type
-        ... on AddressResult {
-          civic_address_id
-          address
-          zipcode
-        }
-        ... on PropertyResult {
-          pinnum
-          address
-          city
-          zipcode
-        }
-        ... on StreetResult {
-          full_street_name
-          zip_code
-          centerline_ids
-        }
-        ... on NeighborhoodResult {
-          name
-          nbhd_id
-        }
-        ... on OwnerResult {
-          ownerName: name
-          pinnums
-        }
-        ... on PlaceResult {
-          type
-          placeName: name
-          id
-          place_id
-          address
-          types
-        }
-      }
-    }
-  }
-`;
 
 export default graphql(searchQuery, {
   skip: ownProps => (!ownProps.searchText || ownProps.searchText.trim().length < 4),

@@ -6,10 +6,31 @@ import { IM_DOWNLOAD7 } from './iconConstants';
 import ButtonGroup from './ButtonGroup';
 import Button from './Button';
 
+const spanish = {
+  Email: 'Mandar correo electr\xF3',
+  Download: 'Descargar',
+};
+
+const english = {
+  Email: 'Email',
+  Download: 'Download',
+};
+
+const translate = (value, language) => {
+  switch (language) {
+    case 'Spanish':
+      return spanish[value];
+    case 'English':
+      return english[value];
+    default:
+      return value;
+  }
+};
+
 const EmailDownload = props => (
   <div className="email-download">
     <CSVLink data={props.downloadData} filename={props.fileName || 'data.csv'}>
-      <Button type="success" size="xs"><Icon path={IM_DOWNLOAD7} /> { props.text ? props.text : 'download' }</Button>
+      <Button type="success" size="xs"><Icon path={IM_DOWNLOAD7} /> {translate('Download', props.lang)}</Button>
     </CSVLink>
     {/* <ButtonGroup style={{ marginBottom: '5px', marginRight: '5px' }}>
       <Button type="success" onClick={props.emailFunction}><Icon path={IM_ENVELOP5} /> Email</Button>
@@ -21,12 +42,13 @@ EmailDownload.propTypes = {
   emailFunction: PropTypes.func,
   downloadData: PropTypes.array,
   fileName: PropTypes.string,
-  text: PropTypes.string
+  lang: PropTypes.string,
 };
 
 EmailDownload.defaultProps = {
   emailFunction: null,
   downloadData: [],
+  lang: 'English',
 };
 
 export default EmailDownload;

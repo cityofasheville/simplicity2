@@ -172,7 +172,7 @@ const Address = props => (
       const mapData = [Object.assign(
         {},
         addressData,
-        { popup: `<b>Address</b><div>${addressData.street_number} ${addressData.street_prefix} ${addressData.street_name} ${addressData.unit || ''}</div><div>${addressData.city}, NC ${addressData.zipcode}</div><br /><b>Owner</b><div>${addressData.owner_name}</div><div>${addressData.owner_address}</div><div>${addressData.owner_cityname}, ${addressData.owner_state} ${addressData.owner_zipcode}</div>` } // eslint-disable-line
+        { popup: `<b>${content.address}</b><div>${addressData.street_number} ${addressData.street_prefix} ${addressData.street_name} ${addressData.unit || ''}</div><div>${addressData.city}, NC ${addressData.zipcode}</div><br /><b>${content.owner}</b><div>${addressData.owner_name}</div><div>${addressData.owner_address}</div><div>${addressData.owner_cityname}, ${addressData.owner_state} ${addressData.owner_zipcode}</div>` } // eslint-disable-line
       )];
 
       return (
@@ -214,7 +214,7 @@ const Address = props => (
           <div className="row">
             <div className="col-sm-7">
               <fieldset className="detailsFieldset">
-                <InCityMessage inTheCity={addressData.is_in_city} />
+                <InCityMessage inTheCity={addressData.is_in_city} lang={data.language.lang} />
                 <div className="map-container">
                   <Map
                     data={mapData}

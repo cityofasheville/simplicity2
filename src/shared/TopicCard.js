@@ -3,7 +3,14 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import styles from './topicCard.css';
 import Icon from './Icon';
-import { IM_SHIELD3, IM_COIN_DOLLAR, IM_CONSTRUCTION, IM_USERS, IM_USERS4, IM_OFFICE, IM_CITY, IM_PROFILE, LI_WALKING, IM_BED, IM_LIBRARY2, IM_WARNING } from './iconConstants';
+import {
+  IM_SHIELD3,
+  IM_COIN_DOLLAR,
+  IM_OFFICE,
+  IM_CITY,
+  IM_BED,
+  IM_LIBRARY2,
+} from './iconConstants';
 
 const getTopicIcon = (topic) => {
   switch (topic) {
@@ -22,11 +29,54 @@ const getTopicIcon = (topic) => {
   }
 };
 
+const spanish = {
+  CRIME: 'CRIMEN',
+  DEVELOPMENT: 'URBANIZACI\xD3N',
+  BUDGET: 'PRESUPUESTO',
+  HOMELESSNESS: 'FALTA DE VIVIENDA',
+  CAPITAL_PROJECTS: 'PROYECTOS_CAPITALES',
+};
+
+const english = {
+  CRIME: 'CRIME',
+  DEVELOPMENT: 'DEVELOPMENT',
+  BUDGET: 'BUDGET',
+  HOMELESSNESS: 'HOMELESSNESS',
+  CAPITAL_PROJECTS: 'CAPITAL_PROJECTS',
+};
+
+const translateTopic = (topic, language) => {
+  switch (language) {
+    case 'Spanish':
+      return spanish[topic];
+    case 'English':
+      return english[topic];
+    default:
+      return topic;
+  }
+};
+
 const TopicCard = props => (
-  <Link className="topic-card" to={{ pathname: props.topic, query: { entity: props.entity, view: 'map', id: props.id, label: props.label, entities: props.entities, x: props.x, y: props.y, search: props.search } }}>
+  <Link
+    className="topic-card"
+    to={{
+      pathname: props.topic,
+      query: {
+        entity: props.entity,
+        view: 'map',
+        id: props.id,
+        label: props.label,
+        entities: props.entities,
+        x: props.x,
+        y: props.y,
+        search: props.search }
+      }}
+  >
     <div className={styles.topicCard}>
       <div className="text-primary text-center">{getTopicIcon(props.topic)}</div>
-      <div className="text-primary text-center">{props.topic.replace(/_/g, ' ')}</div>
+      <div className="text-primary text-center">
+        {translateTopic(props.topic, props.lang).replace(/_/g, ' ')}
+      </div>
     </div>
   </Link>
 );
@@ -40,6 +90,7 @@ TopicCard.propTypes = {
   entities: PropTypes.string,
   x: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   y: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  lang: PropTypes.string,
 };
 
 TopicCard.defaultProps = {
@@ -51,6 +102,7 @@ TopicCard.defaultProps = {
   entities: 'address,property,neighborhood,street,google,owner',
   x: '',
   y: '',
+  lang: 'English',
 };
 
 export default TopicCard;

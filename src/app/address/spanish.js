@@ -1,4 +1,4 @@
-export const content = {
+export const spanish = {
   about_this_address: 'Sobre esta dirrecci\xF3n',
   back_to_place_matches: 'Volver a lugares',
   back_to_search: 'Volver a buscar',

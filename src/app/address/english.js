@@ -1,4 +1,4 @@
-export const content = {
+export const english = {
   about_this_address: 'About this address',
   back_to_place_matches: 'Back to place matches',
   back_to_search: 'Back to search',

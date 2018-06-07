@@ -24,105 +24,13 @@ import InCityMessage from '../InCityMessage';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import Error from '../../shared/Error';
 import Map from '../../shared/visualization/Map';
-import { content } from './spanish';
-
-const getCurrentRecyclingWeek = () => {
-  const d = new Date(); // current time
-  const t = d.getTime() - (1000 * 60 * 60 * 24 * 3); // milliseconds since Jan 4 1970 Sunday
-  const w = Math.floor(t / (1000 * 60 * 60 * 24 * 7)); // weeks since Jan 4 1970
-  const o = w % 2; // equals 0 for even (B weeks) numbered weeks, 1 for odd numbered weeks
-  if (o === 0) {
-    return 'B';
-  }
-  // do your odd numbered week stuff
-  return 'A';
-};
-
-const calculateRecycling = (dayOfWeek, inCity, week) => {
-  if (dayOfWeek !== null) {
-    if (getCurrentRecyclingWeek() === week) {
-      return `${content.weekdays[dayOfWeek]} ${content.of_this_week} (${content.recycle_week} ${week})`; // eslint-disable-line
-    }
-    return `${content.weekdays[dayOfWeek]} ${content.of_next_week} (${content.recycle_week} ${week})`; // eslint-disable-line
-  }
-  if (inCity) {
-    return content.no_information_available;
-  }
-  return content.no_city_pickup;
-};
-
-const calculateBrushDay = (dayOfWeek, inCity, week) => {
-  if (dayOfWeek !== null) {
-    if (getCurrentRecyclingWeek() === week) {
-      return `${content.weekdays[dayOfWeek]} ${content.of_this_week} (${content.brush_week} ${week})`; // eslint-disable-line
-    }
-    return `${content.weekdays[dayOfWeek]} ${content.of_next_week} (${content.brush_week} ${week})`;
-  }
-  if (inCity) {
-    return content.no_information_available;
-  }
-  return content.no_city_pickup;
-};
-
-const calculateTrash = (dayOfWeek, inCity) => {
-  if (dayOfWeek !== null) {
-    return `${content.every} ${content.weekdays[dayOfWeek]}`;
-  }
-  if (inCity) {
-    return content.no_information_available;
-  }
-  return content.no_city_pickup;
-};
-
-const getMaintenanceInfo = (entity) => {
-  if (entity === null) {
-    return <div>{content.no_information_available}</div>;
-  }
-  if (entity === 'CITY OF ASHEVILLE') {
-    return (
-      <div>
-        <span>
-          <a
-            href="http://www.ashevillenc.gov/departments/street_services/maintenance.htm"
-            target="_blank"
-          >
-            {entity}
-          </a>
-        </span>
-        <span className="form-group__call-to-action">
-          <a
-            href="http://www.ashevillenc.gov/departments/it/online/service_requests.htm"
-            target="_blank"
-          >
-            <button className="btn btn-xs btn-warning">
-              {content.report_with_the_asheville_app}
-            </button>
-          </a>
-        </span>
-      </div>
-    );
-  }
-  if (entity === 'NCDOT') {
-    return (
-      <div>
-        <span>
-          <a
-            href="https://apps.ncdot.gov/contactus/Home/PostComment?Unit=PIO"
-            target="_blank"
-          >
-            {entity}
-          </a>
-        </span>
-      </div>
-    );
-  }
-  return <div>{entity}</div>;
-};
+import { english } from './english';
+import { spanish } from './spanish';
 
 const GET_ADDRESSES = gql`
-  query addresses($civicaddress_ids: [String]!) {
-    addresses(civicaddress_ids: $civicaddress_ids) {
-      address
+query addresses($civicaddress_ids: [String]!) {
+  addresses(civicaddress_ids: $civicaddress_ids) {
+    address
       zipcode
       trash_day
       brushweek
@@ -147,8 +55,11 @@ const GET_ADDRESSES = gql`
       owner_state
       owner_zipcode
     }
+    language @client {
+      lang
+    }
   }
-`;
+  `;
 
 const Address = props => (
   <Query
@@ -160,6 +71,103 @@ const Address = props => (
     {({ loading, error, data }) => {
       if (loading) return <LoadingAnimation />;
       if (error) return <Error message={error.message} />;
+      // set language
+      let content;
+      switch (data.language.lang) {
+        case 'Spanish':
+          content = spanish;
+          break;
+        default:
+          content = english;
+      }
+      const getCurrentRecyclingWeek = () => {
+        const d = new Date(); // current time
+        const t = d.getTime() - (1000 * 60 * 60 * 24 * 3); // milliseconds since Jan 4 1970 Sunday
+        const w = Math.floor(t / (1000 * 60 * 60 * 24 * 7)); // weeks since Jan 4 1970
+        const o = w % 2; // equals 0 for even (B weeks) numbered weeks, 1 for odd numbered weeks
+        if (o === 0) {
+          return 'B';
+        }
+        // do your odd numbered week stuff
+        return 'A';
+      };
+      const calculateRecycling = (dayOfWeek, inCity, week) => {
+        if (dayOfWeek !== null) {
+          if (getCurrentRecyclingWeek() === week) {
+            return `${content.weekdays[dayOfWeek]} ${content.of_this_week} (${content.recycle_week} ${week})`; // eslint-disable-line
+          }
+          return `${content.weekdays[dayOfWeek]} ${content.of_next_week} (${content.recycle_week} ${week})`; // eslint-disable-line
+        }
+        if (inCity) {
+          return content.no_information_available;
+        }
+        return content.no_city_pickup;
+      };
+      const calculateBrushDay = (dayOfWeek, inCity, week) => {
+        if (dayOfWeek !== null) {
+          if (getCurrentRecyclingWeek() === week) {
+            return `${content.weekdays[dayOfWeek]} ${content.of_this_week} (${content.brush_week} ${week})`; // eslint-disable-line
+          }
+          return `${content.weekdays[dayOfWeek]} ${content.of_next_week} (${content.brush_week} ${week})`; // eslint-disable-line
+        }
+        if (inCity) {
+          return content.no_information_available;
+        }
+        return content.no_city_pickup;
+      };
+      const calculateTrash = (dayOfWeek, inCity) => {
+        if (dayOfWeek !== null) {
+          return `${content.every} ${content.weekdays[dayOfWeek]}`;
+        }
+        if (inCity) {
+          return content.no_information_available;
+        }
+        return content.no_city_pickup;
+      };
+      const getMaintenanceInfo = (entity) => {
+        if (entity === null) {
+          return <div>{content.no_information_available}</div>;
+        }
+        if (entity === 'CITY OF ASHEVILLE') {
+          return (
+            <div>
+              <span>
+                <a
+                  href="http://www.ashevillenc.gov/departments/street_services/maintenance.htm"
+                  target="_blank"
+                >
+                  {entity}
+                </a>
+              </span>
+              <span className="form-group__call-to-action">
+                <a
+                  href="http://www.ashevillenc.gov/departments/it/online/service_requests.htm"
+                  target="_blank"
+                >
+                  <button className="btn btn-xs btn-warning">
+                    {content.report_with_the_asheville_app}
+                  </button>
+                </a>
+              </span>
+            </div>
+          );
+        }
+        if (entity === 'NCDOT') {
+          return (
+            <div>
+              <span>
+                <a
+                  href="https://apps.ncdot.gov/contactus/Home/PostComment?Unit=PIO"
+                  target="_blank"
+                >
+                  {entity}
+                </a>
+              </span>
+            </div>
+          );
+        }
+        return <div>{entity}</div>;
+      };
       const addressData = data.addresses[0];
       const mapData = [Object.assign(
         {},
@@ -327,6 +335,7 @@ const Address = props => (
                         x={addressData.x}
                         y={addressData.y}
                         search={props.location.query.search}
+                        lang={data.language.lang}
                       />
                     </div>
                   ))}

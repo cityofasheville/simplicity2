@@ -108,26 +108,22 @@ const ProjectDetails = (props) => {
                     <strong>{props.total_project_funding_budget_document}</strong>
                   </div>
                 </div>
-                {props.show_pm_fields &&
-                  <div className="" style={{ marginBottom: '10px' }}>
-                    <div style={{ color: '#676873' }}>
-                      Spent
-                    </div>
-                    <div>
-                      <strong>{['$', parseInt(props.total_spent, 10).toLocaleString()].join('')}</strong>
-                    </div>
+                <div className="" style={{ marginBottom: '10px' }}>
+                  <div style={{ color: '#676873' }}>
+                    Spent
                   </div>
-                }
-                {props.show_pm_fields &&
-                  <div className="" style={{ marginBottom: '10px' }}>
-                    <div style={{ color: '#676873' }}>
-                      Under contract
-                    </div>
-                    <div>
-                      <strong>{['$', parseInt(props.encumbered, 10).toLocaleString()].join('')}</strong>
-                    </div>
+                  <div>
+                    <strong>{['$', parseInt(props.total_spent, 10).toLocaleString()].join('')}</strong>
                   </div>
-                }
+                </div>
+                <div className="" style={{ marginBottom: '10px' }}>
+                  <div style={{ color: '#676873' }}>
+                    Under contract
+                  </div>
+                  <div>
+                    <strong>{['$', parseInt(props.encumbered, 10).toLocaleString()].join('')}</strong>
+                  </div>
+                </div>
               </div>
               <div className="col-xs-7">
                 <div className="" style={{ marginBottom: '10px' }}>
@@ -138,17 +134,14 @@ const ProjectDetails = (props) => {
                     <strong>{props.zip_code || '?'}</strong>
                   </div>
                 </div>
-                {/* TODO: alter logic for new coa_project_manages */}
-                {props &&
-                  <div className="" style={{ marginBottom: '20px' }}>
-                    <div style={{ color: '#676873' }}>
-                      Estimated Construction Timeframe
-                    </div>
-                    <div>
-                      <strong>{props.status !== null && props.status.indexOf('Completed') > -1 ? ['Completed', props.actual_construction_end].join(' ') : props.target_construction_start === null ? props.target_construction_end : [props.target_construction_start, props.target_construction_end].join(' - ')}</strong>
-                    </div>
+                <div className="" style={{ marginBottom: '20px' }}>
+                  <div style={{ color: '#676873' }}>
+                    Estimated Construction Timeframe
                   </div>
-                }
+                  <div>
+                    <strong>{props.status !== null && props.status.indexOf('Completed') > -1 ? ['Completed', props.actual_construction_end].join(' ') : props.target_construction_start === null ? props.target_construction_end : [props.target_construction_start, props.target_construction_end].join(' - ')}</strong>
+                  </div>
+                </div>
               </div>
             </div>
             { /*{props.Category.indexOf('Bond') > -1 &&
@@ -159,7 +152,7 @@ const ProjectDetails = (props) => {
               </div>
               </div>
             }*/}
-            {props.show_pm_fields && props.status !== null &&
+            {props.status !== null &&
               <div className="capital-project__status">
                 <div className="header">
                   Project phase

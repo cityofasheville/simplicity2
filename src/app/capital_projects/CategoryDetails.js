@@ -105,7 +105,6 @@ const GET_PROJECTS = gql`
       project_description
       status
       encumbered
-      show_pm_fields
       total_project_funding_budget_document
       total_spent
       target_construction_start

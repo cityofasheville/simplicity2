@@ -82,12 +82,6 @@ class ProjectsTable extends React.Component {
             :
             row.original.status
           }
-          {/* TODO: come and set this properly with new managed_by_city col  */}
-          {/* {!row.original.show_pm_fields || row.original.status === null ?
-            '--'
-            :
-            row.original.status
-          } */}
         </span>
       ),
       maxWidth: 120,
@@ -117,7 +111,7 @@ class ProjectsTable extends React.Component {
     {
       Header: (<div>Spent</div>),
       id: 'spent',
-      accessor: project => (!project.show_pm_fields ? '--' : ['$', parseInt(project.total_spent, 10).toLocaleString()].join('')),
+      accessor: project => ['$', parseInt(project.total_spent, 10).toLocaleString()].join(''),
       maxWidth: 120,
       show: state.width >= 720,
       Filter: ({ filter, onChange }) => (

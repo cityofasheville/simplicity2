@@ -159,7 +159,6 @@ const ProjectDetails = (props) => {
               </div>
               </div>
             }*/}
-            {console.log(props)}
             {props.show_pm_fields && props.status !== null &&
               <div className="capital-project__status">
                 <div className="header">

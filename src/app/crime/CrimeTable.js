@@ -4,6 +4,8 @@ import AccessibleReactTable from 'accessible-react-table';
 import moment from 'moment';
 import Icon from '../../shared/Icon';
 import { IM_SHIELD3, IM_MAP5, IM_USER, IM_LIBRARY2, IM_CAR, IM_FENCE, IM_PENCIL7, LI_BILL_DOLLAR, IM_COIN_DOLLAR, IM_AID_KIT2, IM_HAMMER, LI_AMBULANCE, IM_PROFILE, IM_BUBBLE9, IM_GUN_FORBIDDEN } from '../../shared/iconConstants';
+import { english } from './english';
+import { spanish } from './spanish';
 
 const getIcon = (type, isExpanded) => {
   switch (type) {
@@ -69,8 +71,17 @@ const getIcon = (type, isExpanded) => {
 class CrimeTable extends React.Component {
   constructor(props) {
     super(props);
+    let content;
+    switch (props.lang) {
+      case 'Spanish':
+        content = spanish;
+        break;
+      default:
+        content = english;
+    }
     this.state = {
       urlString: '',
+      content,
     };
   }
 
@@ -83,7 +94,7 @@ class CrimeTable extends React.Component {
   render() {
     const dataColumns = [
       {
-        Header: 'Type',
+        Header: this.state.content.type,
         accessor: 'offense_long_description',
         width: 335,
         Cell: row => (
@@ -102,7 +113,7 @@ class CrimeTable extends React.Component {
         ),
       },
       {
-        Header: 'Date',
+        Header: this.state.content.date,
         id: 'date_occurred',
         accessor: crime => (<span>{moment.utc(crime.date_occurred).format('M/DD/YYYY')}</span>),
         width: 100,
@@ -202,6 +213,12 @@ class CrimeTable extends React.Component {
 
 CrimeTable.propTypes = {
   data: PropTypes.array, // eslint-disable-line
+  lang: PropTypes.string,
+};
+
+CrimeTable.defaultProps = {
+  data: [],
+  lang: 'English',
 };
 
 export default CrimeTable;

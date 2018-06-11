@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import ReactTable from 'react-table';
 import { accessibility } from 'accessible-react-table';
 import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
-import SearchResultGroup from '../search/searchResults/SearchResultGroup';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import Error from '../../shared/Error';
 import InCityMessage from '../InCityMessage';
@@ -22,7 +20,7 @@ import * as poweredByGoogle from '../search/searchResults/powered_by_google_on_w
 
 const AccessibleReactTable = accessibility(ReactTable);
 
-const dataColumns = (formattedData) => {
+const dataColumns = (formattedData, miniResultsProps) => {
   return [{
     headerStyle: { boxShadow: 'none' },
     Header: <h2 className="pull-left">
@@ -36,7 +34,6 @@ const dataColumns = (formattedData) => {
     </h2>,
     accessor: 'label',
     Cell: (row) => {
-      console.log(row)
       return (
         <span className="search-results-group__row-inner">
           <div
@@ -47,34 +44,35 @@ const dataColumns = (formattedData) => {
             // key={index}
           >
             <div
-              className='text-primary'
+              className="text-primary"
               style={{ display: 'inline-block', minWidth: '40%' }}
             >
               <a
                 href={getLink(
-                  result.type,
-                  result.id,
-                  props.searchText,
-                  props.selectedEntities,
-                  result.label,
-                  props.originalSearch,
+                  row.original.type,
+                  row.original.id,
+                  miniResultsProps.searchText,
+                  miniResultsProps.selectedEntities,
+                  row.original.label,
+                  miniResultsProps.originalSearch,
                 )}
-                target='_blank'
-                rel='noopener noreferrer'
-                >
-                {result.label}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {row.original.label}
               </a>
             </div>
-            { result.is_in_city !== null &&
+            { row.original.is_in_city !== null &&
               <div
-                style={{ display: 'inline-block', fontSize: '0.85em'}}
+                style={{ display: 'inline-block', fontSize: '0.85em' }}
               >
                 <InCityMessage
-                  inTheCity={result.is_in_city}
+                  inTheCity={row.original.is_in_city}
                   text={(inOutBool) => inOutBool ? "In the city" : "Outside of the city"}
                   icon={false}
                 />
               </div>
+            }
           </div>
         </span>
       );
@@ -95,8 +93,6 @@ const MiniResults = (props) => {
 
   const formattedResults = formatSearchResults(props.data.search);
 
-  console.log(formattedResults)
-
   if (formattedResults.length > 0) {
     return (
       <div className="row">
@@ -109,7 +105,7 @@ const MiniResults = (props) => {
               <AccessibleReactTable
                 ariaLabel="Search Results"
                 data={resultGroup.results}
-                columns={dataColumns(resultGroup)}
+                columns={dataColumns(resultGroup, props)}
                 showPagination={resultGroup.results.length > 5}
                 defaultPageSize={resultGroup.results.length < 5 ? resultGroup.results.length : 5}
                 filterable={false}

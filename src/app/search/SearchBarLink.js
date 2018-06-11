@@ -30,7 +30,7 @@ const getEntities = (selected) => {
 
 const SearchBarLink = props => (
   <div className="col-xs-12">
-    <h2>Enter address for trash pickup day, property details, and more</h2>
+    <h2 id="search-instructions">Enter address for trash pickup day, property details, and more</h2>
     {/* <Link to={['/search?entities=', props.selectedEntities].join('')}> */}
     <Link to="/search">
       <form onSubmit={event => event.preventDefault()}>
@@ -42,6 +42,8 @@ const SearchBarLink = props => (
             id="searchBox"
             defaultValue={props.text}
             onKeyUp={props.onKeyUp}
+            aria-label="Simplicity Search Box"
+            aria-describedBy="search-instructions"
           />
           <span className="input-group-btn">
             <button className="btn btn-primary" type="button" aria-label="search"><Icon path={IM_SEARCH} size={16} /></button>
@@ -51,7 +53,7 @@ const SearchBarLink = props => (
     </Link>
     <div>
       <h3 className="text-center" style={{ marginBottom: '20px' }}><i>Or search by: owner, neighborhood, pin number, or street</i></h3>
-    </div>    
+    </div>
     {/* <SearchByEntities location={props.location} entities={getEntities(props.selectedEntities)} selectedEntities={props.selectedEntities} /> */}
   </div>
 );

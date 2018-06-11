@@ -6,7 +6,7 @@ import Icon from '../../../shared/Icon';
 import styles from './searchResultGroup.css';
 import { getLink, getPlural, getIcon } from './searchResultsUtils';
 import { IM_GOOGLE } from '../../../shared/iconConstants';
-
+import * as poweredByGoogle from './powered_by_google_on_white.png';
 
 const SearchResultGroup = (props) => {
   const dataColumns = [
@@ -18,7 +18,7 @@ const SearchResultGroup = (props) => {
         <span className="offscreen">Number of results</span>
         <span className="badge">{props.data.results.length}</span>
         {props.data.label === 'place' &&
-          <img src={require('./powered_by_google_on_white.png')} alt="Powered by Google" style={{ marginLeft: '20px' }}></img>
+          <img src={poweredByGoogle} alt="Powered by Google" style={{ marginLeft: '20px' }}></img>
         }
       </h2>,
       accessor: 'label',

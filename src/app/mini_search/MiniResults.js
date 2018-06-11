@@ -16,6 +16,7 @@ import {
   searchQuery,
 } from '../search/searchResults/searchResultsUtils';
 import * as poweredByGoogle from '../search/searchResults/powered_by_google_on_white.png';
+import styles from '../search/searchResults/searchResultGroup.css';
 
 
 const AccessibleReactTable = accessibility(ReactTable);
@@ -99,7 +100,7 @@ const MiniResults = (props) => {
         <div className="col-sm-12">
           {formattedResults.map((resultGroup, index) => (
             <div
-              className="search-results-group"
+              className={`${styles.searchResultGroup} search-results-group search-results-group-${resultGroup.label}`}
               key={[resultGroup.label, index].join('_')}
             >
               <AccessibleReactTable

@@ -5,7 +5,10 @@ import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import Map from '../../shared/visualization/Map';
 import EmailDownload from '../../shared/EmailDownload';
-import { getBoundsFromStreetData, convertStreetLinesToLatLngArrays } from '../../utilities/mapUtilities';
+import {
+  getBoundsFromStreetData,
+  convertStreetLinesToLatLngArrays,
+} from '../../utilities/mapUtilities';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import Error from '../../shared/Error';
 import { english } from './english';
@@ -64,6 +67,7 @@ const AddressesByStreet = props => (
         default:
           content = english;
       }
+
       const dataColumns = [
         {
           Header: content.address,
@@ -83,8 +87,8 @@ const AddressesByStreet = props => (
             />
           ),
           filterMethod: (filter, row) => {
-            const joinedAddressInfo = [row._original.street_number, row._original.street_prefix, row._original.street_number, row._original.street_name, row._original.unit, row._original.city, ',NC', row._original.zipcode].join(' ');
-            return row._original !== undefined ? joinedAddressInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
+            const joinedAddressInfo = `${row._original.street_number} ${row._original.street_prefix} ${row._original.street_number} ${row._original.street_name} ${row._original.unit} ${row._original.city} ,NC ${row._original.zipcode}`; // eslint-disable-line
+            return row._original !== undefined ? joinedAddressInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true; // eslint-disable-line
           },
         },
         {
@@ -106,14 +110,13 @@ const AddressesByStreet = props => (
             />
           ),
           filterMethod: (filter, row) => {
-            const joinedOwnerInfo = [row._original.owner_name, row._original.owner_address, row._original.owner_cityname, [',', row._original.owner_state].join(''), row._original.owner_zipcode].join(' ');
-            return row._original !== undefined ? joinedOwnerInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
+            const joinedOwnerInfo = `${row._original.owner_name} ${row._original.owner_address} ${row._original.owner_cityname} ,${row._original.owner_state} ${row._original.owner_zipcode}`; // eslint-disable-line
+            return row._original !== undefined ? joinedOwnerInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true; // eslint-disable-line
           },
         },
       ];
 
-      const mapData = data.addresses_by_street.map(item => (Object.assign({}, item, { popup: `<b>${content.address}</b><div>${item.street_number} ${item.street_prefix} ${item.street_name} ${item.unit || ''}</div><div>${item.city}, NC ${item.zipcode}</div><br /><b>${content.owner}</b><div>${item.owner_name}</div><div>${item.owner_address}</div><div>${item.owner_cityname}, ${item.owner_state} ${item.owner_zipcode}</div>` })
-      )); // eslint-disable-line
+      const mapData = data.addresses_by_street.map(item => (Object.assign({}, item, { popup: `<b>${content.address}</b><div>${item.street_number} ${item.street_prefix} ${item.street_name} ${item.unit || ''}</div><div>${item.city}, NC ${item.zipcode}</div><br /><b>${content.owner}</b><div>${item.owner_name}</div><div>${item.owner_address}</div><div>${item.owner_cityname}, ${item.owner_state} ${item.owner_zipcode}</div>` }))); // eslint-disable-line
 
       return (
         <div>
@@ -128,21 +131,22 @@ const AddressesByStreet = props => (
             <div id="listView" hidden={props.location.query.view === 'map'} className="col-sm-12">
               {data.addresses_by_street.length < 1 ?
                 <div className="alert alert-info">No results found</div>
-              :
+                :
                 <div style={{ marginTop: '10px' }}>
                   <AccessibleReactTable
                     data={data.addresses_by_street}
                     ariaLabel="Street Addresses"
                     columns={dataColumns}
                     showPagination={data.addresses_by_street.length > 20}
-                    defaultPageSize={data.addresses_by_street.length <= 20 ? data.addresses_by_street.length : 20}
-                    getTdProps={() => {
-                      return {
+                    defaultPageSize={data.addresses_by_street.length <= 20 ?
+                      data.addresses_by_street.length : 20}
+                    getTdProps={() => (
+                      {
                         style: {
                           whiteSpace: 'normal',
                         },
-                      };
-                    }}
+                      }
+                    )}
                     filterable
                   />
                 </div>
@@ -153,7 +157,12 @@ const AddressesByStreet = props => (
               {data.addresses_by_street.length === 0 || props.location.query.view !== 'map' ?
                 <div className="alert alert-info">No results found</div>
                 :
-                <Map data={mapData} bounds={getBoundsFromStreetData(data.streets)} drawStreet streetData={convertStreetLinesToLatLngArrays(data.streets)} />
+                <Map
+                  data={mapData}
+                  bounds={getBoundsFromStreetData(data.streets)}
+                  drawStreet
+                  streetData={convertStreetLinesToLatLngArrays(data.streets)}
+                />
               }
             </div>
           </div>
@@ -164,13 +173,11 @@ const AddressesByStreet = props => (
 );
 
 AddressesByStreet.propTypes = {
-  spatialEventTopic: PropTypes.string.isRequired,
   location: PropTypes.object, // eslint-disable-line
   query: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 };
 
 AddressesByStreet.defaultProps = {
-  spatialEventTopic: 'crime',
   query: { entity: 'address', label: '123 Main street' },
 };
 

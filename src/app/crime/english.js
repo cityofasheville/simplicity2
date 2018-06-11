@@ -5,6 +5,7 @@ export const english = {
   crime_pie_chart: 'Crime pie chart',
   date: 'Date',
   list_view: 'List view',
+  location: 'Location',
   map_view: 'Map view',
   no_results_found: 'No results found',
   placeholder: 'Search...',

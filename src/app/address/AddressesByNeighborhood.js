@@ -94,7 +94,7 @@ const AddressesByNeighborhood = props => (
           ),
           filterMethod: (filter, row) => {
             const joinedAddressInfo = `${row._original.street_number} ${row._original.street_prefix} ${row._original.street_number} ${row._original.street_name} ${row._original.unit} ${row._original.city} ,NC ${row._original.zipcode}`; // eslint-disable-line
-            return row._original !== undefined ? joinedAddressInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
+            return row._original !== undefined ? joinedAddressInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true; // eslint-disable-line
           },
         },
         {
@@ -129,6 +129,7 @@ const AddressesByNeighborhood = props => (
           item,
           { popup: `<b>${content.address}</b><div>${item.street_number} ${item.street_prefix} ${item.street_name} ${item.unit || ''}</div><div>${item.city}, NC ${item.zipcode}</div><br /><b>${content.owner}</b><div>${item.owner_name}</div><div>${item.owner_address}</div><div>${item.owner_cityname}, ${item.owner_state} ${item.owner_zipcode}</div>` } // eslint-disable-line
         )));
+
       return (
         <div>
           <div className="row">
@@ -142,21 +143,22 @@ const AddressesByNeighborhood = props => (
             <div id="listView" hidden={props.location.query.view === 'map'} className="col-sm-12">
               {data.addresses_by_neighborhood.length < 1 ?
                 <div className="alert alert-info">No results found</div>
-              :
+                :
                 <div style={{ marginTop: '10px' }}>
                   <AccessibleReactTable
                     data={data.addresses_by_neighborhood}
                     arialLabel="Neighborhood Addresses"
                     columns={dataColumns}
                     showPagination={data.addresses_by_neighborhood.length > 20}
-                    defaultPageSize={data.addresses_by_neighborhood.length <= 20 ? data.addresses_by_neighborhood.length : 20}
-                    getTdProps={() => {
-                      return {
+                    defaultPageSize={data.addresses_by_neighborhood.length <= 20
+                      ? data.addresses_by_neighborhood.length : 20}
+                    getTdProps={() => (
+                      {
                         style: {
                           whiteSpace: 'normal',
                         },
-                      };
-                    }}
+                      }
+                    )}
                     filterable
                   />
                 </div>

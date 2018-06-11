@@ -80,6 +80,7 @@ const Address = props => (
         default:
           content = english;
       }
+
       const getCurrentRecyclingWeek = () => {
         const d = new Date(); // current time
         const t = d.getTime() - (1000 * 60 * 60 * 24 * 3); // milliseconds since Jan 4 1970 Sunday
@@ -91,6 +92,7 @@ const Address = props => (
         // do your odd numbered week stuff
         return 'A';
       };
+
       const calculateRecycling = (dayOfWeek, inCity, week) => {
         if (dayOfWeek !== null) {
           if (getCurrentRecyclingWeek() === week) {
@@ -103,6 +105,7 @@ const Address = props => (
         }
         return content.no_city_pickup;
       };
+
       const calculateBrushDay = (dayOfWeek, inCity, week) => {
         if (dayOfWeek !== null) {
           if (getCurrentRecyclingWeek() === week) {
@@ -115,6 +118,7 @@ const Address = props => (
         }
         return content.no_city_pickup;
       };
+
       const calculateTrash = (dayOfWeek, inCity) => {
         if (dayOfWeek !== null) {
           return `${content.every} ${content.weekdays[dayOfWeek]}`;
@@ -124,6 +128,7 @@ const Address = props => (
         }
         return content.no_city_pickup;
       };
+
       const getMaintenanceInfo = (entity) => {
         if (entity === null) {
           return <div>{content.no_information_available}</div>;
@@ -168,6 +173,7 @@ const Address = props => (
         }
         return <div>{entity}</div>;
       };
+
       const addressData = data.addresses[0];
       const mapData = [Object.assign(
         {},

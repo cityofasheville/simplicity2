@@ -5,6 +5,7 @@ export const spanish = {
   crime_pie_chart: 'Gr\xE1fico circular de cr\xEDmenes',
   date: 'Fecha',
   list_view: 'Lista',
+  location: 'Lugar',
   map_view: 'Mapa',
   no_results_found: 'No se han encontrado resultados',
   placeholder: 'Buscar...',

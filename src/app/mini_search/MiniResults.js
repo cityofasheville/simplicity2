@@ -94,6 +94,8 @@ const MiniResults = (props) => {
 
   const formattedResults = formatSearchResults(props.data.search);
 
+  console.log(formattedResults)
+
   if (formattedResults.length > 0) {
     return (
       <div className="row">

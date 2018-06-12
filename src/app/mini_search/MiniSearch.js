@@ -70,7 +70,7 @@ class MiniSearch extends React.Component {
 
   render() {
     return (<div style={{ margin: '2% 0%', fontSize: '0.85em' }} >
-      <h4>Check whether the address is within city limits</h4>
+      <h4>Check whether an address is within city limits</h4>
       <form onSubmit={event => event.preventDefault()}>
         <div className="input-group">
           <label htmlFor="searchBox" className="offscreen">Search terms</label>
@@ -108,6 +108,12 @@ class MiniSearch extends React.Component {
         searchText={this.state.searchTermToUse}
         location={this.props.location}
       />
+      <div className="container">
+        <div className="col-sm-12">
+          <div style={{ fontStyle: 'italic' }} className="text-right"><a className="inText" href="https://docs.google.com/a/ashevillenc.gov/forms/d/e/1FAIpQLSdjNwOmoDY3PjQOVreeSL07zgI8otIIPWjY7BnejWMAjci8-w/viewform?c=0&w=1" target="_blank" title="website feedback form">Report bugs or give feedback on this tool</a>
+          </div>
+        </div>
+      </div>
     </div>);
   }
 }

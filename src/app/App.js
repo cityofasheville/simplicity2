@@ -96,7 +96,7 @@ class Main extends React.Component {
       <main>
         <div
           style={{
-            paddingTop: this.props.location.query.hideNavbar ? '0px' : '0px',
+            paddingTop: this.props.location.query.hideNavbar ? '0px' : '97px',
           }}
         >
           <div id="skip">

@@ -1,6 +1,6 @@
 {
   "name": "simplicity2",
-  "version": "2.5.0",
+  "version": "2.5.1",
   "description": "Version 2 of SimpliCity",
   "main": "index.js",
   "scripts": {
@@ -96,7 +96,7 @@
     "react-table": "^6.7.4",
     "react-toggle": "^4.0.1",
     "selectly": "^0.5.0",
-    "semiotic": "^1.11.2",
+    "semiotic": "^1.11.6",
     "semiotic-mark": "^0.1.2",
     "unfetch": "^3.0.0",
     "url-loader": "^1.0.1"

@@ -18,20 +18,21 @@ const getButtonClass = (categoryType, buttonName) => {
   return 'btn btn-primary btn-xs';
 };
 
-const goDeeper = (props) => {
+const goDeeper = (props, location, history) => {
+  console.log(props)
   let curPath = props.path;
   if (props.path.split('_').length > 5) {
     curPath = props.path.split('_').slice(0, 5).join('_');
   }
-  let newURL = [props.location.pathname, '?',
-    Object.entries(props.location.query).map(([key, value]) => {
+  let newURL = [location.pathname, '?',
+    Object.entries(location.query).map(([key, value]) => {
       if (key !== 'nodePath') {
         return [key, '=', value, '&'].join('');
       }
       return '';
     }).join('')].join('');
   newURL = [newURL, 'nodePath=', curPath].join('');
-  props.history.replace(newURL);
+  history.replace(newURL);
 };
 
 const goUp = (props, numLevels) => {
@@ -110,14 +111,14 @@ const renderBreadcrumb = (tree, props) => {
 
 const BudgetDetailsTreemap = (props) => {
   const myTree = props.location.query.mode === 'expenditures' || props.location.query.mode === undefined ? props.expenseTree : props.revenueTree;
-  
+
   const getNewUrlParams = mode => (
     {
       mode,
       nodePath: 'root',
     }
   );
-  
+
   return (
     <div>
       <div className="row">
@@ -154,7 +155,14 @@ const BudgetDetailsTreemap = (props) => {
               </label>
             </RadioGroup>
           </div>
-          <Treemap data={findTop(myTree, props.location.query.nodePath || 'root')} altText={['Treemap of', (props.location.query.mode || 'expenditures')].join(' ')} diveDeeper={props.diveDeeper} differenceColors history={browserHistory} location={props.location} />
+          <Treemap
+            data={findTop(myTree, props.location.query.nodePath || 'root')}
+            altText={['Treemap of', (props.location.query.mode || 'expenditures')].join(' ')}
+            diveDeeper={props.diveDeeper}
+            differenceColors
+            history={browserHistory}
+            location={props.location}
+          />
         </div>
       </div>
     </div>

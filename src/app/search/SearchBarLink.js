@@ -49,7 +49,7 @@ const SearchBarLink = props => (
             defaultValue={props.text}
             onKeyUp={props.onKeyUp}
             aria-label="Simplicity Search Box"
-            aria-describedBy="search-instructions"
+            aria-describedby="search-instructions"
           />
           <span className="input-group-btn">
             <button

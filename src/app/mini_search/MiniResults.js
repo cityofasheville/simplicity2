@@ -42,7 +42,6 @@ const dataColumns = (formattedData, miniResultsProps) => {
               width: '100%',
               margin: '0.25em 1em',
             }}
-            // key={index}
           >
             <div
               className="text-primary"
@@ -93,8 +92,6 @@ const MiniResults = (props) => {
   }
 
   const formattedResults = formatSearchResults(props.data.search);
-
-  console.log(formattedResults)
 
   if (formattedResults.length > 0) {
     return (

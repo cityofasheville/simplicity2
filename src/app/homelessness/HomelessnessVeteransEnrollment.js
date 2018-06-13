@@ -145,7 +145,7 @@ class HomelessnessVeteransEnrollment extends React.Component {
   render() {
     return (
       <div>
-        <h3>Veterans on the by-name list</h3>
+        <h2>Veterans on the by-name list</h2>
         <div>
           The Veteran By-Name List is a comprehensive list of homeless Veterans in the community that is populated through information from street and VA outreach, HMIS, community shelters, VA-funded programs including GPD providers, and any other provider who may work with Veterans experiencing homelessness. The list is updated regularly – in most cases, daily – in order to ensure it has the most up-to-date information.
         </div>

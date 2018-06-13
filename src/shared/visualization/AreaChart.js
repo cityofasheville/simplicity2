@@ -56,7 +56,7 @@ class AreaChart extends React.Component {
     );
     return (
       <div>
-        <h4>{this.props.chartTitle}</h4>
+        <div className="visualization-title">{this.props.chartTitle}</div>
         <p>
           {this.props.chartText.isArray &&
             this.props.chartText.map((textChunk, index) => (

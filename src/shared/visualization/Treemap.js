@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import { ResponsiveContainer, Treemap as RechartsTreemap } from 'recharts';
 import { ResponsiveNetworkFrame } from 'semiotic';
 import { scaleSequential } from 'd3-scale';
 import { interpolateLab } from 'd3-interpolate';
+import Tooltip from './Tooltip';
 
 
 const getDollars = (value) => {
@@ -57,10 +57,12 @@ class Treemap extends React.Component {
     positiveMax.length > 0 && positiveColor.domain([0, positiveMax[0]]);
     negativeMin.length > 0 && negativeColor.domain([0, negativeMin[0]]);
 
-    console.log(this.props)
-
     return (
-      <div style={{ height: this.props.height }} onClick={this.toggleLabels} alt={this.altText}>
+      <div
+        style={{ height: this.props.height }}
+        onClick={this.toggleLabels}
+        alt={this.altText}
+      >
         <ResponsiveNetworkFrame
           responsiveWidth
           edges={{ key: 'parent', children: filteredData }}
@@ -87,9 +89,34 @@ class Treemap extends React.Component {
             hierarchySum: d => d.size,
           }}
           hoverAnnotation
-          customClickBehavior={this.props.diveDeeper !== undefined ? (d) => this.props.diveDeeper(d, this.props.location, this.props.history) : null}
+          customClickBehavior={d => this.props.diveDeeper !== undefined && this.props.diveDeeper(
+            d,
+            this.props.location,
+            this.props.history
+          )}
+          tooltipContent={(d) => {
+            if(!d.name) { return; } // TAKE THIS OUT WHEN IT'S FIXED
+            const textLines = [
+              {
+                text: `Total: ${getDollarsForTooltips(d.amount)}`,
+              },
+              {
+                text: `${d.delta > 0 ? 'Increase' : 'Decrease'} by ${d.deltaPercent}`,
+              },
+            ];
+            return (<Tooltip
+              title={d.name.trim()}
+              textLines={textLines}
+            />);
+          }}
         />
-        <button className="btn btn-primary btn-xs pull-right" style={{ marginTop: '3px' }} id="toggleLabels">{this.state.showingLabels === true ? 'Hide labels' : 'Show labels'}</button>
+        <button
+          className="btn btn-primary btn-xs pull-right"
+          style={{ marginTop: '3px' }}
+          id="toggleLabels"
+        >
+          {this.state.showingLabels === true ? 'Hide labels' : 'Show labels'}
+        </button>
       </div>
     );
   }

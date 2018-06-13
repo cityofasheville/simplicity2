@@ -19,7 +19,6 @@ const getButtonClass = (categoryType, buttonName) => {
 };
 
 const goDeeper = (props, location, history) => {
-  console.log(props)
   let curPath = props.path;
   if (props.path.split('_').length > 5) {
     curPath = props.path.split('_').slice(0, 5).join('_');
@@ -93,6 +92,7 @@ const renderBreadcrumb = (tree, props) => {
     }
   }
   const levels = curNode.breadcrumbPath.slice(5).split('>');
+
   return (
     <div className="pull-left treeMapBreadcrumb">
       <span className="treeMapBreadcrumbLink" onClick={props.jumpUp ? () => props.jumpUp(props, levels.length) : null}>Top</span><span> &gt; </span>
@@ -155,6 +155,10 @@ const BudgetDetailsTreemap = (props) => {
               </label>
             </RadioGroup>
           </div>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-sm-12">
           <Treemap
             data={findTop(myTree, props.location.query.nodePath || 'root')}
             altText={['Treemap of', (props.location.query.mode || 'expenditures')].join(' ')}

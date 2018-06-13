@@ -11,7 +11,7 @@ const Tooltip = (props) => {
     20
   );
   styles.minWidth = `${minWidth / 2}em`;
-  return (<div style={styles}>
+  return (<div style={styles} className="tooltip">
     <div style={{ fontWeight: 'bolder', textAlign: 'center' }}>
       {props.title}
     </div>

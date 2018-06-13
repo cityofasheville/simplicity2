@@ -81,7 +81,7 @@ const ProjectDetails = (props) => {
       <div className="col-sm-12">
         <div className="row" hidden={props.hideTitle}>
           <div className="col-sm-12">
-            <h4>{getIcon()} {props.display_name}</h4>
+            <h2>{getIcon()} {props.display_name}</h2>
           </div>
         </div>
         <div className="row" style={props.hideTitle ? { marginTop: '15px' } : null}>
@@ -122,7 +122,7 @@ const ProjectDetails = (props) => {
                       <strong>{['$', parseInt(props.encumbered).toLocaleString()].join('')}</strong>
                     </div>
                   </div>
-                }                
+                }
               </div>
               <div className="col-xs-7">
                 <div className="" style={{ marginBottom: '10px' }}>
@@ -148,7 +148,7 @@ const ProjectDetails = (props) => {
             {/*{props.Category.indexOf('Bond') > -1 &&
               <div className="row">
               <div className="col-sm-12">
-              <Icon path={IM_CERTIFICATE} size={25} color="#4077a5" /> 
+              <Icon path={IM_CERTIFICATE} size={25} color="#4077a5" />
               <span>Bond funding: {props['GO Bond Funding']}</span>
               </div>
               </div>

@@ -92,7 +92,7 @@ const PCardReceiptsTable = (props) => {
     <div
       alt="Table of days to reconcile"
     >
-      <h3 id={'pcard-compliance-days-to-reconcile-label'}>{`Table of receipts and missing receipts`}</h3>
+      <h2 id={'pcard-compliance-days-to-reconcile-label'}>{`Table of receipts and missing receipts`}</h2>
       <ExpandableAccessibleReactTable
         data={props.data}
         columns={mainDataColumns}

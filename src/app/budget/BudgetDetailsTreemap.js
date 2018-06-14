@@ -123,9 +123,9 @@ const BudgetDetailsTreemap = (props) => {
     <div>
       <div className="row">
         <div className="col-sm-12">
-          <h3>
+          <h2>
             Treemap of {props.location.query.mode || 'expenditures'}
-          </h3>
+          </h2>
         </div>
       </div>
       <div className="row">

@@ -126,7 +126,7 @@ const HomelessnessVeterans = (props) => (
     </div>
     <div className="row">
       <div className="col-sm-12">
-        <h3>How are homeless Veterans being helped?</h3>
+        <h2>How are homeless Veterans being helped?</h2>
         <p>
           Buncombe County is comprised of many agencies and organizations assisting and serving our Veteran homeless population in conjunction with the VA Medical Center. Outreach specialists identify areas throughout the community where homeless Veterans congregate and camp. Veterans are identified and assessed using a standardized vulnerability index tool to help identify the most appropriate housing intervention available for that Veteran. Agency representatives meet weekly to review referrals and ensure that every eligible homeless Veteran is matched with an appropriate housing intervention. Homeless military Veterans of low and extremely low income in Buncombe County are eligible for case management, service referral or may receive housing assistance through VA funded programs.
         </p>

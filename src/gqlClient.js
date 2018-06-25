@@ -5,6 +5,7 @@ import { IntrospectionFragmentMatcher, InMemoryCache } from 'apollo-cache-inmemo
 import { ApolloLink } from 'apollo-link';
 import firebase from 'firebase';
 import { withClientState } from 'apollo-link-state';
+import { setContext } from 'apollo-link-context';
 import { resolvers } from './resolvers';
 import { defaultState } from './defaultState';
 import { fragmentTypes } from './fragmentTypes';
@@ -16,19 +17,27 @@ if (process.env.USE_LOCAL_API === 'true') {
 
 const httpLink = createHttpLink({ uri: SERVER_URL, fetch });
 
-const authLink = new ApolloLink((operation, forward) => {
-  const token = localStorage.getItem('token') || null;
-  if (firebase.apps.length > 0) {
-    const signedInUser = firebase.auth().currentUser;
-    if (signedInUser) {
-      const newToken = signedInUser.getIdToken(true).then(idToken => (idToken));
-      operation.setContext(({ headers }) => (Object.assign({}, headers, { authorization: newToken })));
-      return forward(operation);
-    }
-  }
-  operation.setContext(({ headers }) => (Object.assign({}, headers, { authorization: token })));
-  return forward(operation);
-});
+const authLink = setContext(
+  request =>
+    new Promise((success, fail) => {
+      const signedInUser = firebase.auth().currentUser;
+      if (signedInUser) {
+        signedInUser.getIdToken(true)
+        .then((idToken) => {
+          localStorage.setItem('token', idToken);
+          success({ headers: {
+            authorization: idToken,
+          } });
+          fail(Error(request.statusText));
+        });
+      } else {
+        success({ headers: {
+          authorization: localStorage.getItem('token') || null,
+        } });
+        fail(Error(request.statusText));
+      }
+    })
+);
 
 const fragmentMatcher = new IntrospectionFragmentMatcher({
   introspectionQueryResultData: fragmentTypes,

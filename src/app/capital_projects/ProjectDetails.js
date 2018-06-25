@@ -102,7 +102,7 @@ const ProjectDetails = (props) => {
               <div className="col-xs-5">
                 <div className="" style={{ marginBottom: '10px' }}>
                   <div style={{ color: '#676873' }}>
-                    Current Project Budget
+                    Budget
                   </div>
                   <div>
                     <strong>{props.total_project_funding_budget_document}</strong>
@@ -155,7 +155,7 @@ const ProjectDetails = (props) => {
             {props.status !== null &&
               <div className="capital-project__status">
                 <div className="header">
-                  Project phase
+                  Phase
                 </div>
                 <div className="project-status">
                   <Icon path={IM_CIRCLE2} size={25} color={getStageNumber(props.status) >= 1 ? phaseColor(1) : '#ecf0f1'} />

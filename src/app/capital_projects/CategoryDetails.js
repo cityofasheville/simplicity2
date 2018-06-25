@@ -5,7 +5,7 @@ import Collapsible from '../../shared/Collapsible';
 import ProjectsTable from './ProjectsTable';
 import { getFundsAllocatedAndExpended, filterProjects, longCategories } from './cip_utilities';
 import Icon from '../../shared/Icon';
-import { IM_SHIELD3, IM_TREE, IM_HOME2, IM_BUS, LI_BOLD } from '../../shared/iconConstants';
+import { IM_SHIELD3, IM_TREE, IM_HOME2, IM_BUS, LI_BOLD, IM_INFO } from '../../shared/iconConstants';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import Error from '../../shared/Error';
 
@@ -161,13 +161,13 @@ const CategoryDetails = props => (
             <div className="col-sm-12">
               <div className="funding-summary">
                 <div className="col-sm-4 col-xs-4">
-                  <h2><span className="label-text">Total funding:</span> <span className="amount">{getDollars(fundingDetails[0].allocated)}</span></h2>
-                </div>
-                <div className="col-sm-4 col-xs-4">
-                  <h2><span className="label-text">Spent:</span> <span className="amount">{getDollars(fundingDetails[0]['Expended funds'])}</span></h2>
+                  <h2><span className="label-text"><span title="Issued bond amount is $74 million. Actual total dollar amount will increase due to alternative funding sources." style={{ marginRight: '5px' }}><Icon path={IM_INFO} size={16} color="#4077a7" /></span>Total budget: </span> <span className="amount">{getDollars(fundingDetails[0].allocated)}</span></h2>
                 </div>
                 <div className="col-sm-4 col-xs-4">
                   <h2><span className="label-text">Under contract:</span> <span className="amount">{getDollars(fundingDetails[0]['Under contract'])}</span></h2>
+                </div>
+                <div className="col-sm-4 col-xs-4">
+                  <h2><span className="label-text">Spent:</span> <span className="amount">{getDollars(fundingDetails[0]['Expended funds'])}</span></h2>
                 </div>
               </div>
               <div className="row">

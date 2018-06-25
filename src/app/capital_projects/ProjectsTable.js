@@ -73,7 +73,7 @@ class ProjectsTable extends React.Component {
       ),
     },
     {
-      Header: (<div>Current phase</div>),
+      Header: (<div>Phase</div>),
       accessor: 'status',
       Cell: row => (
         <span>
@@ -95,8 +95,23 @@ class ProjectsTable extends React.Component {
       ),
     },
     {
-      Header: (<div>Current project budget</div>),
+      Header: (<div>Budget</div>),
       accessor: 'total_project_funding_budget_document',
+      maxWidth: 120,
+      show: state.width >= 720,
+      Filter: ({ filter, onChange }) => (
+        <input
+          onChange={event => onChange(event.target.value)}
+          style={{ width: '100%' }}
+          value={filter ? filter.value : ''}
+          placeholder="Search..."
+        />
+      ),
+    },
+    {
+      Header: (<div>Under contract</div>),
+      id: 'encumbured',
+      accessor: project => ['$', parseInt(project.encumbered, 10).toLocaleString()].join(''),
       maxWidth: 120,
       show: state.width >= 720,
       Filter: ({ filter, onChange }) => (

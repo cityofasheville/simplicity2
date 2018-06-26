@@ -84,7 +84,7 @@ const Owner = (props) => {
 
   return (
     <div>
-      <PageHeader h1={props.data.properties[0].owner} h3="About this owner's properties" dataType="Owner" icon={<Icon path={IM_USER} size={50} />}>
+      <PageHeader h1={props.data.properties[0].owner} h2="About this owner's properties" dataType="Owner" icon={<Icon path={IM_USER} size={50} />}>
         <ButtonGroup alignment="">
           <LinkButton pathname="/search" query={{ entities: props.location.query.entities, search: props.location.query.search, hideNavbar: props.location.query.hideNavbar }}>Back to search</LinkButton>
         </ButtonGroup>

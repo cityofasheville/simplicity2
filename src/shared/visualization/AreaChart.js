@@ -56,7 +56,7 @@ class AreaChart extends React.Component {
     );
     return (
       <div>
-        <h4>{this.props.chartTitle}</h4>
+        <div className="visualization-title">{this.props.chartTitle}</div>
         <p>
           {this.props.chartText.isArray &&
             this.props.chartText.map((textChunk, index) => (
@@ -102,7 +102,7 @@ class AreaChart extends React.Component {
                 yAccessor={d => +d.value}
                 lineType="stackedarea"
                 lineStyle={d => ({ fill: d.color })}
-                margin={{ top: 10, right: 10, bottom: 60, left: 40 }}
+                margin={{ top: 10, right: 10, bottom: 60, left: 45 }}
                 axes={[
                   {
                     orient: 'left',
@@ -160,8 +160,6 @@ class AreaChart extends React.Component {
                     textLines={textLines}
                     title={datum[this.props.mainAxisDataKey]}
                     style={{
-                      backgroundColor: 'white',
-                      border: '1px solid black',
                       position: 'absolute',
                       left: (minTooltipWidth * 16 < 1200 - datum.voronoiX) ?
                         '1.5rem' :
@@ -172,7 +170,10 @@ class AreaChart extends React.Component {
                 }}
               />
               <HorizontalLegend
-                formattedData={formattedData.map(d => d.coordinates.map(datum => {datum.color = d.color; return datum; })).reduce((total, curr) => {
+                formattedData={formattedData.map(d => d.coordinates.map((datum) => {
+                  datum.color = d.color;
+                  return datum;
+                })).reduce((total, curr) => {
                   return total.concat(curr);
                 })}
                 legendLabelFormatter={this.props.legendLabelFormatter}

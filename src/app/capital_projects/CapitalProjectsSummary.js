@@ -1,6 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router';
 import CIPFilter from './CIPFilter';
 import CategoryDetails from './CategoryDetails';
 import { longCategory } from './cip_utilities';
@@ -40,10 +38,6 @@ const CapitalProjectsSummary = (props) => {
       <CategoryDetails location={props.location} categories={getSelected()} />
     </div>
   );
-};
-
-CapitalProjectsSummary.propTypes = {
-  location: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 };
 
 export default CapitalProjectsSummary;

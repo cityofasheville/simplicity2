@@ -99,7 +99,8 @@ class DivergingLineBar extends React.Component {
 
               if (this.props.rotateXLabels) { transform += 'rotate(-45)'; }
 
-              const label = `${d.getMonth() + 1}/${d.getFullYear()}`;
+              const formattedD = new Date(d);
+              const label = `${formattedD.getMonth() + 1}/${formattedD.getFullYear()}`;
 
               return (
                 <text

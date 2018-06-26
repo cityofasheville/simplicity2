@@ -56,10 +56,12 @@ class AreaChart extends React.Component {
     );
     return (
       <div>
-        <h4>{this.props.chartTitle}</h4>
+        <div className="visualization-title">{this.props.chartTitle}</div>
         <p>
           {this.props.chartText.isArray &&
-            this.props.chartText.map((textChunk, index) => (<span key={index}>{textChunk}</span>))
+            this.props.chartText.map((textChunk, index) => (
+              <span key={index}>{textChunk}</span>
+            ))
           }
           {!this.props.chartText.isArray &&
             this.props.chartText
@@ -93,7 +95,6 @@ class AreaChart extends React.Component {
                   set dimensions meaningfully and adjust tooltip position accordingly
                   remove logic that only applies to this use case to utils or homelessness folder
                 */
-                size={[1200, 450]}
                 responsiveWidth
                 lines={formattedData}
                 xScaleType={scaleTime()}
@@ -101,7 +102,7 @@ class AreaChart extends React.Component {
                 yAccessor={d => +d.value}
                 lineType="stackedarea"
                 lineStyle={d => ({ fill: d.color })}
-                margin={{ top: 40, right: 40, bottom: 60, left: 40 }}
+                margin={{ top: 10, right: 10, bottom: 60, left: 45 }}
                 axes={[
                   {
                     orient: 'left',
@@ -109,9 +110,9 @@ class AreaChart extends React.Component {
                   },
                   {
                     orient: 'bottom',
-                    ticks: 20,
                     rotate: -45,
-                    tickFormat: d => `${d.getMonth() + 1}/${d.getFullYear().toString().replace('20', '')}`,
+                    tickFormat: d =>
+                      `${d.getMonth() + 1}/${d.getFullYear().toString().replace('20', '')}`,
                     className: 'semiotic-axis',
                   },
                 ]}
@@ -134,7 +135,7 @@ class AreaChart extends React.Component {
                 tooltipContent={(d) => {
                   if (!d.parentLine) { return; }
 
-                  const datum = d.data
+                  const datum = d.data;
 
                   const points = formattedData
                     .map(line => ({
@@ -159,8 +160,6 @@ class AreaChart extends React.Component {
                     textLines={textLines}
                     title={datum[this.props.mainAxisDataKey]}
                     style={{
-                      backgroundColor: 'white',
-                      border: '1px solid black',
                       position: 'absolute',
                       left: (minTooltipWidth * 16 < 1200 - datum.voronoiX) ?
                         '1.5rem' :
@@ -171,7 +170,10 @@ class AreaChart extends React.Component {
                 }}
               />
               <HorizontalLegend
-                formattedData={formattedData.map(d => d.coordinates.map(datum => {datum.color = d.color; return datum; })).reduce((total, curr) => {
+                formattedData={formattedData.map(d => d.coordinates.map((datum) => {
+                  datum.color = d.color;
+                  return datum;
+                })).reduce((total, curr) => {
                   return total.concat(curr);
                 })}
                 legendLabelFormatter={this.props.legendLabelFormatter}

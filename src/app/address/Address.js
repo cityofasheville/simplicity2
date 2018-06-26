@@ -90,7 +90,7 @@ const Address = (props) => {
 
   return (
     <div className="address">
-      <PageHeader h1={[addressData.address, addressData.zipcode].join(', ')} dataType="Address" h3="About this address" icon={<Icon path={IM_LOCATION} size={50} />}>
+      <PageHeader h1={[addressData.address, addressData.zipcode].join(', ')} dataType="Address" h2="About this address" icon={<Icon path={IM_LOCATION} size={50} />}>
         <ButtonGroup alignment="">
           <LinkButton pathname="/search" positionInGroup={props.location.query.placeSearch ? 'left' : ''} query={{ entities: props.location.query.entities, search: props.location.query.search, hideNavbar: props.location.query.hideNavbar }}>Back to search</LinkButton>
           {props.location.query.placeSearch &&

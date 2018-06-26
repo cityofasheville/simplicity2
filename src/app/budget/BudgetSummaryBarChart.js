@@ -15,10 +15,10 @@ const getDollars = (value) => {
   return [value < 0 ? '-$' : '$', Math.abs(value).toFixed(0).toLocaleString()].join('');
 };
 
-const getDollarsLong = value => {
-  if (!value || value === 0) {return '$0'}
-  return [value < 0 ? '-$' : '$', Math.abs(value).toLocaleString()].join('')
-}
+const getDollarsLong = (value) => {
+  if (!value || value === 0) { return '$0'; }
+  return [value < 0 ? '-$' : '$', Math.abs(value).toLocaleString()].join('');
+};
 
 const getTitle = (categoryType) => {
   switch (categoryType) {

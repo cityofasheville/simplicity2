@@ -32,7 +32,7 @@ const DevelopmentSLADashboard = (props) => {
         props.tasks.map((task, index) => (
           <div key={[task, index].join('_')}>
             <div className="row" >
-              <h3>{task} (First Plan Review)</h3>
+              <h2>{task} (First Plan Review)</h2>
               <div className="col-md-6">
                 <LineGraph
                   annotations={[

@@ -38,6 +38,7 @@ class SummaryDepartments extends React.Component {
 
     if (this.props.summaryDeptData.dataKeys === null) {
       this.initializeSummaryDept();
+      return <LoadingAnimation size="small" />;
     }
 
     return (

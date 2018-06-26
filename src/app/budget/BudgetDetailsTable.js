@@ -9,7 +9,6 @@ import { getBudgetTrees } from './graphql/budgetQueries';
 import { getBudgetYears } from './budgetUtilities';
 import { refreshLocation } from '../../utilities/generalUtilities';
 
-
 const BudgetDetailsTable = (props) => {
   const dataForTable = props.location.query.mode === 'expenditures' || props.location.query.mode === undefined ? props.expenseTree.children : props.revenueTree.children;
   const getNewUrlParams = mode => (
@@ -123,7 +122,7 @@ const BudgetDetailsTable = (props) => {
     <div>
       <div className="row">
         <div className="col-sm-12">
-          <h3 id={'budget-details-table-label'}>{`Table of ${props.location.query.mode || 'expenditures'}`}</h3>
+          <h2 id={'budget-details-table-label'}>{`Table of ${props.location.query.mode || 'expenditures'}`}</h2>
           <div style={{ marginBottom: '15px' }}>
             You may explore the full dataset in the table below, or <a className="inText" href="http://data.ashevillenc.gov/datasets?q=budget&sort_by=relevance" target="_blank">download here</a>. Click the triangles at left to expand rows for more detail.
           </div>

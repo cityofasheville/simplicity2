@@ -19,7 +19,7 @@ const AddressList = (props) => {
 
   return (
     <div>
-      <PageHeader h1={props.location.query.label} h3="Address & Owner Mailing Lists" icon={<Icon path={IM_ENVELOP3} size={50} />}>
+      <PageHeader h1={props.location.query.label} h2="Address & Owner Mailing Lists" icon={<Icon path={IM_ENVELOP3} size={50} />}>
         <ButtonGroup>
           <LinkButton pathname={props.location.query.entity === 'neighborhood' ? '/neighborhood' : '/street'} query={{ entities: props.location.query.entities, search: props.location.query.search, hideNavbar: props.location.query.hideNavbar, entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label }}>Back to {props.location.query.entity}</LinkButton>
         </ButtonGroup>

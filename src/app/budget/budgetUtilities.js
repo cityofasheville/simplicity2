@@ -1,5 +1,4 @@
 import tree from 'data-tree';
-const objectAssign = require('object-assign');
 
 // levels for use in the Treemap
 const expenseLevels = [
@@ -66,7 +65,7 @@ const convertDelta = (flattenedTree) => {
 
 // flatten the tree and export for use by the budget Treemap
 const exportForDetails = (aTree) => {
-  const flattened = aTree.export(data => (objectAssign({}, data, { delta: data.yearAmounts[data.yearAmounts.length - 1].amount - data.yearAmounts[data.yearAmounts.length - 2].amount }, { deltaPercent: calculateDeltaPercent(data.yearAmounts[data.yearAmounts.length - 1].amount, data.yearAmounts[data.yearAmounts.length - 2].amount) })));
+  const flattened = aTree.export(data => (Object.assign({}, data, { delta: data.yearAmounts[data.yearAmounts.length - 1].amount - data.yearAmounts[data.yearAmounts.length - 2].amount }, { deltaPercent: calculateDeltaPercent(data.yearAmounts[data.yearAmounts.length - 1].amount, data.yearAmounts[data.yearAmounts.length - 2].amount) })));
   convertDelta(flattened);
   return flattened;
 };
@@ -94,7 +93,7 @@ const insertLeafCopies = (flattenedTree) => {
   if (flattenedTree.children.length === 0) {
     const splitBreadcrumbPath = flattenedTree.breadcrumbPath.split('>');
     const splitPath = flattenedTree.path.split('_');
-    flattenedTree.children = [objectAssign({}, flattenedTree, { breadcrumbPath: [flattenedTree.breadcrumbPath, splitBreadcrumbPath[splitBreadcrumbPath.length - 1]].join('>') }, { path: [flattenedTree.path, splitPath[splitPath.length - 1]].join('_') })]; // eslint-disable-linesplitBreadcrumbPath
+    flattenedTree.children = [Object.assign({}, flattenedTree, { breadcrumbPath: [flattenedTree.breadcrumbPath, splitBreadcrumbPath[splitBreadcrumbPath.length - 1]].join('>') }, { path: [flattenedTree.path, splitPath[splitPath.length - 1]].join('_') })]; // eslint-disable-linesplitBreadcrumbPath
   } else {
     for (let i = 0; i < flattenedTree.children.length; i += 1) {
       insertLeafCopies(flattenedTree.children[i]);
@@ -145,14 +144,14 @@ export const buildTrees = (data, budgetParameters) => {
           });
         }
         curParent = curNode;
-        curNode.data(objectAssign({}, curNode.data(), { yearAmounts: curNode.data().yearAmounts.map((year, idx) => {
+        curNode.data(Object.assign({}, curNode.data(), { yearAmounts: curNode.data().yearAmounts.map((year, idx) => {
           if (idx === yearIndex) {
             return data[i].use_actual === 'true' ? { year: year.year, amount: year.amount + data[i].actual } : { year: year.year, amount: year.amount + data[i].budget };
           }
           return year;
         }) }));
         if (yearIndex === budgetYears.length - 1) {
-          curNode.data(objectAssign({}, curNode.data(), { amount: data[i].use_actual === 'true' ? curNode.data().amount + data[i].actual : curNode.data().amount + data[i].budget }, { size: data[i].use_actual === 'true' ? curNode.data().size + data[i].actual : curNode.data().size + data[i].budget }));
+          curNode.data(Object.assign({}, curNode.data(), { amount: data[i].use_actual === 'true' ? curNode.data().amount + data[i].actual : curNode.data().amount + data[i].budget }, { size: data[i].use_actual === 'true' ? curNode.data().size + data[i].actual : curNode.data().size + data[i].budget }));
         }
       }
     }
@@ -174,7 +173,7 @@ export const buildTrees = (data, budgetParameters) => {
 };
 
 const roundTree = (node) => {
-  node.data(objectAssign(
+  node.data(Object.assign(
     {},
     node.data(),
     { size: Math.round(node.data().size) },
@@ -253,9 +252,9 @@ export const buildCashFlowData = (data) => {
   };
   allExpenseRevenueRows = allExpenseRevenueRows.filter(item => (fundsToInclude.indexOf(item.fund_id) > -1)).map((item) => {
     if (item.account_type === 'E') {
-      return objectAssign({}, item, { name: managementAndSupportDepts.indexOf(item.department_name) > -1 ? 'Management & Support Services' : (communityAndResidentDepts.indexOf(item.department_name) > -1 ? 'Other Community & Resident Services' : convertDeptNameToDisplayName(item.department_name)), fund_name: convertFundNameToDisplayName(item.fund_id) }); // eslint-disable-line
+      return Object.assign({}, item, { name: managementAndSupportDepts.indexOf(item.department_name) > -1 ? 'Management & Support Services' : (communityAndResidentDepts.indexOf(item.department_name) > -1 ? 'Other Community & Resident Services' : convertDeptNameToDisplayName(item.department_name)), fund_name: convertFundNameToDisplayName(item.fund_id) }); // eslint-disable-line
     }
-    return objectAssign({}, item, { name: item.category_name, fund_name: convertFundNameToDisplayName(item.fund_id) });
+    return Object.assign({}, item, { name: item.category_name, fund_name: convertFundNameToDisplayName(item.fund_id) });
   });
   // group expenses, revenues, and funds into their department, category, and funds - because the nodes are only one per
   // fund_name, category, and fund
@@ -309,7 +308,7 @@ export const buildCashFlowData = (data) => {
   }
   // combine the revenues, funds, expenses nodes into one array
   sankeyNodes = revenueNodes.concat(fundNodes).concat(expenseNodes);
-  sankeyNodes = sankeyNodes.map(node => (objectAssign({}, node, { value: Math.round(node.value) })));
+  sankeyNodes = sankeyNodes.map(node => (Object.assign({}, node, { value: Math.round(node.value) })));
   return { sankeyNodes, sankeyLinks };
 };
 

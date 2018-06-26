@@ -54,7 +54,7 @@ class LineGraph extends React.Component {
     );
     return (
       <div>
-        <h4>{this.props.chartTitle}</h4>
+        <div className="visualization-title">{this.props.chartTitle}</div>
         <br />
         <p>
           {this.props.chartText.isArray &&
@@ -93,8 +93,8 @@ class LineGraph extends React.Component {
                 responsiveWidth
                 lines={formattedData}
                 xScaleType={scaleTime()}
-                xAccessor={d => {
-                  return dateFromSlash(d[this.props.mainAxisDataKey])
+                xAccessor={(d) => {
+                  return dateFromSlash(d[this.props.mainAxisDataKey]);
                 }}
                 yAccessor={d => +d.value}
                 yExtent={[0, 100]}
@@ -131,11 +131,9 @@ class LineGraph extends React.Component {
                 ]}
                 tooltipContent={(d) => {
                   const textLines = [{
-                      text: `${d.label}: ${d.value}%`,
-                      color: lineColor,
-                    }]
-
-                  const minTooltipWidth = (textLines.map(line => line.text).join('').length + 0.5) / textLines.length;
+                    text: `${d.label}: ${d.value}%`,
+                    color: lineColor,
+                  }];
 
                   return (<Tooltip
                     textLines={textLines}
@@ -146,7 +144,7 @@ class LineGraph extends React.Component {
                     }}
                   />);
                 }}
-                svgAnnotationRules={d => {
+                svgAnnotationRules={(d) => {
                   if (d.d.type === 'y' && d.screenCoordinates[0]) {
                     return (<g key={d.d.label}>
                       <text
@@ -167,7 +165,7 @@ class LineGraph extends React.Component {
                       />
                     </g>);
                   }
-                  return null
+                  return null;
                 }}
               />
             </div>

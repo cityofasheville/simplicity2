@@ -2,18 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { scaleSequential } from 'd3-scale';
 import { interpolateLab } from 'd3-interpolate';
-import { NetworkFrame } from 'semiotic';
+import { ResponsiveNetworkFrame } from 'semiotic';
 
 
 /*
  * TODOS
- * Why is downward transformation happening?  Top margin shouldn't be negative
  * Make it vertical on mobile
  * Generally clarify
  */
 
 class Sankey extends React.Component {
-
   constructor() {
     super();
     this.state = { hover: null };
@@ -31,22 +29,32 @@ class Sankey extends React.Component {
     const darkerColor = '#4292c6';
     const nodeColor = scaleSequential(interpolateLab(darkerColor, lighterColor));
 
-    return (<div role="img" aria-label={this.props.altText} tabIndex={0}>
-      <NetworkFrame
+    return (<div
+      role="img"
+      aria-label={this.props.altText}
+      tabIndex={0}
+      style={{ width: '100%' }}
+    >
+      <ResponsiveNetworkFrame
+        responsiveWidth
         annotations={graph.nodes}
         edges={graph.links}
         hoverAnnotation
-        margin={{ top: -20, right: this.props.width / 9, bottom: 25, left: this.props.width / 9 }}
+        margin={{
+          top: 0,
+          right: 10,
+          bottom: 25,
+          left: 10,
+        }}
         networkType="sankey"
-        nodeIdAccessor="id"
+        nodeIDAccessor="id"
         nodes={graph.nodes}
-        size={[+this.props.width, +this.props.height]}
         sourceAccessor="source"
         targetAccessor="target"
         zoomToFit
-        customHoverBehavior={d => (d && d.name ?
-          this.setState({ hover: d.name }) : this.setState({ hover: null }))
-        }
+        customHoverBehavior={(d) => {
+          d && d.name ? this.setState({ hover: d.name }) : this.setState({ hover: null });
+        }}
         svgAnnotationRules={(d) => {
           if (d.d.source && d.d.target) {
             // If it's a link
@@ -117,7 +125,13 @@ class Sankey extends React.Component {
           nodeColor.domain(colorDomain);
           const strokeOpacity = d.name === this.state.hover ? 1 : 0.5;
           const strokeWidth = d.name === this.state.hover ? 5 : 1;
-          return { stroke: darkerColor, strokeWidth: `${strokeWidth}px`, strokeOpacity, fill: nodeColor(d.value), fillOpacity: strokeOpacity };
+          return {
+            stroke: darkerColor,
+            strokeWidth: `${strokeWidth}px`,
+            strokeOpacity,
+            fill: nodeColor(d.value),
+            fillOpacity: strokeOpacity,
+          };
         }}
         tooltipContent={() => ''}
       />

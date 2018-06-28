@@ -56,10 +56,8 @@ class Sankey extends React.Component {
           d && d.name ? this.setState({ hover: d.name }) : this.setState({ hover: null });
         }}
         svgAnnotationRules={(d) => {
-          if (d.d.source && d.d.target) {
-            // If it's a link
-            return;
-          }
+          if (!d.d.name) { return; }
+          // TODO: fix weird null node bug that shows $0 going to parking services and stormwater
 
           let label = d.d.name;
           const key = `${d.d.name}-${d.i}-nodeLabel`;

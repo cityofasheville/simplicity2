@@ -112,10 +112,10 @@ class Timeline extends React.Component {
     }
 
 
-    return (<div style={{ width: '99%', height: '90%', textAlign: 'center' }}>
+    return (<div style={{ textAlign: 'center' }} >
       <ResponsiveXYFrame
         responsiveWidth
-        responsiveHeight
+        // responsiveHeight
         margin={{ top: 70, left: 30, right: 30, bottom: 70}}
         lines={allData}
         lineType={ 'line' }

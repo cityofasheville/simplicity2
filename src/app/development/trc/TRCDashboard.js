@@ -9,10 +9,12 @@ class TRCDashboard extends React.Component {
   }
 
   render() {
-    return (<div style={{width: '100%', height: '100%'}}>
+    return (<div className="row" >
       {/* SEARCH BAR */}
       {/* MAP */}
-      <Timeline/>
+      <div className="col-md-12" >
+        <Timeline/>
+      </div>
       {/* CONTEXT */}
       {/* TABLE */}
     </div>);

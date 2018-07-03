@@ -25,6 +25,8 @@ import Topics from './app/Topics';
 import DevelopmentSummary from './app/development/DevelopmentSummary';
 import DevelopmentDetail from './app/development/DevelopmentDetail';
 import DevelopmentSLADashboard from './app/development/sla_dashboard/SLADashboard';
+import TRCDashboard from './app/development/trc/TRCDashboard';
+import VolumeDashboard from './app/development/volume/VolumeDashboard';
 import ProjectFlowDashboard from './app/internal/bpt_projects/ProjectFlow';
 import CrimeSummary from './app/crime/CrimeSummary';
 import Maintenance from './app/maintenance/Maintenance';
@@ -124,6 +126,8 @@ const Routes = () => (
           <IndexRoute component={DevelopmentSummary} />
           <Route path="detail" component={DevelopmentDetail}></Route>
           <Route path="sla-dashboard" component={DevelopmentSLADashboard}></Route>
+          <Route path="trc" component={TRCDashboard}></Route>
+          <Route path="volume" component={VolumeDashboard}></Route>
         </Route>
         <Route path="homelessness">
           <IndexRoute component={HomelessnessSummary} />

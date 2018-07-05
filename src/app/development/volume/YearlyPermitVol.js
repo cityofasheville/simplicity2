@@ -179,7 +179,7 @@ class YearlyPermitVol extends React.Component {
         lineType="line"
         xAccessor="date"
         yAccessor="volume"
-        lineStyle={d => ({ stroke: d.coordinates[0].color })}
+        lineStyle={d => ({ stroke: d.coordinates[0].color, strokeWidth: 2 })}
         axes={[
           {
             orient: 'bottom',

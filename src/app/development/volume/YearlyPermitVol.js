@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { ResponsiveXYFrame } from 'semiotic';
 import { scaleLinear } from 'd3-scale';
 import Tooltip from '../../../shared/visualization/Tooltip';
+import { dollarFormatter } from '../../../shared/visualization/visUtilities';
 
 
 class YearlyPermitVol extends React.Component {
@@ -175,6 +176,7 @@ class YearlyPermitVol extends React.Component {
         lineType="line"
         xAccessor={d => d.monthInt}
         yAccessor="volume"
+        xExtent={[0, 11]}
         yExtent={[0, undefined]}
         axes={[
           {
@@ -232,13 +234,15 @@ class YearlyPermitVol extends React.Component {
           }
         }}
         tooltipContent={(d) => {
+          // TODO: POSITION THIS SO IT DOESN'T RUN OFF PAGE
+
           const title = `${this.months[d.monthInt]} ${d.year} ${d.parentKey}`;
           const textLines = [
             {
-              text: `Volume: ${d.volume}`,
+              text: `Volume:  ${d.volume}`,
             },
             {
-              text: `Value: ${d.value}`,
+              text: `Value:  ${dollarFormatter(d.value)}`,
             },
           ];
 

@@ -81,7 +81,7 @@ class Timeline extends React.Component {
         overlaps = currentOverlaps;
       }
       eventList.forEach(e =>
-        e.coordinates.map((coord, i) => { coord.layerNum = e.layerNum + i; return coord; }));
+        e.coordinates.map((coord, i) => { coord.layerNum = e.layerNum; return coord; }));
 
       return eventList;
     }

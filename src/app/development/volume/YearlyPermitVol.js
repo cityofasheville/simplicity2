@@ -183,8 +183,8 @@ class YearlyPermitVol extends React.Component {
         axes={[
           {
             orient: 'bottom',
-            tickFormat: d => new Date(d).getFullYear(),
-            ticks: this.years.length - 1,
+            tickFormat: d => new Date(d).toLocaleDateString('en-US', {year: '2-digit', month: 'short'}),
+            ticks: this.years.length,
           },
         ]}
       />

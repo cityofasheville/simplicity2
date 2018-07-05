@@ -55,6 +55,8 @@ import MiniSearch from './app/mini_search/MiniSearch';
 // Finance
 import PCardCompliance from './app/internal/pcard_compliance/PCardCompliance';
 import PCardComplianceReceipts from './app/internal/pcard_compliance/PCardComplianceReceipts';
+// City Website
+import AnalyticsCirclePack from './app/internal/city_website_analytics/AnalyticsCirclePack';
 
 // Google Analytics
 const ReactGA = require('react-ga');
@@ -119,6 +121,9 @@ const Routes = () => (
         <Route path="pcard_compliance">
           <IndexRoute component={PCardCompliance} />
           <Route path="receipts" component={PCardComplianceReceipts} />
+        </Route>
+        <Route path="city_website_analytics">
+          <IndexRoute component={AnalyticsCirclePack} />
         </Route>
         <Route path="development">
           <IndexRoute component={DevelopmentSummary} />

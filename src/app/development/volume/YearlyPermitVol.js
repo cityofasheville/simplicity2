@@ -27,6 +27,7 @@ class YearlyPermitVol extends React.Component {
     this.volDataByType = this.volByType(this.props.permitData);
     this.years = Object.keys(this.volDataByType.Total);
     this.radiusFunc = this.getRadiusFunc();
+    this.sequentialYears = this.volDataBySequence(this.props.permitData);
 
     this.state = {
       hover: null,
@@ -35,15 +36,17 @@ class YearlyPermitVol extends React.Component {
     };
   }
 
-  volByType() {
+  volByType(inputData) {
+    // TODO: REFACTOR THIS TO USE VOLDATABYSEQUENCE RATHER THAN DOING THE SAME THING TWICE
+
     const returnData = {};
 
     this.props.volumeKeys.forEach((volKey, i) => {
       returnData[volKey] = {}
-      this.props.permitData.forEach((d) => {
+      inputData.forEach((d) => {
         const splitDate = d['Month & Year'].split(' ');
         const month = splitDate[0];
-        const year = d['Month & Year'].split(' ')[1];
+        const year = splitDate[1];
         let value = d[`${volKey} Construction Value`].replace(/\D/g, '');
         if (value === '') { value = 0; }
 
@@ -61,8 +64,23 @@ class YearlyPermitVol extends React.Component {
         });
       });
     });
-
     return returnData;
+  }
+
+  volDataBySequence(inputData) {
+    const returnObject = {};
+    this.props.volumeKeys.forEach((volKey, i) => {
+      returnObject[volKey] = inputData.map((d) => {
+        const splitDate = d['Month & Year'].split(' ');
+        return {
+          volume: d[volKey],
+          date: new Date(splitDate[1], this.months.findIndex(m => m === splitDate[0])),
+          color: this.props.colorScheme[i],
+          parentKey: volKey,
+        };
+      });
+    });
+    return returnObject;
   }
 
   maxVolume() {
@@ -93,8 +111,10 @@ class YearlyPermitVol extends React.Component {
 
   render() {
     const currentLines = [];
+    const currentLinesBrushable = [];
 
     this.state.activeTypes.forEach((type) => {
+      currentLinesBrushable.push({coordinates: this.sequentialYears[type]})
       this.state.activeYears.forEach((year) => {
         currentLines.push({
           type,
@@ -104,26 +124,9 @@ class YearlyPermitVol extends React.Component {
       });
     });
 
-    return (<div style={{ width: '100%', height: '70vh', textAlign: 'center' }}>
-      <div className="buttonContainer">
-        {this.years.map((year, i) => {
-          const activeNow = this.state.activeYears.findIndex(activeYear => activeYear === year) >= 0
-          return (<span
-            className={`yearButton ${activeNow ? 'active' : 'inactive'}`}
-            key={year + i}
-            style={{
-              backgroundColor: 'gray',
-              border: '0.5px solid black'
-            }}
-            onClick={d => this.setState({
-              activeYears: activeNow ? this.state.activeYears.filter(d => d !== year) : this.state.activeYears.concat([year])
-            })}
-          >
-            {year}
-          </span>)
-        })}
-      </div>
-      <div className="buttonContainer">
+
+    return (<div style={{ width: '100%', height: '100%', textAlign: 'center' }}>
+      <div style={{ margin: '2% 5%' }}>
         {this.props.volumeKeys.map((key, i) => {
           const activeNow = this.state.activeTypes.findIndex(type => type === key) >= 0
           return (<div
@@ -165,9 +168,31 @@ class YearlyPermitVol extends React.Component {
       </div>
       <ResponsiveXYFrame
         responsiveWidth
-        responsiveHeight
+        size={[1000, 70]}
         margin={{
           top: 10,
+          bottom: 30,
+          left: 40,
+          right: 40,
+        }}
+        lines={currentLinesBrushable}
+        lineType="line"
+        xAccessor="date"
+        yAccessor="volume"
+        lineStyle={d => ({ stroke: d.coordinates[0].color })}
+        axes={[
+          {
+            orient: 'bottom',
+            tickFormat: d => new Date(d).getFullYear(),
+            ticks: this.years.length - 1,
+          },
+        ]}
+      />
+      <ResponsiveXYFrame
+        responsiveWidth
+        size={[1000, 400]}
+        margin={{
+          top: 20,
           left: 40,
           right: 40,
           bottom: 70,
@@ -200,9 +225,9 @@ class YearlyPermitVol extends React.Component {
         }}
         showLinePoints
         customPointMark={(d) => {
-          return <circle
+          return (<circle
             r={this.radiusFunc(d.d.value)}
-          />
+          />);
         }}
         pointStyle={(d) => {
           const hovered = this.state.hover &&

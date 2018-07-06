@@ -183,11 +183,11 @@ class YearlyPermitVol extends React.Component {
         })}
       </div>
       <ResponsiveXYFrame
-        title="Summary"
+        title="Volume Summary"
         responsiveWidth
-        size={[1000, 120]}
+        size={[1000, 130]}
         margin={{
-          top: 30,
+          top: 40,
           bottom: 60,
           left: 50,
           right: 40,
@@ -196,6 +196,7 @@ class YearlyPermitVol extends React.Component {
         lineType="line"
         xAccessor="date"
         yAccessor="volume"
+        yExtent={[0, undefined]}
         lineStyle={d => ({ stroke: d.coordinates[0].color, strokeWidth: 2 })}
         axes={[
           {

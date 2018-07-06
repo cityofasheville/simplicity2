@@ -12,11 +12,11 @@ import Error from '../../shared/Error';
 const getBondText = (type) => {
   switch (type) {
     case 'Transportation':
-      return 'Transportation Bond projects are additional projects that support the completion of road resurfacing and sidewalk improvements; new sidewalk and greenway projects; and pedestrian safety projects such as bus shelters, accessible crossings, signals, and traffic calming.';
+      return 'Transportation Bond projects are additional projects that support the completion of road resurfacing and sidewalk improvements; new sidewalk and greenway projects; and pedestrian safety projects such as bus shelters, accessible crossings, signals, and traffic calming.'; // eslint-disable-line
     case 'Parks':
-      return 'Parks Bond projects are additional projects that support the completion of major improvements to five parks and recreation facilities; acquiring land for parks; and improving outdoor courts, playgrounds and ball field lighting throughout the city.';
+      return 'Parks Bond projects are additional projects that support the completion of major improvements to five parks and recreation facilities; acquiring land for parks; and improving outdoor courts, playgrounds and ball field lighting throughout the city.'; // eslint-disable-line
     case 'Housing':
-      return 'Housing Bond projects for housing affordability provide additional support for the Housing Trust Fund and other programs that assist in creating diverse and affordable housing choices. The projects also include support in the development of affordable housing on key City-owned sites.';
+      return 'Housing Bond projects for housing affordability provide additional support for the Housing Trust Fund and other programs that assist in creating diverse and affordable housing choices. The projects also include support in the development of affordable housing on key City-owned sites.'; // eslint-disable-line
     default:
       return '';
   }
@@ -26,23 +26,66 @@ const getIcon = (type, bond) => {
   switch (type) {
     case 'Transportation':
       if (bond) {
-        return <span><Icon path={IM_BUS} size={25} color="#4077a5" /><Icon path={LI_BOLD} size={16} color="#4077a5" viewBox="0 0 24 24" /></span>;
+        return (
+          <span>
+            <Icon path={IM_BUS} size={25} color="#4077a5" />
+            <Icon path={LI_BOLD} size={16} color="#4077a5" viewBox="0 0 24 24" />
+          </span>
+        );
       }
       return <Icon path={IM_BUS} size={25} color="#4077a5" />;
     case 'Parks':
       if (bond) {
-        return <span><Icon path={IM_TREE} size={25} color="#4077a5" /><Icon path={LI_BOLD} size={16} color="#4077a5" viewBox="0 0 24 24" /></span>;
+        return (
+          <span>
+            <Icon path={IM_TREE} size={25} color="#4077a5" />
+            <Icon path={LI_BOLD} size={16} color="#4077a5" viewBox="0 0 24 24" />
+          </span>
+        );
       }
       return <Icon path={IM_TREE} size={25} color="#4077a5" />;
     case 'Housing':
       if (bond) {
-        return <span><Icon path={IM_HOME2} size={25} color="#4077a5" /><Icon path={LI_BOLD} size={16} color="#4077a5" viewBox="0 0 24 24" /></span>;
+        return (
+          <span>
+            <Icon path={IM_HOME2} size={25} color="#4077a5" />
+            <Icon path={LI_BOLD} size={16} color="#4077a5" viewBox="0 0 24 24" />
+          </span>
+        );
       }
       return <Icon path={IM_HOME2} size={25} color="#4077a5" />;
     case 'Public Safety':
       return <Icon path={IM_SHIELD3} size={25} color="#4077a5" />;
     case 'Other':
-      return <svg xmlns="http://www.w3.org/2000/svg" height="25px" transform="translate(0,4)" version="1.1" viewBox="0 0 16 16" width="25px"><g fill="none" fillRule="evenodd" id="Icons with numbers" stroke="none" strokeWidth="1"><g fill="#4077a5" id="Group" transform="translate(-528.000000, -576.000000)"><path d="M536,592 C531.581722,592 528,588.418278 528,584 C528,579.581722 531.581722,576 536,576 C540.418278,576 544,579.581722 544,584 C544,588.418278 540.418278,592 536,592 Z M541,586 C542.10457,586 543,585.10457 543,584 C543,582.89543 542.10457,582 541,582 C539.89543,582 539,582.89543 539,584 C539,585.10457 539.89543,586 541,586 Z M531,586 C532.10457,586 533,585.10457 533,584 C533,582.89543 532.10457,582 531,582 C529.89543,582 529,582.89543 529,584 C529,585.10457 529.89543,586 531,586 Z M536,586 C537.10457,586 538,585.10457 538,584 C538,582.89543 537.10457,582 536,582 C534.89543,582 534,582.89543 534,584 C534,585.10457 534.89543,586 536,586 Z M536,586" id="Oval 12 copy" /></g></g></svg>;
+      return (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="25px"
+          transform="translate(0,4)"
+          version="1.1"
+          viewBox="0 0 16 16"
+          width="25px"
+        >
+          <g
+            fill="none"
+            fillRule="evenodd"
+            id="Icons with numbers"
+            stroke="none"
+            strokeWidth="1"
+          >
+            <g
+              fill="#4077a5"
+              id="Group"
+              transform="translate(-528.000000, -576.000000)"
+            >
+              <path
+                d="M536,592 C531.581722,592 528,588.418278 528,584 C528,579.581722 531.581722,576 536,576 C540.418278,576 544,579.581722 544,584 C544,588.418278 540.418278,592 536,592 Z M541,586 C542.10457,586 543,585.10457 543,584 C543,582.89543 542.10457,582 541,582 C539.89543,582 539,582.89543 539,584 C539,585.10457 539.89543,586 541,586 Z M531,586 C532.10457,586 533,585.10457 533,584 C533,582.89543 532.10457,582 531,582 C529.89543,582 529,582.89543 529,584 C529,585.10457 529.89543,586 531,586 Z M536,586 C537.10457,586 538,585.10457 538,584 C538,582.89543 537.10457,582 536,582 C534.89543,582 534,582.89543 534,584 C534,585.10457 534.89543,586 536,586 Z M536,586"
+                id="Oval 12 copy"
+              />
+            </g>
+          </g>
+        </svg>
+      );
     default:
       return null;
   }
@@ -125,28 +168,25 @@ const CategoryDetails = props => (
   <Query
     query={GET_PROJECTS}
     variables={{
-      categories: longCategories(Array.from(props.categories)),
+      categories: props.categories,
     }}
   >
     {({ loading, error, data }) => {
       if (loading) return <LoadingAnimation />;
       if (error) return <Error message={error.message} />;
 
-      let actualCategories = Array.from(props.categories);
-      if (props.location.query.mode === 'bond') {
-        actualCategories = actualCategories.filter(cat => (['Transportation', 'Parks', 'Housing'].includes(cat)));
-      }
-      const sortedCats = ['Transportation', 'Housing', 'Parks', 'Public Safety', 'Other'];
+      const actualCategories = props.categories;
       actualCategories.sort((a, b) =>
-        sortedCats.indexOf(a) > sortedCats.indexOf(b));
+        props.sortedCategories.indexOf(a) > props.sortedCategories.indexOf(b));
       const filteredProjects = filterProjects(
         data.cip_projects,
-        actualCategories, props.location.query.mode
+        actualCategories,
+        props.location.query.mode,
       );
       const fundingDetails = getFundsAllocatedAndExpended(
         filteredProjects,
         actualCategories,
-        props.location.query.mode
+        props.location.query.mode,
       );
       const messageOrTable = (filteredProjects === undefined || filteredProjects.length === 0) ?
         (

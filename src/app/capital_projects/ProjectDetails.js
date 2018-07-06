@@ -76,7 +76,7 @@ const ProjectDetails = (props) => {
         x: props.longitude[index],
         y,
         name: props.display_name,
-        popup: `<div><b>${props.display_name}</b><p>Latitude: ${y}</p><p>Longitude: ${props.longitude[index]}</p></div>`,
+        popup: `<div><b>${props.display_name}</b><p>Latitude: ${y}</p><p>Longitude: ${props.longitude[index]}</p></div>`, // eslint-disable-line
       })
     ))
   );
@@ -94,7 +94,22 @@ const ProjectDetails = (props) => {
             {props.project_webpage_more_information !== null &&
               <div className="row">
                 <div className="col-sm-12" style={{ marginTop: '5px' }}>
-                  <div className="pull-left" style={{ marginRight: '10px', marginBottom: '20px' }}> <a title="View project web site" href={props.project_webpage_more_information} target="_blank"><Icon path={IM_SPHERE3} size={20} /> Project Website</a></div>
+                  <div
+                    className="pull-left"
+                    style={{
+                      marginRight: '10px',
+                      marginBottom: '20px',
+                    }}
+                  >
+                    <a
+                      title="View project web site"
+                      href={props.project_webpage_more_information}
+                      target="_blank"
+                    >
+                      <Icon path={IM_SPHERE3} size={20} />
+                      Project Website
+                    </a>
+                  </div>
                 </div>
               </div>
             }

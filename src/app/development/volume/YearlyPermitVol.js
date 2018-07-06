@@ -35,22 +35,21 @@ class YearlyPermitVol extends React.Component {
     });
 
     this.allDataByType = this.getallDataByType(this.cleanedData);
-    this.byTypeAndYear = this.getByTypeAndYear(this.allDataByType);
 
     this.radiusFunc = scaleLinear()
       .range([3, 20])
       .domain([0, this.maxVolVal()]);
 
     this.state = {
-      hover: null,
       activeTypes: ['Total'],
       activeYears: ['2017', '2018'],
+      brushedData: this.cleanedData,
+      hover: null,
     };
-
 
     // this.brushStart = this.brushStart.bind(this);
     // this.brushDuring = this.brushDuring.bind(this);
-    // this.brushEnd = this.brushEnd.bind(this);
+    this.brushEnd = this.brushEnd.bind(this);
   }
 
   getByTypeAndYear(inputData) {
@@ -101,6 +100,7 @@ class YearlyPermitVol extends React.Component {
   //       .length
   //   });
   // }
+
   // brushDuring(e) {
   //   this.setState({
   //     selectedDataCountDuring: data.filter(
@@ -108,31 +108,30 @@ class YearlyPermitVol extends React.Component {
   //     ).length
   //   });
   // }
-  // brushEnd(e) {
-  //   this.setState({
-  //     selectedDataCountEnd: data.filter(d => d.date >= e[0] && d.date <= e[1])
-  //       .length
-  //   });
-  // }
+
+  brushEnd(e) {
+    this.setState({
+      brushedData: this.cleanedData.filter(d => d.date >= e[0] && d.date <= e[1])
+    });
+  }
 
 
   render() {
-    const currentLines = [];
+    let currentLines = [];
     const currentLinesBrushable = [];
+
+    const filteredDataByType = this.getallDataByType(this.state.brushedData);
+    const byTypeAndYear = this.getByTypeAndYear(filteredDataByType);
 
     this.state.activeTypes.forEach((type) => {
       currentLinesBrushable.push({
         coordinates: this.allDataByType[type],
       });
-      this.state.activeYears.forEach((year) => {
-        currentLines.push({
-          type,
-          year,
-          coordinates: this.byTypeAndYear[type][year],
-        });
-      });
+      currentLines = currentLines.concat(Object.values(byTypeAndYear[type]).map(d => ({
+        type,
+        coordinates: d,
+      })));
     });
-
 
     return (<div style={{ width: '100%', height: '100%', textAlign: 'center' }}>
       <div style={{ margin: '2% 5%' }}>
@@ -192,10 +191,18 @@ class YearlyPermitVol extends React.Component {
         axes={[
           {
             orient: 'bottom',
+            // TODO: FIX TO ONLY SHOW JANUARY AND JUNE
             tickFormat: d => new Date(d).toLocaleDateString('en-US', {year: '2-digit', month: 'short'}),
             ticks: 6,
           },
         ]}
+        interaction={{
+        //   start: this.brushStart,
+        //   during: this.brushDuring,
+          end: this.brushEnd,
+          brush: 'xBrush',
+          extent: [new Date(2017, 0), new Date(2018, 7)],
+        }}
       />
       <ResponsiveXYFrame
         responsiveWidth
@@ -285,13 +292,6 @@ class YearlyPermitVol extends React.Component {
             textLines={textLines}
           />);
         }}
-        // interaction={{
-        //   start: this.brushStart,
-        //   during: this.brushDuring,
-        //   end: this.brushEnd,
-        //   brush: "xBrush",
-        //   extent: [new Date("1/2/1997"), new Date("1/2/2003")]
-        // }}
       />
     </div>);
   }

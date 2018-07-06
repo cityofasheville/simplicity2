@@ -3,6 +3,11 @@ import { Mark } from 'semiotic-mark';
 import { colorSchemes } from './colorSchemes';
 
 
+export const dollarFormatter = (value) => {
+  if (!value || value === 0) { return '$0'; }
+  return [value < 0 ? '-$' : '$', Math.abs(value).toLocaleString()].join('');
+};
+
 export const labelOrder = (formattedData, valueAccessor = 'value') => JSON.parse(JSON.stringify(formattedData))
   .filter((item, pos, thisArray) =>
     // Limit it to just the first occurrence

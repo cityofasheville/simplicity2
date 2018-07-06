@@ -35,15 +35,21 @@ class YearlyPermitVol extends React.Component {
     });
 
     this.allDataByType = this.getallDataByType(this.cleanedData);
+    this.years = this.cleanedData
+      .map(d => d.year)
+      .filter((value, index, self) => self.indexOf(value) === index);
 
     this.radiusFunc = scaleLinear()
       .range([3, 20])
       .domain([0, this.maxVolVal()]);
 
+
+    const today = new Date();
+
     this.state = {
       activeTypes: ['Total'],
-      activeYears: ['2017', '2018'],
       brushedData: this.cleanedData,
+      brushExtent: [new Date(2017, 0), new Date(today.getFullYear(), today.getMonth() - 1)],
       hover: null,
     };
 
@@ -111,7 +117,8 @@ class YearlyPermitVol extends React.Component {
 
   brushEnd(e) {
     this.setState({
-      brushedData: this.cleanedData.filter(d => d.date >= e[0] && d.date <= e[1])
+      brushExtent: e,
+      brushedData: this.cleanedData.filter(d => d.date >= e[0] && d.date <= e[1]),
     });
   }
 
@@ -133,8 +140,8 @@ class YearlyPermitVol extends React.Component {
       })));
     });
 
-    return (<div style={{ width: '100%', height: '100%', textAlign: 'center' }}>
-      <div style={{ margin: '2% 5%' }}>
+    return (<div style={{ width: '100%', textAlign: 'center' }}>
+      <div style={{ margin: '2% 10%' }}>
         {this.props.volumeKeys.map((key, i) => {
           const activeNow = this.state.activeTypes.findIndex(type => type === key) >= 0
           return (<div
@@ -175,12 +182,13 @@ class YearlyPermitVol extends React.Component {
         })}
       </div>
       <ResponsiveXYFrame
+        title="Summary"
         responsiveWidth
-        size={[1000, 70]}
+        size={[1000, 120]}
         margin={{
-          top: 10,
-          bottom: 30,
-          left: 40,
+          top: 30,
+          bottom: 60,
+          left: 50,
           right: 40,
         }}
         lines={currentLinesBrushable}
@@ -191,9 +199,8 @@ class YearlyPermitVol extends React.Component {
         axes={[
           {
             orient: 'bottom',
-            // TODO: FIX TO ONLY SHOW JANUARY AND JUNE
-            tickFormat: d => new Date(d).toLocaleDateString('en-US', {year: '2-digit', month: 'short'}),
-            ticks: 6,
+            tickFormat: d => new Date(d).getFullYear(),
+            tickValues: this.years.map(d => new Date(+d, 0)),
           },
         ]}
         interaction={{
@@ -201,15 +208,16 @@ class YearlyPermitVol extends React.Component {
         //   during: this.brushDuring,
           end: this.brushEnd,
           brush: 'xBrush',
-          extent: [new Date(2017, 0), new Date(2018, 7)],
+          extent: this.state.brushExtent,
         }}
       />
       <ResponsiveXYFrame
+        title="Monthly Comparison"
         responsiveWidth
         size={[1000, 400]}
         margin={{
-          top: 20,
-          left: 40,
+          top: 40,
+          left: 60,
           right: 40,
           bottom: 70,
         }}
@@ -228,6 +236,7 @@ class YearlyPermitVol extends React.Component {
           {
             orient: 'left',
             ticks: 5,
+            label: 'Volume',
           },
         ]}
         lineStyle={(d) => {

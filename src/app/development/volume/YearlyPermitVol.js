@@ -142,6 +142,7 @@ class YearlyPermitVol extends React.Component {
 
     return (<div style={{ width: '100%', textAlign: 'center' }}>
       <div style={{ margin: '2% 10%' }}>
+        {/* TODO: USE CHECKBOXES INSTEAD SO THEY'RE ACCESSIBLE */}
         {this.props.volumeKeys.map((key, i) => {
           const activeNow = this.state.activeTypes.findIndex(type => type === key) >= 0
           return (<div
@@ -285,6 +286,7 @@ class YearlyPermitVol extends React.Component {
         }}
         tooltipContent={(d) => {
           // TODO: POSITION THIS SO IT DOESN'T RUN OFF PAGE
+          if (!d.color) { return d.data.year; }
 
           const title = `${months[d.monthInt]} ${d.year} ${d.parentKey}`;
           const textLines = [

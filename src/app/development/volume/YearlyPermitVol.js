@@ -6,120 +6,129 @@ import Tooltip from '../../../shared/visualization/Tooltip';
 import { dollarFormatter } from '../../../shared/visualization/visUtilities';
 
 
+const months = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+
 class YearlyPermitVol extends React.Component {
   constructor(props) {
     super(props);
 
-    this.months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
-    ];
-    this.volDataByType = this.volByType(this.props.permitData);
-    this.years = Object.keys(this.volDataByType.Total);
-    this.radiusFunc = this.getRadiusFunc();
-    this.sequentialYears = this.volDataBySequence(this.props.permitData);
+    this.cleanedData = this.props.permitData.map((d) => {
+      const rVal = Object.assign({}, d);
+      const splitDate = d['Month & Year'].split(' ');
+      rVal.date = new Date(splitDate[1], months.findIndex(m => m === splitDate[0]));
+      rVal.monthInt = months.findIndex(m => m === splitDate[0]);
+      rVal.year = splitDate[1];
+      return rVal;
+    });
+
+    this.allDataByType = this.getallDataByType(this.cleanedData);
+    this.byTypeAndYear = this.getByTypeAndYear(this.allDataByType);
+
+    this.radiusFunc = scaleLinear()
+      .range([3, 20])
+      .domain([0, this.maxVolVal()]);
 
     this.state = {
       hover: null,
       activeTypes: ['Total'],
       activeYears: ['2017', '2018'],
     };
+
+
+    // this.brushStart = this.brushStart.bind(this);
+    // this.brushDuring = this.brushDuring.bind(this);
+    // this.brushEnd = this.brushEnd.bind(this);
   }
 
-  volByType(inputData) {
-    // TODO: REFACTOR THIS TO USE VOLDATABYSEQUENCE RATHER THAN DOING THE SAME THING TWICE
-
+  getByTypeAndYear(inputData) {
     const returnData = {};
-
     this.props.volumeKeys.forEach((volKey, i) => {
-      returnData[volKey] = {}
-      inputData.forEach((d) => {
-        const splitDate = d['Month & Year'].split(' ');
-        const month = splitDate[0];
-        const year = splitDate[1];
-        let value = d[`${volKey} Construction Value`].replace(/\D/g, '');
-        if (value === '') { value = 0; }
-
-        if (!returnData[volKey][year]) {
-          returnData[volKey][year] = [];
+      returnData[volKey] = {};
+      inputData[volKey].forEach((d) => {
+        if (!returnData[volKey][d.year]) {
+          returnData[volKey][d.year] = [];
         }
-
-        returnData[volKey][year].push({
-          volume: d[volKey],
-          monthInt: this.months.findIndex(m => m === month),
-          value,
-          color: this.props.colorScheme[i],
-          parentKey: volKey,
-          year,
-        });
+        returnData[volKey][d.year].push(d);
       });
     });
     return returnData;
   }
 
-  volDataBySequence(inputData) {
+  getallDataByType(inputData) {
     const returnObject = {};
     this.props.volumeKeys.forEach((volKey, i) => {
       returnObject[volKey] = inputData.map((d) => {
-        const splitDate = d['Month & Year'].split(' ');
+        let value = d[`${volKey} Construction Value`].replace(/\D/g, '');
+        if (value === '') { value = 0; }
         return {
-          volume: d[volKey],
-          date: new Date(splitDate[1], this.months.findIndex(m => m === splitDate[0])),
           color: this.props.colorScheme[i],
+          date: d.date,
+          month: months[d.monthInt],
+          monthInt: d.monthInt,
           parentKey: volKey,
+          strValue: dollarFormatter(d.value),
+          value,
+          year: d.year,
+          volume: d[volKey],
         };
       });
     });
     return returnObject;
   }
 
-  maxVolume() {
-    return [].concat.apply(
-      [],
-      [].concat.apply(
-        [],
-        [].concat.apply([], Object.values(this.volDataByType)).map(d => Object.values(d))
-      )
-    ).map(d => d.volume)
-      .sort((a, b) => b - a)[0];
+  maxVolVal(volumeOrValue = 'value') {
+    return this.props.volumeKeys.map(key =>
+      this.allDataByType[key].map(d => d[volumeOrValue]).reduce((a, b) =>
+        Math.max(a, b))).reduce((a, b) => Math.max(a, b));
   }
 
-  getRadiusFunc() {
-    const sortedValue = [].concat.apply(
-      [],
-      [].concat.apply(
-        [],
-        [].concat.apply([], Object.values(this.volDataByType)).map(d => Object.values(d))
-      )
-    ).map(d => d.value)
-      .sort((a, b) => a - b);
+  // brushStart(e) {
+  //   this.setState({
+  //     selectedDataCountStart: data.filter(d => d.date >= e[0] && d.date <= e[1])
+  //       .length
+  //   });
+  // }
+  // brushDuring(e) {
+  //   this.setState({
+  //     selectedDataCountDuring: data.filter(
+  //       d => d.date >= e[0] && d.date <= e[1]
+  //     ).length
+  //   });
+  // }
+  // brushEnd(e) {
+  //   this.setState({
+  //     selectedDataCountEnd: data.filter(d => d.date >= e[0] && d.date <= e[1])
+  //       .length
+  //   });
+  // }
 
-    return scaleLinear()
-      .range([3, 20])
-      .domain([sortedValue[0], +sortedValue[sortedValue.length - 1]]);
-  }
 
   render() {
     const currentLines = [];
     const currentLinesBrushable = [];
 
     this.state.activeTypes.forEach((type) => {
-      currentLinesBrushable.push({coordinates: this.sequentialYears[type]})
+      currentLinesBrushable.push({
+        coordinates: this.allDataByType[type],
+      });
       this.state.activeYears.forEach((year) => {
         currentLines.push({
           type,
           year,
-          coordinates: this.volDataByType[type][year],
+          coordinates: this.byTypeAndYear[type][year],
         });
       });
     });
@@ -184,7 +193,7 @@ class YearlyPermitVol extends React.Component {
           {
             orient: 'bottom',
             tickFormat: d => new Date(d).toLocaleDateString('en-US', {year: '2-digit', month: 'short'}),
-            ticks: this.years.length,
+            ticks: 6,
           },
         ]}
       />
@@ -207,7 +216,7 @@ class YearlyPermitVol extends React.Component {
           {
             orient: 'bottom',
             ticks: 12,
-            tickFormat: d => this.months[d],
+            tickFormat: d => months[d],
           },
           {
             orient: 'left',
@@ -261,7 +270,7 @@ class YearlyPermitVol extends React.Component {
         tooltipContent={(d) => {
           // TODO: POSITION THIS SO IT DOESN'T RUN OFF PAGE
 
-          const title = `${this.months[d.monthInt]} ${d.year} ${d.parentKey}`;
+          const title = `${months[d.monthInt]} ${d.year} ${d.parentKey}`;
           const textLines = [
             {
               text: `Volume:  ${d.volume}`,
@@ -276,9 +285,28 @@ class YearlyPermitVol extends React.Component {
             textLines={textLines}
           />);
         }}
+        // interaction={{
+        //   start: this.brushStart,
+        //   during: this.brushDuring,
+        //   end: this.brushEnd,
+        //   brush: "xBrush",
+        //   extent: [new Date("1/2/1997"), new Date("1/2/2003")]
+        // }}
       />
     </div>);
   }
 }
+
+YearlyPermitVol.propTypes = {
+  colorScheme: PropTypes.arrayOf(PropTypes.string),
+  permitData: PropTypes.arrayOf(PropTypes.object),
+  volumeKeys: PropTypes.arrayOf(PropTypes.string),
+};
+
+YearlyPermitVol.defaultProps = {
+  colorScheme: ['red'],
+  permitData: [],
+  volumeKeys: [],
+};
 
 export default YearlyPermitVol;

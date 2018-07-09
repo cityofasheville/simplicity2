@@ -100,28 +100,12 @@ class YearlyPermitVol extends React.Component {
         Math.max(a, b))).reduce((a, b) => Math.max(a, b));
   }
 
-  // brushStart(e) {
-  //   this.setState({
-  //     selectedDataCountStart: data.filter(d => d.date >= e[0] && d.date <= e[1])
-  //       .length
-  //   });
-  // }
-
-  // brushDuring(e) {
-  //   this.setState({
-  //     selectedDataCountDuring: data.filter(
-  //       d => d.date >= e[0] && d.date <= e[1]
-  //     ).length
-  //   });
-  // }
-
   brushEnd(e) {
     this.setState({
       brushExtent: e,
       brushedData: this.cleanedData.filter(d => d.date >= e[0] && d.date <= e[1]),
     });
   }
-
 
   render() {
     let currentLines = [];
@@ -137,6 +121,7 @@ class YearlyPermitVol extends React.Component {
       currentLines = currentLines.concat(Object.values(byTypeAndYear[type]).map(d => ({
         type,
         coordinates: d,
+        year: d[0].year,
       })));
     });
 

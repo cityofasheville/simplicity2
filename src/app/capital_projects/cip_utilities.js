@@ -5,11 +5,11 @@ export const getCategoryBarChartData = (projectData, categories, mode) => {
   }
 
   for (let project of projectData) {
-    if (categories.includes(mapProjectToCategory(project))) {
+    if (categories.includes(project.category)) {
       if (mode !== 'bond' ||
         (mode === 'bond' && project.type.toLowerCase() === 'bond')
       ) {
-        categoryBarData[mapProjectToCategory(project)] += 1;
+        categoryBarData[project.category] += 1;
       }
     }
   }
@@ -25,7 +25,7 @@ export const getPhaseBarChartData = (projectData, categories, mode) => {
   let numOngoing = 0;
 
   for (let project of projectData) {
-    if (categories.includes(mapProjectToCategory(project))) {
+    if (categories.includes(project.category)) {
       if (mode !== 'bond' ||
         (mode === 'bond' && project.type.toLowerCase() === 'bond')
       ) {
@@ -68,7 +68,7 @@ export const getPhasePieChartData = (projectData, categories, mode) => {
   let numOngoing = 0;
 
   for (let project of projectData) {
-    if (categories.includes(mapProjectToCategory(project))) {
+    if (categories.includes(project.category)) {
       if (mode !== 'bond' ||
         (mode === 'bond' && project.type.toLowerCase() === 'bond')
       ) {
@@ -104,34 +104,13 @@ export const getPhasePieChartData = (projectData, categories, mode) => {
   return pieData;
 };
 
-export const mapProjectToCategory = (projectData) => {
-  switch (projectData.category) {
-    case 'Parks Program':
-      return 'Parks';
-    case 'Transportation Program':
-      return 'Transportation';
-    case 'Housing Program':
-      return 'Housing';
-    case 'Transportation & Infrastructure':
-      return 'Transportation';
-    case 'Affordable Housing':
-      return 'Housing';
-    case 'Public Safety':
-      return 'Public Safety';
-    case 'Parks & Recreation':
-      return 'Parks';
-    default:
-      return 'Other';
-  }
-};
-
 export const getFundsAllocatedAndExpended = (projectData, categories, mode) => {
   let totalExpended = 0;
   let totalAllocated = 0;
   let totalEncumbered = 0;
 
   for (let project of projectData) {
-    if (categories.includes(mapProjectToCategory(project))) {
+    if (categories.includes(project.category)) {
       if (mode !== 'bond' ||
       (mode === 'bond' && project.type.toLowerCase() === 'bond')
       ) {
@@ -156,7 +135,7 @@ export const getFundsAllocatedAndExpended = (projectData, categories, mode) => {
 export const filterProjects = (projects, categories, mode) => {
   const filteredProjects = [];
   for (let project of projects) {
-    if (categories.includes(mapProjectToCategory(project))) {
+    if (categories.includes(project.category)) {
       if (mode === 'bond') {
         if (project.type.toLowerCase() === 'bond') {
           filteredProjects.push(project);
@@ -169,55 +148,6 @@ export const filterProjects = (projects, categories, mode) => {
   return filteredProjects;
 };
 
-export const urlCategory = (category) => {
-  switch (category) {
-    case 'Transportation':
-      return 'transportation';
-    case 'Parks':
-      return 'parks';
-    case 'Housing':
-      return 'housing';
-    case 'Public Safety':
-      return 'public_safety';
-    default:
-      return 'other';
-  }
-};
-
-export const longCategory = (category) => {
-  switch (category.toLowerCase()) {
-    case 'transportation':
-      return 'Transportation';
-    case 'parks':
-      return 'Parks';
-    case 'housing':
-      return 'Housing';
-    case 'public_safety':
-      return 'Public Safety';
-    default:
-      return 'Other';
-  }
-};
-
-export const longCategories = (categories) => {
-  const longCats = [];
-  for (let cat of categories) {
-    const lowerCat = cat.toLowerCase();
-    if (lowerCat === 'housing') {
-      longCats.push('Affordable Housing');
-      longCats.push('Housing Program');
-    } else if (lowerCat === 'transportation') {
-      longCats.push('Transportation & Infrastructure');
-      longCats.push('Transportation Program');
-    } else if (lowerCat === 'parks') {
-      longCats.push('Parks & Recreation');
-      longCats.push('Parks Program');
-    } else if (lowerCat === 'public safety') {
-      longCats.push('Public Safety');
-    } else {
-      longCats.push('Economic Development');
-      longCats.push('General Government');
-    }
-  }
-  return longCats;
-};
+export const urlCategory = category => (
+  encodeURIComponent(category)
+);

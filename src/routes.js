@@ -25,6 +25,8 @@ import Topics from './app/Topics';
 import DevelopmentSummary from './app/development/DevelopmentSummary';
 import DevelopmentDetail from './app/development/DevelopmentDetail';
 import DevelopmentSLADashboard from './app/development/sla_dashboard/SLADashboard';
+import TRCDashboard from './app/development/trc/TRCDashboard';
+import VolumeDashboard from './app/development/volume/VolumeDashboard';
 import ProjectFlowDashboard from './app/internal/bpt_projects/ProjectFlow';
 import CrimeSummary from './app/crime/CrimeSummary';
 import Maintenance from './app/maintenance/Maintenance';
@@ -55,6 +57,8 @@ import MiniSearch from './app/mini_search/MiniSearch';
 // Finance
 import PCardCompliance from './app/internal/pcard_compliance/PCardCompliance';
 import PCardComplianceReceipts from './app/internal/pcard_compliance/PCardComplianceReceipts';
+// City Website
+import AnalyticsCirclePack from './app/internal/city_website_analytics/AnalyticsCirclePack';
 
 // Google Analytics
 const ReactGA = require('react-ga');
@@ -120,10 +124,15 @@ const Routes = () => (
           <IndexRoute component={PCardCompliance} />
           <Route path="receipts" component={PCardComplianceReceipts} />
         </Route>
+        <Route path="city_website_analytics">
+          <IndexRoute component={AnalyticsCirclePack} />
+        </Route>
         <Route path="development">
           <IndexRoute component={DevelopmentSummary} />
           <Route path="detail" component={DevelopmentDetail}></Route>
           <Route path="sla-dashboard" component={DevelopmentSLADashboard}></Route>
+          <Route path="trc" component={TRCDashboard}></Route>
+          <Route path="volume" component={VolumeDashboard}></Route>
         </Route>
         <Route path="homelessness">
           <IndexRoute component={HomelessnessSummary} />

@@ -40,7 +40,7 @@ class YearlyPermitVol extends React.Component {
       .filter((value, index, self) => self.indexOf(value) === index);
 
     this.radiusFunc = scaleLinear()
-      .range([3, 20])
+      .range([3, 25])
       .domain([0, this.maxVolVal()]);
 
 
@@ -101,6 +101,7 @@ class YearlyPermitVol extends React.Component {
   }
 
   brushEnd(e) {
+    if (!e) { return }
     this.setState({
       brushExtent: e,
       brushedData: this.cleanedData.filter(d => d.date >= e[0] && d.date <= e[1]),

@@ -47,7 +47,7 @@ class YearlyPermitVol extends React.Component {
     const today = new Date();
 
     this.state = {
-      activeTypes: ['Total'],
+      activeTypes: ['Total', 'Commercial', 'Residential Alterations and Additions'],
       brushedData: this.cleanedData,
       brushExtent: [new Date(2017, 0), new Date(today.getFullYear(), today.getMonth() - 1)],
       hover: null,
@@ -101,10 +101,9 @@ class YearlyPermitVol extends React.Component {
   }
 
   brushEnd(e) {
-    if (!e) { return }
     this.setState({
-      brushExtent: e,
-      brushedData: this.cleanedData.filter(d => d.date >= e[0] && d.date <= e[1]),
+      brushExtent: e || [0, 0],
+      brushedData: e ? this.cleanedData.filter(d => d.date >= e[0] && d.date <= e[1]) : this.cleanedData,
     });
   }
 

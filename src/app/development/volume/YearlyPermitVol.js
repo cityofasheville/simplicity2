@@ -45,11 +45,12 @@ class YearlyPermitVol extends React.Component {
       .range([3, 25])
       .domain([0, this.maxVolVal()]);
 
-
-    const today = new Date();
-
     this.state = {
-      activeTypes: ['Total', 'Commercial', 'Residential Alterations and Additions'],
+      activeTypes: [
+        'Commercial Alterations and Additions',
+        'Total',
+        'Residential Alterations and Additions',
+      ],
       brushedData: this.cleanedData,
       brushExtent: [this.years[this.years.length - 3], this.years[this.years.length - 1]],
       hover: null,
@@ -131,15 +132,31 @@ class YearlyPermitVol extends React.Component {
       <div style={{ margin: '2% 10%' }}>
         {/* TODO: USE CHECKBOXES INSTEAD SO THEY'RE ACCESSIBLE */}
         {this.props.volumeKeys.map((key, i) => {
-          const activeNow = this.state.activeTypes.findIndex(type => type === key) >= 0
+          const activeNow = this.state.activeTypes.findIndex(type => type === key) >= 0;
           return (<div
+            role="checkbox"
+            aria-checked={activeNow}
+            aria-label={key}
+            tabIndex="0"
             style={{
               display: 'inline',
               padding: '0 1%',
             }}
             key={key + i}
-            onClick={d => this.setState({
-              activeTypes: activeNow ? this.state.activeTypes.filter(d => d !== key) : this.state.activeTypes.concat([key])
+            onKeyDown={(e) => {
+              if (e.key === ' ') {
+                e.preventDefault();
+                this.setState({
+                  activeTypes: activeNow ?
+                    this.state.activeTypes.filter(type => type !== key) :
+                    this.state.activeTypes.concat([key]),
+                });
+              }
+            }}
+            onClick={() => this.setState({
+              activeTypes: activeNow ?
+                this.state.activeTypes.filter(type => type !== key) :
+                this.state.activeTypes.concat([key]),
             })}
           >
             <svg

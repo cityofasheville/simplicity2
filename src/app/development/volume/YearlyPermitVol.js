@@ -182,129 +182,132 @@ class YearlyPermitVol extends React.Component {
           </div>);
         })}
       </div>
-      <ResponsiveXYFrame
-        title="Volume Summary"
-        responsiveWidth
-        size={[1000, 130]}
-        margin={{
-          top: 40,
-          bottom: 60,
-          left: 50,
-          right: 40,
-        }}
-        lines={currentLinesBrushable}
-        lineType="line"
-        xAccessor="date"
-        yAccessor="volume"
-        yExtent={[0, undefined]}
-        lineStyle={d => ({ stroke: d.coordinates[0].color, strokeWidth: 2 })}
-        axes={[
-          {
-            orient: 'bottom',
-            tickFormat: d => new Date(d).getFullYear(),
-            tickValues: this.years.map(d => new Date(+d, 0)),
-          },
-        ]}
-        interaction={{
-        //   start: this.brushStart,
-        //   during: this.brushDuring,
-          end: this.brushEnd,
-          brush: 'xBrush',
-          extent: this.state.brushExtent,
-        }}
-      />
-      <ResponsiveXYFrame
-        title="Monthly Comparison"
-        responsiveWidth
-        size={[1000, 400]}
-        margin={{
-          top: 40,
-          left: 60,
-          right: 40,
-          bottom: 70,
-        }}
-        lines={currentLines}
-        lineType="line"
-        xAccessor={d => d.monthInt}
-        yAccessor="volume"
-        xExtent={[0, 11]}
-        yExtent={[0, undefined]}
-        axes={[
-          {
-            orient: 'bottom',
-            ticks: 12,
-            tickFormat: d => months[d],
-          },
-          {
-            orient: 'left',
-            ticks: 5,
-            label: 'Volume',
-          },
-        ]}
-        lineStyle={(d) => {
-          const hovered = this.state.hover &&
-            d.year === this.state.hover.year &&
-            d.type === this.state.hover.parentKey;
-          return {
-            stroke: d.coordinates[0].color,
-            strokeWidth: hovered ? 2.5 : 0.5,
-          };
-        }}
-        showLinePoints
-        customPointMark={(d) => {
-          return (<circle
-            r={this.radiusFunc(d.d.value)}
-          />);
-        }}
-        pointStyle={(d) => {
-          const hovered = this.state.hover &&
-            d.year === this.state.hover.year &&
-            d.monthInt === this.state.hover.monthInt &&
-            d.parentKey === this.state.hover.parentKey;
-          return {
-            stroke: d.color,
-            strokeWidth: 2.5,
-            strokeOpacity: hovered ? 1 : 0,
-            fillOpacity: 0.75,
-            fill: d.color,
-          };
-        }}
-        hoverAnnotation
-        customHoverBehavior={(d) => {
-          if (d) {
-            this.setState({
-              hover: {
-                year: d.year,
-                parentKey: d.parentKey,
-                monthInt: d.monthInt,
+      {this.state.activeTypes.length < 1 ?
+        <div>Select a permit category</div> :
+        <div>
+          <ResponsiveXYFrame
+            title="Volume Summary"
+            responsiveWidth
+            size={[1000, 130]}
+            margin={{
+              top: 40,
+              bottom: 60,
+              left: 50,
+              right: 40,
+            }}
+            lines={currentLinesBrushable}
+            lineType="line"
+            xAccessor="date"
+            yAccessor="volume"
+            yExtent={[0, undefined]}
+            lineStyle={d => ({ stroke: d.coordinates[0].color, strokeWidth: 2 })}
+            axes={[
+              {
+                orient: 'bottom',
+                tickFormat: d => new Date(d).getFullYear(),
+                tickValues: this.years.map(d => new Date(+d, 0)),
               },
-            });
-          } else {
-            this.setState({
-              hover: null,
-            });
-          }
-        }}
-        tooltipContent={(d) => {
-          // TODO: POSITION THIS SO IT DOESN'T RUN OFF PAGE
-          if (!d.color) { return d.data.year; }
+            ]}
+            interaction={{
+              end: this.brushEnd,
+              brush: 'xBrush',
+              extent: this.state.brushExtent,
+            }}
+          />
+          <ResponsiveXYFrame
+            title="Monthly Comparison"
+            responsiveWidth
+            size={[1000, 400]}
+            margin={{
+              top: 40,
+              left: 60,
+              right: 40,
+              bottom: 70,
+            }}
+            lines={currentLines}
+            lineType="line"
+            xAccessor={d => d.monthInt}
+            yAccessor="volume"
+            xExtent={[0, 11]}
+            yExtent={[0, undefined]}
+            axes={[
+              {
+                orient: 'bottom',
+                ticks: 12,
+                tickFormat: d => months[d],
+              },
+              {
+                orient: 'left',
+                ticks: 5,
+                label: 'Volume',
+              },
+            ]}
+            lineStyle={(d) => {
+              const hovered = this.state.hover &&
+                d.year === this.state.hover.year &&
+                d.type === this.state.hover.parentKey;
+              return {
+                stroke: d.coordinates[0].color,
+                strokeWidth: hovered ? 2.5 : 0.5,
+              };
+            }}
+            showLinePoints
+            customPointMark={(d) => {
+              return (<circle
+                r={this.radiusFunc(d.d.value)}
+              />);
+            }}
+            pointStyle={(d) => {
+              const hovered = this.state.hover &&
+                d.year === this.state.hover.year &&
+                d.monthInt === this.state.hover.monthInt &&
+                d.parentKey === this.state.hover.parentKey;
+              return {
+                stroke: d.color,
+                strokeWidth: 2.5,
+                strokeOpacity: hovered ? 1 : 0,
+                fillOpacity: 0.75,
+                fill: d.color,
+              };
+            }}
+            hoverAnnotation
+            customHoverBehavior={(d) => {
+              if (d) {
+                this.setState({
+                  hover: {
+                    year: d.year,
+                    parentKey: d.parentKey,
+                    monthInt: d.monthInt,
+                  },
+                });
+              } else {
+                this.setState({
+                  hover: null,
+                });
+              }
+            }}
+            tooltipContent={(d) => {
+              // TODO: POSITION THIS SO IT DOESN'T RUN OFF PAGE
+              if (!d.color) { return d.data.year; }
 
-          const title = `${months[d.monthInt]} ${d.year} ${d.parentKey}`;
-          const textLines = [
-            {
-              text: `Volume:  ${d.volume}`,
-            },
-            {
-              text: `Value:  ${dollarFormatter(d.value)}`,
-            },
-          ];
+              const title = `${months[d.monthInt]} ${d.year} ${d.parentKey}`;
+              const textLines = [
+                {
+                  text: `Volume:  ${d.volume}`,
+                },
+                {
+                  text: `Value:  ${dollarFormatter(d.value)}`,
+                },
+              ];
 
-          return (<Tooltip
-            title={title}
-            textLines={textLines}
-          />);
-        }}
-      />
+              return (<Tooltip
+                title={title}
+                textLines={textLines}
+              />);
+            }}
+          />
+        </div>
+      }
     </div>);
   }
 }

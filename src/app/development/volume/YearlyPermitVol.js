@@ -129,8 +129,7 @@ class YearlyPermitVol extends React.Component {
     });
 
     return (<div style={{ width: '100%', textAlign: 'center' }}>
-      <div style={{ margin: '2% 10%' }}>
-        {/* TODO: USE CHECKBOXES INSTEAD SO THEY'RE ACCESSIBLE */}
+      <div style={{ margin: '2% 10%', whiteSpace: 'wrap' }}>
         {this.props.volumeKeys.map((key, i) => {
           const activeNow = this.state.activeTypes.findIndex(type => type === key) >= 0;
           return (<div
@@ -139,7 +138,7 @@ class YearlyPermitVol extends React.Component {
             aria-label={key}
             tabIndex="0"
             style={{
-              display: 'inline',
+              display: 'inline-block',
               padding: '0 1%',
             }}
             key={key + i}
@@ -159,30 +158,40 @@ class YearlyPermitVol extends React.Component {
                 this.state.activeTypes.concat([key]),
             })}
           >
-            <svg
-              height="15"
-              width="15px"
+            <div
               style={{
-                margin: '0 5',
+                whiteSpace: 'nowrap',
               }}
             >
-              <rect
-                height="100%"
-                width="100%"
+              <svg
+                height="15"
+                width="15px"
                 style={{
-                  fill: activeNow ? this.props.colorScheme[i] : 'white',
-                  stroke: this.props.colorScheme[i],
-                  strokeWidth: '3',
-                  cursor: 'pointer',
-                  fillOpacity: 0.75,
+                  margin: '0 5',
                 }}
-              ></rect>
-            </svg>
-            <span
-              className={`volKeyButton ${activeNow ? 'active' : 'inactive'}`}
-            >
-              {key}
-            </span>
+              >
+                <rect
+                  height="100%"
+                  width="100%"
+                  style={{
+                    fill: activeNow ? this.props.colorScheme[i] : 'white',
+                    stroke: this.props.colorScheme[i],
+                    strokeWidth: '3',
+                    cursor: 'pointer',
+                    fillOpacity: 0.75,
+                  }}
+                >
+                </rect>
+              </svg>
+              <span
+                className={`volKeyButton ${activeNow ? 'active' : 'inactive'}`}
+                style={{
+
+                }}
+              >
+                {key}
+              </span>
+            </div>
           </div>);
         })}
       </div>

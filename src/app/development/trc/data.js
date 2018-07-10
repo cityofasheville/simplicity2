@@ -1018,7 +1018,7 @@ export const data = {
       "Planner": "Jessica Bernstein",
       "Description": "17-lot major subdivision",
       "Project Materials": "https://drive.google.com/open?id=0B4e3rmhIcrIHbTk4S2lWTi0tdUU",
-      "Submission Date": "*7/26/17",
+      "Submission Date": "7/26/17",
       "Initial Meeting Date": "(withdrawn by applicant)",
       "Revision Meeting Date": "",
       "Final Meeting Date": "",

@@ -147,7 +147,7 @@ class YearlyPermitVol extends React.Component {
       })));
     });
 
-    return (<div style={{ width: '100%', textAlign: 'center' }}>
+    return (<div style={{ width: '100%', textAlign: 'center' }} className="permitVol">
       <div style={{ margin: '2% 10%', whiteSpace: 'wrap' }}>
         {this.props.volumeKeys.map((key, i) => {
           const activeNow = this.state.activeTypes.findIndex(type => type === key) >= 0;

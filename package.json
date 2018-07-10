@@ -1,6 +1,6 @@
 {
   "name": "simplicity2",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "description": "Version 2 of SimpliCity",
   "main": "index.js",
   "scripts": {
@@ -66,6 +66,7 @@
     "d3-sankey": "^0.7.1",
     "d3-sankey-circular": "^0.23.0",
     "d3-scale": "^2.0.0",
+    "d3-time": "^1.0.8",
     "d3-timer": "^1.0.6",
     "d3-transition": "^1.1.0",
     "data-tree": "^1.2.4",

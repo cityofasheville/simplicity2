@@ -9,7 +9,7 @@ const Tooltip = (props) => {
   styles.letterSpacing = '0.015rem'
   const minWidth = Math.min(
     (props.textLines.map(line => line.text).join('').length) / props.textLines.length,
-    30
+    10
   );
   styles.minWidth = `${minWidth}em`;
   return (<span style={styles} className="tooltip">

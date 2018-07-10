@@ -58,8 +58,6 @@ class YearlyPermitVol extends React.Component {
       hover: null,
     };
 
-    // this.brushStart = this.brushStart.bind(this);
-    // this.brushDuring = this.brushDuring.bind(this);
     this.brushEnd = this.brushEnd.bind(this);
   }
 
@@ -123,6 +121,14 @@ class YearlyPermitVol extends React.Component {
     });
   }
 
+  handleLegendSelect(key, activeNow) {
+    this.setState({
+      activeTypes: activeNow ?
+        this.state.activeTypes.filter(type => type !== key) :
+        this.state.activeTypes.concat([key]),
+    });
+  }
+
   render() {
     let currentLines = [];
     const currentLinesBrushable = [];
@@ -158,18 +164,10 @@ class YearlyPermitVol extends React.Component {
             onKeyDown={(e) => {
               if (e.key === ' ') {
                 e.preventDefault();
-                this.setState({
-                  activeTypes: activeNow ?
-                    this.state.activeTypes.filter(type => type !== key) :
-                    this.state.activeTypes.concat([key]),
-                });
+                this.handleLegendSelect(key, activeNow);
               }
             }}
-            onClick={() => this.setState({
-              activeTypes: activeNow ?
-                this.state.activeTypes.filter(type => type !== key) :
-                this.state.activeTypes.concat([key]),
-            })}
+            onClick={() => this.handleLegendSelect(key, activeNow)}
           >
             <div
               style={{
@@ -312,7 +310,14 @@ class YearlyPermitVol extends React.Component {
         }}
         tooltipContent={(d) => {
           // TODO: POSITION THIS SO IT DOESN'T RUN OFF PAGE
-          if (!d.color) { return d.data.year; }
+          if (!d.color) {
+            return (<Tooltip
+              title={d.data.year}
+              textLines={[{
+                text: d.data.parentKey,
+              }]}
+            />);
+          }
 
           const title = `${months[d.monthInt]} ${d.year} ${d.parentKey}`;
           const textLines = [

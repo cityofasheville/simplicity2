@@ -162,10 +162,10 @@ class TrcTimeline extends React.Component {
           });
         }}
         tooltipContent={(d) => {
-          if (d.data) { return; }
-          const title = d.project;
+          const datum = d.data ? d.data : d;
+          const title = datum.project;
           const textLines = [{
-            text: `${d.eventType}: ${d.date.toLocaleDateString()}`,
+            text: `${datum.eventType}: ${datum.date.toLocaleDateString()}`,
           }];
           return (<Tooltip
             title={title}

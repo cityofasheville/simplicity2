@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ResponsiveXYFrame } from 'semiotic';
 import { scaleLinear } from 'd3-scale';
+import { timeMonth } from 'd3-time';
 import Tooltip from '../../../shared/visualization/Tooltip';
 import { dollarFormatter } from '../../../shared/visualization/visUtilities';
-
 
 const months = [
   'January',
@@ -20,6 +20,8 @@ const months = [
   'November',
   'December',
 ];
+
+// TODO: where else should d3-time and timemonth be used rather than some hacky method?
 
 class YearlyPermitVol extends React.Component {
   constructor(props) {
@@ -104,9 +106,20 @@ class YearlyPermitVol extends React.Component {
   }
 
   brushEnd(e) {
+    let newExtent;
+    if (e) {
+      // snap brush
+      newExtent = e.map(timeMonth.round);
+      if (newExtent[0] >= newExtent[1]) {
+        newExtent[0] = timeMonth.floor(newExtent[0]);
+        newExtent[1] = timeMonth.ciel(newExtent[1]);
+      }
+    } else {
+      newExtent = [0, 0];
+    }
     this.setState({
-      brushExtent: e || [0, 0],
-      brushedData: e ? this.cleanedData.filter(d => d.date >= e[0] && d.date <= e[1]) : this.cleanedData,
+      brushExtent: newExtent,
+      brushedData: e ? this.cleanedData.filter(d => d.date >= newExtent[0] && d.date <= newExtent[1]) : this.cleanedData,
     });
   }
 

@@ -72,15 +72,15 @@ class Treemap extends React.Component {
               return {
                 cursor: 'pointer',
                 fill: 'white',
-                stroke: 'black',
-                strokeWidth: '0.5px',
+                stroke: 'gray',
+                strokeWidth: '0.3px',
               };
             }
             return {
               cursor: 'pointer',
               fill: d.floatDeltaPercent > 0 ? positiveColor(d.floatDeltaPercent) : negativeColor(d.floatDeltaPercent),
-              stroke: 'black',
-              strokeWidth: '0.5px',
+              stroke: 'gray',
+              strokeWidth: '0.3px',
             };
           }}
           nodeIDAccessor="key"
@@ -97,12 +97,12 @@ class Treemap extends React.Component {
 
             const node = d.nodes.filter(n => n.data && n.data.name === d.d.name)[0];
             const nodeName = d.d.name.trim();
-            const fontSize = 14;
+            const fontSize = 12;
 
             const nodeWidth = node.x1 - node.x0;
             const nodeNameArray = nodeName.split(' ').sort((a, b) => b.length - a.length);
             const maxWordChars = nodeNameArray[0].length;
-            const horizontalFit = maxWordChars * (fontSize - 1) <= nodeWidth;
+            const horizontalFit = maxWordChars * (fontSize - 2) <= nodeWidth;
 
             if (!horizontalFit) {
               return '';
@@ -122,7 +122,7 @@ class Treemap extends React.Component {
               top: node.y0,
               width: nodeWidth,
               height: nodeHeight,
-              padding: '5px 5px',
+              padding: '3px 3px',
               fontSize: `${fontSize}px`,
               overflow: 'hidden',
             };

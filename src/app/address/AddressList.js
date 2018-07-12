@@ -38,16 +38,18 @@ const AddressList = props => (
         default:
           content = english;
       }
+
       const getNewUrlParams = view => (
         {
           view,
         }
       );
+
       return (
         <div>
           <PageHeader
             h1={props.location.query.label}
-            h3={content.address_and_owner_mailing_lists}
+            h2={content.address_and_owner_mailing_lists}
             icon={<Icon path={IM_ENVELOP3} size={50} />}
           >
             <ButtonGroup>
@@ -107,3 +109,4 @@ AddressList.propTypes = {
 };
 
 export default AddressList;
+

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import Icon from '../../shared/Icon';
 import { IM_SEARCH } from '../../shared/iconConstants';
-//import SearchByEntities from './searchByEntities/SearchByEntities';
+// import SearchByEntities from './searchByEntities/SearchByEntities';
 
 const getEntities = (selected) => {
   let entityTypes = [];
@@ -15,12 +15,16 @@ const getEntities = (selected) => {
     { label: 'Owners', type: 'owner', checked: true },
     { label: 'Google places', type: 'google', checked: true },
   ];
-  if (selected !== undefined && selected !== 'undefined' && selected.length > 0) {
+  if (
+    selected !== undefined &&
+    selected !== 'undefined' &&
+    selected.length > 0
+  ) {
     entityTypes = selected.split(',');
   } else {
     return entities;
   }
-  for (let entity of entities) {
+  for (const entity of entities) {
     if (entityTypes.indexOf(entity.type) === -1) {
       entity.checked = false;
     }
@@ -30,7 +34,9 @@ const getEntities = (selected) => {
 
 const SearchBarLink = props => (
   <div className="col-xs-12">
-    <h2>Enter address for trash pickup day, property details, and more</h2>
+    <h2 id="search-instructions">
+      Enter address for trash pickup day, property details, and more
+    </h2>
     {/* <Link to={['/search?entities=', props.selectedEntities].join('')}> */}
     <Link to="/search">
       <form onSubmit={event => event.preventDefault()}>
@@ -42,27 +48,44 @@ const SearchBarLink = props => (
             id="searchBox"
             defaultValue={props.text}
             onKeyUp={props.onKeyUp}
+            aria-label="Simplicity Search Box"
+            aria-describedby="search-instructions"
           />
           <span className="input-group-btn">
-            <button className="btn btn-primary" type="button" aria-label="search"><Icon path={IM_SEARCH} size={16} /></button>
+            <button
+              className="btn btn-primary"
+              type="button"
+              aria-label="search"
+            >
+              <Icon path={IM_SEARCH} size={16} />
+            </button>
           </span>
         </div>
       </form>
     </Link>
     <div>
-      <h3 className="text-center" style={{ marginBottom: '20px' }}><i>Or search by: owner, neighborhood, pin number, or street</i></h3>
-    </div>    
-    {/* <SearchByEntities location={props.location} entities={getEntities(props.selectedEntities)} selectedEntities={props.selectedEntities} /> */}
+      <h3 className="text-center" style={{ marginBottom: '20px' }}>
+        <i>Or search by: owner, neighborhood, pin number, or street</i>
+      </h3>
+    </div>
+    {/* <SearchByEntities
+      location={props.location}
+      entities={getEntities(props.selectedEntities)}
+      selectedEntities={props.selectedEntities}
+    /> */}
   </div>
 );
 
 SearchBarLink.propTypes = {
   selectedEntities: PropTypes.string,
+  text: PropTypes.string,
+  onKeyUp: PropTypes.func,
 };
 
 SearchBarLink.defaultProps = {
   selectedEntities: '',
+  text: '',
+  onKeyUp: undefined,
 };
 
 export default SearchBarLink;
-

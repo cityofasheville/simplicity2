@@ -237,7 +237,7 @@ const HomelessnessCounts = props => (
   <div>
     <div className="row">
       <div className="col-sm-12">
-        <h3>How many people are homeless in Asheville?</h3>
+        <h2>How many people are homeless in Asheville?</h2>
         <p>
           Estimating how many people are homeless is complicated since it is always changing. Each day new people either become homeless or arrive in Buncombe County while others transition into housing through our homeless support programs. The charts below show these two different sides: the <a className="inText" key="PIT_link" href="https://www.hudexchange.info/programs/hdx/guides/pit-hic/#general-pit-guides-and-tools" target="_blank" title="Annual point-in-time count definition and procedures">annual Point-in-Time (PIT) count</a> is a one-night estimate of homeless persons conducted each January, while the graph of homeless program enrollments shows the average number of people actively receiving housing support in Buncombe County either through emergency shelter, transitional housing, a housing subsidy or permanent supportive housing. View <a className="inText" href="http://www.ncceh.org/pitdata/" target="_blank">state and local PIT counts for NC</a> or view the <a target="_blank" href="https://public.tableau.com/profile/durhamopeningdoors#!/vizhome/PITCount2016EggoWaffleIron/StatePITCountWaffleIron" className="inText">&quot;waffle chart&quot;</a> for nationwide PIT data.
         </p>

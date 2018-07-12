@@ -23,7 +23,7 @@ const Neighborhood = (props) => {
 
   return (
     <div>
-      <PageHeader h1={props.location.query.label} dataType="Neighborhood" h3="About this neighborhood" icon={<Icon path={IM_USERS} size={50} />}>
+      <PageHeader h1={props.location.query.label} dataType="Neighborhood" h2="About this neighborhood" icon={<Icon path={IM_USERS} size={50} />}>
         <ButtonGroup alignment="">
           <LinkButton pathname="/search" query={{ entities: props.location.query.entities, search: props.location.query.search, hideNavbar: props.location.query.hideNavbar }}>Back to search</LinkButton>
         </ButtonGroup>
@@ -41,7 +41,7 @@ const Neighborhood = (props) => {
             <div className="detailsFieldset__details-listings">
               <DetailsIconLinkFormGroup label="Address & Owner Mailing Lists" icon={<Icon path={IM_ENVELOP3} size={24} />} href={['address/addressList', '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&entities=', props.location.query.entities, '&label=', props.location.query.label, '&search=', props.location.query.search, '&hideNavbar=', props.location.query.hideNavbar].join('')} title="Address & Owner Mailing Lists" inWindow />
               <DetailsIconLinkFormGroup label="Properties" icon={<Icon path={IM_HOME2} size={24} />} href={['property/properties', '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&entities=', props.location.query.entities, '&label=', props.location.query.label, '&search=', props.location.query.search, '&hideNavbar=', props.location.query.hideNavbar].join('')} title="Properties" inWindow />
-            </div>            
+            </div>
           </fieldset>
         </div>
         <div className="col-sm-5">

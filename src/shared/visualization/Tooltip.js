@@ -4,21 +4,22 @@ import PropTypes from 'prop-types';
 
 const Tooltip = (props) => {
   const styles = props.style || {};
-  styles.fontSize = '1rem';
+  styles.fontSize = '0.75rem';
   styles.padding = '0.5rem';
+  styles.letterSpacing = '0.015rem'
   const minWidth = Math.min(
     (props.textLines.map(line => line.text).join('').length) / props.textLines.length,
-    20
+    30
   );
-  styles.minWidth = `${minWidth / 2}em`;
-  return (<div style={styles}>
+  styles.minWidth = `${minWidth}em`;
+  return (<span style={styles} className="tooltip">
     <div style={{ fontWeight: 'bolder', textAlign: 'center' }}>
       {props.title}
     </div>
     {props.textLines.map((lineObj, i) =>
       <div key={`textLine-${i}`} style={{ color: lineObj.color }}>{lineObj.text}</div>
     )}
-  </div>);
+  </span>);
 };
 
 Tooltip.propTypes = {

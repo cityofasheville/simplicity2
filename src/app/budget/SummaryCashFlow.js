@@ -42,7 +42,7 @@ class SummaryCashFlow extends React.Component {
     return (
       <div className="row">
         <div className="col-sm-12">
-          <h3>Cash flow diagram: Revenues to expenditures</h3>
+          <h2>Cash flow diagram: Revenues to expenditures</h2>
           <div>
             The chart below shows how revenue flows through the City’s key funds to the various departments. The thickness of each flow is proportional to the amount of money represented. Mouse over the rectangles and flows to see actual amounts.
           </div>

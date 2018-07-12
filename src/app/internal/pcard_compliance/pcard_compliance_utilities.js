@@ -52,20 +52,20 @@ export const buildReceiptsTree = (data) => {
     let curNode = theTree.rootNode();
     let curParent = theTree.rootNode();
     for (let j = 0; j < levels.length; j += 1) {
-      curNode = searchChildrenForKey(data[i][levels[j]], curParent);
+      curNode = searchChildrenForKey(data[i][levels[j]] || 'Other', curParent);
       let curPath = 'root';
       let breadCrumbPath = 'root';
       for (let k = 0; k <= j; k += 1) {
-        curPath = [curPath, encodeURIComponent(data[i][levels[k]])].join('_');
-        breadCrumbPath = [breadCrumbPath, data[i][levelNames[k]]].join('>');
+        curPath = [curPath, encodeURIComponent(data[i][levels[k]] || 'Other')].join('_');
+        breadCrumbPath = [breadCrumbPath, data[i][levelNames[k]] || 'Other'].join('>');
       }
       if (curNode === null) {
         curNode = theTree.insertToNode(curParent, {
-          key: data[i][levels[j]],
+          key: data[i][levels[j]] || 'Other',
           path: curPath,
           breadcrumbPath: breadCrumbPath,
-          [levels[j]]: data[i][levels[j]],
-          name: data[i][levelNames[j]],
+          [levels[j]]: data[i][levels[j]] || 'Other',
+          name: data[i][levelNames[j]] || 'Other',
           has_itemized_receipt: 0,
           missing_itemized_receipt: 0,
           total_receipts: 0,
@@ -124,20 +124,20 @@ export const buildTree = (data) => {
     let curNode = theTree.rootNode();
     let curParent = theTree.rootNode();
     for (let j = 0; j < levels.length; j += 1) {
-      curNode = searchChildrenForKey(data[i][levels[j]], curParent);
+      curNode = searchChildrenForKey(data[i][levels[j]] || 'Other', curParent);
       let curPath = 'root';
       let breadCrumbPath = 'root';
       for (let k = 0; k <= j; k += 1) {
-        curPath = [curPath, encodeURIComponent(data[i][levels[k]])].join('_');
-        breadCrumbPath = [breadCrumbPath, data[i][levelNames[k]]].join('>');
+        curPath = [curPath, encodeURIComponent(data[i][levels[k]] || 'Other')].join('_');
+        breadCrumbPath = [breadCrumbPath, data[i][levelNames[k]] || 'Other'].join('>');
       }
       if (curNode === null) {
         curNode = theTree.insertToNode(curParent, {
-          key: data[i][levels[j]],
+          key: data[i][levels[j]] || 'Other',
           path: curPath,
           breadcrumbPath: breadCrumbPath,
-          [levels[j]]: data[i][levels[j]],
-          name: data[i][levelNames[j]],
+          [levels[j]]: data[i][levels[j]] || 'Other',
+          name: data[i][levelNames[j]] || 'Other',
           under30: 0,
           under60: 0,
           under90: 0,

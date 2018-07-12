@@ -5,11 +5,11 @@ export const getCategoryBarChartData = (projectData, categories, mode) => {
   }
 
   for (let project of projectData) {
-    if (categories.includes(mapProjectToCategory(project))) {
+    if (categories.includes(project.category)) {
       if (mode !== 'bond' ||
-        ( mode === 'bond' && ['Bond - Parks Program', 'Bond - Housing Program', 'Bond - Transportation Program'].includes(project.Category) )
+        (mode === 'bond' && project.type.toLowerCase() === 'bond')
       ) {
-        categoryBarData[mapProjectToCategory(project)] += 1;
+        categoryBarData[project.category] += 1;
       }
     }
   }
@@ -25,21 +25,21 @@ export const getPhaseBarChartData = (projectData, categories, mode) => {
   let numOngoing = 0;
 
   for (let project of projectData) {
-    if (categories.includes(mapProjectToCategory(project))) {
+    if (categories.includes(project.category)) {
       if (mode !== 'bond' ||
-        (mode === 'bond' && ['Bond - Parks Program', 'Bond - Housing Program', 'Bond - Transportation Program'].includes(project.Category))
+        (mode === 'bond' && project.type.toLowerCase() === 'bond')
       ) {
         switch (project.status) {
-          case 'Status: Planning':
+          case 'Planning':
             numInPlanning += 1;
             break;
-          case 'Status: Design':
+          case 'Design':
             numInDesign += 1;
             break;
-          case 'Status: Construction':
+          case 'Construction':
             numInConstruction += 1;
             break;
-          case 'Status: Completed':
+          case 'Completed':
             numCompleted += 1;
             break;
           default:
@@ -68,21 +68,21 @@ export const getPhasePieChartData = (projectData, categories, mode) => {
   let numOngoing = 0;
 
   for (let project of projectData) {
-    if (categories.includes(mapProjectToCategory(project))) {
+    if (categories.includes(project.category)) {
       if (mode !== 'bond' ||
-        (mode === 'bond' && ['Bond - Parks Program', 'Bond - Housing Program', 'Bond - Transportation Program'].includes(project.category))
+        (mode === 'bond' && project.type.toLowerCase() === 'bond')
       ) {
         switch (project.status) {
-          case 'Status: Planning':
+          case 'Planning':
             numInPlanning += 1;
             break;
-          case 'Status: Design':
+          case 'Design':
             numInDesign += 1;
             break;
-          case 'Status: Construction':
+          case 'Construction':
             numInConstruction += 1;
             break;
-          case 'Status: Completed':
+          case 'Completed':
             numCompleted += 1;
             break;
           default:
@@ -104,40 +104,19 @@ export const getPhasePieChartData = (projectData, categories, mode) => {
   return pieData;
 };
 
-export const mapProjectToCategory = (projectData) => {
-  switch (projectData.category) {
-    case 'Bond - Parks Program':
-      return 'Parks';
-    case 'Bond - Transportation Program':
-      return 'Transportation';
-    case 'Bond - Housing Program':
-      return 'Housing';
-    case 'CIP - Transportation & Infrastructure':
-      return 'Transportation';
-    case 'CIP - Affordable Housing':
-      return 'Housing';
-    case 'CIP - Public Safety':
-      return 'Public Safety';
-    case 'CIP - Parks & Recreation':
-      return 'Parks';
-    default:
-      return 'Other';
-  }
-};
-
 export const getFundsAllocatedAndExpended = (projectData, categories, mode) => {
   let totalExpended = 0;
   let totalAllocated = 0;
   let totalEncumbered = 0;
 
   for (let project of projectData) {
-    if (categories.includes(mapProjectToCategory(project))) {
+    if (categories.includes(project.category)) {
       if (mode !== 'bond' ||
-      (mode === 'bond' && ['Bond - Parks Program', 'Bond - Housing Program', 'Bond - Transportation Program'].includes(project.category))
-    ) {
+      (mode === 'bond' && project.type.toLowerCase() === 'bond')
+      ) {
         totalExpended += parseFloat(project.total_spent);
         totalEncumbered += parseFloat(project.encumbered);
-        if (project.total_project_funding_budget_document.trim() !== '') {
+        if (project.total_project_funding_budget_document !== null && project.total_project_funding_budget_document.trim() !== '') {
           let allocated = project.total_project_funding_budget_document.indexOf('$') === 0 ? project.total_project_funding_budget_document.slice(1).split(',').join('') : project.total_project_funding_budget_document.split(',').join('');
           totalAllocated += parseFloat(allocated);
         }
@@ -149,16 +128,16 @@ export const getFundsAllocatedAndExpended = (projectData, categories, mode) => {
     allocated: parseInt(totalAllocated, 10),
     'Expended funds': parseInt(totalExpended, 10),
     'Remaining funds': parseInt(totalAllocated, 10) - parseInt(totalExpended, 10),
-    'Under contract': parseInt(totalEncumbered, 10)
+    'Under contract': parseInt(totalEncumbered, 10),
   }];
 };
 
 export const filterProjects = (projects, categories, mode) => {
   const filteredProjects = [];
   for (let project of projects) {
-    if (categories.includes(mapProjectToCategory(project))) {
+    if (categories.includes(project.category)) {
       if (mode === 'bond') {
-        if (['Bond - Parks Program', 'Bond - Housing Program', 'Bond - Transportation Program'].includes(project.category)) {
+        if (project.type.toLowerCase() === 'bond') {
           filteredProjects.push(project);
         }
       } else {
@@ -169,55 +148,6 @@ export const filterProjects = (projects, categories, mode) => {
   return filteredProjects;
 };
 
-export const urlCategory = (category) => {
-  switch (category) {
-    case 'Transportation':
-      return 'transportation';
-    case 'Parks':
-      return 'parks';
-    case 'Housing':
-      return 'housing';
-    case 'Public Safety':
-      return 'public_safety';
-    default:
-      return 'other';
-  }
-};
-
-export const longCategory = (category) => {
-  switch (category.toLowerCase()) {
-    case 'transportation':
-      return 'Transportation';
-    case 'parks':
-      return 'Parks';
-    case 'housing':
-      return 'Housing';
-    case 'public_safety':
-      return 'Public Safety';
-    default:
-      return 'Other';
-  }
-};
-
-export const longCategories = (categories) => {
-  const longCats = [];
-  for (let cat of categories) {
-    const lowerCat = cat.toLowerCase();
-    if (lowerCat === 'housing') {
-      longCats.push('CIP - Affordable Housing');
-      longCats.push('Bond - Housing Program');
-    } else if (lowerCat === 'transportation') {
-      longCats.push('CIP - Transportation & Infrastructure');
-      longCats.push('Bond - Transportation Program');
-    } else if (lowerCat === 'parks') {
-      longCats.push('CIP - Parks & Recreation');
-      longCats.push('Bond - Parks Program');
-    } else if (lowerCat === 'public safety') {
-      longCats.push('CIP - Public Safety');
-    } else {
-      longCats.push('CIP - Economic Development');
-      longCats.push('CIP - General Government');
-    }
-  }
-  return longCats;
-};
+export const urlCategory = category => (
+  encodeURIComponent(category)
+);

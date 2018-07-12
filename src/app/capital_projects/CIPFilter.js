@@ -5,13 +5,12 @@ import { CheckboxGroup } from 'accessible-react-checkbox-group';
 import { urlCategory } from './cip_utilities';
 import FilterCheckbox from '../../shared/FilterCheckbox';
 import { refreshLocation } from '../../utilities/generalUtilities';
-import ButtonGroup from '../../shared/ButtonGroup';
-import Button from '../../shared/Button';
 
 const CIPFilter = (props) => {
   const toggleMode = () => (
     {
       mode: props.location.query.mode === 'bond' ? 'all' : 'bond',
+      selected: props.selected.map(cat => urlCategory(cat)),
     }
   );
 
@@ -37,7 +36,7 @@ const CIPFilter = (props) => {
   const getVisibleSelection = () => {
     let { selected } = props;
     if (bondOnly) {
-      selected = selected.filter(e => ['Parks', 'Housing', 'Transportation'].indexOf(e) !== -1);
+      selected = selected.filter(e => props.bond_categories.indexOf(e) !== -1);
     }
     if (selected.length > 0) {
       selected.push('All');
@@ -53,7 +52,9 @@ const CIPFilter = (props) => {
       <div>
         <CheckboxGroup
           checkedValues={visibleSelection}
-          indeterminateValues={realSelection.length < (bondOnly ? props.categories.length - 2 : props.categories.length) && realSelection.length > 0 ? ['All'] : []}
+          indeterminateValues={realSelection.length <
+            (bondOnly ? props.categories.length - 1 : props.categories.length) &&
+            realSelection.length > 0 ? ['All'] : []}
           onChange={handleClick}
           className="checkboxGroup"
         >
@@ -62,13 +63,14 @@ const CIPFilter = (props) => {
             value="All"
             // selected={visibleSelection.includes('All')}
           />
-          {props.categories.map((category, index) => (
+          {props.categories.filter(e => e !== 'All').map((category, index) => (
             <FilterCheckbox
               key={['SummaryCard', category, index].join('_')}
               label={category}
               value={category}
               // selected={visibleSelection.includes(category)}
-              disabled={props.location.query.mode === 'bond' && !['Parks', 'Housing', 'Transportation'].includes(category)}
+              disabled={props.location.query.mode === 'bond' &&
+                !props.bond_categories.includes(category)}
             />
           ))}
         </CheckboxGroup>
@@ -91,11 +93,6 @@ const CIPFilter = (props) => {
 CIPFilter.propTypes = {
   selected: PropTypes.arrayOf(PropTypes.string),
   categories: PropTypes.arrayOf(PropTypes.string),
-};
-
-CIPFilter.defaultProps = {
-  selected: ['Transportation', 'Housing', 'Parks', 'Public Safety', 'Other'],
-  categories: ['Transportation', 'Housing', 'Parks', 'Public Safety', 'Other'],
 };
 
 export default CIPFilter;

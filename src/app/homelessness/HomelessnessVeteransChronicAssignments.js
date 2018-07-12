@@ -124,7 +124,7 @@ class HomelessnessVeteransChronicAssignments extends React.Component {
   render() {
     return (
       <div>
-        <h3>Program enrollments: chronically homeless Veterans</h3>
+        <h2>Program enrollments: chronically homeless Veterans</h2>
         <div>Every identified Veteran is given an opportunity to choose an appropriate intervention they qualify for and that facilities their specific needs. For Veterans who decline an intervention, the U.S. Interagency Council on Homelessness benchmarks require that a documented offer of a housing intervention be made to that Veteran every two weeks. These persons are listed as ‘declining’ on the Veteran By-Name list for Buncombe County.</div>
         <br />
         <div>Program enrollment for all Veterans is tracked on the by-name list but particular attention is paid to those Veterans who are identified as chronically homeless.

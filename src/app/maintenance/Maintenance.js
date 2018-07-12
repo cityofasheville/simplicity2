@@ -26,7 +26,7 @@ const Maintenance = (props) => {
 
   return (
     <div>
-      <PageHeader h1={props.location.query.label} h3={getSubtitle(props.location.query.entity)} icon={<Icon path={IM_TRAFFIC_CONE} size={50} />}>
+      <PageHeader h1={props.location.query.label} h2={getSubtitle(props.location.query.entity)} icon={<Icon path={IM_TRAFFIC_CONE} size={50} />}>
         <ButtonGroup>
           <LinkButton pathname="/street" query={{ entities: props.location.query.entities, search: props.location.query.search, hideNavbar: props.location.query.hideNavbar, entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label }}>Back to {props.location.query.entity}</LinkButton>
         </ButtonGroup>

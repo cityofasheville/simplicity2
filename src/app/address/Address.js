@@ -186,7 +186,7 @@ const Address = props => (
           <PageHeader
             h1={`${addressData.address}, ${addressData.zipcode}`}
             dataType={content.data_type}
-            h3={content.about_this_address}
+            h2={content.about_this_address}
             icon={<Icon path={IM_LOCATION} size={50} />}
           >
             <ButtonGroup alignment="">

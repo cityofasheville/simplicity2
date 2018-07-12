@@ -13,18 +13,18 @@ import { defaultAuthState } from '../utilities/auth/graphql/authDefaultState';
 
 const displayNavbar = (hideNavbar) => {
   if (hideNavbar) {
-    return null
+    return null;
   }
   if (window.location.href.indexOf('dashboards.ashevillenc.gov') < 0) {
-    return (<Navbar />); /// Navbar is SimpliCity
+    return <Navbar />; // / Navbar is SimpliCity
   }
   // CityInfoBar is dashboards
-  return (<CityInfoBar />);
+  return <CityInfoBar />;
 };
 
 const authProviders = [
   firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-  //firebase.auth.EmailAuthProvider.PROVIDER_ID,
+  // firebase.auth.EmailAuthProvider.PROVIDER_ID,
 ];
 
 const initializeFirebaseAuthUI = () => {
@@ -57,21 +57,23 @@ class Main extends React.Component {
 
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        user.getIdToken()
-        .then((token) => {
-          localStorage.setItem('token', token);
-          this.props.updateUser({
-            variables: {
-              loggedIn: true,
-              privilege: user.email.endsWith('ashevillenc.gov') ? 2 : 1,
-              name: user.displayName,
-              email: user.email,
-              provider: user.providerData[0].providerId,
-            },
-          });
-        }, (error) => {
-          console.log(`TOKEN ERROR: ${JSON.stringify(error)}`);
-        });
+        user.getIdToken().then(
+          (token) => {
+            localStorage.setItem('token', token);
+            this.props.updateUser({
+              variables: {
+                loggedIn: true,
+                privilege: user.email.endsWith('ashevillenc.gov') ? 2 : 1,
+                name: user.displayName,
+                email: user.email,
+                provider: user.providerData[0].providerId,
+              },
+            });
+          },
+          (error) => {
+            console.log(`TOKEN ERROR: ${JSON.stringify(error)}`);
+          }
+        );
       } else {
         const defaultUser = defaultAuthState.user;
         this.props.updateUser({
@@ -91,23 +93,35 @@ class Main extends React.Component {
 
   render() {
     return (
-      <div style={{paddingTop: this.props.location.query.hideNavbar ? '0px' : '0px'}}>
-        <div id="skip"><a href="#content">Skip to Main Content</a></div>
-        {
-          displayNavbar(this.props.location.query.hideNavbar) // eslint-disable-line react/prop-types
-        }
-        <div className="container" id="content">
-          { this.props.children }
+      <main>
+        <div
+          style={{
+            paddingTop: this.props.location.query.hideNavbar ? '0px' : '97px',
+          }}
+        >
+          <div id="skip">
+            <a href="#content">Skip to Main Content</a>
+          </div>
+          {displayNavbar(this.props.location.query.hideNavbar)}
+          <div className="container" id="content">
+            {this.props.children}
+          </div>
+          {!this.props.location.query.hideNavbar && <Footer />}
+          <AuthProviderModal />
         </div>
-        { !this.props.location.query.hideNavbar && <Footer /> }
-        <AuthProviderModal />
-      </div>
+      </main>
     );
   }
 }
 
 Main.propTypes = {
   children: PropTypes.node,
+  updateUser: PropTypes.func,
+};
+
+Main.defaultProps = {
+  children: undefined,
+  updateUser: undefined,
 };
 
 const App = compose(

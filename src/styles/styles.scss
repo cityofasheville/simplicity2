@@ -17,7 +17,7 @@ body, html{
 }
 
 body{
-	padding-top: 97px;
+	// padding-top: 97px;
 }
 
 h1, h2, h3{
@@ -74,6 +74,11 @@ h4{
 
 .visualization{
 	font-size: .85rem;
+}
+
+.visualization-title {
+  font-size: 1.25rem;
+  color: #666;
 }
 
 .flex-align-left{
@@ -675,6 +680,40 @@ label {
 		margin-right: .5rem;
 	}
 }
+
+.tooltip-content {
+  background: white;
+  border: 1px solid black;
+  color: black;
+  z-index: 99;
+  opacity: 1;
+}
+
+.tooltip-content:before {
+  background: inherit;
+  content: "";
+  padding: 0px;
+  transform: rotate(45deg);
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  z-index: 99;
+  border-right: inherit;
+  border-bottom: inherit;
+  bottom: -8px;
+  left: calc(50% - 15px);
+}
+
+.tooltip {
+  opacity: 1;
+  background-color: white;
+  border: 0.1px solid black;
+}
+
+.semiotic-axis path {
+  opacity: 0.5;
+}
+
 
 /*************************************************************************************/
 /***************************           FOOTER          *******************************/

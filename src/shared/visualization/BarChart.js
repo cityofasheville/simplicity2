@@ -79,7 +79,7 @@ class BarChart extends React.Component {
 
     return (
       <div>
-        <h4>{this.props.chartTitle}</h4>
+        <div className="visualization-title">{this.props.chartTitle}</div>
         <br />
         <p>
           {this.props.chartText.isArray &&

@@ -15,7 +15,7 @@ const dataColumns = [
     accessor: 'Address',
     Cell: row => (
       <div>
-        <div>{row.original.street_number} {row.original.street_prefix} {row.original.street_name} {row.original.unit}</div>
+        <div>{row.original.street_number} {row.original.street_prefix} {row.original.street_name} {row.original.street_type} {row.original.unit ? `#${row.original.unit}` : ''}</div>
         <div>{row.original.city}, NC {row.original.zipcode}</div>
       </div>
     ),
@@ -28,7 +28,7 @@ const dataColumns = [
       />
     ),
     filterMethod: (filter, row) => {
-      const joinedAddressInfo = [row._original.street_number, row._original.street_prefix, row._original.street_number, row._original.street_name, row._original.unit, row._original.city, ',NC', row._original.zipcode].join(' ');
+      const joinedAddressInfo = [row._original.street_number, row._original.street_prefix, row._original.street_number, row._original.street_name, row._original.street_type, row._original.unit ? '#' : '', row._original.unit, row._original.city, ',NC', row._original.zipcode].join(' ');
       return row._original !== undefined ? joinedAddressInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
     },
   },
@@ -65,7 +65,7 @@ const AddressesByNeighborhood = (props) => {
     return <Error message={props.data.error.message} />; // eslint-disable-line react/prop-types
   }
 
-  const mapData = props.data.addresses_by_neighborhood.map(item => (Object.assign({}, item, { popup: `<b>Address</b><div>${item.street_number} ${item.street_prefix} ${item.street_name} ${item.unit || ''}</div><div>${item.city}, NC ${item.zipcode}</div><br /><b>Owner</b><div>${item.owner_name}</div><div>${item.owner_address}</div><div>${item.owner_cityname}, ${item.owner_state} ${item.owner_zipcode}</div>` })
+  const mapData = props.data.addresses_by_neighborhood.map(item => (Object.assign({}, item, { popup: `<b>Address</b><div>${item.address}</div><div>${item.city}, NC ${item.zipcode}</div><br /><b>Owner</b><div>${item.owner_name}</div><div>${item.owner_address}</div><div>${item.owner_cityname}, ${item.owner_state} ${item.owner_zipcode}</div>` })
   ));
 
   return (
@@ -135,6 +135,7 @@ const getAddressesAndNeighborhoodInfoQuery = gql`
       street_name
       street_prefix
       street_number
+      street_type
       unit
       city
       zipcode

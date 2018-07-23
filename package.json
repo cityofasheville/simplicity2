@@ -1,6 +1,6 @@
 {
   "name": "simplicity2",
-  "version": "3.2.3",
+  "version": "3.3.0",
   "description": "Version 2 of SimpliCity",
   "main": "index.js",
   "scripts": {

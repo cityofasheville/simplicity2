@@ -65,5 +65,5 @@ SearchResults.propTypes = {
 
 export default graphql(searchQuery, {
   skip: ownProps => (!ownProps.searchText || ownProps.searchText.trim().length < 4),
-  options: ownProps => ({ variables: { searchString: ownProps.searchText.trim(), searchContexts: getEntitiesToSearch((ownProps.location.query.entities !== undefined && ownProps.location.query.entities !== '') ? getEntities(ownProps.location.query.entities) : getEntities('address,property,neighborhood,street,owner,google')) } }),
+  options: ownProps => ({ variables: { searchString: ownProps.searchText.trim(), searchContexts: getEntitiesToSearch((ownProps.location.query.entities !== undefined && ownProps.location.query.entities !== '') ? getEntities(ownProps.location.query.entities) : getEntities('address,property,neighborhood,street,owner')) } }),
 })(SearchResults);

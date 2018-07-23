@@ -48,7 +48,7 @@ TopicCard.defaultProps = {
   search: '',
   id: '',
   label: '',
-  entities: 'address,property,neighborhood,street,google,owner',
+  entities: 'address,property,neighborhood,street,owner',
   x: '',
   y: '',
 };

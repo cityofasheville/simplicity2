@@ -86,7 +86,7 @@ const Address = (props) => {
   }
 
   const addressData = props.data.addresses[0];
-  const mapData = [Object.assign({}, addressData, { popup: `<b>Address</b><div>${addressData.street_number} ${addressData.street_prefix} ${addressData.street_name} ${addressData.unit || ''}</div><div>${addressData.city}, NC ${addressData.zipcode}</div><br /><b>Owner</b><div>${addressData.owner_name}</div><div>${addressData.owner_address}</div><div>${addressData.owner_cityname}, ${addressData.owner_state} ${addressData.owner_zipcode}</div>` })];
+  const mapData = [Object.assign({}, addressData, { popup: `<b>Address</b><div>${addressData.address}</div><div>${addressData.city}, NC ${addressData.zipcode}</div><br /><b>Owner</b><div>${addressData.owner_name}</div><div>${addressData.owner_address}</div><div>${addressData.owner_cityname}, ${addressData.owner_state} ${addressData.owner_zipcode}</div>` })];
 
   return (
     <div className="address">
@@ -175,7 +175,9 @@ const addressQuery = gql`
       street_number
       street_prefix
       street_name
+      street_type
       city
+      unit
       neighborhood
       owner_cityname
       owner_state

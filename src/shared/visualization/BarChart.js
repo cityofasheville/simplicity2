@@ -106,7 +106,7 @@ class BarChart extends React.Component {
                 margin={{
                   top: 10,
                   right: 10,
-                  bottom: 35,
+                  bottom: 45,
                   left: 60,
                 }}
                 oAccessor={this.props.mainAxisDataKey}
@@ -131,16 +131,18 @@ class BarChart extends React.Component {
                     </text>
                   );
                 }}
-                oPadding={10}
+                oPadding={6}
                 projection={this.props.layout}
                 rAccessor="value"
                 rExtent={this.props.domain}
                 type="bar"
-                axis={[{
-                  orient: 'left',
-                  tickFormat: d => this.props.yAxisTickFormatter(d),
-                  ticks: 8,
-                }]}
+                axis={[
+                  {
+                    orient: 'left',
+                    tickFormat: d => this.props.yAxisTickFormatter(d),
+                    ticks: 8,
+                  },
+                ]}
                 style={d => (
                   this.state.hover === d[this.props.mainAxisDataKey] ?
                   // For the currently hovered bar, return a brighter fill and add a stroke

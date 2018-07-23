@@ -50,7 +50,6 @@ class YearlyPermitVol extends React.Component {
     this.state = {
       activeTypes: [
         'Commercial Alterations and Additions',
-        'Total',
         'Residential Alterations and Additions',
       ],
       brushedData: this.cleanedData,

@@ -5,8 +5,28 @@ import { permitVol } from './data'
 
 
 class VolumeDashboard extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
+
+    const resRollupKeys = [
+      'Single Family',
+      'Town Houses',
+      'Duplexes',
+      'Mobile Homes',
+    ];
+
+    this.permitVol = permitVol.map((d) => {
+      const rObj = Object.assign({}, d);
+      rObj['New Residential'] = 0;
+      rObj['New Residential Construction Value'] = 0;
+      resRollupKeys.forEach((rollupKey) => {
+        rObj['New Residential'] += d[rollupKey];
+        let value = +d[`${rollupKey} Construction Value`].replace(/\D/g, '');
+        if (value === '') { value = 0; }
+        rObj['New Residential Construction Value'] += value;
+      });
+      return rObj;
+    });
   }
 
   render() {
@@ -17,15 +37,11 @@ class VolumeDashboard extends React.Component {
         permitData={permitVol}
         colorScheme={['#B66DFF', '#DB6D00', '#006DDB', '#000000', '#FF6DB6', '#920000', '#01b0b0', '#2fe12f', '#004949', '#6DB6FF', '#490092']}
         volumeKeys={[
-          'Single Family',
-          'Multi Family',
-          'Town Houses',
-          'Duplexes',
-          'Commercial',
+          'New Residential',
           'Residential Alterations and Additions',
+          'Commercial',
           'Commercial Alterations and Additions',
-          'Mobile Homes',
-          'Total',
+          'Multi Family',
         ]}
       />
     </div>);

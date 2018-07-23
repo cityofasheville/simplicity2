@@ -131,7 +131,7 @@ class BarChart extends React.Component {
                     </text>
                   );
                 }}
-                oPadding={6}
+                oPadding={8}
                 projection={this.props.layout}
                 rAccessor="value"
                 rExtent={this.props.domain}

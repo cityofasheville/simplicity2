@@ -9,7 +9,7 @@ phases:
       - apt-get install -y yarn
       - yarn -v
       - yarn install
-build:
-  commands:
-    - npm run build
-    - npm run devDeploy
+  build:
+    commands:
+      - npm run build
+      - npm run devDeploy

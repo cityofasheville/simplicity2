@@ -8,17 +8,10 @@ class VolumeDashboard extends React.Component {
   constructor(props) {
     super(props);
 
-    const resRollupKeys = [
-      'Single Family',
-      'Town Houses',
-      'Duplexes',
-      'Mobile Homes',
-    ];
-
     this.permitVol = permitVol.map((d) => {
       const rObj = Object.assign({}, d);
       rObj['New Residential'] = d['New Residential Permits'];
-      rObj['New Commercial'] = d['Commercial']
+      rObj['New Commercial'] = d['Commercial'];
       return rObj;
     });
   }

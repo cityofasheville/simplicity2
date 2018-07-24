@@ -9,7 +9,7 @@
     "build": "webpack --optimize-minimize --config webpack.config.js",
     "deploySimplicity": "aws s3 sync dist s3://simplicity.ashevillenc.gov --delete --exclude \"*.map\" --exclude \"favicon.ico\" --profile simplicity2",
     "deployDashboards": "aws s3 sync dist s3://dashboards.ashevillenc.gov --delete --exclude \"*.map\" --exclude \"favicon.ico\" --profile simplicity2",
-    "devDeploy": "aws s3 sync dist s3://dev-simplicity.ashevillenc.gov --delete --exclude \"*.map\" --exclude \"favicon.ico\"",
+    "devDeploy": "aws s3 sync dist s3://dev-simplicity.ashevillenc.gov --delete --exclude \"*.map\" --exclude \"favicon.ico\""
   },
   "repository": {
     "type": "git",

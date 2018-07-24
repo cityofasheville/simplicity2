@@ -100,7 +100,7 @@ class LineGraph extends React.Component {
                 }}
                 yAccessor={d => +d.value}
                 yExtent={[0, 100]}
-                lineStyle={{ stroke: lineColor, strokeWidth: '4px'}}
+                lineStyle={{ stroke: lineColor, strokeWidth: '4px' }}
                 margin={{
                   top: 10,
                   right: 40,

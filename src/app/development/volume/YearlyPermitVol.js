@@ -48,10 +48,7 @@ class YearlyPermitVol extends React.Component {
       .domain([0, this.maxVolVal()]);
 
     this.state = {
-      activeTypes: [
-        'Commercial Alterations and Additions',
-        'Residential Alterations and Additions',
-      ],
+      activeTypes: this.props.volumeKeys,
       brushedData: this.cleanedData,
       brushExtent: [this.years[this.years.length - 3], this.years[this.years.length - 1]],
       hover: null,
@@ -206,9 +203,9 @@ class YearlyPermitVol extends React.Component {
         })}
       </div>
       <ResponsiveXYFrame
-        title="Volume Summary"
+        title="All Years"
         responsiveWidth
-        size={[1000, 130]}
+        size={[1000, 150]}
         margin={{
           top: 40,
           bottom: 60,
@@ -236,13 +233,13 @@ class YearlyPermitVol extends React.Component {
         }}
       />
       <ResponsiveXYFrame
-        title="Monthly Comparison"
+        title="Monthly Comparison of Selected Timespan"
         responsiveWidth
         size={[1000, 400]}
         margin={{
           top: 40,
-          left: 60,
-          right: 40,
+          left: 160,
+          right: 140,
           bottom: 70,
         }}
         lines={currentLines}

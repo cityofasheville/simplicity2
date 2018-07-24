@@ -9,6 +9,7 @@ phases:
       # - apt-get install -y yarn
       # - yarn -v
       # - yarn install
+      - npm install webpack@3.11.0 -g
       - npm install
   build:
     commands:

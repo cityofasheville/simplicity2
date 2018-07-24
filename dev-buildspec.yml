@@ -2,13 +2,14 @@ version: 0.1
 phases:
   install:
     commands:
-      - echo "install step"
-      - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-      - echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-      - sudo apt-get -y update
-      - apt-get install -y yarn
-      - yarn -v
-      - yarn install
+      # - echo "install step"
+      # - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+      # - echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+      # - sudo apt-get -y update
+      # - apt-get install -y yarn
+      # - yarn -v
+      # - yarn install
+      - npm install
   build:
     commands:
       - npm run build

@@ -44,7 +44,7 @@ class YearlyPermitVol extends React.Component {
       .map(d => new Date(+d, 0));
 
     this.radiusFunc = scaleLinear()
-      .range([3, 25])
+      .range([1, 40])
       .domain([0, this.maxVolVal()]);
 
     this.state = {
@@ -95,8 +95,11 @@ class YearlyPermitVol extends React.Component {
 
   maxVolVal(volumeOrValue = 'value') {
     return this.props.volumeKeys.map(key =>
-      this.allDataByType[key].map(d => d[volumeOrValue]).reduce((a, b) =>
-        Math.max(a, b))).reduce((a, b) => Math.max(a, b));
+      this.allDataByType[key]
+        .map(d => d[volumeOrValue])
+        .reduce((a, b) =>
+          Math.max(a, b))
+    ).reduce((a, b) => Math.max(a, b));
   }
 
   brushEnd(e) {
@@ -320,10 +323,13 @@ class YearlyPermitVol extends React.Component {
             {
               text: `Volume:  ${d.volume}`,
             },
-            {
-              text: `Value:  ${dollarFormatter(d.value)}`,
-            },
           ];
+
+          if (d.parentKey !== 'Scheduled Inspections') {
+            textLines.push({
+              text: `Value:  ${dollarFormatter(d.value)}`,
+            });
+          }
 
           return (<Tooltip
             title={title}

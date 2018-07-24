@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import YearlyPermitVol from './YearlyPermitVol'
-import { permitVol } from './data'
+import LoadingAnimation from '../../../shared/LoadingAnimation';
+import YearlyPermitVol from './YearlyPermitVol';
+import { permitVol } from './data';
 
 
 class VolumeDashboard extends React.Component {
@@ -34,7 +35,7 @@ class VolumeDashboard extends React.Component {
     // get JSON
     // iterate over results and increment
     // sort it into "month year" by scheduled date
-    fetch('http://www.civicdata.com/api/action/datastore_search_sql?sql=SELECT*from%222fe31755-8a8b-4bba-8f1e-4777592b8efd%22%20limit%2050000')
+    fetch('http://www.civicdata.com/api/action/datastore_search_sql?sql=SELECT*from%222fe31755-8a8b-4bba-8f1e-4777592b8efd%22')
       .then(res => res.json())
       .then(
         (result) => {
@@ -62,7 +63,7 @@ class VolumeDashboard extends React.Component {
 
   render() {
     if (!this.state.isLoaded) {
-      return <div>Loading...</div>;
+      return <LoadingAnimation />;
     }
     return (<div>
       <h1>Permit Volume</h1>

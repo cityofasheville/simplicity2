@@ -2,17 +2,13 @@ version: 0.1
 phases:
   install:
     commands:
-      # - echo "install step"
-      # - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-      # - echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-      # - sudo apt-get -y update
-      # - apt-get install -y yarn
-      # - yarn -v
-      # - yarn install
-      # - npm install webpack@3.11.0 -g
-      # - npm install webpack-cli@2.0.12
-      # - npm install webpack-dev-server@2.4.5
-      - npm install
+      - echo "install step"
+      - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+      - echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+      - sudo apt-get -y update
+      - apt-get install -y yarn
+      - yarn -v
+      - yarn install
   build:
     commands:
       - npm run build

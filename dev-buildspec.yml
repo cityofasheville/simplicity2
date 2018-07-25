@@ -10,6 +10,8 @@ phases:
       # - yarn -v
       # - yarn install
       - npm install webpack@3.11.0 -g
+      - npm install webpack-cli@2.0.12
+      - npm install webpack-dev-server@2.4.5
       - npm install
   build:
     commands:

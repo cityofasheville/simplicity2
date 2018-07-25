@@ -6,7 +6,7 @@
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack-dev-server --port 3000 --content-base dist/ --history-api-fallback",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --optimize-minimize --config webpack.config.js --quiet",
+    "build": "webpack --optimize-minimize --config webpack.config.js",
     "deploySimplicity": "aws s3 sync dist s3://simplicity.ashevillenc.gov --delete --exclude \"*.map\" --exclude \"favicon.ico\" --profile simplicity2",
     "deployDashboards": "aws s3 sync dist s3://dashboards.ashevillenc.gov --delete --exclude \"*.map\" --exclude \"favicon.ico\" --profile simplicity2",
     "devDeploy": "aws s3 sync dist s3://dev-simplicity.ashevillenc.gov --delete --exclude \"*.map\" --exclude \"favicon.ico\""

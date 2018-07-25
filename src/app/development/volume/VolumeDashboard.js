@@ -21,6 +21,8 @@ class VolumeDashboard extends React.Component {
       return rObj;
     });
 
+    // TODO: MAKE SURE MULTIFAMILY IS NOT INCLUDED IN COMMERCIAL COUNT
+
     this.volKeysToUse = [
       'New Residential',
       'Residential Alterations and Additions',
@@ -32,9 +34,6 @@ class VolumeDashboard extends React.Component {
   }
 
   componentDidMount() {
-    // get JSON
-    // iterate over results and increment
-    // sort it into "month year" by scheduled date
     fetch('http://www.civicdata.com/api/action/datastore_search_sql?sql=SELECT*from%222fe31755-8a8b-4bba-8f1e-4777592b8efd%22')
       .then(res => res.json())
       .then(

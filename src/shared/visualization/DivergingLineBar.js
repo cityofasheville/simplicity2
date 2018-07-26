@@ -119,7 +119,7 @@ class DivergingLineBar extends React.Component {
                 {
                   fill: color(d.color).brighter(0.6).toString(),
                   stroke: color(d.color).toString(),
-                  strokeWidth: 3,
+                  strokeWidth: 2,
                 } :
                 { fill: d.color };
             }

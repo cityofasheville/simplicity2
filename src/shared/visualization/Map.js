@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
 import L from 'leaflet';
 import { Map as LeafletMap, Marker, TileLayer, Popup, Circle, Polyline, Polygon, LayersControl } from 'react-leaflet';
 import { GoogleLayer } from 'react-leaflet-google';
@@ -7,8 +9,31 @@ import MarkerClusterGroup from 'react-leaflet-markercluster';
 import MapLegendControl from './MapLegendControl';
 import Icon from '../Icon';
 import { IM_LIST2 } from '../iconConstants';
+import { convertPolygonsToLatLngArrays } from '../../utilities/mapUtilities';
 
 // using open street map for now because that way can use the clusters, etc.
+
+const GET_MUNICIPALITIES = gql`
+  query municipalities ($jurisdictions: [String]) {
+    municipalities (jurisdictions: $jurisdictions) {
+    jurisdiction
+    polygons {
+      outer {
+        points {
+          x
+          y
+        }
+      }
+      holes {
+        points {
+          x
+          y
+        }
+      }
+    }
+  }
+}
+`;
 
 const mapKey = 'AIzaSyAO8R1pXvBhpRoTFJ4d81MA8D8QBD0mPe0'; // restrict your referrers in cloud console
 const { BaseLayer } = LayersControl;
@@ -20,7 +45,10 @@ const markerClusterOptions = {
 
 const getBounds = (center, within) => {
   const degToAdd = parseInt(within, 10) / 500000;
-  return [[center[0] - degToAdd, center[1] - degToAdd], [center[0] + degToAdd, center[1] + degToAdd]];
+  return [
+    [center[0] - degToAdd, center[1] - degToAdd],
+    [center[0] + degToAdd, center[1] + degToAdd]
+  ];
 };
 
 const Map = (props) => {
@@ -55,20 +83,20 @@ const Map = (props) => {
             <GoogleLayer googlekey={mapKey} maptype={satellite} />
           </BaseLayer>
           {props.drawCircle &&
-            <Circle center={props.center} radius={props.radius} fillOpacity={0.15} />
+            <Circle center={props.center} radius={props.radius} fillOpacity={0.22} />
           }
           {shouldZoomToNonCenter &&
             <Circle center={zoomTo} radius={15} fillOpacity={0.15} color="red" />
           }
           {props.showCenter &&
             <Marker
-            position={props.center}
-            icon={L.icon({
-              iconUrl: require('../../shared/marker-icon-2.png'),
-              iconSize: [25, 41],
-              iconAnchor: [12, 41],
-              popupAnchor: [2, -22],
-            })}
+              position={props.center}
+              icon={L.icon({
+                iconUrl: require('../../shared/marker-icon-2.png'),
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [2, -22],
+              })}
             >
               <Popup>
                 <div><b>{props.centerLabel}</b></div>
@@ -76,32 +104,69 @@ const Map = (props) => {
             </Marker>
           }
           {props.drawStreet &&
-            props.streetData.map((line, index) =>
-              <Polyline key={['street_line', index].join('_')} positions={line} weight={5} className="noPointer" />
-            )
+            props.streetData.map((line, index) => (
+              <Polyline
+                key={['street_line', index].join('_')}
+                positions={line}
+                weight={5}
+                className="noPointer"
+              />
+            ))
           }
           {props.drawMaintenance &&
-            props.maintenanceData.map((line, index) =>
+            props.maintenanceData.map((line, index) => (
               <Polyline
-              key={['maintenance_line', index].join('_')} positions={line.line} weight={10} opacity={0.8} color={line.color}
+                key={['maintenance_line', index].join('_')}
+                positions={line.line}
+                weight={10}
+                opacity={0.8}
+                color={line.color}
               >
                 <Popup>
                   {line.popup}
                 </Popup>
               </Polyline>
-            )
+            ))
           }
           {props.drawPolygon &&
-            props.polygonData.map((poly, index) =>
-              <Polygon key={['polygon', index].join('_')} positions={poly.polygons}>
+            props.polygonData.map((poly, index) => (
+              <Polygon
+                key={['polygon', index].join('_')}
+                positions={poly.polygons}
+              >
                 {poly.popup &&
                   <Popup>
                     {poly.popup}
                   </Popup>
                 }
               </Polygon>
-            )
+            ))
           }
+          <Query
+            query={GET_MUNICIPALITIES}
+            variables={{
+              jurisdictions: props.municipalities,
+            }}
+          >
+            {({ loading, error, data }) => {
+              if (loading) return null;
+              if (error) return null;
+              return (
+                data.municipalities.map(municipality => (
+                  <Polygon
+                    key={municipality.jurisdiction}
+                    fillColor="#BEE8FF"
+                    fillOpacity={0.27}
+                    color="gray"
+                    weight="1.5"
+                    positions={convertPolygonsToLatLngArrays(municipality.polygons)}
+                    className="noPointer"
+                  >
+                  </Polygon>
+                ))
+              );
+            }}
+          </Query>
           <MarkerClusterGroup markers={markers} {...markerClusterOptions} />
         </LayersControl>
         {
@@ -144,6 +209,7 @@ Map.propTypes = {
   zoomToPoint: PropTypes.string,
   maintenanceData: PropTypes.array, //eslint-disable-line
   drawMaintenance: PropTypes.bool,
+  municipalities: PropTypes.array, //eslint-disable-line
 };
 
 Map.defaultProps = {
@@ -166,6 +232,7 @@ Map.defaultProps = {
   maintenanceData: null,
   data: [],
   zoomToPoint: null,
+  municipalities: ['Asheville Corporate Limits'],
 };
 
 export default Map;

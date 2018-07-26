@@ -44,15 +44,11 @@ class YearlyPermitVol extends React.Component {
       .map(d => new Date(+d, 0));
 
     this.radiusFunc = scaleLinear()
-      .range([3, 25])
+      .range([1, 40])
       .domain([0, this.maxVolVal()]);
 
     this.state = {
-      activeTypes: [
-        'Commercial Alterations and Additions',
-        'Total',
-        'Residential Alterations and Additions',
-      ],
+      activeTypes: this.props.volumeKeys,
       brushedData: this.cleanedData,
       brushExtent: [this.years[this.years.length - 3], this.years[this.years.length - 1]],
       hover: null,
@@ -99,8 +95,11 @@ class YearlyPermitVol extends React.Component {
 
   maxVolVal(volumeOrValue = 'value') {
     return this.props.volumeKeys.map(key =>
-      this.allDataByType[key].map(d => d[volumeOrValue]).reduce((a, b) =>
-        Math.max(a, b))).reduce((a, b) => Math.max(a, b));
+      this.allDataByType[key]
+        .map(d => d[volumeOrValue])
+        .reduce((a, b) =>
+          Math.max(a, b))
+    ).reduce((a, b) => Math.max(a, b));
   }
 
   brushEnd(e) {
@@ -148,7 +147,7 @@ class YearlyPermitVol extends React.Component {
     });
 
     return (<div style={{ width: '100%', textAlign: 'center' }} className="permitVol">
-      <div style={{ margin: '2% 10%', whiteSpace: 'wrap' }}>
+      <div style={{ margin: '2% 20%', whiteSpace: 'wrap' }}>
         {this.props.volumeKeys.map((key, i) => {
           const activeNow = this.state.activeTypes.findIndex(type => type === key) >= 0;
           return (<div
@@ -207,9 +206,9 @@ class YearlyPermitVol extends React.Component {
         })}
       </div>
       <ResponsiveXYFrame
-        title="Volume Summary"
+        title="All Years"
         responsiveWidth
-        size={[1000, 130]}
+        size={[1000, 150]}
         margin={{
           top: 40,
           bottom: 60,
@@ -237,13 +236,13 @@ class YearlyPermitVol extends React.Component {
         }}
       />
       <ResponsiveXYFrame
-        title="Monthly Comparison"
+        title="Monthly Comparison of Selected Timespan"
         responsiveWidth
         size={[1000, 400]}
         margin={{
           top: 40,
-          left: 60,
-          right: 40,
+          left: 160,
+          right: 140,
           bottom: 70,
         }}
         lines={currentLines}
@@ -324,10 +323,13 @@ class YearlyPermitVol extends React.Component {
             {
               text: `Volume:  ${d.volume}`,
             },
-            {
-              text: `Value:  ${dollarFormatter(d.value)}`,
-            },
           ];
+
+          if (d.parentKey !== 'Scheduled Inspections') {
+            textLines.push({
+              text: `Value:  ${dollarFormatter(d.value)}`,
+            });
+          }
 
           return (<Tooltip
             title={title}

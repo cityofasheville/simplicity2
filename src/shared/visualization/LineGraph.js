@@ -65,10 +65,10 @@ class LineGraph extends React.Component {
           }
         </p>
         <div
-          className="row"
           role="img"
           alt={this.state.altText}
           tabIndex={0}
+          className="row visualization-container"
         >
           <div
             className="col-sm-12"
@@ -77,6 +77,7 @@ class LineGraph extends React.Component {
               display: 'inline-block',
               margin: '0 auto',
               textAlign: 'center',
+              height: 350,
             }}
           >
             <div
@@ -89,8 +90,9 @@ class LineGraph extends React.Component {
               }}
             >
               <ResponsiveXYFrame
-                annotations={this.props.annotations}
                 responsiveWidth
+                responsiveHeight
+                annotations={this.props.annotations}
                 lines={formattedData}
                 xScaleType={scaleTime()}
                 xAccessor={(d) => {
@@ -98,8 +100,13 @@ class LineGraph extends React.Component {
                 }}
                 yAccessor={d => +d.value}
                 yExtent={[0, 100]}
-                lineStyle={{ stroke: lineColor, strokeWidth: '4px'}}
-                margin={{ top: 10, right: 40, bottom: 50, left: 45 }}
+                lineStyle={{ stroke: lineColor, strokeWidth: '4px' }}
+                margin={{
+                  top: 10,
+                  right: 40,
+                  bottom: 45,
+                  left: 45,
+                }}
                 axes={[
                   {
                     orient: 'left',
@@ -108,7 +115,7 @@ class LineGraph extends React.Component {
                   },
                   {
                     orient: 'bottom',
-                    ticks: 20,
+                    ticks: 10,
                     rotate: -45,
                     tickFormat: d => `${d.getMonth() + 1}/${d.getFullYear().toString().replace('20', '')}`,
                     className: 'semiotic-axis',

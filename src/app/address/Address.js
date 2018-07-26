@@ -2,7 +2,7 @@ import React from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import Icon from '../../shared/Icon';
-import { IM_LOCATION, IM_BIN, LI_RECYCLE2, IM_USER, IM_USERS, IM_LOCATION2, IM_HOME2, IM_TRAFFIC_CONE, IM_LEAF } from '../../shared/iconConstants';
+import { IM_LOCATION, IM_BIN, LI_RECYCLE2, IM_USER, IM_INFO, IM_USERS, IM_LOCATION2, IM_HOME2, IM_TRAFFIC_CONE, IM_LEAF } from '../../shared/iconConstants';
 import { zoningLinks } from './zoning';
 import PageHeader from '../../shared/PageHeader';
 import ButtonGroup from '../../shared/ButtonGroup';
@@ -43,9 +43,27 @@ const calculateRecycling = (dayOfWeek, inCity, week) => {
 const calculateBrushDay = (dayOfWeek, inCity, week) => {
   if (dayOfWeek !== null) {
     if (getCurrentRecyclingWeek() === week) {
-      return ['this week on ', dayOfWeek, ' (Brush Week ', week, ')'].join('');
+      return (
+        <span>
+          sometime this week
+          <span title="Place on curb by 7am Monday" style={{ marginLeft: '3px' }} >
+            <Icon path={IM_INFO} size={16} />
+          </span>
+          <br />
+          {`(Brush Week ${week})`}
+        </span>
+      );
     }
-    return ['next week on ', dayOfWeek, ' (Brush Week ', week, ')'].join('');
+    return (
+      <span>
+        sometime next week
+        <span title="Place on curb by 7am Monday" style={{ marginLeft: '3px' }} >
+          <Icon path={IM_INFO} size={16} />
+        </span>
+        <br />
+        {`(Brush Week ${week})`}
+      </span>
+    );
   }
   if (inCity) {
     return 'No information available';

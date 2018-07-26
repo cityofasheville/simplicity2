@@ -1,4 +1,8 @@
 version: 0.1
+
+env:
+  variables:
+    DIST_ID: "distributionID"
 phases:
   install:
     commands:
@@ -13,3 +17,6 @@ phases:
     commands:
       - npm run build
       - npm run devDeploy
+  post_build:
+    commands:
+      - aws cloudfront create-invalidation --distribution-id $DIST_ID --paths /*

@@ -1,8 +1,5 @@
 version: 0.1
 
-env:
-  variables:
-    DIST_ID: "distributionID"
 phases:
   install:
     commands:

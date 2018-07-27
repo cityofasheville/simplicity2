@@ -17,15 +17,22 @@ class GranularVolume extends React.Component {
   }
 
   makeDataHierarchy() {
-
+    return nest()
+      .key(d => d.permit_group)
+      .key(d => d.permit_type)
+      .key(d => d.permit_subtype)
+      .key(d => d.permit_category)
+      .entries(this.props.data.permits_by_address);
   }
 
   render() {
     if (this.props.data.loading) {
-      return <LoadingAnimation />
+      return <LoadingAnimation />;
     }
 
-    console.log(this.props.data.permits_by_address)
+    const nestedData = this.makeDataHierarchy(this.props.data.permits_by_address);
+
+    console.log(nestedData)
     return (<div>
       <h1>Permit Volume II</h1>
       {/* Permit hierarchy filter buttons */}
@@ -70,7 +77,7 @@ export default graphql(getPermitsQuery, {
   options: {
     variables: {
       civicaddress_id: 9688,
-      radius: 26400,
+      radius: 52800,
       after: 'Thu Jul 01 2018',
     },
   },

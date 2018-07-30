@@ -168,6 +168,7 @@ class HomelessnessVeteransInflowOutflow extends React.Component {
             </div>
             <div style={{ height: 450 }}>
               <DivergingLineBar
+                altText="Diverging stacked bar graph showing number of incoming and outgoing veterans with line showing net change"
                 data={this.props.data}
                 dataKeys={this.props.dataKeys}
                 mainAxisDataKey='month'

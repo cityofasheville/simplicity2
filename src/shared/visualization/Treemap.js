@@ -61,7 +61,8 @@ class Treemap extends React.Component {
       <div
         style={{ height: this.props.height }}
         onClick={this.toggleLabels}
-        alt={this.altText}
+        aria-label={this.altText}
+        tabIndex={0}
       >
         <ResponsiveNetworkFrame
           responsiveWidth

@@ -8,6 +8,7 @@ import { ResponsiveOrdinalFrame } from 'semiotic';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import ZoomableCirclepack from './ZoomableCirclepack';
 import { colorSchemes } from '../../../shared/visualization/colorSchemes';
+import { labelOrder } from '../../../shared/visualization/visUtilities';
 
 
 const colorScheme = colorSchemes.bright_colors.concat(colorSchemes.bright_colors_2);
@@ -85,14 +86,14 @@ class GranularVolume extends React.Component {
         binStartDate: new Date(bin.x0),
       }))));
 
-    // push one dummy datum for each excluded date
     const includedDatesMilliseconds = includedDates.map(d => d.getTime())
     let checkDate = includedDatesMilliseconds[0];
+    // TODO: have checkdate start at query date
 
     while (checkDate < includedDatesMilliseconds[includedDatesMilliseconds.length - 1]) {
       if (includedDatesMilliseconds.indexOf(checkDate) < 0) {
         ordinalData.push({
-          key: 'none',
+          key: 'dummy',
           count: 0,
           binStartDate: new Date(checkDate),
         });
@@ -101,6 +102,9 @@ class GranularVolume extends React.Component {
     }
 
     ordinalData.sort((a, b) => a.binStartDate - b.binStartDate);
+    const countOrder = labelOrder(ordinalData, 'count');
+
+    console.log(countOrder)
 
 
     const rolledUpHierarchy = this.selectedHierarchy(selectedLevels, true);
@@ -213,7 +217,7 @@ export default graphql(getPermitsQuery, {
     variables: {
       civicaddress_id: 9688,
       radius: 52800,
-      after: 'Jul 01 2018',
+      after: 'Jun 30 2018',
     },
   },
 })(GranularVolume);

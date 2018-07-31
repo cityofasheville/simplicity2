@@ -49,6 +49,16 @@ class ZoomableCirclepack extends React.Component {
         type: 'circlepack',
         hierarchyChildren: d => d.values,
       }}
+      nodeLabels={(d) => {
+        if (d.key === 'root' || d.r < 7.5) { return null; }
+        return (<text
+          key={`${d.key}-${d.value}`}
+          style={{ stroke: 'white', fontSize: '0.65em' }}
+          textAnchor="middle"
+        >
+          {d.value}
+        </text>);
+      }}
       tooltipContent={d => {
         const selectedLevel = this.props.highlightLevel === d.depth;
         return selectedLevel ? d.key : '';

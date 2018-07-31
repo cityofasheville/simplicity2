@@ -10,6 +10,8 @@ class ZoomableCirclepack extends React.Component {
       hoverNode: null,
     }
   }
+  // TODO: MAKE HOVER BEHAVIOR
+  // REMOVE ALL OF THE SELECTED LEVEL STUFF AND JUST DISCARD ROOT INSTEAD
 
   render() {
     return (<ResponsiveNetworkFrame
@@ -27,7 +29,6 @@ class ZoomableCirclepack extends React.Component {
         const color = selectedLevel ? this.props.colorKeys[d.key] : null;
         return {
           stroke: color || 'none',
-          strokeWidth: selectedLevel ? 1 : 0.25,
           fill: color || 'none',
         };
       }}
@@ -47,7 +48,6 @@ class ZoomableCirclepack extends React.Component {
       networkType={{
         type: 'circlepack',
         hierarchyChildren: d => d.values,
-        // hierarchySum: d => {console.log(d); return d.value.sum },
       }}
       tooltipContent={d => {
         const selectedLevel = this.props.highlightLevel === d.depth;

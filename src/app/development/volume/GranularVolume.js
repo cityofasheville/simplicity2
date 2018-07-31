@@ -31,31 +31,23 @@ class GranularVolume extends React.Component {
     this.setState({ timeSpan: newTimeSpan });
   }
 
-  allDataHierarchy() {
-    const thisNest = nest();
-    this.state.focusNodeOrderedPath.map(d => d.level)
-      .forEach(level => thisNest.key(d => d[level]));
-    return thisNest
-      .rollup(d => d.length)
-      .entries(this.props.data.permits_by_address);
-  }
-
-  // TODO: COLLAPSE THESE TWO METHODS INTO ONE
-
-  selectedHierarchy(levelsToUse) {
+  selectedHierarchy(levelsToUse, rollup = false) {
     const thisNest = nest();
     levelsToUse.forEach(level => thisNest.key(d => d[level]));
+    if (rollup) {
+      thisNest.rollup(d => d.length);
+    }
     return thisNest
       .entries(this.props.data.permits_by_address);
   }
-
 
   render() {
     if (this.props.data.loading) {
       return <LoadingAnimation />;
     }
 
-    const nestedData = this.allDataHierarchy();
+    // TODO: roll small categories into "other", have asterisk with what is included in other?
+    // or let user choose how many go in other?
 
     const selectedLevels = this.state.focusNodeOrderedPath
       .filter(nodeLevel => nodeLevel.selected)
@@ -68,16 +60,50 @@ class GranularVolume extends React.Component {
       nodeColors[hierarchyLevel.key] = colorScheme[i];
     });
 
-    const histFunc = histogram(this.props.data.permits_by_address)
-      .value(d => new Date(d.applied_date));
+    const dateOptions = {
+      weekday: 'short',
+      year: '2-digit',
+      month: 'short',
+      day: 'numeric',
+    };
 
-    // TODO: THIS SHOULD BE BY DAY
+    const includedDates = this.props.data.permits_by_address
+      .map(d => new Date(d.applied_date))
+      .sort((a, b) => a - b)
+      .map(d => d.toLocaleDateString('en-US', dateOptions))
+      .filter((d, i, a) => a.indexOf(d) === i)
+      .map(d => new Date(d));
+
+    const histFunc = histogram(this.props.data.permits_by_address)
+      .value(d => new Date(d.applied_date))
+      .thresholds(includedDates);
+
     const ordinalData = [].concat(...currentHierarchy
       .map(hierarchyType => histFunc(hierarchyType.values).map(bin => ({
         key: hierarchyType.key,
         count: bin.length,
-        binStartDate: bin.x0,
+        binStartDate: new Date(bin.x0),
       }))));
+
+    // push one dummy datum for each excluded date
+    const includedDatesMilliseconds = includedDates.map(d => d.getTime())
+    let checkDate = includedDatesMilliseconds[0];
+
+    while (checkDate < includedDatesMilliseconds[includedDatesMilliseconds.length - 1]) {
+      if (includedDatesMilliseconds.indexOf(checkDate) < 0) {
+        ordinalData.push({
+          key: 'none',
+          count: 0,
+          binStartDate: new Date(checkDate),
+        });
+      }
+      checkDate += (24 * 60 * 60 * 1000);
+    }
+
+    ordinalData.sort((a, b) => a.binStartDate - b.binStartDate);
+
+
+    const rolledUpHierarchy = this.selectedHierarchy(selectedLevels, true);
 
     return (<div>
       <h1>Permit Volume II</h1>
@@ -106,7 +132,23 @@ class GranularVolume extends React.Component {
             size={[500, 200]}
             projection="vertical"
             type="bar"
-            oLabel
+            margin={{
+              top: 10,
+              right: 10,
+              bottom: 50,
+              left: 20,
+            }}
+            oLabel={(d) => {
+              const dateString = new Date(d).toLocaleDateString('en-US', dateOptions);
+              return (
+                <text
+                  textAnchor={'end'}
+                  transform={'rotate(-45)'}
+                >
+                  {dateString}
+                </text>
+              )
+            }}
             oAccessor="binStartDate"
             oPadding={5}
             rAccessor="count"
@@ -115,7 +157,7 @@ class GranularVolume extends React.Component {
         </div>
         <div className="col-md-3">
           <ZoomableCirclepack
-            data={{ key: 'root', values: nestedData }}
+            data={{ key: 'root', values: rolledUpHierarchy }}
             highlightLevel={selectedLevels.length}
             colorKeys={nodeColors}
           />

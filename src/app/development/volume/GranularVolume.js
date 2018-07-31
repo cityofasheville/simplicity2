@@ -3,24 +3,28 @@ import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { nest } from 'd3-collection';
+import { histogram } from 'd3-array';
+import { ResponsiveOrdinalFrame } from 'semiotic';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import ZoomableCirclepack from './ZoomableCirclepack';
-import { ResponsiveXYFrame } from 'semiotic';
+import { colorSchemes } from '../../../shared/visualization/colorSchemes';
 
+
+const colorScheme = colorSchemes.bright_colors.concat(colorSchemes.bright_colors_2);
 
 class GranularVolume extends React.Component {
   constructor() {
     super();
 
     this.state = {
-      timeSpan: [new Date(2017, 7, 1), new Date()],
+      timeSpan: [new Date(2018, 6, 1), new Date()],
       focusNodeOrderedPath: [
-        { level: 'permit_group', selected: null },
-        { level: 'permit_type', selected: null },
+        // { level: 'permit_group', selected: null },
+        { level: 'permit_type', selected: true },
         { level: 'permit_subtype', selected: null },
         { level: 'permit_category', selected: null },
-      ], // the node whose children have focus
-    };
+      ],
+    }
   }
 
   adjustTimespan(newTimeSpan) {
@@ -28,16 +32,19 @@ class GranularVolume extends React.Component {
   }
 
   allDataHierarchy() {
-    let thisNest = nest();
-    this.state.focusNodeOrderedPath.map(d => d.level).forEach(level => thisNest = thisNest.key(d => d[level]));
+    const thisNest = nest();
+    this.state.focusNodeOrderedPath.map(d => d.level)
+      .forEach(level => thisNest.key(d => d[level]));
     return thisNest
       .rollup(d => d.length)
       .entries(this.props.data.permits_by_address);
   }
 
+  // TODO: COLLAPSE THESE TWO METHODS INTO ONE
+
   selectedHierarchy(levelsToUse) {
-    let thisNest = nest();
-    levelsToUse.forEach(level => thisNest = thisNest.key(d => d[level]));
+    const thisNest = nest();
+    levelsToUse.forEach(level => thisNest.key(d => d[level]));
     return thisNest
       .entries(this.props.data.permits_by_address);
   }
@@ -50,9 +57,27 @@ class GranularVolume extends React.Component {
 
     const nestedData = this.allDataHierarchy();
 
-    const lineData = this.selectedHierarchy(['permit_group']);
+    const selectedLevels = this.state.focusNodeOrderedPath
+      .filter(nodeLevel => nodeLevel.selected)
+      .map(nodeLevel => nodeLevel.level);
 
-    console.log(lineData)
+    const currentHierarchy = this.selectedHierarchy(selectedLevels);
+
+    const nodeColors = {};
+    currentHierarchy.forEach((hierarchyLevel, i) => {
+      nodeColors[hierarchyLevel.key] = colorScheme[i];
+    });
+
+    const histFunc = histogram(this.props.data.permits_by_address)
+      .value(d => new Date(d.applied_date));
+
+    // TODO: THIS SHOULD BE BY DAY
+    const ordinalData = [].concat(...currentHierarchy
+      .map(hierarchyType => histFunc(hierarchyType.values).map(bin => ({
+        key: hierarchyType.key,
+        count: bin.length,
+        binStartDate: bin.x0,
+      }))));
 
     return (<div>
       <h1>Permit Volume II</h1>
@@ -73,57 +98,47 @@ class GranularVolume extends React.Component {
             </div>)
           )}
         </div>
-        {/* Checkbox legend - more like checkboxes */}
-        {/* zoomable circlepack that reflects permit hierarchy buttons */}
+        {/* Checkbox legend - more like checkboxes-- only show top 3 - 5 by volume by default */}
+        <div className="col-md-9">
+          <ResponsiveOrdinalFrame
+            responsiveWidth
+            data={ordinalData}
+            size={[500, 200]}
+            projection="vertical"
+            type="bar"
+            oLabel
+            oAccessor="binStartDate"
+            oPadding={5}
+            rAccessor="count"
+            style={d => ({ fill: nodeColors[d.key] })}
+          />
+        </div>
         <div className="col-md-3">
           <ZoomableCirclepack
             data={{ key: 'root', values: nestedData }}
+            highlightLevel={selectedLevels.length}
+            colorKeys={nodeColors}
           />
-        </div>
-        <div className="col-md-9">
-          {/* brushable histogram that reflects time picker-- label brush with annotation?  add timespan to title of all graphs and page? */}
-          {/* <ResponsiveXYFrame */}
-          {/*   title="All Years" */}
-          {/*   responsiveWidth */}
-          {/*   size={[1000, 200]} */}
-          {/*   margin={{ */}
-          {/*     top: 40, */}
-          {/*     bottom: 60, */}
-          {/*     left: 50, */}
-          {/*     right: 40, */}
-          {/*   }} */}
-          {/*   lines={lineData} */}
-          {/*   lineDataAccessor="values" */}
-          {/*   lineType="line" */}
-          {/*   xAccessor={d => new Date(d.applied_date)} */}
-          {/*   yAccessor="volume" */}
-          {/*   yExtent={[0, undefined]} */}
-          {/*   xExtent={this.timeSpan} */}
-          {/*   lineStyle={d => ({ stroke: d.coordinates[0].color, strokeWidth: 2 })} */}
-          {/*   axes={[ */}
-          {/*     { */}
-          {/*       orient: 'bottom', */}
-          {/*       tickFormat: d => new Date(d).getFullYear(), */}
-          {/*       tickValues: this.years, */}
-          {/*     }, */}
-          {/*   ]} */}
-          {/*   interaction={{ */}
-          {/*     end: this.brushEnd, */}
-          {/*     brush: 'xBrush', */}
-          {/*     extent: this.state.brushExtent, */}
-          {/*   }} */}
-          {/* /> */}
         </div>
       </div>
       <div id="permitValue">
         <h2>Value</h2>
       </div>
-      {/* Value Section */}
-      {/* Fees Section */}
-      {/* Open, Closed, Issued Section */}
-      {/* Percent Opened Online Section */}
-      {/* Inspections by Type */}
-      {/* PAC by type */}
+      <div id="permitFees">
+        <h2>Fees</h2>
+      </div>
+      <div id="openClosedIssued">
+        <h2>Open, Closed, Issued</h2>
+      </div>
+      <div id="inspections">
+        <h2>Inspections</h2>
+      </div>
+      <div id="pacVolume">
+        <h2>PAC Traffic</h2>
+      </div>
+      <div id="percentOnline">
+        <h2>Percent Opened Online</h2>
+      </div>
     </div>);
   }
 }

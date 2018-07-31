@@ -14,14 +14,23 @@ class ZoomableCirclepack extends React.Component {
   render() {
     return (<ResponsiveNetworkFrame
       responsiveWidth
-      size={[500, 200]}
+      size={[200, 200]}
+      margin={{
+        top: 0,
+        right: 0,
+        bottom: 10,
+        left: 10,
+      }}
       edges={this.props.data}
-      nodeStyle={d => ({
-        stroke: this.state.hoverNode === d.id ? 'darkcyan' : 'gray',
-        strokeWidth: this.state.hoverNode === d.id ? 2 : 1,
-        fill: this.state.hoverNode === d.id ? 'darkcyan' : 'white',
-        fillOpacity: this.state.hoverNode === d.id ? 1 : 0.3
-      })}
+      nodeStyle={(d) => {
+        const selectedLevel = this.props.highlightLevel === d.depth;
+        const color = selectedLevel ? this.props.colorKeys[d.key] : null;
+        return {
+          stroke: color || 'none',
+          strokeWidth: selectedLevel ? 1 : 0.25,
+          fill: color || 'none',
+        };
+      }}
       nodeIDAccessor="key"
       hoverAnnotation
       customHoverBehavior={d => {
@@ -41,7 +50,8 @@ class ZoomableCirclepack extends React.Component {
         // hierarchySum: d => {console.log(d); return d.value.sum },
       }}
       tooltipContent={d => {
-        return d.key
+        const selectedLevel = this.props.highlightLevel === d.depth;
+        return selectedLevel ? d.key : '';
       }}
     />);
   }

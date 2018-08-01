@@ -92,6 +92,7 @@ const BudgetDetailsTable = props => (
         const theHeader = getDataColumnHeader(level, expenseOrRevenue);
         const dataColumns = [
           {
+            id: 'name',
             Header: theHeader,
             accessor: 'name',
             width: level === 3 ? 300 - (34 * 2) : 300 - (34 * level),
@@ -100,24 +101,28 @@ const BudgetDetailsTable = props => (
             }),
           },
           {
+            id: 'threeYearsAgo',
             Header: getYearHeader(last4Years[0]),
             accessor: 'yearAmounts',
             Cell: years => getDollars(years.value[0].amount),
             minWidth: 95,
             style: { textAlign: 'right' },
           }, {
+            id: 'twoYearsAgo',
             Header: getYearHeader(last4Years[1]),
             accessor: 'yearAmounts',
             Cell: years => getDollars(years.value[1].amount),
             minWidth: 95,
             style: { textAlign: 'right' },
           }, {
+            id: 'oneYearAgo',
             Header: getYearHeader(last4Years[2]),
             accessor: 'yearAmounts',
             Cell: years => getDollars(years.value[2].amount),
             minWidth: 95,
             style: { textAlign: 'right' },
           }, {
+            id: 'proposed',
             Header: getYearHeader(last4Years[3]),
             accessor: 'yearAmounts',
             Cell: years => getDollars(years.value[3].amount),
@@ -125,6 +130,7 @@ const BudgetDetailsTable = props => (
             style: { textAlign: 'right' },
           },
           {
+            id: 'deltaPercent',
             Header: getChangeHeader(),
             accessor: 'deltaPercent',
             minWidth: 95,

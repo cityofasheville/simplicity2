@@ -12,6 +12,7 @@ import { labelOrder } from '../../../shared/visualization/visUtilities';
 
 
 const colorScheme = colorSchemes.bright_colors.concat(colorSchemes.bright_colors_2);
+const otherGroupCutoff = 5;
 
 class GranularVolume extends React.Component {
   constructor() {
@@ -49,18 +50,28 @@ class GranularVolume extends React.Component {
 
     // TODO: roll small categories into "other", have asterisk with what is included in other?
     // or let user choose how many go in other?
+    // Also, will this all break with nested-- yes, but need to put actual selected value into path
 
+    // Are we viewing permit type, subtype, or category?
     const selectedLevels = this.state.focusNodeOrderedPath
       .filter(nodeLevel => nodeLevel.selected)
       .map(nodeLevel => nodeLevel.level);
 
-    const currentHierarchy = this.selectedHierarchy(selectedLevels);
+    // Data sorted into as many levels as are selected
+    const currentHierarchy = this.selectedHierarchy(selectedLevels)
+      .sort((a, b) => b.values.length - a.values.length);
 
+
+    const hierarchyToUse = currentHierarchy.slice(0, otherGroupCutoff)
+    console.log(currentHierarchy)
+
+    // Determine what colors each key within that hierarchy should be
     const nodeColors = {};
-    currentHierarchy.forEach((hierarchyLevel, i) => {
+    hierarchyToUse.forEach((hierarchyLevel, i) => {
       nodeColors[hierarchyLevel.key] = colorScheme[i];
     });
 
+    // Standard date format for comparison
     const dateOptions = {
       weekday: 'short',
       year: '2-digit',
@@ -68,6 +79,7 @@ class GranularVolume extends React.Component {
       day: 'numeric',
     };
 
+    // What dates are we even including?
     const includedDates = this.props.data.permits_by_address
       .map(d => new Date(d.applied_date))
       .sort((a, b) => a - b)
@@ -75,39 +87,33 @@ class GranularVolume extends React.Component {
       .filter((d, i, a) => a.indexOf(d) === i)
       .map(d => new Date(d));
 
+    const includedDatesMilliseconds = includedDates.map(d => d.getTime());
+    let checkDate = includedDatesMilliseconds[0];
+    // TODO: have checkdate start at query date-- maybe just fill an array with all the dates until we're at the end date?
+
+    while (checkDate < includedDatesMilliseconds[includedDatesMilliseconds.length - 1]) {
+      if (includedDatesMilliseconds.indexOf(checkDate) < 0) {
+        includedDates.push(new Date(checkDate));
+      }
+      checkDate += (24 * 60 * 60 * 1000);
+    }
+    includedDates.sort((a, b) => a - b);
+
+    const rolledUpHierarchy = this.selectedHierarchy(selectedLevels, true);
+
     const histFunc = histogram(this.props.data.permits_by_address)
       .value(d => new Date(d.applied_date))
       .thresholds(includedDates);
 
-    const ordinalData = [].concat(...currentHierarchy
-      .map(hierarchyType => histFunc(hierarchyType.values).map(bin => ({
-        key: hierarchyType.key,
-        count: bin.length,
-        binStartDate: new Date(bin.x0),
-      }))));
-
-    const includedDatesMilliseconds = includedDates.map(d => d.getTime())
-    let checkDate = includedDatesMilliseconds[0];
-    // TODO: have checkdate start at query date
-
-    while (checkDate < includedDatesMilliseconds[includedDatesMilliseconds.length - 1]) {
-      if (includedDatesMilliseconds.indexOf(checkDate) < 0) {
-        ordinalData.push({
-          key: 'dummy',
-          count: 0,
-          binStartDate: new Date(checkDate),
-        });
-      }
-      checkDate += (24 * 60 * 60 * 1000);
-    }
-
-    ordinalData.sort((a, b) => a.binStartDate - b.binStartDate);
-    const countOrder = labelOrder(ordinalData, 'count');
-
-    console.log(countOrder)
-
-
-    const rolledUpHierarchy = this.selectedHierarchy(selectedLevels, true);
+    const ordinalData = [].concat(...hierarchyToUse
+      .map((hierarchyType) => {
+        const binnedValues = histFunc(hierarchyType.values);
+        return binnedValues.map(bin => ({
+          key: hierarchyType.key,
+          count: bin.length,
+          binStartDate: new Date(bin.x0),
+        }));
+      }));
 
     return (<div>
       <h1>Permit Volume II</h1>

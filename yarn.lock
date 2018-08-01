@@ -246,13 +246,12 @@ accessible-react-checkbox-group@^2.0.0-beta.3:
   version "2.0.0-beta.4"
   resolved "https://registry.yarnpkg.com/accessible-react-checkbox-group/-/accessible-react-checkbox-group-2.0.0-beta.4.tgz#3ba9dfec6202a7af53fb52dabf0fe1a2788361c2"
 
-accessible-react-table@^0.1.3:
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/accessible-react-table/-/accessible-react-table-0.1.3.tgz#76e5b07272862bed4198029f340605d7330456a7"
+accessible-react-table@^0.3.3:
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/accessible-react-table/-/accessible-react-table-0.3.3.tgz#bb28ee3e596ba7b5e5bdc721cfdcca5e0cf830d7"
   dependencies:
     merge-prop-functions "^1.0.0"
     namor "^1.0.1"
-    react-dom "^16.2.0"
 
 acorn-dynamic-import@^2.0.0:
   version "2.0.2"
@@ -6520,7 +6519,7 @@ react-csv@^1.0.10:
   version "1.0.14"
   resolved "https://registry.yarnpkg.com/react-csv/-/react-csv-1.0.14.tgz#7c9e444fc4c3ca1e1cf73a81129b1ec032838a71"
 
-react-dom@^16.2.0, react-dom@^16.3.2:
+react-dom@^16.3.2:
   version "16.4.1"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.4.1.tgz#7f8b0223b3a5fbe205116c56deb85de32685dad6"
   dependencies:

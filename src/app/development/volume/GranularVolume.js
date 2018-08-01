@@ -61,9 +61,21 @@ class GranularVolume extends React.Component {
     const currentHierarchy = this.selectedHierarchy(selectedLevels)
       .sort((a, b) => b.values.length - a.values.length);
 
+    const hierarchyToUse = currentHierarchy.slice(0, otherGroupCutoff);
 
-    const hierarchyToUse = currentHierarchy.slice(0, otherGroupCutoff)
-    console.log(currentHierarchy)
+    const others = [].concat(...currentHierarchy.slice(
+      otherGroupCutoff,
+      currentHierarchy.length - 1
+    ).map(d => d.values));
+
+    hierarchyToUse.push({
+      key: 'Other',
+      values: others,
+    });
+
+    hierarchyToUse.sort((a, b) => b.values.length - a.values.length);
+
+    console.log(hierarchyToUse)
 
     // Determine what colors each key within that hierarchy should be
     const nodeColors = {};

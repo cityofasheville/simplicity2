@@ -6,7 +6,7 @@ import { nest } from 'd3-collection';
 import { histogram } from 'd3-array';
 import { ResponsiveOrdinalFrame } from 'semiotic';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
-import ZoomableCirclepack from './ZoomableCirclepack';
+import PermitVolCirclepack from './PermitVolCirclepack';
 import { colorSchemes } from '../../../shared/visualization/colorSchemes';
 
 
@@ -133,12 +133,21 @@ class GranularVolume extends React.Component {
 
     // TO ASK:
     // Should menus show all types or show other?  Or indicate type has been rolled into other?
+    // Is this the right date field to use?
+
+    // TODO:
+    // separate histogram and menu into components
+    // props validation
+    // y axis
+    // tooltip
+    // start in on small multiples
+    // hover behavior-- shared?
+    // update URL to allow bookmarking
 
     // All data to use for dropdowns
     const bigNest = nest();
     this.state.hierarchyLevels.forEach(level => bigNest.key(d => d[level.name]));
     const wholeHierarchy = bigNest.object(this.props.data.permits_by_address);
-    // TODO: SORT THIS WHOLE THING BY NUMBER OF VALUES
 
     // Filtered by what's actually showing now
     const filteredData = this.filterData();
@@ -272,7 +281,7 @@ class GranularVolume extends React.Component {
         </div>
         <div className="col-md-3 granularVolCirclepack">
           <h3>Total Volume</h3>
-          <ZoomableCirclepack
+          <PermitVolCirclepack
             data={{ key: 'root', values: rolledHierarchy }}
             colorKeys={nodeColors}
           />
@@ -299,8 +308,6 @@ class GranularVolume extends React.Component {
     </div>);
   }
 }
-
-// TODO: PROPS VALIDATION
 
 const getPermitsQuery = gql`
   query getPermitsQuery($civicaddress_id: Int!, $radius: Int, $after: String) {

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { ResponsiveNetworkFrame } from 'semiotic';
 
 
-class ZoomableCirclepack extends React.Component {
+class PermitVolCirclepack extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -11,7 +11,6 @@ class ZoomableCirclepack extends React.Component {
     }
   }
   // TODO: MAKE HOVER BEHAVIOR
-  // REMOVE ALL OF THE SELECTED LEVEL STUFF AND JUST DISCARD ROOT INSTEAD
 
   render() {
     return (<ResponsiveNetworkFrame
@@ -63,12 +62,12 @@ class ZoomableCirclepack extends React.Component {
   }
 }
 
-// ZoomableCirclepack.propTypes = {
+// PermitVolCirclepack.propTypes = {
 //   data: PropTypes.object,
 // };
 //
-// ZoomableCirclepack.defaultProps = {
+// PermitVolCirclepack.defaultProps = {
 //   data: { key: 'root', values: [], },
 // };
 
-export default ZoomableCirclepack;
+export default PermitVolCirclepack;

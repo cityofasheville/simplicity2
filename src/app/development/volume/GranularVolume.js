@@ -29,7 +29,7 @@ class GranularVolume extends React.Component {
       timeSpan: [new Date(2018, 6, 1), new Date()],
       hierarchyLevels: [
         { name: 'permit_type', selectedCat: 'Residential' },
-        { name: 'permit_subtype', selectedCat: null },
+        { name: 'permit_subtype', selectedCat: 'Trade' },
         { name: 'permit_category', selectedCat: null },
       ]
     }
@@ -134,6 +134,12 @@ class GranularVolume extends React.Component {
       return <LoadingAnimation />;
     }
 
+    const bigNest = nest()
+    this.state.hierarchyLevels.forEach(level => bigNest.key(d => d[level.name]))
+    const wholeHierarchy = bigNest.object(this.props.data.permits_by_address)
+
+    console.log(wholeHierarchy)
+
     const filteredData = this.filterData();
 
     let lastIndexUnselected = this.state.hierarchyLevels.map(l => l.selectedCat).lastIndexOf(null);
@@ -177,6 +183,14 @@ class GranularVolume extends React.Component {
             if (i > 0 && array[i - 1].selectedCat === null) {
               return null;
             }
+            let keyLevel = wholeHierarchy;
+            for (let index = 0; index < i; index ++) {
+              keyLevel = keyLevel[array[index].selectedCat]
+              console.log(level.name, keyLevel)
+            }
+
+            console.log(level.name, Object.keys(keyLevel))
+
             // If the value is not null, make it a selected dropdown
             // If someone changes the selected dropdown of one earlier in the array, the later one's value should be cleared
             return (<div
@@ -193,12 +207,12 @@ class GranularVolume extends React.Component {
               onChange={e => console.log(e)}
             >
               <option value="null"></option>
-              {unrolledHierarchy.map(hierarchyLevel => (
+              {Object.keys(keyLevel).map(key => (
                 <option
-                  value={hierarchyLevel.key}
-                  selected={hierarchyLevel === level.selectedCat}
+                  value={key}
+                  selected={key === level.selectedCat}
                 >
-                  {hierarchyLevel.key}
+                  {key}
                 </option>
               ))}
             </select>

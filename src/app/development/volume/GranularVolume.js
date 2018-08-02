@@ -178,13 +178,13 @@ class GranularVolume extends React.Component {
       <div id="vol-controls" className="row">
         {/* Permit hierarchy filter buttons */}
         <div style={{ margin: '1%' }} >
-          {this.state.hierarchyLevels.map((level, i, array) => {
+          {this.state.hierarchyLevels.map((level, levelIndex, array) => {
             // If the level before it has no selection, don't show it
-            if (i > 0 && array[i - 1].selectedCat === null) {
+            if (levelIndex > 0 && array[levelIndex - 1].selectedCat === null) {
               return null;
             }
             let keyLevel = wholeHierarchy;
-            for (let index = 0; index < i; index ++) {
+            for (let index = 0; index < levelIndex; index ++) {
               keyLevel = keyLevel[array[index].selectedCat]
             }
             // If the value is not null, make it a selected dropdown
@@ -200,13 +200,22 @@ class GranularVolume extends React.Component {
             <p>{`${level.name.replace('_', ' ')}: `}</p>
             <select
               name={level.name}
-              onChange={e => console.log(e)}
+              onChange={(e) => {
+                const newVal = e.target.value === 'null' ? null : e.target.value;
+                const newLevels = [...this.state.hierarchyLevels]
+                newLevels[levelIndex].selectedCat = newVal;
+                for (let changeIndex = this.state.hierarchyLevels.length - 1; changeIndex > levelIndex; changeIndex --) {
+                  newLevels[changeIndex].selectedCat = null;
+                }
+                this.setState({ hierarchyLevels: newLevels })
+              }}
+              value={level.selectedCat || 'null'}
             >
               <option value="null">All</option>
               {Object.keys(keyLevel).map(key => (
                 <option
                   value={key}
-                  selected={key === level.selectedCat}
+                  key={`${level.name}-${key}`}
                 >
                   {key}
                 </option>

@@ -15,7 +15,7 @@ const colorScheme = colorSchemes.bright_colors.concat(colorSchemes.bright_colors
 const otherGroupCutoff = 7;
     // Standard date format for comparison
     const dateOptions = {
-      weekday: 'short',
+      // weekday: 'short',
       year: '2-digit',
       month: 'short',
       day: 'numeric',
@@ -81,7 +81,7 @@ class GranularVolume extends React.Component {
     return hierarchyToUse.sort((a, b) => b.values.length - a.values.length);
   }
 
-  ordinalFromHierarchical(unrolledWithOthers) {
+  timeBuckets() {
     // What dates are we even including?
     const includedDates = this.props.data.permits_by_address
       .map(d => new Date(d.applied_date))
@@ -100,8 +100,10 @@ class GranularVolume extends React.Component {
       }
       checkDate += (24 * 60 * 60 * 1000);
     }
-    includedDates.sort((a, b) => a - b);
+    return includedDates.sort((a, b) => a - b);
+  }
 
+  ordinalFromHierarchical(unrolledWithOthers, includedDates) {
     const histFunc = histogram(this.props.data.permits_by_address)
       .value(d => new Date(d.applied_date))
       .thresholds(includedDates);
@@ -146,7 +148,8 @@ class GranularVolume extends React.Component {
       nodeColors[hierarchyLevel.key] = colorScheme[i];
     });
 
-    const ordinalData = this.ordinalFromHierarchical(unrolledWithOthers)
+    const includedDates = this.timeBuckets();
+    const ordinalData = this.ordinalFromHierarchical(unrolledWithOthers, includedDates);
 
     return (<div>
       <h1>Permit Volume II</h1>
@@ -169,6 +172,7 @@ class GranularVolume extends React.Component {
         </div>
         {/* Checkbox legend - more like checkboxes-- only show top 3 - 5 by volume by default */}
         <div className="col-md-9">
+          <h3>Daily Volume for {`${new Date(includedDates[0]).toLocaleDateString('en-US', dateOptions)} to ${new Date(includedDates[includedDates.length - 1]).toLocaleDateString('en-US', dateOptions)}`}</h3>
           <ResponsiveOrdinalFrame
             responsiveWidth
             data={ordinalData}
@@ -178,7 +182,7 @@ class GranularVolume extends React.Component {
             margin={{
               top: 10,
               right: 10,
-              bottom: 50,
+              bottom: 60,
               left: 20,
             }}
             oLabel={(d) => {
@@ -187,6 +191,7 @@ class GranularVolume extends React.Component {
                 <text
                   textAnchor={'end'}
                   transform={'rotate(-45)'}
+                  style={{ fontSize: '0.75em' }}
                 >
                   {dateString}
                 </text>
@@ -198,7 +203,8 @@ class GranularVolume extends React.Component {
             style={d => ({ fill: nodeColors[d.key] })}
           />
         </div>
-        <div className="col-md-3">
+        <div className="col-md-3 granularVolCirclepack">
+          <h3>Total Volume</h3>
           <ZoomableCirclepack
             data={{ key: 'root', values: rolledWithOthers }}
             highlightLevel={selectedLevels.length}

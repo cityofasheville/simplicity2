@@ -51,9 +51,10 @@ class ZoomableCirclepack extends React.Component {
       }}
       nodeLabels={(d) => {
         if (d.key === 'root' || d.r < 7.5) { return null; }
+        // return `${d.value}`
         return (<text
-          key={`${d.key}-${d.value}`}
-          style={{ stroke: 'white', fontSize: '0.65em' }}
+          key={`${d.key}-${d.value}-${Math.floor(Math.random() * Math.floor(10000))}`}
+          style={{ stroke: 'white', fontSize: '0.75em', fontWeight: 'lighter', alignmentBaseline: 'middle' }}
           textAnchor="middle"
         >
           {d.value}

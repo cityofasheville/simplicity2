@@ -12,7 +12,14 @@ import { labelOrder } from '../../../shared/visualization/visUtilities';
 
 
 const colorScheme = colorSchemes.bright_colors.concat(colorSchemes.bright_colors_2);
-const otherGroupCutoff = 5;
+const otherGroupCutoff = 7;
+    // Standard date format for comparison
+    const dateOptions = {
+      weekday: 'short',
+      year: '2-digit',
+      month: 'short',
+      day: 'numeric',
+    };
 
 class GranularVolume extends React.Component {
   constructor() {
@@ -43,54 +50,38 @@ class GranularVolume extends React.Component {
       .entries(this.props.data.permits_by_address);
   }
 
-  render() {
-    if (this.props.data.loading) {
-      return <LoadingAnimation />;
+  groupHierachyOthers(inputHierarchy, rolledUp = false) {
+    const hierarchyToUse = inputHierarchy.slice(0, otherGroupCutoff);
+
+    if (rolledUp) {
+      const others = [].concat(...inputHierarchy.slice(
+        otherGroupCutoff,
+        inputHierarchy.length - 1
+      ).map(d => d.value))
+        .reduce((a, b) =>  a + b)
+
+      hierarchyToUse.push({
+        key: 'Other',
+        value: others,
+      })
+
+      return hierarchyToUse.sort((a, b) => b.value - a.value);
     }
 
-    // TODO: roll small categories into "other", have asterisk with what is included in other?
-    // or let user choose how many go in other?
-    // Also, will this all break with nested-- yes, but need to put actual selected value into path
-
-    // Are we viewing permit type, subtype, or category?
-    const selectedLevels = this.state.focusNodeOrderedPath
-      .filter(nodeLevel => nodeLevel.selected)
-      .map(nodeLevel => nodeLevel.level);
-
-    // Data sorted into as many levels as are selected
-    const currentHierarchy = this.selectedHierarchy(selectedLevels)
-      .sort((a, b) => b.values.length - a.values.length);
-
-    const hierarchyToUse = currentHierarchy.slice(0, otherGroupCutoff);
-
-    const others = [].concat(...currentHierarchy.slice(
+    const others = [].concat(...inputHierarchy.slice(
       otherGroupCutoff,
-      currentHierarchy.length - 1
+      inputHierarchy.length - 1
     ).map(d => d.values));
 
     hierarchyToUse.push({
       key: 'Other',
       values: others,
-    });
+    })
 
-    hierarchyToUse.sort((a, b) => b.values.length - a.values.length);
+    return hierarchyToUse.sort((a, b) => b.values.length - a.values.length);
+  }
 
-    console.log(hierarchyToUse)
-
-    // Determine what colors each key within that hierarchy should be
-    const nodeColors = {};
-    hierarchyToUse.forEach((hierarchyLevel, i) => {
-      nodeColors[hierarchyLevel.key] = colorScheme[i];
-    });
-
-    // Standard date format for comparison
-    const dateOptions = {
-      weekday: 'short',
-      year: '2-digit',
-      month: 'short',
-      day: 'numeric',
-    };
-
+  ordinalFromHierarchical(unrolledWithOthers) {
     // What dates are we even including?
     const includedDates = this.props.data.permits_by_address
       .map(d => new Date(d.applied_date))
@@ -111,13 +102,11 @@ class GranularVolume extends React.Component {
     }
     includedDates.sort((a, b) => a - b);
 
-    const rolledUpHierarchy = this.selectedHierarchy(selectedLevels, true);
-
     const histFunc = histogram(this.props.data.permits_by_address)
       .value(d => new Date(d.applied_date))
       .thresholds(includedDates);
 
-    const ordinalData = [].concat(...hierarchyToUse
+    return [].concat(...unrolledWithOthers
       .map((hierarchyType) => {
         const binnedValues = histFunc(hierarchyType.values);
         return binnedValues.map(bin => ({
@@ -126,6 +115,38 @@ class GranularVolume extends React.Component {
           binStartDate: new Date(bin.x0),
         }));
       }));
+  }
+
+  render() {
+    if (this.props.data.loading) {
+      return <LoadingAnimation />;
+    }
+
+    // Also, will this all break with nested-- yes, but need to put actual selected value into path
+
+    // Are we viewing permit type, subtype, or category?
+    const selectedLevels = this.state.focusNodeOrderedPath
+      .filter(nodeLevel => nodeLevel.selected)
+      .map(nodeLevel => nodeLevel.level);
+
+    // For circlepack
+    const rolledUpHierarchy = this.selectedHierarchy(selectedLevels, true)
+      .sort((a, b) => b.value - a.value);
+
+    // Data sorted into as many levels as are selected
+    const unrolledHierarchy = this.selectedHierarchy(selectedLevels)
+      .sort((a, b) => b.values.length - a.values.length);
+
+    const rolledWithOthers = this.groupHierachyOthers(rolledUpHierarchy, true);
+    const unrolledWithOthers = this.groupHierachyOthers(unrolledHierarchy);
+
+    // Determine what colors each key within that hierarchy should be
+    const nodeColors = {};
+    unrolledWithOthers.forEach((hierarchyLevel, i) => {
+      nodeColors[hierarchyLevel.key] = colorScheme[i];
+    });
+
+    const ordinalData = this.ordinalFromHierarchical(unrolledWithOthers)
 
     return (<div>
       <h1>Permit Volume II</h1>
@@ -179,7 +200,7 @@ class GranularVolume extends React.Component {
         </div>
         <div className="col-md-3">
           <ZoomableCirclepack
-            data={{ key: 'root', values: rolledUpHierarchy }}
+            data={{ key: 'root', values: rolledWithOthers }}
             highlightLevel={selectedLevels.length}
             colorKeys={nodeColors}
           />

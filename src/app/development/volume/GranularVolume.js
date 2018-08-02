@@ -134,22 +134,22 @@ class GranularVolume extends React.Component {
       return <LoadingAnimation />;
     }
 
+    // All data to use for dropdowns
     const bigNest = nest()
     this.state.hierarchyLevels.forEach(level => bigNest.key(d => d[level.name]))
     const wholeHierarchy = bigNest.object(this.props.data.permits_by_address)
 
-    console.log(wholeHierarchy)
-
+    // Filtered by what's actually showing now
     const filteredData = this.filterData();
 
-    let lastIndexUnselected = this.state.hierarchyLevels.map(l => l.selectedCat).lastIndexOf(null);
-    if (lastIndexUnselected === -1) {
+    let firstIndexUnselected = this.state.hierarchyLevels.map(l => l.selectedCat).indexOf(null);
+    if (firstIndexUnselected === -1) {
       // Hierarchy is just key: whatever, values: filteredData
-      lastIndexUnselected = this.state.hierarchyLevels.length - 1;
+      firstIndexUnselected = this.state.hierarchyLevels.length - 1;
     }
 
     // Are we viewing permit type, subtype, or category?
-    const selectedLevel = this.state.hierarchyLevels[lastIndexUnselected];
+    const selectedLevel = this.state.hierarchyLevels[firstIndexUnselected];
 
     // For circlepack
     let rolledHierarchy = this.selectedHierarchy(filteredData, selectedLevel, true)
@@ -186,11 +186,7 @@ class GranularVolume extends React.Component {
             let keyLevel = wholeHierarchy;
             for (let index = 0; index < i; index ++) {
               keyLevel = keyLevel[array[index].selectedCat]
-              console.log(level.name, keyLevel)
             }
-
-            console.log(level.name, Object.keys(keyLevel))
-
             // If the value is not null, make it a selected dropdown
             // If someone changes the selected dropdown of one earlier in the array, the later one's value should be cleared
             return (<div
@@ -206,7 +202,7 @@ class GranularVolume extends React.Component {
               name={level.name}
               onChange={e => console.log(e)}
             >
-              <option value="null"></option>
+              <option value="null">All</option>
               {Object.keys(keyLevel).map(key => (
                 <option
                   value={key}

@@ -30,7 +30,6 @@ class Sankey extends React.Component {
     const nodeColor = scaleSequential(interpolateLab(darkerColor, lighterColor));
 
     return (<div
-      role="img"
       aria-label={this.props.altText}
       tabIndex={0}
       style={{ width: '100%' }}

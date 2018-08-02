@@ -90,8 +90,7 @@ class BarChart extends React.Component {
           }
         </p>
         <div
-          role="img"
-          alt={this.state.altText}
+          aria-label={this.state.altText}
           tabIndex={0}
           className="row visualization-container"
         >

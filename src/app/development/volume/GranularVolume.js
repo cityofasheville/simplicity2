@@ -142,6 +142,7 @@ class GranularVolume extends React.Component {
     // tooltip
     // start in on small multiples
     // hover behavior-- shared?
+    // allow users to drill into permits with click/modal behavior
     // update URL to allow bookmarking
 
     // All data to use for dropdowns

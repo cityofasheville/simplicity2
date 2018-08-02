@@ -22,6 +22,7 @@ import {
 } from '../../shared/iconConstants';
 import { english } from './english';
 import { spanish } from './spanish';
+import { withLanguage } from '../../utilities/lang/LanguageContext';
 
 const getIcon = (type, isExpanded) => {
   switch (type) {
@@ -97,7 +98,7 @@ const getIcon = (type, isExpanded) => {
 
 const CrimeTable = (props) => {
   let content;
-  switch (props.lang) {
+  switch (props.language.language) {
     case 'Spanish':
       content = spanish;
       break;
@@ -227,12 +228,10 @@ const CrimeTable = (props) => {
 
 CrimeTable.propTypes = {
   data: PropTypes.array, // eslint-disable-line
-  lang: PropTypes.string,
 };
 
 CrimeTable.defaultProps = {
   data: [],
-  lang: 'English',
 };
 
-export default CrimeTable;
+export default withLanguage(CrimeTable);

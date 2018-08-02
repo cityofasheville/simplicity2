@@ -15,6 +15,7 @@ import Button from '../../shared/Button';
 import { refreshLocation } from '../../utilities/generalUtilities';
 import { english } from './english';
 import { spanish } from './spanish';
+import { withLanguage } from '../../utilities/lang/LanguageContext';
 
 const getMarker = (type) => {
   switch (type) {
@@ -175,9 +176,6 @@ const GET_CRIMES_BY_ADDRESS = gql`
       x
       y
     }
-    language @client {
-      lang
-    }
   }
 `;
 
@@ -196,7 +194,7 @@ const CrimesByAddress = props => (
       if (error) return <Error message={error.message} />;
       // set language
       let content;
-      switch (data.language.lang) {
+      switch (props.language.language) {
         case 'Spanish':
           content = spanish;
           break;
@@ -230,7 +228,6 @@ const CrimesByAddress = props => (
                 <EmailDownload
                   downloadData={data.crimes_by_address}
                   fileName={content.crimes_by_address_filename}
-                  lang={data.language.lang}
                 />
               </div>
               <ButtonGroup alignment="">
@@ -273,7 +270,7 @@ const CrimesByAddress = props => (
             </div>
 
             <div id="listView" hidden={props.location.query.view !== 'list'}>
-              <CrimeTable data={data.crimes_by_address} location={props.location} lang={data.language.lang} />
+              <CrimeTable data={data.crimes_by_address} location={props.location} />
             </div>
 
             <div id="mapView" className="col-xs-12" hidden={props.location.query.view !== 'map'}>
@@ -316,5 +313,5 @@ CrimesByAddress.defaultProps = {
   query: { entity: 'address', label: '123 Main street' },
 };
 
-export default CrimesByAddress;
+export default withLanguage(CrimesByAddress);
 

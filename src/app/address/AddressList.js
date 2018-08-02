@@ -13,100 +13,84 @@ import { IM_ENVELOP3 } from '../../shared/iconConstants';
 import { refreshLocation } from '../../utilities/generalUtilities';
 import { english } from './english';
 import { spanish } from './spanish';
+import { withLanguage } from '../../utilities/lang/LanguageContext';
 
-const GET_LANGUAGE = gql`
-  query language {
-    language @client {
-      lang
-    }
+const AddressList = (props) => {
+  let content;
+  switch (props.language.language) {
+    case 'Spanish':
+      content = spanish;
+      break;
+    default:
+      content = english;
   }
-`;
 
-const AddressList = props => (
-  <Query
-    query={GET_LANGUAGE}
-  >
-    {({ loading, error, data }) => {
-      if (loading) return null;
-      if (error) return null;
-      // set language
-      let content;
-      switch (data.language.lang) {
-        case 'Spanish':
-          content = spanish;
-          break;
-        default:
-          content = english;
-      }
+  const getNewUrlParams = view => (
+    {
+      view,
+    }
+  );
 
-      const getNewUrlParams = view => (
-        {
-          view,
-        }
-      );
-
-      return (
-        <div>
-          <PageHeader
-            h1={props.location.query.label}
-            h2={content.address_and_owner_mailing_lists}
-            icon={<Icon path={IM_ENVELOP3} size={50} />}
+  return (
+    <div>
+      <PageHeader
+        h1={props.location.query.label}
+        h2={content.address_and_owner_mailing_lists}
+        icon={<Icon path={IM_ENVELOP3} size={50} />}
+      >
+        <ButtonGroup>
+          <LinkButton
+            pathname={props.location.query.entity ===
+              'neighborhood' ? '/neighborhood' : '/street'}
+            query={{
+              entities: props.location.query.entities,
+              search: props.location.query.search,
+              hideNavbar: props.location.query.hideNavbar,
+              entity: props.location.query.entity,
+              id: props.location.query.id,
+              label: props.location.query.label,
+            }}
           >
-            <ButtonGroup>
-              <LinkButton
-                pathname={props.location.query.entity ===
-                  'neighborhood' ? '/neighborhood' : '/street'}
-                query={{
-                  entities: props.location.query.entities,
-                  search: props.location.query.search,
-                  hideNavbar: props.location.query.hideNavbar,
-                  entity: props.location.query.entity,
-                  id: props.location.query.id,
-                  label: props.location.query.label,
-                }}
-              >
-                {props.location.query.entity === 'street' ?
-                  content.back_to_street
-                  :
-                  content.back_to_neighborhood
-                }
-              </LinkButton>
-            </ButtonGroup>
-          </PageHeader>
-          <div className="row">
-            <div className="col-sm-12">
-              <ButtonGroup alignment="right">
-                <Button
-                  onClick={() => refreshLocation(getNewUrlParams('list'), props.location)}
-                  active={props.location.query.view !== 'map'}
-                  positionInGroup="left"
-                >
-                  {content.list_view}
-                </Button>
-                <Button
-                  onClick={() => refreshLocation(getNewUrlParams('map'), props.location)}
-                  active={props.location.query.view === 'map'}
-                  positionInGroup="right"
-                >
-                  {content.map_view}
-                </Button>
-              </ButtonGroup>
-            </div>
-          </div>
-          {props.location.query.entity === 'street' ?
-            <AddressesByStreet {...props} />
-            :
-            <AddressesByNeighborhood {...props} />
-          }
+            {props.location.query.entity === 'street' ?
+              content.back_to_street
+              :
+              content.back_to_neighborhood
+            }
+          </LinkButton>
+        </ButtonGroup>
+      </PageHeader>
+      <div className="row">
+        <div className="col-sm-12">
+          <ButtonGroup alignment="right">
+            <Button
+              onClick={() => refreshLocation(getNewUrlParams('list'), props.location)}
+              active={props.location.query.view !== 'map'}
+              positionInGroup="left"
+            >
+              {content.list_view}
+            </Button>
+            <Button
+              onClick={() => refreshLocation(getNewUrlParams('map'), props.location)}
+              active={props.location.query.view === 'map'}
+              positionInGroup="right"
+            >
+              {content.map_view}
+            </Button>
+          </ButtonGroup>
         </div>
-      );
-    }}
-  </Query>
-);
+      </div>
+      {props.location.query.entity === 'street' ?
+        <AddressesByStreet {...props} />
+        :
+        <AddressesByNeighborhood {...props} />
+      }
+    </div>
+  );
+};
 
 AddressList.propTypes = {
   location: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 };
 
-export default AddressList;
+export default withLanguage(AddressList);
 

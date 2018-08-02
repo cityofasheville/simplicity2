@@ -10,6 +10,7 @@ import Footer from './Footer';
 import CityInfoBar from './CityInfoBar';
 import AuthProviderModal from '../utilities/auth/authProviderModal';
 import { defaultAuthState } from '../utilities/auth/graphql/authDefaultState';
+import LanguageProvider from '../utilities/lang/LanguageContext';
 
 const displayNavbar = (hideNavbar) => {
   if (hideNavbar) {
@@ -99,15 +100,17 @@ class Main extends React.Component {
             paddingTop: this.props.location.query.hideNavbar ? '0px' : '97px',
           }}
         >
-          <div id="skip">
-            <a href="#content">Skip to Main Content</a>
-          </div>
-          {displayNavbar(this.props.location.query.hideNavbar)}
-          <div className="container" id="content">
-            {this.props.children}
-          </div>
-          {!this.props.location.query.hideNavbar && <Footer />}
-          <AuthProviderModal />
+          <LanguageProvider>
+            <div id="skip">
+              <a href="#content">Skip to Main Content</a>
+            </div>
+            {displayNavbar(this.props.location.query.hideNavbar)}
+            <div className="container" id="content">
+              {this.props.children}
+            </div>
+            {!this.props.location.query.hideNavbar && <Footer />}
+            <AuthProviderModal />
+          </LanguageProvider>
         </div>
       </main>
     );

@@ -5,6 +5,7 @@ import Icon from './Icon';
 import { IM_DOWNLOAD7 } from './iconConstants';
 import ButtonGroup from './ButtonGroup';
 import Button from './Button';
+import { withLanguage } from '../utilities/lang/LanguageContext';
 
 const spanish = {
   Email: 'Mandar correo electr\xF3',
@@ -30,7 +31,7 @@ const translate = (value, language) => {
 const EmailDownload = props => (
   <div className="email-download">
     <CSVLink data={props.downloadData} filename={props.fileName || 'data.csv'}>
-      <Button type="success" size="xs"><Icon path={IM_DOWNLOAD7} /> {translate('Download', props.lang)}</Button>
+      <Button type="success" size="xs"><Icon path={IM_DOWNLOAD7} /> {translate('Download', props.language.language)}</Button>
     </CSVLink>
     {/* <ButtonGroup style={{ marginBottom: '5px', marginRight: '5px' }}>
       <Button type="success" onClick={props.emailFunction}><Icon path={IM_ENVELOP5} /> Email</Button>
@@ -51,4 +52,4 @@ EmailDownload.defaultProps = {
   lang: 'English',
 };
 
-export default EmailDownload;
+export default withLanguage(EmailDownload);

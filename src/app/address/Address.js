@@ -24,6 +24,7 @@ import InCityMessage from '../InCityMessage';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import Error from '../../shared/Error';
 import Map from '../../shared/visualization/Map';
+import { withLanguage } from '../../utilities/lang/LanguageContext';
 import { english } from './english';
 import { spanish } from './spanish';
 
@@ -55,9 +56,6 @@ query addresses($civicaddress_ids: [String]!) {
       owner_state
       owner_zipcode
     }
-    language @client {
-      lang
-    }
   }
   `;
 
@@ -73,7 +71,7 @@ const Address = props => (
       if (error) return <Error message={error.message} />;
       // set language
       let content;
-      switch (data.language.lang) {
+      switch (props.language.language) {
         case 'Spanish':
           content = spanish;
           break;
@@ -220,7 +218,7 @@ const Address = props => (
           <div className="row">
             <div className="col-sm-7">
               <fieldset className="detailsFieldset">
-                <InCityMessage inTheCity={addressData.is_in_city} lang={data.language.lang} />
+                <InCityMessage inTheCity={addressData.is_in_city} />
                 <div className="map-container">
                   <Map
                     data={mapData}
@@ -341,7 +339,6 @@ const Address = props => (
                         x={addressData.x}
                         y={addressData.y}
                         search={props.location.query.search}
-                        lang={data.language.lang}
                       />
                     </div>
                   ))}
@@ -355,4 +352,4 @@ const Address = props => (
   </Query>
 );
 
-export default Address;
+export default withLanguage(Address);

@@ -11,6 +11,7 @@ import {
   IM_BED,
   IM_LIBRARY2,
 } from './iconConstants';
+import { withLanguage } from '../utilities/lang/LanguageContext';
 
 const getTopicIcon = (topic) => {
   switch (topic) {
@@ -75,7 +76,7 @@ const TopicCard = props => (
     <div className={styles.topicCard}>
       <div className="text-primary text-center">{getTopicIcon(props.topic)}</div>
       <div className="text-primary text-center">
-        {translateTopic(props.topic, props.lang).replace(/_/g, ' ')}
+        {translateTopic(props.topic, props.language.language).replace(/_/g, ' ')}
       </div>
     </div>
   </Link>
@@ -90,7 +91,6 @@ TopicCard.propTypes = {
   entities: PropTypes.string,
   x: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   y: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  lang: PropTypes.string,
 };
 
 TopicCard.defaultProps = {
@@ -102,7 +102,6 @@ TopicCard.defaultProps = {
   entities: 'address,property,neighborhood,street,google,owner',
   x: '',
   y: '',
-  lang: 'English',
 };
 
-export default TopicCard;
+export default withLanguage(TopicCard);

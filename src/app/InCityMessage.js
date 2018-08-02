@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from '../shared/Icon';
+import { withLanguage } from '../utilities/lang/LanguageContext';
 import { IM_LIBRARY2, IM_TARGET } from '../shared/iconConstants';
 
 const spanish = {
@@ -28,7 +29,7 @@ const InCityMessage = props => (
       {props.icon &&
         <Icon path={props.inTheCity ? IM_LIBRARY2 : IM_TARGET} size={33} />
       }
-      <span>{translate(props.inTheCity ? 'in_city' : 'out_of_city', props.lang)}</span>
+      <span>{translate(props.inTheCity ? 'in_city' : 'out_of_city', props.language.language)}</span>
     </div>
   </div>
 );
@@ -36,13 +37,11 @@ const InCityMessage = props => (
 InCityMessage.propTypes = {
   inTheCity: PropTypes.bool,
   icon: PropTypes.bool,
-  lang: PropTypes.string,
 };
 
 InCityMessage.defaultProps = {
   inTheCity: true,
   icon: true,
-  lang: 'English',
 };
 
-export default InCityMessage;
+export default withLanguage(InCityMessage);

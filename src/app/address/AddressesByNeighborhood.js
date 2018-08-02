@@ -10,6 +10,7 @@ import LoadingAnimation from '../../shared/LoadingAnimation';
 import Error from '../../shared/Error';
 import { english } from './english';
 import { spanish } from './spanish';
+import { withLanguage } from '../../utilities/lang/LanguageContext';
 
 const GET_ADDRESSES_BY_NEIGHBORHOOD = gql`
   query addresses_by_neighborhood($nbrhd_ids: [String]) {
@@ -47,9 +48,6 @@ const GET_ADDRESSES_BY_NEIGHBORHOOD = gql`
         }
       }
     }
-    language @client {
-      lang
-    }
   }
 `;
 
@@ -65,7 +63,7 @@ const AddressesByNeighborhood = props => (
       if (error) return <Error message={error.message} />;
       // set language
       let content;
-      switch (data.language.lang) {
+      switch (props.language.language) {
         case 'Spanish':
           content = spanish;
           break;
@@ -137,7 +135,6 @@ const AddressesByNeighborhood = props => (
               <EmailDownload
                 downloadData={data.addresses_by_neighborhood}
                 fileName={content.addresses_by_neighborhood_filename}
-                lang={data.language.lang}
               />
             </div>
             <div id="listView" hidden={props.location.query.view === 'map'} className="col-sm-12">
@@ -195,4 +192,4 @@ AddressesByNeighborhood.defaultProps = {
   query: { entity: 'address', label: '123 Main street' },
 };
 
-export default AddressesByNeighborhood;
+export default withLanguage(AddressesByNeighborhood);

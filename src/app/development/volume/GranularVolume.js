@@ -8,18 +8,55 @@ import { ResponsiveOrdinalFrame } from 'semiotic';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import ZoomableCirclepack from './ZoomableCirclepack';
 import { colorSchemes } from '../../../shared/visualization/colorSchemes';
-import { labelOrder } from '../../../shared/visualization/visUtilities';
 
 
-const colorScheme = colorSchemes.bright_colors.concat(colorSchemes.bright_colors_2);
-const otherGroupCutoff = 7;
-    // Standard date format for comparison
-    const dateOptions = {
-      // weekday: 'short',
-      year: '2-digit',
-      month: 'short',
-      day: 'numeric',
-    };
+const colorScheme = colorSchemes.bright_colors_2.concat(colorSchemes.bright_colors);
+const otherGroupCutoff = 5;
+// Standard date format for comparison
+const dateOptions = {
+  // weekday: 'short',
+  year: '2-digit',
+  month: 'short',
+  day: 'numeric',
+};
+
+function selectHierarchy(filteredData, selectedLevel, rollup = false) {
+  const thisNest = nest().key(d => d[selectedLevel.name]);
+  if (rollup) {
+    thisNest.rollup(d => d.length);
+  }
+  return thisNest
+    .entries(filteredData);
+}
+
+function groupHierachyOthers(inputHierarchy, rolledUp = false) {
+  const hierarchyToUse = inputHierarchy.slice(0, otherGroupCutoff);
+  if (rolledUp) {
+    const others = [].concat(...inputHierarchy.slice(
+      otherGroupCutoff,
+      inputHierarchy.length - 1
+    ).map(d => d.value))
+      .reduce((a, b) =>  a + b);
+
+    hierarchyToUse.push({
+      key: 'Other',
+      value: others,
+    });
+    return hierarchyToUse.sort((a, b) => b.value - a.value);
+  }
+
+  const others = [].concat(...inputHierarchy.slice(
+    otherGroupCutoff,
+    inputHierarchy.length - 1
+  ).map(d => d.values));
+
+  hierarchyToUse.push({
+    key: 'Other',
+    values: others,
+  });
+  return hierarchyToUse.sort((a, b) => b.values.length - a.values.length);
+}
+
 
 class GranularVolume extends React.Component {
   constructor() {
@@ -31,52 +68,12 @@ class GranularVolume extends React.Component {
         { name: 'permit_type', selectedCat: null },
         { name: 'permit_subtype', selectedCat: null },
         { name: 'permit_category', selectedCat: null },
-      ]
-    }
+      ],
+    };
   }
 
   adjustTimespan(newTimeSpan) {
     this.setState({ timeSpan: newTimeSpan });
-  }
-
-  selectedHierarchy(filteredData, selectedLevel, rollup = false) {
-    const thisNest = nest().key(d => d[selectedLevel.name])
-    if (rollup) {
-      thisNest.rollup(d => d.length);
-    }
-    return thisNest
-      .entries(filteredData);
-  }
-
-  groupHierachyOthers(inputHierarchy, rolledUp = false) {
-    const hierarchyToUse = inputHierarchy.slice(0, otherGroupCutoff);
-
-    if (rolledUp) {
-      const others = [].concat(...inputHierarchy.slice(
-        otherGroupCutoff,
-        inputHierarchy.length - 1
-      ).map(d => d.value))
-        .reduce((a, b) =>  a + b)
-
-      hierarchyToUse.push({
-        key: 'Other',
-        value: others,
-      })
-
-      return hierarchyToUse.sort((a, b) => b.value - a.value);
-    }
-
-    const others = [].concat(...inputHierarchy.slice(
-      otherGroupCutoff,
-      inputHierarchy.length - 1
-    ).map(d => d.values));
-
-    hierarchyToUse.push({
-      key: 'Other',
-      values: others,
-    })
-
-    return hierarchyToUse.sort((a, b) => b.values.length - a.values.length);
   }
 
   timeBuckets() {
@@ -135,13 +132,12 @@ class GranularVolume extends React.Component {
     }
 
     // TO ASK:
-      // Should menus show all types or show other?  Or indicate type has been rolled into other?
-
+    // Should menus show all types or show other?  Or indicate type has been rolled into other?
 
     // All data to use for dropdowns
-    const bigNest = nest()
-    this.state.hierarchyLevels.forEach(level => bigNest.key(d => d[level.name]))
-    const wholeHierarchy = bigNest.object(this.props.data.permits_by_address)
+    const bigNest = nest();
+    this.state.hierarchyLevels.forEach(level => bigNest.key(d => d[level.name]));
+    const wholeHierarchy = bigNest.object(this.props.data.permits_by_address);
     // TODO: SORT THIS WHOLE THING BY NUMBER OF VALUES
 
     // Filtered by what's actually showing now
@@ -157,16 +153,16 @@ class GranularVolume extends React.Component {
     const selectedLevel = this.state.hierarchyLevels[firstIndexUnselected];
 
     // For circlepack
-    let rolledHierarchy = this.selectedHierarchy(filteredData, selectedLevel, true)
+    let rolledHierarchy = selectHierarchy(filteredData, selectedLevel, true)
       .sort((a, b) => b.value - a.value);
 
     // Data sorted into as many levels as are selected
-    let unrolledHierarchy = this.selectedHierarchy(filteredData, selectedLevel)
+    let unrolledHierarchy = selectHierarchy(filteredData, selectedLevel)
       .sort((a, b) => b.values.length - a.values.length);
 
     if (rolledHierarchy.length > otherGroupCutoff) {
-      rolledHierarchy = this.groupHierachyOthers(rolledHierarchy, true);
-      unrolledHierarchy = this.groupHierachyOthers(unrolledHierarchy);
+      rolledHierarchy = groupHierachyOthers(rolledHierarchy, true);
+      unrolledHierarchy = groupHierachyOthers(unrolledHierarchy);
     }
 
     // Determine what colors each key within that hierarchy should be
@@ -258,8 +254,8 @@ class GranularVolume extends React.Component {
               const dateString = new Date(d).toLocaleDateString('en-US', dateOptions);
               return (
                 <text
-                  textAnchor={'end'}
-                  transform={'rotate(-45)'}
+                  textAnchor="end"
+                  transform="rotate(-45)"
                   style={{ fontSize: '0.75em' }}
                 >
                   {dateString}
@@ -270,6 +266,8 @@ class GranularVolume extends React.Component {
             oPadding={5}
             rAccessor="count"
             style={d => ({ fill: nodeColors[d.key] })}
+            hoverAnnotation
+            tooltipContent={d => d.key}
           />
         </div>
         <div className="col-md-3 granularVolCirclepack">

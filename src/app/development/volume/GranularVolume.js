@@ -28,8 +28,8 @@ class GranularVolume extends React.Component {
     this.state = {
       timeSpan: [new Date(2018, 6, 1), new Date()],
       hierarchyLevels: [
-        { name: 'permit_type', selectedCat: 'Residential' },
-        { name: 'permit_subtype', selectedCat: 'Trade' },
+        { name: 'permit_type', selectedCat: null },
+        { name: 'permit_subtype', selectedCat: null },
         { name: 'permit_category', selectedCat: null },
       ]
     }
@@ -134,10 +134,15 @@ class GranularVolume extends React.Component {
       return <LoadingAnimation />;
     }
 
+    // TO ASK:
+      // Should menus show all types or show other?  Or indicate type has been rolled into other?
+
+
     // All data to use for dropdowns
     const bigNest = nest()
     this.state.hierarchyLevels.forEach(level => bigNest.key(d => d[level.name]))
     const wholeHierarchy = bigNest.object(this.props.data.permits_by_address)
+    // TODO: SORT THIS WHOLE THING BY NUMBER OF VALUES
 
     // Filtered by what's actually showing now
     const filteredData = this.filterData();
@@ -189,6 +194,15 @@ class GranularVolume extends React.Component {
             }
             // If the value is not null, make it a selected dropdown
             // If someone changes the selected dropdown of one earlier in the array, the later one's value should be cleared
+            const orderedKeys = Object.keys(keyLevel).sort((a, b) => {
+              if (a > b) {
+                return 1;
+              } else if (a < b) {
+                return -1;
+              }
+              return 0;
+            })
+
             return (<div
               style={{
                 display: 'inline-block',
@@ -212,7 +226,7 @@ class GranularVolume extends React.Component {
               value={level.selectedCat || 'null'}
             >
               <option value="null">All</option>
-              {Object.keys(keyLevel).map(key => (
+              {orderedKeys.map(key => (
                 <option
                   value={key}
                   key={`${level.name}-${key}`}

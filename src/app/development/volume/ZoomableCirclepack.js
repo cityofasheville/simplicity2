@@ -25,11 +25,10 @@ class ZoomableCirclepack extends React.Component {
       }}
       edges={this.props.data}
       nodeStyle={(d) => {
-        const selectedLevel = this.props.highlightLevel === d.depth;
-        const color = selectedLevel ? this.props.colorKeys[d.key] : null;
+        const color = this.props.colorKeys[d.key];
         return {
-          stroke: color || 'none',
-          fill: color || 'none',
+          stroke: color,
+          fill: color,
         };
       }}
       nodeIDAccessor="key"
@@ -60,10 +59,7 @@ class ZoomableCirclepack extends React.Component {
           {d.value}
         </text>);
       }}
-      tooltipContent={d => {
-        const selectedLevel = this.props.highlightLevel === d.depth;
-        return selectedLevel ? d.key : '';
-      }}
+      tooltipContent={d => d.key === 'root' ? '' : d.key}
     />);
   }
 }

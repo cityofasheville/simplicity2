@@ -12,7 +12,7 @@ import { labelOrder } from '../../../shared/visualization/visUtilities';
 
 
 const colorScheme = colorSchemes.bright_colors.concat(colorSchemes.bright_colors_2);
-const otherGroupCutoff = 7;
+const otherGroupCutoff = 10;
     // Standard date format for comparison
     const dateOptions = {
       // weekday: 'short',
@@ -27,12 +27,11 @@ class GranularVolume extends React.Component {
 
     this.state = {
       timeSpan: [new Date(2018, 6, 1), new Date()],
-      focusNodeOrderedPath: [
-        // { level: 'permit_group', selected: null },
-        { level: 'permit_type', selected: true },
-        { level: 'permit_subtype', selected: null },
-        { level: 'permit_category', selected: null },
-      ],
+      hierarchyLevels: [
+        { name: 'permit_type', selectedCat: 'Residential' },
+        { name: 'permit_subtype', selectedCat: 'Trade' },
+        { name: 'permit_category', selectedCat: null },
+      ]
     }
   }
 
@@ -40,14 +39,13 @@ class GranularVolume extends React.Component {
     this.setState({ timeSpan: newTimeSpan });
   }
 
-  selectedHierarchy(levelsToUse, rollup = false) {
-    const thisNest = nest();
-    levelsToUse.forEach(level => thisNest.key(d => d[level]));
+  selectedHierarchy(filteredData, selectedLevel, rollup = false) {
+    const thisNest = nest().key(d => d[selectedLevel.name])
     if (rollup) {
       thisNest.rollup(d => d.length);
     }
     return thisNest
-      .entries(this.props.data.permits_by_address);
+      .entries(filteredData);
   }
 
   groupHierachyOthers(inputHierarchy, rolledUp = false) {
@@ -103,12 +101,12 @@ class GranularVolume extends React.Component {
     return includedDates.sort((a, b) => a - b);
   }
 
-  ordinalFromHierarchical(unrolledWithOthers, includedDates) {
+  ordinalFromHierarchical(unrolledHierarchy, includedDates) {
     const histFunc = histogram(this.props.data.permits_by_address)
       .value(d => new Date(d.applied_date))
       .thresholds(includedDates);
 
-    return [].concat(...unrolledWithOthers
+    return [].concat(...unrolledHierarchy
       .map((hierarchyType) => {
         const binnedValues = histFunc(hierarchyType.values);
         return binnedValues.map(bin => ({
@@ -119,57 +117,84 @@ class GranularVolume extends React.Component {
       }));
   }
 
+  filterData() {
+    // Filter based on what is selected in dropdowns
+    return this.props.data.permits_by_address.filter(d => {
+      let use = true;
+      this.state.hierarchyLevels.forEach(level => {
+        if (!level.selectedCat) { return; }
+        use = use && d[level.name] === level.selectedCat;
+      })
+      return use;
+    });
+  }
+
   render() {
     if (this.props.data.loading) {
       return <LoadingAnimation />;
     }
 
-    // Also, will this all break with nested-- yes, but need to put actual selected value into path
+    const filteredData = this.filterData();
+
+    let lastIndexUnselected = this.state.hierarchyLevels.map(l => l.selectedCat).lastIndexOf(null);
+    if (lastIndexUnselected === -1) {
+      // Hierarchy is just key: whatever, values: filteredData
+      lastIndexUnselected = this.state.hierarchyLevels.length - 1;
+    }
 
     // Are we viewing permit type, subtype, or category?
-    const selectedLevels = this.state.focusNodeOrderedPath
-      .filter(nodeLevel => nodeLevel.selected)
-      .map(nodeLevel => nodeLevel.level);
+    const selectedLevel = this.state.hierarchyLevels[lastIndexUnselected];
 
     // For circlepack
-    const rolledUpHierarchy = this.selectedHierarchy(selectedLevels, true)
+    let rolledHierarchy = this.selectedHierarchy(filteredData, selectedLevel, true)
       .sort((a, b) => b.value - a.value);
 
     // Data sorted into as many levels as are selected
-    const unrolledHierarchy = this.selectedHierarchy(selectedLevels)
+    let unrolledHierarchy = this.selectedHierarchy(filteredData, selectedLevel)
       .sort((a, b) => b.values.length - a.values.length);
 
-    const rolledWithOthers = this.groupHierachyOthers(rolledUpHierarchy, true);
-    const unrolledWithOthers = this.groupHierachyOthers(unrolledHierarchy);
+    if (rolledHierarchy.length > otherGroupCutoff) {
+      rolledHierarchy = this.groupHierachyOthers(rolledHierarchy, true);
+      unrolledHierarchy = this.groupHierachyOthers(unrolledHierarchy);
+    }
 
     // Determine what colors each key within that hierarchy should be
-    const nodeColors = {};
-    unrolledWithOthers.forEach((hierarchyLevel, i) => {
+    const nodeColors = { root: 'none' };
+    unrolledHierarchy.forEach((hierarchyLevel, i) => {
       nodeColors[hierarchyLevel.key] = colorScheme[i];
     });
 
     const includedDates = this.timeBuckets();
-    const ordinalData = this.ordinalFromHierarchical(unrolledWithOthers, includedDates);
+    const ordinalData = this.ordinalFromHierarchical(unrolledHierarchy, includedDates);
 
     return (<div>
       <h1>Permit Volume II</h1>
       <div id="vol-controls" className="row">
         {/* Permit hierarchy filter buttons */}
-        <div style={{ margin: '1%' }} >
-          {this.state.focusNodeOrderedPath.map(pathOption =>
-            // if it and the pathoption before it has a value, then show it
-            (<div
-              style={{
-                display: 'inline-block',
-                padding: '0 1%',
-                textTransform: 'capitalize',
-              }}
-              key={pathOption.level}
-            >
-              {pathOption.level.replace('_', ' ')}: dropdown here
-            </div>)
-          )}
-        </div>
+        {/* <div style={{ margin: '1%' }} > */}
+        {/*   {this.state.focusNodeOrderedPath.map(pathOption => */}
+        {/*     // if it and the pathoption before it has a value, then show it */}
+        {/*     pathOption.selected && !pathOption.category ? */}
+        {/*     (<div */}
+        {/*       style={{ */}
+        {/*         display: 'inline-block', */}
+        {/*         padding: '0 1%', */}
+        {/*         textTransform: 'capitalize', */}
+        {/*       }} */}
+        {/*       key={pathOption.level} */}
+        {/*     > */}
+        {/*     <p>{`Filter by ${pathOption.level.replace('_', ' ')}: `}</p> */}
+        {/*     <select */}
+        {/*       name={pathOption.level.replace('_', ' ')} */}
+        {/*       onChange={e => this.setState({ focusNodeOrderedPath: { level[]}})} */}
+        {/*     > */}
+        {/*       <option value="null"></option> */}
+        {/*       {unrolledHierarchy.map(hierarchyLevel => <option value={hierarchyLevel.key}>{hierarchyLevel.key}</option>)} */}
+        {/*     </select> */}
+        {/*     </div>) */}
+        {/*     : (null) */}
+        {/*   )} */}
+        {/* </div> */}
         {/* Checkbox legend - more like checkboxes-- only show top 3 - 5 by volume by default */}
         <div className="col-md-9">
           <h3>Daily Volume for {`${new Date(includedDates[0]).toLocaleDateString('en-US', dateOptions)} to ${new Date(includedDates[includedDates.length - 1]).toLocaleDateString('en-US', dateOptions)}`}</h3>
@@ -206,8 +231,7 @@ class GranularVolume extends React.Component {
         <div className="col-md-3 granularVolCirclepack">
           <h3>Total Volume</h3>
           <ZoomableCirclepack
-            data={{ key: 'root', values: rolledWithOthers }}
-            highlightLevel={selectedLevels.length}
+            data={{ key: 'root', values: rolledHierarchy }}
             colorKeys={nodeColors}
           />
         </div>

@@ -36,7 +36,7 @@ function groupHierachyOthers(inputHierarchy, rolledUp = false) {
       otherGroupCutoff,
       inputHierarchy.length - 1
     ).map(d => d.value))
-      .reduce((a, b) =>  a + b);
+      .reduce((a, b) => a + b);
 
     hierarchyToUse.push({
       key: 'Other',
@@ -116,12 +116,12 @@ class GranularVolume extends React.Component {
 
   filterData() {
     // Filter based on what is selected in dropdowns
-    return this.props.data.permits_by_address.filter(d => {
+    return this.props.data.permits_by_address.filter((d) => {
       let use = true;
-      this.state.hierarchyLevels.forEach(level => {
+      this.state.hierarchyLevels.forEach((level) => {
         if (!level.selectedCat) { return; }
         use = use && d[level.name] === level.selectedCat;
-      })
+      });
       return use;
     });
   }
@@ -140,6 +140,10 @@ class GranularVolume extends React.Component {
     // props validation
     // y axis
     // tooltip
+    // timepicker
+    // bin by week if it's too many days, by month if it's too many weeks, etc
+      // also adjust oPadding if there are a lot?
+    // fix date issue-- have checkdate start at right place
     // start in on small multiples
     // hover behavior-- shared?
     // allow users to drill into permits with click/modal behavior
@@ -195,8 +199,8 @@ class GranularVolume extends React.Component {
               return null;
             }
             let keyLevel = wholeHierarchy;
-            for (let index = 0; index < levelIndex; index ++) {
-              keyLevel = keyLevel[array[index].selectedCat]
+            for (let index = 0; index < levelIndex; index++) {
+              keyLevel = keyLevel[array[index].selectedCat];
             }
             // If the value is not null, make it a selected dropdown
             // If someone changes the selected dropdown of one earlier in the array, the later one's value should be cleared
@@ -207,7 +211,7 @@ class GranularVolume extends React.Component {
                 return -1;
               }
               return 0;
-            })
+            });
 
             return (<div
               style={{
@@ -217,31 +221,31 @@ class GranularVolume extends React.Component {
               }}
               key={level.name}
             >
-            <p>{`${level.name.replace('_', ' ')}: `}</p>
-            <select
-              name={level.name}
-              onChange={(e) => {
-                const newVal = e.target.value === 'null' ? null : e.target.value;
-                const newLevels = [...this.state.hierarchyLevels]
-                newLevels[levelIndex].selectedCat = newVal;
-                for (let changeIndex = this.state.hierarchyLevels.length - 1; changeIndex > levelIndex; changeIndex --) {
-                  newLevels[changeIndex].selectedCat = null;
-                }
-                this.setState({ hierarchyLevels: newLevels })
-              }}
-              value={level.selectedCat || 'null'}
-            >
-              <option value="null">All</option>
-              {orderedKeys.map(key => (
-                <option
-                  value={key}
-                  key={`${level.name}-${key}`}
-                >
-                  {key}
-                </option>
-              ))}
-            </select>
-            </div>)
+              <p>{`${level.name.replace('_', ' ')}: `}</p>
+              <select
+                name={level.name}
+                onChange={(e) => {
+                  const newVal = e.target.value === 'null' ? null : e.target.value;
+                  const newLevels = [...this.state.hierarchyLevels];
+                  newLevels[levelIndex].selectedCat = newVal;
+                  for (let changeIndex = this.state.hierarchyLevels.length - 1; changeIndex > levelIndex; changeIndex--) {
+                    newLevels[changeIndex].selectedCat = null;
+                  }
+                  this.setState({ hierarchyLevels: newLevels });
+                }}
+                value={level.selectedCat || 'null'}
+              >
+                <option value="null">All</option>
+                {orderedKeys.map(key => (
+                  <option
+                    value={key}
+                    key={`${level.name}-${key}`}
+                  >
+                    {key}
+                  </option>
+                ))}
+              </select>
+            </div>);
           }
           )}
         </div>
@@ -265,8 +269,8 @@ class GranularVolume extends React.Component {
               return (
                 <text
                   textAnchor="end"
-                  transform="rotate(-45)"
-                  style={{ fontSize: '0.75em' }}
+                  transform="rotate(-35)"
+                  style={{ fontSize: '0.70em' }}
                 >
                   {dateString}
                 </text>
@@ -336,7 +340,7 @@ export default graphql(getPermitsQuery, {
     variables: {
       civicaddress_id: 9688,
       radius: 52800,
-      after: 'Jun 30 2018',
+      after: 'May 08 2018',
     },
   },
 })(GranularVolume);

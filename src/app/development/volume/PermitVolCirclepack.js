@@ -20,7 +20,7 @@ class PermitVolCirclepack extends React.Component {
         top: 0,
         right: 0,
         bottom: 10,
-        left: 10,
+        left: 20,
       }}
       edges={this.props.data}
       nodeStyle={(d) => {

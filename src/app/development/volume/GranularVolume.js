@@ -12,7 +12,7 @@ import { labelOrder } from '../../../shared/visualization/visUtilities';
 
 
 const colorScheme = colorSchemes.bright_colors.concat(colorSchemes.bright_colors_2);
-const otherGroupCutoff = 10;
+const otherGroupCutoff = 7;
     // Standard date format for comparison
     const dateOptions = {
       // weekday: 'short',
@@ -29,7 +29,7 @@ class GranularVolume extends React.Component {
       timeSpan: [new Date(2018, 6, 1), new Date()],
       hierarchyLevels: [
         { name: 'permit_type', selectedCat: 'Residential' },
-        { name: 'permit_subtype', selectedCat: 'Trade' },
+        { name: 'permit_subtype', selectedCat: null },
         { name: 'permit_category', selectedCat: null },
       ]
     }
@@ -171,30 +171,41 @@ class GranularVolume extends React.Component {
       <h1>Permit Volume II</h1>
       <div id="vol-controls" className="row">
         {/* Permit hierarchy filter buttons */}
-        {/* <div style={{ margin: '1%' }} > */}
-        {/*   {this.state.focusNodeOrderedPath.map(pathOption => */}
-        {/*     // if it and the pathoption before it has a value, then show it */}
-        {/*     pathOption.selected && !pathOption.category ? */}
-        {/*     (<div */}
-        {/*       style={{ */}
-        {/*         display: 'inline-block', */}
-        {/*         padding: '0 1%', */}
-        {/*         textTransform: 'capitalize', */}
-        {/*       }} */}
-        {/*       key={pathOption.level} */}
-        {/*     > */}
-        {/*     <p>{`Filter by ${pathOption.level.replace('_', ' ')}: `}</p> */}
-        {/*     <select */}
-        {/*       name={pathOption.level.replace('_', ' ')} */}
-        {/*       onChange={e => this.setState({ focusNodeOrderedPath: { level[]}})} */}
-        {/*     > */}
-        {/*       <option value="null"></option> */}
-        {/*       {unrolledHierarchy.map(hierarchyLevel => <option value={hierarchyLevel.key}>{hierarchyLevel.key}</option>)} */}
-        {/*     </select> */}
-        {/*     </div>) */}
-        {/*     : (null) */}
-        {/*   )} */}
-        {/* </div> */}
+        <div style={{ margin: '1%' }} >
+          {this.state.hierarchyLevels.map((level, i, array) => {
+            // If the level before it has no selection, don't show it
+            if (i > 0 && array[i - 1].selectedCat === null) {
+              return null;
+            }
+            // If the value is not null, make it a selected dropdown
+            // If someone changes the selected dropdown of one earlier in the array, the later one's value should be cleared
+            return (<div
+              style={{
+                display: 'inline-block',
+                padding: '0 1%',
+                textTransform: 'capitalize',
+              }}
+              key={level.name}
+            >
+            <p>{`${level.name.replace('_', ' ')}: `}</p>
+            <select
+              name={level.name}
+              onChange={e => console.log(e)}
+            >
+              <option value="null"></option>
+              {unrolledHierarchy.map(hierarchyLevel => (
+                <option
+                  value={hierarchyLevel.key}
+                  selected={hierarchyLevel === level.selectedCat}
+                >
+                  {hierarchyLevel.key}
+                </option>
+              ))}
+            </select>
+            </div>)
+          }
+          )}
+        </div>
         {/* Checkbox legend - more like checkboxes-- only show top 3 - 5 by volume by default */}
         <div className="col-md-9">
           <h3>Daily Volume for {`${new Date(includedDates[0]).toLocaleDateString('en-US', dateOptions)} to ${new Date(includedDates[includedDates.length - 1]).toLocaleDateString('en-US', dateOptions)}`}</h3>

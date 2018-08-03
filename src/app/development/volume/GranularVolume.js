@@ -5,6 +5,7 @@ import { graphql } from 'react-apollo';
 import { nest } from 'd3-collection';
 import { histogram } from 'd3-array';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
+import PermitTypeMenus from './PermitTypeMenus';
 import PermitVolCirclepack from './PermitVolCirclepack';
 import VolumeHistogram from './VolumeHistogram';
 import { colorSchemes } from '../../../shared/visualization/colorSchemes';
@@ -70,6 +71,8 @@ class GranularVolume extends React.Component {
         { name: 'permit_category', selectedCat: null },
       ],
     };
+
+    this.onMenuSelect = this.onMenuSelect.bind(this);
   }
 
   adjustTimespan(newTimeSpan) {
@@ -126,9 +129,27 @@ class GranularVolume extends React.Component {
     });
   }
 
+  onMenuSelect(e, levelIndex) {
+    const newVal = e.target.value === 'null' ? null : e.target.value;
+    const newLevels = [...this.state.hierarchyLevels];
+    // console.log(newLevels, levelIndex)
+    newLevels[levelIndex].selectedCat = newVal;
+    for (let changeIndex = newLevels.length - 1; changeIndex > levelIndex; changeIndex--) {
+      newLevels[changeIndex].selectedCat = null;
+    }
+    this.setState({ hierarchyLevels: newLevels });
+  }
+
   render() {
     if (this.props.data.loading) {
       return <LoadingAnimation />;
+    }
+
+    if (this.props.data.error) {
+      console.log(this.props.data.error);
+      return (<div>
+        Error :(
+      </div>);
     }
 
     // TO ASK:
@@ -136,10 +157,9 @@ class GranularVolume extends React.Component {
     // Is this the right date field to use?
 
     // TODO:
-    // separate histogram and menu into components
-    // props validation
-    // y axis
     // tooltip
+    // props validation
+    // separate out graphql query
     // timepicker
     // bin by week if it's too many days, by month if it's too many weeks, etc
       // also adjust oPadding if there are a lot?
@@ -190,72 +210,20 @@ class GranularVolume extends React.Component {
 
     return (<div>
       <h1>Permit Volume II</h1>
-      <div id="vol-controls" className="row">
-        {/* Permit hierarchy filter buttons */}
-        <div style={{ margin: '1%' }} >
-          {this.state.hierarchyLevels.map((level, levelIndex, array) => {
-            // If the level before it has no selection, don't show it
-            if (levelIndex > 0 && array[levelIndex - 1].selectedCat === null) {
-              return null;
-            }
-            let keyLevel = wholeHierarchy;
-            for (let index = 0; index < levelIndex; index++) {
-              keyLevel = keyLevel[array[index].selectedCat];
-            }
-            // If the value is not null, make it a selected dropdown
-            // If someone changes the selected dropdown of one earlier in the array, the later one's value should be cleared
-            const orderedKeys = Object.keys(keyLevel).sort((a, b) => {
-              if (a > b) {
-                return 1;
-              } else if (a < b) {
-                return -1;
-              }
-              return 0;
-            });
-
-            return (<div
-              style={{
-                display: 'inline-block',
-                padding: '0 1%',
-                textTransform: 'capitalize',
-              }}
-              key={level.name}
-            >
-              <p>{`${level.name.replace('_', ' ')}: `}</p>
-              <select
-                name={level.name}
-                onChange={(e) => {
-                  const newVal = e.target.value === 'null' ? null : e.target.value;
-                  const newLevels = [...this.state.hierarchyLevels];
-                  newLevels[levelIndex].selectedCat = newVal;
-                  for (let changeIndex = this.state.hierarchyLevels.length - 1; changeIndex > levelIndex; changeIndex--) {
-                    newLevels[changeIndex].selectedCat = null;
-                  }
-                  this.setState({ hierarchyLevels: newLevels });
-                }}
-                value={level.selectedCat || 'null'}
-              >
-                <option value="null">All</option>
-                {orderedKeys.map(key => (
-                  <option
-                    value={key}
-                    key={`${level.name}-${key}`}
-                  >
-                    {key}
-                  </option>
-                ))}
-              </select>
-            </div>);
-          }
-          )}
-        </div>
-        {/* Checkbox legend - more like checkboxes-- only show top 3 - 5 by volume by default */}
+      <div id="controls-n-summary" className="row">
+        {/* Permit hierarchy filter menus */}
+        <PermitTypeMenus
+          onSelect={this.onMenuSelect}
+          parentHierarchyLevels={this.state.hierarchyLevels}
+          wholeHierarchy={wholeHierarchy}
+        />
         <div className="col-md-9">
           <h3>Daily Volume for {`${new Date(includedDates[0]).toLocaleDateString('en-US', dateOptions)} to ${new Date(includedDates[includedDates.length - 1]).toLocaleDateString('en-US', dateOptions)}`}</h3>
           <VolumeHistogram
             data={ordinalData}
             nodeColors={nodeColors}
           />
+          {/* Checkbox legend - more like checkboxes-- only show top 3 - 5 by volume by default */}
         </div>
         <div className="col-md-3 granularVolCirclepack">
           <h3>Total Volume</h3>

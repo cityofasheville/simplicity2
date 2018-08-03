@@ -15,8 +15,21 @@ const VolumeHistogram = props => (
       top: 10,
       right: 10,
       bottom: 60,
-      left: 20,
+      left: 40,
     }}
+    axis={[
+      {
+        orient: 'left',
+        tickFormat: d => (
+          <text
+            textAnchor="end"
+            style={{ fontSize: '0.70em' }}
+          >
+            {d}
+          </text>
+        ),
+      },
+    ]}
     oLabel={(d) => {
       const dateString = new Date(d).toLocaleDateString('en-US', props.dateOptions);
       return (
@@ -32,9 +45,22 @@ const VolumeHistogram = props => (
     oAccessor="binStartDate"
     oPadding={5}
     rAccessor="count"
-    style={d => ({ fill: props.nodeColors[d.key] })}
+    style={d => ({ fill: d.count === 0 ? 'none' : props.nodeColors[d.key] })}
     hoverAnnotation
-    tooltipContent={d => d.key}
+    tooltipContent={(d) => {
+      const pieces = d.type === 'column-hover' ? d.pieces : [d.data];
+      const title = new Date(pieces[0].binStartDate).toLocaleDateString('en-US', props.dateOptions);
+
+      const textLines = pieces.map(piece => ({
+        text: `${piece.key}: ${piece.count}`,
+        color: props.nodeColors[piece.key],
+      }));
+
+      return (<Tooltip
+        title={title}
+        textLines={textLines}
+      />);
+    }}
   />
 );
 
@@ -50,7 +76,7 @@ VolumeHistogram.defaultProps = {
     month: 'short',
     day: 'numeric',
   },
-  nodeColors: [],
+  nodeColors: {},
 };
 
 export default VolumeHistogram;

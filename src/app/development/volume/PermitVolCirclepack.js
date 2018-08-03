@@ -1,16 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ResponsiveNetworkFrame } from 'semiotic';
+import Tooltip from '../../../shared/visualization/Tooltip';
+
 
 
 class PermitVolCirclepack extends React.Component {
   constructor() {
     super();
-    this.state = {
-      hoverNode: null,
-    }
+    // this.state = {
+    //   hoverNode: null,
+    // }
   }
-  // TODO: MAKE HOVER BEHAVIOR
 
   render() {
     return (<ResponsiveNetworkFrame
@@ -32,17 +33,17 @@ class PermitVolCirclepack extends React.Component {
       }}
       nodeIDAccessor="key"
       hoverAnnotation
-      customHoverBehavior={d => {
-        if (!d) {
-          this.setState({
-            hoverNode: null,
-          });
-          return;
-        }
-        this.setState({
-          hoverNode: d.id,
-        });
-      }}
+      // customHoverBehavior={d => {
+      //   if (!d) {
+      //     this.setState({
+      //       hoverNode: null,
+      //     });
+      //     return;
+      //   }
+      //   this.setState({
+      //     hoverNode: d.id,
+      //   });
+      // }}
       networkType={{
         type: 'circlepack',
         hierarchyChildren: d => d.values,
@@ -57,7 +58,14 @@ class PermitVolCirclepack extends React.Component {
           {d.value}
         </text>);
       }}
-      tooltipContent={d => d.key === 'root' ? '' : d.key}
+      tooltipContent={(d) => {
+        return d.key === 'root' ? '' : (
+          <Tooltip
+            title={d.key}
+            style={{ color: this.props.colorKeys[d.key] }}
+          />
+        );
+      }}
     />);
   }
 }

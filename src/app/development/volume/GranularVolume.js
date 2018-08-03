@@ -16,7 +16,7 @@ const otherGroupCutoff = 5;
 // Standard date format for comparison
 const dateOptions = {
   // weekday: 'short',
-  year: '2-digit',
+  year: 'numeric',
   month: 'short',
   day: 'numeric',
 };
@@ -154,10 +154,10 @@ class GranularVolume extends React.Component {
 
     // TO ASK:
     // Should menus show all types or show other?  Or indicate type has been rolled into other?
+    // Or should we do checkboxes like the other one instead of making "other"?
     // Is this the right date field to use?
 
     // TODO:
-    // tooltip
     // props validation
     // separate out graphql query
     // timepicker
@@ -209,16 +209,15 @@ class GranularVolume extends React.Component {
     const ordinalData = this.ordinalFromHierarchical(unrolledHierarchy, includedDates);
 
     return (<div>
-      <h1>Permit Volume II</h1>
+      <h1>Permit Volume for {`${new Date(includedDates[0]).toLocaleDateString('en-US', dateOptions)} to ${new Date(includedDates[includedDates.length - 1]).toLocaleDateString('en-US', dateOptions)}`}</h1>
       <div id="controls-n-summary" className="row">
-        {/* Permit hierarchy filter menus */}
         <PermitTypeMenus
           onSelect={this.onMenuSelect}
           parentHierarchyLevels={this.state.hierarchyLevels}
           wholeHierarchy={wholeHierarchy}
         />
         <div className="col-md-9">
-          <h3>Daily Volume for {`${new Date(includedDates[0]).toLocaleDateString('en-US', dateOptions)} to ${new Date(includedDates[includedDates.length - 1]).toLocaleDateString('en-US', dateOptions)}`}</h3>
+          <h3>Daily</h3>
           <VolumeHistogram
             data={ordinalData}
             nodeColors={nodeColors}
@@ -226,7 +225,7 @@ class GranularVolume extends React.Component {
           {/* Checkbox legend - more like checkboxes-- only show top 3 - 5 by volume by default */}
         </div>
         <div className="col-md-3 granularVolCirclepack">
-          <h3>Total Volume</h3>
+          <h3>Total</h3>
           <PermitVolCirclepack
             data={{ key: 'root', values: rolledHierarchy }}
             colorKeys={nodeColors}
@@ -281,7 +280,7 @@ export default graphql(getPermitsQuery, {
     variables: {
       civicaddress_id: 9688,
       radius: 52800,
-      after: 'May 08 2018',
+      after: 'Jun 30 2018',
     },
   },
 })(GranularVolume);

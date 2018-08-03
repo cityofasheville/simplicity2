@@ -3,16 +3,38 @@ import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { nest } from 'd3-collection';
+import { color } from 'd3-color';
 import { histogram } from 'd3-array';
 import { FacetController, OrdinalFrame } from 'semiotic';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import PermitTypeMenus from './PermitTypeMenus';
 import PermitVolCirclepack from './PermitVolCirclepack';
 import VolumeHistogram from './VolumeHistogram';
-import { colorSchemes } from '../../../shared/visualization/colorSchemes';
+import Tooltip from '../../../shared/visualization/Tooltip';
 
 
-const colorScheme = colorSchemes.bright_colors_2.concat(colorSchemes.bright_colors);
+const colorScheme = [
+  '#B66DFF',
+  '#DB6D00',
+  '#006DDB',
+  '#FF6DB6',
+  '#920000',
+  '#01b0b0',
+  '#2fe12f',
+  '#004949',
+  '#6DB6FF',
+  '#490092',
+  '#920000',
+  '#006DDB',
+  '#490092',
+  '#FF6DB6',
+  '#DB6D00',
+  '#2fe12f',
+  '#01b0b0',
+  '#6DB6FF',
+  '#FFBDDB',
+];
+
 const otherGroupCutoff = 5;
 // Standard date format for comparison
 const dateOptions = {
@@ -113,8 +135,9 @@ class GranularVolume extends React.Component {
             key: hierarchyType.key,
             count: binLength,
             binStartDate: thisDate,
+            values: bin || [],
           };
-        })
+        });
       }));
   }
 
@@ -210,11 +233,22 @@ class GranularVolume extends React.Component {
     const includedDates = this.timeBuckets();
     const ordinalData = this.ordinalFromHierarchical(unrolledHierarchy, includedDates);
 
-    const statusFilteredHierarchy = selectHierarchy(filteredData, [selectedLevel, 'status_current']);
-    const statusFilteredOrdinal = this.ordinalFromHierarchical(statusFilteredHierarchy, includedDates);
-    // TODO: ADD STATUS TO ORDINAL-- MAKE ORDINAL STACKING PARAMETER OPTIONAL OR SOMETHING
-
-    console.log(statusFilteredOrdinal)
+    // status_current = Issued
+    const issuedOrdinal = ordinalData.map((datum) => {
+      const rObj = Object.assign({}, datum);
+      rObj.values = datum.values.filter(val => val.status_current === 'Issued');
+      rObj.count = rObj.values.length;
+      rObj.issued = true;
+      return rObj;
+    });
+    const notIssuedOrdinal = ordinalData.map((datum) => {
+      const rObj = Object.assign({}, datum);
+      rObj.values = datum.values.filter(val => val.status_current !== 'Issued');
+      rObj.count = rObj.values.length;
+      rObj.issued = false;
+      return rObj;
+    });
+    const ordinalWithStatus = issuedOrdinal.concat(notIssuedOrdinal);
 
     return (<div>
       <h1>Permit Volume for {`${new Date(includedDates[0]).toLocaleDateString('en-US', dateOptions)} to ${new Date(includedDates[includedDates.length - 1]).toLocaleDateString('en-US', dateOptions)}`}</h1>
@@ -243,7 +277,7 @@ class GranularVolume extends React.Component {
       <div
         id="openClosedIssued"
       >
-        <h2>Open, Closed, Issued</h2>
+        <h2>Issued or Not</h2>
         <div
           style={{
             display: 'flex',
@@ -253,6 +287,12 @@ class GranularVolume extends React.Component {
         >
           <FacetController
             size={[185, 185]}
+            margin={{
+              top: 40,
+              right: 10,
+              bottom: 10,
+              left: 25,
+            }}
             oPadding={1}
             oAccessor="binStartDate"
             rAccessor="count"
@@ -272,24 +312,31 @@ class GranularVolume extends React.Component {
               },
             ]}
             hoverAnnotation
+            tooltipContent={(d) => {
+              const pieces = d.type === 'column-hover' ? d.pieces : [d.data];
+              const title = new Date(pieces[0].binStartDate).toLocaleDateString('en-US', dateOptions);
+
+              const textLines = pieces.map(piece => ({
+                text: `${piece.issued ? 'Issued' : 'Not Issued'}: ${piece.count}`,
+                color: nodeColors[piece.key],
+              })).reverse();
+
+              return (<Tooltip
+                title={title}
+                textLines={textLines}
+              />);
+            }}
           >
             {/* foreach permit type showing (see menus for logic) */}
             {unrolledHierarchy.map(unroll => (
               // colors are shades of unroll key
               <OrdinalFrame
                 key={unroll.key}
-                data={ordinalData.filter(d => d.key === unroll.key)}
+                data={ordinalWithStatus.filter(d => d.key === unroll.key)}
                 title={unroll.key}
-                margin={{
-                  top: 40,
-                  right: 10,
-                  bottom: 10,
-                  left: 25,
-                }}
                 style={d => {
-                  // console.log(d);
                   return {
-                    fill: nodeColors[unroll.key],
+                    fill: d.issued ? nodeColors[unroll.key] : color(nodeColors[unroll.key]).brighter(2)
                   };
                 }}
               />

@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { nest } from 'd3-collection';
 import { histogram } from 'd3-array';
-import { FacetController, ResponsiveOrdinalFrame } from 'semiotic';
+import { FacetController, OrdinalFrame } from 'semiotic';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import PermitTypeMenus from './PermitTypeMenus';
 import PermitVolCirclepack from './PermitVolCirclepack';
@@ -22,8 +22,14 @@ const dateOptions = {
   day: 'numeric',
 };
 
-function selectHierarchy(filteredData, selectedLevel, rollup = false) {
-  const thisNest = nest().key(d => d[selectedLevel.name]);
+function selectHierarchy(filteredData, selectedLevels, rollup = false) {
+  let useLevels = selectedLevels;
+  if (typeof selectedLevels === 'string') {
+    useLevels = [selectedLevels];
+  }
+  const thisNest = nest();
+  useLevels.forEach(level => thisNest.key(d => d[level]));
+
   if (rollup) {
     thisNest.rollup(d => d.length);
   }
@@ -186,7 +192,7 @@ class GranularVolume extends React.Component {
     }
 
     // Are we viewing permit type, subtype, or category?
-    const selectedLevel = this.state.hierarchyLevels[firstIndexUnselected];
+    const selectedLevel = this.state.hierarchyLevels[firstIndexUnselected].name;
 
     // For circlepack
     let rolledHierarchy = selectHierarchy(filteredData, selectedLevel, true)
@@ -210,7 +216,11 @@ class GranularVolume extends React.Component {
     const includedDates = this.timeBuckets();
     const ordinalData = this.ordinalFromHierarchical(unrolledHierarchy, includedDates);
 
-    console.log(filteredData, unrolledHierarchy)
+    const statusFilteredHierarchy = selectHierarchy(filteredData, [selectedLevel, 'status_current']);
+    const statusFilteredOrdinal = this.ordinalFromHierarchical(statusFilteredHierarchy, includedDates);
+    // TODO: ADD STATUS TO ORDINAL-- MAKE ORDINAL STACKING PARAMETER OPTIONAL OR SOMETHING
+
+    console.log(statusFilteredOrdinal)
 
     return (<div>
       <h1>Permit Volume for {`${new Date(includedDates[0]).toLocaleDateString('en-US', dateOptions)} to ${new Date(includedDates[includedDates.length - 1]).toLocaleDateString('en-US', dateOptions)}`}</h1>
@@ -236,23 +246,62 @@ class GranularVolume extends React.Component {
           />
         </div>
       </div>
-      <div id="openClosedIssued">
+      <div
+        id="openClosedIssued"
+      >
         <h2>Open, Closed, Issued</h2>
-        <FacetController
-          size={[1000, 300]}
-          oPadding={2}
+        <div
+          style={{
+            display: 'flex',
+            padding: '0 1%',
+            textTransform: 'capitalize',
+          }}
         >
-          {/* foreach permit type showing (see menus for logic) */}
-          {unrolledHierarchy.map(unroll => (
-            // apply histogram function to values
-            // colors are shades of unroll key
-            <ResponsiveOrdinalFrame
-              // data={unroll.values.map(val => ({
-              //   key:
-              // }))}
-            />
-          ))}
-        </FacetController>
+          <FacetController
+            size={[180, 200]}
+            oPadding={1}
+            oAccessor="binStartDate"
+            rAccessor="count"
+            type="bar"
+            pieceIDAccessor="key"
+            axis={[
+              {
+                orient: 'left',
+                tickFormat: d => (
+                  <text
+                    textAnchor="end"
+                    style={{ fontSize: '0.70em' }}
+                  >
+                    {d}
+                  </text>
+                ),
+              },
+            ]}
+            hoverAnnotation
+          >
+            {/* foreach permit type showing (see menus for logic) */}
+            {unrolledHierarchy.map(unroll => (
+              // colors are shades of unroll key
+              <OrdinalFrame
+                key={unroll.key}
+                data={ordinalData.filter(d => d.key === unroll.key)}
+                title={unroll.key}
+                margin={{
+                  top: 40,
+                  right: 10,
+                  bottom: 10,
+                  left: 25,
+                }}
+                style={d => {
+                  // console.log(d);
+                  return {
+                    fill: nodeColors[unroll.key],
+                  };
+                }}
+              />
+            ))}
+          </FacetController>
+        </div>
       </div>
       <div id="permitValue">
         <h2>Value</h2>

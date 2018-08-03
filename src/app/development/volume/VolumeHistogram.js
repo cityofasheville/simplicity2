@@ -45,7 +45,7 @@ const VolumeHistogram = props => (
     oAccessor="binStartDate"
     oPadding={5}
     rAccessor="count"
-    style={d => ({ fill: d.count === 0 ? 'none' : props.nodeColors[d.key] })}
+    style={d => ({ fill: d.count === 0 ? 'none' : props.nodeColors[d.key], stroke: 'white', strokeWidth: 0.1 })}
     hoverAnnotation
     tooltipContent={(d) => {
       const pieces = d.type === 'column-hover' ? d.pieces : [d.data];

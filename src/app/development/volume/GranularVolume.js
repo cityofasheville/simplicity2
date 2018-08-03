@@ -3,15 +3,38 @@ import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { nest } from 'd3-collection';
+import { color } from 'd3-color';
 import { histogram } from 'd3-array';
+import { FacetController, OrdinalFrame } from 'semiotic';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import PermitTypeMenus from './PermitTypeMenus';
 import PermitVolCirclepack from './PermitVolCirclepack';
 import VolumeHistogram from './VolumeHistogram';
-import { colorSchemes } from '../../../shared/visualization/colorSchemes';
+import Tooltip from '../../../shared/visualization/Tooltip';
 
 
-const colorScheme = colorSchemes.bright_colors_2.concat(colorSchemes.bright_colors);
+const colorScheme = [
+  '#B66DFF',
+  '#DB6D00',
+  '#006DDB',
+  '#FF6DB6',
+  '#920000',
+  '#01b0b0',
+  '#2fe12f',
+  '#004949',
+  '#6DB6FF',
+  '#490092',
+  '#920000',
+  '#006DDB',
+  '#490092',
+  '#FF6DB6',
+  '#DB6D00',
+  '#2fe12f',
+  '#01b0b0',
+  '#6DB6FF',
+  '#FFBDDB',
+];
+
 const otherGroupCutoff = 5;
 // Standard date format for comparison
 const dateOptions = {
@@ -21,8 +44,14 @@ const dateOptions = {
   day: 'numeric',
 };
 
-function selectHierarchy(filteredData, selectedLevel, rollup = false) {
-  const thisNest = nest().key(d => d[selectedLevel.name]);
+function selectHierarchy(filteredData, selectedLevels, rollup = false) {
+  let useLevels = selectedLevels;
+  if (typeof selectedLevels === 'string') {
+    useLevels = [selectedLevels];
+  }
+  const thisNest = nest();
+  useLevels.forEach(level => thisNest.key(d => d[level]));
+
   if (rollup) {
     thisNest.rollup(d => d.length);
   }
@@ -80,25 +109,15 @@ class GranularVolume extends React.Component {
   }
 
   timeBuckets() {
-    // What dates are we even including?
-    const includedDates = this.props.data.permits_by_address
-      .map(d => new Date(d.applied_date))
-      .sort((a, b) => a - b)
-      .map(d => d.toLocaleDateString('en-US', dateOptions))
-      .filter((d, i, a) => a.indexOf(d) === i)
-      .map(d => new Date(d));
-
-    const includedDatesMilliseconds = includedDates.map(d => d.getTime());
-    let checkDate = includedDatesMilliseconds[0];
-    // TODO: have checkdate start at query date-- maybe just fill an array with all the dates until we're at the end date?
-
-    while (checkDate < includedDatesMilliseconds[includedDatesMilliseconds.length - 1]) {
-      if (includedDatesMilliseconds.indexOf(checkDate) < 0) {
-        includedDates.push(new Date(checkDate));
-      }
-      checkDate += (24 * 60 * 60 * 1000);
+    const includedDates = [];
+    const oneDayMilliseconds = (24 * 60 * 60 * 1000);
+    let dateToAdd = new Date(this.state.timeSpan[0]).getTime();
+    const lastDate = new Date(this.state.timeSpan[1]).getTime();
+    while (dateToAdd <= lastDate) {
+      includedDates.push(new Date(dateToAdd));
+      dateToAdd += oneDayMilliseconds;
     }
-    return includedDates.sort((a, b) => a - b);
+    return includedDates;
   }
 
   ordinalFromHierarchical(unrolledHierarchy, includedDates) {
@@ -109,11 +128,16 @@ class GranularVolume extends React.Component {
     return [].concat(...unrolledHierarchy
       .map((hierarchyType) => {
         const binnedValues = histFunc(hierarchyType.values);
-        return binnedValues.map(bin => ({
-          key: hierarchyType.key,
-          count: bin.length,
-          binStartDate: new Date(bin.x0),
-        }));
+        return includedDates.map((thisDate) => {
+          const bin = binnedValues.find(v => new Date(v.x0).toLocaleDateString('en-US', dateOptions) === new Date(thisDate).toLocaleDateString('en-US', dateOptions));
+          const binLength = bin ? bin.length : 0;
+          return {
+            key: hierarchyType.key,
+            count: binLength,
+            binStartDate: thisDate,
+            values: bin || [],
+          };
+        });
       }));
   }
 
@@ -152,21 +176,23 @@ class GranularVolume extends React.Component {
       </div>);
     }
 
-    // TO ASK:
-    // Should menus show all types or show other?  Or indicate type has been rolled into other?
-    // Or should we do checkboxes like the other one instead of making "other"?
-    // Is this the right date field to use?
+    /*
+      TO ASK:
+        Should menus show all types or show other?  Or indicate type has been rolled into other?
+        Or should we do checkboxes like the other one instead of making "other"?
+        Is this the right date field to use?
 
-    // TODO:
-    // props validation
-    // separate out graphql query
-    // timepicker
-    // bin by week if it's over 6 weeks, by month if it's over 1 year
-    // fix date issue-- have checkdate start at right place
-    // start in on small multiples
-    // hover behavior-- shared?
-    // allow users to drill into permits with click/modal behavior
-    // update URL to allow bookmarking
+      TODO:
+        props validation
+        separate out graphql query
+        timepicker
+        bin by week if it's over 6 weeks, by month if it's over 1 year
+        fix date issue-- have checkdate start at right place
+        start in on small multiples
+        hover behavior-- shared?
+        allow users to drill into permits with click/modal behavior
+        update URL to allow bookmarking
+    */
 
     // All data to use for dropdowns
     const bigNest = nest();
@@ -183,7 +209,7 @@ class GranularVolume extends React.Component {
     }
 
     // Are we viewing permit type, subtype, or category?
-    const selectedLevel = this.state.hierarchyLevels[firstIndexUnselected];
+    const selectedLevel = this.state.hierarchyLevels[firstIndexUnselected].name;
 
     // For circlepack
     let rolledHierarchy = selectHierarchy(filteredData, selectedLevel, true)
@@ -206,6 +232,23 @@ class GranularVolume extends React.Component {
 
     const includedDates = this.timeBuckets();
     const ordinalData = this.ordinalFromHierarchical(unrolledHierarchy, includedDates);
+
+    // status_current = Issued
+    const issuedOrdinal = ordinalData.map((datum) => {
+      const rObj = Object.assign({}, datum);
+      rObj.values = datum.values.filter(val => val.status_current === 'Issued');
+      rObj.count = rObj.values.length;
+      rObj.issued = true;
+      return rObj;
+    });
+    const notIssuedOrdinal = ordinalData.map((datum) => {
+      const rObj = Object.assign({}, datum);
+      rObj.values = datum.values.filter(val => val.status_current !== 'Issued');
+      rObj.count = rObj.values.length;
+      rObj.issued = false;
+      return rObj;
+    });
+    const ordinalWithStatus = issuedOrdinal.concat(notIssuedOrdinal);
 
     return (<div>
       <h1>Permit Volume for {`${new Date(includedDates[0]).toLocaleDateString('en-US', dateOptions)} to ${new Date(includedDates[includedDates.length - 1]).toLocaleDateString('en-US', dateOptions)}`}</h1>
@@ -231,14 +274,81 @@ class GranularVolume extends React.Component {
           />
         </div>
       </div>
+      <div
+        id="openClosedIssued"
+      >
+        <h2>Issued or Not</h2>
+        <div
+          style={{
+            display: 'flex',
+            padding: '0 1%',
+            textTransform: 'capitalize',
+          }}
+        >
+          <FacetController
+            size={[185, 185]}
+            margin={{
+              top: 40,
+              right: 10,
+              bottom: 10,
+              left: 25,
+            }}
+            oPadding={1}
+            oAccessor="binStartDate"
+            rAccessor="count"
+            type="bar"
+            pieceIDAccessor="key"
+            axis={[
+              {
+                orient: 'left',
+                tickFormat: d => (
+                  <text
+                    textAnchor="end"
+                    style={{ fontSize: '0.70em' }}
+                  >
+                    {d}
+                  </text>
+                ),
+              },
+            ]}
+            hoverAnnotation
+            tooltipContent={(d) => {
+              const pieces = d.type === 'column-hover' ? d.pieces : [d.data];
+              const title = new Date(pieces[0].binStartDate).toLocaleDateString('en-US', dateOptions);
+
+              const textLines = pieces.map(piece => ({
+                text: `${piece.issued ? 'Issued' : 'Not Issued'}: ${piece.count}`,
+                color: nodeColors[piece.key],
+              })).reverse();
+
+              return (<Tooltip
+                title={title}
+                textLines={textLines}
+              />);
+            }}
+          >
+            {/* foreach permit type showing (see menus for logic) */}
+            {unrolledHierarchy.map(unroll => (
+              // colors are shades of unroll key
+              <OrdinalFrame
+                key={unroll.key}
+                data={ordinalWithStatus.filter(d => d.key === unroll.key)}
+                title={unroll.key}
+                style={d => {
+                  return {
+                    fill: d.issued ? nodeColors[unroll.key] : color(nodeColors[unroll.key]).brighter(2)
+                  };
+                }}
+              />
+            ))}
+          </FacetController>
+        </div>
+      </div>
       <div id="permitValue">
         <h2>Value</h2>
       </div>
       <div id="permitFees">
         <h2>Fees</h2>
-      </div>
-      <div id="openClosedIssued">
-        <h2>Open, Closed, Issued</h2>
       </div>
       <div id="inspections">
         <h2>Inspections</h2>

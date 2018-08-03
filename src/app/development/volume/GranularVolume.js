@@ -4,9 +4,9 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { nest } from 'd3-collection';
 import { histogram } from 'd3-array';
-import { ResponsiveOrdinalFrame } from 'semiotic';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import PermitVolCirclepack from './PermitVolCirclepack';
+import VolumeHistogram from './VolumeHistogram';
 import { colorSchemes } from '../../../shared/visualization/colorSchemes';
 
 
@@ -252,36 +252,9 @@ class GranularVolume extends React.Component {
         {/* Checkbox legend - more like checkboxes-- only show top 3 - 5 by volume by default */}
         <div className="col-md-9">
           <h3>Daily Volume for {`${new Date(includedDates[0]).toLocaleDateString('en-US', dateOptions)} to ${new Date(includedDates[includedDates.length - 1]).toLocaleDateString('en-US', dateOptions)}`}</h3>
-          <ResponsiveOrdinalFrame
-            responsiveWidth
+          <VolumeHistogram
             data={ordinalData}
-            size={[500, 200]}
-            projection="vertical"
-            type="bar"
-            margin={{
-              top: 10,
-              right: 10,
-              bottom: 60,
-              left: 20,
-            }}
-            oLabel={(d) => {
-              const dateString = new Date(d).toLocaleDateString('en-US', dateOptions);
-              return (
-                <text
-                  textAnchor="end"
-                  transform="rotate(-35)"
-                  style={{ fontSize: '0.70em' }}
-                >
-                  {dateString}
-                </text>
-              )
-            }}
-            oAccessor="binStartDate"
-            oPadding={5}
-            rAccessor="count"
-            style={d => ({ fill: nodeColors[d.key] })}
-            hoverAnnotation
-            tooltipContent={d => d.key}
+            nodeColors={nodeColors}
           />
         </div>
         <div className="col-md-3 granularVolCirclepack">

@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { nest } from 'd3-collection';
 import { histogram } from 'd3-array';
+import { FacetController, ResponsiveOrdinalFrame } from 'semiotic';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import PermitTypeMenus from './PermitTypeMenus';
 import PermitVolCirclepack from './PermitVolCirclepack';
@@ -92,7 +93,7 @@ class GranularVolume extends React.Component {
     let checkDate = includedDatesMilliseconds[0];
     // TODO: have checkdate start at query date-- maybe just fill an array with all the dates until we're at the end date?
 
-    while (checkDate < includedDatesMilliseconds[includedDatesMilliseconds.length - 1]) {
+    while (checkDate <= includedDatesMilliseconds[includedDatesMilliseconds.length - 1]) {
       if (includedDatesMilliseconds.indexOf(checkDate) < 0) {
         includedDates.push(new Date(checkDate));
       }
@@ -152,21 +153,23 @@ class GranularVolume extends React.Component {
       </div>);
     }
 
-    // TO ASK:
-    // Should menus show all types or show other?  Or indicate type has been rolled into other?
-    // Or should we do checkboxes like the other one instead of making "other"?
-    // Is this the right date field to use?
+    /*
+      TO ASK:
+        Should menus show all types or show other?  Or indicate type has been rolled into other?
+        Or should we do checkboxes like the other one instead of making "other"?
+        Is this the right date field to use?
 
-    // TODO:
-    // props validation
-    // separate out graphql query
-    // timepicker
-    // bin by week if it's over 6 weeks, by month if it's over 1 year
-    // fix date issue-- have checkdate start at right place
-    // start in on small multiples
-    // hover behavior-- shared?
-    // allow users to drill into permits with click/modal behavior
-    // update URL to allow bookmarking
+      TODO:
+        props validation
+        separate out graphql query
+        timepicker
+        bin by week if it's over 6 weeks, by month if it's over 1 year
+        fix date issue-- have checkdate start at right place
+        start in on small multiples
+        hover behavior-- shared?
+        allow users to drill into permits with click/modal behavior
+        update URL to allow bookmarking
+    */
 
     // All data to use for dropdowns
     const bigNest = nest();
@@ -207,6 +210,8 @@ class GranularVolume extends React.Component {
     const includedDates = this.timeBuckets();
     const ordinalData = this.ordinalFromHierarchical(unrolledHierarchy, includedDates);
 
+    console.log(filteredData, unrolledHierarchy)
+
     return (<div>
       <h1>Permit Volume for {`${new Date(includedDates[0]).toLocaleDateString('en-US', dateOptions)} to ${new Date(includedDates[includedDates.length - 1]).toLocaleDateString('en-US', dateOptions)}`}</h1>
       <div id="controls-n-summary" className="row">
@@ -231,14 +236,29 @@ class GranularVolume extends React.Component {
           />
         </div>
       </div>
+      <div id="openClosedIssued">
+        <h2>Open, Closed, Issued</h2>
+        <FacetController
+          size={[1000, 300]}
+          oPadding={2}
+        >
+          {/* foreach permit type showing (see menus for logic) */}
+          {unrolledHierarchy.map(unroll => (
+            // apply histogram function to values
+            // colors are shades of unroll key
+            <ResponsiveOrdinalFrame
+              // data={unroll.values.map(val => ({
+              //   key:
+              // }))}
+            />
+          ))}
+        </FacetController>
+      </div>
       <div id="permitValue">
         <h2>Value</h2>
       </div>
       <div id="permitFees">
         <h2>Fees</h2>
-      </div>
-      <div id="openClosedIssued">
-        <h2>Open, Closed, Issued</h2>
       </div>
       <div id="inspections">
         <h2>Inspections</h2>

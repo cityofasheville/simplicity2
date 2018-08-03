@@ -87,25 +87,15 @@ class GranularVolume extends React.Component {
   }
 
   timeBuckets() {
-    // What dates are we even including?
-    const includedDates = this.props.data.permits_by_address
-      .map(d => new Date(d.applied_date))
-      .sort((a, b) => a - b)
-      .map(d => d.toLocaleDateString('en-US', dateOptions))
-      .filter((d, i, a) => a.indexOf(d) === i)
-      .map(d => new Date(d));
-
-    const includedDatesMilliseconds = includedDates.map(d => d.getTime());
-    let checkDate = includedDatesMilliseconds[0];
-    // TODO: have checkdate start at query date-- maybe just fill an array with all the dates until we're at the end date?
-
-    while (checkDate <= includedDatesMilliseconds[includedDatesMilliseconds.length - 1]) {
-      if (includedDatesMilliseconds.indexOf(checkDate) < 0) {
-        includedDates.push(new Date(checkDate));
-      }
-      checkDate += (24 * 60 * 60 * 1000);
+    const includedDates = [];
+    const oneDayMilliseconds = (24 * 60 * 60 * 1000);
+    let dateToAdd = new Date(this.state.timeSpan[0]).getTime();
+    const lastDate = new Date(this.state.timeSpan[1]).getTime();
+    while (dateToAdd <= lastDate) {
+      includedDates.push(new Date(dateToAdd));
+      dateToAdd += oneDayMilliseconds;
     }
-    return includedDates.sort((a, b) => a - b);
+    return includedDates;
   }
 
   ordinalFromHierarchical(unrolledHierarchy, includedDates) {
@@ -116,11 +106,15 @@ class GranularVolume extends React.Component {
     return [].concat(...unrolledHierarchy
       .map((hierarchyType) => {
         const binnedValues = histFunc(hierarchyType.values);
-        return binnedValues.map(bin => ({
-          key: hierarchyType.key,
-          count: bin.length,
-          binStartDate: new Date(bin.x0),
-        }));
+        return includedDates.map((thisDate) => {
+          const bin = binnedValues.find(v => new Date(v.x0).toLocaleDateString('en-US', dateOptions) === new Date(thisDate).toLocaleDateString('en-US', dateOptions));
+          const binLength = bin ? bin.length : 0;
+          return {
+            key: hierarchyType.key,
+            count: binLength,
+            binStartDate: thisDate,
+          };
+        })
       }));
   }
 
@@ -258,7 +252,7 @@ class GranularVolume extends React.Component {
           }}
         >
           <FacetController
-            size={[180, 200]}
+            size={[185, 185]}
             oPadding={1}
             oAccessor="binStartDate"
             rAccessor="count"

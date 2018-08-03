@@ -161,7 +161,7 @@ class GranularVolume extends React.Component {
     // props validation
     // separate out graphql query
     // timepicker
-    // bin by week if it's too many days, by month if it's too many weeks, etc
+    // bin by week if it's over 6 weeks, by month if it's over 1 year
     // fix date issue-- have checkdate start at right place
     // start in on small multiples
     // hover behavior-- shared?
@@ -216,7 +216,7 @@ class GranularVolume extends React.Component {
           wholeHierarchy={wholeHierarchy}
         />
         <div className="col-md-9">
-          <h3>Daily</h3>
+          <h2>Daily</h2>
           <VolumeHistogram
             data={ordinalData}
             nodeColors={nodeColors}
@@ -224,7 +224,7 @@ class GranularVolume extends React.Component {
           {/* Checkbox legend - more like checkboxes-- only show top 3 - 5 by volume by default */}
         </div>
         <div className="col-md-3 granularVolCirclepack">
-          <h3>Total</h3>
+          <h2>Total</h2>
           <PermitVolCirclepack
             data={{ key: 'root', values: rolledHierarchy }}
             colorKeys={nodeColors}

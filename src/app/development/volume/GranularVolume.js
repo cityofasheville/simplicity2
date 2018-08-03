@@ -162,7 +162,6 @@ class GranularVolume extends React.Component {
     // separate out graphql query
     // timepicker
     // bin by week if it's too many days, by month if it's too many weeks, etc
-      // also adjust oPadding if there are a lot?
     // fix date issue-- have checkdate start at right place
     // start in on small multiples
     // hover behavior-- shared?

@@ -54,7 +54,7 @@ const VolumeHistogram = props => (
       const textLines = pieces.map(piece => ({
         text: `${piece.key}: ${piece.count}`,
         color: props.nodeColors[piece.key],
-      }));
+      })).reverse();
 
       return (<Tooltip
         title={title}

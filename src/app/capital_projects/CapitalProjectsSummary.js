@@ -49,7 +49,7 @@ const CapitalProjectsSummary = props => (
           <PageHeader
             h1="Capital Projects"
             externalLinkText="View the City&apos;s General Capital Improvement Plan (CIP)"
-            externalLink="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=28348#page=146" // eslint-disable-line
+            externalLink="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=30725#page=146" // eslint-disable-line
             dataLinkPath="/capital_projects/data"
             icon={<Icon path={IM_CITY} size={60} />}
           >

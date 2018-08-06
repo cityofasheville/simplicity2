@@ -66,7 +66,7 @@ const ReactGA = require('react-ga');
 
 let logPageView = () => {
   ReactGA.set({ page: window.location.pathname });
-  ReactGA.pageview(window.location.pathname);
+  ReactGA.pageview(window.location.pathname + window.location.search);
 };
 
 if (window.location.href.indexOf('dashboards.ashevillenc.gov') > -1) {

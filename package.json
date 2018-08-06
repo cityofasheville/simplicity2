@@ -101,7 +101,7 @@
     "react-table": "^6.7.4",
     "react-toggle": "^4.0.1",
     "selectly": "^0.5.0",
-    "semiotic": "^1.13.3",
+    "semiotic": "^1.13.4",
     "semiotic-mark": "^0.1.2",
     "unfetch": "^3.0.0",
     "url-loader": "^1.0.1"

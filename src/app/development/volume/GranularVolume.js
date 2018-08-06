@@ -5,7 +5,7 @@ import { graphql } from 'react-apollo';
 import { nest } from 'd3-collection';
 import { color } from 'd3-color';
 import { histogram } from 'd3-array';
-import { FacetController, OrdinalFrame } from 'semiotic';
+import { FacetController, ResponsiveOrdinalFrame } from 'semiotic';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import PermitTypeMenus from './PermitTypeMenus';
 import PermitVolCirclepack from './PermitVolCirclepack';
@@ -248,7 +248,7 @@ class GranularVolume extends React.Component {
       rObj.issued = false;
       return rObj;
     });
-    const ordinalWithStatus = issuedOrdinal.concat(notIssuedOrdinal);
+    const ordinalWithStatus = notIssuedOrdinal.concat(issuedOrdinal);
 
     return (<div>
       <h1>Permit Volume for {`${new Date(includedDates[0]).toLocaleDateString('en-US', dateOptions)} to ${new Date(includedDates[includedDates.length - 1]).toLocaleDateString('en-US', dateOptions)}`}</h1>
@@ -330,7 +330,8 @@ class GranularVolume extends React.Component {
             {/* foreach permit type showing (see menus for logic) */}
             {unrolledHierarchy.map(unroll => (
               // colors are shades of unroll key
-              <OrdinalFrame
+              <ResponsiveOrdinalFrame
+                responsiveWidth
                 key={unroll.key}
                 data={ordinalWithStatus.filter(d => d.key === unroll.key)}
                 title={unroll.key}

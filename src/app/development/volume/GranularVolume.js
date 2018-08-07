@@ -44,36 +44,9 @@ const dateOptions = {
   day: 'numeric',
 };
 
-function selectHierarchy(filteredData, selectedLevels, rollup = false) {
-  let useLevels = selectedLevels;
-  if (typeof selectedLevels === 'string') {
-    useLevels = [selectedLevels];
-  }
-  const thisNest = nest();
-  useLevels.forEach(level => thisNest.key(d => d[level]));
 
-  if (rollup) {
-    thisNest.rollup(d => d.length);
-  }
-  return thisNest
-    .entries(filteredData);
-}
-
-function groupHierachyOthers(inputHierarchy, rolledUp = false) {
+function groupHierachyOthers(inputHierarchy) {
   const hierarchyToUse = inputHierarchy.slice(0, otherGroupCutoff);
-  if (rolledUp) {
-    const others = [].concat(...inputHierarchy.slice(
-      otherGroupCutoff,
-      inputHierarchy.length - 1
-    ).map(d => d.value))
-      .reduce((a, b) => a + b);
-
-    hierarchyToUse.push({
-      key: 'Other',
-      value: others,
-    });
-    return hierarchyToUse.sort((a, b) => b.value - a.value);
-  }
 
   const others = [].concat(...inputHierarchy.slice(
     otherGroupCutoff,
@@ -83,8 +56,9 @@ function groupHierachyOthers(inputHierarchy, rolledUp = false) {
   hierarchyToUse.push({
     key: 'Other',
     values: others,
+    value: others.length,
   });
-  return hierarchyToUse.sort((a, b) => b.values.length - a.values.length);
+  return hierarchyToUse.sort((a, b) => b.value - a.value);
 }
 
 
@@ -120,12 +94,12 @@ class GranularVolume extends React.Component {
     return includedDates;
   }
 
-  ordinalFromHierarchical(unrolledHierarchy, includedDates) {
+  ordinalFromHierarchical(entriesHierarchy, includedDates) {
     const histFunc = histogram(this.props.data.permits_by_address)
       .value(d => new Date(d.applied_date))
       .thresholds(includedDates);
 
-    return [].concat(...unrolledHierarchy
+    return [].concat(...entriesHierarchy
       .map((hierarchyType) => {
         const binnedValues = histFunc(hierarchyType.values);
         return includedDates.map((thisDate) => {
@@ -194,44 +168,46 @@ class GranularVolume extends React.Component {
         update URL to allow bookmarking
     */
 
-    // All data to use for dropdowns
-    const bigNest = nest();
-    this.state.hierarchyLevels.forEach(level => bigNest.key(d => d[level.name]));
-    const wholeHierarchy = bigNest.object(this.props.data.permits_by_address);
-
-    // Filtered by what's actually showing now
-    const filteredData = this.filterData();
-
     let firstIndexUnselected = this.state.hierarchyLevels.map(l => l.selectedCat).indexOf(null);
     if (firstIndexUnselected === -1) {
       // Hierarchy is just key: whatever, values: filteredData
       firstIndexUnselected = this.state.hierarchyLevels.length - 1;
     }
 
-    // Are we viewing permit type, subtype, or category?
-    const selectedLevel = this.state.hierarchyLevels[firstIndexUnselected].name;
-
-    // For circlepack
-    let rolledHierarchy = selectHierarchy(filteredData, selectedLevel, true)
-      .sort((a, b) => b.value - a.value);
-
-    // Data sorted into as many levels as are selected
-    let unrolledHierarchy = selectHierarchy(filteredData, selectedLevel)
-      .sort((a, b) => b.values.length - a.values.length);
-
-    if (rolledHierarchy.length > otherGroupCutoff) {
-      rolledHierarchy = groupHierachyOthers(rolledHierarchy, true);
-      unrolledHierarchy = groupHierachyOthers(unrolledHierarchy);
+    // Current data separated into groups
+    const bigNest = nest();
+    for (let i = 0; i <= firstIndexUnselected; i++) {
+      bigNest.key(d => d[this.state.hierarchyLevels[i].name]);
     }
+
+    const wholeHierarchy = bigNest.object(this.props.data.permits_by_address);
+
+    let filteredData = wholeHierarchy;
+    for (let i = 0; i < firstIndexUnselected; i++) {
+      filteredData = wholeHierarchy[this.state.hierarchyLevels[i].selectedCat];
+    }
+
+    let entriesHierarchy = Object.keys(filteredData).map(key => ({
+      key,
+      values: filteredData[key],
+      value: filteredData[key].length
+    })).sort((a, b) => b.value - a.value);
+
+    if (entriesHierarchy.length > otherGroupCutoff) {
+      entriesHierarchy = groupHierachyOthers(entriesHierarchy);
+    }
+
+
+    console.log(entriesHierarchy)
 
     // Determine what colors each key within that hierarchy should be
     const nodeColors = { root: 'none' };
-    unrolledHierarchy.forEach((hierarchyLevel, i) => {
+    entriesHierarchy.forEach((hierarchyLevel, i) => {
       nodeColors[hierarchyLevel.key] = colorScheme[i];
     });
 
     const includedDates = this.timeBuckets();
-    const ordinalData = this.ordinalFromHierarchical(unrolledHierarchy, includedDates);
+    const ordinalData = this.ordinalFromHierarchical(entriesHierarchy, includedDates);
 
     // status_current = Issued
     const issuedOrdinal = ordinalData.map((datum) => {
@@ -269,7 +245,7 @@ class GranularVolume extends React.Component {
         <div className="col-md-3 granularVolCirclepack">
           <h2>Total</h2>
           <PermitVolCirclepack
-            data={{ key: 'root', values: rolledHierarchy }}
+            data={{ key: 'root', children: entriesHierarchy }}
             colorKeys={nodeColors}
           />
         </div>
@@ -328,7 +304,7 @@ class GranularVolume extends React.Component {
             }}
           >
             {/* foreach permit type showing (see menus for logic) */}
-            {unrolledHierarchy.map(unroll => (
+            {entriesHierarchy.map(unroll => (
               // colors are shades of unroll key
               <ResponsiveOrdinalFrame
                 responsiveWidth

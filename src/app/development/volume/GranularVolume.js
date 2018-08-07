@@ -102,6 +102,7 @@ class GranularVolume extends React.Component {
     return [].concat(...entriesHierarchy
       .map((hierarchyType) => {
         const binnedValues = histFunc(hierarchyType.values);
+
         return includedDates.map((thisDate) => {
           const bin = binnedValues.find(v => new Date(v.x0).toLocaleDateString('en-US', dateOptions) === new Date(thisDate).toLocaleDateString('en-US', dateOptions));
           const binLength = bin ? bin.length : 0;
@@ -115,22 +116,9 @@ class GranularVolume extends React.Component {
       }));
   }
 
-  filterData() {
-    // Filter based on what is selected in dropdowns
-    return this.props.data.permits_by_address.filter((d) => {
-      let use = true;
-      this.state.hierarchyLevels.forEach((level) => {
-        if (!level.selectedCat) { return; }
-        use = use && d[level.name] === level.selectedCat;
-      });
-      return use;
-    });
-  }
-
   onMenuSelect(e, levelIndex) {
     const newVal = e.target.value === 'null' ? null : e.target.value;
     const newLevels = [...this.state.hierarchyLevels];
-    // console.log(newLevels, levelIndex)
     newLevels[levelIndex].selectedCat = newVal;
     for (let changeIndex = newLevels.length - 1; changeIndex > levelIndex; changeIndex--) {
       newLevels[changeIndex].selectedCat = null;
@@ -190,15 +178,12 @@ class GranularVolume extends React.Component {
     let entriesHierarchy = Object.keys(filteredData).map(key => ({
       key,
       values: filteredData[key],
-      value: filteredData[key].length
+      value: filteredData[key].length,
     })).sort((a, b) => b.value - a.value);
 
     if (entriesHierarchy.length > otherGroupCutoff) {
       entriesHierarchy = groupHierachyOthers(entriesHierarchy);
     }
-
-
-    console.log(entriesHierarchy)
 
     // Determine what colors each key within that hierarchy should be
     const nodeColors = { root: 'none' };
@@ -209,22 +194,25 @@ class GranularVolume extends React.Component {
     const includedDates = this.timeBuckets();
     const ordinalData = this.ordinalFromHierarchical(entriesHierarchy, includedDates);
 
-    // status_current = Issued
-    const issuedOrdinal = ordinalData.map((datum) => {
-      const rObj = Object.assign({}, datum);
-      rObj.values = datum.values.filter(val => val.status_current === 'Issued');
-      rObj.count = rObj.values.length;
-      rObj.issued = true;
-      return rObj;
+    const ordinalWithStatus = [];
+    ordinalData.forEach((datum) => {
+      const issued = Object.assign({}, datum);
+      const notIssued = Object.assign({}, datum);
+      // TODO: ONLY ASSIGN VALUES NECESSARY
+      issued.values = [];
+      notIssued.values = [];
+
+      datum.values.forEach(datumValue => (datumValue.status_current === 'Issued' ?
+        issued.values.push(datumValue)
+        : notIssued.values.push(datumValue)));
+      issued.count = issued.values.length;
+      issued.issued = true;
+      notIssued.count = notIssued.values.length;
+      notIssued.issued = false;
+
+      ordinalWithStatus.push(notIssued);
+      ordinalWithStatus.push(issued);
     });
-    const notIssuedOrdinal = ordinalData.map((datum) => {
-      const rObj = Object.assign({}, datum);
-      rObj.values = datum.values.filter(val => val.status_current !== 'Issued');
-      rObj.count = rObj.values.length;
-      rObj.issued = false;
-      return rObj;
-    });
-    const ordinalWithStatus = notIssuedOrdinal.concat(issuedOrdinal);
 
     return (<div>
       <h1>Permit Volume for {`${new Date(includedDates[0]).toLocaleDateString('en-US', dateOptions)} to ${new Date(includedDates[includedDates.length - 1]).toLocaleDateString('en-US', dateOptions)}`}</h1>
@@ -304,16 +292,15 @@ class GranularVolume extends React.Component {
             }}
           >
             {/* foreach permit type showing (see menus for logic) */}
-            {entriesHierarchy.map(unroll => (
-              // colors are shades of unroll key
+            {entriesHierarchy.map(datum => (
               <ResponsiveOrdinalFrame
                 responsiveWidth
-                key={unroll.key}
-                data={ordinalWithStatus.filter(d => d.key === unroll.key)}
-                title={unroll.key}
+                key={datum.key}
+                data={ordinalWithStatus.filter(d => d.key === datum.key)}
+                title={datum.key}
                 style={d => {
                   return {
-                    fill: d.issued ? nodeColors[unroll.key] : color(nodeColors[unroll.key]).brighter(2)
+                    fill: d.issued ? nodeColors[datum.key] : color(nodeColors[datum.key]).brighter(2)
                   };
                 }}
               />

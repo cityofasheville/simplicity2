@@ -46,6 +46,9 @@ const dateOptions = {
 
 
 function groupHierachyOthers(inputHierarchy) {
+  if (inputHierarchy.length <= otherGroupCutoff) {
+    return inputHierarchy;
+  }
   const hierarchyToUse = inputHierarchy.slice(0, otherGroupCutoff);
 
   const others = [].concat(...inputHierarchy.slice(
@@ -59,6 +62,31 @@ function groupHierachyOthers(inputHierarchy) {
     value: others.length,
   });
   return hierarchyToUse.sort((a, b) => b.value - a.value);
+}
+
+function splitOrdinalByBool(inputData, matchTestFunc, nameTrue) {
+  const splitOrdinal = [];
+  inputData.forEach((datum) => {
+    const matchy = Object.assign({}, datum);
+    matchy[nameTrue] = true;
+    const notMatchy = Object.assign({}, datum);
+    notMatchy[nameTrue] = false;
+
+    matchy.values = [];
+    notMatchy.values = [];
+
+    datum.values.forEach(datumValue => (matchTestFunc(datumValue) ?
+      matchy.values.push(datumValue)
+      : notMatchy.values.push(datumValue)));
+
+    matchy.count = matchy.values.length;
+    notMatchy.count = notMatchy.values.length;
+
+    splitOrdinal.push(notMatchy);
+    splitOrdinal.push(matchy);
+  });
+
+  return splitOrdinal;
 }
 
 
@@ -171,51 +199,40 @@ class GranularVolume extends React.Component {
     const wholeHierarchy = bigNest.object(this.props.data.permits_by_address);
 
     let filteredData = wholeHierarchy;
-    for (let i = 0; i < firstIndexUnselected; i++) {
-      filteredData = wholeHierarchy[this.state.hierarchyLevels[i].selectedCat];
-    }
+    this.state.hierarchyLevels.forEach((level, i) => {
+      if (level.selectedCat) { filteredData = filteredData[level.selectedCat]; }
+      if (level.selectedCat && i === this.state.hierarchyLevels.length - 1) {
+        const rObj = {};
+        rObj[level.selectedCat] = filteredData;
+        filteredData = rObj;
+      }
+    });
 
+    // Named entries hierarchy because it's the equivalent of nest().entries(data)
     let entriesHierarchy = Object.keys(filteredData).map(key => ({
       key,
       values: filteredData[key],
       value: filteredData[key].length,
     })).sort((a, b) => b.value - a.value);
 
-    if (entriesHierarchy.length > otherGroupCutoff) {
-      entriesHierarchy = groupHierachyOthers(entriesHierarchy);
-    }
+    entriesHierarchy = groupHierachyOthers(entriesHierarchy);
 
     // Determine what colors each key within that hierarchy should be
     const nodeColors = { root: 'none' };
+    const theseColors = firstIndexUnselected % 2 !== 0 ? colorScheme.slice().reverse() : colorScheme;
     entriesHierarchy.forEach((hierarchyLevel, i) => {
-      nodeColors[hierarchyLevel.key] = colorScheme[i];
+      nodeColors[hierarchyLevel.key] = theseColors[i];
     });
 
     const includedDates = this.timeBuckets();
     const ordinalData = this.ordinalFromHierarchical(entriesHierarchy, includedDates);
 
-    const ordinalWithStatus = [];
-    ordinalData.forEach((datum) => {
-      const issued = Object.assign({}, datum);
-      const notIssued = Object.assign({}, datum);
-      // TODO: ONLY ASSIGN VALUES NECESSARY
-      issued.values = [];
-      notIssued.values = [];
-
-      datum.values.forEach(datumValue => (datumValue.status_current === 'Issued' ?
-        issued.values.push(datumValue)
-        : notIssued.values.push(datumValue)));
-      issued.count = issued.values.length;
-      issued.issued = true;
-      notIssued.count = notIssued.values.length;
-      notIssued.issued = false;
-
-      ordinalWithStatus.push(notIssued);
-      ordinalWithStatus.push(issued);
-    });
+    const statusTestFunc = d => d.status_current === 'Issued';
+    const statusBoolKey = 'issued';
+    const ordinalWithStatus = splitOrdinalByBool(ordinalData, statusTestFunc, statusBoolKey);
 
     return (<div>
-      <h1>Permit Volume for {`${new Date(includedDates[0]).toLocaleDateString('en-US', dateOptions)} to ${new Date(includedDates[includedDates.length - 1]).toLocaleDateString('en-US', dateOptions)}`}</h1>
+      <h1>Permits Opened from {`${new Date(includedDates[0]).toLocaleDateString('en-US', dateOptions)} to ${new Date(includedDates[includedDates.length - 1]).toLocaleDateString('en-US', dateOptions)}`}</h1>
       <div id="controls-n-summary" className="row">
         <PermitTypeMenus
           onSelect={this.onMenuSelect}
@@ -330,18 +347,18 @@ class GranularVolume extends React.Component {
 const getPermitsQuery = gql`
   query getPermitsQuery($civicaddress_id: Int!, $radius: Int, $after: String) {
     permits_by_address(civicaddress_id: $civicaddress_id, radius: $radius, after: $after) {
-        permit_number
-        permit_group
-        permit_type
-        permit_subtype
-        permit_category
-        permit_description
+        address
         applicant_name
         applied_date
+        civic_address_id
+        permit_category
+        permit_description
+        permit_group
+        permit_number
+        permit_subtype
+        permit_type
         status_current
         status_date
-        civic_address_id
-        address
         x
         y
     }

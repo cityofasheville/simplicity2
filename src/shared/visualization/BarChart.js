@@ -13,9 +13,9 @@ import { formatDataForStackedBar, budgetBarAnnotationRule } from './visUtilities
  */
 
 const getLongDesc = (data, dataKeys, mainAxisKey, valueFormatter) => {
-  //need to fix this function to be generic and work for any barchart data sent in.
+  // need to fix this function to be generic and work for any barchart data sent in.
   let formattedData = [];
-  if (data.length > 0 && data[0].label === undefined) { //hacky temporary fix so homelessness barcharts still work
+  if (data.length > 0 && data[0].label === undefined) { // hacky temporary fix so homelessness barcharts still work
     formattedData = data;
   } else {
     for (let item of data) {
@@ -90,8 +90,7 @@ class BarChart extends React.Component {
           }
         </p>
         <div
-          role="img"
-          alt={this.state.altText}
+          aria-label={this.state.altText}
           tabIndex={0}
           className="row visualization-container"
         >
@@ -120,7 +119,7 @@ class BarChart extends React.Component {
                     textAnchor = 'end';
                   }
 
-                  if (this.props.rotateXLabels) { transform += 'rotate(-45)' }
+                  if (this.props.rotateXLabels) { transform += 'rotate(-45)'; }
 
                   return (
                     <text

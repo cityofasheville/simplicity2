@@ -76,6 +76,8 @@ class AreaChart extends React.Component {
               margin: '0 auto',
               textAlign: 'center',
             }}
+            tabIndex={0}
+            aria-label={this.state.altText}
           >
             <div
               style={{
@@ -85,9 +87,6 @@ class AreaChart extends React.Component {
                 width: '95%',
                 textAlign: 'center',
               }}
-              role="img"
-              aria-label={this.state.altText}
-              tabIndex={0}
             >
               <ResponsiveXYFrame
                 /*

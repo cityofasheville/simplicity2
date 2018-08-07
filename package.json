@@ -1,6 +1,6 @@
 {
   "name": "simplicity2",
-  "version": "3.4.0",
+  "version": "3.5.0",
   "description": "Version 2 of SimpliCity",
   "main": "index.js",
   "scripts": {
@@ -61,6 +61,8 @@
     "apollo-link-state": "^0.4.0",
     "babel-polyfill": "^6.23.0",
     "cross-env": "^5.1.6",
+    "d3-array": "^1.2.1",
+    "d3-collection": "^1.0.4",
     "d3-color": "^1.2.0",
     "d3-drag": "^1.0.4",
     "d3-ease": "^1.0.3",
@@ -99,7 +101,7 @@
     "react-table": "^6.7.4",
     "react-toggle": "^4.0.1",
     "selectly": "^0.5.0",
-    "semiotic": "^1.11.13",
+    "semiotic": "^1.13.4",
     "semiotic-mark": "^0.1.2",
     "unfetch": "^3.0.0",
     "url-loader": "^1.0.1"

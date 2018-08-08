@@ -13,9 +13,9 @@ import { formatDataForStackedBar, budgetBarAnnotationRule } from './visUtilities
  */
 
 const getLongDesc = (data, dataKeys, mainAxisKey, valueFormatter) => {
-  //need to fix this function to be generic and work for any barchart data sent in.
+  // need to fix this function to be generic and work for any barchart data sent in.
   let formattedData = [];
-  if (data.length > 0 && data[0].label === undefined) { //hacky temporary fix so homelessness barcharts still work
+  if (data.length > 0 && data[0].label === undefined) { // hacky temporary fix so homelessness barcharts still work
     formattedData = data;
   } else {
     for (let item of data) {
@@ -90,8 +90,7 @@ class BarChart extends React.Component {
           }
         </p>
         <div
-          role="img"
-          alt={this.state.altText}
+          aria-label={this.state.altText}
           tabIndex={0}
           className="row visualization-container"
         >
@@ -106,7 +105,7 @@ class BarChart extends React.Component {
                 margin={{
                   top: 10,
                   right: 10,
-                  bottom: 35,
+                  bottom: 45,
                   left: 60,
                 }}
                 oAccessor={this.props.mainAxisDataKey}
@@ -120,7 +119,7 @@ class BarChart extends React.Component {
                     textAnchor = 'end';
                   }
 
-                  if (this.props.rotateXLabels) { transform += 'rotate(-45)' }
+                  if (this.props.rotateXLabels) { transform += 'rotate(-45)'; }
 
                   return (
                     <text
@@ -131,23 +130,25 @@ class BarChart extends React.Component {
                     </text>
                   );
                 }}
-                oPadding={10}
+                oPadding={8}
                 projection={this.props.layout}
                 rAccessor="value"
                 rExtent={this.props.domain}
                 type="bar"
-                axis={[{
-                  orient: 'left',
-                  tickFormat: d => this.props.yAxisTickFormatter(d),
-                  ticks: 8,
-                }]}
+                axis={[
+                  {
+                    orient: 'left',
+                    tickFormat: d => this.props.yAxisTickFormatter(d),
+                    ticks: 8,
+                  },
+                ]}
                 style={d => (
                   this.state.hover === d[this.props.mainAxisDataKey] ?
                   // For the currently hovered bar, return a brighter fill and add a stroke
                     {
                       fill: color(d.color).brighter(0.6).toString(),
                       stroke: color(d.color).toString(),
-                      strokeWidth: 3,
+                      strokeWidth: 2,
                     } :
                     { fill: d.color })
                 }

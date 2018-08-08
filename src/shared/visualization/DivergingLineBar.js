@@ -26,7 +26,10 @@ const getLongDesc = (data, dataKeys, mainAxisKey) => (
 class DivergingLineBar extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { showingLongDesc: this.showLongDesc };
+    this.state = {
+      showingLongDesc: this.showLongDesc,
+      altText: this.props.altText || this.props.chartTitle,
+    };
   }
 
   toggleLongDesc() {
@@ -71,7 +74,11 @@ class DivergingLineBar extends React.Component {
 
     return (
       <div style={{ width: '100%', textAlign: 'center' }}>
-        <div className="row visualization-container">
+        <div
+          className="row visualization-container"
+          aria-label={this.state.altText}
+          tabIndex={0}
+        >
           <ResponsiveOrdinalFrame
             responsiveWidth
             annotations={annotations}
@@ -119,7 +126,7 @@ class DivergingLineBar extends React.Component {
                 {
                   fill: color(d.color).brighter(0.6).toString(),
                   stroke: color(d.color).toString(),
-                  strokeWidth: 3,
+                  strokeWidth: 2,
                 } :
                 { fill: d.color };
             }
@@ -239,6 +246,8 @@ class DivergingLineBar extends React.Component {
 }
 
 DivergingLineBar.propTypes = {
+  altText: PropTypes.string,
+  chartTitle: PropTypes.string,
   colorScheme: PropTypes.string,
   data: PropTypes.array,
   dataKeys: PropTypes.arrayOf(PropTypes.string),
@@ -249,6 +258,7 @@ DivergingLineBar.propTypes = {
 };
 
 DivergingLineBar.defaultProps = {
+  chartTitle: '',
   colorScheme: 'orange_purple_diverging',
   data: [],
   dataKeys: [],

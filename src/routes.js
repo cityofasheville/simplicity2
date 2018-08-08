@@ -27,6 +27,7 @@ import DevelopmentDetail from './app/development/DevelopmentDetail';
 import DevelopmentSLADashboard from './app/development/sla_dashboard/SLADashboard';
 import TRCDashboard from './app/development/trc/TRCDashboard';
 import VolumeDashboard from './app/development/volume/VolumeDashboard';
+import GranularVolume from './app/development/volume/GranularVolume';
 import ProjectFlowDashboard from './app/internal/bpt_projects/ProjectFlow';
 import CrimeSummary from './app/crime/CrimeSummary';
 import Maintenance from './app/maintenance/Maintenance';
@@ -65,12 +66,12 @@ const ReactGA = require('react-ga');
 
 let logPageView = () => {
   ReactGA.set({ page: window.location.pathname });
-  ReactGA.pageview(window.location.pathname);
+  ReactGA.pageview(window.location.pathname + window.location.search);
 };
 
 if (window.location.href.indexOf('dashboards.ashevillenc.gov') > -1) {
   ReactGA.initialize('UA-16340971-12');
-} else if (window.location.href.indexOf('simplicity.ashevillenc.gov') > -1) {
+} else if (window.location.href.indexOf('simplicity.ashevillenc.gov') > -1 && window.location.href.indexOf('dev') === -1) {
   ReactGA.initialize('UA-16340971-11');
 } else {
   logPageView = null;
@@ -133,6 +134,7 @@ const Routes = () => (
           <Route path="sla-dashboard" component={DevelopmentSLADashboard}></Route>
           <Route path="trc" component={TRCDashboard}></Route>
           <Route path="volume" component={VolumeDashboard}></Route>
+          <Route path="granular_volume" component={GranularVolume}></Route>
         </Route>
         <Route path="homelessness">
           <IndexRoute component={HomelessnessSummary} />

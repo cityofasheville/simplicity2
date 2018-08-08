@@ -12,6 +12,7 @@ import {
   IM_HOME2,
   IM_TRAFFIC_CONE,
   IM_LEAF,
+  IM_INFO,
 } from '../../shared/iconConstants';
 import { zoningLinks } from './zoning';
 import PageHeader from '../../shared/PageHeader';
@@ -50,6 +51,7 @@ query addresses($civicaddress_ids: [String]!) {
       street_number
       street_prefix
       street_name
+      street_type
       city
       neighborhood
       owner_cityname
@@ -107,9 +109,27 @@ const Address = props => (
       const calculateBrushDay = (dayOfWeek, inCity, week) => {
         if (dayOfWeek !== null) {
           if (getCurrentRecyclingWeek() === week) {
-            return `${content.weekdays[dayOfWeek]} ${content.of_this_week} (${content.brush_week} ${week})`; // eslint-disable-line
+            return (
+              <span>
+                sometime this week
+                <span title="Place on curb by 7am Monday" style={{ marginLeft: '3px' }} >
+                  <Icon path={IM_INFO} size={16} />
+                </span>
+                <br />
+                {`(Brush Week ${week})`}
+              </span>
+            );
           }
-          return `${content.weekdays[dayOfWeek]} ${content.of_next_week} (${content.brush_week} ${week})`; // eslint-disable-line
+          return (
+            <span>
+              sometime next week
+              <span title="Place on curb by 7am Monday" style={{ marginLeft: '3px' }} >
+                <Icon path={IM_INFO} size={16} />
+              </span>
+              <br />
+              {`(Brush Week ${week})`}
+            </span>
+          );
         }
         if (inCity) {
           return content.no_information_available;

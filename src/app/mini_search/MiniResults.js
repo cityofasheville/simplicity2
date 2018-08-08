@@ -143,7 +143,7 @@ export default graphql(searchQuery, {
       searchString: ownProps.searchText.trim(),
       searchContexts: getEntitiesToSearch(ownProps.location.query.entities !== undefined ?
         getEntities(ownProps.location.query.entities) :
-        getEntities('address,property,neighborhood,street,owner,google'))
-    }
+        getEntities('address,property,neighborhood,street,owner')), // ,google'))
+    },
   }),
 })(MiniResults);

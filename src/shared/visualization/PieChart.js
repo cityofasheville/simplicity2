@@ -24,7 +24,6 @@ class PieChart extends React.Component {
     return (
       <div
         className="ordinal-pie-elements"
-        role="img"
         tabIndex={0}
         aria-label={this.props.altText}
       >

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Timeline from './Timeline';
+import TrcTimeline from './TrcTimeline';
 
 
 class TRCDashboard extends React.Component {
@@ -13,7 +13,7 @@ class TRCDashboard extends React.Component {
       {/* SEARCH BAR */}
       {/* MAP */}
       <div className="col-md-12" >
-        <Timeline/>
+        <TrcTimeline/>
       </div>
       {/* CONTEXT */}
       {/* TABLE */}

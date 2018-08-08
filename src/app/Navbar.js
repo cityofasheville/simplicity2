@@ -63,7 +63,7 @@ export default class Navbar extends React.Component { // eslint-disable-line rea
                 {/* <li><Link to="/my-simplicity" activeClassName="active">My SimpliCity</Link></li> */}
                 <li><Link to="/dashboards" activeClassName="active">Dashboards</Link></li>
                 <li><Link to="https://docs.google.com/a/ashevillenc.gov/forms/d/e/1FAIpQLSdjNwOmoDY3PjQOVreeSL07zgI8otIIPWjY7BnejWMAjci8-w/viewform?c=0&w=1" target="_blank" activeClassName="active">Feedback</Link></li>
-                <li><a onClick={() => { browserHistory.push('/search?entities=address,property,neighborhood,street,owner,google') }}><Icon path={IM_SEARCH} size={16} /></a></li>
+                <li><a onClick={() => { browserHistory.push('/search?entities=address,property,neighborhood,street,owner') }}><Icon path={IM_SEARCH} size={16} /></a></li>
                 <AuthControl />
                 <li>
                   <hr style={{

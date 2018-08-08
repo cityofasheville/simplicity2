@@ -10,6 +10,7 @@ const HorizontalLegend = (props) => {
 
   return (<div
     style={props.style}
+    aria-label="Legend values for chart"
   >
     {labelItems.map((item, index) => {
       const label = props.legendLabelFormatter(item.label);

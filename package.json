@@ -1,14 +1,15 @@
 {
   "name": "simplicity2",
-  "version": "3.0.1",
+  "version": "3.3.0",
   "description": "Version 2 of SimpliCity",
   "main": "index.js",
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack-dev-server --port 3000 --content-base dist/ --history-api-fallback",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --optimize-minimize --config webpack.config.js",
-    "deploySimplicity": "aws s3 sync dist s3://simplicity.ashevillenc.gov --delete --exclude \"*.map\" --exclude \"favicon.ico\" --profile simplicity2",
-    "deployDashboards": "aws s3 sync dist s3://dashboards.ashevillenc.gov --delete --exclude \"*.map\" --exclude \"favicon.ico\" --profile simplicity2"
+    "deploySimplicity": "aws s3 sync dist s3://simplicity.ashevillenc.gov --delete --exclude \"*.map\" --exclude \"favicon.ico\"",
+    "deployDashboards": "aws s3 sync dist s3://dashboards.ashevillenc.gov --delete --exclude \"*.map\" --exclude \"favicon.ico\"",
+    "devDeploy": "aws s3 sync dist s3://dev-simplicity.ashevillenc.gov --delete --exclude \"*.map\" --exclude \"favicon.ico\""
   },
   "repository": {
     "type": "git",
@@ -60,12 +61,15 @@
     "apollo-link-state": "^0.4.0",
     "babel-polyfill": "^6.23.0",
     "cross-env": "^5.1.6",
+    "d3-array": "^1.2.1",
+    "d3-collection": "^1.0.4",
     "d3-color": "^1.2.0",
     "d3-drag": "^1.0.4",
     "d3-ease": "^1.0.3",
     "d3-sankey": "^0.7.1",
     "d3-sankey-circular": "^0.23.0",
     "d3-scale": "^2.0.0",
+    "d3-time": "^1.0.8",
     "d3-timer": "^1.0.6",
     "d3-transition": "^1.1.0",
     "data-tree": "^1.2.4",
@@ -97,7 +101,7 @@
     "react-table": "^6.7.4",
     "react-toggle": "^4.0.1",
     "selectly": "^0.5.0",
-    "semiotic": "^1.11.9",
+    "semiotic": "^1.13.4",
     "semiotic-mark": "^0.1.2",
     "unfetch": "^3.0.0",
     "url-loader": "^1.0.1"

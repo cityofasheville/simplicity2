@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ResponsiveXYFrame } from 'semiotic';
 import { data } from './data';
+import Tooltip from '../../../shared/visualization/Tooltip';
 
 
 const dateParser = (stringDate) => {
@@ -11,33 +12,36 @@ const dateParser = (stringDate) => {
   return new Date(arrDate[2], arrDate[0], arrDate[1]);
 };
 
-class Timeline extends React.Component {
+class TrcTimeline extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      hover: null,
+    };
   }
 
   render() {
     const dateTypes = [
       {
         name: 'Submission Date',
-        color: 'red',
+        color: '#cc1100',
       },
       {
         name: 'Initial TRC Meeting Date',
-        color: 'orange',
+        color: '#ffce00',
       },
       {
         name: 'Initial Meeting Date',
-        color: 'orange',
+        color: '#e69400',
         //  IS THIS RIGHT???????
       },
       {
         name: 'Revision Meeting Date',
-        color: 'green',
+        color: '#009970',
       },
       {
         name: 'Final Meeting Date',
-        color: 'blue',
+        color: '#55bef6',
       },
     ];
 
@@ -53,6 +57,7 @@ class Timeline extends React.Component {
             date,
             color: type.color,
             eventType: type.name,
+            project: rVal['Project Name']
           });
         }
       });
@@ -111,11 +116,15 @@ class Timeline extends React.Component {
     }
 
 
-    return (<div style={{ textAlign: 'center' }} >
+    return (<div style={{ textAlign: 'center' }} className="trc-timeline" >
       <ResponsiveXYFrame
         responsiveWidth
-        // responsiveHeight
-        margin={{ top: 70, left: 30, right: 30, bottom: 70 }}
+        margin={{
+          top: 70,
+          left: 30,
+          right: 30,
+          bottom: 70,
+        }}
         lines={layeredData}
         lineType="line"
         xAccessor="date"
@@ -123,7 +132,6 @@ class Timeline extends React.Component {
         axes={[
           {
             orient: 'top',
-            rotate: -45,
             tickFormat: d => `${new Date(d).toLocaleDateString(
               'en-US',
               { month: 'short', year: '2-digit' },
@@ -131,28 +139,42 @@ class Timeline extends React.Component {
             ticks: 5,
           },
         ]}
-        lineStyle={{
+        lineStyle={d => ({
           stroke: 'black',
-          strokeWidth: '1.5',
-        }}
+          strokeWidth: '0.5',
+          strokeOpacity: d['Project Name'] === this.state.hover ? '1' : '0.5',
+        })}
         showLinePoints
-        customPointMark={(d) => {
-          return (<circle
-            r={4}
+        customPointMark={() => (<circle r={4} />)}
+        pointStyle={(d) => {
+          const hovered = this.state.hover === d.project;
+          return {
+            stroke: d.color,
+            strokeOpacity: hovered ? 0.75 : 0.25,
+            strokeWidth: hovered ? 5 : 0.25,
+            fill: d.color,
+          };
+        }}
+        hoverAnnotation
+        customHoverBehavior={(d) => {
+          this.setState({
+            hover: d ? d.project : null,
+          });
+        }}
+        tooltipContent={(d) => {
+          const datum = d.data ? d.data : d;
+          const title = datum.project;
+          const textLines = [{
+            text: `${datum.eventType}: ${datum.date.toLocaleDateString()}`,
+          }];
+          return (<Tooltip
+            title={title}
+            textLines={textLines}
           />);
         }}
-        pointStyle={d => ({
-          stroke: d.color,
-          strokeWidth: 3,
-          fill: 'white',
-        })}
-        hoverAnnotation
-        tooltipContent={d =>
-          `${d.parentLine['Project Name']} ${d.eventType}: ${d.date.toLocaleDateString()}`
-        }
       />
     </div>);
   }
 }
 
-export default Timeline;
+export default TrcTimeline;

@@ -21,6 +21,7 @@ const GET_ADDRESSES_BY_NEIGHBORHOOD = gql`
       street_name
       street_prefix
       street_number
+      street_type
       unit
       city
       zipcode
@@ -76,9 +77,7 @@ const AddressesByNeighborhood = props => (
           accessor: 'Address',
           Cell: row => (
             <div>
-              <div>
-                {row.original.street_number} {row.original.street_prefix} {row.original.street_name} {row.original.unit}
-              </div>
+              <div>{row.original.street_number} {row.original.street_prefix} {row.original.street_name} {row.original.street_type} {row.original.unit ? `#${row.original.unit}` : ''}</div>
               <div>{row.original.city}, NC {row.original.zipcode}</div>
             </div>
           ),
@@ -91,7 +90,7 @@ const AddressesByNeighborhood = props => (
             />
           ),
           filterMethod: (filter, row) => {
-            const joinedAddressInfo = `${row._original.street_number} ${row._original.street_prefix} ${row._original.street_number} ${row._original.street_name} ${row._original.unit} ${row._original.city} ,NC ${row._original.zipcode}`; // eslint-disable-line
+            const joinedAddressInfo = `${row._original.street_number} ${row._original.street_prefix} ${row._original.street_name} ${row._original.street_type} ${row._original.unit ? '#' : ''} ${row._original.unit} ${row._original.city}, NC ${row._original.zipcode}`;
             return row._original !== undefined ? joinedAddressInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true; // eslint-disable-line
           },
         },

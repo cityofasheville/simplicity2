@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ResponsiveXYFrame } from 'semiotic';
 import { scaleLinear } from 'd3-scale';
+import { timeMonth } from 'd3-time';
 import Tooltip from '../../../shared/visualization/Tooltip';
 import { dollarFormatter } from '../../../shared/visualization/visUtilities';
-
 
 const months = [
   'January',
@@ -20,6 +20,8 @@ const months = [
   'November',
   'December',
 ];
+
+// TODO: where else should d3-time and timemonth be used rather than some hacky method?
 
 class YearlyPermitVol extends React.Component {
   constructor(props) {
@@ -37,24 +39,21 @@ class YearlyPermitVol extends React.Component {
     this.allDataByType = this.getallDataByType(this.cleanedData);
     this.years = this.cleanedData
       .map(d => d.year)
-      .filter((value, index, self) => self.indexOf(value) === index);
+      .filter((value, index, self) => self.indexOf(value) === index)
+      .concat([new Date().getFullYear() + 1])
+      .map(d => new Date(+d, 0));
 
     this.radiusFunc = scaleLinear()
-      .range([3, 20])
+      .range([1, 40])
       .domain([0, this.maxVolVal()]);
 
-
-    const today = new Date();
-
     this.state = {
-      activeTypes: ['Total'],
+      activeTypes: this.props.volumeKeys,
       brushedData: this.cleanedData,
-      brushExtent: [new Date(2017, 0), new Date(today.getFullYear(), today.getMonth() - 1)],
+      brushExtent: [this.years[this.years.length - 3], this.years[this.years.length - 1]],
       hover: null,
     };
 
-    // this.brushStart = this.brushStart.bind(this);
-    // this.brushDuring = this.brushDuring.bind(this);
     this.brushEnd = this.brushEnd.bind(this);
   }
 
@@ -96,32 +95,38 @@ class YearlyPermitVol extends React.Component {
 
   maxVolVal(volumeOrValue = 'value') {
     return this.props.volumeKeys.map(key =>
-      this.allDataByType[key].map(d => d[volumeOrValue]).reduce((a, b) =>
-        Math.max(a, b))).reduce((a, b) => Math.max(a, b));
+      this.allDataByType[key]
+        .map(d => d[volumeOrValue])
+        .reduce((a, b) =>
+          Math.max(a, b))
+    ).reduce((a, b) => Math.max(a, b));
   }
 
-  // brushStart(e) {
-  //   this.setState({
-  //     selectedDataCountStart: data.filter(d => d.date >= e[0] && d.date <= e[1])
-  //       .length
-  //   });
-  // }
-
-  // brushDuring(e) {
-  //   this.setState({
-  //     selectedDataCountDuring: data.filter(
-  //       d => d.date >= e[0] && d.date <= e[1]
-  //     ).length
-  //   });
-  // }
-
   brushEnd(e) {
+    let newExtent;
+    if (e) {
+      // snap brush
+      newExtent = e.map(timeMonth.round);
+      if (newExtent[0] >= newExtent[1]) {
+        newExtent[0] = timeMonth.floor(newExtent[0]);
+        newExtent[1] = timeMonth.ciel(newExtent[1]);
+      }
+    } else {
+      newExtent = [0, 0];
+    }
     this.setState({
-      brushExtent: e,
-      brushedData: this.cleanedData.filter(d => d.date >= e[0] && d.date <= e[1]),
+      brushExtent: newExtent,
+      brushedData: e ? this.cleanedData.filter(d => d.date >= newExtent[0] && d.date <= newExtent[1]) : this.cleanedData,
     });
   }
 
+  handleLegendSelect(key, activeNow) {
+    this.setState({
+      activeTypes: activeNow ?
+        this.state.activeTypes.filter(type => type !== key) :
+        this.state.activeTypes.concat([key]),
+    });
+  }
 
   render() {
     let currentLines = [];
@@ -137,57 +142,75 @@ class YearlyPermitVol extends React.Component {
       currentLines = currentLines.concat(Object.values(byTypeAndYear[type]).map(d => ({
         type,
         coordinates: d,
+        year: d[0].year,
       })));
     });
 
-    return (<div style={{ width: '100%', textAlign: 'center' }}>
-      <div style={{ margin: '2% 10%' }}>
-        {/* TODO: USE CHECKBOXES INSTEAD SO THEY'RE ACCESSIBLE */}
+    return (<div style={{ width: '100%', textAlign: 'center' }} className="permitVol">
+      <div style={{ margin: '2% 20%', whiteSpace: 'wrap' }}>
         {this.props.volumeKeys.map((key, i) => {
-          const activeNow = this.state.activeTypes.findIndex(type => type === key) >= 0
+          const activeNow = this.state.activeTypes.findIndex(type => type === key) >= 0;
           return (<div
+            role="checkbox"
+            aria-checked={activeNow}
+            aria-label={key}
+            tabIndex="0"
             style={{
-              display: 'inline',
+              display: 'inline-block',
               padding: '0 1%',
             }}
             key={key + i}
-            onClick={d => this.setState({
-              activeTypes: activeNow ? this.state.activeTypes.filter(d => d !== key) : this.state.activeTypes.concat([key])
-            })}
+            onKeyDown={(e) => {
+              if (e.key === ' ') {
+                e.preventDefault();
+                this.handleLegendSelect(key, activeNow);
+              }
+            }}
+            onClick={() => this.handleLegendSelect(key, activeNow)}
           >
-            <svg
-              height="15"
-              width="15px"
+            <div
               style={{
-                margin: '0 5',
+                whiteSpace: 'nowrap',
               }}
             >
-              <rect
-                height="100%"
-                width="100%"
+              <svg
+                height="15"
+                width="15px"
                 style={{
-                  fill: activeNow ? this.props.colorScheme[i] : 'white',
-                  stroke: this.props.colorScheme[i],
-                  strokeWidth: '3',
-                  cursor: 'pointer',
-                  fillOpacity: 0.75,
+                  margin: '0 5',
                 }}
-              ></rect>
-            </svg>
-            <span
-              className={`volKeyButton ${activeNow ? 'active' : 'inactive'}`}
-            >
-              {key}
-            </span>
+              >
+                <rect
+                  height="100%"
+                  width="100%"
+                  style={{
+                    fill: activeNow ? this.props.colorScheme[i] : 'white',
+                    stroke: this.props.colorScheme[i],
+                    strokeWidth: '3',
+                    cursor: 'pointer',
+                    fillOpacity: 0.75,
+                  }}
+                >
+                </rect>
+              </svg>
+              <span
+                className={`volKeyButton ${activeNow ? 'active' : 'inactive'}`}
+                style={{
+
+                }}
+              >
+                {key}
+              </span>
+            </div>
           </div>);
         })}
       </div>
       <ResponsiveXYFrame
-        title="Summary"
+        title="All Years"
         responsiveWidth
-        size={[1000, 120]}
+        size={[1000, 150]}
         margin={{
-          top: 30,
+          top: 40,
           bottom: 60,
           left: 50,
           right: 40,
@@ -196,30 +219,30 @@ class YearlyPermitVol extends React.Component {
         lineType="line"
         xAccessor="date"
         yAccessor="volume"
+        yExtent={[0, undefined]}
+        xExtent={[this.years[0], this.years[this.years.length - 1]]}
         lineStyle={d => ({ stroke: d.coordinates[0].color, strokeWidth: 2 })}
         axes={[
           {
             orient: 'bottom',
             tickFormat: d => new Date(d).getFullYear(),
-            tickValues: this.years.map(d => new Date(+d, 0)),
+            tickValues: this.years,
           },
         ]}
         interaction={{
-        //   start: this.brushStart,
-        //   during: this.brushDuring,
           end: this.brushEnd,
           brush: 'xBrush',
           extent: this.state.brushExtent,
         }}
       />
       <ResponsiveXYFrame
-        title="Monthly Comparison"
+        title="Monthly Comparison of Selected Timespan"
         responsiveWidth
         size={[1000, 400]}
         margin={{
           top: 40,
-          left: 60,
-          right: 40,
+          left: 160,
+          right: 140,
           bottom: 70,
         }}
         lines={currentLines}
@@ -286,17 +309,27 @@ class YearlyPermitVol extends React.Component {
         }}
         tooltipContent={(d) => {
           // TODO: POSITION THIS SO IT DOESN'T RUN OFF PAGE
-          if (!d.color) { return d.data.year; }
+          if (!d.color) {
+            return (<Tooltip
+              title={d.data.year}
+              textLines={[{
+                text: d.data.parentKey,
+              }]}
+            />);
+          }
 
           const title = `${months[d.monthInt]} ${d.year} ${d.parentKey}`;
           const textLines = [
             {
               text: `Volume:  ${d.volume}`,
             },
-            {
-              text: `Value:  ${dollarFormatter(d.value)}`,
-            },
           ];
+
+          if (d.parentKey !== 'Scheduled Inspections') {
+            textLines.push({
+              text: `Value:  ${dollarFormatter(d.value)}`,
+            });
+          }
 
           return (<Tooltip
             title={title}

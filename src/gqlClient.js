@@ -11,6 +11,9 @@ import { defaultState } from './defaultState';
 import { fragmentTypes } from './fragmentTypes';
 
 let SERVER_URL = 'https://data-api1.ashevillenc.gov/graphql';
+if (window.location.origin.indexOf('dev-simplicity') > -1) {
+  SERVER_URL = 'https://dev-data-api1.ashevillenc.gov/graphql';
+}
 if (process.env.USE_LOCAL_API === 'true') {
   SERVER_URL = 'http://localhost:8080/graphql';
 }

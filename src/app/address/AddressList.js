@@ -1,7 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import gql from 'graphql-tag';
-import { Query } from 'react-apollo';
 import AddressesByStreet from './AddressesByStreet';
 import AddressesByNeighborhood from './AddressesByNeighborhood';
 import ButtonGroup from '../../shared/ButtonGroup';

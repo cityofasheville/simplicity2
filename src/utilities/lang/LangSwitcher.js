@@ -5,19 +5,19 @@ const LangSwitcher = props => (
   <li className={['dropdown', props.language.dropdownOpen ? 'open' : ''].join(' ')}>
     <a
       className="dropdown-toggle"
-      onClick={() => props.language.switchLanguage(props.language.language, !props.language.dropdownOpen)}
+      onClick={() => props.language.switchLanguage(props.language.language, props.language.label, !props.language.dropdownOpen)}
       data-toggle="dropdown"
       role="button"
       aria-haspopup="true"
       aria-expanded="false"
-    >{props.language.language}
+    >{props.language.label}
       <span className="caret"></span>
     </a>
     <ul className="dropdown-menu">
       <li>
         <a
           href="#"
-          onClick={() => props.language.switchLanguage('English', false)}
+          onClick={() => props.language.switchLanguage('English', 'English', false)}
           className=""
         >English
         </a>
@@ -25,9 +25,9 @@ const LangSwitcher = props => (
       <li>
         <a
           href="#"
-          onClick={() => props.language.switchLanguage('Spanish', false)}
+          onClick={() => props.language.switchLanguage('Spanish', 'Espa\xF1ol', false)}
           className=""
-          >Spanish
+          >{'Espa\xF1ol'}
         </a>
       </li>
     </ul>

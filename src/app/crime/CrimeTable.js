@@ -197,7 +197,7 @@ const CrimeTable = (props) => {
     <div>
       <div className="col-sm-12">
         {props.data.length < 1 ?
-          <div className="alert alert-info">No results found</div>
+          <div className="alert alert-info">{content.no_results_found}</div>
         :
           <div style={{ marginTop: '10px' }}>
             <AccessibleReactTable

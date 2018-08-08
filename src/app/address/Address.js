@@ -111,23 +111,23 @@ const Address = props => (
           if (getCurrentRecyclingWeek() === week) {
             return (
               <span>
-                sometime this week
-                <span title="Place on curb by 7am Monday" style={{ marginLeft: '3px' }} >
+                {content.sometime_this_week}
+                <span title={content.place_on_curb_by_7am_monday} style={{ marginLeft: '3px' }} >
                   <Icon path={IM_INFO} size={16} />
                 </span>
                 <br />
-                {`(Brush Week ${week})`}
+                {`(${content.brush_week} ${week})`}
               </span>
             );
           }
           return (
             <span>
-              sometime next week
-              <span title="Place on curb by 7am Monday" style={{ marginLeft: '3px' }} >
+              {content.sometime_next_week}
+              <span title={content.place_on_curb_by_7am_monday} style={{ marginLeft: '3px' }} >
                 <Icon path={IM_INFO} size={16} />
               </span>
               <br />
-              {`(Brush Week ${week})`}
+              {`(${content.brush_week} ${week})`}
             </span>
           );
         }

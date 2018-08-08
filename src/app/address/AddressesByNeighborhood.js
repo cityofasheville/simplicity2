@@ -138,7 +138,7 @@ const AddressesByNeighborhood = props => (
             </div>
             <div id="listView" hidden={props.location.query.view === 'map'} className="col-sm-12">
               {data.addresses_by_neighborhood.length < 1 ?
-                <div className="alert alert-info">No results found</div>
+                <div className="alert alert-info">{content.no_results_found}</div>
                 :
                 <div style={{ marginTop: '10px' }}>
                   <AccessibleReactTable
@@ -163,7 +163,7 @@ const AddressesByNeighborhood = props => (
 
             <div id="mapView" className="col-xs-12" hidden={props.location.query.view !== 'map'}>
               {data.addresses_by_neighborhood.length === 0 || props.location.query.view !== 'map' ?
-                <div className="alert alert-info">No results found</div>
+                <div className="alert alert-info">{content.no_results_found}</div>
                 :
                 <Map
                   data={mapData}

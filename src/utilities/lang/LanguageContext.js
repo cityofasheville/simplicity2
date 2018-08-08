@@ -5,9 +5,10 @@ const LangContext = React.createContext();
 export default class LanguageProvider extends React.Component {
   state = {
     language: 'English',
+    label: 'English',
     dropdownOpen: false,
-    switchLanguage: (newLang, dropdownOpen) => {
-      this.setState({ language: newLang, dropdownOpen });
+    switchLanguage: (newLang, label, dropdownOpen) => {
+      this.setState({ language: newLang, label, dropdownOpen });
     },
   }
   render() {

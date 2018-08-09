@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
+import { Query } from "react-apollo";
 import { graphql } from 'react-apollo';
 import { nest } from 'd3-collection';
 import { color } from 'd3-color';
@@ -89,6 +90,64 @@ function splitOrdinalByBool(inputData, matchTestFunc, nameTrue) {
   return splitOrdinal;
 }
 
+function boxWhisker({ data, rScale, adjustedSize, margin }) {
+  const renderedPieces = [];
+  const keys = Object.keys(data);
+
+  keys.forEach((key) => {
+    const column = data[key];
+    const datum = column.pieceData[0];
+    console.log(data)
+
+    // Each ordinal value/status has one bar associated
+    // Each bar has an array of individual data points
+    // Render each point as a dot
+    // Render a box a la box and whisker
+    // Box is transparent, whole thing glows when hovered
+    // Hover event
+
+    //Calculate individual start and width of each graphical band
+    const birthDate = rScale(datum.startDate);
+    // const termStart = rScale(datum.start);
+    // const termEnd = rScale(datum.end);
+    // const deathDate = rScale(datum.death);
+    // const preTermWidth = termStart - birthDate;
+    // const termWidth = termEnd - termStart;
+    // const postTermWidth = deathDate - termEnd;
+//
+//     //You can return an array of graphics or an array of objects with extra data (see the Waterfall chart demo)
+    const markObject = (
+      <g key={`piece-${key}`}>
+        <rect
+          fill="#00a2ce"
+          width={10}
+          height={column.width}
+          x={birthDate}
+          y={column.x}
+        />
+        {/* <rect */}
+        {/*   fill="#4d430c" */}
+        {/*   width={termWidth} */}
+        {/*   height={column.width} */}
+        {/*   x={termStart} */}
+        {/*   y={column.x} */}
+        {/* /> */}
+        {/* <rect */}
+        {/*   fill="#b6a756" */}
+        {/*   width={postTermWidth} */}
+        {/*   height={column.width} */}
+        {/*   x={termEnd} */}
+        {/*   y={column.x} */}
+        {/* /> */}
+      </g>
+    );
+
+    renderedPieces.push(markObject);
+  });
+
+  return renderedPieces;
+}
+
 
 class GranularVolume extends React.Component {
   constructor() {
@@ -122,7 +181,7 @@ class GranularVolume extends React.Component {
     return includedDates;
   }
 
-  ordinalFromHierarchical(entriesHierarchy, includedDates) {
+  histogramFromHierarchical(entriesHierarchy, includedDates) {
     const histFunc = histogram(this.props.data.permits_by_address)
       .value(d => new Date(d.applied_date))
       .thresholds(includedDates);
@@ -225,12 +284,14 @@ class GranularVolume extends React.Component {
     });
 
     const includedDates = this.timeBuckets();
-    const ordinalData = this.ordinalFromHierarchical(entriesHierarchy, includedDates);
+    const histogramData = this.histogramFromHierarchical(entriesHierarchy, includedDates);
 
-    const statusTestFunc = d => d.status_current === 'Issued';
-    const statusBoolKey = 'issued';
-    const ordinalWithStatus = splitOrdinalByBool(ordinalData, statusTestFunc, statusBoolKey);
+    // const statusTestFunc = d => d.status_current === 'Issued';
+    // const statusBoolKey = 'issued';
+    // const histWithStatus = splitOrdinalByBool(histogramData, statusTestFunc, statusBoolKey);
+    const statusNest = nest().key(d => d.status_current)
 
+    /********************/
     return (<div>
       <h1>Permits Opened from {`${new Date(includedDates[0]).toLocaleDateString('en-US', dateOptions)} to ${new Date(includedDates[includedDates.length - 1]).toLocaleDateString('en-US', dateOptions)}`}</h1>
       <div id="controls-n-summary" className="row">
@@ -242,7 +303,7 @@ class GranularVolume extends React.Component {
         <div className="col-md-9">
           <h2>Daily</h2>
           <VolumeHistogram
-            data={ordinalData}
+            data={histogramData}
             nodeColors={nodeColors}
           />
           {/* Checkbox legend - more like checkboxes-- only show top 3 - 5 by volume by default */}
@@ -267,17 +328,21 @@ class GranularVolume extends React.Component {
           }}
         >
           <FacetController
+            type={{
+              type: boxWhisker,
+            }}
+            projection="horizontal"
             size={[185, 185]}
             margin={{
               top: 40,
               right: 10,
               bottom: 10,
-              left: 25,
+              left: 60,
             }}
             oPadding={1}
-            oAccessor="binStartDate"
-            rAccessor="count"
-            type="bar"
+            oAccessor="key"
+            oLabel
+            rAccessor={d => new Date(d.startDate)}
             pieceIDAccessor="key"
             axis={[
               {
@@ -292,7 +357,7 @@ class GranularVolume extends React.Component {
                 ),
               },
             ]}
-            hoverAnnotation
+            // hoverAnnotation
             tooltipContent={(d) => {
               const pieces = d.type === 'column-hover' ? d.pieces : [d.data];
               const title = new Date(pieces[0].binStartDate).toLocaleDateString('en-US', dateOptions);
@@ -309,41 +374,48 @@ class GranularVolume extends React.Component {
             }}
           >
             {/* foreach permit type showing (see menus for logic) */}
-            {entriesHierarchy.map(datum => (
-              <ResponsiveOrdinalFrame
+            {entriesHierarchy.map((datum) => {
+              const thisData = filteredData[datum.key] ? statusNest.entries(filteredData[datum.key]) : [];
+              const keyedData = thisData.map(d => {
+                const rObj = Object.assign({}, d);
+                rObj.startDate = d.values.sort((a, b) => new Date(a.applied_date) - new Date(b.applied_date))[0].applied_date;
+                return rObj;
+              });
+              console.log(keyedData)
+
+              return <ResponsiveOrdinalFrame
                 responsiveWidth
                 key={datum.key}
-                data={ordinalWithStatus.filter(d => d.key === datum.key)}
+                data={thisData}
                 title={datum.key}
-                style={d => {
-                  return {
-                    fill: d.issued ? nodeColors[datum.key] : color(nodeColors[datum.key]).brighter(2)
-                  };
-                }}
+                style={(d) => ({ fill: nodeColors[datum.key] })}
               />
-            ))}
+            }
+            )}
           </FacetController>
         </div>
       </div>
-      <div id="permitValue">
-        <h2>Value</h2>
-      </div>
-      <div id="permitFees">
-        <h2>Fees</h2>
+      <div id="taskVol">
+        <h2>Tasks</h2>
       </div>
       <div id="inspections">
         <h2>Inspections</h2>
       </div>
-      <div id="pacVolume">
-        <h2>PAC Traffic</h2>
-      </div>
       <div id="percentOnline">
         <h2>Percent Opened Online</h2>
+      </div>
+      <div id="permitFees">
+        <h2>Fees</h2>
       </div>
     </div>);
   }
 }
 
+// comments {
+//   comment_seq_number
+//   comment_date
+//   comments
+// }
 const getPermitsQuery = gql`
   query getPermitsQuery($civicaddress_id: Int!, $radius: Int, $after: String) {
     permits_by_address(civicaddress_id: $civicaddress_id, radius: $radius, after: $after) {

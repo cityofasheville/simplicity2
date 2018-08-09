@@ -96,8 +96,8 @@ function boxWhisker({ data, rScale, adjustedSize, margin }) {
 
   keys.forEach((key) => {
     const column = data[key];
-    const datum = column.pieceData[0];
-    console.log(data)
+    const firstDatum = column.pieceData[0];
+    console.log(column, firstDatum)
 
     // Each ordinal value/status has one bar associated
     // Each bar has an array of individual data points
@@ -107,10 +107,10 @@ function boxWhisker({ data, rScale, adjustedSize, margin }) {
     // Hover event
 
     //Calculate individual start and width of each graphical band
-    const birthDate = rScale(datum.startDate);
-    // const termStart = rScale(datum.start);
-    // const termEnd = rScale(datum.end);
-    // const deathDate = rScale(datum.death);
+    const birthDate = rScale(firstDatum.startDate);
+    // const termStart = rScale(firstDatum.start);
+    // const termEnd = rScale(firstDatum.end);
+    // const deathDate = rScale(firstDatum.death);
     // const preTermWidth = termStart - birthDate;
     // const termWidth = termEnd - termStart;
     // const postTermWidth = deathDate - termEnd;

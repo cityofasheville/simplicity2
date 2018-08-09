@@ -35,7 +35,7 @@ const PageHeader = props => (
           }
           {props.dataLinkPath &&
             <div>
-              <Link to={{ pathname: props.dataLinkPath }}>Understand this data</Link>
+              <Link to={{ pathname: props.dataLinkPath }}>{props.dataLinkText}</Link>
             </div>
           }
         </div>
@@ -59,6 +59,7 @@ PageHeader.propTypes = {
   externalLink: PropTypes.string,
   externalLinkText: PropTypes.string,
   dataLinkPath: PropTypes.string,
+  dataLinkText: PropTypes.string,
   image: PropTypes.string,
   imageAlt: PropTypes.string,
   icon: PropTypes.node,
@@ -67,6 +68,7 @@ PageHeader.propTypes = {
 PageHeader.defaultProps = {
   h2: null,
   h3: null,
+  dataLinkText: 'Understand this data',
 };
 
 export default PageHeader;

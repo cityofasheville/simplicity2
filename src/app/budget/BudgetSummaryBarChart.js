@@ -5,12 +5,17 @@ import BarChart from '../../shared/visualization/BarChart';
 import { formatBudgetDataForStackedBar } from '../../shared/visualization/visUtilities';
 import { createAnnotations } from './budgetUtilities';
 import { getBudgetSummaryDept, getBudgetSummaryUse } from './graphql/budgetQueries';
+import { withLanguage } from '../../utilities/lang/LanguageContext';
+import { english } from './english';
+import { spanish } from './spanish';
 
 const getDollars = (value) => {
   if (Math.abs(value) > 1000000) {
-    return [value < 0 ? '-$' : '$', (Math.abs(value) / 1000000).toFixed(0).toLocaleString(), ' M'].join('');
+    return [value < 0 ? '-$' :
+      '$', (Math.abs(value) / 1000000).toFixed(0).toLocaleString(), ' M'].join('');
   } else if (Math.abs(value) > 1000) {
-    return [value < 0 ? '-$' : '$', (Math.abs(value) / 1000).toFixed(0).toLocaleString(), ' k'].join('');
+    return [value < 0 ? '-$' :
+      '$', (Math.abs(value) / 1000).toFixed(0).toLocaleString(), ' k'].join('');
   }
   return [value < 0 ? '-$' : '$', Math.abs(value).toFixed(0).toLocaleString()].join('');
 };
@@ -20,44 +25,53 @@ const getDollarsLong = (value) => {
   return [value < 0 ? '-$' : '$', Math.abs(value).toLocaleString()].join('');
 };
 
-const getTitle = (categoryType) => {
-  switch (categoryType) {
-    case 'use':
-      return 'Spending By Use';
-    case 'department':
-      return 'Spending By Department';
-    default:
-      return '';
-  }
-};
-
-const getLongDesc = data => (
-  <div>
-    {data.dataValues.map((value, index) => (
-      <div key={[value.display_year, index].join('_')}>
-        <p>{value.display_year}<br />
-          {data.dataKeys.map(key => (
-            <span key={[value.display_year, key].join('_')}>{key}: {getDollarsLong(value[key])}<br /></span>
-          ))}
-        </p>
-      </div>
-    ))}
-  </div>
-);
-
 class BudgetSummaryBarChart extends React.Component {
   constructor(props) {
     super(props);
+    // set language
+    let content;
+    switch (props.language.language) {
+      case 'Spanish':
+        content = spanish;
+        break;
+      default:
+        content = english;
+    }
+
     this.state = {
       showingLongDesc: this.showLongDesc,
       summaryData: props.categoryType === 'use' ? props.summaryUseData : props.summaryDeptData,
+      content,
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    let content;
+    switch (nextProps.language.language) {
+      case 'Spanish':
+        content = spanish;
+        break;
+      default:
+        content = english;
+    }
+    this.setState({ content });
   }
 
   toggleLongDesc() {
     this.setState({
       showingLongDesc: !this.state.showingLongDesc,
     });
+  }
+
+  getTitle() {
+    switch (this.props.categoryType) {
+      case 'use':
+        return this.state.content.spending_by_use;
+      case 'department':
+        return this.state.content.spending_by_department;
+      default:
+        return '';
+    }
   }
 
   render() {
@@ -75,8 +89,8 @@ class BudgetSummaryBarChart extends React.Component {
               tooltipYValFormatter={getDollarsLong}
               domain={[0, 190000000]}
               legendLabelFormatter={function(label) {return label.replace(' Department', '')}}
-              altText={['Spending by', this.props.categoryType, 'bar chart'].join(' ')}
-              chartTitle={getTitle(this.props.categoryType)}
+              altText={`${this.getTitle()} ${this.state.content.bar_chart}`}
+              chartTitle={this.props.categoryType === 'use' ? this.state.content.spending_by_use : this.state.content.spending_by_department}
               dataFormatter={formatBudgetDataForStackedBar}
             />
           </div>
@@ -99,8 +113,8 @@ BudgetSummaryBarChart.defaultProps = {
   showLongDesc: false,
 };
 
-//not that efficient...
-export default compose(
+// not that efficient...
+export default withLanguage(compose(
   graphql(getBudgetSummaryDept, {
     props: ({ data: { budgetSummaryDept } }) => ({
       summaryDeptData: budgetSummaryDept,
@@ -111,4 +125,4 @@ export default compose(
       summaryUseData: budgetSummaryUse,
     }),
   }),
-)(BudgetSummaryBarChart);
+)(BudgetSummaryBarChart));

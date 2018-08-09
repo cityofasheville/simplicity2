@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactTable from 'react-table';
+import { Link } from 'react-router';
 import { accessibility } from 'accessible-react-table';
 import Icon from '../../../shared/Icon';
 import styles from './searchResultGroup.css';
@@ -24,12 +25,12 @@ const SearchResultGroup = (props) => {
       accessor: 'label',
       Cell: row => (
         <span className="search-results-group__row-inner">
-          <a className="search-results-group__link" href={getLink(row.original.type, row.original.id, props.searchText, props.selectedEntities, row.original.label, props.originalSearch)}>
+          <Link className="search-results-group__link" to={getLink(row.original.type, row.original.id, props.searchText, props.selectedEntities, row.original.label, props.originalSearch)}>
             <span className="text-primary">
               {getIcon(row.original.type === 'place' ? 'search' : row.original.type)}
               {row.value}
             </span>
-          </a>
+          </Link>
           {props.data.label === 'place' &&
             <span className="text-primary">
               <a

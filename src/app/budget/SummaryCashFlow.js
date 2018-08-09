@@ -7,11 +7,38 @@ import Error from '../../shared/Error';
 import { updateSankeyData } from './graphql/budgetMutations';
 import { getSankeyData } from './graphql/budgetQueries';
 import { buildCashFlowData } from './budgetUtilities';
+import { withLanguage } from '../../utilities/lang/LanguageContext';
+import { english } from './english';
+import { spanish } from './spanish';
 
 class SummaryCashFlow extends React.Component {
   constructor(props) {
     super(props);
+    // set language
+    let content;
+    switch (props.language.language) {
+      case 'Spanish':
+        content = spanish;
+        break;
+      default:
+        content = english;
+    }
+    this.state = {
+      content,
+    };
     this.initializeSankey = this.initializeSankey.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    let content;
+    switch (nextProps.language.language) {
+      case 'Spanish':
+        content = spanish;
+        break;
+      default:
+        content = english;
+    }
+    this.setState({ content });
   }
 
   async initializeSankey() {
@@ -42,11 +69,11 @@ class SummaryCashFlow extends React.Component {
     return (
       <div className="row">
         <div className="col-sm-12">
-          <h2>Cash flow diagram: Revenues to expenditures</h2>
+          <h2>{this.state.content.cash_flow_chart_title}</h2>
           <div>
-            The chart below shows how revenue flows through the City’s key funds to the various departments. The thickness of each flow is proportional to the amount of money represented. Mouse over the rectangles and flows to see actual amounts.
+            {this.state.content.cash_flow_chart_intro}
           </div>
-          <BudgetSankey altText="Cash flow diagram" />
+          <BudgetSankey altText={this.state.content.cash_flow_diagram} />
         </div>
       </div>
     );
@@ -76,7 +103,7 @@ const glBudgetCashFlowQuery = gql`
   }
 `;
 
-export default compose(
+export default withLanguage(compose(
   graphql(glBudgetCashFlowQuery, {}),
   graphql(getSankeyData, {
     props: ({ data: { sankeyData } }) => ({
@@ -84,4 +111,4 @@ export default compose(
     }),
   }),
   graphql(updateSankeyData, { name: 'updateSankeyData' }),
-)(SummaryCashFlow);
+)(SummaryCashFlow));

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TopicCard from '../shared/TopicCard';
+import { withLanguage } from '../utilities/lang/LanguageContext';
 
 const Topics = props => (
   <div className="card-container">
@@ -12,7 +13,7 @@ const Topics = props => (
     <div className="row">
       {props.topics.map((topic, i) => (
         <div className="card-item" key={['topic', i].join('_')}>
-          <TopicCard topic={topic} entity="city" label="City of Asheville" />
+          <TopicCard topic={topic} entity="city" label="City of Asheville" lang={props.language.language} />
         </div>
       ))}
     </div>
@@ -33,4 +34,4 @@ Topics.defaultProps = {
   ],
 };
 
-export default Topics;
+export default withLanguage(Topics);

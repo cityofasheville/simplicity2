@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import L from 'leaflet';
-import { graphql } from 'react-apollo';
-import moment from 'moment';
 import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
+import moment from 'moment';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import Error from '../../shared/Error';
 import PieChart from '../../shared/visualization/PieChart';
@@ -13,64 +13,67 @@ import EmailDownload from '../../shared/EmailDownload';
 import ButtonGroup from '../../shared/ButtonGroup';
 import Button from '../../shared/Button';
 import { refreshLocation } from '../../utilities/generalUtilities';
+import { english } from './english';
+import { spanish } from './spanish';
+import { withLanguage } from '../../utilities/lang/LanguageContext';
 
 const getMarker = (type) => {
   switch (type) {
     case 'MISSING PERSON REPORT':
     case 'RUNAWAY JUVENILE':
-      return require('../../shared/User.png');
+      return require('../../shared/User.png'); // eslint-disable-line
     case 'DAMAGE TO PERSONAL PROPERTY':
     case 'VANDALISM':
-      return require('../../shared/Hammer.png');
+      return require('../../shared/Hammer.png'); // eslint-disable-line
     case 'ASSAULT - SIMPLE':
     case 'ASSAULT ON FEMALE':
     case 'ASSAULT W/DEADLY WEAPON':
-      return require('../../shared/Ambulance.png');
+      return require('../../shared/Ambulance.png'); // eslint-disable-line
     case 'COMMUNICATING THREAT':
-      return require('../../shared/Bubble.png');
+      return require('../../shared/Bubble.png'); // eslint-disable-line
     case 'INTIMIDATING STATE WITNESS':
     case 'PERJURY':
     case 'OBSTRUCTION OF JUSTICE':
-      return require('../../shared/Library2.png');
+      return require('../../shared/Library2.png'); // eslint-disable-line
     case 'FRAUD':
     case 'FRAUD-CREDIT CARD':
     case 'FALSE PRETENSE - OBTAIN PROPERTY BY':
     case 'IMPERSONATE':
-      return require('../../shared/Profile.png');
+      return require('../../shared/Profile.png'); // eslint-disable-line
     case 'CARRYING CONCEALED WEAPON':
-      return require('../../shared/Gun.png');
+      return require('../../shared/Gun.png'); // eslint-disable-line
     case 'RESIST, DELAY, OBSTRUCT OFFICER':
     case 'CIT INCIDENT':
     case 'DV ASSISTANCE OTHER':
     case 'VICTIM ASSISTANCE OTHER':
     case 'ASSAULT ON GOVERNMENT OFFICIAL':
-      return require('../../shared/Shield3.png');
+      return require('../../shared/Shield3.png'); // eslint-disable-line
     case 'DWI':
     case 'UNAUTHORIZED USE OF MOTOR VEHICLE':
-      return require('../../shared/Car.png');
+      return require('../../shared/Car.png'); // eslint-disable-line
     case 'LARCENY OF MV OTHER':
     case 'LARCENY OF MV AUTO':
     case 'LARCENY OF MV TRUCK':
-      return require('../../shared/Car.png');
+      return require('../../shared/Car.png'); // eslint-disable-line
     case 'TRESPASS':
-      return require('../../shared/Fence.png');
+      return require('../../shared/Fence.png'); // eslint-disable-line
     case 'INFORMATION ONLY':
-      return require('../../shared/Pencil7.png');
+      return require('../../shared/Pencil7.png'); // eslint-disable-line
     case 'DRUG PARAPHERNALIA POSSESS':
     case 'DRUG OFFENSE - FELONY':
     case 'DRUG OFFENSE - MISDEMEANOR':
     case 'DRUG PARAPHERNALIA OTHER':
-      return require('../../shared/AidKit2.png');     
+      return require('../../shared/AidKit2.png'); // eslint-disable-line
     case 'COUNTERFEITING-BUYING/RECEIVING':
-      return require('../../shared/BillDollar.png');
+      return require('../../shared/BillDollar.png'); // eslint-disable-line
     case 'LARCENY ALL OTHER':
     case 'LARCENY FROM BUILDING':
     case 'LARCENY FROM MOTOR VEHICLE':
     case 'ROBBERY - COMMON LAW':
     case 'ROBBERY - ARMED - KNIFE':
-      return require('../../shared/Dollar.png');
+      return require('../../shared/Dollar.png'); // eslint-disable-line
     default:
-      return require('../../shared/Ellipsis.png');
+      return require('../../shared/Ellipsis.png'); // eslint-disable-line
   }
 };
 
@@ -92,7 +95,32 @@ const createLegend = (crimeData) => {
   return (
     <div style={{ width: '160px' }}>
       {crimeTypes.map(type => (
-        <div key={`legendItem-${type}`} style={{ width: '160px', marginBottom: '5px' }}><img src={getMarker(type)} style={{ display: 'inline-block', width: '25px', verticalAlign: 'top' }}></img><span style={{ marginLeft: '5px', display: 'inline-block', width: '130px' }}>{type}</span></div>
+        <div
+          key={`legendItem-${type}`}
+          style={{ width: '160px', marginBottom: '5px' }}
+        >
+          <img
+            alt="crime icon"
+            src={getMarker(type)}
+            style={
+              {
+                display: 'inline-block',
+                width: '25px',
+                verticalAlign: 'top',
+              }
+            }
+          />
+          <span style={
+            {
+              marginLeft: '5px',
+              display: 'inline-block',
+              width: '130px',
+            }
+          }
+          >
+            {type}
+          </span>
+        </div>
       ))}
     </div>
   );
@@ -112,7 +140,11 @@ const convertToPieData = (crimeData) => {
       }
     }
     if (!crimeTypeAlreadyPresent) {
-      pieData.push(Object.assign({}, {}, { name: crimeData[i].offense_long_description, value: 1 }));
+      pieData.push(Object.assign(
+        {},
+        {},
+        { name: crimeData[i].offense_long_description, value: 1 }
+      ));
     }
   }
 
@@ -131,93 +163,10 @@ const convertToPieData = (crimeData) => {
   return pieData;
 };
 
-const CrimesByAddress = (props) => {
-  if (props.data.loading) { // eslint-disable-line react/prop-types
-    return <LoadingAnimation />;
-  }
-  if (props.data.error) { // eslint-disable-line react/prop-types
-    return <Error message={props.data.error.message} />; // eslint-disable-line react/prop-types
-  }
-
-  const pieData = convertToPieData(props.data.crimes_by_address);
-  const mapData = props.data.crimes_by_address.map(item => (Object.assign({}, item, {
-    popup: `<div><b>${item.address}</b><p>${moment.utc(item.date_occurred).format('M/DD/YYYY')}</p><p>${item.offense_long_description}</p></div>`,
-    options: { icon: L.icon({
-      iconUrl: getMarker(item.offense_long_description),
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-      popupAnchor: [2, -22],
-    }) } })
-  ));
-
-  const getNewUrlParams = view => (
-    {
-      view,
-    }
-  );
-
-  return (
-    <div className="crimes-template__data">
-      <div className="row template-header">
-        <div className="col-xs-12 template-header__inner">
-          <div className="pull-left">
-            <EmailDownload downloadData={props.data.crimes_by_address} fileName="crimes_by_address.csv" />
-          </div>
-          <ButtonGroup alignment="">
-            <Button onClick={() => refreshLocation(getNewUrlParams('map'), props.location)} active={props.location.query.view === 'map'} positionInGroup="left">Map view</Button>
-            <Button onClick={() => refreshLocation(getNewUrlParams('list'), props.location)} active={props.location.query.view === 'list'} positionInGroup="middle">List view</Button>
-            <Button onClick={() => refreshLocation(getNewUrlParams('summary'), props.location)} positionInGroup="right" active={props.location.query.view === 'summary'}>Chart</Button>
-          </ButtonGroup>
-        </div>
-      </div>
-
-      <div className="row">
-        <div id="summaryView" className="col-xs-12" hidden={props.location.query.view !== 'summary'}>
-          {pieData.length > 0 ?
-            <PieChart data={pieData} altText="Crime pie chart" />
-            :
-            <div className="alert alert-info">No results found</div>
-          }
-        </div>
-
-        <div id="listView" hidden={props.location.query.view !== 'list'}>
-          <CrimeTable data={props.data.crimes_by_address} location={props.location} />
-        </div>
-
-        <div id="mapView" className="col-xs-12" hidden={props.location.query.view !== 'map'}>
-          {props.data.crimes_by_address.length === 0 || props.location.query.view !== 'map' ?
-            <div className="alert alert-info">No results found</div>
-            :
-            <Map
-              data={mapData}
-              showCenter
-              legend={createLegend(props.data.crimes_by_address)}
-              center={props.location.query.x !== '' ? [parseFloat(props.location.query.y), parseFloat(props.location.query.x)] : null}
-              centerLabel={props.location.query.label}
-              drawCircle
-              radius={(props.location.query.within === undefined || props.location.query.within === '') ? 215 : parseInt(props.location.query.within, 10) / 3}
-              within={(props.location.query.within === undefined || props.location.query.within === '') ? 660 : parseInt(props.location.query.within, 10)}
-              zoomToPoint={(props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== '') ? props.location.query.zoomToPoint : null}
-            />
-          }
-        </div>
-      </div>
-    </div>
-  );
-};
-
-CrimesByAddress.propTypes = {
-  location: PropTypes.object, // eslint-disable-line
-  query: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-};
-
-CrimesByAddress.defaultProps = {
-  query: { entity: 'address', label: '123 Main street' },
-};
-
-const getCrimesQuery = gql`
-  query getCrimesQuery($civicaddress_id: Int!, $radius: Int, $before: String, $after: String) {
-    crimes_by_address (civicaddress_id: $civicaddress_id, radius: $radius, before: $before, after: $after) {
+const GET_CRIMES_BY_ADDRESS = gql`
+  query crimes_by_address($civicaddress_id: Int!, $radius: Int, $before: String, $after: String) {
+    crimes_by_address (civicaddress_id: $civicaddress_id,
+      radius: $radius, before: $before, after: $after) {
       case_number
       date_occurred
       address
@@ -230,15 +179,139 @@ const getCrimesQuery = gql`
   }
 `;
 
-const CrimesByAddressGQL = graphql(getCrimesQuery, {
-  options: ownProps => ({
-    variables: {
-      civicaddress_id: ownProps.location.query.id.trim(),
-      radius: ownProps.radius,
-      before: ownProps.before,
-      after: ownProps.after,
-    },
-  }),
-})(CrimesByAddress);
+const CrimesByAddress = props => (
+  <Query
+    query={GET_CRIMES_BY_ADDRESS}
+    variables={{
+      civicaddress_id: props.location.query.id.trim(),
+      radius: props.radius,
+      before: props.before,
+      after: props.after,
+    }}
+  >
+    {({ loading, error, data }) => {
+      if (loading) return <LoadingAnimation />;
+      if (error) return <Error message={error.message} />;
+      // set language
+      let content;
+      switch (props.language.language) {
+        case 'Spanish':
+          content = spanish;
+          break;
+        default:
+          content = english;
+      }
+      const pieData = convertToPieData(data.crimes_by_address);
+      const mapData = data.crimes_by_address.map(item => (Object.assign({}, item, {
+        popup: `<div><b>${item.address}</b><p>${moment.utc(item.date_occurred).format('M/DD/YYYY')}</p><p>${item.offense_long_description}</p></div>`, // eslint-disable-line
+        options: {
+          icon: L.icon({
+            iconUrl: getMarker(item.offense_long_description),
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [2, -22],
+          }),
+        },
+      })));
 
-export default CrimesByAddressGQL;
+      const getNewUrlParams = view => (
+        {
+          view,
+        }
+      );
+
+      return (
+        <div className="crimes-template__data">
+          <div className="row template-header">
+            <div className="col-xs-12 template-header__inner">
+              <div className="pull-left">
+                <EmailDownload
+                  downloadData={data.crimes_by_address}
+                  fileName={content.crimes_by_address_filename}
+                />
+              </div>
+              <ButtonGroup alignment="">
+                <Button
+                  onClick={() => refreshLocation(getNewUrlParams('map'), props.location)}
+                  active={props.location.query.view === 'map'}
+                  positionInGroup="left"
+                >
+                  {content.map_view}
+                </Button>
+                <Button
+                  onClick={() => refreshLocation(getNewUrlParams('list'), props.location)}
+                  active={props.location.query.view === 'list'}
+                  positionInGroup="middle"
+                >
+                  {content.list_view}
+                </Button>
+                <Button
+                  onClick={() => refreshLocation(getNewUrlParams('summary'), props.location)}
+                  positionInGroup="right"
+                  active={props.location.query.view === 'summary'}
+                >
+                  {content.chart_view}
+                </Button>
+              </ButtonGroup>
+            </div>
+          </div>
+
+          <div className="row">
+            <div
+              id="summaryView"
+              className="col-xs-12"
+              hidden={props.location.query.view !== 'summary'}
+            >
+              {pieData.length > 0 ?
+                <PieChart data={pieData} altText={content.crime_pie_chart} />
+                :
+                <div className="alert alert-info">{content.no_results_found}</div>
+              }
+            </div>
+
+            <div id="listView" hidden={props.location.query.view !== 'list'}>
+              <CrimeTable data={data.crimes_by_address} location={props.location} />
+            </div>
+
+            <div id="mapView" className="col-xs-12" hidden={props.location.query.view !== 'map'}>
+              {data.crimes_by_address.length === 0 || props.location.query.view !== 'map' ?
+                <div className="alert alert-info">{content.no_results_found}</div>
+                :
+                <Map
+                  data={mapData}
+                  showCenter
+                  legend={createLegend(data.crimes_by_address)}
+                  center={props.location.query.x !== '' ?
+                    [parseFloat(props.location.query.y), parseFloat(props.location.query.x)] : null}
+                  centerLabel={props.location.query.label}
+                  drawCircle
+                  radius={(props.location.query.within === undefined
+                    || props.location.query.within === '') ?
+                    215 : parseInt(props.location.query.within, 10) / 3}
+                  within={(props.location.query.within === undefined
+                    || props.location.query.within === '') ?
+                    660 : parseInt(props.location.query.within, 10)}
+                  zoomToPoint={(props.location.query.zoomToPoint !== undefined
+                    && props.location.query.zoomToPoint !== '') ?
+                    props.location.query.zoomToPoint : null}
+                />
+              }
+            </div>
+          </div>
+        </div>
+      );
+    }}
+  </Query>
+);
+
+CrimesByAddress.propTypes = {
+  location: PropTypes.object, // eslint-disable-line
+  query: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+};
+
+CrimesByAddress.defaultProps = {
+  query: { entity: 'address', label: '123 Main street' },
+};
+
+export default withLanguage(CrimesByAddress);
+

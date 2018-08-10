@@ -4,9 +4,8 @@ import gql from 'graphql-tag';
 import { Query } from "react-apollo";
 import { graphql } from 'react-apollo';
 import { nest } from 'd3-collection';
-import { color } from 'd3-color';
 import { histogram } from 'd3-array';
-import { FacetController, ResponsiveOrdinalFrame } from 'semiotic';
+import { ResponsiveOrdinalFrame } from 'semiotic';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import PermitTypeMenus from './PermitTypeMenus';
 import PermitVolCirclepack from './PermitVolCirclepack';
@@ -66,6 +65,9 @@ function groupHierachyOthers(inputHierarchy) {
 }
 
 function splitOrdinalByBool(inputData, matchTestFunc, nameTrue) {
+  // const statusTestFunc = d => d.status_current === 'Issued';
+  // const statusBoolKey = 'issued';
+  // const histWithStatus = splitOrdinalByBool(histogramData, statusTestFunc, statusBoolKey);
   const splitOrdinal = [];
   inputData.forEach((datum) => {
     const matchy = Object.assign({}, datum);
@@ -93,11 +95,11 @@ function splitOrdinalByBool(inputData, matchTestFunc, nameTrue) {
 function boxWhisker({ data, rScale, adjustedSize, margin }) {
   const renderedPieces = [];
   const keys = Object.keys(data);
+  console.log(data)
 
   keys.forEach((key) => {
     const column = data[key];
     const firstDatum = column.pieceData[0];
-    console.log(column, firstDatum)
 
     // Each ordinal value/status has one bar associated
     // Each bar has an array of individual data points
@@ -107,7 +109,7 @@ function boxWhisker({ data, rScale, adjustedSize, margin }) {
     // Hover event
 
     //Calculate individual start and width of each graphical band
-    const birthDate = rScale(firstDatum.startDate);
+    // const birthDate = rScale(column.pieces.data.startDate);
     // const termStart = rScale(firstDatum.start);
     // const termEnd = rScale(firstDatum.end);
     // const deathDate = rScale(firstDatum.death);
@@ -120,9 +122,9 @@ function boxWhisker({ data, rScale, adjustedSize, margin }) {
       <g key={`piece-${key}`}>
         <rect
           fill="#00a2ce"
-          width={10}
+          width={column.width}
           height={column.width}
-          x={birthDate}
+          x={firstDatum.scaledValue}
           y={column.x}
         />
         {/* <rect */}
@@ -286,10 +288,17 @@ class GranularVolume extends React.Component {
     const includedDates = this.timeBuckets();
     const histogramData = this.histogramFromHierarchical(entriesHierarchy, includedDates);
 
-    // const statusTestFunc = d => d.status_current === 'Issued';
-    // const statusBoolKey = 'issued';
-    // const histWithStatus = splitOrdinalByBool(histogramData, statusTestFunc, statusBoolKey);
-    const statusNest = nest().key(d => d.status_current)
+    const statusNest = nest().key(d => d.status_current);
+    const entriesHierarchyStatusNest = entriesHierarchy.map((entry) => {
+      const rObj = Object.assign({}, entry);
+      rObj.values = statusNest.entries(entry.values)
+        .map((v) => {
+          const rVal = Object.assign({}, v);
+          rVal.startDate = new Date(v.values.sort((a, b) => Date.parse(a.applied_date) - Date.parse(b.applied_date))[0].applied_date).getTime();
+          return rVal;
+        });
+      return rObj;
+    });
 
     /********************/
     return (<div>
@@ -319,7 +328,7 @@ class GranularVolume extends React.Component {
       <div
         id="openClosedIssued"
       >
-        <h2>Issued or Not</h2>
+        <h2>Status by Opened Date</h2>
         <div
           style={{
             display: 'flex',
@@ -327,72 +336,49 @@ class GranularVolume extends React.Component {
             textTransform: 'capitalize',
           }}
         >
-          <FacetController
-            type={{
-              type: boxWhisker,
-            }}
-            projection="horizontal"
-            size={[185, 185]}
-            margin={{
-              top: 40,
-              right: 10,
-              bottom: 10,
-              left: 60,
-            }}
-            oPadding={1}
-            oAccessor="key"
-            oLabel
-            rAccessor={d => new Date(d.startDate)}
-            pieceIDAccessor="key"
-            axis={[
-              {
-                orient: 'left',
-                tickFormat: d => (
-                  <text
-                    textAnchor="end"
-                    style={{ fontSize: '0.70em' }}
-                  >
-                    {d}
-                  </text>
-                ),
-              },
-            ]}
-            // hoverAnnotation
-            tooltipContent={(d) => {
-              const pieces = d.type === 'column-hover' ? d.pieces : [d.data];
-              const title = new Date(pieces[0].binStartDate).toLocaleDateString('en-US', dateOptions);
+          {entriesHierarchyStatusNest.map((datum) => {
+            console.log(datum.values);
 
-              const textLines = pieces.map(piece => ({
-                text: `${piece.issued ? 'Issued' : 'Not Issued'}: ${piece.count}`,
-                color: nodeColors[piece.key],
-              })).reverse();
-
-              return (<Tooltip
-                title={title}
-                textLines={textLines}
-              />);
-            }}
-          >
-            {/* foreach permit type showing (see menus for logic) */}
-            {entriesHierarchy.map((datum) => {
-              const thisData = filteredData[datum.key] ? statusNest.entries(filteredData[datum.key]) : [];
-              const keyedData = thisData.map(d => {
-                const rObj = Object.assign({}, d);
-                rObj.startDate = d.values.sort((a, b) => new Date(a.applied_date) - new Date(b.applied_date))[0].applied_date;
-                return rObj;
-              });
-              console.log(keyedData)
-
-              return <ResponsiveOrdinalFrame
-                responsiveWidth
-                key={datum.key}
-                data={thisData}
-                title={datum.key}
-                style={(d) => ({ fill: nodeColors[datum.key] })}
-              />
-            }
-            )}
-          </FacetController>
+            return (<ResponsiveOrdinalFrame
+              type="bar"
+              projection="horizontal"
+              size={[185, 300]}
+              margin={{
+                top: 40,
+                right: 20,
+                bottom: 30,
+                left: 60,
+              }}
+              oPadding={1}
+              oAccessor="key"
+              oLabel
+              rAccessor="startDate"
+              rExtent={[includedDates[0].getTime(), includedDates[includedDates.length - 1].getTime()]}
+              pieceIDAccessor="key"
+              axis={[
+                {
+                  orient: 'bottom',
+                  tickFormat: d => (
+                    <text
+                      textAnchor="end"
+                      transform="rotate(-35)"
+                      style={{ fontSize: '0.70em' }}
+                    >
+                      {new Date(d).toLocaleDateString(
+                        'en-US',
+                        { month: 'short', day: 'numeric' }
+                      )}
+                    </text>
+                  ),
+                },
+              ]}
+              responsiveWidth
+              key={datum.key}
+              data={datum.values}
+              title={datum.key}
+              style={(d) => ({ fill: nodeColors[datum.key] })}
+            />);
+          })}
         </div>
       </div>
       <div id="taskVol">

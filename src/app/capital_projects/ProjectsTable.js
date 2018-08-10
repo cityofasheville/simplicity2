@@ -101,6 +101,7 @@ class ProjectsTable extends React.Component {
       accessor: 'total_project_funding_budget_document',
       maxWidth: 120,
       show: state.width >= 720,
+      style: { textAlign: 'right' },
       Filter: ({ filter, onChange }) => (
         <input
           onChange={event => onChange(event.target.value)}
@@ -116,6 +117,7 @@ class ProjectsTable extends React.Component {
       accessor: project => ['$', parseInt(project.encumbered, 10).toLocaleString()].join(''),
       maxWidth: 120,
       show: state.width >= 720,
+      style: { textAlign: 'right' },
       Filter: ({ filter, onChange }) => (
         <input
           onChange={event => onChange(event.target.value)}
@@ -131,6 +133,7 @@ class ProjectsTable extends React.Component {
       accessor: project => ['$', parseInt(project.total_spent, 10).toLocaleString()].join(''),
       maxWidth: 120,
       show: state.width >= 720,
+      style: { textAlign: 'right' },
       Filter: ({ filter, onChange }) => (
         <input
           onChange={event => onChange(event.target.value)}

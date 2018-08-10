@@ -3,28 +3,18 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import Collapsible from '../../shared/Collapsible';
 import ProjectsTable from './ProjectsTable';
-import { getFundsAllocatedAndExpended, filterProjects, longCategories } from './cip_utilities';
+import { getFundsAllocatedAndExpended, filterProjects } from './cip_utilities';
 import Icon from '../../shared/Icon';
-import { IM_SHIELD3, IM_TREE, IM_HOME2, IM_BUS, LI_BOLD, IM_INFO } from '../../shared/iconConstants';
+import { IM_SHIELD3, IM_TREE, IM_HOME2, IM_BUS, LI_BOLD, IM_INFO, IM_DROPLET } from '../../shared/iconConstants';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import Error from '../../shared/Error';
-
-const getBondText = (type) => {
-  switch (type) {
-    case 'Transportation':
-      return 'Transportation Bond projects are additional projects that support the completion of road resurfacing and sidewalk improvements; new sidewalk and greenway projects; and pedestrian safety projects such as bus shelters, accessible crossings, signals, and traffic calming.'; // eslint-disable-line
-    case 'Parks':
-      return 'Parks Bond projects are additional projects that support the completion of major improvements to five parks and recreation facilities; acquiring land for parks; and improving outdoor courts, playgrounds and ball field lighting throughout the city.'; // eslint-disable-line
-    case 'Housing':
-      return 'Housing Bond projects for housing affordability provide additional support for the Housing Trust Fund and other programs that assist in creating diverse and affordable housing choices. The projects also include support in the development of affordable housing on key City-owned sites.'; // eslint-disable-line
-    default:
-      return '';
-  }
-};
+import { withLanguage } from '../../utilities/lang/LanguageContext';
+import { english } from './english';
+import { spanish } from './spanish';
 
 const getIcon = (type, bond) => {
   switch (type) {
-    case 'Transportation':
+    case 'Transportation & Infrastructure':
       if (bond) {
         return (
           <span>
@@ -34,7 +24,7 @@ const getIcon = (type, bond) => {
         );
       }
       return <Icon path={IM_BUS} size={25} color="#4077a5" />;
-    case 'Parks':
+    case 'Parks & Recreation':
       if (bond) {
         return (
           <span>
@@ -44,7 +34,7 @@ const getIcon = (type, bond) => {
         );
       }
       return <Icon path={IM_TREE} size={25} color="#4077a5" />;
-    case 'Housing':
+    case 'Housing Program':
       if (bond) {
         return (
           <span>
@@ -56,6 +46,8 @@ const getIcon = (type, bond) => {
       return <Icon path={IM_HOME2} size={25} color="#4077a5" />;
     case 'Public Safety':
       return <Icon path={IM_SHIELD3} size={25} color="#4077a5" />;
+    case 'Water':
+      return <Icon path={IM_DROPLET} size={25} color="#4077a6" />;
     case 'Other':
       return (
         <svg
@@ -91,32 +83,6 @@ const getIcon = (type, bond) => {
   }
 };
 
-const getKeyText = categories => (
-  <div>
-    <p>
-      <span>
-        { ['Transportation', 'Housing', 'Parks', 'Public Safety', 'Other'].map((cat, index) => {
-          if (categories.includes(cat)) {
-            return <span key={index} style={categories.indexOf(cat) !== 0 ? { marginLeft: '10px', color: '#4077a5' } : { marginLeft: '0px', color: '#4077a5' }}>{getIcon(cat)}&nbsp;<b>{cat}</b></span>;
-          }
-          return null;
-        })}
-      </span>
-      <span style={{ marginLeft: '5px' }}>{categories.slice(0, categories.length - 1).join(', ')} {categories.length > 1 ? 'and' : ''} {categories[categories.length - 1]} projects within the City’s General Capital Improvement Program (CIP) are funded with a combination of general tax revenue, municipal debt and external grants or partnerships.</span>
-      {categories.includes('Other') &&
-        <span>&nbsp;Projects categorized as &quot;Other&quot;
-          support facility upgrades and economic development initiatives.
-        </span>
-      }
-    </p>
-    { ['Transportation', 'Housing', 'Parks'].map((cat, index) => {
-      if (categories.includes(cat)) {
-        return <p key={index} ><span style={{ color: '#4077a5' }}>{getIcon(cat, true)}&nbsp;<b>{cat} Bond</b></span><span style={{ marginLeft: '5px' }}>{getBondText(cat)}</span></p>;
-      }
-      return null;
-    })}
-  </div>
-);
 
 const getDollars = (value) => {
   let formatted;
@@ -162,7 +128,7 @@ const GET_PROJECTS = gql`
       longitude
     }
   }
-`;
+  `;
 
 const CategoryDetails = props => (
   <Query
@@ -175,9 +141,81 @@ const CategoryDetails = props => (
       if (loading) return <LoadingAnimation />;
       if (error) return <Error message={error.message} />;
 
+      // set language
+      let content;
+      switch (props.language.language) {
+        case 'Spanish':
+          content = spanish;
+          break;
+        default:
+          content = english;
+      }
+
+      const getBondText = (type) => {
+        switch (type) {
+          case 'Transportation & Infrastructure':
+            return content.transportation_bond_info;
+          case 'Parks & Recreation':
+            return content.parks_bond_info;
+          case 'Housing Program':
+            return content.housing_bond_info;
+          default:
+            return '';
+        }
+      };
+
+      const getKeyText = categories => (
+        <div>
+          <p>
+            <span>
+              { [
+                'Transportation & Infrastructure',
+                'Housing Program',
+                'Parks & Recreation',
+                'Water',
+                'Other'].map((cat, index) => {
+                if (categories.includes(cat)) {
+                  return (
+                    <span
+                      key={index}
+                      style={categories.indexOf(cat) !== 0 ?
+                        { marginLeft: '10px', color: '#4077a5' } :
+                        { marginLeft: '0px', color: '#4077a5' }}
+                    >{getIcon(cat)}&nbsp;<b>{cat}</b>
+                    </span>);
+                }
+                return null;
+              })}
+            </span>
+            <span
+              style={{ marginLeft: '5px' }}
+            >{categories.slice(0, categories.length - 1).join(', ')} {categories.length > 1 ? 'and' : ''} {categories[categories.length - 1]} {content.funding_info}
+            </span>
+            {categories.includes('Other') &&
+              <span>&nbsp;{content.other_category_note}
+              </span>
+            }
+          </p>
+          { ['Transportation & Infrastructure', 'Housing Program', 'Parks & Recreation'].map((cat, index) => {
+            if (categories.includes(cat)) {
+              return (
+                <p
+                  key={index}
+                >
+                  <span
+                    style={{ color: '#4077a5' }}
+                  >{getIcon(cat, true)}&nbsp;<b>{cat} Bond</b>
+                  </span><span style={{ marginLeft: '5px' }}>{getBondText(cat)}</span>
+                </p>);
+            }
+            return null;
+          })}
+        </div>
+      );
+
       const actualCategories = props.categories;
       actualCategories.sort((a, b) =>
-        props.sortedCategories.indexOf(a) > props.sortedCategories.indexOf(b));
+      props.sortedCategories.indexOf(a) > props.sortedCategories.indexOf(b));
       const filteredProjects = filterProjects(
         data.cip_projects,
         actualCategories,
@@ -191,7 +229,7 @@ const CategoryDetails = props => (
       const messageOrTable = (filteredProjects === undefined || filteredProjects.length === 0) ?
         (
           <div style={{ marginTop: '20px' }} className="alert alert-info alert-sm">
-            Select a category above to show project data
+            {content.select_a_category}
           </div>
         ) : <ProjectsTable data={filteredProjects} />;
 
@@ -201,13 +239,13 @@ const CategoryDetails = props => (
             <div className="col-sm-12">
               <div className="funding-summary">
                 <div className="col-sm-4 col-xs-4">
-                  <h2><span className="label-text"><span title="Issued bond amount is $74 million. Actual total dollar amount will increase due to alternative funding sources." style={{ marginRight: '5px' }}><Icon path={IM_INFO} size={16} color="#4077a7" /></span>Total budget: </span> <span className="amount">{getDollars(fundingDetails[0].allocated)}</span></h2>
+                  <h2><span className="label-text"><span title="Issued bond amount is $74 million. Actual total dollar amount will increase due to alternative funding sources." style={{ marginRight: '5px' }}><Icon path={IM_INFO} size={16} color="#4077a7" /></span>{content.total_budget}: </span> <span className="amount">{getDollars(fundingDetails[0].allocated)}</span></h2>
                 </div>
                 <div className="col-sm-4 col-xs-4">
-                  <h2><span className="label-text">Under contract:</span> <span className="amount">{getDollars(fundingDetails[0]['Under contract'])}</span></h2>
+                  <h2><span className="label-text">{content.under_contract}:</span> <span className="amount">{getDollars(fundingDetails[0]['Under contract'])}</span></h2>
                 </div>
                 <div className="col-sm-4 col-xs-4">
-                  <h2><span className="label-text">Spent:</span> <span className="amount">{getDollars(fundingDetails[0]['Expended funds'])}</span></h2>
+                  <h2><span className="label-text">{content.spent}:</span> <span className="amount">{getDollars(fundingDetails[0]['Expended funds'])}</span></h2>
                 </div>
               </div>
               <div className="row">
@@ -216,8 +254,8 @@ const CategoryDetails = props => (
                     {getKeyText(actualCategories, props.location.query.mode)}
                     <div style={{ marginTop: '15px' }}>
                       <div>
-                        <p><span style={{ fontStyle: 'italic' }}>Please note: Current project budgets include prior year funding and may change throughout the life of the project.</span></p>
-                        <p><span style={{ fontStyle: 'italic' }}>Ongoing programs and regular maintenance projects may not be represented in this dashboard. For a complete list including ongoing and maintenance projects within the City&apos;s General CIP, please view the adopted <a className="inText" href="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=28348#page=146%20" target="_blank">FY 17-18 Annual Budget</a>.</span></p>
+                        <p><span style={{ fontStyle: 'italic' }}>{content.project_budgets_note}</span></p>
+                        <p><span style={{ fontStyle: 'italic' }}>{content.ongoing_programs} <a className="inText" href="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=30725#page=146" target="_blank">FY 18-19 {content.adopted_annual_budget}</a>.</span></p>
                       </div>
                     </div>
                   </Collapsible>
@@ -232,4 +270,4 @@ const CategoryDetails = props => (
   </Query>
 );
 
-export default CategoryDetails;
+export default withLanguage(CategoryDetails);

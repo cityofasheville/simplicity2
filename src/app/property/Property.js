@@ -1,7 +1,6 @@
 import React from 'react';
 import { graphql } from 'react-apollo';
-import ReactTable from 'react-table';
-import { accessibility } from 'accessible-react-table';
+import AccessibleReactTable from 'accessible-react-table';
 import gql from 'graphql-tag';
 import DetailsTable from '../../shared/DetailsTable';
 import DetailsFormGroup from '../../shared/DetailsFormGroup';
@@ -87,8 +86,6 @@ const Property = (props) => {
       },
     },
   ];
-
-  const AccessibleReactTable = accessibility(ReactTable);
 
   return (
     <div>

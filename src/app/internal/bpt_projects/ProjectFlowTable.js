@@ -1,6 +1,5 @@
 import React from 'react';
-import { accessibility } from 'accessible-react-table';
-import ReactTable from 'react-table';
+import AccessibleReactTable from 'accessible-react-table';
 import moment from 'moment';
 
 //const parseNotes = (notes) => {
@@ -108,7 +107,6 @@ const dataColumns = [
 ];
 
 const ProjectFlowTable = props => {
-  const AccessibleReactTable = accessibility(ReactTable);
   return (
     <div>
       <div className="col-sm-12">

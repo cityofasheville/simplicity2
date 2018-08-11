@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactTable from 'react-table';
 import { Link } from 'react-router';
-import { accessibility, CellFocusWrapper } from 'accessible-react-table';
+import AccessibleReactTable, { CellFocusWrapper } from 'accessible-react-table';
 import Icon from '../../../shared/Icon';
 import styles from './searchResultGroup.css';
 import { getLink, getPlural, getIcon } from './searchResultsUtils';
@@ -75,8 +74,6 @@ const SearchResultGroup = (props) => {
       ),
     },
   ];
-
-  const AccessibleReactTable = accessibility(ReactTable);
 
   return (
     <div className={styles.searchResultGroup + ' search-results-group' + ' search-results-group-'+props.data.label }>

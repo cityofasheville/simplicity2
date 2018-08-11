@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactTable from 'react-table';
-import { accessibility } from 'accessible-react-table';
+import AccessibleReactTable from 'accessible-react-table';
 import moment from 'moment';
 import DetailsFormGroup from '../../shared/DetailsFormGroup';
 import Icon from '../../shared/Icon';
@@ -47,7 +46,6 @@ const getContractorData = (contractors, licenses) => {
 
 const DevelopmentDetail = (props) => {
   const contractorData = getContractorData(props.data.contractor_names, props.data.contractor_license_numbers);
-  const AccessibleReactTable = accessibility(ReactTable);
   return (
     <div>
       {props.standalone &&
@@ -64,7 +62,7 @@ const DevelopmentDetail = (props) => {
           <fieldset className="detailsFieldset">
             <div className="row">
               <div className="col-xs-12 detailsFieldset__details-listings">
-                <DetailsFormGroup label="Description" name="permit_description" value={props.data.permit_description} hasLabel />              
+                <DetailsFormGroup label="Description" name="permit_description" value={props.data.permit_description} hasLabel />
                 <div className="form-group">
                   <a href={['https://www.google.com/maps/?q=', [props.data.y, props.data.x].join(',')].join('')} target="_blank" title="Click to view address in Google maps">
                     <span style={{ marginRight: '5px' }}><Icon path={IM_MAP5} size={20} /></span>

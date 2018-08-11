@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactTable from 'react-table';
-import { accessibility } from 'accessible-react-table';
+import AccessibleReactTable from 'accessible-react-table';
 import { graphql } from 'react-apollo';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import Error from '../../shared/Error';
@@ -18,8 +17,6 @@ import {
 import * as poweredByGoogle from '../search/searchResults/powered_by_google_on_white.png';
 import styles from '../search/searchResults/searchResultGroup.css';
 
-
-const AccessibleReactTable = accessibility(ReactTable);
 
 const dataColumns = (formattedData, miniResultsProps) => {
   return [{

@@ -246,12 +246,11 @@ accessible-react-checkbox-group@^2.0.0-beta.3:
   version "2.0.0-beta.4"
   resolved "https://registry.yarnpkg.com/accessible-react-checkbox-group/-/accessible-react-checkbox-group-2.0.0-beta.4.tgz#3ba9dfec6202a7af53fb52dabf0fe1a2788361c2"
 
-accessible-react-table@^0.3.3:
-  version "0.3.3"
-  resolved "https://registry.yarnpkg.com/accessible-react-table/-/accessible-react-table-0.3.3.tgz#bb28ee3e596ba7b5e5bdc721cfdcca5e0cf830d7"
+accessible-react-table@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/accessible-react-table/-/accessible-react-table-0.5.1.tgz#aa764ab3a047d193fe5ad1647f11e6042b868212"
   dependencies:
     merge-prop-functions "^1.0.0"
-    namor "^1.0.1"
 
 acorn-dynamic-import@^2.0.0:
   version "2.0.2"
@@ -5356,10 +5355,6 @@ multimatch@^2.0.0:
 mute-stream@0.0.7:
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.7.tgz#3075ce93bc21b8fab43e1bc4da7e8115ed1e7bab"
-
-namor@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/namor/-/namor-1.0.1.tgz#ac879d9b6a0a71abecac12da6393e27ab35fb757"
 
 nan@^2.10.0, nan@^2.9.2:
   version "2.10.0"

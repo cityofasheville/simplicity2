@@ -29,6 +29,9 @@ const SearchResultGroup = (props) => {
         <CellFocusWrapper>
           {(focusRef, focusable) => (
             <span className="search-results-group__row-inner">
+              {/* This LinkFocusWrapper can be replaced by the innerRef prop on the Link component
+                in react-router ^4.2.0. Presently it serves as a work around for not having that
+                prop. */}
               <LinkFocusWrapper focusRef={focusRef}>
                 <Link
                   className="search-results-group__link"

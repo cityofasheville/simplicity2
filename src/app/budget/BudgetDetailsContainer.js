@@ -8,6 +8,9 @@ import LoadingAnimation from '../../shared/LoadingAnimation';
 import Error from '../../shared/Error';
 import { buildTrees } from './budgetUtilities';
 import { updateBudgetTrees } from './graphql/budgetMutations';
+import { withLanguage } from '../../utilities/lang/LanguageContext';
+import { english } from './english';
+import { spanish } from './spanish';
 
 const renderSubComponent = (props) => {
   switch (props.location.pathname) { // eslint-disable-line react/prop-types
@@ -20,12 +23,20 @@ const renderSubComponent = (props) => {
   }
 };
 
-
 class BudgetDetailsContainer extends React.Component {
   constructor(props) {
     super(props);
+    let content;
+    switch (props.language.language) {
+      case 'Spanish':
+        content = spanish;
+        break;
+      default:
+        content = english;
+    }
     this.state = {
       treesInitialized: false,
+      content,
     };
 
     this.initializeTrees = this.initializeTrees.bind(this);
@@ -49,7 +60,7 @@ class BudgetDetailsContainer extends React.Component {
   render() {
     if (this.props.data.loading) { // eslint-disable-line react/prop-types
       return (
-        <LoadingAnimation message="Loading...Thank you for your patience. The full budget data can take several moments to load" />
+        <LoadingAnimation message={this.state.content.loading_message} />
       );
     }
     if (this.props.data.error) { // eslint-disable-line react/prop-types
@@ -59,7 +70,7 @@ class BudgetDetailsContainer extends React.Component {
     if (!this.state.treesInitialized) {
       this.initializeTrees();
       return (
-        <LoadingAnimation message="Loading...Thank you for your patience. The full budget data can take several moments to load" />
+        <LoadingAnimation message={this.state.content.loading_message} />
       );
     }
 
@@ -100,7 +111,7 @@ const budgetHistoryQuery = gql`
   }
 `;
 
-export default compose(
+export default withLanguage(compose(
   graphql(budgetHistoryQuery, {}),
   graphql(updateBudgetTrees, { name: 'updateBudgetTrees' }),
-)(BudgetDetailsContainer);
+)(BudgetDetailsContainer));

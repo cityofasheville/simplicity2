@@ -1,46 +1,43 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { graphql } from 'react-apollo';
+import { Query } from 'react-apollo';
 import { getSankeyData } from './graphql/budgetQueries';
 import Sankey from '../../shared/visualization/Sankey';
+import LoadingAnimation from '../../shared/LoadingAnimation';
+import Error from '../../shared/Error';
+import { withLanguage } from '../../utilities/lang/LanguageContext';
+import { english } from './english';
+import { spanish } from './spanish';
 
 const BudgetSankey = props => (
-  <Sankey
-    nodes={props.nodes}
-    links={props.links}
-    altText={props.altText}
-    valueFormatter={(value) => {
-      if (!value || value === 0) { return '$0'; }
-      return [value < 0 ? '-$' : '$', Math.abs(value).toLocaleString()].join('');
+  <Query
+    query={getSankeyData}
+  >
+    {({ loading, error, data }) => {
+      if (loading) return <LoadingAnimation />;
+      if (error) return <Error message={error.message} />;
+
+      // set language
+      let content;
+      switch (props.language.language) {
+        case 'Spanish':
+          content = spanish;
+          break;
+        default:
+          content = english;
+      }
+      return (
+        <Sankey
+          nodes={data.sankeyData.nodes}
+          links={data.sankeyData.links}
+          altText={content.flow_diagram}
+          valueFormatter={(value) => {
+            if (!value || value === 0) { return '$0'; }
+            return [value < 0 ? '-$' : '$', Math.abs(value).toLocaleString()].join('');
+          }}
+        />
+      );
     }}
-  />
+  </Query>
 );
 
-const nameShape = {
-  name: PropTypes.string,
-};
-
-const linkShape = {
-  source: PropTypes.number,
-  target: PropTypes.number,
-  value: PropTypes.number,
-};
-
-BudgetSankey.propTypes = {
-  nodes: PropTypes.arrayOf(PropTypes.shape(nameShape)),
-  links: PropTypes.arrayOf(PropTypes.shape(linkShape)),
-  altText: PropTypes.string,
-};
-
-BudgetSankey.defaultProps = {
-  nodes: [],
-  links: [],
-  altText: 'Flow diagram',
-};
-
-export default graphql(getSankeyData, {
-  props: ({ data: { sankeyData } }) => ({
-    nodes: sankeyData.nodes,
-    links: sankeyData.links,
-  }),
-})(BudgetSankey);
+export default withLanguage(BudgetSankey);

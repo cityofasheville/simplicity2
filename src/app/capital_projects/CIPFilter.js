@@ -5,8 +5,21 @@ import { CheckboxGroup } from 'accessible-react-checkbox-group';
 import { urlCategory } from './cip_utilities';
 import FilterCheckbox from '../../shared/FilterCheckbox';
 import { refreshLocation } from '../../utilities/generalUtilities';
+import { withLanguage } from '../../utilities/lang/LanguageContext';
+import { english } from './english';
+import { spanish } from './spanish';
 
 const CIPFilter = (props) => {
+  // set language
+  let content;
+  switch (props.language.language) {
+    case 'Spanish':
+      content = spanish;
+      break;
+    default:
+      content = english;
+  }
+
   const toggleMode = () => (
     {
       mode: props.location.query.mode === 'bond' ? 'all' : 'bond',
@@ -77,7 +90,7 @@ const CIPFilter = (props) => {
         <div className="toggle toggle--table">
           <div>
             <label>
-              <span>Include only bond projects</span>
+              <span>{content.include_only_bond_projects}</span>
               <Toggle
                 defaultChecked={props.location.query.mode === 'bond'}
                 onChange={() => refreshLocation(toggleMode(), props.location)}
@@ -95,4 +108,4 @@ CIPFilter.propTypes = {
   categories: PropTypes.arrayOf(PropTypes.string),
 };
 
-export default CIPFilter;
+export default withLanguage(CIPFilter);

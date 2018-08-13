@@ -228,7 +228,7 @@
 .navbar-nav {
   margin: ($navbar-padding-vertical / 2) (-$navbar-padding-horizontal);
 
-  > li > a {
+  > li > a, {
     padding-top:    10px;
     padding-bottom: 10px;
     line-height: $line-height-computed;

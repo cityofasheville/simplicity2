@@ -38,6 +38,7 @@ export const english = {
   treemap_of: 'Treemap of',
   treemap_instructions_1: 'In the treemap below, the size and color of the rectangles represent important information about the',
   treemap_instructions_2: 'budget. The size of each rectangle is proportional to the amount of money budgeted for that category. The color of the rectangle shows the change from last year’s budget. Increases are shown in blue, decreases are orange, and white shows no change. The deeper the color, the larger the change. Click a rectangle to see a detailed breakdown for that category, or mouse over it to see the description and total amount.',
+  treemap_up: 'Go up one level in treemap',
   understand_the_budget_data: 'Understand the budget data',
   use: 'Use',
   you_may_explore: 'You may explore the full dataset in the table below, or',

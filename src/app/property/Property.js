@@ -1,6 +1,6 @@
 import React from 'react';
 import { graphql } from 'react-apollo';
-import AccessibleReactTable from 'accessible-react-table';
+import AccessibleReactTable, {CellFocusWrapper} from 'accessible-react-table';
 import gql from 'graphql-tag';
 import DetailsTable from '../../shared/DetailsTable';
 import DetailsFormGroup from '../../shared/DetailsFormGroup';
@@ -16,12 +16,14 @@ import Map from '../../shared/visualization/Map';
 import { getBoundsFromPropertyPolygons, combinePolygonsFromPropertyList } from '../../utilities/mapUtilities';
 import Icon from '../../shared/Icon';
 import { IM_PROFILE, IM_USER, IM_GOOGLE, IM_CERTIFICATE, IM_CHECKBOX_PARTIAL2, IM_HOME2 } from '../../shared/iconConstants';
+import createFilterRenderer from '../../shared/FilterRenderer';
 
 const getDollars = (value) => {
   const initialSymbols = value < 0 ? '-$' : '$';
   return [initialSymbols, Math.abs(value).toLocaleString()].join('');
 };
 
+const FilterRenderer = createFilterRenderer('Search...');
 
 const Property = (props) => {
   if (props.data.loading) {
@@ -46,40 +48,40 @@ const Property = (props) => {
       Header: 'Civic address ID(s)',
       accessor: 'civic_address_id',
       width: 150,
-      Filter: ({ filter, onChange }) => (
-        <input
-          onChange={event => onChange(event.target.value)}
-          style={{ width: '100%' }}
-          value={filter ? filter.value : ''}
-          placeholder="Search..."
-        />
-      ),
+      Filter: FilterRenderer,
       filterMethod: (filter, row) => {
         const joinedInfo = row._original.pinnum;
-        return row._original !== undefined ? joinedInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
+        return row._original !== undefined
+          ? joinedInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1
+          : true;
       },
     },
     {
       Header: 'Address(es)',
       accessor: 'Address',
+      innerFocus: true,
       Cell: row => (
-        <span>
-          {
-            props.inTable ?
-              <span>{row.original.address}, {row.original.zipcode}</span>
-              :
-              <a href={`/address?search=${props.location.query.search}&id=${row.original.civic_address_id}&entities=${props.location.query.entities}&entity=address`}>{row.original.address}, {row.original.zipcode}</a>
-          }
-        </span>
+        <CellFocusWrapper>
+          {(focusRef, focusable) => (
+            <span>
+              {
+                props.inTable
+                  ? <span>{row.original.address}, {row.original.zipcode}</span>
+                  : (
+                    <a
+                      href={`/address?search=${props.location.query.search}&id=${row.original.civic_address_id}&entities=${props.location.query.entities}&entity=address`}
+                      tabIndex={focusable ? 0 : -1}
+                      ref={focusRef}
+                    >
+                      {row.original.address}, {row.original.zipcode}
+                    </a>
+                  )
+              }
+            </span>
+          )}
+        </CellFocusWrapper>
       ),
-      Filter: ({ filter, onChange }) => (
-        <input
-          onChange={event => onChange(event.target.value)}
-          style={{ width: '100%' }}
-          value={filter ? filter.value : ''}
-          placeholder="Search..."
-        />
-      ),
+      Filter: FilterRenderer,
       filterMethod: (filter, row) => {
         const joinedInfo = [row._original.address, row._original.zipcode].join(', ');
         return row._original !== undefined ? joinedInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;

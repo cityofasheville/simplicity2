@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import AccessibleReactTable from 'accessible-react-table';
+import AccessibleReactTable, { CellFocusWrapper } from 'accessible-react-table';
 import moment from 'moment';
 import Icon from '../../shared/Icon';
 import {
@@ -23,6 +23,7 @@ import {
 import { english } from './english';
 import { spanish } from './spanish';
 import { withLanguage } from '../../utilities/lang/LanguageContext';
+import createFilterRenderer from '../../shared/FilterRenderer';
 
 const getIcon = (type, isExpanded) => {
   switch (type) {
@@ -108,6 +109,8 @@ const CrimeTable = (props) => {
 
   const urlString = `${props.location.pathname}?entity=${props.location.query.entity}&id=${props.location.query.id}&entities=${props.location.query.entities}&label=${props.location.query.label}&within=${props.location.query.within || '660'}&during=${props.location.query.during || '183'}&hideNavbar=${props.location.query.hideNavbar}&search=${props.location.query.search}&view=map&x=${props.location.query.x}&y=${props.location.query.y}`; // eslint-disable-line
 
+  const FilterRenderer = createFilterRenderer(content.placeholder);
+
   const dataColumns = [
     {
       Header: content.type,
@@ -119,28 +122,14 @@ const CrimeTable = (props) => {
           <span style={{ marginLeft: '5px' }}>{row.value}</span>
         </span>
       ),
-      Filter: ({ filter, onChange }) => (
-        <input
-          onChange={event => onChange(event.target.value)}
-          style={{ width: '100%' }}
-          value={filter ? filter.value : ''}
-          placeholder={content.placeholder}
-        />
-      ),
+      Filter: FilterRenderer,
     },
     {
       Header: content.date,
       id: 'date_occurred',
       accessor: crime => (<span>{moment.utc(crime.date_occurred).format('M/DD/YYYY')}</span>),
       width: 100,
-      Filter: ({ filter, onChange }) => (
-        <input
-          onChange={event => onChange(event.target.value)}
-          style={{ width: '100%' }}
-          value={filter ? filter.value : ''}
-          placeholder={content.placeholder}
-        />
-      ),
+      Filter: FilterRenderer,
       filterMethod: (filter, row) => {
         const id = filter.pivotId || filter.id;
         return row[id] !== undefined ? String(row[id].props.children).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
@@ -150,46 +139,44 @@ const CrimeTable = (props) => {
       Header: content.location,
       accessor: 'address',
       minWidth: 200,
+      innerFocus: true,
       Cell: row => (
-        <span>
-          <span> <a title={content.click_to_crime} href={[urlString, '&zoomToPoint=', [row.original.y, row.original.x].join(',')].join('')}><Icon path={IM_MAP5} size={23} /></a></span>
-          <span style={{ marginLeft: '5px' }}>{row.value}</span>
-        </span>
+        <CellFocusWrapper>
+          {(focusRef, focusable) => (
+            <span>
+              <span>
+                <a
+                  title={content.click_to_crime}
+                  href={[
+                    urlString,
+                    '&zoomToPoint=',
+                    [row.original.y, row.original.x].join(','),
+                  ].join('')}
+                  tabIndex={focusable ? 0 : -1}
+                  ref={focusRef}
+                  onClick={e => e.stopPropagation()}
+                >
+                  <Icon path={IM_MAP5} size={23} />
+                  <span style={{ marginLeft: '5px' }}>{row.value}</span>
+                </a>
+              </span>
+            </span>
+          )}
+        </CellFocusWrapper>
       ),
-      Filter: ({ filter, onChange }) => (
-        <input
-          onChange={event => onChange(event.target.value)}
-          style={{ width: '100%' }}
-          value={filter ? filter.value : ''}
-          placeholder={content.placeholder}
-        />
-      ),
+      Filter: FilterRenderer,
     },
     {
       Header: content.case_no,
       accessor: 'case_number',
       width: props.language.language === 'Spanish' ? 125 : 95,
-      Filter: ({ filter, onChange }) => (
-        <input
-          onChange={event => onChange(event.target.value)}
-          style={{ width: '100%' }}
-          value={filter ? filter.value : ''}
-          placeholder={content.placeholder}
-        />
-      ),
+      Filter: FilterRenderer,
     },
     {
       Header: content.law_beat,
       accessor: 'geo_beat',
       width: 85,
-      Filter: ({ filter, onChange }) => (
-        <input
-          onChange={event => onChange(event.target.value)}
-          style={{ width: '100%' }}
-          value={filter ? filter.value : ''}
-          placeholder={content.placeholder}
-        />
-      ),
+      Filter: FilterRenderer,
     },
   ];
 

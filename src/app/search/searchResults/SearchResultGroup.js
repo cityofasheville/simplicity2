@@ -7,6 +7,8 @@ import styles from './searchResultGroup.css';
 import { getLink, getPlural, getIcon } from './searchResultsUtils';
 import { IM_GOOGLE } from '../../../shared/iconConstants';
 import * as poweredByGoogle from './powered_by_google_on_white.png';
+import createFilterRenderer from '../../../shared/FilterRenderer';
+import LinkFocusWrapper from '../../../shared/LinkFocusWrapper';
 
 const SearchResultGroup = (props) => {
   const dataColumns = [
@@ -27,23 +29,24 @@ const SearchResultGroup = (props) => {
         <CellFocusWrapper>
           {(focusRef, focusable) => (
             <span className="search-results-group__row-inner">
-              <Link
-                className="search-results-group__link"
-                tabIndex={focusable ? 0 : -1}
-                to={getLink(
-                  row.original.type,
-                  row.original.id, props.searchText,
-                  props.selectedEntities,
-                  row.original.label,
-                  props.originalSearch
-                )}
-                ref={focusRef}
-              >
-                <span className="text-primary">
-                  {getIcon(row.original.type === 'place' ? 'search' : row.original.type)}
-                  {row.value}
-                </span>
-              </Link>
+              <LinkFocusWrapper focusRef={focusRef}>
+                <Link
+                  className="search-results-group__link"
+                  tabIndex={focusable ? 0 : -1}
+                  to={getLink(
+                    row.original.type,
+                    row.original.id, props.searchText,
+                    props.selectedEntities,
+                    row.original.label,
+                    props.originalSearch
+                  )}
+                >
+                  <span className="text-primary">
+                    {getIcon(row.original.type === 'place' ? 'search' : row.original.type)}
+                    {row.value}
+                  </span>
+                </Link>
+              </LinkFocusWrapper>
               {props.data.label === 'place' &&
                 <span className="text-primary">
                   <a
@@ -64,13 +67,9 @@ const SearchResultGroup = (props) => {
           )}
         </CellFocusWrapper>
       ),
-      Filter: ({ filter, onChange }) => (
-        <input
-          onChange={event => onChange(event.target.value)}
-          value={filter ? filter.value : ''}
-          placeholder="Filter results..."
-          className="full-width"
-        />
+      Filter: createFilterRenderer(
+        'Filter Results...',
+        { style: undefined, className: 'full-width' }
       ),
     },
   ];

@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import AccessibleReactTable from 'accessible-react-table';
+import AccessibleReactTable, { CellFocusWrapper } from 'accessible-react-table';
 import expandingRows from '../../shared/react_table_hoc/ExpandingRows';
 import DevelopmentDetail from './DevelopmentDetail';
 import Icon from '../../shared/Icon';
 import { IM_HOME2, IM_MAP5, IM_OFFICE, IM_DIRECTION, IM_LIBRARY2, IM_FIRE, IM_USERS4, IM_COOK, IM_CITY, LI_WALKING, IM_MUG } from '../../shared/iconConstants';
+import createFilterRenderer from '../../shared/FilterRenderer';
 
 const getIcon = (type, isExpanded) => {
   switch (type) {
@@ -34,6 +35,8 @@ const getIcon = (type, isExpanded) => {
   }
 };
 
+const FilterRenderer = createFilterRenderer('Search...');
+
 class DevelopmentTable extends React.Component {
   constructor(props) {
     super(props);
@@ -56,20 +59,33 @@ class DevelopmentTable extends React.Component {
         Header: 'Name',
         accessor: 'applicant_name',
         minWidth: 250,
+        innerFocus: true,
         Cell: row => (
-          <span>
-            <span> <a title="Click to permit in map" href={[this.state.urlString, '&zoomToPoint=', [row.original.y, row.original.x].join(',')].join('')} style={{ color: row.isExpanded ? 'white' : '#4077a5' }}><Icon path={IM_MAP5} size={23} /></a></span>
-            <span style={{ marginLeft: '5px' }}>{row.value}</span>
-          </span>
+          <CellFocusWrapper>
+            {(focusRef, focusable) => (
+              <span>
+                <span>
+                  <a
+                    title="Click to permit in map"
+                    href={[
+                      this.state.urlString,
+                      '&zoomToPoint=',
+                      [row.original.y, row.original.x].join(','),
+                    ].join('')}
+                    style={{ color: row.isExpanded ? 'white' : '#4077a5' }}
+                    tabIndex={focusable ? 0 : -1}
+                    ref={focusRef}
+                    onClick={e => e.stopPropagation()}
+                  >
+                    <Icon path={IM_MAP5} size={23} />
+                    <span style={{ marginLeft: '5px' }}>{row.value}</span>
+                  </a>
+                </span>
+              </span>
+            )}
+          </CellFocusWrapper>
         ),
-        Filter: ({ filter, onChange }) => (
-          <input
-            onChange={event => onChange(event.target.value)}
-            style={{ width: '100%' }}
-            value={filter ? filter.value : ''}
-            placeholder="Search..."
-          />
-        ),
+        Filter: FilterRenderer,
       },
       {
         Header: 'Type',
@@ -81,41 +97,20 @@ class DevelopmentTable extends React.Component {
             <span style={{ marginLeft: '5px' }}>{row.value}</span>
           </span>
         ),
-        Filter: ({ filter, onChange }) => (
-          <input
-            onChange={event => onChange(event.target.value)}
-            style={{ width: '100%' }}
-            value={filter ? filter.value : ''}
-            placeholder="Search..."
-          />
-        ),
+        Filter: FilterRenderer,
       },
       {
         Header: 'Contractor',
         accessor: 'contractor_name',
         minWidth: 150,
-        Filter: ({ filter, onChange }) => (
-          <input
-            onChange={event => onChange(event.target.value)}
-            style={{ width: '100%' }}
-            value={filter ? filter.value : ''}
-            placeholder="Search..."
-          />
-        ),
+        Filter: FilterRenderer,
       },
       {
         Header: 'Applied Date',
         id: 'applied_date',
         accessor: permit => (<span>{moment.utc(permit.applied_date).format('M/DD/YYYY')}</span>),
         width: 110,
-        Filter: ({ filter, onChange }) => (
-          <input
-            onChange={event => onChange(event.target.value)}
-            style={{ width: '100%' }}
-            value={filter ? filter.value : ''}
-            placeholder="Search..."
-          />
-        ),
+        Filter: FilterRenderer,
         filterMethod: (filter, row) => {
           const id = filter.pivotId || filter.id;
           return row[id] !== undefined ? String(row[id].props.children).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
@@ -125,14 +120,7 @@ class DevelopmentTable extends React.Component {
         Header: 'Permit #',
         accessor: 'permit_number',
         width: 115,
-        Filter: ({ filter, onChange }) => (
-          <input
-            onChange={event => onChange(event.target.value)}
-            style={{ width: '100%' }}
-            value={filter ? filter.value : ''}
-            placeholder="Search..."
-          />
-        ),
+        Filter: FilterRenderer,
       },
     ];
 

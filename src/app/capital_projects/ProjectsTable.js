@@ -13,6 +13,7 @@ import {
   IM_DROPLET,
 } from '../../shared/iconConstants';
 import expandingRows from '../../shared/react_table_hoc/ExpandingRows';
+import createFilterRenderer from '../../shared/FilterRenderer';
 import { withLanguage } from '../../utilities/lang/LanguageContext';
 import { english } from './english';
 import { spanish } from './spanish';
@@ -84,14 +85,7 @@ class ProjectsTable extends React.Component {
           <span style={{ marginLeft: '5px' }}>{row.value}</span>
         </span>
       ),
-      Filter: ({ filter, onChange }) => (
-        <input
-          onChange={event => onChange(event.target.value)}
-          style={{ width: '100%' }}
-          value={filter ? filter.value : ''}
-          placeholder={this.state.content.search}
-        />
-      ),
+      Filter: createFilterRenderer(this.state.content.search),
       getProps: () => ({
         role: 'rowheader',
       }),
@@ -101,14 +95,7 @@ class ProjectsTable extends React.Component {
       accessor: 'zip_code',
       maxWidth: 120,
       show: this.state.width >= 940,
-      Filter: ({ filter, onChange }) => (
-        <input
-          onChange={event => onChange(event.target.value)}
-          style={{ width: '100%' }}
-          value={filter ? filter.value : ''}
-          placeholder={this.state.content.search}
-        />
-      ),
+      Filter: createFilterRenderer(this.state.content.search),
     },
     {
       Header: (<div>{this.state.content.phase}</div>),
@@ -123,29 +110,14 @@ class ProjectsTable extends React.Component {
         </span>
       ),
       maxWidth: 120,
-      Filter: ({ filter, onChange }) => (
-        <input
-          onChange={event => onChange(event.target.value)}
-          style={{ width: '100%' }}
-          value={filter ? filter.value : ''}
-          placeholder={this.state.content.search}
-        />
-      ),
+      Filter: createFilterRenderer(this.state.content.search),
     },
     {
       Header: (<div>{this.state.content.budget}</div>),
       accessor: 'total_project_funding_budget_document',
       maxWidth: 120,
       show: this.state.width >= 720,
-      style: { textAlign: 'right' },
-      Filter: ({ filter, onChange }) => (
-        <input
-          onChange={event => onChange(event.target.value)}
-          style={{ width: '100%' }}
-          value={filter ? filter.value : ''}
-          placeholder={this.state.content.search}
-        />
-      ),
+      Filter: createFilterRenderer(this.state.content.search),
     },
     {
       Header: (<div>{this.state.content.under_contract}</div>),
@@ -154,14 +126,7 @@ class ProjectsTable extends React.Component {
       maxWidth: 120,
       show: this.state.width >= 720,
       style: { textAlign: 'right' },
-      Filter: ({ filter, onChange }) => (
-        <input
-          onChange={event => onChange(event.target.value)}
-          style={{ width: '100%' }}
-          value={filter ? filter.value : ''}
-          placeholder={this.state.content.search}
-        />
-      ),
+      Filter: createFilterRenderer(this.state.content.search),
     },
     {
       Header: (<div>{this.state.content.spent}</div>),
@@ -169,15 +134,7 @@ class ProjectsTable extends React.Component {
       accessor: project => ['$', parseInt(project.total_spent, 10).toLocaleString()].join(''),
       maxWidth: 120,
       show: this.state.width >= 720,
-      style: { textAlign: 'right' },
-      Filter: ({ filter, onChange }) => (
-        <input
-          onChange={event => onChange(event.target.value)}
-          style={{ width: '100%' }}
-          value={filter ? filter.value : ''}
-          placeholder={this.state.content.search}
-        />
-      ),
+      Filter: createFilterRenderer(this.state.content.search),
     },
   ]);
 

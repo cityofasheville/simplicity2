@@ -92,65 +92,6 @@ function splitOrdinalByBool(inputData, matchTestFunc, nameTrue) {
   return splitOrdinal;
 }
 
-function boxWhisker({ data, rScale, adjustedSize, margin }) {
-  const renderedPieces = [];
-  const keys = Object.keys(data);
-  console.log(data)
-
-  keys.forEach((key) => {
-    const column = data[key];
-    const firstDatum = column.pieceData[0];
-
-    // Each ordinal value/status has one bar associated
-    // Each bar has an array of individual data points
-    // Render each point as a dot
-    // Render a box a la box and whisker
-    // Box is transparent, whole thing glows when hovered
-    // Hover event
-
-    //Calculate individual start and width of each graphical band
-    // const birthDate = rScale(column.pieces.data.startDate);
-    // const termStart = rScale(firstDatum.start);
-    // const termEnd = rScale(firstDatum.end);
-    // const deathDate = rScale(firstDatum.death);
-    // const preTermWidth = termStart - birthDate;
-    // const termWidth = termEnd - termStart;
-    // const postTermWidth = deathDate - termEnd;
-//
-//     //You can return an array of graphics or an array of objects with extra data (see the Waterfall chart demo)
-    const markObject = (
-      <g key={`piece-${key}`}>
-        <rect
-          fill="#00a2ce"
-          width={column.width}
-          height={column.width}
-          x={firstDatum.scaledValue}
-          y={column.x}
-        />
-        {/* <rect */}
-        {/*   fill="#4d430c" */}
-        {/*   width={termWidth} */}
-        {/*   height={column.width} */}
-        {/*   x={termStart} */}
-        {/*   y={column.x} */}
-        {/* /> */}
-        {/* <rect */}
-        {/*   fill="#b6a756" */}
-        {/*   width={postTermWidth} */}
-        {/*   height={column.width} */}
-        {/*   x={termEnd} */}
-        {/*   y={column.x} */}
-        {/* /> */}
-      </g>
-    );
-
-    renderedPieces.push(markObject);
-  });
-
-  return renderedPieces;
-}
-
-
 class GranularVolume extends React.Component {
   constructor() {
     super();
@@ -288,21 +229,13 @@ class GranularVolume extends React.Component {
     const includedDates = this.timeBuckets();
     const histogramData = this.histogramFromHierarchical(entriesHierarchy, includedDates);
 
-    const statusNest = nest().key(d => d.status_current);
-    const entriesHierarchyStatusNest = entriesHierarchy.map((entry) => {
-      const rObj = Object.assign({}, entry);
-      rObj.values = statusNest.entries(entry.values)
-        .map((v) => {
-          const rVal = Object.assign({}, v);
-          rVal.startDate = new Date(v.values.sort((a, b) => Date.parse(a.applied_date) - Date.parse(b.applied_date))[0].applied_date).getTime();
-          return rVal;
-        });
-      return rObj;
-    });
-
-    /********************/
     return (<div>
-      <h1>Permits Opened from {`${new Date(includedDates[0]).toLocaleDateString('en-US', dateOptions)} to ${new Date(includedDates[includedDates.length - 1]).toLocaleDateString('en-US', dateOptions)}`}</h1>
+      <h1>Permits Opened from {
+        `${new Date(includedDates[0]).toLocaleDateString('en-US', dateOptions)
+        } to ${
+          new Date(includedDates[includedDates.length - 1]).toLocaleDateString('en-US', dateOptions)
+        }`}
+      </h1>
       <div id="controls-n-summary" className="row">
         <PermitTypeMenus
           onSelect={this.onMenuSelect}
@@ -328,56 +261,88 @@ class GranularVolume extends React.Component {
       <div
         id="openClosedIssued"
       >
-        <h2>Status by Opened Date</h2>
+        <h2>Status Distribution by Opened Date</h2>
+        <p>Click a box to see data details</p>
         <div
           style={{
-            display: 'flex',
             padding: '0 1%',
             textTransform: 'capitalize',
           }}
         >
-          {entriesHierarchyStatusNest.map((datum) => {
-            console.log(datum.values);
-
-            return (<ResponsiveOrdinalFrame
-              type="bar"
-              projection="horizontal"
-              size={[185, 300]}
-              margin={{
-                top: 40,
-                right: 20,
-                bottom: 30,
-                left: 60,
-              }}
-              oPadding={1}
-              oAccessor="key"
-              oLabel
-              rAccessor="startDate"
-              rExtent={[includedDates[0].getTime(), includedDates[includedDates.length - 1].getTime()]}
-              pieceIDAccessor="key"
-              axis={[
-                {
-                  orient: 'bottom',
-                  tickFormat: d => (
+          {entriesHierarchy.map((datum) => {
+            // TODO:
+            // roll them into other if there are more than 5
+            // click to pop up modal
+            // tooltip
+            return (<div
+              className="col-md-4"
+              style={{ display: 'inline-block' }}
+              key={datum.key}
+            >
+              <ResponsiveOrdinalFrame
+                projection="horizontal"
+                size={[300, 325]}
+                responsiveWidth
+                margin={{
+                  top: 40,
+                  right: 0,
+                  bottom: 40,
+                  left: 90,
+                }}
+                oPadding={5}
+                oAccessor={d => d.status_current || 'No Status'}
+                oLabel={(d) => {
+                  const fontSize = 1 - (0.125 * d.split(' ').length);
+                  return (
                     <text
                       textAnchor="end"
                       transform="rotate(-35)"
-                      style={{ fontSize: '0.70em' }}
+                      style={{ fontSize: `${fontSize}em` }}
                     >
-                      {new Date(d).toLocaleDateString(
-                        'en-US',
-                        { month: 'short', day: 'numeric' }
-                      )}
+                      {d}
                     </text>
-                  ),
-                },
-              ]}
-              responsiveWidth
-              key={datum.key}
-              data={datum.values}
-              title={datum.key}
-              style={(d) => ({ fill: nodeColors[datum.key] })}
-            />);
+                  );
+                }}
+                summaryType={{ type: 'boxplot', amplitude: new Date() }}
+                summaryStyle={{
+                  fill: nodeColors[datum.key],
+                  stroke: nodeColors[datum.key],
+                  fillOpacity: 0.65,
+                }}
+                rAccessor={d => new Date(d.applied_date)}
+                rExtent={[includedDates[0], includedDates[includedDates.length - 1]]}
+                pieceIDAccessor="key"
+                axis={[
+                  {
+                    orient: 'bottom',
+                    tickFormat: d => (
+                      <text
+                        textAnchor="end"
+                        transform="rotate(-35)"
+                        style={{ fontSize: '0.65em' }}
+                      >
+                        {new Date(d).toLocaleDateString(
+                          'en-US',
+                          { month: 'short', day: 'numeric' }
+                        )}
+                      </text>
+                    ),
+                  },
+                ]}
+                key={datum.key}
+                data={datum.values}
+                title={datum.key}
+                hoverAnnotation
+                tooltipContent={(d) => {
+                  // Add text line that says "median date received is ____"
+                  return <Tooltip
+                    title={`${d.column.name} Total: ${d.summary.length}`}
+                  />
+                }}
+                customClickBehavior={d => console.log(d)}
+              />
+            </div>
+            );
           })}
         </div>
       </div>

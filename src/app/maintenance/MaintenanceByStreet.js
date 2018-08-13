@@ -24,13 +24,15 @@ const getMaintenanceInfo = (entity, comma) => {
     return (
       <CellFocusWrapper>
         {(focusRef, focusable) => (
-          // TODO this needs to be converted to widget with its own keyboard nav.
-          <div ref={focusRef} tabIndex={focusable ? 0 : -1}>
+          // TODO this needs to be converted to widget with its own keyboard nav or split into
+          // a separate column for the report button.
+          <div>
             <span>
               <a
                 href="http://www.ashevillenc.gov/departments/street_services/maintenance.htm"
                 target="_blank"
-                tabIndex="-1"
+                ref={focusRef}
+                tabIndex={focusable ? 0 : -1}
               >
                 {entity}
               </a>

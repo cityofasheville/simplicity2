@@ -124,7 +124,7 @@ const CrimeTable = (props) => {
           onChange={event => onChange(event.target.value)}
           style={{ width: '100%' }}
           value={filter ? filter.value : ''}
-          placeholder="Search..."
+          placeholder={content.placeholder}
         />
       ),
     },
@@ -138,7 +138,7 @@ const CrimeTable = (props) => {
           onChange={event => onChange(event.target.value)}
           style={{ width: '100%' }}
           value={filter ? filter.value : ''}
-          placeholder="Search..."
+          placeholder={content.placeholder}
         />
       ),
       filterMethod: (filter, row) => {
@@ -152,7 +152,7 @@ const CrimeTable = (props) => {
       minWidth: 200,
       Cell: row => (
         <span>
-          <span> <a title="Click to crime in map" href={[urlString, '&zoomToPoint=', [row.original.y, row.original.x].join(',')].join('')}><Icon path={IM_MAP5} size={23} /></a></span>
+          <span> <a title={content.click_to_crime} href={[urlString, '&zoomToPoint=', [row.original.y, row.original.x].join(',')].join('')}><Icon path={IM_MAP5} size={23} /></a></span>
           <span style={{ marginLeft: '5px' }}>{row.value}</span>
         </span>
       ),
@@ -161,25 +161,25 @@ const CrimeTable = (props) => {
           onChange={event => onChange(event.target.value)}
           style={{ width: '100%' }}
           value={filter ? filter.value : ''}
-          placeholder="Search..."
+          placeholder={content.placeholder}
         />
       ),
     },
     {
-      Header: 'Case #',
+      Header: content.case_no,
       accessor: 'case_number',
-      width: 95,
+      width: props.language.language === 'Spanish' ? 125 : 95,
       Filter: ({ filter, onChange }) => (
         <input
           onChange={event => onChange(event.target.value)}
           style={{ width: '100%' }}
           value={filter ? filter.value : ''}
-          placeholder="Search..."
+          placeholder={content.placeholder}
         />
       ),
     },
     {
-      Header: 'Law Beat',
+      Header: content.law_beat,
       accessor: 'geo_beat',
       width: 85,
       Filter: ({ filter, onChange }) => (
@@ -187,7 +187,7 @@ const CrimeTable = (props) => {
           onChange={event => onChange(event.target.value)}
           style={{ width: '100%' }}
           value={filter ? filter.value : ''}
-          placeholder="Search..."
+          placeholder={content.placeholder}
         />
       ),
     },
@@ -202,7 +202,7 @@ const CrimeTable = (props) => {
           <div style={{ marginTop: '10px' }}>
             <AccessibleReactTable
               data={props.data}
-              ariaLabel="Crimes"
+              ariaLabel={content.crimes}
               columns={dataColumns}
               showPagination={props.data.length > 20}
               defaultPageSize={props.data.length <= 20 ? props.data.length : 20}

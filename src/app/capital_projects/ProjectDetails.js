@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import Map from '../../shared/visualization/Map';
 import Icon from '../../shared/Icon';
 import { IM_QUESTION, IM_SPHERE3, IM_CIRCLE2 } from '../../shared/iconConstants';
+import { withLanguage } from '../../utilities/lang/LanguageContext';
+import { english } from './english';
+import { spanish } from './spanish';
 
 const getIcon = (category) => {
   switch (category) {
@@ -81,6 +84,16 @@ const ProjectDetails = (props) => {
     ))
   );
 
+  // set language
+  let content;
+  switch (props.language.language) {
+    case 'Spanish':
+      content = spanish;
+      break;
+    default:
+      content = english;
+  }
+
   return (
     <div className="capital-project row">
       <div className="col-sm-12">
@@ -107,7 +120,7 @@ const ProjectDetails = (props) => {
                       target="_blank"
                     >
                       <Icon path={IM_SPHERE3} size={20} />
-                      Project Website
+                      &nbsp;{content.project_website}
                     </a>
                   </div>
                 </div>
@@ -117,7 +130,7 @@ const ProjectDetails = (props) => {
               <div className="col-xs-5">
                 <div className="" style={{ marginBottom: '10px' }}>
                   <div style={{ color: '#676873' }}>
-                    Budget
+                    {content.budget}
                   </div>
                   <div>
                     <strong>{props.total_project_funding_budget_document}</strong>
@@ -125,25 +138,29 @@ const ProjectDetails = (props) => {
                 </div>
                 <div className="" style={{ marginBottom: '10px' }}>
                   <div style={{ color: '#676873' }}>
-                    Spent
+                    {content.spent}
                   </div>
                   <div>
-                    <strong>{['$', parseInt(props.total_spent, 10).toLocaleString()].join('')}</strong>
+                    <strong>
+                      {['$', parseInt(props.total_spent, 10).toLocaleString()].join('')}
+                    </strong>
                   </div>
                 </div>
                 <div className="" style={{ marginBottom: '10px' }}>
                   <div style={{ color: '#676873' }}>
-                    Under contract
+                    {content.under_contract}
                   </div>
                   <div>
-                    <strong>{['$', parseInt(props.encumbered, 10).toLocaleString()].join('')}</strong>
+                    <strong>
+                      {['$', parseInt(props.encumbered, 10).toLocaleString()].join('')}
+                    </strong>
                   </div>
                 </div>
               </div>
               <div className="col-xs-7">
                 <div className="" style={{ marginBottom: '10px' }}>
                   <div style={{ color: '#676873' }}>
-                    Zip code
+                    {content.zip_code}
                   </div>
                   <div >
                     <strong>{props.zip_code || '?'}</strong>
@@ -151,7 +168,7 @@ const ProjectDetails = (props) => {
                 </div>
                 <div className="" style={{ marginBottom: '20px' }}>
                   <div style={{ color: '#676873' }}>
-                    Estimated Construction Timeframe
+                    {content.estimated_construction_timeframe}
                   </div>
                   <div>
                     <strong>{props.status !== null && props.status.indexOf('Completed') > -1 ? ['Completed', props.actual_construction_end].join(' ') : props.target_construction_start === null ? props.target_construction_end : [props.target_construction_start, props.target_construction_end].join(' - ')}</strong>
@@ -170,7 +187,7 @@ const ProjectDetails = (props) => {
             {props.status !== null &&
               <div className="capital-project__status">
                 <div className="header">
-                  Phase
+                  {content.phase}
                 </div>
                 <div className="project-status">
                   <Icon path={IM_CIRCLE2} size={25} color={getStageNumber(props.status) >= 1 ? phaseColor(1) : '#ecf0f1'} />
@@ -197,13 +214,13 @@ const ProjectDetails = (props) => {
                 {props.project_description}
                 <hr />
                 <div>
-                  <label htmlFor="contact">Project contact:&nbsp;</label><span name="contact">{props.coa_contact}</span>
+                  <label htmlFor="contact">{content.project_contact}:&nbsp;</label><span name="contact">{props.coa_contact}</span>
                 </div>
                 <div>
-                  <label htmlFor="contact_phone">Contact phone:&nbsp;</label><span name="contact_phone">{props.phone_number}</span>
+                  <label htmlFor="contact_phone">{content.contact_phone}:&nbsp;</label><span name="contact_phone">{props.phone_number}</span>
                 </div>
                 <div>
-                  <label htmlFor="contact_email">Contact email:&nbsp;</label><span name="contact_email">{props.email_address}</span>
+                  <label htmlFor="contact_email">{content.contact_email}:&nbsp;</label><span name="contact_email">{props.email_address}</span>
                 </div>
               </div>
             </div>
@@ -213,7 +230,7 @@ const ProjectDetails = (props) => {
               <Map data={getMyPoints(props.project)} bounds={calculateBounds(getMyPoints(props.project))} height="300px"/>
             </div>
             <a href={props.photo_url} target="_blank">
-              <img alt="Project" className="img-responsive" src={props.photo_url} />
+              <img alt={content.project} className="img-responsive" src={props.photo_url} />
             </a>
           </div>
         </div>
@@ -232,4 +249,4 @@ ProjectDetails.defaultProps = {
   hideTitle: false,
 };
 
-export default ProjectDetails;
+export default withLanguage(ProjectDetails);

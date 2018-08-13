@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import L from 'leaflet';
-import { graphql } from 'react-apollo';
+import { Query } from 'react-apollo';
 import moment from 'moment';
 import gql from 'graphql-tag';
 import LoadingAnimation from '../../shared/LoadingAnimation';
@@ -12,8 +12,14 @@ import CrimeTable from '../crime/CrimeTable';
 import EmailDownload from '../../shared/EmailDownload';
 import ButtonGroup from '../../shared/ButtonGroup';
 import Button from '../../shared/Button';
-import { getBoundsFromPolygonData, combinePolygonsFromNeighborhoodList } from '../../utilities/mapUtilities';
+import {
+  getBoundsFromPolygonData,
+  combinePolygonsFromNeighborhoodList,
+} from '../../utilities/mapUtilities';
 import { refreshLocation } from '../../utilities/generalUtilities';
+import { english } from './english';
+import { spanish } from './spanish';
+import { withLanguage } from '../../utilities/lang/LanguageContext';
 
 const getMarker = (type) => {
   switch (type) {
@@ -75,6 +81,38 @@ const getMarker = (type) => {
   }
 };
 
+const GET_CRIMES_BY_NEIGHBORHOOD = gql`
+  query getCrimesQuery($nbrhd_ids: [String], $before: String, $after: String) {
+    crimes_by_neighborhood (nbrhd_ids: $nbrhd_ids, before: $before, after: $after) {
+      case_number
+      date_occurred
+      address
+      offense_long_description
+      offense_short_description
+      geo_beat
+      x
+      y
+    }
+    neighborhoods (nbrhd_ids: $nbrhd_ids) {
+      name
+      polygon {
+        outer {
+          points {
+            x
+            y
+          }
+        }
+        holes {
+          points {
+            x
+            y
+          }
+        }
+      }
+    } 
+  }
+`;
+
 const convertToPieData = (crimeData) => {
   // Group crimes to less categories?? Right now just show top 8 and Other
   let pieData = [];
@@ -89,7 +127,11 @@ const convertToPieData = (crimeData) => {
       }
     }
     if (!crimeTypeAlreadyPresent) {
-      pieData.push(Object.assign({}, {}, { name: crimeData[i].offense_long_description, value: 1 }));
+      pieData.push(Object.assign(
+        {},
+        {},
+        { name: crimeData[i].offense_long_description, value: 1 }
+      ));
     }
   }
 
@@ -126,84 +168,153 @@ const createLegend = (crimeData) => {
   return (
     <div style={{ width: '160px' }}>
       {crimeTypes.map(type => (
-        <div key={`legendItem-${type}`} style={{ width: '160px', marginBottom: '5px' }}><img src={getMarker(type)} style={{ display: 'inline-block', width: '25px', verticalAlign: 'top' }}></img><span style={{ marginLeft: '5px', display: 'inline-block', width: '130px' }}>{type}</span></div>
+        <div
+          key={`legendItem-${type}`}
+          style={{ width: '160px', marginBottom: '5px' }}
+        >
+          <img
+            src={getMarker(type)}
+            alt="legendItem"
+            style={{
+              display: 'inline-block',
+              width: '25px',
+              verticalAlign: 'top',
+            }}
+          />
+          <span
+            style={{
+              marginLeft: '5px',
+              display: 'inline-block',
+              width: '130px',
+            }}
+          >{type}
+          </span>
+        </div>
       ))}
     </div>
   );
 };
 
-const CrimesByNeighborhood = (props) => {
-  if (props.data.loading) { // eslint-disable-line react/prop-types
-    return <LoadingAnimation />;
-  }
-  if (props.data.error) { // eslint-disable-line react/prop-types
-    return <Error message={props.data.error.message} />; // eslint-disable-line react/prop-types
-  }
+const CrimesByNeighborhood = props => (
+  <Query
+    query={GET_CRIMES_BY_NEIGHBORHOOD}
+    variables={{
+      nbrhd_ids: props.location.query.id.trim(),
+      before: props.before,
+      after: props.after,
+    }}
+  >
+    {({ loading, error, data }) => {
+      if (loading) return <LoadingAnimation />;
+      if (error) return <Error message={error.message} />;
+      // set language
+      let content;
+      switch (props.language.language) {
+        case 'Spanish':
+          content = spanish;
+          break;
+        default:
+          content = english;
+      }
+      const pieData = convertToPieData(data.crimes_by_neighborhood);
+      const mapData = data.crimes_by_neighborhood.map(item => (Object.assign({}, item, {
+        popup: `<div><b>${item.address}</b><p>${moment.utc(item.date_occurred).format('M/DD/YYYY')}</p><p>${item.offense_long_description}</p></div>`, // eslint-disable-line
+        options: {
+          icon: L.icon({
+            iconUrl: getMarker(item.offense_long_description),
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [2, -22],
+          }),
+        },
+      })
+      ));
 
-  const pieData = convertToPieData(props.data.crimes_by_neighborhood);
-  const mapData = props.data.crimes_by_neighborhood.map(item => (Object.assign({}, item, {
-    popup: `<div><b>${item.address}</b><p>${moment.utc(item.date_occurred).format('M/DD/YYYY')}</p><p>${item.offense_long_description}</p></div>`,
-    options: { icon: L.icon({
-      iconUrl: getMarker(item.offense_long_description),
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-      popupAnchor: [2, -22],
-    }) } })
-  ));
+      const getNewUrlParams = view => (
+        {
+          view,
+        }
+      );
 
-  const getNewUrlParams = view => (
-    {
-      view,
-    }
-  );
-
-  return (
-    <div className="crimes-template__data">
-      <div className="row template-header">
-        <div className="col-xs-12 template-header__inner">
-          <div className="pull-left">
-            <EmailDownload downloadData={props.data.crimes_by_neighborhood} fileName="crimes_by_neighborhood.csv" />
+      return (
+        <div className="crimes-template__data">
+          <div className="row template-header">
+            <div className="col-xs-12 template-header__inner">
+              <div className="pull-left">
+                <EmailDownload
+                  downloadData={data.crimes_by_neighborhood}
+                  fileName={content.crimes_by_neighborhood_filename}
+                />
+              </div>
+              <ButtonGroup>
+                <Button
+                  onClick={() => refreshLocation(getNewUrlParams('map'), props.location)}
+                  active={props.location.query.view === 'map'}
+                  positionInGroup="left"
+                >{content.map_view}
+                </Button>
+                <Button
+                  onClick={() => refreshLocation(getNewUrlParams('list'), props.location)}
+                  active={props.location.query.view === 'list'}
+                  positionInGroup="middle"
+                >{content.list_view}
+                </Button>
+                <Button
+                  onClick={() => refreshLocation(getNewUrlParams('summary'), props.location)}
+                  positionInGroup="right"
+                  active={props.location.query.view === 'summary'}
+                >{content.chart_view}
+                </Button>
+              </ButtonGroup>
+            </div>
           </div>
-          <ButtonGroup>
-            <Button onClick={() => refreshLocation(getNewUrlParams('map'), props.location)} active={props.location.query.view === 'map'} positionInGroup="left">Map view</Button>
-            <Button onClick={() => refreshLocation(getNewUrlParams('list'), props.location)} active={props.location.query.view === 'list'} positionInGroup="middle">List view</Button>
-            <Button onClick={() => refreshLocation(getNewUrlParams('summary'), props.location)} positionInGroup="right" active={props.location.query.view === 'summary'}>Chart</Button>
-          </ButtonGroup>
+          <div className="row data-view-container">
+            <div
+              id="summaryView"
+              className="col-xs-12"
+              hidden={props.location.query.view !== 'summary'}
+            >
+              {pieData.length > 0 ?
+                <PieChart data={pieData} altText={content.crime_pie_chart} />
+                :
+                <div className="alert alert-info">{content.no_results_found}</div>
+              }
+            </div>
+            <div
+              id="listView"
+              hidden={props.location.query.view !== 'list'}
+            >
+              <CrimeTable data={data.crimes_by_neighborhood} location={props.location} />
+            </div>
+            <div
+              id="mapView"
+              className="col-xs-12"
+              hidden={props.location.query.view !== 'map'}
+            >
+              {data.crimes_by_neighborhood.length === 0 || props.location.query.view !== 'map' ?
+                <div className="alert alert-info">{content.no_results_found}</div>
+                :
+                <Map
+                  data={mapData}
+                  legend={createLegend(data.crimes_by_neighborhood)}
+                  drawPolygon
+                  polygonData={combinePolygonsFromNeighborhoodList([data.neighborhoods[0]])}
+                  bounds={(props.location.query.zoomToPoint !== undefined &&
+                    props.location.query.zoomToPoint !== '') ?
+                    null : getBoundsFromPolygonData([data.neighborhoods[0].polygon])}
+                  within={parseInt(props.location.query.within, 10)}
+                  zoomToPoint={(props.location.query.zoomToPoint !== undefined &&
+                    props.location.query.zoomToPoint !== '') ?
+                    props.location.query.zoomToPoint : null}
+                />
+              }
+            </div>
+          </div>
         </div>
-      </div>
-
-      <div className="row data-view-container">
-        <div id="summaryView" className="col-xs-12" hidden={props.location.query.view !== 'summary'}>
-          {pieData.length > 0 ?
-            <PieChart data={pieData} altText="Crime pie chart" />
-            :
-            <div className="alert alert-info">No results found</div>
-          }
-        </div>
-
-        <div id="listView" hidden={props.location.query.view !== 'list'}>
-          <CrimeTable data={props.data.crimes_by_neighborhood} location={props.location} />
-        </div>
-
-        <div id="mapView" className="col-xs-12" hidden={props.location.query.view !== 'map'}>
-          {props.data.crimes_by_neighborhood.length === 0 || props.location.query.view !== 'map' ?
-            <div className="alert alert-info">No results found</div>
-            :
-            <Map
-              data={mapData}
-              legend={createLegend(props.data.crimes_by_neighborhood)}
-              drawPolygon
-              polygonData={combinePolygonsFromNeighborhoodList([props.data.neighborhoods[0]])}
-              bounds={(props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== '') ? null : getBoundsFromPolygonData([props.data.neighborhoods[0].polygon])}
-              within={parseInt(props.location.query.within, 10)}
-              zoomToPoint={(props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== '') ? props.location.query.zoomToPoint : null}
-            />
-          }
-        </div>
-      </div>
-    </div>
-  );
-};
+      );
+    }}
+  </Query>
+);
 
 CrimesByNeighborhood.propTypes = {
   location: PropTypes.object, // eslint-disable-line
@@ -214,46 +325,4 @@ CrimesByNeighborhood.defaultProps = {
   query: { entity: 'address', label: '123 Main street' },
 };
 
-const getCrimesQuery = gql`
-  query getCrimesQuery($nbrhd_ids: [String], $before: String, $after: String) {
-    crimes_by_neighborhood (nbrhd_ids: $nbrhd_ids, before: $before, after: $after) {
-      case_number
-      date_occurred
-      address
-      offense_long_description
-      offense_short_description
-      geo_beat
-      x
-      y
-    }
-    neighborhoods (nbrhd_ids: $nbrhd_ids) {
-      name
-      polygon {
-        outer {
-          points {
-            x
-            y
-          }
-        }
-        holes {
-          points {
-            x
-            y
-          }
-        }
-      }
-    } 
-  }
-`;
-
-const CrimesByNeighborhoodGQL = graphql(getCrimesQuery, {
-  options: ownProps => ({
-    variables: {
-      nbrhd_ids: [ownProps.location.query.id.trim()],
-      before: ownProps.before,
-      after: ownProps.after,
-    },
-  }),
-})(CrimesByNeighborhood);
-
-export default CrimesByNeighborhoodGQL;
+export default withLanguage(CrimesByNeighborhood);

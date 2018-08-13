@@ -8,6 +8,9 @@ import Icon from '../../shared/Icon';
 import { IM_CITY } from '../../shared/iconConstants';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import Error from '../../shared/Error';
+import { withLanguage } from '../../utilities/lang/LanguageContext';
+import { english } from './english';
+import { spanish } from './spanish';
 
 const GET_CATEGORIES = gql`
   query cip_project_categories {
@@ -26,6 +29,16 @@ const CapitalProjectsSummary = props => (
     {({ loading, error, data }) => {
       if (loading) return <LoadingAnimation />;
       if (error) return <Error message={error.message} />;
+      // set language
+      let content;
+      switch (props.language.language) {
+        case 'Spanish':
+          content = spanish;
+          break;
+        default:
+          content = english;
+      }
+
       let allCats = Array.from(data.cip_project_categories);
       allCats.sort((a, b) => (a.category_number > b.category_number) ? 1 : ((b.category_number > a.category_number) ? -1 : 0)).map((item) => item.category_name); // eslint-disable-line
       allCats = allCats.map(cat => cat.category_name);
@@ -47,16 +60,17 @@ const CapitalProjectsSummary = props => (
       return (
         <div>
           <PageHeader
-            h1="Capital Projects"
-            externalLinkText="View the City&apos;s General Capital Improvement Plan (CIP)"
+            h1={content.capital_projects}
+            externalLinkText={content.view_cip_plan}
             externalLink="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=30725#page=146" // eslint-disable-line
             dataLinkPath="/capital_projects/data"
+            dataLinkText={content.understand_the_capital_projects_data}
             icon={<Icon path={IM_CITY} size={60} />}
           >
-            <span>You can search geographically AND by address:</span>
+            <span>{content.search_by_note}</span>
             <br></br>
             <a className="" href="http://arcg.is/Sy5KC" target="_blank">
-              Try our Project Map
+              {content.try_project_map}
             </a>
           </PageHeader>
           <CIPFilter
@@ -77,4 +91,4 @@ const CapitalProjectsSummary = props => (
   </Query>
 );
 
-export default CapitalProjectsSummary;
+export default withLanguage(CapitalProjectsSummary);

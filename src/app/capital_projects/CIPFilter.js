@@ -90,7 +90,7 @@ const CIPFilter = (props) => {
         <div className="toggle toggle--table">
           <div>
             <label>
-              <span>Include only bond projects</span>
+              <span>{content.include_only_bond_projects}</span>
               <Toggle
                 defaultChecked={props.location.query.mode === 'bond'}
                 onChange={() => refreshLocation(toggleMode(), props.location)}

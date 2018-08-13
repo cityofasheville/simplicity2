@@ -4,8 +4,18 @@ import Measure from 'react-measure';
 import ProjectDetails from './ProjectDetails';
 // import { mapProjectToCategory } from './cip_utilities';
 import Icon from '../../shared/Icon';
-import { IM_SHIELD3, IM_TREE, IM_HOME2, IM_BUS, LI_BOLD, IM_DROPLET } from '../../shared/iconConstants';
+import {
+  IM_SHIELD3,
+  IM_TREE,
+  IM_HOME2,
+  IM_BUS,
+  LI_BOLD,
+  IM_DROPLET,
+} from '../../shared/iconConstants';
 import expandingRows from '../../shared/react_table_hoc/ExpandingRows';
+import { withLanguage } from '../../utilities/lang/LanguageContext';
+import { english } from './english';
+import { spanish } from './spanish';
 
 const getIcon = (category, isExpanded) => {
   switch (category) {
@@ -33,17 +43,43 @@ const getIcon = (category, isExpanded) => {
 const ExpandableAccessibleReactTable = expandingRows(AccessibleReactTable);
 
 class ProjectsTable extends React.Component {
-  state = {};
+  constructor(props) {
+    super(props);
+    // set language
+    let content;
+    switch (props.language.language) {
+      case 'Spanish':
+        content = spanish;
+        break;
+      default:
+        content = english;
+    }
+    this.state = {
+      content,
+    };
+  }
 
-  dataColumns = state => ([
+  componentWillReceiveProps(nextProps) {
+    let content;
+    switch (nextProps.language.language) {
+      case 'Spanish':
+        content = spanish;
+        break;
+      default:
+        content = english;
+    }
+    this.setState({ content });
+  }
+
+  dataColumns = () => ([
     {
-      Header: 'Project',
+      Header: this.state.content.project,
       accessor: 'display_name',
       Cell: row => (
         <span>
           <span title={row.original.category}>{getIcon(row.original.category, row.isExpanded)}</span>
           {row.original.type === 'Bond' &&
-          <span title={'Bond project'} style={{ marginLeft: '3px' }}><Icon path={LI_BOLD} size={16} color={row.isExpanded ? '#fff' : '#4077a5'} viewBox="0 0 24 24" /></span>
+          <span title={content.bond_project} style={{ marginLeft: '3px' }}><Icon path={LI_BOLD} size={16} color={row.isExpanded ? '#fff' : '#4077a5'} viewBox="0 0 24 24" /></span>
           }
           <span style={{ marginLeft: '5px' }}>{row.value}</span>
         </span>
@@ -53,7 +89,7 @@ class ProjectsTable extends React.Component {
           onChange={event => onChange(event.target.value)}
           style={{ width: '100%' }}
           value={filter ? filter.value : ''}
-          placeholder="Search..."
+          placeholder={this.state.content.search}
         />
       ),
       getProps: () => ({
@@ -61,21 +97,21 @@ class ProjectsTable extends React.Component {
       }),
     },
     {
-      Header: (<div>Zip code</div>),
+      Header: (<div>{this.state.content.zip_code}</div>),
       accessor: 'zip_code',
       maxWidth: 120,
-      show: state.width >= 940,
+      show: this.state.width >= 940,
       Filter: ({ filter, onChange }) => (
         <input
           onChange={event => onChange(event.target.value)}
           style={{ width: '100%' }}
           value={filter ? filter.value : ''}
-          placeholder="Search..."
+          placeholder={this.state.content.search}
         />
       ),
     },
     {
-      Header: (<div>Phase</div>),
+      Header: (<div>{this.state.content.phase}</div>),
       accessor: 'status',
       Cell: row => (
         <span>
@@ -92,54 +128,54 @@ class ProjectsTable extends React.Component {
           onChange={event => onChange(event.target.value)}
           style={{ width: '100%' }}
           value={filter ? filter.value : ''}
-          placeholder="Search..."
+          placeholder={this.state.content.search}
         />
       ),
     },
     {
-      Header: (<div>Budget</div>),
+      Header: (<div>{this.state.content.budget}</div>),
       accessor: 'total_project_funding_budget_document',
       maxWidth: 120,
-      show: state.width >= 720,
+      show: this.state.width >= 720,
       style: { textAlign: 'right' },
       Filter: ({ filter, onChange }) => (
         <input
           onChange={event => onChange(event.target.value)}
           style={{ width: '100%' }}
           value={filter ? filter.value : ''}
-          placeholder="Search..."
+          placeholder={this.state.content.search}
         />
       ),
     },
     {
-      Header: (<div>Under contract</div>),
+      Header: (<div>{this.state.content.under_contract}</div>),
       id: 'encumbured',
       accessor: project => ['$', parseInt(project.encumbered, 10).toLocaleString()].join(''),
       maxWidth: 120,
-      show: state.width >= 720,
+      show: this.state.width >= 720,
       style: { textAlign: 'right' },
       Filter: ({ filter, onChange }) => (
         <input
           onChange={event => onChange(event.target.value)}
           style={{ width: '100%' }}
           value={filter ? filter.value : ''}
-          placeholder="Search..."
+          placeholder={this.state.content.search}
         />
       ),
     },
     {
-      Header: (<div>Spent</div>),
+      Header: (<div>{this.state.content.spent}</div>),
       id: 'spent',
       accessor: project => ['$', parseInt(project.total_spent, 10).toLocaleString()].join(''),
       maxWidth: 120,
-      show: state.width >= 720,
+      show: this.state.width >= 720,
       style: { textAlign: 'right' },
       Filter: ({ filter, onChange }) => (
         <input
           onChange={event => onChange(event.target.value)}
           style={{ width: '100%' }}
           value={filter ? filter.value : ''}
-          placeholder="Search..."
+          placeholder={this.state.content.search}
         />
       ),
     },
@@ -175,7 +211,7 @@ class ProjectsTable extends React.Component {
                 <ExpandableAccessibleReactTable
                   // ref={measureRef}
                   tableId="projects"
-                  ariaLabel="Capital Projects"
+                  ariaLabel={this.state.content.capital_projects}
                   data={this.props.data}
                   columns={this.getColumns(this.props.type, this.props.subType)}
                   showPagination
@@ -219,7 +255,7 @@ class ProjectsTable extends React.Component {
                   {(state, makeTable) => (
                     <div
                       ref={measureRef}
-                      alt={['Table of', this.props.type, this.props.subType || '', 'bond project statuses'].join(' ')}
+                      alt={[this.state.content.table_of, this.props.type, this.props.subType || '', this.state.bond_project_statuses].join(' ')}
                       style={{ marginTop: '10px' }}
                     >
                       {makeTable()}
@@ -234,4 +270,4 @@ class ProjectsTable extends React.Component {
   }
 }
 
-export default ProjectsTable;
+export default withLanguage(ProjectsTable);

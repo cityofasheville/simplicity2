@@ -5,7 +5,15 @@ import Collapsible from '../../shared/Collapsible';
 import ProjectsTable from './ProjectsTable';
 import { getFundsAllocatedAndExpended, filterProjects } from './cip_utilities';
 import Icon from '../../shared/Icon';
-import { IM_SHIELD3, IM_TREE, IM_HOME2, IM_BUS, LI_BOLD, IM_INFO, IM_DROPLET } from '../../shared/iconConstants';
+import {
+  IM_SHIELD3,
+  IM_TREE,
+  IM_HOME2,
+  IM_BUS,
+  LI_BOLD,
+  IM_INFO,
+  IM_DROPLET,
+} from '../../shared/iconConstants';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import Error from '../../shared/Error';
 import { withLanguage } from '../../utilities/lang/LanguageContext';
@@ -82,7 +90,6 @@ const getIcon = (type, bond) => {
       return null;
   }
 };
-
 
 const getDollars = (value) => {
   let formatted;
@@ -215,7 +222,7 @@ const CategoryDetails = props => (
 
       const actualCategories = props.categories;
       actualCategories.sort((a, b) =>
-      props.sortedCategories.indexOf(a) > props.sortedCategories.indexOf(b));
+        props.sortedCategories.indexOf(a) > props.sortedCategories.indexOf(b));
       const filteredProjects = filterProjects(
         data.cip_projects,
         actualCategories,
@@ -239,23 +246,60 @@ const CategoryDetails = props => (
             <div className="col-sm-12">
               <div className="funding-summary">
                 <div className="col-sm-4 col-xs-4">
-                  <h2><span className="label-text"><span title="Issued bond amount is $74 million. Actual total dollar amount will increase due to alternative funding sources." style={{ marginRight: '5px' }}><Icon path={IM_INFO} size={16} color="#4077a7" /></span>{content.total_budget}: </span> <span className="amount">{getDollars(fundingDetails[0].allocated)}</span></h2>
+                  <h2>
+                    <span className="label-text">
+                      <span
+                        title={content.total_budget_note} // eslint-disable-line
+                        style={{ marginRight: '5px' }}
+                      ><Icon path={IM_INFO} size={16} color="#4077a7" />
+                      </span>{content.total_budget}:
+                    </span>
+                    <span className="amount">{getDollars(fundingDetails[0].allocated)}</span>
+                  </h2>
                 </div>
                 <div className="col-sm-4 col-xs-4">
-                  <h2><span className="label-text">{content.under_contract}:</span> <span className="amount">{getDollars(fundingDetails[0]['Under contract'])}</span></h2>
+                  <h2>
+                    <span className="label-text">{content.under_contract}:</span>
+                    <span
+                      className="amount"
+                    >{getDollars(fundingDetails[0]['Under contract'])}
+                    </span>
+                  </h2>
                 </div>
                 <div className="col-sm-4 col-xs-4">
-                  <h2><span className="label-text">{content.spent}:</span> <span className="amount">{getDollars(fundingDetails[0]['Expended funds'])}</span></h2>
+                  <h2>
+                    <span className="label-text">{content.spent}:</span>
+                    <span
+                      className="amount"
+                    >{getDollars(fundingDetails[0]['Expended funds'])}
+                    </span>
+                  </h2>
                 </div>
               </div>
               <div className="row">
                 <div className="col-sm-12">
-                  <Collapsible trigger="Click here to learn how projects in each category are supported">
+                  <Collapsible trigger={content.collapsible_text}>
                     {getKeyText(actualCategories, props.location.query.mode)}
                     <div style={{ marginTop: '15px' }}>
                       <div>
-                        <p><span style={{ fontStyle: 'italic' }}>{content.project_budgets_note}</span></p>
-                        <p><span style={{ fontStyle: 'italic' }}>{content.ongoing_programs} <a className="inText" href="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=30725#page=146" target="_blank">FY 18-19 {content.adopted_annual_budget}</a>.</span></p>
+                        <p>
+                          <span
+                            style={{ fontStyle: 'italic' }}
+                          >{content.project_budgets_note}
+                          </span>
+                        </p>
+                        <p>
+                          <span
+                            style={{ fontStyle: 'italic' }}
+                          >{content.ongoing_programs}
+                            <a
+                              className="inText"
+                              href="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=30725#page=146" // eslint-disable-line
+                              target="_blank"
+                            >&nbsp;FY 18-19 {content.adopted_annual_budget}
+                            </a>.
+                          </span>
+                        </p>
                       </div>
                     </div>
                   </Collapsible>

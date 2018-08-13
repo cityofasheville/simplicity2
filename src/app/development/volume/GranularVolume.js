@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
-import { Query } from "react-apollo";
-import { graphql } from 'react-apollo';
+import { graphql, Query } from 'react-apollo';
 import { nest } from 'd3-collection';
 import { histogram } from 'd3-array';
 import { ResponsiveOrdinalFrame } from 'semiotic';
@@ -64,33 +63,6 @@ function groupHierachyOthers(inputHierarchy) {
   return hierarchyToUse.sort((a, b) => b.value - a.value);
 }
 
-function splitOrdinalByBool(inputData, matchTestFunc, nameTrue) {
-  // const statusTestFunc = d => d.status_current === 'Issued';
-  // const statusBoolKey = 'issued';
-  // const histWithStatus = splitOrdinalByBool(histogramData, statusTestFunc, statusBoolKey);
-  const splitOrdinal = [];
-  inputData.forEach((datum) => {
-    const matchy = Object.assign({}, datum);
-    matchy[nameTrue] = true;
-    const notMatchy = Object.assign({}, datum);
-    notMatchy[nameTrue] = false;
-
-    matchy.values = [];
-    notMatchy.values = [];
-
-    datum.values.forEach(datumValue => (matchTestFunc(datumValue) ?
-      matchy.values.push(datumValue)
-      : notMatchy.values.push(datumValue)));
-
-    matchy.count = matchy.values.length;
-    notMatchy.count = notMatchy.values.length;
-
-    splitOrdinal.push(notMatchy);
-    splitOrdinal.push(matchy);
-  });
-
-  return splitOrdinal;
-}
 
 class GranularVolume extends React.Component {
   constructor() {
@@ -125,7 +97,7 @@ class GranularVolume extends React.Component {
   }
 
   histogramFromHierarchical(entriesHierarchy, includedDates) {
-    const histFunc = histogram(this.props.data.permits_by_address)
+    const histFunc = histogram(this.props.data.permits)
       .value(d => new Date(d.applied_date))
       .thresholds(includedDates);
 
@@ -172,16 +144,14 @@ class GranularVolume extends React.Component {
       TO ASK:
         Should menus show all types or show other?  Or indicate type has been rolled into other?
         Or should we do checkboxes like the other one instead of making "other"?
-        Is this the right date field to use?
 
       TODO:
         props validation
+        make opened/updated an option
         separate out graphql query
         timepicker
         bin by week if it's over 6 weeks, by month if it's over 1 year
         fix date issue-- have checkdate start at right place
-        start in on small multiples
-        hover behavior-- shared?
         allow users to drill into permits with click/modal behavior
         update URL to allow bookmarking
     */
@@ -198,7 +168,7 @@ class GranularVolume extends React.Component {
       bigNest.key(d => d[this.state.hierarchyLevels[i].name]);
     }
 
-    const wholeHierarchy = bigNest.object(this.props.data.permits_by_address);
+    const wholeHierarchy = bigNest.object(this.props.data.permits);
 
     let filteredData = wholeHierarchy;
     this.state.hierarchyLevels.forEach((level, i) => {
@@ -362,18 +332,11 @@ class GranularVolume extends React.Component {
   }
 }
 
-// comments {
-//   comment_seq_number
-//   comment_date
-//   comments
-// }
 const getPermitsQuery = gql`
-  query getPermitsQuery($civicaddress_id: Int!, $radius: Int, $after: String) {
-    permits_by_address(civicaddress_id: $civicaddress_id, radius: $radius, after: $after) {
-        address
+  query getPermitsQuery($date_field: String!, $after: String, $before: String) {
+    permits(date_field: $date_field, after: $after, before: $before) {
         applicant_name
         applied_date
-        civic_address_id
         permit_category
         permit_description
         permit_group
@@ -382,8 +345,21 @@ const getPermitsQuery = gql`
         permit_type
         status_current
         status_date
-        x
-        y
+        created_by
+        building_value
+        job_value
+        total_project_valuation
+        total_sq_feet
+        fees
+        paid
+        balance
+        invoiced_fee_total
+        address
+        comments {
+          comment_seq_number
+          comment_date
+          comments
+        }
     }
   }
 `;
@@ -391,9 +367,9 @@ const getPermitsQuery = gql`
 export default graphql(getPermitsQuery, {
   options: {
     variables: {
-      civicaddress_id: 9688,
-      radius: 52800,
-      after: 'Jun 30 2018',
+      date_field: 'applied_date',
+      after: '2018-07-13',
+      before: '2018-08-14',
     },
   },
 })(GranularVolume);

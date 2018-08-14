@@ -1,12 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router';
 
 const DetailsIconLinkFormGroup = props => (
   <div className={props.icon ? 'form-group form-group--has-icon' : 'form-group'}>
     <div className="form-group__inner">
-      <a className="btn btn-default" href={props.href} title={props.title} target={props.inWindow ? '_self' : '_blank'}>
+      {
+        props.inWindow ?
+          <Link className="btn btn-default" to={props.href} title={props.title}>
+            <span>{props.icon}&nbsp;{props.label}</span>
+          </Link>
+        :
+        <a className="btn btn-default" href={props.href} title={props.title} target="_blank">
           <span>{props.icon}&nbsp;{props.label}</span>
-      </a>
+        </a>
+      }
     </div>
   </div>
 );

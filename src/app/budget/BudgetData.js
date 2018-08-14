@@ -4,21 +4,38 @@ import PageHeader from '../../shared/PageHeader';
 import ButtonGroup from '../../shared/ButtonGroup';
 import Button from '../../shared/Button';
 import Icon from '../../shared/Icon';
-import { IM_COIN_DOLLAR } from '../../shared/iconConstants'
+import { IM_COIN_DOLLAR } from '../../shared/iconConstants';
+import { withLanguage } from '../../utilities/lang/LanguageContext';
+import { english } from './english';
+import { spanish } from './spanish';
 
-const BudgetData = () => (
-  <div>
-    <PageHeader h1="Understand the budget data" icon={<Icon path={IM_COIN_DOLLAR} size={60} />}>
-      <ButtonGroup>
-        <Button onClick={browserHistory.goBack}>Back</Button>
-      </ButtonGroup>
-    </PageHeader>
-    <div className="row">
-      <div className="col-sm-12">
-        <p>Some explanation of the data and limitations of the data, and some links to more detailed reports</p>
+const BudgetData = (props) => {
+  let content;
+  switch (props.language.language) {
+    case 'Spanish':
+      content = spanish;
+      break;
+    default:
+      content = english;
+  }
+
+  return (
+    <div>
+      <PageHeader
+        h1={content.understand_the_budget_data}
+        icon={<Icon path={IM_COIN_DOLLAR} size={60} />}
+      >
+        <ButtonGroup>
+          <Button onClick={browserHistory.goBack}>{content.back}</Button>
+        </ButtonGroup>
+      </PageHeader>
+      <div className="row">
+        <div className="col-sm-12">
+          <p>{content.budget_data_explanation}</p>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
-export default BudgetData;
+export default withLanguage(BudgetData);

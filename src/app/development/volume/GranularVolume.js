@@ -2,14 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { graphql, Query } from 'react-apollo';
-import { nest } from 'd3-collection';
 import { histogram } from 'd3-array';
+import { nest } from 'd3-collection';
+import { DateTimePicker } from 'react-widgets';
+import Moment from 'moment';
+import momentLocalizer from 'react-widgets-moment';
 import { ResponsiveOrdinalFrame } from 'semiotic';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import PermitTypeMenus from './PermitTypeMenus';
 import PermitVolCirclepack from './PermitVolCirclepack';
-import VolumeHistogram from './VolumeHistogram';
 import Tooltip from '../../../shared/visualization/Tooltip';
+import VolumeHistogram from './VolumeHistogram';
 
 
 const colorScheme = [
@@ -80,10 +83,6 @@ class GranularVolume extends React.Component {
     this.onMenuSelect = this.onMenuSelect.bind(this);
   }
 
-  adjustTimespan(newTimeSpan) {
-    this.setState({ timeSpan: newTimeSpan });
-  }
-
   timeBuckets() {
     const includedDates = [];
     const oneDayMilliseconds = (24 * 60 * 60 * 1000);
@@ -129,6 +128,9 @@ class GranularVolume extends React.Component {
   }
 
   render() {
+    Moment.locale('en');
+    momentLocalizer();
+
     if (this.props.data.loading) {
       return <LoadingAnimation />;
     }
@@ -199,13 +201,25 @@ class GranularVolume extends React.Component {
     const includedDates = this.timeBuckets();
     const histogramData = this.histogramFromHierarchical(entriesHierarchy, includedDates);
 
+    const datePickerStyle = {
+      width: '25%',
+      fontSize: '0.45em',
+      display: 'inline-block',
+      padding: '0% 2%',
+    };
+
     return (<div>
-      <h1>Permits Opened from {
-        `${new Date(includedDates[0]).toLocaleDateString('en-US', dateOptions)
-        } to ${
-          new Date(includedDates[includedDates.length - 1]).toLocaleDateString('en-US', dateOptions)
-        }`}
-      </h1>
+      <h1>Permits Opened from <DateTimePicker
+        value={this.state.timeSpan[0]}
+        onChange={value => this.setState({ timeSpan: [value, this.state.timeSpan[1]] })}
+        time={false}
+        style={datePickerStyle}
+      /> to <DateTimePicker
+        style={datePickerStyle}
+        value={this.state.timeSpan[1]}
+        onChange={value => this.setState({ timeSpan: [this.state.timeSpan[0], value] })}
+        time={false}
+        /> </h1>
       <div id="controls-n-summary" className="row">
         <PermitTypeMenus
           onSelect={this.onMenuSelect}

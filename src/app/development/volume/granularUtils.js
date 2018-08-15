@@ -7,8 +7,8 @@ export const colorScheme = [
   '#DB6D00',
   '#006DDB',
   '#FF6DB6',
-  '#920000',
   '#01b0b0',
+  '#920000',
   '#2fe12f',
   '#004949',
   '#6DB6FF',
@@ -16,7 +16,7 @@ export const colorScheme = [
   '#FFBDDB',
 ];
 
-
+export const openedOnlineRule = inputDatum => inputDatum.created_by.includes('PUBLICUSER') || inputDatum.created_by === 'TALLEY' || inputDatum.created_by === 'CSHORT';
 
 export function groupHierachyOthers(inputHierarchy, otherGroupCutoff = 5) {
   if (inputHierarchy.length <= otherGroupCutoff) {
@@ -66,6 +66,32 @@ export function histogramFromHierarchical(rawData, entriesHierarchy, includedDat
       });
     }));
 }
+
+export function splitOrdinalByBool(inputData, matchTestFunc, nameTrue) {
+  const splitOrdinal = [];
+  inputData.forEach((datum) => {
+    const matchy = Object.assign({}, datum);
+    matchy[nameTrue] = true;
+    const notMatchy = Object.assign({}, datum);
+    notMatchy[nameTrue] = false;
+
+    matchy.values = [];
+    notMatchy.values = [];
+
+    datum.values.forEach(datumValue => (matchTestFunc(datumValue) ?
+      matchy.values.push(datumValue)
+      : notMatchy.values.push(datumValue)));
+
+    matchy.count = matchy.values.length;
+    notMatchy.count = notMatchy.values.length;
+
+    splitOrdinal.push(notMatchy);
+    splitOrdinal.push(matchy);
+  });
+
+  return splitOrdinal;
+}
+
 
 export const GET_PERMITS = gql`
   query getPermitsQuery($date_field: String!, $after: String, $before: String) {

@@ -3,11 +3,14 @@ import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import { nest } from 'd3-collection';
 import { ResponsiveOrdinalFrame } from 'semiotic';
+import { color } from 'd3-color';
 import {
   colorScheme,
   groupHierachyOthers,
   histogramFromHierarchical,
   GET_PERMITS,
+  openedOnlineRule,
+  splitOrdinalByBool,
 } from './granularUtils';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import PermitTypeMenus from './PermitTypeMenus';
@@ -113,6 +116,8 @@ class GranularDataReceivers extends React.Component {
           includedDates,
         );
 
+        const openedOnline = splitOrdinalByBool(histogramData, openedOnlineRule, 'openedOnline');
+
         return (<div>
           <div id="controls-n-summary" className="row">
             <PermitTypeMenus
@@ -141,7 +146,6 @@ class GranularDataReceivers extends React.Component {
             className="row"
           >
             <h2>Status Distribution by {this.state.dateField  === 'applied_date' ? 'Opened' : 'Updated'} Date</h2>
-            <p>Click a box to see data details</p>
             <div
               style={{
                 padding: '0 1%',
@@ -237,7 +241,72 @@ class GranularDataReceivers extends React.Component {
             <h2>Inspections</h2>
           </div>
           <div id="percentOnline">
-            <h2>Percent Opened Online</h2>
+            <h2>Opened Online</h2>
+            {/* for each permit type, return a histogram showing opened online, opened in person,  */}
+            <div
+              style={{
+                padding: '0 1%',
+                textTransform: 'capitalize',
+              }}
+            >
+              {entriesHierarchy.map((datum) => {
+                return (<div
+                  style={{ display: 'inline-block' }}
+                  key={datum.key}
+                >
+                  <ResponsiveOrdinalFrame
+                    size={[185, 185]}
+                    // responsiveWidth
+                    margin={{
+                      top: 40,
+                      right: 10,
+                      bottom: 30,
+                      left: 25,
+                    }}
+                    oPadding={1}
+                    oAccessor="binStartDate"
+                    rAccessor="count"
+                    type="bar"
+                    pieceIDAccessor="key"
+                    axis={[
+                      {
+                        orient: 'left',
+                        tickFormat: d => (
+                          <text
+                            textAnchor="end"
+                            style={{ fontSize: '0.70em' }}
+                          >
+                            {d}
+                          </text>
+                        ),
+                      },
+                    ]}
+                    hoverAnnotation
+                    tooltipContent={(d) => {
+                      const pieces = d.type === 'column-hover' ? d.pieces : [d.data];
+                      const title = new Date(pieces[0].binStartDate).toLocaleDateString('en-US');
+
+                      const textLines = pieces.map(piece => ({
+                        text: `${piece.openedOnline ? 'Online' : 'In Person'}: ${piece.count}`,
+                        color: nodeColors[piece.key],
+                      })).reverse();
+
+                      return (<Tooltip
+                        title={title}
+                        textLines={textLines}
+                      />);
+                    }}
+                    data={openedOnline.filter(d => d.key === datum.key)}
+                    title={datum.key}
+                    style={d => {
+                      return {
+                        fill: d.openedOnline ? nodeColors[datum.key] : color(nodeColors[datum.key]).brighter(2),
+                      };
+                    }}
+                  />
+                </div>);
+              })}
+            </div>
           </div>
           <div id="permitFees">
             <h2>Fees</h2>

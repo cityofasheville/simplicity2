@@ -46,7 +46,7 @@ class PermitVolCirclepack extends React.Component {
       // }}
       networkType={{
         type: 'circlepack',
-        hierarchyChildren: d => d.values,
+        // array of data has to be { key: root, children: [...] }
       }}
       nodeLabels={(d) => {
         if (d.key === 'root' || d.r < 7.5) { return null; }

@@ -241,7 +241,7 @@ class GranularDataReceivers extends React.Component {
             <h2>Inspections</h2>
           </div>
           <div id="percentOnline">
-            <h2>Opened Online</h2>
+            <h2>Online vs In Person</h2>
             {/* for each permit type, return a histogram showing opened online, opened in person,  */}
             <div
               style={{

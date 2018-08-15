@@ -26,10 +26,7 @@ class GranularVolume extends React.Component {
 
       TODO:
         props validation
-        make opened/updated an option
-        separate out graphql query
         bin by week if it's over 6 weeks, by month if it's over 1 year
-        fix date issue-- have checkdate start at right place
         allow users to drill into permits with click/modal behavior
         update URL to allow bookmarking
     */

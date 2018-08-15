@@ -15,7 +15,10 @@ import { IM_USER } from '../../shared/iconConstants';
 import { getBoundsFromPropertyList, combinePolygonsFromPropertyList } from '../../utilities/mapUtilities';
 import Map from '../../shared/visualization/Map';
 import { refreshLocation } from '../../utilities/generalUtilities';
-import expandingRows from "../../shared/react_table_hoc/ExpandingRows";
+import expandingRows from '../../shared/react_table_hoc/ExpandingRows';
+import createFilterRenderer from '../../shared/FilterRenderer';
+
+const FilterRenderer = createFilterRenderer('Search...');
 
 const dataColumns = [
   {
@@ -23,27 +26,13 @@ const dataColumns = [
     id: 'property',
     accessor: property => (<span>{property.property_address}, {property.property_zipcode}</span>),
     minWidth: 335,
-    Filter: ({ filter, onChange }) => (
-      <input
-        onChange={event => onChange(event.target.value)}
-        style={{ width: '100%' }}
-        value={filter ? filter.value : ''}
-        placeholder="Search..."
-      />
-    ),
+    Filter: FilterRenderer,
   },
   {
     Header: 'Civic Address ID',
     accessor: 'property_civic_address_id',
     width: 160,
-    Filter: ({ filter, onChange }) => (
-      <input
-        onChange={event => onChange(event.target.value)}
-        style={{ width: '100%' }}
-        value={filter ? filter.value : ''}
-        placeholder="Search..."
-      />
-    ),
+    Filter: FilterRenderer,
     filterMethod: (filter, row) => {
       const id = filter.pivotId || filter.id;
       return row[id] !== undefined ? String(row[id].props.children).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
@@ -53,14 +42,7 @@ const dataColumns = [
     Header: 'Pin #',
     accessor: 'pinnum',
     minWidth: 150,
-    Filter: ({ filter, onChange }) => (
-      <input
-        onChange={event => onChange(event.target.value)}
-        style={{ width: '100%' }}
-        value={filter ? filter.value : ''}
-        placeholder="Search..."
-      />
-    ),
+    Filter: FilterRenderer,
   },
 ];
 

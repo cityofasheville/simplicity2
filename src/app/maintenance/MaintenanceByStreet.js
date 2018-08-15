@@ -1,28 +1,81 @@
 import React from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import AccessibleReactTable from 'accessible-react-table';
+import AccessibleReactTable, { CellFocusWrapper } from 'accessible-react-table';
 import EmailDownload from '../../shared/EmailDownload';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import Error from '../../shared/Error';
 import Map from '../../shared/visualization/Map';
-import { getBoundsFromStreetData, formatMaintenanceData, getBounds, createMaintenanceLegend } from '../../utilities/mapUtilities';
+import {
+  getBoundsFromStreetData,
+  formatMaintenanceData,
+  getBounds,
+  createMaintenanceLegend,
+} from '../../utilities/mapUtilities';
 import Icon from '../../shared/Icon';
 import { IM_MAP5 } from '../../shared/iconConstants';
+import createFilterRenderer from '../../shared/FilterRenderer';
 
 const getMaintenanceInfo = (entity, comma) => {
   if (entity === null) {
     return <div>No information available{comma ? ',' : ''}</div>;
   }
   if (entity === 'CITY OF ASHEVILLE') {
-    return (<div><span><a href="http://www.ashevillenc.gov/departments/street_services/maintenance.htm" target="_blank">{entity}</a></span><span style={{ marginLeft: '10px' }}><a href="http://www.ashevillenc.gov/departments/it/online/service_requests.htm" target="_blank"><button className="btn btn-xs btn-warning">Report with the Asheville App</button></a>
-    </span></div>);
+    return (
+      <CellFocusWrapper>
+        {(focusRef, focusable) => (
+          // TODO this needs to be converted to widget with its own keyboard nav or split into
+          // a separate column for the report button.
+          <div>
+            <span>
+              <a
+                href="http://www.ashevillenc.gov/departments/street_services/maintenance.htm"
+                target="_blank"
+                ref={focusRef}
+                tabIndex={focusable ? 0 : -1}
+              >
+                {entity}
+              </a>
+            </span>
+            <span style={{ marginLeft: '10px' }}>
+              <a
+                href="http://www.ashevillenc.gov/departments/it/online/service_requests.htm"
+                target="_blank"
+                tabIndex="-1"
+              >
+                <button className="btn btn-xs btn-warning">Report with the Asheville App</button>
+              </a>
+            </span>
+          </div>
+        )}
+      </CellFocusWrapper>
+    );
   }
   if (entity === 'NCDOT') {
-    return <div><span><a href="https://apps.ncdot.gov/contactus/Home/PostComment?Unit=PIO" target="_blank">{entity}</a>{comma ? ',' : ''}</span></div>;
+    return (
+      <CellFocusWrapper>
+        {(focusRef, focusable) => (
+          <div>
+            <span>
+              <a
+                href="https://apps.ncdot.gov/contactus/Home/PostComment?Unit=PIO"
+                target="_blank"
+                tabIndex={focusable ? 0 : -1}
+                ref={focusRef}
+              >
+                {entity}
+              </a>
+              {comma ? ',' : ''}
+            </span>
+          </div>
+        )}
+      </CellFocusWrapper>
+    );
   }
   return <div>{entity}{comma ? ',' : ''}</div>;
 };
+
+const FilterRenderer = createFilterRenderer('Search...');
 
 const MaintenanceByStreet = (props) => {
   if (props.data.loading) { // eslint-disable-line react/prop-types
@@ -32,42 +85,72 @@ const MaintenanceByStreet = (props) => {
     return <Error message={props.data.error.message} />; // eslint-disable-line react/prop-types
   }
 
-  const urlString = [props.location.pathname, '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&entities=', props.location.query.entities, '&label=', props.location.query.label, '&hideNavbar=', props.location.query.hideNavbar, '&search=', props.location.query.search, '&view=map'].join('');
+  const urlString = [
+    props.location.pathname,
+    '?entity=',
+    props.location.query.entity,
+    '&id=',
+    props.location.query.id,
+    '&entities=',
+    props.location.query.entities,
+    '&label=',
+    props.location.query.label,
+    '&hideNavbar=',
+    props.location.query.hideNavbar,
+    '&search=',
+    props.location.query.search,
+    '&view=map',
+  ].join('');
 
   const dataColumns = [
     {
       Header: 'Centerline ID',
       accessor: 'centerline_id',
+      innerFocus: true,
       Cell: row => (
-        <span>
-          <span><a title="Click to centerline in map" href={[urlString, '&bounds=', JSON.stringify(getBounds(row.original.line))].join('')}><Icon path={IM_MAP5} size={23} /></a></span>
-          <span style={{ marginLeft: '5px' }}>{parseInt(row.value, 10)}</span>
-        </span>
+        <CellFocusWrapper>
+          {(focusRef, focusable) => (
+            <span>
+              <span>
+                <a
+                  title="Click to centerline in map"
+                  href={[
+                    urlString,
+                    '&bounds=',
+                    JSON.stringify(getBounds(row.original.line)),
+                  ].join('')}
+                  tabIndex={focusable ? 0 : -1}
+                  ref={focusRef}
+                >
+                  <Icon path={IM_MAP5} size={23} />
+                  <span style={{ marginLeft: '5px' }}>{parseInt(row.value, 10)}</span>
+                </a>
+              </span>
+            </span>
+          )}
+        </CellFocusWrapper>
       ),
-
-      Filter: ({ filter, onChange }) => (
-        <input
-          onChange={event => onChange(event.target.value)}
-          style={{ width: '100%' }}
-          value={filter ? filter.value : ''}
-          placeholder="Search..."
-        />
-      ),
+      Filter: FilterRenderer,
     },
     {
       Header: 'Maintenance Entities',
       accessor: 'maintenance_entities',
+      innerFocus: true,
       Cell: row => (
-        <span>{row.original.maintenance_entities.map((item, index) => <div key={index}>{getMaintenanceInfo(item, row.original.maintenance_entities.length > 1 && index < row.original.maintenance_entities.length - 1)}</div>)}</span>
+        <span>
+          {
+            row.original.maintenance_entities.map((item, index) => (
+              <div key={index}>
+                {getMaintenanceInfo(
+                  item,
+                  row.original.maintenance_entities.length > 1
+                  && index < row.original.maintenance_entities.length - 1
+                )}
+              </div>))
+          }
+        </span>
       ),
-      Filter: ({ filter, onChange }) => (
-        <input
-          onChange={event => onChange(event.target.value)}
-          style={{ width: '100%' }}
-          value={filter ? filter.value : ''}
-          placeholder="Search..."
-        />
-      ),
+      Filter: FilterRenderer,
       filterMethod: (filter, row) => {
         const joinedInfo = row._original.maintenance_entities.join('');
         return row._original !== undefined ? joinedInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;

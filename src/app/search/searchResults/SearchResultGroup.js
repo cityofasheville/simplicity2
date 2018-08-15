@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactTable from 'react-table';
 import { Link } from 'react-router';
-import { accessibility } from 'accessible-react-table';
+import AccessibleReactTable, { CellFocusWrapper } from 'accessible-react-table';
 import Icon from '../../../shared/Icon';
 import styles from './searchResultGroup.css';
 import { getLink, getPlural, getIcon } from './searchResultsUtils';
 import { IM_GOOGLE } from '../../../shared/iconConstants';
 import * as poweredByGoogle from './powered_by_google_on_white.png';
+import createFilterRenderer from '../../../shared/FilterRenderer';
+import LinkFocusWrapper from '../../../shared/LinkFocusWrapper';
 
 const SearchResultGroup = (props) => {
   const dataColumns = [
@@ -23,37 +24,58 @@ const SearchResultGroup = (props) => {
         }
       </h2>,
       accessor: 'label',
+      innerFocus: true,
       Cell: row => (
-        <span className="search-results-group__row-inner">
-          <Link className="search-results-group__link" to={getLink(row.original.type, row.original.id, props.searchText, props.selectedEntities, row.original.label, props.originalSearch)}>
-            <span className="text-primary">
-              {getIcon(row.original.type === 'place' ? 'search' : row.original.type)}
-              {row.value}
+        <CellFocusWrapper>
+          {(focusRef, focusable) => (
+            <span className="search-results-group__row-inner">
+              {/* This LinkFocusWrapper can be replaced by the innerRef prop on the Link component
+                in react-router ^4.2.0. Presently it serves as a work around for not having that
+                prop. */}
+              <LinkFocusWrapper focusRef={focusRef}>
+                <Link
+                  className="search-results-group__link"
+                  tabIndex={focusable ? 0 : -1}
+                  to={getLink(
+                    row.original.type,
+                    row.original.id, props.searchText,
+                    props.selectedEntities,
+                    row.original.label,
+                    props.originalSearch
+                  )}
+                >
+                  <span className="text-primary">
+                    {getIcon(row.original.type === 'place' ? 'search' : row.original.type)}
+                    {row.value}
+                  </span>
+                </Link>
+              </LinkFocusWrapper>
+              {props.data.label === 'place' &&
+                <span className="text-primary">
+                  <a
+                    tabIndex="-1"
+                    href={[
+                      'https://www.google.com/maps/place/?q=place_id:',
+                      row.original.place_id,
+                    ].join('')}
+                    target="_blank"
+                  >
+                    <span style={{ marginRight: '5px' }}>
+                      <Icon path={IM_GOOGLE} size={26} />
+                    </span>{row.original.place_name}
+                  </a>
+                </span>
+              }
             </span>
-          </Link>
-          {props.data.label === 'place' &&
-            <span className="text-primary">
-              <a
-                href={['https://www.google.com/maps/place/?q=place_id:', row.original.place_id].join('')}target="_blank"
-              >
-                <span style={{ marginRight: '5px' }}><Icon path={IM_GOOGLE} size={26} /></span>{row.original.place_name}
-              </a>
-            </span>
-          }
-        </span>
+          )}
+        </CellFocusWrapper>
       ),
-      Filter: ({ filter, onChange }) => (
-        <input
-          onChange={event => onChange(event.target.value)}
-          value={filter ? filter.value : ''}
-          placeholder="Filter results..."
-          className="full-width"
-        />
+      Filter: createFilterRenderer(
+        'Filter Results...',
+        { style: undefined, className: 'full-width' }
       ),
     },
   ];
-
-  const AccessibleReactTable = accessibility(ReactTable);
 
   return (
     <div className={styles.searchResultGroup + ' search-results-group' + ' search-results-group-'+props.data.label }>

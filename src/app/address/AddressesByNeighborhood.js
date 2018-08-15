@@ -11,6 +11,7 @@ import Error from '../../shared/Error';
 import { english } from './english';
 import { spanish } from './spanish';
 import { withLanguage } from '../../utilities/lang/LanguageContext';
+import createFilterRenderer from '../../shared/FilterRenderer';
 
 const GET_ADDRESSES_BY_NEIGHBORHOOD = gql`
   query addresses_by_neighborhood($nbrhd_ids: [String]) {
@@ -81,14 +82,7 @@ const AddressesByNeighborhood = props => (
               <div>{row.original.city}, NC {row.original.zipcode}</div>
             </div>
           ),
-          Filter: ({ filter, onChange }) => (
-            <input
-              onChange={event => onChange(event.target.value)}
-              style={{ width: '100%' }}
-              value={filter ? filter.value : ''}
-              placeholder={content.placeholder}
-            />
-          ),
+          Filter: createFilterRenderer(content.placeholder),
           filterMethod: (filter, row) => {
             const joinedAddressInfo = `${row._original.street_number} ${row._original.street_prefix} ${row._original.street_name} ${row._original.street_type} ${row._original.unit ? '#' : ''} ${row._original.unit} ${row._original.city}, NC ${row._original.zipcode}`;
             return row._original !== undefined ? joinedAddressInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true; // eslint-disable-line
@@ -104,14 +98,7 @@ const AddressesByNeighborhood = props => (
               <div>{row.original.owner_cityname}, {row.original.owner_state} {row.original.owner_zipcode}</div>
             </div>
           ),
-          Filter: ({ filter, onChange }) => (
-            <input
-              onChange={event => onChange(event.target.value)}
-              style={{ width: '100%' }}
-              value={filter ? filter.value : ''}
-              placeholder={content.placeholder}
-            />
-          ),
+          Filter: createFilterRenderer(content.placeholder),
           filterMethod: (filter, row) => {
             const joinedOwnerInfo = [row._original.owner_name, row._original.owner_address, row._original.owner_cityname, [',', row._original.owner_state].join(''), row._original.owner_zipcode].join(' '); // eslint-disable-line
             return row._original !== undefined ? // eslint-disable-line

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactTable from 'react-table';
-import { accessibility } from 'accessible-react-table';
+import AccessibleReactTable, { CellFocusWrapper } from 'accessible-react-table';
 import { graphql } from 'react-apollo';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import Error from '../../shared/Error';
@@ -18,67 +17,75 @@ import {
 import * as poweredByGoogle from '../search/searchResults/powered_by_google_on_white.png';
 import styles from '../search/searchResults/searchResultGroup.css';
 
-
-const AccessibleReactTable = accessibility(ReactTable);
-
-const dataColumns = (formattedData, miniResultsProps) => {
-  return [{
+const dataColumns = (formattedData, miniResultsProps) => [
+  {
     headerStyle: { boxShadow: 'none' },
-    Header: <h2 className="pull-left">
-      {getIcon(formattedData.label)}
-      {getPlural(formattedData.label)}
-      <span className="offscreen">Number of results</span>
-      <span className="badge">{formattedData.results.length}</span>
-      {formattedData.label === 'place' &&
-        <img src={poweredByGoogle} alt="Powered by Google" style={{ marginLeft: '20px' }}></img>
-      }
-    </h2>,
+    Header: (
+      <h2 className="pull-left">
+        {getIcon(formattedData.label)}
+        {getPlural(formattedData.label)}
+        <span className="offscreen">Number of results</span>
+        <span className="badge">{formattedData.results.length}</span>
+        {formattedData.label === 'place' && (
+          <img
+            src={poweredByGoogle}
+            alt="Powered by Google"
+            style={{ marginLeft: '20px' }}
+          />
+        )}
+      </h2>
+    ),
     accessor: 'label',
-    Cell: (row) => {
-      return (
-        <span className="search-results-group__row-inner">
-          <div
-            style={{
-              width: '100%',
-              margin: '0.25em 1em',
-            }}
-          >
+    innerFocus: true,
+    Cell: row => (
+      <CellFocusWrapper>
+        {(focusRef, focusable) => (
+          <span className="search-results-group__row-inner">
             <div
-              className="text-primary"
-              style={{ display: 'inline-block', minWidth: '40%' }}
+              style={{
+                width: '100%',
+                margin: '0.25em 1em',
+              }}
             >
-              <a
-                href={getLink(
-                  row.original.type,
-                  row.original.id,
-                  miniResultsProps.searchText,
-                  miniResultsProps.selectedEntities,
-                  row.original.label,
-                  miniResultsProps.originalSearch,
-                )}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {row.original.label}
-              </a>
-            </div>
-            { row.original.is_in_city !== null &&
               <div
-                style={{ display: 'inline-block', fontSize: '0.85em' }}
+                className="text-primary"
+                style={{ display: 'inline-block', minWidth: '40%' }}
               >
-                <InCityMessage
-                  inTheCity={row.original.is_in_city}
-                  text={(inOutBool) => inOutBool ? "In the city" : "Outside of the city"}
-                  icon={false}
-                />
+                <a
+                  href={getLink(
+                    row.original.type,
+                    row.original.id,
+                    miniResultsProps.searchText,
+                    miniResultsProps.selectedEntities,
+                    row.original.label,
+                    miniResultsProps.originalSearch
+                  )}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  tabIndex={focusable ? 0 : -1}
+                  ref={focusRef}
+                >
+                  {row.original.label}
+                </a>
               </div>
-            }
-          </div>
-        </span>
-      );
-    },
-  }];
-};
+              {row.original.is_in_city !== null && (
+                <div style={{ display: 'inline-block', fontSize: '0.85em' }}>
+                  <InCityMessage
+                    inTheCity={row.original.is_in_city}
+                    text={inOutBool =>
+                      (inOutBool ? 'In the city' : 'Outside of the city')
+                    }
+                    icon={false}
+                  />
+                </div>
+              )}
+            </div>
+          </span>
+        )}
+      </CellFocusWrapper>
+    ),
+  },
+];
 
 const MiniResults = (props) => {
   if (props.data === undefined) {
@@ -99,7 +106,9 @@ const MiniResults = (props) => {
         <div className="col-sm-12">
           {formattedResults.map((resultGroup, index) => (
             <div
-              className={`${styles.searchResultGroup} search-results-group search-results-group-${resultGroup.label}`}
+              className={`${
+                styles.searchResultGroup
+              } search-results-group search-results-group-${resultGroup.label}`}
               key={[resultGroup.label, index].join('_')}
             >
               <AccessibleReactTable
@@ -117,9 +126,11 @@ const MiniResults = (props) => {
       </div>
     );
   } else if (formattedResults.length === 0) {
-    return (<div className='alert alert-warning alert-sm'>
-      No results found.  Is this an address in Asheville, NC?
-    </div>);
+    return (
+      <div className="alert alert-warning alert-sm">
+        No results found. Is this an address in Asheville, NC?
+      </div>
+    );
   }
   return null;
 };
@@ -133,7 +144,11 @@ const resultsShape = {
 MiniResults.propTypes = {
   results: PropTypes.arrayOf(PropTypes.shape(resultsShape)),
   searchText: PropTypes.string,
-  searchEntities: PropTypes.arrayOf(PropTypes.shape({ label: PropTypes.string, type: PropTypes.string, check: PropTypes.bool })),
+  searchEntities: PropTypes.arrayOf(PropTypes.shape({
+    label: PropTypes.string,
+    type: PropTypes.string,
+    check: PropTypes.bool,
+  })),
 };
 
 export default graphql(searchQuery, {

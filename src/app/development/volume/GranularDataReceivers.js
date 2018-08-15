@@ -57,7 +57,7 @@ class GranularDataReceivers extends React.Component {
     return (<Query
       query={GET_PERMITS}
       variables={{
-        date_field: 'applied_date',
+        date_field: this.props.dateField,
         after: this.props.timeSpan[0],
         before: this.props.timeSpan[1],
       }}
@@ -140,7 +140,7 @@ class GranularDataReceivers extends React.Component {
             id="openClosedIssued"
             className="row"
           >
-            <h2>Status Distribution by Opened Date</h2>
+            <h2>Status Distribution by {this.state.dateField  === 'applied_date' ? 'Opened' : 'Updated'} Date</h2>
             <p>Click a box to see data details</p>
             <div
               style={{
@@ -188,8 +188,12 @@ class GranularDataReceivers extends React.Component {
                       stroke: nodeColors[datum.key],
                       fillOpacity: 0.65,
                     }}
-                    rAccessor={d => new Date(d.applied_date)}
-                    rExtent={[includedDates[0], includedDates[includedDates.length - 1]]}
+                    rAccessor={d => new Date(d[this.props.dateField])}
+                    rExtent={[
+                      // new Date(includedDates[0]).setDate(includedDates[0].getDate() - 1),
+                      includedDates[0],
+                      includedDates[includedDates.length - 1],
+                    ]}
                     pieceIDAccessor="key"
                     axis={[
                       {
@@ -206,6 +210,7 @@ class GranularDataReceivers extends React.Component {
                             )}
                           </text>
                         ),
+                        tickValues: includedDates.filter((tick, i) => i % 2 === 0),
                       },
                     ]}
                     key={datum.key}

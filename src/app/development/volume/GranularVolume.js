@@ -12,6 +12,7 @@ class GranularVolume extends React.Component {
 
     this.state = {
       timeSpan: [new Date(2018, 7, 1), new Date()],
+      dateField: 'applied_date',
     };
   }
 
@@ -41,12 +42,19 @@ class GranularVolume extends React.Component {
     };
 
     return (<div>
-      <h1>Permits Opened from <DateTimePicker
+      <h1>Permits <select
+        style={{ fontSize: '0.9em' }}
+        value={this.state.dateField}
+        onChange={e => this.setState({ dateField: e.target.value })}
+      >
+        <option value="applied_date">Opened</option>
+        <option value="status_date">Updated</option>
+      </select> between <DateTimePicker
         value={this.state.timeSpan[0]}
         onChange={value => this.setState({ timeSpan: [value, this.state.timeSpan[1]] })}
         time={false}
         style={datePickerStyle}
-      /> to <DateTimePicker
+      /> and <DateTimePicker
         style={datePickerStyle}
         value={this.state.timeSpan[1]}
         onChange={value => this.setState({ timeSpan: [this.state.timeSpan[0], value] })}
@@ -55,9 +63,7 @@ class GranularVolume extends React.Component {
       </h1>
       <GranularDataReceivers
         timeSpan={this.state.timeSpan}
-        queryOptions={{
-          dateField: 'applied_date', // or 'status_date'
-        }}
+        dateField={this.state.dateField}
       />
     </div>);
   }

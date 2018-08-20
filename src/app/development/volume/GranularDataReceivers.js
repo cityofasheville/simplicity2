@@ -145,7 +145,7 @@ class GranularDataReceivers extends React.Component {
             id="openClosedIssued"
             className="row"
           >
-            <h2>Status Distribution by {this.state.dateField  === 'applied_date' ? 'Opened' : 'Updated'} Date</h2>
+            <h2>Status Distribution by {this.props.dateField  === 'applied_date' ? 'Opened' : 'Updated'} Date</h2>
             <div
               style={{
                 padding: '0 1%',
@@ -154,9 +154,12 @@ class GranularDataReceivers extends React.Component {
             >
               {entriesHierarchy.map((datum) => {
                 // TODO:
-                // roll them into other if there are more than 5
+                // circle bins - plot each individual point, but expand radius by how many records there are in that bin
                 // click to pop up modal
-                // tooltip
+                // roll them into other if there are more than 5
+                // standard y axis!  use facetcontroller?
+
+
                 return (<div
                   className="col-md-4"
                   style={{ display: 'inline-block' }}
@@ -239,10 +242,16 @@ class GranularDataReceivers extends React.Component {
           </div>
           <div id="inspections">
             <h2>Inspections</h2>
+            {/* need to show when someone schedules an inspection and when it gets performed */}
+            {/* how often did we not get to something scheduled on a given day-- 99% of the time it's fine, so about 1/day gets dropped-- show the anomalies */}
           </div>
           <div id="percentOnline">
             <h2>Online vs In Person</h2>
-            {/* for each permit type, return a histogram showing opened online, opened in person,  */}
+            {/* TODO: ADD TOTAL PERCENT OPENED ONLINE in its own div-- total, and then per permit type */}
+            {/* make 0 values invisible */}
+            {/* add a legend for dark and light */}
+            {/* fix issue with pink being too light with lighter color */}
+            {/* add outline to all of them that is consistent */}
             <div
               style={{
                 padding: '0 1%',
@@ -310,6 +319,7 @@ class GranularDataReceivers extends React.Component {
           </div>
           <div id="permitFees">
             <h2>Fees</h2>
+            {/* TODO: include city of asheville ones in tooltip, to show what fees were not paid/were waived */}
           </div>
         </div>);
       }

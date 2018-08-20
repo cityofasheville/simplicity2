@@ -19,16 +19,16 @@ class GranularVolume extends React.Component {
   render() {
     Moment.locale('en');
     momentLocalizer();
-    /*
-      TO ASK:
-        Should menus show all types or show other?  Or indicate type has been rolled into other?
-        Or should we do checkboxes like the other one instead of making "other"?
-
-      TODO:
-        props validation
-        bin by week if it's over 6 weeks, by month if it's over 1 year
-        allow users to drill into permits with click/modal behavior
-        update URL to allow bookmarking
+    /* TODO:
+      props validation
+      legends
+      modal pop up of individual permits
+      bin by week if it's over 6 weeks, by month if it's over 1 year
+      allow users to drill into permits with click/modal behavior
+      do binning on server? is this going to be slow AF?
+      update URL to allow bookmarking
+      select more than one in permit type (etc) dropdowns
+      freeze header (and make it smaller) to keep updated vs opened, date range, and permit type in view
     */
 
     const datePickerStyle = {

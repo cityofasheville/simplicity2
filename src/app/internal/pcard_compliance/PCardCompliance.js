@@ -54,9 +54,6 @@ const PCardCompliance = props => (
     {({ loading, error, data }) => {
       if (loading) return <LoadingAnimation />;
       if (error) return <Error message={error.message} />;
-      // if (!props.user.loggedIn || ['fruiz@ashevillenc.gov', 'fmcgowan@ashevillenc.gov', 'tmartin@ashevillenc.gov', 'bking3@ashevillenc.gov', 'bwhitehorn@ashevillenc.gov', 'ejackson@ashevillenc.gov', 'mmazanec@ashevillenc.gov', 'jwood@ashevillenc.gov'].indexOf(props.user.email) === -1) {
-      //   return <Error message="You are not authorized to view this page" />;
-      // }
 
       const getNewUrlParams = (nodePath, time) => {
         const dept = document.getElementById('department');

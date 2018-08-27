@@ -7252,7 +7252,7 @@ semiotic-mark@^0.1.2:
     d3-transition "1.0.3"
     prop-types "15.6.0"
 
-semiotic@^1.13.4:
+semiotic@^1.13.8:
   version "1.13.8"
   resolved "https://registry.yarnpkg.com/semiotic/-/semiotic-1.13.8.tgz#5694175ccaf30b00eb322c522ecfc5b7eba97f3d"
   dependencies:

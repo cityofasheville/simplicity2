@@ -157,8 +157,6 @@ class GranularDataReceivers extends React.Component {
                 // circle bins - plot each individual point, but expand radius by how many records there are in that bin
                 // click to pop up modal
                 // roll them into other if there are more than 5
-                // standard y axis!  use facetcontroller?
-
 
                 return (<div
                   className="col-md-4"
@@ -167,7 +165,7 @@ class GranularDataReceivers extends React.Component {
                 >
                   <ResponsiveOrdinalFrame
                     projection="horizontal"
-                    size={[300, 325]}
+                    size={[300, 200]}
                     responsiveWidth
                     margin={{
                       top: 40,
@@ -277,6 +275,7 @@ class GranularDataReceivers extends React.Component {
                     oPadding={1}
                     oAccessor="binStartDate"
                     rAccessor="count"
+                    rExtent={[0, 50]}
                     type="bar"
                     pieceIDAccessor="key"
                     axis={[

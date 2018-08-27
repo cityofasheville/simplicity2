@@ -244,10 +244,7 @@ class GranularDataReceivers extends React.Component {
           </div>
           <div id="percentOnline">
             <h2>Online vs In Person</h2>
-            {/* TODO: ADD TOTAL PERCENT OPENED ONLINE in its own div-- total, and then per permit type */}
-            {/* add a legend for dark and light */}
-            {/* fix issue with pink being too light with lighter color */}
-            {/* add outline to all of them that is consistent */}
+            {/* Make shared extent with FacetController after issue is fixed */}
             <div
               style={{
                 padding: '0 1%',
@@ -255,7 +252,7 @@ class GranularDataReceivers extends React.Component {
               }}
             >
               {entriesHierarchy.map((datum) => {
-                const brighterColor = color(nodeColors[datum.key]).brighter(2);
+                const brighterColor = color(nodeColors[datum.key]).brighter(1.5);
                 const thisData = openedOnline.filter(d => d.key === datum.key);
                 const margins = {
                   top: 40,
@@ -263,6 +260,12 @@ class GranularDataReceivers extends React.Component {
                   bottom: 10,
                   left: 25,
                 }
+
+                let numOnline = 0;
+                let numInPerson = 0;
+                thisData.forEach(datumDay => {
+                  datumDay.openedOnline ? numOnline += datumDay.count : numInPerson += datumDay.count;
+                })
 
                 return (<div
                   style={{ display: 'inline-block' }}
@@ -324,8 +327,8 @@ class GranularDataReceivers extends React.Component {
                           {
                             styleFn: (d) => ({ fill: d.color, stroke: nodeColors[datum.key] }),
                             items: [
-                              { label: 'Online', color: nodeColors[datum.key] },
-                              { label: 'In Person', color: brighterColor },
+                              { label: `Online: ${numOnline}`, color: nodeColors[datum.key] },
+                              { label: `In Person: ${numInPerson}`, color: brighterColor },
                             ]
                           }
                         ]}

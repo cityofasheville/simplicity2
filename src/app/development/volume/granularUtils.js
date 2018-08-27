@@ -1,6 +1,15 @@
+import React from 'react';
 import gql from 'graphql-tag';
 import { histogram } from 'd3-array';
+import { scaleLinear } from 'd3-scale';
 
+
+const dateComparisonOpts = {
+  // weekday: 'short',
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+};
 
 export const colorScheme = [
   '#B66DFF',
@@ -13,7 +22,7 @@ export const colorScheme = [
   '#004949',
   '#6DB6FF',
   '#490092',
-  '#FFBDDB',
+  '#ff99c7',
 ];
 
 export function groupStatuses(data) {
@@ -35,6 +44,48 @@ export function groupStatuses(data) {
     }
     return rVal;
   })
+}
+
+export function dotBin(inputD) {
+  const renderedPieces = [];
+  const keys = Object.keys(inputD.data);
+  const maxVol = Math.max(...keys.map(key => inputD.data[key].pieceData.length))
+  console.log(inputD)
+
+  // TODO: SCALE CIRCLES BASED ON MAX VOL PER DAY, NOT TOTAL MAX VOL
+  const radiusFunc = scaleLinear()
+    .range([2, 10])
+    .domain([0, maxVol]);
+
+  keys.forEach(key => {
+    const column = inputD.data[key];
+    const circles = {}
+    column.pieceData.forEach(pieceDatum => {
+      const thisDate = new Date(pieceDatum.value).toLocaleDateString('en-US', dateComparisonOpts)
+      if (circles[thisDate]) {
+        circles[thisDate].push(pieceDatum)
+      } else {
+        circles[thisDate] = [pieceDatum]
+      }
+    })
+
+    const circleArray = Object.keys(circles).map((circleKey) => {
+      return <circle
+        r={radiusFunc(circles[circleKey].length)}
+        cx={inputD.rScale(new Date(circleKey))}
+        cy={column.x}
+        style={inputD.type.style}
+      ></circle>
+    })
+
+    const dotArray = (
+      <g key={`piece-${key}`}>
+        {circleArray}
+      </g>
+    );
+    renderedPieces.push(dotArray);
+  });
+  return renderedPieces;
 }
 
 export const openedOnlineRule = inputDatum => inputDatum.created_by.includes('PUBLICUSER') || inputDatum.created_by === 'TALLEY' || inputDatum.created_by === 'CSHORT';
@@ -60,12 +111,6 @@ export function groupHierachyOthers(inputHierarchy, otherGroupCutoff = 5) {
 
 export function histogramFromHierarchical(rawData, entriesHierarchy, includedDates) {
   // Standard date format for comparison
-  const dateComparisonOpts = {
-    // weekday: 'short',
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  };
 
   const histFunc = histogram(rawData)
     .value(d => new Date(d.applied_date))

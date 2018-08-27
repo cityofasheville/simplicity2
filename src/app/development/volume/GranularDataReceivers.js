@@ -12,6 +12,7 @@ import {
   openedOnlineRule,
   splitOrdinalByBool,
   groupStatuses,
+  dotBin,
 } from './granularUtils';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import PermitTypeMenus from './PermitTypeMenus';
@@ -186,12 +187,13 @@ class GranularDataReceivers extends React.Component {
                         </text>
                       );
                     }}
-                    style={{
-                      fill: nodeColors[datum.key],
-                      stroke: nodeColors[datum.key],
-                      fillOpacity: 0.15,
+                    type={{
+                      type: dotBin,
+                      style: {
+                        fill: nodeColors[datum.key],
+                        stroke: nodeColors[datum.key],
+                      }
                     }}
-                    type={{ type: 'point', r: 4 }}
                     rAccessor={d => new Date(d[this.props.dateField])}
                     rExtent={[
                       includedDates[0],
@@ -251,7 +253,7 @@ class GranularDataReceivers extends React.Component {
               }}
             >
               {entriesHierarchy.map((datum) => {
-                const brighterColor = color(nodeColors[datum.key]).brighter(1.5);
+                const brighterColor = color(nodeColors[datum.key]).brighter(1.25);
                 const thisData = openedOnline.filter(d => d.key === datum.key);
                 const margins = {
                   top: 40,

@@ -32,36 +32,39 @@ class GranularVolume extends React.Component {
     */
 
     const datePickerStyle = {
-      width: '25%',
-      fontSize: '0.45em',
+      maxWidth: '25%',
       display: 'inline-block',
-      padding: '0% 2%',
+      padding: '0% 0.5%',
+      color: 'inherit',
     };
 
-    return (<div>
-      <h1>Permits <select
-        style={{ fontSize: '0.9em' }}
+    return (<div className="visualization-title" >
+      <h1><select
+        style={{ fontSize: '0.85em' }}
         value={this.state.dateField}
         onChange={e => this.setState({ dateField: e.target.value })}
       >
         <option value="applied_date">Opened</option>
         <option value="status_date">Updated</option>
-      </select> between <DateTimePicker
-        value={this.state.timeSpan[0]}
-        onChange={value => this.setState({ timeSpan: [value, this.state.timeSpan[1]] })}
-        time={false}
-        style={datePickerStyle}
-      /> and <DateTimePicker
-        style={datePickerStyle}
-        value={this.state.timeSpan[1]}
-        onChange={value => this.setState({ timeSpan: [this.state.timeSpan[0], value] })}
-        time={false}
-      />
+      </select> Permits
       </h1>
-      <GranularDataReceivers
-        timeSpan={this.state.timeSpan}
-        dateField={this.state.dateField}
-      />
+      <div>
+        <DateTimePicker
+          value={this.state.timeSpan[0]}
+          onChange={value => this.setState({ timeSpan: [value, this.state.timeSpan[1]] })}
+          time={false}
+          style={datePickerStyle}
+        /> to <DateTimePicker
+          style={datePickerStyle}
+          value={this.state.timeSpan[1]}
+          onChange={value => this.setState({ timeSpan: [this.state.timeSpan[0], value] })}
+          time={false}
+        />
+        <GranularDataReceivers
+          timeSpan={this.state.timeSpan}
+          dateField={this.state.dateField}
+        />
+      </div>
     </div>);
   }
 }

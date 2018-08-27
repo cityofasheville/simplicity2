@@ -25,14 +25,15 @@ const PermitTypeMenus = props => (
       });
 
       return (<div
+        className="visualization-title"
         style={{
           display: 'inline-block',
-          padding: '0 1%',
           textTransform: 'capitalize',
+          padding: '0% 0.5%',
         }}
         key={level.name}
       >
-        <p>{`${level.name.replace('_', ' ')}: `}</p>
+        <div style={{ display: 'inline-block' }}>{`${level.name.replace('_', ' ')}: `}&nbsp;</div>
         <select
           name={level.name}
           onChange={e => props.onSelect(e, levelIndex)}

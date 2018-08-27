@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import { nest } from 'd3-collection';
-import { ResponsiveOrdinalFrame } from 'semiotic';
+import { Legend, ResponsiveOrdinalFrame } from 'semiotic';
 import { color } from 'd3-color';
 import {
   colorScheme,
@@ -189,15 +189,14 @@ class GranularDataReceivers extends React.Component {
                         </text>
                       );
                     }}
-                    summaryType={{ type: 'boxplot', amplitude: new Date() }}
-                    summaryStyle={{
+                    style={{
                       fill: nodeColors[datum.key],
                       stroke: nodeColors[datum.key],
-                      fillOpacity: 0.65,
+                      fillOpacity: 0.15,
                     }}
+                    type={{ type: 'point', r: 4 }}
                     rAccessor={d => new Date(d[this.props.dateField])}
                     rExtent={[
-                      // new Date(includedDates[0]).setDate(includedDates[0].getDate() - 1),
                       includedDates[0],
                       includedDates[includedDates.length - 1],
                     ]}
@@ -248,7 +247,6 @@ class GranularDataReceivers extends React.Component {
           <div id="percentOnline">
             <h2>Online vs In Person</h2>
             {/* TODO: ADD TOTAL PERCENT OPENED ONLINE in its own div-- total, and then per permit type */}
-            {/* make 0 values invisible */}
             {/* add a legend for dark and light */}
             {/* fix issue with pink being too light with lighter color */}
             {/* add outline to all of them that is consistent */}
@@ -259,6 +257,15 @@ class GranularDataReceivers extends React.Component {
               }}
             >
               {entriesHierarchy.map((datum) => {
+                const brighterColor = color(nodeColors[datum.key]).brighter(2);
+                const thisData = openedOnline.filter(d => d.key === datum.key);
+                const margins = {
+                  top: 40,
+                  right: 10,
+                  bottom: 10,
+                  left: 25,
+                }
+
                 return (<div
                   style={{ display: 'inline-block' }}
                   key={datum.key}
@@ -266,12 +273,7 @@ class GranularDataReceivers extends React.Component {
                   <ResponsiveOrdinalFrame
                     size={[185, 185]}
                     // responsiveWidth
-                    margin={{
-                      top: 40,
-                      right: 10,
-                      bottom: 30,
-                      left: 25,
-                    }}
+                    margin={margins}
                     oPadding={1}
                     oAccessor="binStartDate"
                     rAccessor="count"
@@ -305,14 +307,33 @@ class GranularDataReceivers extends React.Component {
                         textLines={textLines}
                       />);
                     }}
-                    data={openedOnline.filter(d => d.key === datum.key)}
+                    data={thisData}
                     title={datum.key}
                     style={d => {
                       return {
-                        fill: d.openedOnline ? nodeColors[datum.key] : color(nodeColors[datum.key]).brighter(2),
+                        fill: d.openedOnline ? nodeColors[datum.key] : brighterColor,
+                        stroke: nodeColors[datum.key],
+                        strokeWidth: 0.25,
+                        opacity: d.count > 0 ? 1 : 0,
                       };
                     }}
                   />
+                  <svg style={{ height: 100, width: 185, fontSize: '0.75em'}}>
+                    <g transform={`translate(${margins.left},-10)`}>
+                      <Legend
+                        legendGroups={[
+                          {
+                            styleFn: (d) => ({ fill: d.color, stroke: nodeColors[datum.key] }),
+                            items: [
+                              { label: 'Online', color: nodeColors[datum.key] },
+                              { label: 'In Person', color: brighterColor },
+                            ]
+                          }
+                        ]}
+                        title=""
+                    />
+                    </g>
+                  </svg>
                 </div>);
               })}
             </div>

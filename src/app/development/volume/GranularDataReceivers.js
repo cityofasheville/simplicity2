@@ -11,6 +11,7 @@ import {
   GET_PERMITS,
   openedOnlineRule,
   splitOrdinalByBool,
+  groupStatuses,
 } from './granularUtils';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import PermitTypeMenus from './PermitTypeMenus';
@@ -156,10 +157,9 @@ class GranularDataReceivers extends React.Component {
                 // TODO:
                 // circle bins - plot each individual point, but expand radius by how many records there are in that bin
                 // click to pop up modal
-                // roll them into other if there are more than 5
 
                 return (<div
-                  className="col-md-4"
+                  className="col-md-6"
                   style={{ display: 'inline-block' }}
                   key={datum.key}
                 >
@@ -170,17 +170,16 @@ class GranularDataReceivers extends React.Component {
                     margin={{
                       top: 40,
                       right: 0,
-                      bottom: 40,
-                      left: 90,
+                      bottom: 60,
+                      left: 150,
                     }}
                     oPadding={5}
                     oAccessor={d => d.status_current || 'No Status'}
                     oLabel={(d) => {
-                      const fontSize = 1 - (0.125 * d.split(' ').length);
+                      const fontSize = '0.65'
                       return (
                         <text
                           textAnchor="end"
-                          transform="rotate(-35)"
                           style={{ fontSize: `${fontSize}em` }}
                         >
                           {d}
@@ -218,7 +217,7 @@ class GranularDataReceivers extends React.Component {
                       },
                     ]}
                     key={datum.key}
-                    data={datum.values}
+                    data={groupStatuses(datum.values)}
                     title={datum.key}
                     hoverAnnotation
                     tooltipContent={(d) => {

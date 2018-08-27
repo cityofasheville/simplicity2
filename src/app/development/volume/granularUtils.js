@@ -16,6 +16,27 @@ export const colorScheme = [
   '#FFBDDB',
 ];
 
+export function groupStatuses(data) {
+  // Issued/Finaled/Closed
+  const done = ['Partial Issued', 'Reissued', 'Issued', 'Sent', 'Closed', 'Issued CA', 'Finaled', 'Record Closed', 'Approved']
+  // Plan Check/In Review
+  const inReview = ['Plan Check', 'Plan Check 2', 'In Review']
+  // Application Phase
+  const appPhase = ['Application Received', 'Application Submitted', 'Submittal Required']
+
+  return data.map(d => {
+    const rVal = Object.assign({}, d)
+    if (done.includes(d.status_current)) {
+      rVal.status_current = 'Issued/Finaled/Closed'
+    } else if (appPhase.includes(d.status_current)) {
+      rVal.status_current = 'Application Phase'
+    } else if (inReview.includes(d.status_current)) {
+      rVal.status_current = 'Plan Check/In Review'
+    }
+    return rVal;
+  })
+}
+
 export const openedOnlineRule = inputDatum => inputDatum.created_by.includes('PUBLICUSER') || inputDatum.created_by === 'TALLEY' || inputDatum.created_by === 'CSHORT';
 
 export function groupHierachyOthers(inputHierarchy, otherGroupCutoff = 5) {

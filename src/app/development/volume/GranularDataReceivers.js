@@ -17,7 +17,6 @@ import LoadingAnimation from '../../../shared/LoadingAnimation';
 import PermitTypeMenus from './PermitTypeMenus';
 import PermitVolCirclepack from './PermitVolCirclepack';
 import StatusDistributionMultiples from './StatusDistributionMultiples';
-import Tooltip from '../../../shared/visualization/Tooltip';
 import VolumeHistogram from './VolumeHistogram';
 
 
@@ -152,7 +151,7 @@ class GranularDataReceivers extends React.Component {
               {/* Checkbox legend - more like checkboxes-- only show top 3 - 5 by volume by default */}
             </div>
             <div className="col-md-3 granularVolCirclepack">
-              <h2>Total</h2>
+              <h2>{`Total: ${entriesHierarchy.map(d => d.value).reduce((a, b) => a + b)}`}</h2>
               <PermitVolCirclepack
                 data={{ key: 'root', children: entriesHierarchy }}
                 colorKeys={nodeColors}

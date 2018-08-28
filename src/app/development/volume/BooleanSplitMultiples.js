@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Legend, ResponsiveOrdinalFrame } from 'semiotic';
 import { color } from 'd3-color';
+import Tooltip from '../../../shared/visualization/Tooltip';
 
 
 const BooleanSplitMultiples = props => (

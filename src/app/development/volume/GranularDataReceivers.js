@@ -238,11 +238,16 @@ class GranularDataReceivers extends React.Component {
                     data={datum.values}
                     title={datum.key}
                     hoverAnnotation
-                    tooltipContent={(d) => {
-                      // Add text line that says "median date received is ____"
-                      return (<Tooltip
-                        title={`${d.column.name} Total: ${d.summary.length}`}
-                      />);
+                    // tooltipContent={(d) => {
+                    //   // Add text line that says "median date received is ____"
+                    //   console.log(d)
+                    //   // return (<Tooltip
+                    //   //   title={`${d.column.name} Total: ${d.summary.length}`}
+                    //   // />);
+                    //   return 'foo'
+                    // }}
+                    customHoverBehavior={(d) => {
+                      console.log(d)
                     }}
                     customClickBehavior={d => console.log(d)}
                   />
@@ -251,15 +256,15 @@ class GranularDataReceivers extends React.Component {
               })}
             </div>
           </div>
-          <div id="taskVol">
+          <div id="taskVol" className="row">
             <h2>Tasks</h2>
           </div>
-          <div id="inspections">
+          <div id="inspections" className="row">
             <h2>Inspections</h2>
             {/* need to show when someone schedules an inspection and when it gets performed */}
             {/* how often did we not get to something scheduled on a given day-- 99% of the time it's fine, so about 1/day gets dropped-- show the anomalies */}
           </div>
-          <div id="percentOnline">
+          <div id="percentOnline" className="row">
             <h2>Online vs In Person</h2>
             {/* Make shared extent with FacetController after issue is fixed */}
             <div
@@ -274,7 +279,7 @@ class GranularDataReceivers extends React.Component {
                 const margins = {
                   top: 40,
                   right: 10,
-                  bottom: 10,
+                  bottom: 35,
                   left: 25,
                 }
 
@@ -287,10 +292,11 @@ class GranularDataReceivers extends React.Component {
                 return (<div
                   style={{ display: 'inline-block' }}
                   key={datum.key}
+                  className="col-md-4"
                 >
                   <ResponsiveOrdinalFrame
                     size={[185, 185]}
-                    // responsiveWidth
+                    responsiveWidth
                     margin={margins}
                     oPadding={1}
                     oAccessor="binStartDate"
@@ -326,6 +332,19 @@ class GranularDataReceivers extends React.Component {
                         textLines={textLines}
                       />);
                     }}
+                    oLabel={(d, pieces, i) => {
+                      if (i % 5 !== 0) { return null }
+                      const dateString = new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                      return (
+                        <text
+                          textAnchor="end"
+                          transform="rotate(-35)"
+                          style={{ fontSize: '0.70em' }}
+                        >
+                          {dateString}
+                        </text>
+                      );
+                    }}
                     data={thisData}
                     title={datum.key}
                     style={d => {
@@ -357,7 +376,7 @@ class GranularDataReceivers extends React.Component {
               })}
             </div>
           </div>
-          <div id="permitFees">
+          <div id="permitFees" className="row">
             <h2>Fees</h2>
             {/* TODO: include city of asheville ones in tooltip, to show what fees were not paid/were waived */}
           </div>

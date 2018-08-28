@@ -1,7 +1,6 @@
 import React from 'react';
 import { NetworkFrame } from 'semiotic';
 import { data } from './analytics';
-import { ColdObservable } from 'rxjs/testing/ColdObservable';
 import { buildTree } from './analytics';
 import { scaleLinear } from 'd3-scale';
 import { interpolateHcl } from 'd3-interpolate';
@@ -47,7 +46,7 @@ const AnalyticsCirclePack = () => {
                 }
               </p>
               {
-                d.data.pageViews > 0 && 
+                d.data.pageViews > 0 &&
                 <p>
                   {
                     d.data.pageViews
@@ -59,7 +58,7 @@ const AnalyticsCirclePack = () => {
           )}
           margin={10}
         />
-      </div>      
+      </div>
       <div style={{ marginLeft: '-50px', marginBottom: '100px' }}>
         <NetworkFrame
           size={[1200, 700]}
@@ -91,7 +90,7 @@ const AnalyticsCirclePack = () => {
                 }
               </p>
               {
-                d.data.pageViews > 0 && 
+                d.data.pageViews > 0 &&
                 <p>
                   {
                     d.data.pageViews
@@ -103,7 +102,7 @@ const AnalyticsCirclePack = () => {
           )}
           margin={10}
         />
-      </div>         
+      </div>
     </div>
   );
 };

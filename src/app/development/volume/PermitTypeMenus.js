@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 
 const PermitTypeMenus = props => (
-  <div style={{ margin: '1%' }} >
+  <div>
     {props.parentHierarchyLevels.map((level, levelIndex, array) => {
       // If the level before it has no selection, don't show it
       if (levelIndex > 0 && array[levelIndex - 1].selectedCat === null) {
@@ -25,14 +25,15 @@ const PermitTypeMenus = props => (
       });
 
       return (<div
+        className="visualization-title"
         style={{
           display: 'inline-block',
-          padding: '0 1%',
           textTransform: 'capitalize',
+          padding: '0 2% 0 0',
         }}
         key={level.name}
       >
-        <p>{`${level.name.replace('_', ' ')}: `}</p>
+        <div style={{ display: 'inline-block' }}>{`${level.name.replace('_', ' ')}: `}&nbsp;</div>
         <select
           name={level.name}
           onChange={e => props.onSelect(e, levelIndex)}

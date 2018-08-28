@@ -52,7 +52,7 @@ class PermitVolCirclepack extends React.Component {
         if (d.key === 'root' || d.r < 7.5) { return null; }
         return (<text
           key={`${d.key}-${d.value}-${Math.floor(Math.random() * Math.floor(10000))}`}
-          style={{ stroke: 'white', fontSize: '0.9em', fontWeight: 'light', alignmentBaseline: 'middle' }}
+          style={{ stroke: 'white', fontWeight: 'light', alignmentBaseline: 'middle' }}
           textAnchor="middle"
         >
           {d.value}

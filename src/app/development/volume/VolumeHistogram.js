@@ -14,7 +14,7 @@ const VolumeHistogram = props => (
     margin={{
       top: 10,
       right: 10,
-      bottom: 60,
+      bottom: 55,
       left: 40,
     }}
     axis={[

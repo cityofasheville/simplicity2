@@ -14,6 +14,7 @@ import {
 } from './granularUtils';
 import BooleanSplitMultiples from './BooleanSplitMultiples';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
+import HorizontalLegend from '../../../shared/visualization/HorizontalLegend';
 import PermitTypeMenus from './PermitTypeMenus';
 import PermitVolCirclepack from './PermitVolCirclepack';
 import StatusDistributionMultiples from './StatusDistributionMultiples';
@@ -139,7 +140,7 @@ class GranularDataReceivers extends React.Component {
         // make boolean split multiples for paid vs outstanding fees by opened/updated date
         console.log(entriesHierarchy)
 
-        return (<div>
+        return (<div className="dashRows">
           <div id="controls-n-summary" className="row" className="col-md-12">
             <PermitTypeMenus
               onSelect={this.onMenuSelect}
@@ -159,6 +160,18 @@ class GranularDataReceivers extends React.Component {
               <PermitVolCirclepack
                 data={{ key: 'root', children: entriesHierarchy }}
                 colorKeys={nodeColors}
+              />
+            </div>
+            {/* TODO: move this into volume histogram and set distance from left by margins, not hard coded! */}
+            <div className="col-md-10" style={{ left: 40 }}>
+              <HorizontalLegend
+                // label item has label and color
+                labelItems={entriesHierarchy.map(entry => (
+                  {
+                    label: entry.key,
+                    color: nodeColors[entry.key],
+                  }
+                ))}
               />
             </div>
           </div>

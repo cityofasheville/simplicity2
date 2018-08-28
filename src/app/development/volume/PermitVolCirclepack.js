@@ -48,6 +48,9 @@ class PermitVolCirclepack extends React.Component {
         type: 'circlepack',
         // array of data has to be { key: root, children: [...] }
       }}
+      customClickBehavior={(d) => {
+        this.props.onCircleClick(d.values)
+      }}
       nodeLabels={(d) => {
         if (d.key === 'root' || d.r < 7.5) { return null; }
         return (<text

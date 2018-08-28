@@ -20,10 +20,11 @@ class GranularVolume extends React.Component {
     Moment.locale('en');
     momentLocalizer();
     /* TODO:
-      add fees
-      add hover behavior to things
       allow users to drill into permits with click/modal behavior
+        todo: make modal faster-- put on individual visualizations?
+      add tooltip to dotbin pieces
       set radius of dotbin properly
+      add fees
 
       freeze header (and make it smaller) to keep updated vs opened, date range, and permit type in view
       split code more responsibly-- put data manipulation and loading thing in each vis rather than on granulardatareceivers

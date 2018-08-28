@@ -46,18 +46,18 @@ export function groupStatuses(data) {
   })
 }
 
-export function dotBin(inputD) {
+export function dotBin(input) {
   const renderedPieces = [];
-  const keys = Object.keys(inputD.data);
+  const keys = Object.keys(input.data);
 
-  console.log(inputD)
+  // console.log(input)
 
   const radiusFunc = scaleLinear()
     .range([2, 8])
-    .domain([0, inputD.type.maxRadius]);
+    .domain([0, input.type.maxRadius]);
 
   keys.forEach(key => {
-    const column = inputD.data[key];
+    const column = input.data[key];
     const circles = {}
     column.pieceData.forEach(pieceDatum => {
       const thisDate = new Date(pieceDatum.value).toLocaleDateString('en-US', dateComparisonOpts)
@@ -72,9 +72,9 @@ export function dotBin(inputD) {
       return <circle
         key={`piece-${key}-${circleKey}`}
         r={radiusFunc(circles[circleKey].length)}
-        cx={inputD.rScale(new Date(circleKey))}
+        cx={input.rScale(new Date(circleKey))}
         cy={column.middle - column.padding}
-        style={inputD.type.style}
+        style={input.type.style}
       ></circle>
     })
 

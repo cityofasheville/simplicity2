@@ -19,6 +19,7 @@ import PermitTypeMenus from './PermitTypeMenus';
 import PermitVolCirclepack from './PermitVolCirclepack';
 import StatusDistributionMultiples from './StatusDistributionMultiples';
 import VolumeHistogram from './VolumeHistogram';
+import DataModal from './DataModal';
 
 
 class GranularDataReceivers extends React.Component {
@@ -31,9 +32,12 @@ class GranularDataReceivers extends React.Component {
         { name: 'permit_subtype', selectedCat: null },
         { name: 'permit_category', selectedCat: null },
       ],
+      modalData: null
     };
 
     this.onMenuSelect = this.onMenuSelect.bind(this);
+    this.onModalOpen = this.onModalOpen.bind(this);
+    this.onModalClose = this.onModalClose.bind(this);
   }
 
   timeBuckets() {
@@ -56,6 +60,18 @@ class GranularDataReceivers extends React.Component {
       newLevels[changeIndex].selectedCat = null;
     }
     this.setState({ hierarchyLevels: newLevels });
+  }
+
+  onModalClose() {
+    this.setState({
+      modalData: null
+    })
+  }
+
+  onModalOpen(inputData) {
+    this.setState({
+      modalData: inputData
+    })
   }
 
   render() {
@@ -138,9 +154,10 @@ class GranularDataReceivers extends React.Component {
 
         // todo:
         // make boolean split multiples for paid vs outstanding fees by opened/updated date
-        console.log(entriesHierarchy)
+        // console.log(entriesHierarchy)
 
         return (<div className="dashRows">
+          {this.state.modalData && <DataModal data={this.state.modalData} closeModal={this.onModalClose} />}
           <div id="controls-n-summary" className="row" className="col-md-12">
             <PermitTypeMenus
               onSelect={this.onMenuSelect}
@@ -160,6 +177,7 @@ class GranularDataReceivers extends React.Component {
               <PermitVolCirclepack
                 data={{ key: 'root', children: entriesHierarchy }}
                 colorKeys={nodeColors}
+                onCircleClick={circleData => this.onModalOpen(circleData)}
               />
             </div>
             {/* TODO: move this into volume histogram and set distance from left by margins, not hard coded! */}

@@ -43,14 +43,14 @@ class GranularVolume extends React.Component {
     };
 
     return (<div>
-      <h1 style={{ width: '62.5%', display: 'inline-block' }} ><select
+      <h1 style={{ width: '62.5%', display: 'inline-block' }} >Permits by <select
         style={{ fontSize: '0.85em' }}
         value={this.state.dateField}
         onChange={e => this.setState({ dateField: e.target.value })}
       >
-        <option value="applied_date">Opened</option>
-        <option value="status_date">Updated</option>
-      </select> Permits
+        <option value="applied_date">Date Opened</option>
+        <option value="status_date">Date Updated</option>
+      </select>
       </h1>
       <div style={{ width: '37.5%', display: 'inline-block' }} className="visualization-title">
         <DateTimePicker

@@ -135,6 +135,10 @@ class GranularDataReceivers extends React.Component {
         // TODO: do this in BooleanSplitMultiples instead
         const openedOnline = splitOrdinalByBool(histogramData, openedOnlineRule, 'openedOnline');
 
+        // todo:
+        // make boolean split multiples for paid vs outstanding fees by opened/updated date
+        console.log(entriesHierarchy)
+
         return (<div>
           <div id="controls-n-summary" className="row" className="col-md-12">
             <PermitTypeMenus

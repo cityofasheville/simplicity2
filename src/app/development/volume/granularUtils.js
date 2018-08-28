@@ -50,6 +50,8 @@ export function dotBin(inputD) {
   const renderedPieces = [];
   const keys = Object.keys(inputD.data);
 
+  console.log(inputD)
+
   const radiusFunc = scaleLinear()
     .range([2, 8])
     .domain([0, inputD.type.maxRadius]);
@@ -71,7 +73,7 @@ export function dotBin(inputD) {
         key={`piece-${key}-${circleKey}`}
         r={radiusFunc(circles[circleKey].length)}
         cx={inputD.rScale(new Date(circleKey))}
-        cy={column.x}
+        cy={column.middle - column.padding}
         style={inputD.type.style}
       ></circle>
     })

@@ -21,11 +21,10 @@ class GranularVolume extends React.Component {
     momentLocalizer();
     /* TODO:
 
+      account for spacing from top with status distribution
       add fees
-      add legend to histogram
       add hover behavior to things
       allow users to drill into permits with click/modal behavior
-      account for spacing from top with status distribution
 
       freeze header (and make it smaller) to keep updated vs opened, date range, and permit type in view
       split code more responsibly-- put data manipulation and loading thing in each vis rather than on granulardatareceivers

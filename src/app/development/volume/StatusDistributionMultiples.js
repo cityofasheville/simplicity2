@@ -21,9 +21,9 @@ const StatusDistributionMultiples = props => (
           size={[300, 300]}
           responsiveWidth
           margin={{
-            top: 40,
+            top: 45,
             right: 0,
-            bottom: 60,
+            bottom: 55,
             left: 150,
           }}
           oPadding={5}
@@ -60,7 +60,7 @@ const StatusDistributionMultiples = props => (
               tickFormat: d => (
                 <text
                   textAnchor="end"
-                  transform="rotate(-35)"
+                  transform="translate(0,-10)rotate(-35)"
                   style={{ fontSize: '0.65em' }}
                 >
                   {new Date(d).toLocaleDateString(

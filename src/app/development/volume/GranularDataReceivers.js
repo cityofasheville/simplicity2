@@ -118,6 +118,21 @@ class GranularDataReceivers extends React.Component {
           includedDates,
         );
 
+
+        const filteredStatuses = [];
+        let maxRadius = 0;
+        const numDates = includedDates.length
+        const statusNest = nest().key(d => d.status_current)
+
+        entriesHierarchy.forEach(hierarchyObj => {
+          const rObj = Object.assign({}, hierarchyObj);
+          rObj.values = groupStatuses(hierarchyObj.values)
+          rObj.valuesByStatus = statusNest.entries(rObj.values).sort((a, b) => (b.values.length - a.values.length))
+          const maxRadiusCandidate = rObj.valuesByStatus[0].values.length / numDates
+          maxRadius = maxRadiusCandidate > maxRadius ? maxRadiusCandidate : maxRadius;
+          filteredStatuses.push(rObj)
+        })
+
         const openedOnline = splitOrdinalByBool(histogramData, openedOnlineRule, 'openedOnline');
 
         return (<div>
@@ -154,9 +169,8 @@ class GranularDataReceivers extends React.Component {
                 textTransform: 'capitalize',
               }}
             >
-              {entriesHierarchy.map((datum) => {
+              {filteredStatuses.map((datum) => {
                 // TODO:
-                // circle bins - plot each individual point, but expand radius by how many records there are in that bin
                 // click to pop up modal
 
                 return (<div
@@ -166,7 +180,7 @@ class GranularDataReceivers extends React.Component {
                 >
                   <ResponsiveOrdinalFrame
                     projection="horizontal"
-                    size={[300, 200]}
+                    size={[300, 300]}
                     responsiveWidth
                     margin={{
                       top: 40,
@@ -192,7 +206,9 @@ class GranularDataReceivers extends React.Component {
                       style: {
                         fill: nodeColors[datum.key],
                         stroke: nodeColors[datum.key],
-                      }
+                        fillOpacity: 0.5,
+                      },
+                      maxRadius: maxRadius
                     }}
                     rAccessor={d => new Date(d[this.props.dateField])}
                     rExtent={[
@@ -219,7 +235,7 @@ class GranularDataReceivers extends React.Component {
                       },
                     ]}
                     key={datum.key}
-                    data={groupStatuses(datum.values)}
+                    data={datum.values}
                     title={datum.key}
                     hoverAnnotation
                     tooltipContent={(d) => {

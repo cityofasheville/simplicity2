@@ -17,8 +17,8 @@ export const colorScheme = [
   '#006DDB',
   '#FF6DB6',
   '#01b0b0',
-  '#920000',
   '#2fe12f',
+  '#920000',
   '#004949',
   '#6DB6FF',
   '#490092',
@@ -49,13 +49,12 @@ export function groupStatuses(data) {
 export function dotBin(inputD) {
   const renderedPieces = [];
   const keys = Object.keys(inputD.data);
-  const maxVol = Math.max(...keys.map(key => inputD.data[key].pieceData.length))
-  console.log(inputD)
 
   // TODO: SCALE CIRCLES BASED ON MAX VOL PER DAY, NOT TOTAL MAX VOL
+  // MAKE ACCESSIBLE
   const radiusFunc = scaleLinear()
-    .range([2, 10])
-    .domain([0, maxVol]);
+    .range([2, 8])
+    .domain([0, inputD.type.maxRadius]);
 
   keys.forEach(key => {
     const column = inputD.data[key];

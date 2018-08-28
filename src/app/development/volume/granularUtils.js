@@ -50,8 +50,6 @@ export function dotBin(inputD) {
   const renderedPieces = [];
   const keys = Object.keys(inputD.data);
 
-  // TODO: SCALE CIRCLES BASED ON MAX VOL PER DAY, NOT TOTAL MAX VOL
-  // MAKE ACCESSIBLE
   const radiusFunc = scaleLinear()
     .range([2, 8])
     .domain([0, inputD.type.maxRadius]);
@@ -70,6 +68,7 @@ export function dotBin(inputD) {
 
     const circleArray = Object.keys(circles).map((circleKey) => {
       return <circle
+        key={`piece-${key}-${circleKey}`}
         r={radiusFunc(circles[circleKey].length)}
         cx={inputD.rScale(new Date(circleKey))}
         cy={column.x}

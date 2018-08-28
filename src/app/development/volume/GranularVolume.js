@@ -20,25 +20,29 @@ class GranularVolume extends React.Component {
     Moment.locale('en');
     momentLocalizer();
     /* TODO:
-      props validation
-      legends
-      modal pop up of individual permits
-      bin by week if it's over 6 weeks, by month if it's over 1 year
+
+      add fees
+      separate visualizations out for hover behavior
       allow users to drill into permits with click/modal behavior
-      do binning on server? is this going to be slow AF?
-      update URL to allow bookmarking
-      select more than one in permit type (etc) dropdowns
+      account for spacing from top with status distribution
+
       freeze header (and make it smaller) to keep updated vs opened, date range, and permit type in view
+      split code more responsibly-- put data manipulation and loading thing in each vis rather than on granulardatareceivers
+      props validation
+      update URL to allow bookmarking
+      bin by week if it's over 6 weeks, by month if it's over 1 year
+      do binning on server? is this going to be slow AF?
+      select more than one in permit type (etc) dropdowns
     */
 
     const datePickerStyle = {
-      maxWidth: '25%',
+      maxWidth: '45%',
       display: 'inline-block',
       padding: '0% 0.5% 0% 0%',
     };
 
     return (<div>
-      <h1><select
+      <h1 style={{ width: '62.5%', display: 'inline-block' }} ><select
         style={{ fontSize: '0.85em' }}
         value={this.state.dateField}
         onChange={e => this.setState({ dateField: e.target.value })}
@@ -47,20 +51,20 @@ class GranularVolume extends React.Component {
         <option value="status_date">Updated</option>
       </select> Permits
       </h1>
-      <div>
-        <div style={{ padding: '0% 0.5% 0% 4%' }} className="visualization-title">
-          <DateTimePicker
-            value={this.state.timeSpan[0]}
-            onChange={value => this.setState({ timeSpan: [value, this.state.timeSpan[1]] })}
-            time={false}
-            style={datePickerStyle}
-          /> to <DateTimePicker
-            style={datePickerStyle}
-            value={this.state.timeSpan[1]}
-            onChange={value => this.setState({ timeSpan: [this.state.timeSpan[0], value] })}
-            time={false}
-          />
-        </div>
+      <div style={{ width: '37.5%', display: 'inline-block' }} className="visualization-title">
+        <DateTimePicker
+          value={this.state.timeSpan[0]}
+          onChange={value => this.setState({ timeSpan: [value, this.state.timeSpan[1]] })}
+          time={false}
+          style={datePickerStyle}
+        /> to <DateTimePicker
+          style={datePickerStyle}
+          value={this.state.timeSpan[1]}
+          onChange={value => this.setState({ timeSpan: [this.state.timeSpan[0], value] })}
+          time={false}
+        />
+      </div>
+      <div >
         <GranularDataReceivers
           timeSpan={this.state.timeSpan}
           dateField={this.state.dateField}

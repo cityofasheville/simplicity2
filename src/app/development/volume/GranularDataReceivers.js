@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import { nest } from 'd3-collection';
 import { Legend, ResponsiveOrdinalFrame } from 'semiotic';
-import { color } from 'd3-color';
 import {
   colorScheme,
   groupHierachyOthers,
@@ -12,11 +11,12 @@ import {
   openedOnlineRule,
   splitOrdinalByBool,
   groupStatuses,
-  dotBin,
 } from './granularUtils';
+import BooleanSplitMultiples from './BooleanSplitMultiples';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import PermitTypeMenus from './PermitTypeMenus';
 import PermitVolCirclepack from './PermitVolCirclepack';
+import StatusDistributionMultiples from './StatusDistributionMultiples';
 import Tooltip from '../../../shared/visualization/Tooltip';
 import VolumeHistogram from './VolumeHistogram';
 
@@ -133,10 +133,11 @@ class GranularDataReceivers extends React.Component {
           filteredStatuses.push(rObj)
         })
 
+        // TODO: do this in BooleanSplitMultiples instead
         const openedOnline = splitOrdinalByBool(histogramData, openedOnlineRule, 'openedOnline');
 
         return (<div>
-          <div id="controls-n-summary" className="row">
+          <div id="controls-n-summary" className="row" className="col-md-12">
             <PermitTypeMenus
               onSelect={this.onMenuSelect}
               parentHierarchyLevels={this.state.hierarchyLevels}
@@ -163,98 +164,14 @@ class GranularDataReceivers extends React.Component {
             className="row"
           >
             <h2>Status Distribution by {this.props.dateField  === 'applied_date' ? 'Opened' : 'Updated'} Date</h2>
-            <div
-              style={{
-                padding: '0 1%',
-                textTransform: 'capitalize',
-              }}
-            >
-              {filteredStatuses.map((datum) => {
-                // TODO:
-                // click to pop up modal
-
-                return (<div
-                  className="col-md-6"
-                  style={{ display: 'inline-block' }}
-                  key={datum.key}
-                >
-                  <ResponsiveOrdinalFrame
-                    projection="horizontal"
-                    size={[300, 300]}
-                    responsiveWidth
-                    margin={{
-                      top: 40,
-                      right: 0,
-                      bottom: 60,
-                      left: 150,
-                    }}
-                    oPadding={5}
-                    oAccessor={d => d.status_current || 'No Status'}
-                    oLabel={(d) => {
-                      const fontSize = '0.65'
-                      return (
-                        <text
-                          textAnchor="end"
-                          style={{ fontSize: `${fontSize}em` }}
-                        >
-                          {d}
-                        </text>
-                      );
-                    }}
-                    type={{
-                      type: dotBin,
-                      style: {
-                        fill: nodeColors[datum.key],
-                        stroke: nodeColors[datum.key],
-                        fillOpacity: 0.5,
-                      },
-                      maxRadius: maxRadius
-                    }}
-                    rAccessor={d => new Date(d[this.props.dateField])}
-                    rExtent={[
-                      includedDates[0],
-                      includedDates[includedDates.length - 1],
-                    ]}
-                    pieceIDAccessor="key"
-                    axis={[
-                      {
-                        orient: 'bottom',
-                        tickFormat: d => (
-                          <text
-                            textAnchor="end"
-                            transform="rotate(-35)"
-                            style={{ fontSize: '0.65em' }}
-                          >
-                            {new Date(d).toLocaleDateString(
-                              'en-US',
-                              { month: 'short', day: 'numeric' }
-                            )}
-                          </text>
-                        ),
-                        tickValues: includedDates.filter((tick, i) => i % 2 === 0),
-                      },
-                    ]}
-                    key={datum.key}
-                    data={datum.values}
-                    title={datum.key}
-                    hoverAnnotation
-                    // tooltipContent={(d) => {
-                    //   // Add text line that says "median date received is ____"
-                    //   console.log(d)
-                    //   // return (<Tooltip
-                    //   //   title={`${d.column.name} Total: ${d.summary.length}`}
-                    //   // />);
-                    //   return 'foo'
-                    // }}
-                    customHoverBehavior={(d) => {
-                      console.log(d)
-                    }}
-                    customClickBehavior={d => console.log(d)}
-                  />
-                </div>
-                );
-              })}
-            </div>
+            <StatusDistributionMultiples
+              filteredStatuses={filteredStatuses}
+              nodeColors={nodeColors}
+              maxRadius={maxRadius}
+              // TODO: THIS SHOULD REALLY BE SET ON StatusDistributionMultiples
+              dateField={this.props.dateField}
+              includedDates={includedDates}
+            />
           </div>
           <div id="taskVol" className="row">
             <h2>Tasks</h2>
@@ -267,114 +184,11 @@ class GranularDataReceivers extends React.Component {
           <div id="percentOnline" className="row">
             <h2>Online vs In Person</h2>
             {/* Make shared extent with FacetController after issue is fixed */}
-            <div
-              style={{
-                padding: '0 1%',
-                textTransform: 'capitalize',
-              }}
-            >
-              {entriesHierarchy.map((datum) => {
-                const brighterColor = color(nodeColors[datum.key]).brighter(1.25);
-                const thisData = openedOnline.filter(d => d.key === datum.key);
-                const margins = {
-                  top: 40,
-                  right: 10,
-                  bottom: 35,
-                  left: 25,
-                }
-
-                let numOnline = 0;
-                let numInPerson = 0;
-                thisData.forEach(datumDay => {
-                  datumDay.openedOnline ? numOnline += datumDay.count : numInPerson += datumDay.count;
-                })
-
-                return (<div
-                  style={{ display: 'inline-block' }}
-                  key={datum.key}
-                  className="col-md-4"
-                >
-                  <ResponsiveOrdinalFrame
-                    size={[185, 185]}
-                    responsiveWidth
-                    margin={margins}
-                    oPadding={1}
-                    oAccessor="binStartDate"
-                    rAccessor="count"
-                    rExtent={[0, 50]}
-                    type="bar"
-                    pieceIDAccessor="key"
-                    axis={[
-                      {
-                        orient: 'left',
-                        tickFormat: d => (
-                          <text
-                            textAnchor="end"
-                            style={{ fontSize: '0.70em' }}
-                          >
-                            {d}
-                          </text>
-                        ),
-                      },
-                    ]}
-                    hoverAnnotation
-                    tooltipContent={(d) => {
-                      const pieces = d.type === 'column-hover' ? d.pieces : [d.data];
-                      const title = new Date(pieces[0].binStartDate).toLocaleDateString('en-US');
-
-                      const textLines = pieces.map(piece => ({
-                        text: `${piece.openedOnline ? 'Online' : 'In Person'}: ${piece.count}`,
-                        color: nodeColors[piece.key],
-                      })).reverse();
-
-                      return (<Tooltip
-                        title={title}
-                        textLines={textLines}
-                      />);
-                    }}
-                    oLabel={(d, pieces, i) => {
-                      if (i % 5 !== 0) { return null }
-                      const dateString = new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-                      return (
-                        <text
-                          textAnchor="end"
-                          transform="rotate(-35)"
-                          style={{ fontSize: '0.70em' }}
-                        >
-                          {dateString}
-                        </text>
-                      );
-                    }}
-                    data={thisData}
-                    title={datum.key}
-                    style={d => {
-                      return {
-                        fill: d.openedOnline ? nodeColors[datum.key] : brighterColor,
-                        stroke: nodeColors[datum.key],
-                        strokeWidth: 0.25,
-                        opacity: d.count > 0 ? 1 : 0,
-                      };
-                    }}
-                  />
-                  <svg style={{ height: 100, width: 185, fontSize: '0.75em'}}>
-                    <g transform={`translate(${margins.left},-10)`}>
-                      <Legend
-                        legendGroups={[
-                          {
-                            styleFn: (d) => ({ fill: d.color, stroke: nodeColors[datum.key] }),
-                            items: [
-                              { label: `Online: ${numOnline}`, color: nodeColors[datum.key] },
-                              { label: `In Person: ${numInPerson}`, color: brighterColor },
-                            ]
-                          }
-                        ]}
-                        title=""
-                    />
-                    </g>
-                  </svg>
-                </div>);
-              })}
-            </div>
+            <BooleanSplitMultiples
+              entriesHierarchy={entriesHierarchy}
+              nodeColors={nodeColors}
+              openedOnline={openedOnline}
+            />
           </div>
           <div id="permitFees" className="row">
             <h2>Fees</h2>

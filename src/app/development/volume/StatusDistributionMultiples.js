@@ -17,6 +17,7 @@ const StatusDistributionMultiples = props => (
         key={datum.key}
       >
         <ResponsiveOrdinalFrame
+          customHoverBehavior={d => console.log(d)}
           projection="horizontal"
           size={[300, 300]}
           responsiveWidth
@@ -46,7 +47,10 @@ const StatusDistributionMultiples = props => (
               stroke: props.nodeColors[datum.key],
               fillOpacity: 0.5,
             },
-            maxRadius: props.maxRadius
+            maxRadius: props.maxRadius,
+            mouseOver: d => console.log(d),
+            // TODO: ALSO GET EVENT COORDS, PLACE TOOLTIP
+            mouseOut: d => console.log('make tooltip not visible on mouseout')
           }}
           rAccessor={d => new Date(d[props.dateField])}
           rExtent={[

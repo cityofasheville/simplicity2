@@ -75,6 +75,7 @@ export function dotBin(input) {
         cx={input.rScale(new Date(circleKey))}
         cy={column.middle - column.padding}
         style={input.type.style}
+        onMouseOver={() => input.type.mouseOver(circles[circleKey].length)}
       ></circle>
     })
 

@@ -75,12 +75,15 @@ export function dotBin(input) {
         cx={input.rScale(new Date(circleKey))}
         cy={column.middle - column.padding}
         style={input.type.style}
-        onMouseOver={() => input.type.mouseOver(circles[circleKey].length)}
+        // onMouseOver={(e) => input.type.mouseOver(circleKey, circles[circleKey], e)}
       ></circle>
     })
 
     const dotArray = (
-      <g key={`piece-${key}`}>
+      <g
+        key={`piece-${key}`}
+        // onMouseOut={() => input.type.mouseOut()}
+      >
         {circleArray}
       </g>
     );

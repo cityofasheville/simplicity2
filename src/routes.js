@@ -25,6 +25,7 @@ import Topics from './app/Topics';
 import DevelopmentSummary from './app/development/DevelopmentSummary';
 import DevelopmentDetail from './app/development/DevelopmentDetail';
 import DevelopmentSLADashboard from './app/development/sla_dashboard/SLADashboard';
+import DevelopmentDashIndex from './app/development/DevelopmentDashIndex';
 import TRCDashboard from './app/development/trc/TRCDashboard';
 import VolumeDashboard from './app/development/volume/VolumeDashboard';
 import GranularVolume from './app/development/volume/GranularVolume';
@@ -131,6 +132,8 @@ const Routes = () => (
         <Route path="development">
           <IndexRoute component={DevelopmentSummary} />
           <Route path="detail" component={DevelopmentDetail}></Route>
+          {/* The rest of these are dashboards */}
+          <Route path="dashboards" component={DevelopmentDashIndex}></Route>
           <Route path="sla-dashboard" component={DevelopmentSLADashboard}></Route>
           <Route path="trc" component={TRCDashboard}></Route>
           <Route path="volume" component={VolumeDashboard}></Route>
@@ -160,4 +163,3 @@ const Routes = () => (
 );
 
 export default Routes;
-

@@ -4,7 +4,7 @@ import { ResponsiveOrdinalFrame } from 'semiotic';
 import Tooltip from '../../../shared/visualization/Tooltip';
 
 
-class StatusDistributionMultiples extends React.Component {
+class StatusBars extends React.Component {
 
   constructor() {
     super()
@@ -19,7 +19,7 @@ class StatusDistributionMultiples extends React.Component {
       }}
     >
       {this.props.filteredStatuses.map((datum) => {
-        // for each status, make a bar chart of 
+        // for each status, make a bar chart of
         return (<div
           className="col-md-6"
           style={{ display: 'inline-block' }}
@@ -121,10 +121,10 @@ class StatusDistributionMultiples extends React.Component {
 
 }
 
-StatusDistributionMultiples.propTypes = {
+StatusBars.propTypes = {
 };
 
-StatusDistributionMultiples.defaultProps = {
+StatusBars.defaultProps = {
 };
 
-export default StatusDistributionMultiples;
+export default StatusBars;

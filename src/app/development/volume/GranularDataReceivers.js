@@ -207,14 +207,6 @@ class GranularDataReceivers extends React.Component {
               includedDates={includedDates}
             />
           </div>
-          <div id="taskVol" className="row">
-            <h2>Tasks</h2>
-          </div>
-          <div id="inspections" className="row">
-            <h2>Inspections</h2>
-            {/* need to show when someone schedules an inspection and when it gets performed */}
-            {/* how often did we not get to something scheduled on a given day-- 99% of the time it's fine, so about 1/day gets dropped-- show the anomalies */}
-          </div>
           <div id="percentOnline" className="row">
             <h2>Online vs In Person</h2>
             {/* Make shared extent with FacetController after issue is fixed */}
@@ -223,10 +215,6 @@ class GranularDataReceivers extends React.Component {
               nodeColors={nodeColors}
               openedOnline={openedOnline}
             />
-          </div>
-          <div id="permitFees" className="row">
-            <h2>Fees</h2>
-            {/* TODO: include city of asheville ones in tooltip, to show what fees were not paid/were waived */}
           </div>
         </div>);
       }

@@ -61,19 +61,27 @@ DevelopmentDashIndex.propTypes = {
 DevelopmentDashIndex.defaultProps = {
   topics: [
     {
-      name: 'Granular Volume I',
+      name: 'Permit Volume Detail',
       linkPath: '/development/granular_volume',
     },
     {
-      name: 'Granular Volume II',
+      name: 'Inspection Volume Detail',
       linkPath: '/',
     },
     {
-      name: 'Volume Overlay',
+      name: 'Task Volume Detail',
+      linkPath: '/',
+    },
+    {
+      name: 'Permit Search',
+      linkPath: '/',
+    },
+    {
+      name: 'Yearly Volume Overlay',
       linkPath: '/development/volume',
     },
     {
-      name: 'TRC',
+      name: 'TRC Timeline',
       linkPath: '/development/trc',
     },
   ],

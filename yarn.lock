@@ -7252,9 +7252,9 @@ semiotic-mark@^0.1.2:
     d3-transition "1.0.3"
     prop-types "15.6.0"
 
-semiotic@^1.13.8:
-  version "1.13.8"
-  resolved "https://registry.yarnpkg.com/semiotic/-/semiotic-1.13.8.tgz#5694175ccaf30b00eb322c522ecfc5b7eba97f3d"
+semiotic@^1.14.3:
+  version "1.14.3"
+  resolved "https://registry.yarnpkg.com/semiotic/-/semiotic-1.14.3.tgz#7814beeb8440260cae78de2f48049e51bc52fbee"
   dependencies:
     "@mapbox/polylabel" "1"
     d3-array "^1.2.0"

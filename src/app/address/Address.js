@@ -13,6 +13,8 @@ import {
   IM_TRAFFIC_CONE,
   IM_LEAF,
   IM_INFO,
+  IM_FLAG7,
+  IM_LIBRARY,
 } from '../../shared/iconConstants';
 import { zoningLinks } from './zoning';
 import PageHeader from '../../shared/PageHeader';
@@ -57,6 +59,8 @@ query addresses($civicaddress_ids: [String]!) {
       owner_cityname
       owner_state
       owner_zipcode
+      local_landmark
+      historic_district
     }
   }
   `;
@@ -199,6 +203,8 @@ const Address = props => (
         { popup: `<b>${content.address}</b><div>${addressData.street_number} ${addressData.street_prefix} ${addressData.street_name} ${addressData.unit || ''}</div><div>${addressData.city}, NC ${addressData.zipcode}</div><br /><b>${content.owner}</b><div>${addressData.owner_name}</div><div>${addressData.owner_address}</div><div>${addressData.owner_cityname}, ${addressData.owner_state} ${addressData.owner_zipcode}</div>` } // eslint-disable-line
       )];
 
+      console.log(addressData.local_landmark, addressData.historic_district);
+
       return (
         <div className="address">
           <PageHeader
@@ -319,13 +325,38 @@ const Address = props => (
                     icon={<Icon path={IM_LOCATION2} size={20} />
                     }
                   />
-                  <DetailsIconLinkFormGroup
-                    label={content.property_information}
-                    title={content.property_information}
-                    href={`/property/?fromAddress=${props.location.query.id}&search=${props.location.query.search}&id=${addressData.pinnum}&entities=${props.location.query.entities}`} // eslint-disable-line
-                    icon={<Icon path={IM_HOME2} size={20} />}
-                    inWindow
-                  />
+                  {
+                    addressData.local_landmark &&
+                      <DetailsFormGroup
+                        label={content.local_landmark}
+                        name="local_landmark"
+                        value={
+                          <div>
+                            <div>
+                              {addressData.local_landmark}
+                            </div>
+                          </div>
+                        }
+                        hasLabel
+                        icon={<Icon path={IM_FLAG7} size={20} />}
+                      />
+                  }
+                  {
+                    addressData.historic_district &&
+                      <DetailsFormGroup
+                        label={content.historic_district}
+                        name="historic_district"
+                        value={
+                          <div>
+                            <div>
+                              {addressData.historic_district}
+                            </div>
+                          </div>
+                        }
+                        hasLabel
+                        icon={<Icon path={IM_LIBRARY} size={20} />}
+                      />
+                  }
                   <DetailsFormGroup
                     label={content.owner}
                     name="owner"
@@ -341,6 +372,13 @@ const Address = props => (
                     }
                     hasLabel
                     icon={<Icon path={IM_USER} size={20} />}
+                  />
+                  <DetailsIconLinkFormGroup
+                    label={content.property_information}
+                    title={content.property_information}
+                    href={`/property/?fromAddress=${props.location.query.id}&search=${props.location.query.search}&id=${addressData.pinnum}&entities=${props.location.query.entities}`} // eslint-disable-line
+                    icon={<Icon path={IM_HOME2} size={20} />}
+                    inWindow
                   />
                 </div>
               </fieldset>

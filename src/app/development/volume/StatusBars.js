@@ -48,32 +48,6 @@ class StatusBars extends React.Component {
                 </text>
               );
             }}
-            type={{
-              type: dotBin,
-              style: {
-                fill: this.props.nodeColors[datum.key],
-                stroke: this.props.nodeColors[datum.key],
-                fillOpacity: 0.5,
-              },
-              maxRadius: this.props.maxRadius,
-              // mouseOver: (k, d, e) => {
-              //   this.setState({
-              //     tooltip: {
-              //       title: k,
-              //       data: d,
-              //       coords: [e.pageX, e.pageY],
-              //       opacity: 1,
-              //     }
-              //   })
-              // },
-              // mouseOut: () => this.setState({
-              //   tooltip: {
-              //     opacity: 0,
-              //     data: [],
-              //     coords: [0, 0]
-              //   }
-              // })
-            }}
             rAccessor={d => new Date(d[this.props.dateField])}
             rExtent={[
               this.props.includedDates[0],

@@ -17,7 +17,8 @@ import LoadingAnimation from '../../../shared/LoadingAnimation';
 import HorizontalLegend from '../../../shared/visualization/HorizontalLegend';
 import PermitTypeMenus from './PermitTypeMenus';
 import PermitVolCirclepack from './PermitVolCirclepack';
-import StatusDistributionMultiples from './StatusDistributionMultiples';
+// import StatusDistributionMultiples from './StatusDistributionMultiples';
+import StatusBars from './StatusBars';
 import VolumeHistogram from './VolumeHistogram';
 import DataModal from './DataModal';
 
@@ -198,7 +199,15 @@ class GranularDataReceivers extends React.Component {
             className="row"
           >
             <h2>Status Distribution by {this.props.dateField  === 'applied_date' ? 'Opened' : 'Updated'} Date</h2>
-            <StatusDistributionMultiples
+            {/* <StatusDistributionMultiples
+              filteredStatuses={filteredStatuses}
+              nodeColors={nodeColors}
+              maxRadius={maxRadius}
+              // TODO: THIS SHOULD REALLY BE SET ON StatusDistributionMultiples
+              dateField={this.props.dateField}
+              includedDates={includedDates}
+            /> */}
+            <StatusBars
               filteredStatuses={filteredStatuses}
               nodeColors={nodeColors}
               maxRadius={maxRadius}

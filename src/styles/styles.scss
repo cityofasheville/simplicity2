@@ -725,6 +725,20 @@ label {
 }
 
 
+.brushedChart rect.selection {
+	fill: darken(#f6fcff, 10%);
+	stroke: darken(#f6fcff, 30%)
+}
+
+.brushedChart rect.handle {
+	fill: darken(#f6fcff, 50%);
+}
+
+.brushedChart.hideBrushHandles rect.handle {
+	display: none;
+}
+
+
 /*************************************************************************************/
 /***************************           FOOTER          *******************************/
 /*************************************************************************************/

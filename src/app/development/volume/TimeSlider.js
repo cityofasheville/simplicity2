@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { ResponsiveXYFrame } from 'semiotic';
 
 class TimeSlider extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       brushExtent: this.props.defaultBrushExtent,
     };
@@ -12,7 +12,8 @@ class TimeSlider extends Component {
   }
 
   brushEnd(e) {
-    this.props.parentBrushEnd(e);
+    this.props.onBrushEnd(e);
+    console.log(e)
     this.setState({
       brushExtent: e,
     });
@@ -31,14 +32,34 @@ class TimeSlider extends Component {
       >
         <ResponsiveXYFrame
           responsiveWidth
+          margin={{
+            top: 35,
+            right: 5,
+            bottom: 10,
+            left: 5,
+          }}
+          size={[1000, 55]}
           xAccessor={d => new Date(d)}
           yAccessor={() => 0}
           xExtent={this.props.xSpan}
           axes={[
             {
-              orient: 'bottom',
-              ticks: 12,
-              tickFormat: d => d.getFullYear(),
+              orient: 'top',
+              tickFormat: d => (
+                <text
+                  textAnchor="middle"
+                  style={{ fontSize: '0.70em' }}
+                  transform="rotate(-45)"
+                >
+                  {new Date(d).toLocaleDateString(
+                    'en-US',
+                    {
+                      month: 'short',
+                      day: 'numeric',
+                    },
+                  )}
+                </text>
+              ),
             },
           ]}
           interaction={{
@@ -53,17 +74,23 @@ class TimeSlider extends Component {
 }
 
 TimeSlider.propTypes = {
-  defaultBrushExtent: PropTypes.arrayOf(PropTypes.object),
+  defaultBrushExtent: PropTypes.arrayOf(PropTypes.number),
   brushWidthLocked: PropTypes.bool,
-  parentBrushEnd: PropTypes.func,
-  xSpan: PropTypes.arrayOf(PropTypes.object),
+  onBrushEnd: PropTypes.func,
+  xSpan: PropTypes.arrayOf(PropTypes.number),
 };
 
 TimeSlider.defaultProps = {
-  defaultBrushExtent: [], // today and today minus thirty days
-  brushWidthLocked: false, // 2592000000 is 30 days in milliseconds
-  parentBrushEnd: newExtent => console.log(newExtent),
-  xSpan: [new Date(), new Date()], // today and today minus one year
+  defaultBrushExtent: [
+    new Date().getTime() - 2592000000,
+    new Date().getTime(),
+  ], // today and today minus thirty days
+  brushWidthLocked: false,
+  onBrushEnd: newExtent => console.log(newExtent),
+  xSpan: [
+    new Date().setFullYear(new Date().getFullYear() - 1),
+    new Date().getTime(),
+  ], // today and today minus one year
 };
 
 export default TimeSlider;

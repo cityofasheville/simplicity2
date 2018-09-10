@@ -17,8 +17,8 @@ import LoadingAnimation from '../../../shared/LoadingAnimation';
 import HorizontalLegend from '../../../shared/visualization/HorizontalLegend';
 import PermitTypeMenus from './PermitTypeMenus';
 import PermitVolCirclepack from './PermitVolCirclepack';
-// import StatusDistributionMultiples from './StatusDistributionMultiples';
-import StatusBars from './StatusBars';
+import StatusDistributionMultiples from './StatusDistributionMultiples';
+// import StatusBars from './StatusBars';
 import VolumeHistogram from './VolumeHistogram';
 import DataModal from './DataModal';
 
@@ -80,13 +80,16 @@ class GranularDataReceivers extends React.Component {
       query={GET_PERMITS}
       variables={{
         date_field: this.props.dateField,
-        after: this.props.timeSpan[0],
-        before: this.props.timeSpan[1],
+        after: new Date(this.props.timeSpan[0]),
+        before: new Date(this.props.timeSpan[1]),
       }}
     >
       {({ loading, error, data }) => {
         if (loading) return <LoadingAnimation />;
-        if (error) return <div>Error :( </div>;
+        if (error) {
+          console.log(error);
+          return <div>Error :( </div>;
+        }
 
         let firstIndexUnselected = this.state.hierarchyLevels.map(l => l.selectedCat).indexOf(null);
         if (firstIndexUnselected === -1) {
@@ -199,15 +202,7 @@ class GranularDataReceivers extends React.Component {
             className="row"
           >
             <h2>Status Distribution by {this.props.dateField  === 'applied_date' ? 'Opened' : 'Updated'} Date</h2>
-            {/* <StatusDistributionMultiples
-              filteredStatuses={filteredStatuses}
-              nodeColors={nodeColors}
-              maxRadius={maxRadius}
-              // TODO: THIS SHOULD REALLY BE SET ON StatusDistributionMultiples
-              dateField={this.props.dateField}
-              includedDates={includedDates}
-            /> */}
-            <StatusBars
+            <StatusDistributionMultiples
               filteredStatuses={filteredStatuses}
               nodeColors={nodeColors}
               maxRadius={maxRadius}

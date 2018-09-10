@@ -1,10 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { DateTimePicker } from 'react-widgets';
-import Moment from 'moment';
-import momentLocalizer from 'react-widgets-moment';
 import GranularDataReceivers from './GranularDataReceivers';
-
+import TimeSlider from './TimeSlider';
 
 class GranularVolume extends React.Component {
   constructor() {
@@ -14,11 +11,19 @@ class GranularVolume extends React.Component {
       timeSpan: [new Date(2018, 7, 1), new Date()],
       dateField: 'applied_date',
     };
+
+    this.onTimeBrushEnd = this.onTimeBrushEnd.bind(this);
+  }
+
+  onTimeBrushEnd(e) {
+    this.setState({
+      timeSpan: e,
+    });
   }
 
   render() {
-    Moment.locale('en');
-    momentLocalizer();
+    // Moment.locale('en');
+    // momentLocalizer();
     /* TODO:
       allow users to drill into permits with click/modal behavior
         todo: make modal faster-- put on individual visualizations?
@@ -51,17 +56,10 @@ class GranularVolume extends React.Component {
         <option value="status_date">Date Updated</option>
       </select>
       </h1>
-      <div style={{ width: '37.5%', display: 'inline-block' }} className="visualization-title">
-        <DateTimePicker
-          value={this.state.timeSpan[0]}
-          onChange={value => this.setState({ timeSpan: [value, this.state.timeSpan[1]] })}
-          time={false}
-          style={datePickerStyle}
-        /> to <DateTimePicker
-          style={datePickerStyle}
-          value={this.state.timeSpan[1]}
-          onChange={value => this.setState({ timeSpan: [this.state.timeSpan[0], value] })}
-          time={false}
+      <div className="col-md-12">
+        <TimeSlider
+          // defaultBrushExtent={this.state.timeSpan}
+          onBrushEnd={this.onTimeBrushEnd}
         />
       </div>
       <div >

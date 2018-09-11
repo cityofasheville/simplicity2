@@ -11,7 +11,7 @@ class HierarchicalSelect extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeDepth: 1,
+      activeDepth: 2,
       selectedByLevel: this.props.hierarchyOrder,
     };
 
@@ -30,25 +30,22 @@ class HierarchicalSelect extends Component {
     this.props.hierarchyOrder.forEach(level => thisNest.key(d => d[level]))
     thisNest.rollup(d => d.length)
     const edges = thisNest.entries(this.props.data);
-
-    // whatever level is visualized should receive colors
-    // inactive ones should be lighter
-    // on hover should highlihght parents?
-
-    // use annotations to select which level is active
-    // use custom node icon to make these look more like buttons
-    // should they have a button role?
-
-
-
+    /*
+    whatever level is visualized should receive colors
+    if there are too many selected in the active group, roll the rest into "other"
+    still show them separately, just make them the same color
+    inactive ones should be lighter
+    should selection annotations have a button role?
+    use custom node icon to make these look more like buttons?
+    */
     return (
       <div className="interactiveAnnotation">
         <ResponsiveNetworkFrame
           size={[1000, 125]}
           margin={{
-            top: 10,
-            right: 10,
-            bottom: 10,
+            top: 0,
+            right: 0,
+            bottom: 0,
             left: 50,
           }}
           responsiveWidth
@@ -86,9 +83,10 @@ class HierarchicalSelect extends Component {
               y={sameDepthNode.y}
               style={{
                 fontSize: '0.75em',
-                color: d.d.depth === this.state.activeDepth ? 'red' : 'black',
+                stroke: d.d.depth === this.state.activeDepth ? '#00a4f6' : 'gray',
                 cursor: 'pointer',
                 pointerEvents: 'all',
+                alignmentBaseline: 'middle',
                 zIndex: 2,
               }}
               onClick={() => this.setActiveDepth(d.d.depth)}
@@ -97,11 +95,12 @@ class HierarchicalSelect extends Component {
             </text>)
           }}
           nodeStyle={(d, i) => {
+            console.log(d)
+            const atActiveDepth = d.depth === this.state.activeDepth ? 1 : 0
             return {
               fill: 'gray',
               stroke: 'white',
-              strokeWidth: 0.75,
-              fillOpacity: 0.5,
+              fillOpacity: atActiveDepth ? 1 : 0.5,
             };
           }}
           filterRenderedNodes={(d) => {

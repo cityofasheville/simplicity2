@@ -21,6 +21,7 @@ import StatusDistributionMultiples from './StatusDistributionMultiples';
 // import StatusBars from './StatusBars';
 import VolumeHistogram from './VolumeHistogram';
 import DataModal from './DataModal';
+import HierarchicalSelect from './HierarchicalSelect'
 
 
 class GranularDataReceivers extends React.Component {
@@ -162,11 +163,17 @@ class GranularDataReceivers extends React.Component {
 
         return (<div className="dashRows">
           {this.state.modalData && <DataModal data={this.state.modalData} closeModal={this.onModalClose} />}
-          <div id="controls-n-summary" className="row" className="col-md-12">
-            <PermitTypeMenus
+          <div
+            id="controls-n-summary"
+            className="row col-md-12"
+          >
+            {/* <PermitTypeMenus
               onSelect={this.onMenuSelect}
               parentHierarchyLevels={this.state.hierarchyLevels}
               wholeHierarchy={wholeHierarchy}
+            /> */}
+            <HierarchicalSelect
+              data={data.permits}
             />
             <div className="col-md-9">
               <h2>Daily</h2>

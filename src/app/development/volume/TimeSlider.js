@@ -13,16 +13,12 @@ class TimeSlider extends Component {
 
   brushEnd(e) {
     this.props.onBrushEnd(e);
-    console.log(e)
     this.setState({
       brushExtent: e,
     });
   }
 
   render() {
-    // if brushWidthLocked, use a css class to hide handles
-    // style it so that it can be consistent on charts and as a standalone
-
     return (
       <div
         className={this.props.brushWidthLocked ?

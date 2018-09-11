@@ -22,8 +22,6 @@ class GranularVolume extends React.Component {
   }
 
   render() {
-    // Moment.locale('en');
-    // momentLocalizer();
     /* TODO:
       allow users to drill into permits with click/modal behavior
         todo: make modal faster-- put on individual visualizations?

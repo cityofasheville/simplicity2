@@ -12,7 +12,8 @@ const BooleanSplitMultiples = props => (
     }}
   >
     {props.entriesHierarchy.map((datum) => {
-      const brighterColor = color(props.nodeColors[datum.key]).brighter(1.25);
+      const thisColor = props.nodeColors[datum.key];
+      const brighterColor = color(thisColor).brighter(1.25);
       const thisData = props.openedOnline.filter(d => d.key === datum.key);
       const margins = {
         top: 40,
@@ -41,6 +42,7 @@ const BooleanSplitMultiples = props => (
           rAccessor="count"
           rExtent={[0, 50]}
           type="bar"
+          canvasPieces
           pieceIDAccessor="key"
           axis={[
             {
@@ -85,12 +87,17 @@ const BooleanSplitMultiples = props => (
           }}
           data={thisData}
           title={datum.key}
-          style={d => {
+          style={(d) => {
+            if (d.count === 0) {
+              return {
+                fill: 'none',
+                stroke: 'none',
+              };
+            }
             return {
-              fill: d.openedOnline ? props.nodeColors[datum.key] : brighterColor,
-              stroke: props.nodeColors[datum.key],
+              fill: d.openedOnline ? thisColor : brighterColor,
+              stroke: thisColor,
               strokeWidth: 0.25,
-              opacity: d.count > 0 ? 1 : 0,
             };
           }}
         />
@@ -99,9 +106,9 @@ const BooleanSplitMultiples = props => (
             <Legend
               legendGroups={[
                 {
-                  styleFn: (d) => ({ fill: d.color, stroke: props.nodeColors[datum.key] }),
+                  styleFn: (d) => ({ fill: d.color, stroke: thisColor }),
                   items: [
-                    { label: `Online: ${numOnline}`, color: props.nodeColors[datum.key] },
+                    { label: `Online: ${numOnline}`, color: thisColor },
                     { label: `In Person: ${numInPerson}`, color: brighterColor },
                   ]
                 }

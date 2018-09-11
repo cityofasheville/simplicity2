@@ -37,15 +37,24 @@ class HierarchicalSelect extends Component {
     inactive ones should be lighter
     should selection annotations have a button role?
     use custom node icon to make these look more like buttons?
+      make padding for whitespace between them
+      use stroke for hover?
+    add labels
+
+    children are automatically active if parent is active
+    children are automatically deactivated if parent is deactivated
+    if a move will activate or deactivate other nodes, highlight those nodes
+      as well on hover
+
     */
     return (
       <div className="interactiveAnnotation">
         <ResponsiveNetworkFrame
-          size={[1000, 125]}
+          size={[1000, 100]}
           margin={{
-            top: 0,
+            top: 5,
             right: 0,
-            bottom: 0,
+            bottom: 5,
             left: 50,
           }}
           responsiveWidth

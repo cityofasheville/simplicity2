@@ -31,10 +31,10 @@ class TimeSlider extends Component {
           margin={{
             top: 35,
             right: 5,
-            bottom: 10,
+            bottom: 15,
             left: 5,
           }}
-          size={[1000, 55]}
+          size={[1000, 60]}
           xAccessor={d => new Date(d)}
           yAccessor={() => 0}
           xExtent={this.props.xSpan}

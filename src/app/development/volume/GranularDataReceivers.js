@@ -177,10 +177,10 @@ class GranularDataReceivers extends React.Component {
             />
             <div className="col-md-9">
               <h2>Daily</h2>
-              {/* <VolumeHistogram
+              <VolumeHistogram
                 data={histogramData}
                 nodeColors={nodeColors}
-              /> */}
+              />
               {/* Checkbox legend - more like checkboxes-- only show top 3 - 5 by volume by default */}
             </div>
             <div className="col-md-3 granularVolCirclepack">

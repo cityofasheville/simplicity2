@@ -33,6 +33,7 @@ class StatusDistributionMultiples extends React.Component {
         >
           <ResponsiveOrdinalFrame
             projection="horizontal"
+            // canvasPieces
             size={[300, 300]}
             responsiveWidth
             margin={{
@@ -134,5 +135,3 @@ StatusDistributionMultiples.defaultProps = {
 };
 
 export default StatusDistributionMultiples;
-
-

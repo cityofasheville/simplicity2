@@ -11,6 +11,8 @@ function dotBin(input) {
   const renderedPieces = [];
   const keys = Object.keys(input.data);
 
+  console.log(input.data)
+
   const radiusFunc = scaleLinear()
     .range([2, 8])
     .domain([0, input.type.maxRadius]);
@@ -18,6 +20,7 @@ function dotBin(input) {
   keys.forEach(key => {
     const column = input.data[key];
     const circles = {}
+    console.log(column)
     column.pieceData.forEach(pieceDatum => {
       const thisDate = new Date(pieceDatum.value).toLocaleDateString('en-US', dateComparisonOpts)
       if (circles[thisDate]) {
@@ -78,21 +81,30 @@ class StatusDistributionMultiples extends React.Component {
     const filteredStatuses = [];
     let maxRadius = 0;
     const statusNest = nest().key(d => d.status_current);
+
     this.props.entriesHierarchy.forEach(hierarchyObj => {
       const rObj = Object.assign({}, hierarchyObj);
       rObj.values = groupStatuses(hierarchyObj.values)
-      rObj.valuesByStatus = statusNest.entries(rObj.values).sort((a, b) => (b.values.length - a.values.length))
-      rObj.histByStatus = rObj.valuesByStatus.map(status => {
-        const statusRObj = Object.assign({}, status);
-        statusRObj.values = this.histFunc(statusRObj.values);
-        const maxRadiusCandidate = statusRObj.values.map(day => day.length).sort((a, b) => b - a)[0];
+      // rObj.valuesByStatus = statusNest.entries(rObj.values)
+      // .sort((a, b) => (b.values.length - a.values.length))
+
+      rObj.histByStatus = [].concat(...statusNest.entries(rObj.values).map(status => {
+        const histBuckets = this.histFunc(status.values).map(bucket => {
+          const histBucket = Object.assign({}, bucket)
+          histBucket.key = status.key
+          return histBucket
+        })
+
+        // FIND A BETTER WAY TO DO THIS
+        const byDay = histBuckets.map(day => day.length)
+        const maxRadiusCandidate = byDay.sort((a, b) => b - a)[0];
         maxRadius = maxRadiusCandidate > maxRadius ? maxRadiusCandidate : maxRadius;
-        return statusRObj;
-      });
+
+        return histBuckets;
+      }))
+
       filteredStatuses.push(rObj);
     });
-
-    console.log(filteredStatuses)
 
     return (<div
       style={{
@@ -100,7 +112,7 @@ class StatusDistributionMultiples extends React.Component {
       }}
     >
       {filteredStatuses.map((datum) => {
-        console.log(datum)
+        console.log(datum.histByStatus)
         return (<div
           className="col-md-6"
           style={{ display: 'inline-block' }}
@@ -117,7 +129,7 @@ class StatusDistributionMultiples extends React.Component {
               left: 150,
             }}
             oPadding={5}
-            oAccessor={d => d.status_current || 'No Status'}
+            oAccessor={d => d.key || 'No Status'}
             oLabel={(d) => {
               const fontSize = '0.65'
               return (
@@ -155,7 +167,7 @@ class StatusDistributionMultiples extends React.Component {
               //   }
               // })
             }}
-            rAccessor={d => new Date(d[this.props.dateField])}
+            rAccessor={d => new Date(d.x0)}
             rExtent={[
               this.props.includedDates[0],
               this.props.includedDates[this.props.includedDates.length - 1],
@@ -180,7 +192,7 @@ class StatusDistributionMultiples extends React.Component {
               },
             ]}
             key={datum.key}
-            data={datum.values}
+            data={datum.histByStatus}
             title={datum.key}
           />
         </div>

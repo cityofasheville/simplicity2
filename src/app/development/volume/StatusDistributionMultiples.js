@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { nest } from 'd3-collection';
 import { scaleLinear } from 'd3-scale';
+import { histogram } from 'd3-array';
 import { ResponsiveOrdinalFrame } from 'semiotic';
 import Tooltip from '../../../shared/visualization/Tooltip';
 import { groupStatuses, dateComparisonOpts } from './granularUtils';
@@ -52,8 +53,17 @@ function dotBin(input) {
 
 
 class StatusDistributionMultiples extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
+
+    this.histFunc = histogram()
+      .value(d => new Date(d[this.props.dateField]))
+      .thresholds(this.props.includedDates)
+      .domain([
+        this.props.includedDates[0],
+        this.props.includedDates[this.props.includedDates.length - 1],
+      ]);
+
     this.state = {
       // tooltip: {
       //   coords: [0, 0],
@@ -67,17 +77,22 @@ class StatusDistributionMultiples extends React.Component {
   render() {
     const filteredStatuses = [];
     let maxRadius = 0;
-    const statusNest = nest().key(d => d.status_current)
-
+    const statusNest = nest().key(d => d.status_current);
     this.props.entriesHierarchy.forEach(hierarchyObj => {
       const rObj = Object.assign({}, hierarchyObj);
       rObj.values = groupStatuses(hierarchyObj.values)
       rObj.valuesByStatus = statusNest.entries(rObj.values).sort((a, b) => (b.values.length - a.values.length))
-      const maxRadiusCandidate = rObj.valuesByStatus[0].values.length
-      maxRadius = maxRadiusCandidate > maxRadius ? maxRadiusCandidate : maxRadius;
-      filteredStatuses.push(rObj)
-    })
+      rObj.histByStatus = rObj.valuesByStatus.map(status => {
+        const statusRObj = Object.assign({}, status);
+        statusRObj.values = this.histFunc(statusRObj.values);
+        const maxRadiusCandidate = statusRObj.values.map(day => day.length).sort((a, b) => b - a)[0];
+        maxRadius = maxRadiusCandidate > maxRadius ? maxRadiusCandidate : maxRadius;
+        return statusRObj;
+      });
+      filteredStatuses.push(rObj);
+    });
 
+    console.log(filteredStatuses)
 
     return (<div
       style={{

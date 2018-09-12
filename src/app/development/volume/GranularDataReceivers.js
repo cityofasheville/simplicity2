@@ -6,7 +6,7 @@ import { Legend, ResponsiveOrdinalFrame } from 'semiotic';
 import {
   colorScheme,
   groupHierachyOthers,
-  histogramFromHierarchical,
+  stackedHistogramFromHierarchical,
   GET_PERMITS,
   openedOnlineRule,
   splitOrdinalByBool,
@@ -133,7 +133,7 @@ class GranularDataReceivers extends React.Component {
         });
 
         const includedDates = this.timeBuckets();
-        const histogramData = histogramFromHierarchical(
+        const histogramData = stackedHistogramFromHierarchical(
           data.permits,
           entriesHierarchy,
           includedDates,

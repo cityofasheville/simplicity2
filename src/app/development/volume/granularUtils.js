@@ -65,27 +65,25 @@ export function groupHierachyOthers(inputHierarchy, otherGroupCutoff = 5) {
   return hierarchyToUse.sort((a, b) => b.value - a.value);
 }
 
-export function histogramFromHierarchical(rawData, entriesHierarchy, includedDates) {
-  // Standard date format for comparison
-
-  const histFunc = histogram(rawData)
+export function stackedHistogramFromHierarchical(rawData, entriesHierarchy, includedDates) {
+  const histFunc = histogram()
     .value(d => new Date(d.applied_date))
-    .thresholds(includedDates);
-
+    .thresholds(includedDates)
+    .domain([
+      includedDates[0],
+      includedDates[includedDates.length - 1],
+    ])
   return [].concat(...entriesHierarchy
     .map((hierarchyType) => {
-      const binnedValues = histFunc(hierarchyType.values);
-
-      return includedDates.map((thisDate) => {
-        const bin = binnedValues.find(v => new Date(v.x0).toLocaleDateString('en-US', dateComparisonOpts) === new Date(thisDate).toLocaleDateString('en-US', dateComparisonOpts));
-        const binLength = bin ? bin.length : 0;
-        return {
-          key: hierarchyType.key,
-          count: binLength,
-          binStartDate: thisDate,
-          values: bin || [],
-        };
-      });
+      return histFunc(hierarchyType.values)
+        .map(d => {
+          return {
+            key: hierarchyType.key,
+            count: d.length,
+            binStartDate: d.x0,
+            values: d || [],
+          };
+        })
     }));
 }
 

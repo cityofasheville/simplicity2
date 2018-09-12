@@ -1,8 +1,6 @@
 import React from 'react';
 import gql from 'graphql-tag';
 import { histogram } from 'd3-array';
-import { scaleLinear } from 'd3-scale';
-
 
 const dateComparisonOpts = {
   // weekday: 'short',
@@ -44,52 +42,6 @@ export function groupStatuses(data) {
     }
     return rVal;
   })
-}
-
-export function dotBin(input) {
-  const renderedPieces = [];
-  const keys = Object.keys(input.data);
-
-  // console.log(input)
-
-  const radiusFunc = scaleLinear()
-    .range([2, 8])
-    .domain([0, input.type.maxRadius]);
-
-  keys.forEach(key => {
-    const column = input.data[key];
-    const circles = {}
-    column.pieceData.forEach(pieceDatum => {
-      const thisDate = new Date(pieceDatum.value).toLocaleDateString('en-US', dateComparisonOpts)
-      if (circles[thisDate]) {
-        circles[thisDate].push(pieceDatum)
-      } else {
-        circles[thisDate] = [pieceDatum]
-      }
-    })
-
-    const circleArray = Object.keys(circles).map((circleKey) => {
-      return <circle
-        key={`piece-${key}-${circleKey}`}
-        r={radiusFunc(circles[circleKey].length)}
-        cx={input.rScale(new Date(circleKey))}
-        cy={column.middle - column.padding}
-        style={input.type.style}
-        // onMouseOver={(e) => input.type.mouseOver(circleKey, circles[circleKey], e)}
-      ></circle>
-    })
-
-    const dotArray = (
-      <g
-        key={`piece-${key}`}
-        // onMouseOut={() => input.type.mouseOut()}
-      >
-        {circleArray}
-      </g>
-    );
-    renderedPieces.push(dotArray);
-  });
-  return renderedPieces;
 }
 
 export const openedOnlineRule = inputDatum => inputDatum.created_by.includes('PUBLICUSER') || inputDatum.created_by === 'TALLEY' || inputDatum.created_by === 'CSHORT';

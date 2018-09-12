@@ -104,7 +104,7 @@ class HierarchicalSelect extends Component {
             </text>)
           }}
           nodeStyle={(d, i) => {
-            console.log(d)
+            // console.log(d)
             const atActiveDepth = d.depth === this.state.activeDepth ? 1 : 0
             return {
               fill: 'gray',

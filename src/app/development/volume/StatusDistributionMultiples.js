@@ -1,12 +1,57 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { nest } from 'd3-collection';
+import { scaleLinear } from 'd3-scale';
 import { ResponsiveOrdinalFrame } from 'semiotic';
-import { dotBin } from './granularUtils';
 import Tooltip from '../../../shared/visualization/Tooltip';
+import { groupStatuses, dateComparisonOpts } from './granularUtils';
+
+function dotBin(input) {
+  const renderedPieces = [];
+  const keys = Object.keys(input.data);
+
+  const radiusFunc = scaleLinear()
+    .range([2, 8])
+    .domain([0, input.type.maxRadius]);
+
+  keys.forEach(key => {
+    const column = input.data[key];
+    const circles = {}
+    column.pieceData.forEach(pieceDatum => {
+      const thisDate = new Date(pieceDatum.value).toLocaleDateString('en-US', dateComparisonOpts)
+      if (circles[thisDate]) {
+        circles[thisDate].push(pieceDatum)
+      } else {
+        circles[thisDate] = [pieceDatum]
+      }
+    })
+
+    const circleArray = Object.keys(circles).map((circleKey) => {
+      return <circle
+        key={`piece-${key}-${circleKey}`}
+        r={radiusFunc(circles[circleKey].length)}
+        cx={input.rScale(new Date(circleKey))}
+        cy={column.middle - column.padding}
+        style={input.type.style}
+        // onMouseOver={(e) => input.type.mouseOver(circleKey, circles[circleKey], e)}
+      ></circle>
+    })
+
+    const dotArray = (
+      <g
+        key={`piece-${key}`}
+        // onMouseOut={() => input.type.mouseOut()}
+      >
+        {circleArray}
+      </g>
+    );
+    renderedPieces.push(dotArray);
+  });
+  return renderedPieces;
+}
 
 
 class StatusDistributionMultiples extends React.Component {
-
   constructor() {
     super()
     this.state = {
@@ -20,12 +65,27 @@ class StatusDistributionMultiples extends React.Component {
   }
 
   render() {
+    const filteredStatuses = [];
+    let maxRadius = 0;
+    const statusNest = nest().key(d => d.status_current)
+
+    this.props.entriesHierarchy.forEach(hierarchyObj => {
+      const rObj = Object.assign({}, hierarchyObj);
+      rObj.values = groupStatuses(hierarchyObj.values)
+      rObj.valuesByStatus = statusNest.entries(rObj.values).sort((a, b) => (b.values.length - a.values.length))
+      const maxRadiusCandidate = rObj.valuesByStatus[0].values.length
+      maxRadius = maxRadiusCandidate > maxRadius ? maxRadiusCandidate : maxRadius;
+      filteredStatuses.push(rObj)
+    })
+
+
     return (<div
       style={{
         textTransform: 'capitalize',
       }}
     >
-      {this.props.filteredStatuses.map((datum) => {
+      {filteredStatuses.map((datum) => {
+        console.log(datum)
         return (<div
           className="col-md-6"
           style={{ display: 'inline-block' }}
@@ -33,7 +93,6 @@ class StatusDistributionMultiples extends React.Component {
         >
           <ResponsiveOrdinalFrame
             projection="horizontal"
-            // canvasPieces
             size={[300, 300]}
             responsiveWidth
             margin={{
@@ -62,7 +121,7 @@ class StatusDistributionMultiples extends React.Component {
                 stroke: this.props.nodeColors[datum.key],
                 fillOpacity: 0.5,
               },
-              maxRadius: this.props.maxRadius,
+              maxRadius: maxRadius,
               // mouseOver: (k, d, e) => {
               //   this.setState({
               //     tooltip: {
@@ -129,6 +188,10 @@ class StatusDistributionMultiples extends React.Component {
 }
 
 StatusDistributionMultiples.propTypes = {
+  entriesHierarchy: PropTypes.arrayOf(PropTypes.object),
+  nodeColors: PropTypes.object,
+  dateField: PropTypes.string,
+  includedDates: PropTypes.arrayOf(PropTypes.object),
 };
 
 StatusDistributionMultiples.defaultProps = {

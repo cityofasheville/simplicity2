@@ -139,21 +139,6 @@ class GranularDataReceivers extends React.Component {
           includedDates,
         );
 
-
-        const filteredStatuses = [];
-        let maxRadius = 0;
-        const numDates = includedDates.length
-        const statusNest = nest().key(d => d.status_current)
-
-        entriesHierarchy.forEach(hierarchyObj => {
-          const rObj = Object.assign({}, hierarchyObj);
-          rObj.values = groupStatuses(hierarchyObj.values)
-          rObj.valuesByStatus = statusNest.entries(rObj.values).sort((a, b) => (b.values.length - a.values.length))
-          const maxRadiusCandidate = rObj.valuesByStatus[0].values.length / numDates
-          maxRadius = maxRadiusCandidate > maxRadius ? maxRadiusCandidate : maxRadius;
-          filteredStatuses.push(rObj)
-        })
-
         // TODO: do this in BooleanSplitMultiples instead
         const openedOnline = splitOrdinalByBool(histogramData, openedOnlineRule, 'openedOnline');
 
@@ -210,10 +195,8 @@ class GranularDataReceivers extends React.Component {
           >
             <h2>Status Distribution by {this.props.dateField  === 'applied_date' ? 'Opened' : 'Updated'} Date</h2>
             <StatusDistributionMultiples
-              filteredStatuses={filteredStatuses}
+              entriesHierarchy={entriesHierarchy}
               nodeColors={nodeColors}
-              maxRadius={maxRadius}
-              // TODO: THIS SHOULD REALLY BE SET ON StatusDistributionMultiples
               dateField={this.props.dateField}
               includedDates={includedDates}
             />

@@ -11,35 +11,27 @@ function dotBin(input) {
   const renderedPieces = [];
   const keys = Object.keys(input.data);
 
-  console.log(input.data)
-
   const radiusFunc = scaleLinear()
-    .range([2, 8])
+    // TODO: DETERMINE RANGE PROGRAMMATICALLY
+    .range([2, 10])
     .domain([0, input.type.maxRadius]);
 
   keys.forEach(key => {
     const column = input.data[key];
     const circles = {}
-    console.log(column)
-    column.pieceData.forEach(pieceDatum => {
-      const thisDate = new Date(pieceDatum.value).toLocaleDateString('en-US', dateComparisonOpts)
-      if (circles[thisDate]) {
-        circles[thisDate].push(pieceDatum)
-      } else {
-        circles[thisDate] = [pieceDatum]
-      }
-    })
 
-    const circleArray = Object.keys(circles).map((circleKey) => {
-      return <circle
-        key={`piece-${key}-${circleKey}`}
-        r={radiusFunc(circles[circleKey].length)}
-        cx={input.rScale(new Date(circleKey))}
-        cy={column.middle - column.padding}
-        style={input.type.style}
-        // onMouseOver={(e) => input.type.mouseOver(circleKey, circles[circleKey], e)}
-      ></circle>
-    })
+    const circleArray = column.pieceData
+      .filter(pieceDatum => pieceDatum.data.count > 0)
+      .map((pieceDatum) => {
+        return <circle
+          key={pieceDatum.renderKey}
+          r={radiusFunc(pieceDatum.data.count)}
+          cx={pieceDatum.scaledValue}
+          cy={column.middle - column.padding}
+          style={input.type.style}
+          // onMouseOver={(e) => input.type.mouseOver(circleKey, circles[circleKey], e)}
+        ></circle>
+      })
 
     const dotArray = (
       <g
@@ -78,33 +70,23 @@ class StatusDistributionMultiples extends React.Component {
   }
 
   render() {
-    const filteredStatuses = [];
-    let maxRadius = 0;
     const statusNest = nest().key(d => d.status_current);
-
-    this.props.entriesHierarchy.forEach(hierarchyObj => {
+    const filteredStatuses = this.props.entriesHierarchy.map(hierarchyObj => {
       const rObj = Object.assign({}, hierarchyObj);
       rObj.values = groupStatuses(hierarchyObj.values)
-      // rObj.valuesByStatus = statusNest.entries(rObj.values)
-      // .sort((a, b) => (b.values.length - a.values.length))
-
       rObj.histByStatus = [].concat(...statusNest.entries(rObj.values).map(status => {
         const histBuckets = this.histFunc(status.values).map(bucket => {
           const histBucket = Object.assign({}, bucket)
           histBucket.key = status.key
+          histBucket.count = bucket.length;
           return histBucket
         })
-
-        // FIND A BETTER WAY TO DO THIS
-        const byDay = histBuckets.map(day => day.length)
-        const maxRadiusCandidate = byDay.sort((a, b) => b - a)[0];
-        maxRadius = maxRadiusCandidate > maxRadius ? maxRadiusCandidate : maxRadius;
-
         return histBuckets;
       }))
-
-      filteredStatuses.push(rObj);
+      return rObj;
     });
+
+    const maxRadius = filteredStatuses.map(d => d.histByStatus.map(datum => datum.count).sort((a, b) => b - a)[0])[0]
 
     return (<div
       style={{
@@ -112,7 +94,6 @@ class StatusDistributionMultiples extends React.Component {
       }}
     >
       {filteredStatuses.map((datum) => {
-        console.log(datum.histByStatus)
         return (<div
           className="col-md-6"
           style={{ display: 'inline-block' }}
@@ -124,7 +105,7 @@ class StatusDistributionMultiples extends React.Component {
             responsiveWidth
             margin={{
               top: 45,
-              right: 0,
+              right: 10,
               bottom: 55,
               left: 150,
             }}
@@ -135,6 +116,7 @@ class StatusDistributionMultiples extends React.Component {
               return (
                 <text
                   textAnchor="end"
+                  transform="translate(-10,0)"
                   style={{ fontSize: `${fontSize}em` }}
                 >
                   {d}

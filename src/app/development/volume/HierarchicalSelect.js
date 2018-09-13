@@ -7,6 +7,7 @@ import Tooltip from '../../../shared/visualization/Tooltip';
 // given hierarchical data, make selecty categories
 // use callback to set current data for parent element
 // include circlepack
+
 class HierarchicalSelect extends Component {
   constructor(props) {
     super(props);
@@ -47,16 +48,19 @@ class HierarchicalSelect extends Component {
       as well on hover
 
     */
+
+    const margin = {
+      top: 5,
+      right: 0,
+      bottom: 5,
+      left: 50,
+    };
+
     return (
       <div className="interactiveAnnotation">
         <ResponsiveNetworkFrame
           size={[1000, 100]}
-          margin={{
-            top: 5,
-            right: 0,
-            bottom: 5,
-            left: 50,
-          }}
+          margin={margin}
           responsiveWidth
           edges={{ key: 'All Permits', values: edges }}
           annotations={[
@@ -81,27 +85,51 @@ class HierarchicalSelect extends Component {
               type: 'custom',
             },
           ]}
-          svgAnnotationRules={(d) => {
+          htmlAnnotationRules={(d) => {
             if (d.d.type !== 'custom') {
               return null;
             }
             const sameDepthNode = d.nodes.find(node => node.depth === d.d.depth);
-            return (<text
+            console.log(sameDepthNode, d)
+            const buttonHeight = sameDepthNode.y1 - sameDepthNode.y0;
+            return (<div className="input-group"
               key={d.d.key}
-              x={0}
-              y={sameDepthNode.y}
-              style={{
-                fontSize: '0.75em',
-                stroke: d.d.depth === this.state.activeDepth ? '#00a4f6' : 'gray',
-                cursor: 'pointer',
-                pointerEvents: 'all',
-                alignmentBaseline: 'middle',
-                zIndex: 2,
-              }}
-              onClick={() => this.setActiveDepth(d.d.depth)}
             >
-              {d.d.key}
-            </text>)
+              <div
+                className='input-group-btn'
+                style={{
+                  cursor: 'pointer',
+                  pointerEvents: 'all',
+                  fontSize: '0.75em',
+                  position: 'absolute',
+                  top: `${sameDepthNode.y0}px`,
+                  left: `-${margin.left}px`,
+                  color: d.d.depth === this.state.activeDepth ? '#00a4f6' : 'inherit',
+                }}
+              >
+                <button
+                  type="button"
+                  style={{
+                    height: buttonHeight
+                  }}
+                  onClick={() => this.setActiveDepth(d.d.depth)}
+                >
+                  {d.d.key}
+                </button>
+                <button
+                  type="button"
+                  style={{
+                    height: buttonHeight,
+                  }}
+                >
+                  <span className="caret"></span>
+                </button>
+                <ul className="dropdown-menu dropdown-menu-right">
+                  <li>foo</li>
+                  <li>baz</li>
+                </ul>
+              </div>
+            </div>)
           }}
           nodeStyle={(d, i) => {
             // console.log(d)

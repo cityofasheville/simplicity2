@@ -90,7 +90,8 @@ class HierarchicalSelect extends Component {
 
     const isNodeDeselected = (candidate) => {
       console.log(clickedNode.key, clickedNode.depth, candidate.heritage)
-      if (candidate.depth > clickedNode.depth && candidate.heritage.includes(clickedNode.key)) {
+      const isNode = candidate.key === clickedNode.key && candidate.depth === clickedNode.depth;
+      if (isNode || candidate.depth > clickedNode.depth && candidate.heritage.includes(clickedNode.key)) {
         return false;
       }
       return true;
@@ -112,6 +113,7 @@ class HierarchicalSelect extends Component {
     let newEdges = this.state.edges;
     if (clickedNode.selected) {
       newEdges = select(this.state.edges, isNodeDeselected)
+
     }
     else {
       newEdges = select(this.state.edges, isNodeSelected)

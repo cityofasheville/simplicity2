@@ -7,16 +7,76 @@ import Tooltip from '../../../shared/visualization/Tooltip';
 // given hierarchical data, make selecty categories
 // use callback to set current data for parent element
 // include circlepack
+const select = function(inputNode, selected) {
+  const node = Object.assign({}, inputNode);
+  if (typeof selected ==='function') {
+    node.selected = selected(node);
+  } else {
+    node.selected = selected;
+  }
+  if (node.values) {
+    node.values = inputNode.values.map((child) => {
+      return select(child, selected);
+    })
+  }
+  return node;
+}
+
+const labelDepth = function(inputNode, depth) {
+  const node = Object.assign({}, inputNode);
+  node.depth = depth;
+  const nodeHeritage = node.heritage || [];
+  if (node.values) {
+    node.values = inputNode.values.map((child) => {
+      const thisChild = Object.assign({}, child);
+      thisChild.heritage = nodeHeritage.concat([node.key])
+      return labelDepth(thisChild, depth + 1);
+    })
+  }
+  return node;
+}
+
+const getSemioticNodeHeritage = function(d) {
+  const heritage = [d.key];
+  let nextParent = d.parent;
+  while (nextParent) {
+    if (nextParent.key === 'All Permits') {
+      nextParent = null;
+    } else {
+      heritage.push(nextParent.key);
+      nextParent = nextParent.parent;
+    }
+  }
+  return heritage.reverse();
+}
+
 
 class HierarchicalSelect extends Component {
   constructor(props) {
     super(props);
+
+    const thisNest = nest();
+    this.props.hierarchyOrder.forEach(level => thisNest.key(d => d[level]))
+    thisNest.rollup(d => d.length)
+
+    let thisEdges = {
+      key: 'All Permits',
+      values: thisNest.entries(this.props.data).map(v => {
+        if (v.key === 'Services') {
+          return select(v, false);
+        }
+        return select(v, true);
+      })
+    }
+    thisEdges = labelDepth(thisEdges, 0)
+
     this.state = {
       activeDepth: 2,
-      selectedByLevel: this.props.hierarchyOrder,
+      edges: thisEdges,
     };
 
     this.setActiveDepth = this.setActiveDepth.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   setActiveDepth(newDepth) {
@@ -25,28 +85,59 @@ class HierarchicalSelect extends Component {
     });
   }
 
+  handleClick(d) {
+    const clickedNode = d.data;
+
+    const isNodeDeselected = (candidate) => {
+      console.log(clickedNode.key, clickedNode.depth, candidate.heritage)
+      if (candidate.depth > clickedNode.depth && candidate.heritage.includes(clickedNode.key)) {
+        return false;
+      }
+      return true;
+    }
+
+    const isNodeSelected = (activatedNode) => {
+      // is input clickedNode a child of activated clickedNode?
+      if (clickedNode.heritage.indexOf(activatedNode.key) === activatedNode.depth) {
+        return true;
+      }
+      // is input node a parent/grandparent of activated node?
+      // console.log(activatedNode.heritage)
+      if (activatedNode.heritage.indexOf(clickedNode.key) === clickedNode.depth) {
+        return true;
+      }
+      return false;
+    }
+
+    let newEdges = this.state.edges;
+    if (clickedNode.selected) {
+      newEdges = select(this.state.edges, isNodeDeselected)
+    }
+    else {
+      newEdges = select(this.state.edges, isNodeSelected)
+    }
+
+    this.setState({
+      edges: newEdges,
+    })
+  }
+
 
   render() {
-    const thisNest = nest();
-    this.props.hierarchyOrder.forEach(level => thisNest.key(d => d[level]))
-    thisNest.rollup(d => d.length)
-    const edges = thisNest.entries(this.props.data);
     /*
+    if there's nothing in defaultSelected for that level, then assume all
+
+
     whatever level is visualized should receive colors
     if there are too many selected in the active group, roll the rest into "other"
     still show them separately, just make them the same color
     inactive ones should be lighter
-    should selection annotations have a button role?
-    use custom node icon to make these look more like buttons?
-      make padding for whitespace between them
-      use stroke for hover?
     add labels
 
     children are automatically active if parent is active
     children are automatically deactivated if parent is deactivated
     if a move will activate or deactivate other nodes, highlight those nodes
       as well on hover
-
     */
 
     const margin = {
@@ -62,7 +153,7 @@ class HierarchicalSelect extends Component {
           size={[1000, 100]}
           margin={margin}
           responsiveWidth
-          edges={{ key: 'All Permits', values: edges }}
+          edges={this.state.edges}
           annotations={[
             {
               depth: 1,
@@ -90,7 +181,6 @@ class HierarchicalSelect extends Component {
               return null;
             }
             const sameDepthNode = d.nodes.find(node => node.depth === d.d.depth);
-            console.log(sameDepthNode, d)
             const buttonHeight = sameDepthNode.y1 - sameDepthNode.y0;
             return (<div className="input-group"
               key={d.d.key}
@@ -132,12 +222,11 @@ class HierarchicalSelect extends Component {
             </div>)
           }}
           nodeStyle={(d, i) => {
-            // console.log(d)
-            const atActiveDepth = d.depth === this.state.activeDepth ? 1 : 0
+            const atActiveDepth = d.depth === this.state.activeDepth ? 1 : 0;
             return {
-              fill: 'gray',
+              fill: atActiveDepth ? 'pink' : 'gray',
               stroke: 'white',
-              fillOpacity: atActiveDepth ? 1 : 0.5,
+              fillOpacity: d.data.selected ? 1 : 0.5,
             };
           }}
           filterRenderedNodes={(d) => {
@@ -149,17 +238,8 @@ class HierarchicalSelect extends Component {
           nodeIDAccessor="key"
           hoverAnnotation
           tooltipContent={(d) => {
-            const heritage = [d.key];
-            let nextParent = d.parent;
-            while (nextParent) {
-              if (nextParent.key === 'All Permits') {
-                nextParent = null;
-              } else {
-                heritage.push(nextParent.key);
-                nextParent = nextParent.parent;
-              }
-            }
-            const title = heritage.reverse().join(' > ');
+            const heritage = getSemioticNodeHeritage(d);
+            const title = heritage.join(' > ');
             return (<Tooltip
               title={title}
               style={{ minWdith: title.length * 5 }}
@@ -171,6 +251,7 @@ class HierarchicalSelect extends Component {
             hierarchyChildren: d => d.values,
             hierarchySum: d => d.value,
           }}
+          customClickBehavior={d => this.handleClick(d)}
         />
       </div>
     );
@@ -189,7 +270,18 @@ HierarchicalSelect.defaultProps = {
   hierarchyOrder: ['permit_group', 'permit_type', 'permit_subtype', 'permit_category'],
   defaultSelected: {
     permit_group: ['Permits', 'Planning'],
-    // if there's nothing here, assume all of them
+    key: 'root',
+    selected: 'true',
+    selectedChildren: [
+      {
+        key: 'Permits',
+        depth: 1,
+      },
+      {
+        key: 'Planning',
+        depth: 1,
+      }
+    ],
   },
   onSelect: data => console.log(data),
 };

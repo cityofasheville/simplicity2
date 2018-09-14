@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { nest } from 'd3-collection';
 import { ResponsiveNetworkFrame } from 'semiotic';
 import Tooltip from '../../../shared/visualization/Tooltip';
+import HierarchicalDropdown from './HierarchicalDropdown';
 
 // given hierarchical data, make selecty categories
 // use callback to set current data for parent element
@@ -88,9 +89,7 @@ class HierarchicalSelect extends Component {
     });
   }
 
-  handleClick(d) {
-    const clickedNode = d.data;
-
+  handleClick(clickedNode) {
     const isSameNode = (candidate) => {
       return candidate.key === clickedNode.key &&
         candidate.heritage.join() === clickedNode.heritage.join()
@@ -143,21 +142,7 @@ class HierarchicalSelect extends Component {
     this.props.onFilterSelect(newEdges)
   }
 
-
   render() {
-    /*
-    whatever level is visualized should receive colors
-    if there are too many selected in the active group, roll the rest into "other"
-    still show them separately, just make them the same color
-    inactive ones should be lighter
-    add labels
-
-    children are automatically active if parent is active
-    children are automatically deactivated if parent is deactivated
-    if a move will activate or deactivate other nodes, highlight those nodes
-      as well on hover
-    */
-
     const margin = {
       top: 5,
       right: 0,
@@ -167,6 +152,10 @@ class HierarchicalSelect extends Component {
 
     return (
       <div className="interactiveAnnotation">
+        <HierarchicalDropdown
+          hierarchy={this.state.edges}
+          onNodeClick={node => this.handleClick(node)}
+        />
         <ResponsiveNetworkFrame
           size={[1000, 100]}
           margin={margin}
@@ -224,18 +213,6 @@ class HierarchicalSelect extends Component {
                 >
                   {d.d.key}
                 </button>
-                <button
-                  type="button"
-                  style={{
-                    height: buttonHeight,
-                  }}
-                >
-                  <span className="caret"></span>
-                </button>
-                <ul className="dropdown-menu dropdown-menu-right">
-                  <li>foo</li>
-                  <li>baz</li>
-                </ul>
               </div>
             </div>)
           }}
@@ -270,7 +247,7 @@ class HierarchicalSelect extends Component {
             hierarchyChildren: d => d.values,
             hierarchySum: d => d.value,
           }}
-          customClickBehavior={d => this.handleClick(d)}
+          customClickBehavior={d => this.handleClick(d.data)}
         />
       </div>
     );

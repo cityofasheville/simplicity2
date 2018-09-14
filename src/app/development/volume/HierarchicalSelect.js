@@ -7,7 +7,7 @@ import Tooltip from '../../../shared/visualization/Tooltip';
 // given hierarchical data, make selecty categories
 // use callback to set current data for parent element
 // include circlepack
-const select = function(inputNode, selected) {
+const toggleHierarchy = function(inputNode, selected) {
   const node = Object.assign({}, inputNode);
   if (typeof selected ==='function') {
     node.selected = selected(node);
@@ -16,13 +16,13 @@ const select = function(inputNode, selected) {
   }
   if (node.values) {
     node.values = inputNode.values.map((child) => {
-      return select(child, selected);
+      return toggleHierarchy(child, selected);
     })
   }
   return node;
 }
 
-const labelDepth = function(inputNode, depth) {
+const assignDepthLabels = function(inputNode, depth) {
   const node = Object.assign({}, inputNode);
   node.depth = depth;
   const nodeHeritage = node.heritage || [];
@@ -30,7 +30,7 @@ const labelDepth = function(inputNode, depth) {
     node.values = inputNode.values.map((child) => {
       const thisChild = Object.assign({}, child);
       thisChild.heritage = nodeHeritage.concat([node.key])
-      return labelDepth(thisChild, depth + 1);
+      return assignDepthLabels(thisChild, depth + 1);
     })
   }
   return node;
@@ -61,14 +61,17 @@ class HierarchicalSelect extends Component {
 
     let thisEdges = {
       key: 'All Permits',
+      selected: 'true',
       values: thisNest.entries(this.props.data).map(v => {
         if (v.key === 'Services') {
-          return select(v, false);
+          return toggleHierarchy(v, false);
         }
-        return select(v, true);
+        return toggleHierarchy(v, true);
       })
     }
-    thisEdges = labelDepth(thisEdges, 0)
+
+    // Maybe hack nest method to be able to add this without callinga  recursive function
+    thisEdges = assignDepthLabels(thisEdges, 0)
 
     this.state = {
       activeDepth: 2,
@@ -88,48 +91,61 @@ class HierarchicalSelect extends Component {
   handleClick(d) {
     const clickedNode = d.data;
 
-    const isNodeDeselected = (candidate) => {
-      console.log(clickedNode.key, clickedNode.depth, candidate.heritage)
-      const isNode = candidate.key === clickedNode.key && candidate.depth === clickedNode.depth;
-      if (isNode || candidate.depth > clickedNode.depth && candidate.heritage.includes(clickedNode.key)) {
-        return false;
-      }
-      return true;
+    const isSameNode = (candidate) => {
+      return candidate.key === clickedNode.key &&
+        candidate.heritage.join() === clickedNode.heritage.join()
     }
 
-    const isNodeSelected = (activatedNode) => {
-      // is input clickedNode a child of activated clickedNode?
-      if (clickedNode.heritage.indexOf(activatedNode.key) === activatedNode.depth) {
+    const isChild = (candidate) => {
+      return candidate.depth > clickedNode.depth &&
+        candidate.heritage.indexOf(clickedNode.key) === clickedNode.depth &&
+        candidate.heritage.join().includes(clickedNode.heritage.join());
+    }
+
+    const isParent = (candidate) => {
+      return clickedNode.heritage.indexOf(candidate.key) === candidate.depth;
+    }
+
+    const isNodeDeselected = (candidate) => {
+      if (isSameNode(candidate)) {
+        return false;
+      }
+      if (isChild(candidate)) {
+        return false;
+      }
+      return candidate.selected;
+    }
+
+    const isNodeSelected = (candidate) => {
+      if (isSameNode(candidate)) {
         return true;
       }
-      // is input node a parent/grandparent of activated node?
-      // console.log(activatedNode.heritage)
-      if (activatedNode.heritage.indexOf(clickedNode.key) === clickedNode.depth) {
+      if (isParent(candidate)) {
         return true;
       }
-      return false;
+      if (isChild(candidate)) {
+        return true;
+      }
+      return candidate.selected;
     }
 
     let newEdges = this.state.edges;
     if (clickedNode.selected) {
-      newEdges = select(this.state.edges, isNodeDeselected)
-
-    }
-    else {
-      newEdges = select(this.state.edges, isNodeSelected)
+      newEdges = toggleHierarchy(this.state.edges, isNodeDeselected)
+    } else {
+      newEdges = toggleHierarchy(this.state.edges, isNodeSelected)
     }
 
     this.setState({
       edges: newEdges,
     })
+
+    this.props.onFilterSelect(newEdges)
   }
 
 
   render() {
     /*
-    if there's nothing in defaultSelected for that level, then assume all
-
-
     whatever level is visualized should receive colors
     if there are too many selected in the active group, roll the rest into "other"
     still show them separately, just make them the same color
@@ -240,7 +256,8 @@ class HierarchicalSelect extends Component {
           nodeIDAccessor="key"
           hoverAnnotation
           tooltipContent={(d) => {
-            const heritage = getSemioticNodeHeritage(d);
+            const heritage = d.heritage.slice(1)
+            heritage.push(d.key)
             const title = heritage.join(' > ');
             return (<Tooltip
               title={title}
@@ -285,7 +302,7 @@ HierarchicalSelect.defaultProps = {
       }
     ],
   },
-  onSelect: data => console.log(data),
+  onFilterSelect: data => console.log(data),
 };
 
 export default HierarchicalSelect;

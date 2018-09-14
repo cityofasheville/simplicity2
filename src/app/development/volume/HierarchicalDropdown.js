@@ -4,31 +4,21 @@ import PropTypes from 'prop-types';
 
 
 class ChildMenus extends Component {
-  state = {
-    open: false,
-  }
   render() {
     const concatenatedHeritage = this.props.node.heritage
       .concat([this.props.node.key])
       .join();
     let className = '';
     if (this.props.node.values) {
-      className = `${className} dropdown-submenu dropdown-menu-right`
+      className = `${className} dropdown-submenu`
     }
-    if (this.state.open) {
-      className = `${className} open`
-    }
+    // if (this.state.open) {
+    //   className = `${className} open`
+    // }
     return (
       <li
-        style={{
-          marginLeft: this.props.node.depth * 5,
-          position: 'relative'
-        }}
         className={className}
         key={concatenatedHeritage}
-        onMouseOver={() => this.setState({
-          open: true,
-        })}
       >
         <a
           value={concatenatedHeritage}
@@ -45,7 +35,7 @@ class ChildMenus extends Component {
         </a>
         {this.props.node.values &&(
           <ul
-            className="dropdown-menu dropdown-menu-right"
+            className="dropdown-menu"
             role="menu"
           >
             {this.props.node.values.map((child) => {
@@ -78,7 +68,7 @@ class HierarchicalDropdown extends Component {
 
   render() {
     return (<div
-      className={`btn-group ${this.state.open ? 'open' : ''}`}
+      className={`hierarchicalDropdown container-fluid btn-group ${this.state.open ? 'open' : ''}`}
     >
       <a
         className="dropdown-toggle"
@@ -93,7 +83,7 @@ class HierarchicalDropdown extends Component {
           <span className="caret"></span>
         </a>
         <ul
-          className="dropdown-menu dropdown-menu-right"
+          className="dropdown-menu"
           role="menu"
           >
             {

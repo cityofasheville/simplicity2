@@ -20,7 +20,10 @@ class ChildMenus extends Component {
     }
     return (
       <li
-        style={{ marginLeft: this.props.node.depth * 5 }}
+        style={{
+          marginLeft: this.props.node.depth * 5,
+          position: 'relative'
+        }}
         className={className}
         key={concatenatedHeritage}
         onMouseOver={() => this.setState({

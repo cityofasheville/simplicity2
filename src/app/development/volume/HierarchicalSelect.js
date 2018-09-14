@@ -5,9 +5,16 @@ import { ResponsiveNetworkFrame } from 'semiotic';
 import Tooltip from '../../../shared/visualization/Tooltip';
 import HierarchicalDropdown from './HierarchicalDropdown';
 
-// given hierarchical data, make selecty categories
-// use callback to set current data for parent element
-// include circlepack
+
+/*
+send selected data back up to let parent parse and such
+assign node colors here?
+fix focus and hover behavior of dropdown button
+fix focus behavior of dropdown items
+move styling out of general maybe 
+*/
+
+
 const toggleHierarchy = function(inputNode, selected) {
   const node = Object.assign({}, inputNode);
   if (typeof selected ==='function') {
@@ -219,7 +226,7 @@ class HierarchicalSelect extends Component {
           nodeStyle={(d, i) => {
             const atActiveDepth = d.depth === this.state.activeDepth ? 1 : 0;
             return {
-              fill: atActiveDepth ? 'pink' : 'gray',
+              fill: atActiveDepth ? 'pink' : '#c8c8c8',
               stroke: 'white',
               fillOpacity: d.data.selected ? 1 : 0.5,
             };

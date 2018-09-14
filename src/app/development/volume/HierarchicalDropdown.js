@@ -32,7 +32,7 @@ class ChildMenus extends Component {
           href=""
           onClick={(e) => {
             e.preventDefault();
-            this.props.onNodeClick(node);
+            this.props.onNodeClick(this.props.node);
           }}
           style={{
             color: this.props.node.selected ? '#00a4f6' : 'inherit',
@@ -84,7 +84,7 @@ class HierarchicalDropdown extends Component {
           e.preventDefault();
           this.setState({ open: !this.state.open })
         }}
-        onBlur={() => this.setState({ open: false })}
+        // onBlur={() => this.setState({ open: false })}
         >
           Permit Types
           <span className="caret"></span>

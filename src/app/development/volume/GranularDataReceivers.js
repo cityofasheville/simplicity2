@@ -53,6 +53,7 @@ class GranularDataReceivers extends React.Component {
     );
     this.setState({
       hierarchicalData: newHierarchy,
+      histogramData: histogramData,
     });
   }
 
@@ -82,6 +83,15 @@ class GranularDataReceivers extends React.Component {
         if (error) {
           console.log(error);
           return <div>Error :( </div>;
+        }
+
+        // TODO
+        // GETTING THE DATA, GIVING IT TO THE CONTROLLER, THEN SETTING STATE IS RECURSIVE
+        // create granular data controls, put it as a parent of granular data receivers
+        // make this component dumber
+
+        const nodeColors = {
+
         }
 
         return (<div className="dashRows">
@@ -139,7 +149,6 @@ class GranularDataReceivers extends React.Component {
                   histogramData={this.state.histogramData}
                   entriesHierarchy={this.state.hierarchicalData}
                   nodeColors={nodeColors}
-                  openedOnline={openedOnline}
                 />
             }
           </div>

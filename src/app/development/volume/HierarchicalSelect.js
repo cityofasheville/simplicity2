@@ -7,11 +7,12 @@ import HierarchicalDropdown from './HierarchicalDropdown';
 
 
 /*
+TODO
 send selected data back up to let parent parse and such
 assign node colors here?
 fix focus and hover behavior of dropdown button
 fix focus behavior of dropdown items
-move styling out of general maybe 
+move styling out of general maybe
 */
 
 
@@ -97,6 +98,8 @@ class HierarchicalSelect extends Component {
   }
 
   handleClick(clickedNode) {
+    // TODO: also assign color here, remove node colors references
+
     const isSameNode = (candidate) => {
       return candidate.key === clickedNode.key &&
         candidate.heritage.join() === clickedNode.heritage.join()

@@ -19,7 +19,7 @@ const BooleanSplitMultiples = (props) => {
       {props.entriesHierarchy.map((datum) => {
         const thisColor = props.nodeColors[datum.key];
         const brighterColor = color(thisColor).brighter(1.25);
-        const thisData = props.openedOnline.filter(d => d.key === datum.key);
+        const thisData = openedOnline.filter(d => d.key === datum.key);
         const margins = {
           top: 40,
           right: 10,

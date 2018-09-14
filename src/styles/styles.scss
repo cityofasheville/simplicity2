@@ -743,8 +743,14 @@ label {
 	padding: 0px 2em 0px 0.5em;
 	display: inline-block;
 }
+.hierarchicalDropdown .dropdown-menu > li > a:hover {
+	background-color: inherit;
+}
+.hierarchicalDropdown .dropdown-menu > li:hover {
+	background-color: darken(#fbfbfb, 20%);
+}
 .hierarchicalDropdown .dropdown-submenu{
-	position:relative;
+	position: relative;
 }
 .hierarchicalDropdown .dropdown-submenu>.dropdown-menu{
 	top:0;

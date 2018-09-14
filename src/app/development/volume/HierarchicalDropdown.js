@@ -71,13 +71,15 @@ class HierarchicalDropdown extends Component {
       className={`hierarchicalDropdown container-fluid btn-group ${this.state.open ? 'open' : ''}`}
     >
       <a
-        className="dropdown-toggle"
+        className="btn dropdown-toggle"
         href=""
         onClick={(e) => {
           e.preventDefault();
           this.setState({ open: !this.state.open })
         }}
-        // onBlur={() => this.setState({ open: false })}
+        style={{
+          backgroundColor: '#fbfbfb',
+        }}
         >
           Permit Types
           <span className="caret"></span>

@@ -909,3 +909,10 @@ footer.footer{
 		}
 	}
 }
+
+.ReactTable {
+  input:focus, select:focus, .-btn:focus {
+    outline: 1px dotted #212121;
+    outline: 5px auto -webkit-focus-ring-color;
+  }
+}

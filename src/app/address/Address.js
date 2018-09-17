@@ -304,6 +304,22 @@ const Address = props => (
                     />
                   }
                   <DetailsFormGroup
+                    label={content.owner}
+                    name="owner"
+                    value={
+                      <div>
+                        <div>
+                          {addressData.owner_name}
+                        </div>
+                        <div>
+                          {addressData.owner_address}
+                        </div>
+                      </div>
+                    }
+                    hasLabel
+                    icon={<Icon path={IM_USER} size={20} />}
+                  />
+                  <DetailsFormGroup
                     label={content.zoning}
                     name="zoning"
                     value={
@@ -320,58 +336,42 @@ const Address = props => (
                             </a>
                             {addressData.zoning.split(',').length > index + 1 ? ', ' : ''}
                           </span>))}
+                        {
+                          addressData.local_landmark &&
+                            <DetailsFormGroup
+                              label={content.local_landmark}
+                              name="local_landmark"
+                              value={
+                                <div>
+                                  <div>
+                                    {addressData.local_landmark}
+                                  </div>
+                                </div>
+                              }
+                              hasLabel
+                              icon={<Icon path={IM_FLAG7} size={20} />}
+                            />
+                        }
+                        {
+                          addressData.historic_district &&
+                            <DetailsFormGroup
+                              label={content.historic_district}
+                              name="historic_district"
+                              value={
+                                <div>
+                                  <div>
+                                    {addressData.historic_district}
+                                  </div>
+                                </div>
+                              }
+                              hasLabel
+                              icon={<Icon path={IM_LIBRARY} size={20} />}
+                            />
+                        }
                       </div>}
                     hasLabel
                     icon={<Icon path={IM_LOCATION2} size={20} />
                     }
-                  />
-                  {
-                    addressData.local_landmark &&
-                      <DetailsFormGroup
-                        label={content.local_landmark}
-                        name="local_landmark"
-                        value={
-                          <div>
-                            <div>
-                              {addressData.local_landmark}
-                            </div>
-                          </div>
-                        }
-                        hasLabel
-                        icon={<Icon path={IM_FLAG7} size={20} />}
-                      />
-                  }
-                  {
-                    addressData.historic_district &&
-                      <DetailsFormGroup
-                        label={content.historic_district}
-                        name="historic_district"
-                        value={
-                          <div>
-                            <div>
-                              {addressData.historic_district}
-                            </div>
-                          </div>
-                        }
-                        hasLabel
-                        icon={<Icon path={IM_LIBRARY} size={20} />}
-                      />
-                  }
-                  <DetailsFormGroup
-                    label={content.owner}
-                    name="owner"
-                    value={
-                      <div>
-                        <div>
-                          {addressData.owner_name}
-                        </div>
-                        <div>
-                          {addressData.owner_address}
-                        </div>
-                      </div>
-                    }
-                    hasLabel
-                    icon={<Icon path={IM_USER} size={20} />}
                   />
                   <DetailsIconLinkFormGroup
                     label={content.property_information}

@@ -14,32 +14,43 @@ fix focus and hover behavior of dropdown button
 fix focus behavior of dropdown items
 move styling out of general maybe
 */
-
-
-const toggleHierarchy = function(inputNode, selected) {
-  const node = Object.assign({}, inputNode);
-  if (typeof selected ==='function') {
-    node.selected = selected(node);
-  } else {
-    node.selected = selected;
+const getNodeRelationship = (clickedNode, candidate) => {
+  if (candidate.depth === 0) {
+    return 'parent';
   }
-  if (node.values) {
-    node.values = inputNode.values.map((child) => {
-      return toggleHierarchy(child, selected);
-    })
+  const candidateHeritage = candidate.heritage.join();
+  const clickedHeritage = clickedNode.heritage.join();
+  if (candidate.key === clickedNode.key && candidateHeritage === clickedHeritage) {
+    return 'self';
+  } else if (candidate.depth > clickedNode.depth &&
+    candidate.heritage.indexOf(clickedNode.key) === clickedNode.depth &&
+    candidateHeritage.includes(clickedHeritage)
+  ) {
+    return 'child';
+  } else if ( clickedHeritage.includes(candidateHeritage) &&
+    clickedNode.heritage.indexOf(candidate.key) === candidate.depth) {
+    return 'parent';
   }
-  return node;
+  return null;
 }
 
-const assignDepthLabels = function(inputNode, depth) {
+const toggleHierarchy = function(clickedNode, inputNode) {
   const node = Object.assign({}, inputNode);
-  node.depth = depth;
-  const nodeHeritage = node.heritage || [];
+  const relationship = getNodeRelationship(clickedNode, node);
+  if (!relationship) {
+    // Don't iterate if they have nothing to do with each other
+    return node;
+  }
+  if (clickedNode.selected && (relationship === 'self' || relationship === 'child')) {
+    // If clicked node was already selected, deselect itself and its children
+    node.selected = false;
+  } else if (!clickedNode.selected){
+    // If clicked node is being selected, select itself and its children
+    node.selected = true;
+  }
   if (node.values) {
     node.values = inputNode.values.map((child) => {
-      const thisChild = Object.assign({}, child);
-      thisChild.heritage = nodeHeritage.concat([node.key])
-      return assignDepthLabels(thisChild, depth + 1);
+      return toggleHierarchy(clickedNode, child);
     })
   }
   return node;
@@ -64,23 +75,13 @@ class HierarchicalSelect extends Component {
   constructor(props) {
     super(props);
 
-    const thisNest = nest();
-    this.props.hierarchyOrder.forEach(level => thisNest.key(d => d[level]))
-    thisNest.rollup(d => d.length)
-
-    let thisEdges = {
-      key: 'All Permits',
-      selected: 'true',
-      values: thisNest.entries(this.props.data).map(v => {
-        if (v.key === 'Services') {
-          return toggleHierarchy(v, false);
-        }
-        return toggleHierarchy(v, true);
-      })
-    }
-
-    // Maybe hack nest method to be able to add this without callinga  recursive function
-    thisEdges = assignDepthLabels(thisEdges, 0)
+    let thisEdges = this.customNestEntries(
+      {
+        key: 'All Permits',
+        values: this.props.data,
+      },
+      0,
+    )
 
     this.state = {
       activeDepth: 2,
@@ -91,64 +92,56 @@ class HierarchicalSelect extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
+  customNestEntries(inputNode, depth) {
+    const node = Object.assign({}, inputNode);
+    const nodeHeritage = node.heritage || [];
+    node.depth = depth;
+    node.selected = true;
+
+    if (depth < this.props.hierarchyOrder.length) {
+      node.unNestedValues = node.values;
+      const childrenNest = nest()
+        .key(d => d[this.props.hierarchyOrder[depth]])
+        .entries(node.unNestedValues)
+
+      childrenNest.sort((a, b) => b.values.length - a.values.length)
+
+      node.values = childrenNest.map((child) => {
+        const thisChild = Object.assign({}, child);
+        thisChild.heritage = nodeHeritage.concat([node.key])
+        return this.customNestEntries(thisChild, depth + 1);
+      })
+    } else {
+      node.unNestedValues = node.values;
+      node.value = node.values.length;
+      node.values = undefined;
+    }
+    return node;
+  }
+
   setActiveDepth(newDepth) {
     this.setState({
       activeDepth: newDepth,
     });
   }
 
-  handleClick(clickedNode) {
-    // TODO: also assign color here, remove node colors references
+  getCurrentDataSet() {
+    // Follow active nodes to get values at end
 
-    const isSameNode = (candidate) => {
-      return candidate.key === clickedNode.key &&
-        candidate.heritage.join() === clickedNode.heritage.join()
-    }
+    // Concatenate these all together
+    // Sort them based on their key for the selected depth
+  }
 
-    const isChild = (candidate) => {
-      return candidate.depth > clickedNode.depth &&
-        candidate.heritage.indexOf(clickedNode.key) === clickedNode.depth &&
-        candidate.heritage.join().includes(clickedNode.heritage.join());
-    }
+  getKeysAtActiveDepth() {
 
-    const isParent = (candidate) => {
-      return clickedNode.heritage.indexOf(candidate.key) === candidate.depth;
-    }
+  }
 
-    const isNodeDeselected = (candidate) => {
-      if (isSameNode(candidate)) {
-        return false;
-      }
-      if (isChild(candidate)) {
-        return false;
-      }
-      return candidate.selected;
-    }
-
-    const isNodeSelected = (candidate) => {
-      if (isSameNode(candidate)) {
-        return true;
-      }
-      if (isParent(candidate)) {
-        return true;
-      }
-      if (isChild(candidate)) {
-        return true;
-      }
-      return candidate.selected;
-    }
-
-    let newEdges = this.state.edges;
-    if (clickedNode.selected) {
-      newEdges = toggleHierarchy(this.state.edges, isNodeDeselected)
-    } else {
-      newEdges = toggleHierarchy(this.state.edges, isNodeSelected)
-    }
-
+  handleClick(inputNode) {
+    const clickedNode = Object.assign({}, inputNode)
+    const newEdges = toggleHierarchy(clickedNode, this.state.edges);
     this.setState({
       edges: newEdges,
     })
-
     this.props.onFilterSelect(newEdges)
   }
 
@@ -273,21 +266,20 @@ HierarchicalSelect.propTypes = {
 
 HierarchicalSelect.defaultProps = {
   data: [],
-  hierarchyOrder: ['permit_group', 'permit_type', 'permit_subtype', 'permit_category'],
+  hierarchyOrder: [
+    'permit_group',
+    'permit_type',
+    'permit_subtype',
+    'permit_category',
+  ],
   defaultSelected: {
-    permit_group: ['Permits', 'Planning'],
+    // TODO: figure out how this should work
+    permit_group: [
+      'Permits',
+      'Planning',
+    ],
     key: 'root',
     selected: 'true',
-    selectedChildren: [
-      {
-        key: 'Permits',
-        depth: 1,
-      },
-      {
-        key: 'Planning',
-        depth: 1,
-      }
-    ],
   },
   onFilterSelect: data => console.log(data),
 };

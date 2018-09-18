@@ -9,8 +9,6 @@ import { colorScheme } from './granularUtils'
 
 /*
 TODO
-send selected data back up to let parent parse and such
-assign node colors here?
 fix focus and hover behavior of dropdown button
 fix focus behavior of dropdown items
 move styling out of general maybe
@@ -57,14 +55,6 @@ function toggleHierarchy(clickedNode, inputNode) {
   return node;
 }
 
-function selectedHierarchyData(node) {
-  // TODO: use selected active depth nodes for this instead-- just map and join unNestedValues
-  if (!node.values) {
-    return node.selected ? node.unNestedValues : [];
-  }
-  return [].concat(...node.values.map(v => selectedHierarchyData(v)))
-}
-
 function selectedActiveDepthNodes(node, activeDepth) {
   if (node.depth === activeDepth) {
     if (activeDepth === 0) {
@@ -81,6 +71,7 @@ function selectedActiveDepthNodes(node, activeDepth) {
 }
 
 function setNodeDisplayOpts(nodesToDisplay, colors, maxNodes = 7) {
+  // Needs output from selectedActiveDepthNodes
   return nodesToDisplay
     .sort((a, b) => b.unNestedValues.length - a.unNestedValues.length)
     .map((d, i) => {
@@ -88,35 +79,52 @@ function setNodeDisplayOpts(nodesToDisplay, colors, maxNodes = 7) {
       let colorIndex = i;
       if (i > maxNodes - 1) {
         colorIndex = maxNodes;
+        rVal.othered = true;
       }
       rVal.color = colors[colorIndex];
       return rVal;
     })
 }
 
+function selectedDataFromNodes(filteredColorfulNodes) {
+  // Output from setNodeDisplayOpts
+  return [].concat(...filteredColorfulNodes.map(node => {
+    return node.unNestedValues.map(datum => {
+      const rVal = Object.assign({}, datum)
+      rVal.color = node.color
+      rVal.othered = node.othered;
+      return rVal;
+    })
+  }))
+}
+
 
 class HierarchicalSelect extends Component {
   constructor(props) {
     super(props);
-
-    let thisEdges = this.customNestEntries(
+    const thisEdges = this.customNestEntries(
       {
         key: 'All Permits',
         values: this.props.data,
       },
-      0,
-    )
+    );
+
+    // TODO: filter out services by default
+
+    // TODO: meld these two functions into one since they *always* appear together
+    const selectedNodes = selectedActiveDepthNodes(thisEdges, this.props.activeDepth);
+    const colorfulNodes = setNodeDisplayOpts(selectedNodes, this.props.colorScheme);
 
     this.state = {
-      activeDepth: 2,
+      activeDepth: this.props.activeDepth,
       edges: thisEdges,
+      colorfulNodes: colorfulNodes,
     };
-
     this.setActiveDepth = this.setActiveDepth.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+    this.handleNodeClick = this.handleNodeClick.bind(this);
   }
 
-  customNestEntries(inputNode, depth) {
+  customNestEntries(inputNode, depth = 0) {
     const node = Object.assign({}, inputNode);
     const nodeHeritage = node.heritage || [];
     node.depth = depth;
@@ -144,27 +152,36 @@ class HierarchicalSelect extends Component {
   }
 
   setActiveDepth(newDepth) {
+    const selectedNodes = selectedActiveDepthNodes(this.state.edges, newDepth);
+    const colorfulNodes = setNodeDisplayOpts(selectedNodes, this.props.colorScheme);
+
     this.setState({
       activeDepth: newDepth,
+      colorfulNodes: colorfulNodes,
     });
+
     this.props.onFilterSelect(
-      // selectedHierarchyData(this.state.edges),
+      selectedDataFromNodes(colorfulNodes),
+      colorfulNodes,
       this.props.hierarchyOrder[newDepth - 1],
-      selectedActiveDepthNodes(this.state.edges, newDepth),
     )
   }
 
-  handleClick(inputNode) {
+  handleNodeClick(inputNode) {
     const clickedNode = Object.assign({}, inputNode)
     const newEdges = toggleHierarchy(clickedNode, this.state.edges);
+    const selectedNodes = selectedActiveDepthNodes(newEdges, this.state.activeDepth);
+    const colorfulNodes = setNodeDisplayOpts(selectedNodes, this.props.colorScheme);
+
     this.setState({
       edges: newEdges,
+      colorfulNodes: colorfulNodes,
     })
-    console.log(setNodeDisplayOpts(selectedActiveDepthNodes(newEdges, this.state.activeDepth), colorScheme))
+
     this.props.onFilterSelect(
-      // selectedHierarchyData(newEdges),
-      this.props.hierarchyOrder[this.state.activeDepth - 1],
-      selectedActiveDepthNodes(newEdges, this.state.activeDepth),
+      selectedDataFromNodes(colorfulNodes),
+      colorfulNodes,
+      this.props.hierarchyOrder[this.state.depth - 1],
     )
   }
 
@@ -180,7 +197,7 @@ class HierarchicalSelect extends Component {
       <div className="interactiveAnnotation">
         <HierarchicalDropdown
           hierarchy={this.state.edges}
-          onNodeClick={node => this.handleClick(node)}
+          onNodeClick={node => this.handleNodeClick(node)}
         />
         <ResponsiveNetworkFrame
           size={[1000, 100]}
@@ -244,10 +261,17 @@ class HierarchicalSelect extends Component {
           }}
           nodeStyle={(d, i) => {
             const atActiveDepth = d.depth === this.state.activeDepth ? 1 : 0;
+            let color = '#a6a6a6';
+            if (atActiveDepth && d.selected) {
+              const colorfulNode = this.state.colorfulNodes.find(candidate => {
+                return candidate.key === d.key && candidate.heritage.join() === d.heritage.join();
+              })
+              color = colorfulNode.color;
+            }
             return {
-              fill: atActiveDepth ? 'pink' : '#c8c8c8',
+              fill: color,
               stroke: 'white',
-              fillOpacity: d.data.selected ? 1 : 0.5,
+              fillOpacity: d.selected ? 1 : 0.5,
             };
           }}
           filterRenderedNodes={(d) => {
@@ -273,7 +297,7 @@ class HierarchicalSelect extends Component {
             hierarchyChildren: d => d.values,
             hierarchySum: d => d.value,
           }}
-          customClickBehavior={d => this.handleClick(d.data)}
+          customClickBehavior={d => this.handleNodeClick(d.data)}
         />
       </div>
     );
@@ -283,8 +307,10 @@ class HierarchicalSelect extends Component {
 HierarchicalSelect.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object),
   hierarchyOrder: PropTypes.arrayOf(PropTypes.string),
-  onSelect: PropTypes.func,
-  defaultSelected: PropTypes.object,
+  activeDepth: PropTypes.number,
+  defaultSelected: PropTypes.arrayOf(PropTypes.object),
+  onFilterSelect: PropTypes.func,
+  colorScheme: PropTypes.arrayOf(PropTypes.string),
 };
 
 HierarchicalSelect.defaultProps = {
@@ -295,16 +321,20 @@ HierarchicalSelect.defaultProps = {
     'permit_subtype',
     'permit_category',
   ],
-  defaultSelected: {
-    // TODO: figure out how this should work
-    permit_group: [
-      'Permits',
-      'Planning',
-    ],
-    key: 'root',
-    selected: 'true',
+  activeDepth: 2,
+  defaultSelected: [
+    {
+      level: 'permit_group',
+      keys: [
+        'Permits',
+        'Planning',
+      ],
+    },
+  ],
+  onFilterSelect: (selectedData, selectedNodes, selectedHierarchyLevel) => {
+    console.log(selectedData, selectedNodes, selectedHierarchyLevel);
   },
-  onFilterSelect: (data, hierarchyLevel, activeKeys) => console.log(data, hierarchyLevel, activeKeys),
+  colorScheme: colorScheme,
 };
 
 export default HierarchicalSelect;

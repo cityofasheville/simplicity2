@@ -14,7 +14,7 @@ fix focus and hover behavior of dropdown button
 fix focus behavior of dropdown items
 move styling out of general maybe
 */
-const getNodeRelationship = (clickedNode, candidate) => {
+function getNodeRelationship(clickedNode, candidate) {
   if (candidate.depth === 0) {
     return 'parent';
   }
@@ -34,7 +34,7 @@ const getNodeRelationship = (clickedNode, candidate) => {
   return null;
 }
 
-const toggleHierarchy = function(clickedNode, inputNode) {
+function toggleHierarchy(clickedNode, inputNode) {
   const node = Object.assign({}, inputNode);
   const relationship = getNodeRelationship(clickedNode, node);
   if (!relationship) {
@@ -56,19 +56,13 @@ const toggleHierarchy = function(clickedNode, inputNode) {
   return node;
 }
 
-const getSemioticNodeHeritage = function(d) {
-  const heritage = [d.key];
-  let nextParent = d.parent;
-  while (nextParent) {
-    if (nextParent.key === 'All Permits') {
-      nextParent = null;
-    } else {
-      heritage.push(nextParent.key);
-      nextParent = nextParent.parent;
-    }
+function selectedHierarchyData(node) {
+  if (!node.values) {
+    return node.selected ? node.unNestedValues : [];
   }
-  return heritage.reverse();
+  return [].concat(...node.values.map(v => selectedHierarchyData(v)))
 }
+
 
 
 class HierarchicalSelect extends Component {
@@ -125,13 +119,6 @@ class HierarchicalSelect extends Component {
     });
   }
 
-  getCurrentDataSet() {
-    // Follow active nodes to get values at end
-
-    // Concatenate these all together
-    // Sort them based on their key for the selected depth
-  }
-
   getKeysAtActiveDepth() {
 
   }
@@ -142,7 +129,7 @@ class HierarchicalSelect extends Component {
     this.setState({
       edges: newEdges,
     })
-    this.props.onFilterSelect(newEdges)
+    this.props.onFilterSelect(selectedHierarchyData(newEdges))
   }
 
   render() {

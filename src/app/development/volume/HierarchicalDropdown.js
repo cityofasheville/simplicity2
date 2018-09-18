@@ -75,9 +75,9 @@ class HierarchicalDropdown extends Component {
 
   render() {
     return (<div
-      className={`hierarchicalDropdown container-fluid btn-group ${this.state.open ? 'open' : ''}`}
+      className={`hierarchicalDropdown btn-group ${this.state.open ? 'open' : ''}`}
     >
-      <a
+      <button
         className="dropdown-toggle"
         href=""
         onClick={(e) => {
@@ -86,27 +86,28 @@ class HierarchicalDropdown extends Component {
         }}
         style={{
           backgroundColor: '#fbfbfb',
+          borderRadius: 6,
         }}
+      >
+        Permit Types
+        <span className="caret"></span>
+      </button>
+      <ul
+        className="dropdown-menu"
+        role="menu"
         >
-          Permit Types
-          <span className="caret"></span>
-        </a>
-        <ul
-          className="dropdown-menu"
-          role="menu"
-          >
-            {
-              this.props.hierarchy.values.map(node => (
-                <ChildMenus
-                  key={node.key}
-                  node={node}
-                  onNodeClick={this.props.onNodeClick}
-                  activeSelectedNodes={this.props.activeSelectedNodes}
-                />
-              ))
-            }
-          </ul>
-        </div>)
+          {
+            this.props.hierarchy.values.map(node => (
+              <ChildMenus
+                key={node.key}
+                node={node}
+                onNodeClick={this.props.onNodeClick}
+                activeSelectedNodes={this.props.activeSelectedNodes}
+              />
+            ))
+          }
+        </ul>
+      </div>)
   }
 }
 

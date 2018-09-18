@@ -4,6 +4,7 @@ import { nest } from 'd3-collection';
 import { ResponsiveNetworkFrame } from 'semiotic';
 import Tooltip from '../../../shared/visualization/Tooltip';
 import HierarchicalDropdown from './HierarchicalDropdown';
+import HorizontalLegend from '../../../shared/visualization/HorizontalLegend';
 import { colorScheme } from './granularUtils'
 
 
@@ -202,7 +203,7 @@ class HierarchicalSelect extends Component {
           onNodeClick={node => this.handleNodeClick(node)}
         />
         <ResponsiveNetworkFrame
-          size={[1000, 100]}
+          size={[1000, 125]}
           margin={margin}
           responsiveWidth
           edges={this.state.edges}
@@ -233,7 +234,7 @@ class HierarchicalSelect extends Component {
               return null;
             }
             const sameDepthNode = d.nodes.find(node => node.depth === d.d.depth);
-            const buttonHeight = sameDepthNode.y1 - sameDepthNode.y0;
+            const buttonHeight = sameDepthNode.y1 - sameDepthNode.y0 - 2;
             return (<div className="input-group"
               key={d.d.key}
             >
@@ -252,7 +253,8 @@ class HierarchicalSelect extends Component {
                 <button
                   type="button"
                   style={{
-                    height: buttonHeight
+                    height: buttonHeight,
+                    borderRadius: 6,
                   }}
                   onClick={() => this.setActiveDepth(d.d.depth)}
                 >
@@ -300,6 +302,21 @@ class HierarchicalSelect extends Component {
             hierarchySum: d => d.value,
           }}
           customClickBehavior={d => this.handleNodeClick(d.data)}
+        />
+        <HorizontalLegend
+          // label item has label and color
+          style={{
+            textAlign: 'center'
+          }}
+          labelItems={this.state.colorfulNodes
+            .filter((d, i, array) => !d.othered || array.findIndex(datum => datum.othered) === i)
+            .map(entry => (
+              {
+                label: entry.othered ? 'Other' : entry.key,
+                color: entry.color,
+              }
+            ))
+          }
         />
       </div>
     );

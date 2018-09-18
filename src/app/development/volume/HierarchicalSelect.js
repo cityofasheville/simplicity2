@@ -174,6 +174,7 @@ class HierarchicalSelect extends Component {
     const colorfulNodes = setNodeDisplayOpts(selectedNodes, this.props.colorScheme);
 
     this.setState({
+      activeDepth: this.state.activeDepth,
       edges: newEdges,
       colorfulNodes: colorfulNodes,
     })
@@ -181,7 +182,7 @@ class HierarchicalSelect extends Component {
     this.props.onFilterSelect(
       selectedDataFromNodes(colorfulNodes),
       colorfulNodes,
-      this.props.hierarchyOrder[this.state.depth - 1],
+      this.props.hierarchyOrder[this.state.activeDepth - 1],
     )
   }
 
@@ -197,6 +198,7 @@ class HierarchicalSelect extends Component {
       <div className="interactiveAnnotation">
         <HierarchicalDropdown
           hierarchy={this.state.edges}
+          activeSelectedNodes={this.state.colorfulNodes}
           onNodeClick={node => this.handleNodeClick(node)}
         />
         <ResponsiveNetworkFrame

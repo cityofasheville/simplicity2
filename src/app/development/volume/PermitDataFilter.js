@@ -7,6 +7,7 @@ import {
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import DataModal from './DataModal';
 import HierarchicalSelect from './HierarchicalSelect'
+import GranularDataReceivers from './GranularDataReceivers'
 
 
 class PermitDataFilter extends React.Component {
@@ -29,44 +30,36 @@ class PermitDataFilter extends React.Component {
     }
 
     this.state = {
-      hierarchicalData: null,
-      histogramData: null,
-      hierarchyLevels: [
-        { name: 'permit_type', selectedCat: null },
-        { name: 'permit_subtype', selectedCat: null },
-        { name: 'permit_category', selectedCat: null },
-      ],
-      modalData: null
+      selectedData: null,
+      selectedNodes: null,
+      selectedHierarchyLevel: null,
+      // modalData: null,
     };
 
     this.onHierarchySelect = this.onHierarchySelect.bind(this);
-    this.onModalOpen = this.onModalOpen.bind(this);
-    this.onModalClose = this.onModalClose.bind(this);
+    // this.onModalOpen = this.onModalOpen.bind(this);
+    // this.onModalClose = this.onModalClose.bind(this);
   }
 
-  onHierarchySelect(newHierarchy) {
-    const histogramData = stackedHistogramFromHierarchical(
-      data.permits,
-      newHierarchy,
-      this.includedDates,
-    );
+  onHierarchySelect(selectedData, selectedNodes, selectedHierarchyLevel) {
     this.setState({
-      hierarchicalData: newHierarchy,
-      histogramData: histogramData,
+      selectedData,
+      selectedNodes,
+      selectedHierarchyLevel
     });
   }
 
-  onModalClose() {
-    this.setState({
-      modalData: null
-    })
-  }
-
-  onModalOpen(inputData) {
-    this.setState({
-      modalData: inputData
-    })
-  }
+  // onModalClose() {
+  //   this.setState({
+  //     modalData: null
+  //   })
+  // }
+  //
+  // onModalOpen(inputData) {
+  //   this.setState({
+  //     modalData: inputData
+  //   })
+  // }
 
   render() {
     return (<Query
@@ -85,13 +78,13 @@ class PermitDataFilter extends React.Component {
         }
 
         return (<div className="dashRows">
-          {this.state.modalData &&
+          {/* {this.state.modalData &&
             // Maybe this needs to be moved?
             <DataModal
               data={this.state.modalData}
               closeModal={this.onModalClose}
             />
-          }
+          } */}
           <div
             className="row col-md-12"
           >
@@ -101,7 +94,7 @@ class PermitDataFilter extends React.Component {
           </div>
           <div>
             {/* <GranularDataReceivers
-              currentData={[]}
+              currentData={this.state.currentData}
             /> */}
           </div>
         </div>);

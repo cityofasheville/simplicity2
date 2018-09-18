@@ -12,9 +12,15 @@ class ChildMenus extends Component {
     if (this.props.node.values) {
       className = `${className} dropdown-submenu`
     }
-    // if (this.state.open) {
-    //   className = `${className} open`
-    // }
+    let color = 'inherit';
+    if (this.props.node.selected) {
+      const activeSelected = this.props.activeSelectedNodes.find(candidate => {
+        if (!candidate.heritage) { return false; }
+        return candidate.heritage.join() === this.props.node.heritage.join() &&
+          candidate.key === this.props.node.key;
+      });
+      color = activeSelected ? activeSelected.color : '#00a4f6';
+    }
     return (
       <li
         className={className}
@@ -28,7 +34,7 @@ class ChildMenus extends Component {
             this.props.onNodeClick(this.props.node);
           }}
           style={{
-            color: this.props.node.selected ? '#00a4f6' : 'inherit',
+            color: color,
           }}
         >
           {this.props.node.key}
@@ -43,6 +49,7 @@ class ChildMenus extends Component {
                 key={child.key}
                 node={child}
                 onNodeClick={this.props.onNodeClick}
+                activeSelectedNodes={this.props.activeSelectedNodes}
               />);
             })}
           </ul>
@@ -71,7 +78,7 @@ class HierarchicalDropdown extends Component {
       className={`hierarchicalDropdown container-fluid btn-group ${this.state.open ? 'open' : ''}`}
     >
       <a
-        className="btn dropdown-toggle"
+        className="dropdown-toggle"
         href=""
         onClick={(e) => {
           e.preventDefault();
@@ -94,6 +101,7 @@ class HierarchicalDropdown extends Component {
                   key={node.key}
                   node={node}
                   onNodeClick={this.props.onNodeClick}
+                  activeSelectedNodes={this.props.activeSelectedNodes}
                 />
               ))
             }

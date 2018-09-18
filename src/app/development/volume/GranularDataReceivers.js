@@ -20,6 +20,7 @@ class GranularDataReceivers extends React.Component {
     super(props);
 
     // Maybe this belongs elsewhere in the lifecycle?
+    // Or on the timeline thing
     this.includedDates = [];
     const oneDayMilliseconds = (24 * 60 * 60 * 1000);
     let dateToAdd = new Date(this.props.timeSpan[0]).getTime();
@@ -29,133 +30,75 @@ class GranularDataReceivers extends React.Component {
       dateToAdd += oneDayMilliseconds;
     }
 
-    this.state = {
-      hierarchicalData: null,
-      histogramData: null,
-      hierarchyLevels: [
-        { name: 'permit_type', selectedCat: null },
-        { name: 'permit_subtype', selectedCat: null },
-        { name: 'permit_category', selectedCat: null },
-      ],
-      modalData: null
-    };
-
-    this.onHierarchySelect = this.onHierarchySelect.bind(this);
-    this.onModalOpen = this.onModalOpen.bind(this);
-    this.onModalClose = this.onModalClose.bind(this);
+    // this.onModalOpen = this.onModalOpen.bind(this);
+    // this.onModalClose = this.onModalClose.bind(this);
   }
 
-  onHierarchySelect(newHierarchy) {
-    const histogramData = stackedHistogramFromHierarchical(
-      data.permits,
-      newHierarchy,
-      this.includedDates,
-    );
-    this.setState({
-      hierarchicalData: newHierarchy,
-      histogramData: histogramData,
-    });
-  }
-
-  onModalClose() {
-    this.setState({
-      modalData: null
-    })
-  }
-
-  onModalOpen(inputData) {
-    this.setState({
-      modalData: inputData
-    })
-  }
+  // onModalClose() {
+  //   this.setState({
+  //     modalData: null
+  //   })
+  // }
+  //
+  // onModalOpen(inputData) {
+  //   this.setState({
+  //     modalData: inputData
+  //   })
+  // }
 
   render() {
-    return (<Query
-      query={GET_PERMITS}
-      variables={{
-        date_field: this.props.dateField,
-        after: new Date(this.props.timeSpan[0]),
-        before: new Date(this.props.timeSpan[1]),
-      }}
-    >
-      {({ loading, error, data }) => {
-        if (loading) return <LoadingAnimation />;
-        if (error) {
-          console.log(error);
-          return <div>Error :( </div>;
-        }
-
-        // TODO
-        // GETTING THE DATA, GIVING IT TO THE CONTROLLER, THEN SETTING STATE IS RECURSIVE
-        // create granular data controls, put it as a parent of granular data receivers
-        // make this component dumber
-
-        const nodeColors = {
-
-        }
-
-        return (<div className="dashRows">
-          {this.state.modalData && <DataModal data={this.state.modalData} closeModal={this.onModalClose} />}
-          <div
-            id="controls-n-summary"
-            className="row col-md-12"
-          >
-            <HierarchicalSelect
-              data={data.permits}
-            />
-            <div className="col-md-9">
-              <h2>Daily</h2>
-              {
-                this.state.histogramData ?
-                  <VolumeHistogram
-                    data={this.state.histogramData}
-                    nodeColors={nodeColors}
-                  /> :
-                  <LoadingAnimation />
-              }
-            </div>
-            {
-              this.state.hierarchicalData ?
-                (<div className="col-md-3 granularVolCirclepack">
-                  <h2>{`Total: ${this.state.hierarchicalData.map(d => d.value).reduce((a, b) => a + b)}`}</h2>
-                  <PermitVolCirclepack
-                    data={{ key: 'root', children: this.state.hierarchicalData }}
-                    colorKeys={nodeColors}
-                    onCircleClick={circleData => this.onModalOpen(circleData)}
-                  />
-                </div>) :
-                <LoadingAnimation />
-            }
-            {/* TODO: move this into volume histogram and set distance from left by margins, not hard coded! */}
-            {/* <div className="col-md-10" style={{ left: 40 }}>
-              <HorizontalLegend
-                // label item has label and color
-                labelItems={this.state.hierarchicalData.map(entry => (
-                  {
-                    label: entry.key,
-                    color: nodeColors[entry.key],
-                  }
-                ))}
+    return (<div className="dashRows">
+      {/* {this.state.modalData && <DataModal data={this.state.modalData} closeModal={this.onModalClose} />} */}
+      <div
+        id="controls-n-summary"
+        className="row col-md-12"
+      >
+        <div className="col-md-9">
+          <h2>Daily</h2>
+            {/* <VolumeHistogram
+              data={[]}
+              nodeColors={{}}
+            /> */}
+        </div>
+        {/* {
+          this.state.hierarchicalData ?
+            (<div className="col-md-3 granularVolCirclepack">
+              <h2>{`Total: ${this.state.hierarchicalData.map(d => d.value).reduce((a, b) => a + b)}`}</h2>
+              <PermitVolCirclepack
+                data={{ key: 'root', children: this.state.hierarchicalData }}
+                colorKeys={nodeColors}
+                onCircleClick={circleData => this.onModalOpen(circleData)}
               />
-            </div> */}
-          </div>
-          <div id="percentOnline" className="row">
-            <h2>Online vs In Person</h2>
-            {/* Make shared extent with FacetController after issue is fixed */}
-            {
-              this.state.histogramData ?
-                <LoadingAnimation /> :
-                <BooleanSplitMultiples
-                  histogramData={this.state.histogramData}
-                  entriesHierarchy={this.state.hierarchicalData}
-                  nodeColors={nodeColors}
-                />
-            }
-          </div>
-        </div>);
-      }
-      }
-    </Query>);
+            </div>) :
+            <LoadingAnimation />
+        } */}
+        {/* TODO: move this into volume histogram and set distance from left by margins, not hard coded! */}
+        {/* <div className="col-md-10" style={{ left: 40 }}>
+          <HorizontalLegend
+            // label item has label and color
+            labelItems={this.state.hierarchicalData.map(entry => (
+              {
+                label: entry.key,
+                color: nodeColors[entry.key],
+              }
+            ))}
+          />
+        </div> */}
+      </div>
+      <div id="percentOnline" className="row">
+        <h2>Online vs In Person</h2>
+        {/* Make shared extent with FacetController after issue is fixed */}
+        {/* {
+          this.state.histogramData ?
+            <LoadingAnimation /> :
+            <BooleanSplitMultiples
+              histogramData={this.state.histogramData}
+              entriesHierarchy={this.state.hierarchicalData}
+              nodeColors={nodeColors}
+            />
+        } */}
+      </div>
+    </div>);
   }
 }
 

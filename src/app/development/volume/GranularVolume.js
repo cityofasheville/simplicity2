@@ -27,7 +27,6 @@ class GranularVolume extends React.Component {
 
   render() {
     /* TODO:
-      split code more responsibly-- put data manipulation and loading thing in each vis rather than on granulardatareceivers
       bin by week if it's over 6 weeks, by month if it's over 1 year
         do binning on server? is this going to be slow AF?
       group header things-- make it smaller? fixed pos? to keep updated vs opened, date range, and permit type in view
@@ -55,7 +54,6 @@ class GranularVolume extends React.Component {
       </div>
       <div>
         <PermitDataFilter
-          // This should re-render when the timespan is changed
           timeSpan={this.state.timeSpan}
           dateField={this.state.dateField}
         />

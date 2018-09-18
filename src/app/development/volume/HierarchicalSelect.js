@@ -4,6 +4,7 @@ import { nest } from 'd3-collection';
 import { ResponsiveNetworkFrame } from 'semiotic';
 import Tooltip from '../../../shared/visualization/Tooltip';
 import HierarchicalDropdown from './HierarchicalDropdown';
+import { colorScheme } from './granularUtils'
 
 
 /*
@@ -57,21 +58,41 @@ function toggleHierarchy(clickedNode, inputNode) {
 }
 
 function selectedHierarchyData(node) {
+  // TODO: use selected active depth nodes for this instead-- just map and join unNestedValues
   if (!node.values) {
     return node.selected ? node.unNestedValues : [];
   }
   return [].concat(...node.values.map(v => selectedHierarchyData(v)))
 }
 
-function getKeysAtActiveDepth(node, activeDepth) {
+function selectedActiveDepthNodes(node, activeDepth) {
   if (node.depth === activeDepth) {
-    return node.selected ? node.key : null;
+    if (activeDepth === 0) {
+      return [node];
+    }
+    return node;
   }
-  return [].concat(...node.values.map(v => {
-    return getKeysAtActiveDepth(v, activeDepth);
-  }))
+  return [].concat(...node.values
+    .filter(v => v.selected)
+    .map(v => {
+      return selectedActiveDepthNodes(v, activeDepth);
+    })
+  )
 }
 
+function setNodeDisplayOpts(nodesToDisplay, colors, maxNodes = 7) {
+  return nodesToDisplay
+    .sort((a, b) => b.unNestedValues.length - a.unNestedValues.length)
+    .map((d, i) => {
+      const rVal = Object.assign({}, d);
+      let colorIndex = i;
+      if (i > maxNodes - 1) {
+        colorIndex = maxNodes;
+      }
+      rVal.color = colors[colorIndex];
+      return rVal;
+    })
+}
 
 
 class HierarchicalSelect extends Component {
@@ -126,6 +147,11 @@ class HierarchicalSelect extends Component {
     this.setState({
       activeDepth: newDepth,
     });
+    this.props.onFilterSelect(
+      // selectedHierarchyData(this.state.edges),
+      this.props.hierarchyOrder[newDepth - 1],
+      selectedActiveDepthNodes(this.state.edges, newDepth),
+    )
   }
 
   handleClick(inputNode) {
@@ -134,7 +160,12 @@ class HierarchicalSelect extends Component {
     this.setState({
       edges: newEdges,
     })
-    this.props.onFilterSelect(selectedHierarchyData(newEdges))
+    console.log(setNodeDisplayOpts(selectedActiveDepthNodes(newEdges, this.state.activeDepth), colorScheme))
+    this.props.onFilterSelect(
+      // selectedHierarchyData(newEdges),
+      this.props.hierarchyOrder[this.state.activeDepth - 1],
+      selectedActiveDepthNodes(newEdges, this.state.activeDepth),
+    )
   }
 
   render() {
@@ -144,8 +175,6 @@ class HierarchicalSelect extends Component {
       bottom: 5,
       left: 50,
     };
-
-    console.log(getKeysAtActiveDepth(this.state.edges, 0))
 
     return (
       <div className="interactiveAnnotation">
@@ -275,7 +304,7 @@ HierarchicalSelect.defaultProps = {
     key: 'root',
     selected: 'true',
   },
-  onFilterSelect: data => console.log(data),
+  onFilterSelect: (data, hierarchyLevel, activeKeys) => console.log(data, hierarchyLevel, activeKeys),
 };
 
 export default HierarchicalSelect;

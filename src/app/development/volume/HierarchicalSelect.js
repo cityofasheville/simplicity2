@@ -63,6 +63,15 @@ function selectedHierarchyData(node) {
   return [].concat(...node.values.map(v => selectedHierarchyData(v)))
 }
 
+function getKeysAtActiveDepth(node, activeDepth) {
+  if (node.depth === activeDepth) {
+    return node.selected ? node.key : null;
+  }
+  return [].concat(...node.values.map(v => {
+    return getKeysAtActiveDepth(v, activeDepth);
+  }))
+}
+
 
 
 class HierarchicalSelect extends Component {
@@ -119,10 +128,6 @@ class HierarchicalSelect extends Component {
     });
   }
 
-  getKeysAtActiveDepth() {
-
-  }
-
   handleClick(inputNode) {
     const clickedNode = Object.assign({}, inputNode)
     const newEdges = toggleHierarchy(clickedNode, this.state.edges);
@@ -139,6 +144,8 @@ class HierarchicalSelect extends Component {
       bottom: 5,
       left: 50,
     };
+
+    console.log(getKeysAtActiveDepth(this.state.edges, 0))
 
     return (
       <div className="interactiveAnnotation">

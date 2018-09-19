@@ -99,6 +99,14 @@ function selectedDataFromNodes(filteredColorfulNodes) {
   }))
 }
 
+function getNode(inputNode, hierarchyKeyPath) {
+  // inputNode-- start with the root
+  // hierarchyKeyPath-- start with the root like ['All Permits', 'Permits', 'Residential']
+  // if inputNode.key matches hierarchyKeyPath[depth], this is in the path
+    // if the above && inputNode.depth === hierarchyKeyPath.length - 1, this is the node!!!
+    // else keep going
+  // else it's a dud and don't bother
+}
 
 class HierarchicalSelect extends Component {
   constructor(props) {
@@ -111,6 +119,8 @@ class HierarchicalSelect extends Component {
     );
 
     // TODO: filter out services by default
+    // use the getNode function with the hierarchyKeyPath ['All Permits', 'Services']
+    // and put that node into the toggleHierarchy function to toggle it off
 
     // TODO: meld these two functions into one since they *always* appear together
     const selectedNodes = selectedActiveDepthNodes(thisEdges, this.props.activeDepth);
@@ -302,6 +312,11 @@ class HierarchicalSelect extends Component {
             hierarchySum: d => d.value,
           }}
           customClickBehavior={d => this.handleNodeClick(d.data)}
+          customDoubleClickBehavior={d => {
+            console.log(d)
+            // Make it so that this is the root node
+
+          }}
         />
         <HorizontalLegend
           // label item has label and color

@@ -102,10 +102,20 @@ function selectedDataFromNodes(filteredColorfulNodes) {
 function getNode(inputNode, hierarchyKeyPath) {
   // inputNode-- start with the root
   // hierarchyKeyPath-- start with the root like ['All Permits', 'Permits', 'Residential']
-  // if inputNode.key matches hierarchyKeyPath[depth], this is in the path
-    // if the above && inputNode.depth === hierarchyKeyPath.length - 1, this is the node!!!
-    // else keep going
-  // else it's a dud and don't bother
+  // If inputNode.key matches hierarchyKeyPath[depth], this is in the path
+  if (inputNode.key === hierarchyKeyPath[inputNode.depth]) {
+    // If the above && inputNode.depth === hierarchyKeyPath.length - 1, this is the node!!!
+    if (inputNode.depth === hierarchyKeyPath.length - 1) {
+      return inputNode;
+    } else {
+      // Figure out which of the child values is in the hierarhcykeypath, if any
+      const nextVictim = inputNode.values.find(val => val.key === hierarchyKeyPath[val.depth]);
+      if (!nextVictim) { return null; }
+      return getNode(nextVictim, hierarchyKeyPath)
+    }
+  }
+  // Else it's a dud and don't bother
+  return null;;
 }
 
 class HierarchicalSelect extends Component {
@@ -197,6 +207,26 @@ class HierarchicalSelect extends Component {
     )
   }
 
+  getNodeColor(d) {
+    // TODO: also use this in hierarchicalDropdown
+    const atActiveDepth = d.depth === this.state.activeDepth ? 1 : 0;
+    let color = '#a6a6a6';
+    if (atActiveDepth && d.selected) {
+      const colorfulNode = this.state.colorfulNodes.find(candidate => {
+        return candidate.key === d.key && candidate.heritage.join() === d.heritage.join();
+      })
+      if (!colorfulNode) {
+        // If you deselect a node's child, and then deselect that node, things break
+        // TODO: why tho
+        console.log('A LOGIC ERROR OF SOME SORT IN GET NODE COLOR: ', d)
+        console.log(this.state.colorfulNodes)
+      } else {
+        color = colorfulNode.color;
+      }
+    }
+    return color;
+  }
+
   render() {
     const margin = {
       top: 5,
@@ -273,15 +303,8 @@ class HierarchicalSelect extends Component {
               </div>
             </div>)
           }}
-          nodeStyle={(d, i) => {
-            const atActiveDepth = d.depth === this.state.activeDepth ? 1 : 0;
-            let color = '#a6a6a6';
-            if (atActiveDepth && d.selected) {
-              const colorfulNode = this.state.colorfulNodes.find(candidate => {
-                return candidate.key === d.key && candidate.heritage.join() === d.heritage.join();
-              })
-              color = colorfulNode.color;
-            }
+          nodeStyle={(d) => {
+            const color = this.getNodeColor(d);
             return {
               fill: color,
               stroke: 'white',
@@ -300,9 +323,17 @@ class HierarchicalSelect extends Component {
             const heritage = d.heritage.slice(1)
             heritage.push(d.key)
             const title = heritage.join(' > ');
+            // TODO: darker gray for get node color-- optionally pass in default
+            // TODO: "400 selected of 500 total" or something
             return (<Tooltip
-              title={title}
-              style={{ minWdith: title.length * 5 }}
+              style={{
+                minWdith: title.length * 5,
+                color: this.getNodeColor(d),
+               }}
+              textLines={[
+                { text: title },
+                { text: `${d.value} total` }
+              ]}
             />)
           }}
           networkType={{
@@ -313,24 +344,26 @@ class HierarchicalSelect extends Component {
           }}
           customClickBehavior={d => this.handleNodeClick(d.data)}
           customDoubleClickBehavior={d => {
+            // TODO: make this the root node on click
             console.log(d)
-            // Make it so that this is the root node
-
           }}
         />
         <HorizontalLegend
-          // label item has label and color
           style={{
             textAlign: 'center'
           }}
           labelItems={this.state.colorfulNodes
             .filter((d, i, array) => !d.othered || array.findIndex(datum => datum.othered) === i)
-            .map(entry => (
-              {
-                label: entry.othered ? 'Other' : entry.key,
+            .map(entry => {
+              const heritage = entry.heritage.slice(1)
+              heritage.push(entry.key)
+              const title = heritage.join(' > ');
+
+              return {
+                label: entry.othered ? 'Other' : title,
                 color: entry.color,
               }
-            ))
+            })
           }
         />
       </div>

@@ -196,8 +196,8 @@ class HierarchicalSelect extends Component {
 
     this.setState({
       activeDepth: this.state.activeDepth,
-      edges: newEdges,
       colorfulNodes: colorfulNodes,
+      edges: newEdges,
     })
 
     this.props.onFilterSelect(

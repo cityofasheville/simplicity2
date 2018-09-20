@@ -10,6 +10,9 @@ const dateComparisonOpts = {
 };
 
 export const colorScheme = [
+  /* This is two of the color schemes from the other color scheme file
+    (under shared/visualizations) joined and deduped
+  */
   '#B66DFF',
   '#DB6D00',
   '#006DDB',
@@ -65,7 +68,7 @@ export function groupHierachyOthers(inputHierarchy, otherGroupCutoff = 5) {
   return hierarchyToUse.sort((a, b) => b.value - a.value);
 }
 
-export function stackedHistogramFromHierarchical(rawData, entriesHierarchy, includedDates) {
+export function stackedHistogramFromNodes(nodes, includedDates) {
   const histFunc = histogram()
     .value(d => new Date(d.applied_date))
     .thresholds(includedDates)
@@ -73,12 +76,15 @@ export function stackedHistogramFromHierarchical(rawData, entriesHierarchy, incl
       includedDates[0],
       includedDates[includedDates.length - 1],
     ])
-  return [].concat(...entriesHierarchy
-    .map((hierarchyType) => {
-      return histFunc(hierarchyType.values)
+
+  console.log(nodes)
+  return [].concat(...nodes
+    .map((node) => {
+      console.log(node)
+      return histFunc(node.unNestedValues)
         .map(d => {
           return {
-            key: hierarchyType.key,
+            key: node.key,
             count: d.length,
             binStartDate: d.x0,
             values: d || [],

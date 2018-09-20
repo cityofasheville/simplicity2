@@ -19,16 +19,6 @@ class PermitDataFilter extends React.Component {
   constructor(props) {
     super(props);
 
-    // Maybe this belongs elsewhere in the lifecycle?
-    this.includedDates = [];
-    const oneDayMilliseconds = (24 * 60 * 60 * 1000);
-    let dateToAdd = new Date(this.props.timeSpan[0]).getTime();
-    const lastDate = new Date(this.props.timeSpan[1]).getTime();
-    while (dateToAdd <= lastDate) {
-      this.includedDates.push(new Date(dateToAdd));
-      dateToAdd += oneDayMilliseconds;
-    }
-
     this.state = {
       selectedData: null,
       selectedNodes: null,
@@ -62,6 +52,16 @@ class PermitDataFilter extends React.Component {
   // }
 
   render() {
+    // Maybe this belongs elsewhere in the lifecycle?
+    const includedDates = [];
+    const oneDayMilliseconds = (24 * 60 * 60 * 1000);
+    let dateToAdd = new Date(this.props.timeSpan[0]).getTime();
+    const lastDate = new Date(this.props.timeSpan[1]).getTime();
+    while (dateToAdd <= lastDate) {
+      includedDates.push(new Date(dateToAdd));
+      dateToAdd += oneDayMilliseconds;
+    }
+
     return (<Query
       query={GET_PERMITS}
       variables={{
@@ -76,7 +76,6 @@ class PermitDataFilter extends React.Component {
           console.log(error);
           return <div>Error :( </div>;
         }
-
         return (<div className="dashRows">
           {/* {this.state.modalData &&
             // Maybe this needs to be moved?
@@ -93,9 +92,12 @@ class PermitDataFilter extends React.Component {
             />
           </div>
           <div>
-            {/* <GranularDataReceivers
-              currentData={this.state.currentData}
-            /> */}
+            <GranularDataReceivers
+              includedDates={includedDates}
+              selectedData={this.state.selectedData}
+              selectedNodes={this.state.selectedNodes}
+              selectedHierarchyLevel={this.state.selectedHierarchyLevel}
+            />
           </div>
         </div>);
       }

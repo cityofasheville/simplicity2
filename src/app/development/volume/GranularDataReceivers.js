@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import { Legend, ResponsiveOrdinalFrame } from 'semiotic';
 import {
-  stackedHistogramFromHierarchical,
+  stackedHistogramFromNodes,
   GET_PERMITS,
 } from './granularUtils';
 import BooleanSplitMultiples from './BooleanSplitMultiples';
@@ -18,17 +18,6 @@ import HierarchicalSelect from './HierarchicalSelect'
 class GranularDataReceivers extends React.Component {
   constructor(props) {
     super(props);
-
-    // Maybe this belongs elsewhere in the lifecycle?
-    // Or on the timeline thing
-    this.includedDates = [];
-    const oneDayMilliseconds = (24 * 60 * 60 * 1000);
-    let dateToAdd = new Date(this.props.timeSpan[0]).getTime();
-    const lastDate = new Date(this.props.timeSpan[1]).getTime();
-    while (dateToAdd <= lastDate) {
-      this.includedDates.push(new Date(dateToAdd));
-      dateToAdd += oneDayMilliseconds;
-    }
 
     // this.onModalOpen = this.onModalOpen.bind(this);
     // this.onModalClose = this.onModalClose.bind(this);
@@ -46,7 +35,12 @@ class GranularDataReceivers extends React.Component {
   //   })
   // }
 
+
   render() {
+    const histData = this.props.selectedNodes ?
+      stackedHistogramFromNodes(this.props.selectedNodes, this.props.includedDates) :
+      [];
+
     return (<div className="dashRows">
       {/* {this.state.modalData && <DataModal data={this.state.modalData} closeModal={this.onModalClose} />} */}
       <div
@@ -55,10 +49,10 @@ class GranularDataReceivers extends React.Component {
       >
         <div className="col-md-9">
           <h2>Daily</h2>
-            {/* <VolumeHistogram
-              data={[]}
+            <VolumeHistogram
+              data={histData}
               nodeColors={{}}
-            /> */}
+            />
         </div>
         {/* {
           this.state.hierarchicalData ?

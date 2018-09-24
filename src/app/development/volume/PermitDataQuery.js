@@ -10,33 +10,14 @@ import HierarchicalSelect from './HierarchicalSelect'
 import GranularDataReceivers from './GranularDataReceivers'
 
 
-class PermitDataFilter extends React.Component {
+class PermitDataQuery extends React.Component {
   /*
     This component fetches data from the graphql server based on the timespan
-    It renders the select component, which allows the user to choose what data to
-    display in child visualiations
   */
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      selectedData: null,
-      selectedNodes: null,
-      selectedHierarchyLevel: null,
-      // modalData: null,
-    };
-
-    this.onHierarchySelect = this.onHierarchySelect.bind(this);
+  constructor() {
+    super();
     // this.onModalOpen = this.onModalOpen.bind(this);
     // this.onModalClose = this.onModalClose.bind(this);
-  }
-
-  onHierarchySelect(selectedData, selectedNodes, selectedHierarchyLevel) {
-    this.setState({
-      selectedData,
-      selectedNodes,
-      selectedHierarchyLevel
-    });
   }
 
   // onModalClose() {
@@ -84,19 +65,10 @@ class PermitDataFilter extends React.Component {
               closeModal={this.onModalClose}
             />
           } */}
-          <div
-            className="row col-md-12"
-          >
-            <HierarchicalSelect
-              data={data.permits}
-            />
-          </div>
           <div>
             <GranularDataReceivers
+              data={data.permits}
               includedDates={includedDates}
-              selectedData={this.state.selectedData}
-              selectedNodes={this.state.selectedNodes}
-              selectedHierarchyLevel={this.state.selectedHierarchyLevel}
             />
           </div>
         </div>);
@@ -106,4 +78,4 @@ class PermitDataFilter extends React.Component {
   }
 }
 
-export default PermitDataFilter;
+export default PermitDataQuery;

@@ -1,14 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Query } from 'react-apollo';
-import { Legend, ResponsiveOrdinalFrame } from 'semiotic';
 import {
   stackedHistogramFromNodes,
   GET_PERMITS,
 } from './granularUtils';
 import BooleanSplitMultiples from './BooleanSplitMultiples';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
-import HorizontalLegend from '../../../shared/visualization/HorizontalLegend';
 import PermitVolCirclepack from './PermitVolCirclepack';
 import VolumeHistogram from './VolumeHistogram';
 import DataModal from './DataModal';
@@ -21,6 +18,14 @@ class GranularDataReceivers extends React.Component {
 
     // this.onModalOpen = this.onModalOpen.bind(this);
     // this.onModalClose = this.onModalClose.bind(this);
+    this.state = {
+      selectedData: this.props.data,
+      selectedNodes: null,
+      selectedHierarchyLevel: null,
+      // modalData: null,
+    };
+
+    this.onHierarchySelect = this.onHierarchySelect.bind(this);
   }
 
   // onModalClose() {
@@ -35,14 +40,32 @@ class GranularDataReceivers extends React.Component {
   //   })
   // }
 
+  onHierarchySelect(selectedData, selectedNodes, selectedHierarchyLevel) {
+    this.setState({
+      selectedData,
+      selectedNodes,
+      selectedHierarchyLevel
+    });
+  }
 
   render() {
-    const histData = this.props.selectedNodes ?
-      stackedHistogramFromNodes(this.props.selectedNodes, this.props.includedDates) :
+    const histData = this.state.selectedNodes ?
+      stackedHistogramFromNodes(this.state.selectedNodes, this.props.includedDates) :
       [];
+
+      // TODO: GROUP OTHERS
+    console.log(histData)
 
     return (<div className="dashRows">
       {/* {this.state.modalData && <DataModal data={this.state.modalData} closeModal={this.onModalClose} />} */}
+      <div
+        className="row col-md-12"
+      >
+        <HierarchicalSelect
+          data={this.props.data}
+          onFilterSelect={this.onHierarchySelect}
+        />
+      </div>
       <div
         id="controls-n-summary"
         className="row col-md-12"
@@ -66,18 +89,6 @@ class GranularDataReceivers extends React.Component {
             </div>) :
             <LoadingAnimation />
         } */}
-        {/* TODO: move this into volume histogram and set distance from left by margins, not hard coded! */}
-        {/* <div className="col-md-10" style={{ left: 40 }}>
-          <HorizontalLegend
-            // label item has label and color
-            labelItems={this.state.hierarchicalData.map(entry => (
-              {
-                label: entry.key,
-                color: nodeColors[entry.key],
-              }
-            ))}
-          />
-        </div> */}
       </div>
       <div id="percentOnline" className="row">
         <h2>Online vs In Person</h2>

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import PermitDataFilter from './PermitDataFilter';
+import PermitDataQuery from './PermitDataQuery';
 import TimeSlider from './TimeSlider';
 
 class GranularVolume extends React.Component {
@@ -53,7 +53,7 @@ class GranularVolume extends React.Component {
         />
       </div>
       <div>
-        <PermitDataFilter
+        <PermitDataQuery
           timeSpan={this.state.timeSpan}
           dateField={this.state.dateField}
         />

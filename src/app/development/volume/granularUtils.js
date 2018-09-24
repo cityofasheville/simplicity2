@@ -88,6 +88,7 @@ export function stackedHistogramFromNodes(nodes, includedDates) {
             count: d.length,
             binStartDate: d.x0,
             values: d || [],
+            color: node.color,
           };
         })
     }));

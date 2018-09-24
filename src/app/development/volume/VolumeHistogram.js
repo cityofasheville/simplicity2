@@ -46,7 +46,9 @@ const VolumeHistogram = props => (
     oAccessor="binStartDate"
     oPadding={5}
     rAccessor="count"
-    style={d => ({ fill: d.count === 0 ? 'none' : props.nodeColors[d.key], stroke: 'white', strokeWidth: 0.1 })}
+    style={d => {
+      return { fill: d.count === 0 ? 'none' : d.color, stroke: 'white', strokeWidth: 0.1 }
+    }}
     hoverAnnotation
     tooltipContent={(d) => {
       const pieces = d.type === 'column-hover' ? d.pieces : [d.data];
@@ -54,7 +56,7 @@ const VolumeHistogram = props => (
 
       const textLines = pieces.map(piece => ({
         text: `${piece.key}: ${piece.count}`,
-        color: props.nodeColors[piece.key],
+        color: piece.color,
       })).reverse();
 
       return (<Tooltip

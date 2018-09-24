@@ -6,7 +6,7 @@ import { labelOrder } from './visUtilities';
 const HorizontalLegend = (props) => {
   const rectWidth = 15;
 
-  const labelItems = labelOrder(props.formattedData, props.valueAccessor);
+  const labelItems = props.labelItems || labelOrder(props.formattedData, props.valueAccessor);
 
   return (<div
     style={props.style}

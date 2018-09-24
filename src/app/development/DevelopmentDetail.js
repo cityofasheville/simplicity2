@@ -1,36 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactTable from 'react-table';
-import { accessibility } from 'accessible-react-table';
+import AccessibleReactTable from 'accessible-react-table';
 import moment from 'moment';
 import DetailsFormGroup from '../../shared/DetailsFormGroup';
 import Icon from '../../shared/Icon';
 import { IM_MAP5 } from '../../shared/iconConstants';
+import createFilterRenderer from '../../shared/FilterRenderer';
+
+const FilterRenderer = createFilterRenderer('Search...');
 
 const dataColumns = [
   {
     Header: 'Contractor name(s)',
     accessor: 'contractor_name',
-    Filter: ({ filter, onChange }) => (
-      <input
-        onChange={event => onChange(event.target.value)}
-        style={{ width: '100%' }}
-        value={filter ? filter.value : ''}
-        placeholder="Search..."
-      />
-    ),
+    Filter: FilterRenderer,
   },
   {
     Header: 'License Number(s)',
     accessor: 'contractor_license_number',
-    Filter: ({ filter, onChange }) => (
-      <input
-        onChange={event => onChange(event.target.value)}
-        style={{ width: '100%' }}
-        value={filter ? filter.value : ''}
-        placeholder="Search..."
-      />
-    ),
+    Filter: FilterRenderer,
   },
 ];
 
@@ -47,7 +35,6 @@ const getContractorData = (contractors, licenses) => {
 
 const DevelopmentDetail = (props) => {
   const contractorData = getContractorData(props.data.contractor_names, props.data.contractor_license_numbers);
-  const AccessibleReactTable = accessibility(ReactTable);
   return (
     <div>
       {props.standalone &&
@@ -64,7 +51,7 @@ const DevelopmentDetail = (props) => {
           <fieldset className="detailsFieldset">
             <div className="row">
               <div className="col-xs-12 detailsFieldset__details-listings">
-                <DetailsFormGroup label="Description" name="permit_description" value={props.data.permit_description} hasLabel />              
+                <DetailsFormGroup label="Description" name="permit_description" value={props.data.permit_description} hasLabel />
                 <div className="form-group">
                   <a href={['https://www.google.com/maps/?q=', [props.data.y, props.data.x].join(',')].join('')} target="_blank" title="Click to view address in Google maps">
                     <span style={{ marginRight: '5px' }}><Icon path={IM_MAP5} size={20} /></span>
@@ -112,39 +99,29 @@ const DevelopmentDetail = (props) => {
                     };
                   }}
                   columns={
-                  [{
-                    Header: 'Date',
-                    id: 'comment_date',
-                    width: 125,
-                    accessor: comment => (<span>{moment.utc(comment.comment_date).format('M/DD/YYYY')}</span>),
-                    Filter: ({ filter, onChange }) => (
-                      <input
-                        onChange={event => onChange(event.target.value)}
-                        style={{ width: '100%' }}
-                        value={filter ? filter.value : ''}
-                        placeholder="Search..."
-                      />
-                    ),
-                  }, {
-                    Header: 'Comments',
-                    accessor: 'comments',
-                    minWidth: 400,
-                    Filter: ({ filter, onChange }) => (
-                      <input
-                        onChange={event => onChange(event.target.value)}
-                        style={{ width: '100%' }}
-                        value={filter ? filter.value : ''}
-                        placeholder="Search..."
-                      />
-                    ),
-                  }]
+                    [{
+                      Header: 'Date',
+                      id: 'comment_date',
+                      width: 125,
+                      accessor: comment => (
+                        <span>{moment.utc(comment.comment_date).format('M/DD/YYYY')}</span>
+                      ),
+                      Filter: FilterRenderer,
+                    }, {
+                      Header: 'Comments',
+                      accessor: 'comments',
+                      minWidth: 400,
+                      Filter: FilterRenderer,
+                    }]
                   }
                   showPagination={props.data.comments.length > 5}
                   defaultPageSize={props.data.comments.length <= 5 ? props.data.comments.length : 5}
                   filterable={props.data.comments.length > 5}
                   defaultFilterMethod={(filter, row) => {
                     const id = filter.pivotId || filter.id;
-                    return row[id] !== undefined ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
+                    return row[id] !== undefined
+                      ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1
+                      : true;
                   }}
                 />
               </div>

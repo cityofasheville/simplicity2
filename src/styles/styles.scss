@@ -1,5 +1,7 @@
 @import "bootstrap/bootstrap";
 @import "components/components";
+@import "components/react-widgets-copied-files/css/react-widgets";
+
 
 /*VARIABLES*/
 $desktop-min: 1025px;
@@ -691,7 +693,7 @@ label {
 
 .tooltip-content {
   background: white;
-  border: 1px solid black;
+  border: 0.1px solid gray;
   color: black;
   z-index: 99;
   opacity: 1;
@@ -715,7 +717,7 @@ label {
 .tooltip {
   opacity: 1;
   background-color: white;
-  border: 0.1px solid black;
+  border: 0.1px solid gray;
 }
 
 .semiotic-axis path {
@@ -906,4 +908,11 @@ footer.footer{
 			float: none !important;
 		}
 	}
+}
+
+.ReactTable {
+  input:focus, select:focus, .-btn:focus {
+    outline: 1px dotted #212121;
+    outline: 5px auto -webkit-focus-ring-color;
+  }
 }

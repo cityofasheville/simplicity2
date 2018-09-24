@@ -1,7 +1,7 @@
 import React from 'react';
-import { accessibility } from 'accessible-react-table';
-import ReactTable from 'react-table';
+import AccessibleReactTable from 'accessible-react-table';
 import moment from 'moment';
+import createFilterRenderer from '../../../shared/FilterRenderer';
 
 //const parseNotes = (notes) => {
   // this function could be improved for matching with the 'Eastern Standard Time' string -
@@ -28,87 +28,46 @@ import moment from 'moment';
 //   return parsedNotes;
 // };
 
+const FilterRenderer = createFilterRenderer('Search');
+
 const dataColumns = [
   {
     Header: 'ID',
     accessor: 'ID',
     width: 100,
-    Filter: ({ filter, onChange }) => (
-      <input
-        onChange={event => onChange(event.target.value)}
-        style={{ width: '100%' }}
-        value={filter ? filter.value : ''}
-        placeholder="Search..."
-      />
-    ),
+    Filter: FilterRenderer,
   },
   {
     Header: 'Summary',
     accessor: 'Summary',
     minWidth: 250,
-    Filter: ({ filter, onChange }) => (
-      <input
-        onChange={event => onChange(event.target.value)}
-        style={{ width: '100%' }}
-        value={filter ? filter.value : ''}
-        placeholder="Search..."
-      />
-    ),
+    Filter: FilterRenderer,
   },
   {
     Header: 'Requested Date',
     id: 'RequestedDate',
     accessor: item => (<span>{moment.utc(item.RequestedDate).format('M/DD/YYYY')}</span>),
     width: 115,
-    Filter: ({ filter, onChange }) => (
-      <input
-        onChange={event => onChange(event.target.value)}
-        style={{ width: '100%' }}
-        value={filter ? filter.value : ''}
-        placeholder="Search..."
-      />
-    ),
+    Filter: FilterRenderer,
   },
   {
     Header: 'Requestor',
     accessor: 'Requestor',
-    Filter: ({ filter, onChange }) => (
-      <input
-        onChange={event => onChange(event.target.value)}
-        style={{ width: '100%' }}
-        value={filter ? filter.value : ''}
-        placeholder="Search..."
-      />
-    ),
+    Filter: FilterRenderer,
   },
   {
     Header: 'Priority',
     accessor: 'Priority',
-    Filter: ({ filter, onChange }) => (
-      <input
-        onChange={event => onChange(event.target.value)}
-        style={{ width: '100%' }}
-        value={filter ? filter.value : ''}
-        placeholder="Search..."
-      />
-    ),
+    Filter: FilterRenderer,
   },
   {
     Header: 'Status',
     accessor: 'CurrentStatus',
-    Filter: ({ filter, onChange }) => (
-      <input
-        onChange={event => onChange(event.target.value)}
-        style={{ width: '100%' }}
-        value={filter ? filter.value : ''}
-        placeholder="Search..."
-      />
-    ),
+    Filter: FilterRenderer,
   },
 ];
 
 const ProjectFlowTable = props => {
-  const AccessibleReactTable = accessibility(ReactTable);
   return (
     <div>
       <div className="col-sm-12">

@@ -188,6 +188,7 @@ const BudgetDetailsTreemap = props => (
                   onClick={props.jumpUp ? () => props.jumpUp(props) : null}
                   disabled={props.location.query.nodePath === 'root' ||
                     props.location.query.nodePath === undefined}
+                  aria-label={content.treemap_up}
                 ><Icon path={IM_ARROW_UP8} size={16} />
                 </button>
               </div>

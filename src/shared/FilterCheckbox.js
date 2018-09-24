@@ -1,15 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Checkbox, CheckboxGroupContext } from 'accessible-react-checkbox-group';
-import { generate } from 'namor';
 import '../styles/components/filterCheckbox.scss';
 
 
 class FilterCheckbox extends React.Component {
+  /**
+   * Generates a randomized string that looks like a GUID and is unique enough for this library.
+   *
+   * As per top answer: https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
+   *
+   * @returns {string} a randomized mostly unique string
+   */
+  guid = () => {
+    function s4() {
+      return Math.floor((1 + Math.random()) * 0x10000)
+        .toString(16)
+        .substring(1);
+    }
+    return `${s4() + s4()}-${s4()}-${s4()}-${s4()}-${s4()}${s4()}${s4()}`;
+  };
+
   state = {
-    id: generate({ words: 2 }),
-    parentId: generate({ words: 2 }),
-    labelId: generate({ words: 2 }),
+    id: this.guid(),
+    parentId: this.guid(),
+    labelId: this.guid(),
   };
 
   handleClick = (event) => {

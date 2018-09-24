@@ -10,6 +10,9 @@ import { getBoundsFromPolygonData, combinePolygonsFromPropertyList } from '../..
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import Error from '../../shared/Error';
 import expandingRows from '../../shared/react_table_hoc/ExpandingRows';
+import createFilterRenderer from '../../shared/FilterRenderer';
+
+const FilterRenderer = createFilterRenderer('Search...');
 
 const dataColumns = [
   {
@@ -19,14 +22,7 @@ const dataColumns = [
     Cell: row => (
       <span>{row.original.pinnum}</span>
     ),
-    Filter: ({ filter, onChange }) => (
-      <input
-        onChange={event => onChange(event.target.value)}
-        style={{ width: '100%' }}
-        value={filter ? filter.value : ''}
-        placeholder="Search..."
-      />
-    ),
+    Filter: FilterRenderer,
     filterMethod: (filter, row) => {
       const joinedInfo = row._original.pinnum;
       return row._original !== undefined ? joinedInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
@@ -36,14 +32,7 @@ const dataColumns = [
     Header: 'Civic Address ID',
     accessor: 'property_civic_address_id',
     width: 150,
-    Filter: ({ filter, onChange }) => (
-      <input
-        onChange={event => onChange(event.target.value)}
-        style={{ width: '100%' }}
-        value={filter ? filter.value : ''}
-        placeholder="Search..."
-      />
-    ),
+    Filter: FilterRenderer,
   },
   {
     Header: 'Address',
@@ -51,14 +40,7 @@ const dataColumns = [
     Cell: row => (
       <span>{row.original.property_address}, {row.original.property_zipcode}</span>
     ),
-    Filter: ({ filter, onChange }) => (
-      <input
-        onChange={event => onChange(event.target.value)}
-        style={{ width: '100%' }}
-        value={filter ? filter.value : ''}
-        placeholder="Search..."
-      />
-    ),
+    Filter: FilterRenderer,
     filterMethod: (filter, row) => {
       const joinedInfo = [row._original.address, row._original.zipcode].join(', ');
       return row._original !== undefined ? joinedInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;

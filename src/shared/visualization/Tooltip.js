@@ -13,7 +13,7 @@ const Tooltip = (props) => {
   );
   styles.minWidth = `${minWidth}em`;
   return (<span style={styles} className="tooltip">
-    <div style={{ fontWeight: 'bolder', textAlign: 'center' }}>
+    <div style={{ textAlign: 'center' }}>
       {props.title}
     </div>
     {props.textLines.map((lineObj, i) =>

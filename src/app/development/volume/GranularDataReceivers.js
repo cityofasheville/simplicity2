@@ -52,6 +52,7 @@ class GranularDataReceivers extends React.Component {
     const histData = this.state.selectedNodes ?
       stackedHistogramFromNodes(this.state.selectedNodes, this.props.includedDates) :
       [];
+    const totalCount = this.state.selectedData.length;
 
     return (<div className="dashRows">
       {/* {this.state.modalData && <DataModal data={this.state.modalData} closeModal={this.onModalClose} />} */}
@@ -71,21 +72,19 @@ class GranularDataReceivers extends React.Component {
           <h2>Daily</h2>
             <VolumeHistogram
               data={histData}
-              nodeColors={{}}
             />
         </div>
-        {/* {
-          this.state.hierarchicalData ?
-            (<div className="col-md-3 granularVolCirclepack">
-              <h2>{`Total: ${this.state.hierarchicalData.map(d => d.value).reduce((a, b) => a + b)}`}</h2>
-              <PermitVolCirclepack
-                data={{ key: 'root', children: this.state.hierarchicalData }}
-                colorKeys={nodeColors}
-                onCircleClick={circleData => this.onModalOpen(circleData)}
-              />
-            </div>) :
-            <LoadingAnimation />
-        } */}
+        <div className="col-md-3 granularVolCirclepack">
+        <h2>{`Total: ${totalCount}`}</h2>
+        {this.state.selectedNodes ?
+          (<PermitVolCirclepack
+            data={{ key: 'root', values: this.state.selectedNodes }}
+            colorKeys={{}}
+            // onCircleClick={circleData => this.onModalOpen(circleData)}
+          />) :
+        <LoadingAnimation />
+        }
+      </div>
       </div>
       <div id="percentOnline" className="row">
         <h2>Online vs In Person</h2>

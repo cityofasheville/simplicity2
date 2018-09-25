@@ -87,7 +87,6 @@ const VolumeHistogram = props => (
 VolumeHistogram.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object),
   dateOptions: PropTypes.object,
-  nodeColors: PropTypes.object,
 };
 
 VolumeHistogram.defaultProps = {
@@ -96,7 +95,6 @@ VolumeHistogram.defaultProps = {
     month: 'short',
     day: 'numeric',
   },
-  nodeColors: {},
 };
 
 export default VolumeHistogram;

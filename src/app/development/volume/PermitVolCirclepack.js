@@ -25,10 +25,9 @@ class PermitVolCirclepack extends React.Component {
       }}
       edges={this.props.data}
       nodeStyle={(d) => {
-        const color = this.props.colorKeys[d.key];
         return {
-          stroke: color,
-          fill: color,
+          stroke: d.color,
+          fill: d.color,
         };
       }}
       nodeIDAccessor="key"
@@ -46,11 +45,13 @@ class PermitVolCirclepack extends React.Component {
       // }}
       networkType={{
         type: 'circlepack',
-        // array of data has to be { key: root, children: [...] }
+        hierarchyChildren: d => d.values,
+        hierarchySum: d => d.value,
+        // array of data has to be { key: root, values: [...] }
       }}
-      customClickBehavior={(d) => {
-        this.props.onCircleClick(d.values)
-      }}
+      // customClickBehavior={(d) => {
+      //   this.props.onCircleClick(d.values)
+      // }}
       nodeLabels={(d) => {
         if (d.key === 'root' || d.r < 7.5) { return null; }
         return (<text
@@ -65,7 +66,7 @@ class PermitVolCirclepack extends React.Component {
         return d.key === 'root' ? '' : (
           <Tooltip
             title={d.key}
-            style={{ color: this.props.colorKeys[d.key] }}
+            style={{ color: d.color }}
           />
         );
       }}

@@ -53,9 +53,6 @@ class GranularDataReceivers extends React.Component {
       stackedHistogramFromNodes(this.state.selectedNodes, this.props.includedDates) :
       [];
 
-      // TODO: GROUP OTHERS
-    console.log(histData)
-
     return (<div className="dashRows">
       {/* {this.state.modalData && <DataModal data={this.state.modalData} closeModal={this.onModalClose} />} */}
       <div

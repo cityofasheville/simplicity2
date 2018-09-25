@@ -67,7 +67,7 @@ const VolumeHistogram = props => (
         color: piece.color,
       }))
 
-      if (othered) {
+      if (othered.length > 0) {
         textLines.push({
           text: `Other: ${othered.map(other => other.count).reduce((a, b) => a + b)}`,
           color: othered[0].color,

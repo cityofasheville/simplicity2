@@ -12,6 +12,7 @@ class TimeSlider extends Component {
   }
 
   brushEnd(e) {
+    console.log(e)
     this.props.onBrushEnd(e);
     this.setState({
       brushExtent: e,

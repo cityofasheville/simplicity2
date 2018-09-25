@@ -143,6 +143,11 @@ class HierarchicalSelect extends Component {
     };
     this.setActiveDepth = this.setActiveDepth.bind(this);
     this.handleNodeClick = this.handleNodeClick.bind(this);
+    this.props.onFilterSelect(
+      selectedDataFromNodes(colorfulNodes),
+      colorfulNodes,
+      this.props.hierarchyOrder[this.state.activeDepth - 1]
+    )
   }
 
   customNestEntries(inputNode, depth = 0) {

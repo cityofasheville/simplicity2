@@ -95,6 +95,7 @@ TimeSlider.defaultProps = {
     new Date().getTime() - 2592000000,
     new Date().getTime(),
   ], // today and today minus thirty days
+  // TODO: get rid of width locked since it doesn't work anyway
   brushWidthLocked: true,
   onBrushEnd: newExtent => console.log(newExtent),
   xSpan: [

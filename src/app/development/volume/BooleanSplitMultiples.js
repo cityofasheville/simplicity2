@@ -19,7 +19,8 @@ const BooleanSplitMultiples = (props) => {
       {props.entriesHierarchy.map((node) => {
         const thisColor = node.color;
         const brighterColor = color(thisColor).brighter(1.25);
-        const thisData = openedOnline.filter(d => d.key === node.key);
+        // PREVENT THINGS WITH SAME NAME FROM GETTING ADDED TOGETHER by adding heritage
+        const thisData = openedOnline.filter(d => d.key === node.key && d.heritage.join() === node.heritage.join());
         const margins = {
           top: 40,
           right: 10,
@@ -35,7 +36,7 @@ const BooleanSplitMultiples = (props) => {
 
         return (<div
           style={{ display: 'inline-block' }}
-          key={node.key}
+          key={`${node.key}-${node.heritage.join('-')}`}
           className="col-md-4"
         >
           <ResponsiveOrdinalFrame
@@ -91,7 +92,7 @@ const BooleanSplitMultiples = (props) => {
               );
             }}
             data={thisData}
-            title={node.key}
+            title={`${node.heritage.slice(1).join(' > ')} > ${node.key}`}
             style={(d) => {
               if (d.count === 0) {
                 return {

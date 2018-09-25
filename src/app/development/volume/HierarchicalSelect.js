@@ -40,32 +40,30 @@ function getNodeRelationship(clickedNode, candidate) {
 function toggleHierarchy(clickedNode, inputNode) {
   const node = Object.assign({}, inputNode);
   const relationship = getNodeRelationship(clickedNode, node);
-  if (!relationship) {
+  if (relationship) {
     // Don't iterate if they have nothing to do with each other
-    return node;
-  }
-  // Else if there is a relationship...
-  if (clickedNode.selected) {
-    if (relationship === 'self' || relationship === 'child') {
-      // If clicked node was already selected, deselect itself and its children
-      node.selected = false;
-    } else if (relationship === 'parent') {
-      // If relationship is parent and the only selected child got clicked
-      const selectedNodeChildren = node.values.filter(candidateChild => candidateChild.selected);
-      if (selectedNodeChildren.length === 1) {
-        const relationshipWithClicked = getNodeRelationship(clickedNode, selectedNodeChildren[0]);
-        // Deselect if self or if parent
-        node.selected = !(relationshipWithClicked === 'self' || relationshipWithClicked === 'parent')
+    if (clickedNode.selected) {
+      if (relationship === 'self' || relationship === 'child') {
+        // If clicked node was already selected, deselect itself and its children
+        node.selected = false;
+      } else if (relationship === 'parent') {
+        // If relationship is parent and the only selected child got clicked
+        const selectedNodeChildren = node.values.filter(candidateChild => candidateChild.selected);
+        if (selectedNodeChildren.length === 1) {
+          const relationshipWithClicked = getNodeRelationship(clickedNode, selectedNodeChildren[0]);
+          // Deselect if self or if parent
+          node.selected = !(relationshipWithClicked === 'self' || relationshipWithClicked === 'parent')
+        }
       }
+    } else if (!clickedNode.selected){
+      // If clicked node is being selected, select itself and its children
+      node.selected = true;
     }
-  } else if (!clickedNode.selected){
-    // If clicked node is being selected, select itself and its children
-    node.selected = true;
-  }
-  if (node.values) {
-    node.values = inputNode.values.map((child) => {
-      return toggleHierarchy(clickedNode, child);
-    })
+    if (node.values) {
+      node.values = inputNode.values.map((child) => {
+        return toggleHierarchy(clickedNode, child);
+      })
+    }
   }
   return node;
 }
@@ -88,9 +86,8 @@ function selectedActiveDepthNodes(inputNode, activeDepth) {
 }
 
 function selectedDataFromHierarchy(node) {
-  // if it's not active, return null
-  // if it has no values attached, return it
   if (!node.values) {
+    // If it has no values attached, return it
     return node.allUnnestedValues;
   }
   return [].concat(...node.values
@@ -127,7 +124,7 @@ class HierarchicalSelect extends Component {
       },
     );
 
-    // TODO: meld these two functions into one since they *always* appear together
+    // TODO: meld these two functions into one since they *always* appear together?
     const selectedNodes = selectedActiveDepthNodes(thisEdges, this.props.activeDepth);
     const colorfulNodes = this.setNodeDisplayOpts(selectedNodes, this.props.colorScheme);
 
@@ -136,13 +133,9 @@ class HierarchicalSelect extends Component {
       edges: thisEdges,
       colorfulNodes: colorfulNodes,
     };
+
     this.setActiveDepth = this.setActiveDepth.bind(this);
     this.handleNodeClick = this.handleNodeClick.bind(this);
-
-    // TODO: filter out services by default
-    // use the getNode function with the hierarchyKeyPath ['All Permits', 'Services']
-    // and put that node into the toggleHierarchy function to toggle it off
-    // this.handleNodeClick()
 
     this.props.onFilterSelect(
       selectedDataFromHierarchy(thisEdges),
@@ -200,8 +193,6 @@ class HierarchicalSelect extends Component {
     const selectedNodes = selectedActiveDepthNodes(newEdges, this.state.activeDepth);
     const colorfulNodes = this.setNodeDisplayOpts(selectedNodes, this.props.colorScheme);
 
-    console.log(newEdges, selectedDataFromHierarchy(newEdges))
-
     this.setState({
       activeDepth: this.state.activeDepth,
       colorfulNodes: colorfulNodes,
@@ -238,7 +229,7 @@ class HierarchicalSelect extends Component {
   setNodeDisplayOpts(nodesToDisplay, colors, maxNodes = 6) {
     // Needs output from selectedActiveDepthNodes
     return nodesToDisplay
-      .sort((a, b) => b.allUnnestedValues.length - a.allUnnestedValues.length)
+      .sort((a, b) => b.selectedActiveValues.length - a.selectedActiveValues.length)
       .map((d, i) => {
         const rVal = Object.assign({}, d);
         let colorIndex = i;
@@ -249,6 +240,13 @@ class HierarchicalSelect extends Component {
         rVal.color = colors[colorIndex];
         return rVal;
       })
+  }
+
+  componentWillMount() {
+    // Filter out services by default
+    // use the getNode function with the hierarchyKeyPath ['All Permits', 'Services']
+    const servicesNode = getNode(this.state.edges, ['All Permits', 'Services'])
+    this.handleNodeClick(servicesNode)
   }
 
   render() {

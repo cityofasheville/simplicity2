@@ -1,8 +1,6 @@
 import React from 'react';
 import gql from 'graphql-tag';
 import { histogram } from 'd3-array';
-import { scaleLinear } from 'd3-scale';
-
 
 const dateComparisonOpts = {
   // weekday: 'short',
@@ -12,14 +10,17 @@ const dateComparisonOpts = {
 };
 
 export const colorScheme = [
+  /* This is two of the color schemes from the other color scheme file
+    (under shared/visualizations) joined and deduped
+  */
   '#B66DFF',
   '#DB6D00',
+  '#920000',
   '#006DDB',
   '#FF6DB6',
   '#01b0b0',
-  '#2fe12f',
-  '#920000',
   '#004949',
+  '#2fe12f',
   '#6DB6FF',
   '#490092',
   '#ff99c7',
@@ -46,52 +47,6 @@ export function groupStatuses(data) {
   })
 }
 
-export function dotBin(input) {
-  const renderedPieces = [];
-  const keys = Object.keys(input.data);
-
-  // console.log(input)
-
-  const radiusFunc = scaleLinear()
-    .range([2, 8])
-    .domain([0, input.type.maxRadius]);
-
-  keys.forEach(key => {
-    const column = input.data[key];
-    const circles = {}
-    column.pieceData.forEach(pieceDatum => {
-      const thisDate = new Date(pieceDatum.value).toLocaleDateString('en-US', dateComparisonOpts)
-      if (circles[thisDate]) {
-        circles[thisDate].push(pieceDatum)
-      } else {
-        circles[thisDate] = [pieceDatum]
-      }
-    })
-
-    const circleArray = Object.keys(circles).map((circleKey) => {
-      return <circle
-        key={`piece-${key}-${circleKey}`}
-        r={radiusFunc(circles[circleKey].length)}
-        cx={input.rScale(new Date(circleKey))}
-        cy={column.middle - column.padding}
-        style={input.type.style}
-        // onMouseOver={(e) => input.type.mouseOver(circleKey, circles[circleKey], e)}
-      ></circle>
-    })
-
-    const dotArray = (
-      <g
-        key={`piece-${key}`}
-        // onMouseOut={() => input.type.mouseOut()}
-      >
-        {circleArray}
-      </g>
-    );
-    renderedPieces.push(dotArray);
-  });
-  return renderedPieces;
-}
-
 export const openedOnlineRule = inputDatum => inputDatum.created_by.includes('PUBLICUSER') || inputDatum.created_by === 'TALLEY' || inputDatum.created_by === 'CSHORT';
 
 export function groupHierachyOthers(inputHierarchy, otherGroupCutoff = 5) {
@@ -113,27 +68,29 @@ export function groupHierachyOthers(inputHierarchy, otherGroupCutoff = 5) {
   return hierarchyToUse.sort((a, b) => b.value - a.value);
 }
 
-export function histogramFromHierarchical(rawData, entriesHierarchy, includedDates) {
-  // Standard date format for comparison
-
-  const histFunc = histogram(rawData)
+export function stackedHistogramFromNodes(nodes, includedDates) {
+  const histFunc = histogram()
     .value(d => new Date(d.applied_date))
-    .thresholds(includedDates);
+    .thresholds(includedDates)
+    .domain([
+      includedDates[0],
+      includedDates[includedDates.length - 1],
+    ])
 
-  return [].concat(...entriesHierarchy
-    .map((hierarchyType) => {
-      const binnedValues = histFunc(hierarchyType.values);
-
-      return includedDates.map((thisDate) => {
-        const bin = binnedValues.find(v => new Date(v.x0).toLocaleDateString('en-US', dateComparisonOpts) === new Date(thisDate).toLocaleDateString('en-US', dateComparisonOpts));
-        const binLength = bin ? bin.length : 0;
-        return {
-          key: hierarchyType.key,
-          count: binLength,
-          binStartDate: thisDate,
-          values: bin || [],
-        };
-      });
+  return [].concat(...nodes
+    .map((node) => {
+      return histFunc(node.selectedActiveValues)
+        .map(d => {
+          return {
+            key: node.key,
+            count: d.length,
+            binStartDate: d.x0,
+            values: d || [],
+            color: node.color,
+            othered: node.othered,
+            heritage: node.heritage,
+          };
+        })
     }));
 }
 

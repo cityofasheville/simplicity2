@@ -67,6 +67,10 @@ module.exports = {
     contentBase: path.join(__dirname, 'dist'),
     inline: true,
     stats: 'errors-only',
+    watchOptions: {
+      aggregateTimeout: 300,
+      poll: 1000,
+    },
   },
   plugins: [
     new webpack.optimize.CommonsChunkPlugin({

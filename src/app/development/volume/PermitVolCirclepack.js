@@ -13,6 +13,10 @@ class PermitVolCirclepack extends React.Component {
     // }
   }
 
+  shouldComponentUpdate() {
+    return true;
+  }
+
   render() {
     return (<ResponsiveNetworkFrame
       responsiveWidth
@@ -25,10 +29,9 @@ class PermitVolCirclepack extends React.Component {
       }}
       edges={this.props.data}
       nodeStyle={(d) => {
-        const color = this.props.colorKeys[d.key];
         return {
-          stroke: color,
-          fill: color,
+          stroke: d.color,
+          fill: d.color,
         };
       }}
       nodeIDAccessor="key"
@@ -46,15 +49,17 @@ class PermitVolCirclepack extends React.Component {
       // }}
       networkType={{
         type: 'circlepack',
-        // array of data has to be { key: root, children: [...] }
+        hierarchyChildren: d => d.values,
+        hierarchySum: d => d.value,
+        // array of data has to be { key: root, values: [...] }
       }}
-      customClickBehavior={(d) => {
-        this.props.onCircleClick(d.values)
-      }}
+      // customClickBehavior={(d) => {
+      //   this.props.onCircleClick(d.values)
+      // }}
       nodeLabels={(d) => {
-        if (d.key === 'root' || d.r < 7.5) { return null; }
+        if (d.key === 'root' || d.r < 12) { return null; }
         return (<text
-          key={`${d.key}-${d.value}-${Math.floor(Math.random() * Math.floor(10000))}`}
+          key={`${d.key}-${d.heritage.join('-')}`}
           style={{ stroke: 'white', fontWeight: 'light', alignmentBaseline: 'middle' }}
           textAnchor="middle"
         >
@@ -64,8 +69,8 @@ class PermitVolCirclepack extends React.Component {
       tooltipContent={(d) => {
         return d.key === 'root' ? '' : (
           <Tooltip
-            title={d.key}
-            style={{ color: this.props.colorKeys[d.key] }}
+            title={`${d.heritage.slice(1).join(' > ')} > ${d.key}: ${d.value}`}
+            style={{ color: d.color }}
           />
         );
       }}

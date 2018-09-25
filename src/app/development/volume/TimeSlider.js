@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ResponsiveXYFrame } from 'semiotic';
+import { timeDay } from 'd3-time';
 
 class TimeSlider extends Component {
   constructor(props) {
@@ -12,10 +13,22 @@ class TimeSlider extends Component {
   }
 
   brushEnd(e) {
-    console.log(e)
-    this.props.onBrushEnd(e);
+    let newExtent;
+    if (e) {
+      // Snap brush to the day
+      // TODO: make this flexible based on timespan
+      newExtent = e.map(timeDay.round);
+      if (newExtent[0] >= newExtent[1]) {
+        newExtent[0] = timeDay.floor(newExtent[0]);
+        newExtent[1] = timeDay.ciel(newExtent[1]);
+      }
+    } else {
+      newExtent = this.state.brushExtent;
+    }
+
+    this.props.onBrushEnd(newExtent);
     this.setState({
-      brushExtent: e,
+      brushExtent: newExtent,
     });
   }
 
@@ -82,7 +95,7 @@ TimeSlider.defaultProps = {
     new Date().getTime() - 2592000000,
     new Date().getTime(),
   ], // today and today minus thirty days
-  brushWidthLocked: false,
+  brushWidthLocked: true,
   onBrushEnd: newExtent => console.log(newExtent),
   xSpan: [
     new Date().setFullYear(new Date().getFullYear() - 1),

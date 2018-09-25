@@ -54,10 +54,27 @@ const VolumeHistogram = props => (
       const pieces = d.type === 'column-hover' ? d.pieces : [d.data];
       const title = new Date(pieces[0].binStartDate).toLocaleDateString('en-US', props.dateOptions);
 
-      const textLines = pieces.map(piece => ({
+      const othered = [];
+      const notOthered = [];
+      pieces.forEach(piece => {
+        piece.othered ? othered.push(piece) : notOthered.push(piece);
+      })
+
+      // TODO: do this elsewhere?
+
+      let textLines = notOthered.map(piece => ({
         text: `${piece.key}: ${piece.count}`,
         color: piece.color,
-      })).reverse();
+      }))
+
+      if (othered) {
+        textLines.push({
+          text: `Other: ${othered.map(other => other.count).reduce((a, b) => a + b)}`,
+          color: othered[0].color,
+        })
+      }
+
+      textLines = textLines.reverse();
 
       return (<Tooltip
         title={title}

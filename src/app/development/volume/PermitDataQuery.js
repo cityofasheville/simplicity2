@@ -16,24 +16,9 @@ class PermitDataQuery extends React.Component {
   */
   constructor() {
     super();
-    // this.onModalOpen = this.onModalOpen.bind(this);
-    // this.onModalClose = this.onModalClose.bind(this);
   }
 
-  // onModalClose() {
-  //   this.setState({
-  //     modalData: null
-  //   })
-  // }
-  //
-  // onModalOpen(inputData) {
-  //   this.setState({
-  //     modalData: inputData
-  //   })
-  // }
-
   render() {
-    // Maybe this belongs elsewhere in the lifecycle?
     const includedDates = [];
     const oneDayMilliseconds = (24 * 60 * 60 * 1000);
     let dateToAdd = new Date(this.props.timeSpan[0]).getTime();
@@ -58,13 +43,6 @@ class PermitDataQuery extends React.Component {
           return <div>Error :( </div>;
         }
         return (<div className="dashRows">
-          {/* {this.state.modalData &&
-            // Maybe this needs to be moved?
-            <DataModal
-              data={this.state.modalData}
-              closeModal={this.onModalClose}
-            />
-          } */}
           <div>
             <GranularDataReceivers
               data={data.permits}

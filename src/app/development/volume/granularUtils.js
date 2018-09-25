@@ -77,10 +77,8 @@ export function stackedHistogramFromNodes(nodes, includedDates) {
       includedDates[includedDates.length - 1],
     ])
 
-  console.log(nodes)
   return [].concat(...nodes
     .map((node) => {
-      console.log(node)
       return histFunc(node.unNestedValues)
         .map(d => {
           return {
@@ -89,6 +87,7 @@ export function stackedHistogramFromNodes(nodes, includedDates) {
             binStartDate: d.x0,
             values: d || [],
             color: node.color,
+            othered: node.othered,
           };
         })
     }));

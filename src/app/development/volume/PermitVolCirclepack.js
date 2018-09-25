@@ -69,7 +69,7 @@ class PermitVolCirclepack extends React.Component {
       tooltipContent={(d) => {
         return d.key === 'root' ? '' : (
           <Tooltip
-            title={`${d.key}: ${d.value}`}
+            title={`${d.heritage.slice(1).join(' > ')} > ${d.key}: ${d.value}`}
             style={{ color: d.color }}
           />
         );

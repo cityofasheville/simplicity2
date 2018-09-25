@@ -48,7 +48,7 @@ const BooleanSplitMultiples = (props) => {
             rAccessor="count"
             rExtent={[0, 50]}
             type="bar"
-            canvasPieces
+            // canvasPieces
             pieceIDAccessor="key"
             axis={[
               {

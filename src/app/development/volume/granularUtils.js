@@ -79,7 +79,7 @@ export function stackedHistogramFromNodes(nodes, includedDates) {
 
   return [].concat(...nodes
     .map((node) => {
-      return histFunc(node.unNestedValues)
+      return histFunc(node.selectedActiveValues)
         .map(d => {
           return {
             key: node.key,

@@ -15,6 +15,7 @@ fix focus behavior of dropdown items
 move styling out of general maybe
 */
 function getNodeRelationship(clickedNode, candidate) {
+  // The parent value really just means ancestor
   if (candidate.depth === 0) {
     // If it's the root
     return 'parent';
@@ -44,9 +45,19 @@ function toggleHierarchy(clickedNode, inputNode) {
     return node;
   }
   // Else if there is a relationship...
-  if (clickedNode.selected && (relationship === 'self' || relationship === 'child')) {
-    // If clicked node was already selected, deselect itself and its children
-    node.selected = false;
+  if (clickedNode.selected) {
+    if (relationship === 'self' || relationship === 'child') {
+      // If clicked node was already selected, deselect itself and its children
+      node.selected = false;
+    } else if (relationship === 'parent') {
+      // If relationship is parent and the only selected child got clicked
+      const selectedNodeChildren = node.values.filter(candidateChild => candidateChild.selected);
+      if (selectedNodeChildren.length === 1) {
+        const relationshipWithClicked = getNodeRelationship(clickedNode, selectedNodeChildren[0]);
+        // Deselect if self or if parent
+        node.selected = !(relationshipWithClicked === 'self' || relationshipWithClicked === 'parent')
+      }
+    }
   } else if (!clickedNode.selected){
     // If clicked node is being selected, select itself and its children
     node.selected = true;
@@ -59,7 +70,9 @@ function toggleHierarchy(clickedNode, inputNode) {
   return node;
 }
 
-function selectedActiveDepthNodes(node, activeDepth) {
+function selectedActiveDepthNodes(inputNode, activeDepth) {
+  const node = Object.assign({}, inputNode)
+  node.selectedActiveValues = selectedDataFromHierarchy(inputNode)
   if (node.depth === activeDepth) {
     if (activeDepth === 0) {
       return [node];
@@ -74,13 +87,11 @@ function selectedActiveDepthNodes(node, activeDepth) {
   )
 }
 
-// TODO: only get active data
-// recursive method that takes hierarchy, iterates until it finds the children
 function selectedDataFromHierarchy(node) {
   // if it's not active, return null
   // if it has no values attached, return it
   if (!node.values) {
-    return node.unNestedValues;
+    return node.allUnnestedValues;
   }
   return [].concat(...node.values
     .filter(v => v.selected)
@@ -116,12 +127,7 @@ class HierarchicalSelect extends Component {
       },
     );
 
-    // TODO: filter out services by default
-    // use the getNode function with the hierarchyKeyPath ['All Permits', 'Services']
-    // and put that node into the toggleHierarchy function to toggle it off
-
     // TODO: meld these two functions into one since they *always* appear together
-    // TODO: FIX LOGIC ERROR WHERE IF YOU DESELECT A CHILD NODE, EVERYTHING DISPLAYS WRONG
     const selectedNodes = selectedActiveDepthNodes(thisEdges, this.props.activeDepth);
     const colorfulNodes = this.setNodeDisplayOpts(selectedNodes, this.props.colorScheme);
 
@@ -132,6 +138,12 @@ class HierarchicalSelect extends Component {
     };
     this.setActiveDepth = this.setActiveDepth.bind(this);
     this.handleNodeClick = this.handleNodeClick.bind(this);
+
+    // TODO: filter out services by default
+    // use the getNode function with the hierarchyKeyPath ['All Permits', 'Services']
+    // and put that node into the toggleHierarchy function to toggle it off
+    // this.handleNodeClick()
+
     this.props.onFilterSelect(
       selectedDataFromHierarchy(thisEdges),
       colorfulNodes,
@@ -146,10 +158,10 @@ class HierarchicalSelect extends Component {
     node.selected = true;
 
     if (depth < this.props.hierarchyOrder.length) {
-      node.unNestedValues = node.values;
+      node.allUnnestedValues = node.values;
       const childrenNest = nest()
         .key(d => d[this.props.hierarchyOrder[depth]])
-        .entries(node.unNestedValues)
+        .entries(node.allUnnestedValues)
 
       childrenNest.sort((a, b) => b.values.length - a.values.length)
 
@@ -159,7 +171,7 @@ class HierarchicalSelect extends Component {
         return this.customNestEntries(thisChild, depth + 1);
       })
     } else {
-      node.unNestedValues = node.values;
+      node.allUnnestedValues = node.values;
       node.value = node.values.length;
       node.values = undefined;
     }
@@ -226,7 +238,7 @@ class HierarchicalSelect extends Component {
   setNodeDisplayOpts(nodesToDisplay, colors, maxNodes = 6) {
     // Needs output from selectedActiveDepthNodes
     return nodesToDisplay
-      .sort((a, b) => b.unNestedValues.length - a.unNestedValues.length)
+      .sort((a, b) => b.allUnnestedValues.length - a.allUnnestedValues.length)
       .map((d, i) => {
         const rVal = Object.assign({}, d);
         let colorIndex = i;

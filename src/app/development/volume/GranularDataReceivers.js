@@ -64,7 +64,7 @@ class GranularDataReceivers extends React.Component {
             heritage: node.heritage,
             key: node.key,
             selected: node.selected,
-            value: node.unNestedValues.length,
+            value: node.selectedActiveValues.length,
           }
         }) :
         [],

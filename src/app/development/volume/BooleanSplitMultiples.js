@@ -16,10 +16,10 @@ const BooleanSplitMultiples = (props) => {
         textTransform: 'capitalize',
       }}
     >
-      {props.entriesHierarchy.map((datum) => {
-        const thisColor = props.nodeColors[datum.key];
+      {props.entriesHierarchy.map((node) => {
+        const thisColor = node.color;
         const brighterColor = color(thisColor).brighter(1.25);
-        const thisData = openedOnline.filter(d => d.key === datum.key);
+        const thisData = openedOnline.filter(d => d.key === node.key);
         const margins = {
           top: 40,
           right: 10,
@@ -29,13 +29,13 @@ const BooleanSplitMultiples = (props) => {
 
         let numOnline = 0;
         let numInPerson = 0;
-        thisData.forEach(datumDay => {
-          datumDay.openedOnline ? numOnline += datumDay.count : numInPerson += datumDay.count;
+        thisData.forEach(nodeDay => {
+          nodeDay.openedOnline ? numOnline += nodeDay.count : numInPerson += nodeDay.count;
         })
 
         return (<div
           style={{ display: 'inline-block' }}
-          key={datum.key}
+          key={node.key}
           className="col-md-4"
         >
           <ResponsiveOrdinalFrame
@@ -69,7 +69,7 @@ const BooleanSplitMultiples = (props) => {
 
               const textLines = pieces.map(piece => ({
                 text: `${piece.openedOnline ? 'Online' : 'In Person'}: ${piece.count}`,
-                color: props.nodeColors[piece.key],
+                color: thisColor,
               })).reverse();
 
               return (<Tooltip
@@ -91,7 +91,7 @@ const BooleanSplitMultiples = (props) => {
               );
             }}
             data={thisData}
-            title={datum.key}
+            title={node.key}
             style={(d) => {
               if (d.count === 0) {
                 return {

@@ -104,15 +104,14 @@ class GranularDataReceivers extends React.Component {
       <div id="percentOnline" className="row">
         <h2>Online vs In Person</h2>
         {/* Make shared extent with FacetController after issue is fixed */}
-        {/* {
-          this.state.histogramData ?
-            <LoadingAnimation /> :
-            <BooleanSplitMultiples
-              histogramData={this.state.histogramData}
-              entriesHierarchy={this.state.hierarchicalData}
-              nodeColors={nodeColors}
-            />
-        } */}
+        {this.state.selectedNodes ?
+          (<BooleanSplitMultiples
+            histogramData={histData}
+            entriesHierarchy={this.state.selectedNodes.filter(node => !node.othered)}
+            nodeColors={{}}
+          />) :
+          <LoadingAnimation />
+        }
       </div>
     </div>);
   }

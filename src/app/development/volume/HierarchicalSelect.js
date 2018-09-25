@@ -71,24 +71,8 @@ function selectedActiveDepthNodes(node, activeDepth) {
   )
 }
 
-function setNodeDisplayOpts(nodesToDisplay, colors, maxNodes = 7) {
-  // Needs output from selectedActiveDepthNodes
-  return nodesToDisplay
-    .sort((a, b) => b.unNestedValues.length - a.unNestedValues.length)
-    .map((d, i) => {
-      const rVal = Object.assign({}, d);
-      let colorIndex = i;
-      if (i > maxNodes - 1) {
-        colorIndex = maxNodes;
-        rVal.othered = true;
-      }
-      rVal.color = colors[colorIndex];
-      return rVal;
-    })
-}
-
 function selectedDataFromNodes(filteredColorfulNodes) {
-  // Output from setNodeDisplayOpts
+  // Output from this.setNodeDisplayOpts
   return [].concat(...filteredColorfulNodes.map(node => {
     return node.unNestedValues.map(datum => {
       const rVal = Object.assign({}, datum)
@@ -134,7 +118,7 @@ class HierarchicalSelect extends Component {
 
     // TODO: meld these two functions into one since they *always* appear together
     const selectedNodes = selectedActiveDepthNodes(thisEdges, this.props.activeDepth);
-    const colorfulNodes = setNodeDisplayOpts(selectedNodes, this.props.colorScheme);
+    const colorfulNodes = this.setNodeDisplayOpts(selectedNodes, this.props.colorScheme);
 
     this.state = {
       activeDepth: this.props.activeDepth,
@@ -179,7 +163,7 @@ class HierarchicalSelect extends Component {
 
   setActiveDepth(newDepth) {
     const selectedNodes = selectedActiveDepthNodes(this.state.edges, newDepth);
-    const colorfulNodes = setNodeDisplayOpts(selectedNodes, this.props.colorScheme);
+    const colorfulNodes = this.setNodeDisplayOpts(selectedNodes, this.props.colorScheme);
 
     this.setState({
       activeDepth: newDepth,
@@ -197,7 +181,7 @@ class HierarchicalSelect extends Component {
     const clickedNode = Object.assign({}, inputNode)
     const newEdges = toggleHierarchy(clickedNode, this.state.edges);
     const selectedNodes = selectedActiveDepthNodes(newEdges, this.state.activeDepth);
-    const colorfulNodes = setNodeDisplayOpts(selectedNodes, this.props.colorScheme);
+    const colorfulNodes = this.setNodeDisplayOpts(selectedNodes, this.props.colorScheme);
 
     this.setState({
       activeDepth: this.state.activeDepth,
@@ -230,6 +214,22 @@ class HierarchicalSelect extends Component {
       }
     }
     return color;
+  }
+
+  setNodeDisplayOpts(nodesToDisplay, colors, maxNodes = 6) {
+    // Needs output from selectedActiveDepthNodes
+    return nodesToDisplay
+      .sort((a, b) => b.unNestedValues.length - a.unNestedValues.length)
+      .map((d, i) => {
+        const rVal = Object.assign({}, d);
+        let colorIndex = i;
+        if (i > maxNodes - 1) {
+          colorIndex = maxNodes;
+          rVal.othered = true;
+        }
+        rVal.color = colors[colorIndex];
+        return rVal;
+      })
   }
 
   render() {

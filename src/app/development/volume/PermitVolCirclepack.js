@@ -53,9 +53,9 @@ class PermitVolCirclepack extends React.Component {
       //   this.props.onCircleClick(d.values)
       // }}
       nodeLabels={(d) => {
-        if (d.key === 'root' || d.r < 7.5) { return null; }
+        if (d.key === 'root' || d.r < 12) { return null; }
         return (<text
-          key={`${d.key}-${d.value}-${Math.floor(Math.random() * Math.floor(10000))}`}
+          key={`${d.key}-${d.heritage.join('-')}`}
           style={{ stroke: 'white', fontWeight: 'light', alignmentBaseline: 'middle' }}
           textAnchor="middle"
         >
@@ -65,7 +65,7 @@ class PermitVolCirclepack extends React.Component {
       tooltipContent={(d) => {
         return d.key === 'root' ? '' : (
           <Tooltip
-            title={d.key}
+            title={`${d.key}: ${d.value}`}
             style={{ color: d.color }}
           />
         );

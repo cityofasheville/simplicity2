@@ -53,6 +53,22 @@ class GranularDataReceivers extends React.Component {
       stackedHistogramFromNodes(this.state.selectedNodes, this.props.includedDates) :
       [];
     const totalCount = this.state.selectedData.length;
+    const circlePackData = {
+      key: 'root',
+      color: 'none',
+      heritage: [],
+      values: this.state.selectedNodes ?
+        this.state.selectedNodes.map(node => {
+          return {
+            color: node.color,
+            heritage: node.heritage,
+            key: node.key,
+            selected: node.selected,
+            value: node.unNestedValues.length,
+          }
+        }) :
+        [],
+    }
 
     return (<div className="dashRows">
       {/* {this.state.modalData && <DataModal data={this.state.modalData} closeModal={this.onModalClose} />} */}
@@ -78,8 +94,7 @@ class GranularDataReceivers extends React.Component {
         <h2>{`Total: ${totalCount}`}</h2>
         {this.state.selectedNodes ?
           (<PermitVolCirclepack
-            data={{ key: 'root', values: this.state.selectedNodes }}
-            colorKeys={{}}
+            data={circlePackData}
             // onCircleClick={circleData => this.onModalOpen(circleData)}
           />) :
         <LoadingAnimation />

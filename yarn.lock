@@ -246,9 +246,9 @@ accessible-react-checkbox-group@^2.0.0-beta.3:
   version "2.0.0-beta.4"
   resolved "https://registry.yarnpkg.com/accessible-react-checkbox-group/-/accessible-react-checkbox-group-2.0.0-beta.4.tgz#3ba9dfec6202a7af53fb52dabf0fe1a2788361c2"
 
-accessible-react-table@^0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/accessible-react-table/-/accessible-react-table-0.5.1.tgz#aa764ab3a047d193fe5ad1647f11e6042b868212"
+accessible-react-table@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/accessible-react-table/-/accessible-react-table-0.6.0.tgz#ea633d0c0409d21995cef1911bdd743c5eee6b7d"
   dependencies:
     merge-prop-functions "^1.0.0"
 

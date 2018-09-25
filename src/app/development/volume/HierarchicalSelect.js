@@ -16,10 +16,12 @@ move styling out of general maybe
 */
 function getNodeRelationship(clickedNode, candidate) {
   if (candidate.depth === 0) {
+    // If it's the root
     return 'parent';
   }
   const candidateHeritage = candidate.heritage.join();
   const clickedHeritage = clickedNode.heritage.join();
+
   if (candidate.key === clickedNode.key && candidateHeritage === clickedHeritage) {
     return 'self';
   } else if (candidate.depth > clickedNode.depth &&
@@ -41,6 +43,7 @@ function toggleHierarchy(clickedNode, inputNode) {
     // Don't iterate if they have nothing to do with each other
     return node;
   }
+  // Else if there is a relationship...
   if (clickedNode.selected && (relationship === 'self' || relationship === 'child')) {
     // If clicked node was already selected, deselect itself and its children
     node.selected = false;
@@ -71,16 +74,17 @@ function selectedActiveDepthNodes(node, activeDepth) {
   )
 }
 
-function selectedDataFromNodes(filteredColorfulNodes) {
-  // Output from this.setNodeDisplayOpts
-  return [].concat(...filteredColorfulNodes.map(node => {
-    return node.unNestedValues.map(datum => {
-      const rVal = Object.assign({}, datum)
-      rVal.color = node.color
-      rVal.othered = node.othered;
-      return rVal;
-    })
-  }))
+// TODO: only get active data
+// recursive method that takes hierarchy, iterates until it finds the children
+function selectedDataFromHierarchy(node) {
+  // if it's not active, return null
+  // if it has no values attached, return it
+  if (!node.values) {
+    return node.unNestedValues;
+  }
+  return [].concat(...node.values
+    .filter(v => v.selected)
+    .map(v => selectedDataFromHierarchy(v)));
 }
 
 function getNode(inputNode, hierarchyKeyPath) {
@@ -117,6 +121,7 @@ class HierarchicalSelect extends Component {
     // and put that node into the toggleHierarchy function to toggle it off
 
     // TODO: meld these two functions into one since they *always* appear together
+    // TODO: FIX LOGIC ERROR WHERE IF YOU DESELECT A CHILD NODE, EVERYTHING DISPLAYS WRONG
     const selectedNodes = selectedActiveDepthNodes(thisEdges, this.props.activeDepth);
     const colorfulNodes = this.setNodeDisplayOpts(selectedNodes, this.props.colorScheme);
 
@@ -128,7 +133,7 @@ class HierarchicalSelect extends Component {
     this.setActiveDepth = this.setActiveDepth.bind(this);
     this.handleNodeClick = this.handleNodeClick.bind(this);
     this.props.onFilterSelect(
-      selectedDataFromNodes(colorfulNodes),
+      selectedDataFromHierarchy(thisEdges),
       colorfulNodes,
       this.props.hierarchyOrder[this.state.activeDepth - 1]
     )
@@ -171,7 +176,7 @@ class HierarchicalSelect extends Component {
     });
 
     this.props.onFilterSelect(
-      selectedDataFromNodes(colorfulNodes),
+      selectedDataFromHierarchy(this.state.edges),
       colorfulNodes,
       this.props.hierarchyOrder[newDepth - 1],
     )
@@ -183,6 +188,8 @@ class HierarchicalSelect extends Component {
     const selectedNodes = selectedActiveDepthNodes(newEdges, this.state.activeDepth);
     const colorfulNodes = this.setNodeDisplayOpts(selectedNodes, this.props.colorScheme);
 
+    console.log(newEdges, selectedDataFromHierarchy(newEdges))
+
     this.setState({
       activeDepth: this.state.activeDepth,
       colorfulNodes: colorfulNodes,
@@ -190,7 +197,7 @@ class HierarchicalSelect extends Component {
     })
 
     this.props.onFilterSelect(
-      selectedDataFromNodes(colorfulNodes),
+      selectedDataFromHierarchy(newEdges),
       colorfulNodes,
       this.props.hierarchyOrder[this.state.activeDepth - 1],
     )

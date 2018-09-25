@@ -13,6 +13,10 @@ class PermitVolCirclepack extends React.Component {
     // }
   }
 
+  shouldComponentUpdate() {
+    return true;
+  }
+
   render() {
     return (<ResponsiveNetworkFrame
       responsiveWidth

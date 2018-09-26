@@ -156,7 +156,6 @@ class HierarchicalSelect extends Component {
   handleNodeClick(inputNode) {
     const clickedNode = Object.assign({}, inputNode)
     const newEdges = this.toggleHierarchy(clickedNode, this.state.edges);
-    console.log(newEdges)
     const selectedNodes = selectedActiveDepthNodes(newEdges, this.state.activeDepth);
     const colorfulNodes = this.setNodeDisplayOpts(selectedNodes, this.props.colorScheme);
 
@@ -203,9 +202,6 @@ class HierarchicalSelect extends Component {
       }
     }
     node.selectedActiveValues = selectedDataFromHierarchy(node, this.state.activeDepth)
-    if (!node.selected && node.depth === 4) {
-      console.log(node)
-    }
     return node;
   }
 
@@ -228,9 +224,8 @@ class HierarchicalSelect extends Component {
       if (colorfulNode) {
         // For some reason there is still a colorful node for an unselected node
         // But only if its child was unselected first???
+        // Maybe some react rendering order nonsense
         color = colorfulNode.color;
-      } else {
-        console.log(colorfulNode, d)
       }
     }
     return color;

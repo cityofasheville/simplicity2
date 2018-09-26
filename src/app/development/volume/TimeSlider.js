@@ -36,9 +36,7 @@ class TimeSlider extends Component {
     // TODO: add hover annotation
     return (
       <div
-        className={this.props.brushWidthLocked ?
-          'brushedChart hideBrushHandles'
-          : 'brushedChart'}
+        className="brushedChart"
         style={{ width: '100%' }}
       >
         <ResponsiveXYFrame
@@ -86,7 +84,6 @@ class TimeSlider extends Component {
 
 TimeSlider.propTypes = {
   defaultBrushExtent: PropTypes.arrayOf(PropTypes.number),
-  brushWidthLocked: PropTypes.bool,
   onBrushEnd: PropTypes.func,
   xSpan: PropTypes.arrayOf(PropTypes.number),
 };
@@ -97,7 +94,6 @@ TimeSlider.defaultProps = {
     new Date().getTime(),
   ], // today and today minus thirty-one days
   // TODO: get rid of width locked since it doesn't work anyway
-  brushWidthLocked: false,
   onBrushEnd: newExtent => console.log(newExtent),
   xSpan: [
     new Date().setFullYear(new Date().getFullYear() - 1),

@@ -60,8 +60,9 @@ const VolumeHistogram = props => (
       pieces.forEach((piece) => {
         if (piece.othered) {
           othered.push(piece);
+        } else {
+          notOthered.push(piece);
         }
-        notOthered.push(piece);
       });
 
       // TODO: do this elsewhere?

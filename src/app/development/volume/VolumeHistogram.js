@@ -7,7 +7,6 @@ import Tooltip from '../../../shared/visualization/Tooltip';
 const VolumeHistogram = props => (
   <ResponsiveOrdinalFrame
     responsiveWidth
-    canvasPieces
     data={props.data}
     size={[500, 200]}
     projection="vertical"

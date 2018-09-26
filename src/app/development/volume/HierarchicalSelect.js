@@ -136,6 +136,7 @@ class HierarchicalSelect extends Component {
 
     this.setActiveDepth = this.setActiveDepth.bind(this);
     this.handleNodeClick = this.handleNodeClick.bind(this);
+    this.htmlAnnotationButton = this.htmlAnnotationButton.bind(this);
 
     this.props.onFilterSelect(
       selectedDataFromHierarchy(thisEdges),
@@ -249,6 +250,41 @@ class HierarchicalSelect extends Component {
     this.handleNodeClick(servicesNode)
   }
 
+  htmlAnnotationButton(d, leftMargin) {
+    if (d.d.type !== 'custom') {
+      return null;
+    }
+    const sameDepthNode = d.nodes.find(node => node.depth === d.d.depth);
+    const buttonHeight = sameDepthNode.y1 - sameDepthNode.y0 - 2;
+    return (<div className="input-group"
+      key={d.d.key}
+    >
+      <div
+        className='input-group-btn'
+        style={{
+          cursor: 'pointer',
+          pointerEvents: 'all',
+          fontSize: '0.75em',
+          position: 'absolute',
+          top: `${sameDepthNode.y0}px`,
+          left: `-${leftMargin}px`,
+          color: d.d.depth === this.state.activeDepth ? '#00a4f6' : 'inherit',
+        }}
+      >
+        <button
+          type="button"
+          style={{
+            height: buttonHeight,
+            borderRadius: 6,
+          }}
+          onClick={() => this.setActiveDepth(d.d.depth)}
+        >
+          {d.d.key}
+        </button>
+      </div>
+    </div>)
+  }
+
   render() {
     const margin = {
       top: 5,
@@ -256,6 +292,40 @@ class HierarchicalSelect extends Component {
       bottom: 5,
       left: 50,
     };
+    const annotations = [
+      {
+        depth: 1,
+        key: 'Module',
+        type: 'custom',
+      },
+      {
+        depth: 2,
+        key: 'Type',
+        type: 'custom',
+      },
+      {
+        depth: 3,
+        key: 'Subtype',
+        type: 'custom',
+      },
+      {
+        depth: 4,
+        key: 'Category',
+        type: 'custom',
+      },
+    ]
+    const legendLabelItems = this.state.colorfulNodes
+      .filter((d, i, array) => !d.othered || array.findIndex(datum => datum.othered) === i)
+      .map(entry => {
+        const heritage = entry.heritage.slice(1)
+        heritage.push(entry.key)
+        const title = heritage.join(' > ');
+
+        return {
+          label: entry.othered ? 'Other' : title,
+          color: entry.color,
+        }
+      })
 
     return (
       <div className="interactiveAnnotation">
@@ -269,62 +339,8 @@ class HierarchicalSelect extends Component {
           margin={margin}
           responsiveWidth
           edges={this.state.edges}
-          annotations={[
-            {
-              depth: 1,
-              key: 'Module',
-              type: 'custom',
-            },
-            {
-              depth: 2,
-              key: 'Type',
-              type: 'custom',
-            },
-            {
-              depth: 3,
-              key: 'Subtype',
-              type: 'custom',
-            },
-            {
-              depth: 4,
-              key: 'Category',
-              type: 'custom',
-            },
-          ]}
-          htmlAnnotationRules={(d) => {
-            if (d.d.type !== 'custom') {
-              return null;
-            }
-            const sameDepthNode = d.nodes.find(node => node.depth === d.d.depth);
-            const buttonHeight = sameDepthNode.y1 - sameDepthNode.y0 - 2;
-            return (<div className="input-group"
-              key={d.d.key}
-            >
-              <div
-                className='input-group-btn'
-                style={{
-                  cursor: 'pointer',
-                  pointerEvents: 'all',
-                  fontSize: '0.75em',
-                  position: 'absolute',
-                  top: `${sameDepthNode.y0}px`,
-                  left: `-${margin.left}px`,
-                  color: d.d.depth === this.state.activeDepth ? '#00a4f6' : 'inherit',
-                }}
-              >
-                <button
-                  type="button"
-                  style={{
-                    height: buttonHeight,
-                    borderRadius: 6,
-                  }}
-                  onClick={() => this.setActiveDepth(d.d.depth)}
-                >
-                  {d.d.key}
-                </button>
-              </div>
-            </div>)
-          }}
+          annotations={annotations}
+          htmlAnnotationRules={(d) => this.htmlAnnotationButton(d, margin.left)}
           nodeStyle={(d) => {
             const color = this.getNodeColor(d);
             return {
@@ -354,7 +370,7 @@ class HierarchicalSelect extends Component {
                }}
               textLines={[
                 { text: title },
-                { text: `${d.value} total` }
+                { text: `${d.value} records` }
               ]}
             />)
           }}
@@ -374,19 +390,7 @@ class HierarchicalSelect extends Component {
           style={{
             textAlign: 'center'
           }}
-          labelItems={this.state.colorfulNodes
-            .filter((d, i, array) => !d.othered || array.findIndex(datum => datum.othered) === i)
-            .map(entry => {
-              const heritage = entry.heritage.slice(1)
-              heritage.push(entry.key)
-              const title = heritage.join(' > ');
-
-              return {
-                label: entry.othered ? 'Other' : title,
-                color: entry.color,
-              }
-            })
-          }
+          labelItems={legendLabelItems}
         />
       </div>
     );

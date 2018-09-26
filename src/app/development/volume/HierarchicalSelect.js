@@ -103,6 +103,7 @@ class HierarchicalSelect extends Component {
     this.setActiveDepth = this.setActiveDepth.bind(this);
     this.handleNodeClick = this.handleNodeClick.bind(this);
     this.htmlAnnotationButton = this.htmlAnnotationButton.bind(this);
+    this.handleDoubleClick = this.handleDoubleClick.bind(this);
   }
 
   customNestEntries(inputNode, depth = 0) {
@@ -288,6 +289,13 @@ class HierarchicalSelect extends Component {
     </div>)
   }
 
+  handleDoubleClick(node) {
+    console.log(node)
+    // this.setState({
+    //   edges: node,
+    // })
+  }
+
   render() {
     const margin = {
       top: 5,
@@ -383,10 +391,7 @@ class HierarchicalSelect extends Component {
             hierarchySum: d => d.value,
           }}
           customClickBehavior={d => this.handleNodeClick(d.data)}
-          customDoubleClickBehavior={d => {
-            // TODO: make this the root node on click
-            console.log(d)
-          }}
+          customDoubleClickBehavior={d => this.handleDoubleClick(d)}
         />
         <HorizontalLegend
           style={{

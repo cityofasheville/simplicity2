@@ -35,6 +35,7 @@ class ChildMenus extends Component {
           }}
           style={{
             color: color,
+            width: '100%',
           }}
         >
           {this.props.node.key}

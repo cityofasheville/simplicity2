@@ -9,16 +9,13 @@ import { colorScheme } from './granularUtils'
 
 
 /*
-TODO
-fix focus and hover behavior of dropdown button
-fix focus behavior of dropdown items
-move styling out of general maybe
+TODO: move styling out of general maybe
 */
 function getNodeRelationship(clickedNode, candidate) {
   // The parent value really just means ancestor
   if (candidate.depth === 0) {
     // If it's the root
-    return 'parent';
+    return 'ancestor';
   }
   const candidateHeritage = candidate.heritage.join();
   const clickedHeritage = clickedNode.heritage.join();
@@ -32,45 +29,13 @@ function getNodeRelationship(clickedNode, candidate) {
     return 'child';
   } else if ( clickedHeritage.includes(candidateHeritage) &&
     clickedNode.heritage.indexOf(candidate.key) === candidate.depth) {
-    return 'parent';
+    return 'ancestor';
   }
   return null;
 }
 
-function toggleHierarchy(clickedNode, inputNode) {
-  const node = Object.assign({}, inputNode);
-  const relationship = getNodeRelationship(clickedNode, node);
-  if (relationship) {
-    // Don't iterate if they have nothing to do with each other
-    if (clickedNode.selected) {
-      if (relationship === 'self' || relationship === 'child') {
-        // If clicked node was already selected, deselect itself and its children
-        node.selected = false;
-      } else if (relationship === 'parent') {
-        // If relationship is parent and the only selected child got clicked
-        const selectedNodeChildren = node.values.filter(candidateChild => candidateChild.selected);
-        if (selectedNodeChildren.length === 1) {
-          const relationshipWithClicked = getNodeRelationship(clickedNode, selectedNodeChildren[0]);
-          // Deselect if self or if parent
-          node.selected = !(relationshipWithClicked === 'self' || relationshipWithClicked === 'parent')
-        }
-      }
-    } else if (!clickedNode.selected){
-      // If clicked node is being selected, select itself and its children
-      node.selected = true;
-    }
-    if (node.values) {
-      node.values = inputNode.values.map((child) => {
-        return toggleHierarchy(clickedNode, child);
-      })
-    }
-  }
-  return node;
-}
-
 function selectedActiveDepthNodes(inputNode, activeDepth) {
   const node = Object.assign({}, inputNode)
-  node.selectedActiveValues = selectedDataFromHierarchy(inputNode)
   if (node.depth === activeDepth) {
     if (activeDepth === 0) {
       return [node];
@@ -86,9 +51,14 @@ function selectedActiveDepthNodes(inputNode, activeDepth) {
 }
 
 function selectedDataFromHierarchy(node) {
+  // Given a node, return only the selected raw values
   if (!node.values) {
-    // If it has no values attached, return it
-    return node.allUnnestedValues;
+    if (node.selected) {
+      // If it is selected and at the lowest level, return its values
+      return node.allUnnestedValues;
+    }
+    // Return empty array to be concatenated if it's not selected
+    return [];
   }
   return [].concat(...node.values
     .filter(v => v.selected)
@@ -124,27 +94,23 @@ class HierarchicalSelect extends Component {
       },
     );
 
-    // TODO: meld these two functions into one since they *always* appear together?
-    const selectedNodes = selectedActiveDepthNodes(thisEdges, this.props.activeDepth);
-    const colorfulNodes = this.setNodeDisplayOpts(selectedNodes, this.props.colorScheme);
-
     this.state = {
       activeDepth: this.props.activeDepth,
       edges: thisEdges,
-      colorfulNodes: colorfulNodes,
+      colorfulNodes: null, // This gets set by componentWillMount
     };
 
     this.setActiveDepth = this.setActiveDepth.bind(this);
     this.handleNodeClick = this.handleNodeClick.bind(this);
-
-    this.props.onFilterSelect(
-      selectedDataFromHierarchy(thisEdges),
-      colorfulNodes,
-      this.props.hierarchyOrder[this.state.activeDepth - 1]
-    )
+    this.htmlAnnotationButton = this.htmlAnnotationButton.bind(this);
+    this.handleDoubleClick = this.handleDoubleClick.bind(this);
   }
 
   customNestEntries(inputNode, depth = 0) {
+    /*
+     * Called only in constructor
+     * Input node is starter root
+    */
     const node = Object.assign({}, inputNode);
     const nodeHeritage = node.heritage || [];
     node.depth = depth;
@@ -168,6 +134,7 @@ class HierarchicalSelect extends Component {
       node.value = node.values.length;
       node.values = undefined;
     }
+    node.selectedActiveValues = node.allUnnestedValues;
     return node;
   }
 
@@ -181,7 +148,7 @@ class HierarchicalSelect extends Component {
     });
 
     this.props.onFilterSelect(
-      selectedDataFromHierarchy(this.state.edges),
+      this.state.edges.selectedActiveValues,
       colorfulNodes,
       this.props.hierarchyOrder[newDepth - 1],
     )
@@ -189,7 +156,7 @@ class HierarchicalSelect extends Component {
 
   handleNodeClick(inputNode) {
     const clickedNode = Object.assign({}, inputNode)
-    const newEdges = toggleHierarchy(clickedNode, this.state.edges);
+    const newEdges = this.toggleHierarchy(clickedNode, this.state.edges);
     const selectedNodes = selectedActiveDepthNodes(newEdges, this.state.activeDepth);
     const colorfulNodes = this.setNodeDisplayOpts(selectedNodes, this.props.colorScheme);
 
@@ -200,26 +167,65 @@ class HierarchicalSelect extends Component {
     })
 
     this.props.onFilterSelect(
-      selectedDataFromHierarchy(newEdges),
+      newEdges.selectedActiveValues,
       colorfulNodes,
       this.props.hierarchyOrder[this.state.activeDepth - 1],
     )
   }
 
+  toggleHierarchy(clickedNode, inputNode) {
+    const node = Object.assign({}, inputNode);
+    const relationship = getNodeRelationship(clickedNode, node);
+    // Don't iterate if they have nothing to do with each other
+    if (relationship) {
+      if (clickedNode.selected) {
+        // If clicked node was already selected, deselect itself and its children
+        if (relationship === 'self' || relationship === 'child') {
+          node.selected = false;
+        } else if (relationship === 'ancestor') {
+          // If input node is parent of clicked and the only selected child got deselected
+          // If clicked was only child at that depth, deselect
+          const childrenAtDepth = this.activeDescendentsAtDepth(inputNode, clickedNode.depth);
+          if (childrenAtDepth.length === 1) {
+            const relationshipWithClicked = getNodeRelationship(clickedNode, childrenAtDepth[0]);
+            // Deselect if self or if parent
+            node.selected = !(relationshipWithClicked === 'self')
+          }
+        }
+      } else if (!clickedNode.selected){
+        // If clicked node is being selected, select itself and its children and parent
+        node.selected = true;
+      }
+      if (node.values) {
+        node.values = inputNode.values.map((child) => {
+          return this.toggleHierarchy(clickedNode, child);
+        })
+      }
+    }
+    node.selectedActiveValues = selectedDataFromHierarchy(node, this.state.activeDepth)
+    return node;
+  }
+
+  activeDescendentsAtDepth(node, depth) {
+    if (node.depth === depth && node.selected) {
+      return [node];
+    }
+    return [].concat(...node.values
+      .filter(v => v.selected)
+      .map(v => this.activeDescendentsAtDepth(v, depth)));
+  }
+
   getNodeColor(d) {
     // TODO: also use this in hierarchicalDropdown
-    const atActiveDepth = d.depth === this.state.activeDepth ? 1 : 0;
     let color = '#a6a6a6';
-    if (atActiveDepth && d.selected) {
+    if (d.depth === this.state.activeDepth && d.selected) {
       const colorfulNode = this.state.colorfulNodes.find(candidate => {
         return candidate.key === d.key && candidate.heritage.join() === d.heritage.join();
       })
-      if (!colorfulNode) {
-        // If you deselect a node's child, and then deselect that node, things break
-        // TODO: why tho
-        console.log('A LOGIC ERROR OF SOME SORT IN GET NODE COLOR: ', d)
-        console.log(this.state.colorfulNodes)
-      } else {
+      if (colorfulNode) {
+        // For some reason there is still a colorful node for an unselected node
+        // But only if its child was unselected first???
+        // Maybe some react rendering order nonsense
         color = colorfulNode.color;
       }
     }
@@ -244,9 +250,50 @@ class HierarchicalSelect extends Component {
 
   componentWillMount() {
     // Filter out services by default
-    // use the getNode function with the hierarchyKeyPath ['All Permits', 'Services']
     const servicesNode = getNode(this.state.edges, ['All Permits', 'Services'])
     this.handleNodeClick(servicesNode)
+  }
+
+  htmlAnnotationButton(d, leftMargin) {
+    if (d.d.type !== 'custom') {
+      return null;
+    }
+    const sameDepthNode = d.nodes.find(node => node.depth === d.d.depth);
+    const buttonHeight = sameDepthNode.y1 - sameDepthNode.y0 - 2;
+    return (<div className="input-group"
+      key={d.d.key}
+    >
+      <div
+        className='input-group-btn'
+        style={{
+          cursor: 'pointer',
+          pointerEvents: 'all',
+          fontSize: '0.75em',
+          position: 'absolute',
+          top: `${sameDepthNode.y0}px`,
+          left: `-${leftMargin}px`,
+          color: d.d.depth === this.state.activeDepth ? '#00a4f6' : 'inherit',
+        }}
+      >
+        <button
+          type="button"
+          style={{
+            height: buttonHeight,
+            borderRadius: 6,
+          }}
+          onClick={() => this.setActiveDepth(d.d.depth)}
+        >
+          {d.d.key}
+        </button>
+      </div>
+    </div>)
+  }
+
+  handleDoubleClick(node) {
+    console.log(node)
+    // this.setState({
+    //   edges: node,
+    // })
   }
 
   render() {
@@ -256,6 +303,40 @@ class HierarchicalSelect extends Component {
       bottom: 5,
       left: 50,
     };
+    const annotations = [
+      {
+        depth: 1,
+        key: 'Module',
+        type: 'custom',
+      },
+      {
+        depth: 2,
+        key: 'Type',
+        type: 'custom',
+      },
+      {
+        depth: 3,
+        key: 'Subtype',
+        type: 'custom',
+      },
+      {
+        depth: 4,
+        key: 'Category',
+        type: 'custom',
+      },
+    ]
+    const legendLabelItems = this.state.colorfulNodes
+      .filter((d, i, array) => !d.othered || array.findIndex(datum => datum.othered) === i)
+      .map(entry => {
+        const heritage = entry.heritage.slice(1)
+        heritage.push(entry.key)
+        const title = heritage.join(' > ');
+
+        return {
+          label: entry.othered ? 'Other' : title,
+          color: entry.color,
+        }
+      })
 
     return (
       <div className="interactiveAnnotation">
@@ -269,62 +350,8 @@ class HierarchicalSelect extends Component {
           margin={margin}
           responsiveWidth
           edges={this.state.edges}
-          annotations={[
-            {
-              depth: 1,
-              key: 'Module',
-              type: 'custom',
-            },
-            {
-              depth: 2,
-              key: 'Type',
-              type: 'custom',
-            },
-            {
-              depth: 3,
-              key: 'Subtype',
-              type: 'custom',
-            },
-            {
-              depth: 4,
-              key: 'Category',
-              type: 'custom',
-            },
-          ]}
-          htmlAnnotationRules={(d) => {
-            if (d.d.type !== 'custom') {
-              return null;
-            }
-            const sameDepthNode = d.nodes.find(node => node.depth === d.d.depth);
-            const buttonHeight = sameDepthNode.y1 - sameDepthNode.y0 - 2;
-            return (<div className="input-group"
-              key={d.d.key}
-            >
-              <div
-                className='input-group-btn'
-                style={{
-                  cursor: 'pointer',
-                  pointerEvents: 'all',
-                  fontSize: '0.75em',
-                  position: 'absolute',
-                  top: `${sameDepthNode.y0}px`,
-                  left: `-${margin.left}px`,
-                  color: d.d.depth === this.state.activeDepth ? '#00a4f6' : 'inherit',
-                }}
-              >
-                <button
-                  type="button"
-                  style={{
-                    height: buttonHeight,
-                    borderRadius: 6,
-                  }}
-                  onClick={() => this.setActiveDepth(d.d.depth)}
-                >
-                  {d.d.key}
-                </button>
-              </div>
-            </div>)
-          }}
+          annotations={annotations}
+          htmlAnnotationRules={(d) => this.htmlAnnotationButton(d, margin.left)}
           nodeStyle={(d) => {
             const color = this.getNodeColor(d);
             return {
@@ -346,7 +373,6 @@ class HierarchicalSelect extends Component {
             heritage.push(d.key)
             const title = heritage.join(' > ');
             // TODO: darker gray for get node color-- optionally pass in default
-            // TODO: "400 selected of 500 total" or something
             return (<Tooltip
               style={{
                 minWdith: title.length * 5,
@@ -354,7 +380,7 @@ class HierarchicalSelect extends Component {
                }}
               textLines={[
                 { text: title },
-                { text: `${d.value} total` }
+                { text: `${d.selectedActiveValues.length} of ${d.value} selected` }
               ]}
             />)
           }}
@@ -365,28 +391,13 @@ class HierarchicalSelect extends Component {
             hierarchySum: d => d.value,
           }}
           customClickBehavior={d => this.handleNodeClick(d.data)}
-          customDoubleClickBehavior={d => {
-            // TODO: make this the root node on click
-            console.log(d)
-          }}
+          customDoubleClickBehavior={d => this.handleDoubleClick(d)}
         />
         <HorizontalLegend
           style={{
             textAlign: 'center'
           }}
-          labelItems={this.state.colorfulNodes
-            .filter((d, i, array) => !d.othered || array.findIndex(datum => datum.othered) === i)
-            .map(entry => {
-              const heritage = entry.heritage.slice(1)
-              heritage.push(entry.key)
-              const title = heritage.join(' > ');
-
-              return {
-                label: entry.othered ? 'Other' : title,
-                color: entry.color,
-              }
-            })
-          }
+          labelItems={legendLabelItems}
         />
       </div>
     );

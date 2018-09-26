@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import BigNumber from '../../shared/visualization/BigNumber';
+import { GET_PERMITS_FOR_COUNTING } from './volume/granularUtils';
 
 const DevelopmentDashIndex = props => (
   <div className="card-container">
@@ -15,21 +16,21 @@ const DevelopmentDashIndex = props => (
       <BigNumber
         label="New Permits"
         tempNumber="42"
-        query=""
-        aggregateFunction=""
+        query={GET_PERMITS_FOR_COUNTING}
+        aggregateFunction={allData => allData.length}
       />
-      <BigNumber
+      {/* <BigNumber
         label="Scheduled Inspections"
-        tempNumber="3,987"
+        tempNumber="???"
         query=""
         aggregateFunction=""
       />
       <BigNumber
         label="Tasks Completed"
-        tempNumber="11,297"
+        tempNumber="???"
         query=""
         aggregateFunction=""
-      />
+      /> */}
     </div>
     <div className="row">
       <h2>Dashboards</h2>
@@ -55,7 +56,7 @@ const DevelopmentDashIndex = props => (
 );
 
 DevelopmentDashIndex.propTypes = {
-  topics: PropTypes.arrayOf(PropTypes.string),
+  topics: PropTypes.arrayOf(PropTypes.object),
 };
 
 DevelopmentDashIndex.defaultProps = {
@@ -63,18 +64,6 @@ DevelopmentDashIndex.defaultProps = {
     {
       name: 'Permit Volume Detail',
       linkPath: '/development/granular_volume',
-    },
-    {
-      name: 'Inspection Volume Detail',
-      linkPath: '/',
-    },
-    {
-      name: 'Task Volume Detail',
-      linkPath: '/',
-    },
-    {
-      name: 'Permit Search',
-      linkPath: '/',
     },
     {
       name: 'Yearly Volume Overlay',

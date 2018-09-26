@@ -33,6 +33,7 @@ class TimeSlider extends Component {
   }
 
   render() {
+    // TODO: add hover annotation
     return (
       <div
         className={this.props.brushWidthLocked ?
@@ -92,9 +93,9 @@ TimeSlider.propTypes = {
 
 TimeSlider.defaultProps = {
   defaultBrushExtent: [
-    new Date().getTime() - 2592000000,
+    new Date().getTime() - 2678400000,
     new Date().getTime(),
-  ], // today and today minus thirty days
+  ], // today and today minus thirty-one days
   // TODO: get rid of width locked since it doesn't work anyway
   brushWidthLocked: true,
   onBrushEnd: newExtent => console.log(newExtent),

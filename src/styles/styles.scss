@@ -742,10 +742,10 @@ label {
 	padding: 0px 2em 0px 0.5em;
 	display: inline-block;
 }
-.hierarchicalDropdown .dropdown-menu > li > a:hover {
+.hierarchicalDropdown .dropdown-menu > li > a:hover, .hierarchicalDropdown .dropdown-menu > li > a:focus {
 	background-color: inherit;
 }
-.hierarchicalDropdown .dropdown-menu > li:hover {
+.hierarchicalDropdown .dropdown-menu > li:hover, .hierarchicalDropdown .dropdown-menu > li:focus {
 	background-color: #c8c8c8;
 }
 .hierarchicalDropdown .dropdown-submenu{

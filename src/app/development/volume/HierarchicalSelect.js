@@ -5,7 +5,7 @@ import { ResponsiveNetworkFrame } from 'semiotic';
 import Tooltip from '../../../shared/visualization/Tooltip';
 import HierarchicalDropdown from './HierarchicalDropdown';
 import HorizontalLegend from '../../../shared/visualization/HorizontalLegend';
-import { colorScheme } from './granularUtils'
+import { colorScheme } from './granularUtils';
 
 
 /*
@@ -27,7 +27,7 @@ function getNodeRelationship(clickedNode, candidate) {
     candidateHeritage.includes(clickedHeritage)
   ) {
     return 'child';
-  } else if ( clickedHeritage.includes(candidateHeritage) &&
+  } else if (clickedHeritage.includes(candidateHeritage) &&
     clickedNode.heritage.indexOf(candidate.key) === candidate.depth) {
     return 'ancestor';
   }
@@ -35,7 +35,7 @@ function getNodeRelationship(clickedNode, candidate) {
 }
 
 function selectedActiveDepthNodes(inputNode, activeDepth) {
-  const node = Object.assign({}, inputNode)
+  const node = Object.assign({}, inputNode);
   if (node.depth === activeDepth) {
     if (activeDepth === 0) {
       return [node];
@@ -44,10 +44,8 @@ function selectedActiveDepthNodes(inputNode, activeDepth) {
   }
   return [].concat(...node.values
     .filter(v => v.selected)
-    .map(v => {
-      return selectedActiveDepthNodes(v, activeDepth);
-    })
-  )
+    .map(v => selectedActiveDepthNodes(v, activeDepth))
+  );
 }
 
 function selectedDataFromHierarchy(node) {
@@ -73,26 +71,23 @@ function getNode(inputNode, hierarchyKeyPath) {
     // If the above && inputNode.depth === hierarchyKeyPath.length - 1, this is the node!!!
     if (inputNode.depth === hierarchyKeyPath.length - 1) {
       return inputNode;
-    } else {
-      // Figure out which of the child values is in the hierarhcykeypath, if any
-      const nextVictim = inputNode.values.find(val => val.key === hierarchyKeyPath[val.depth]);
-      if (!nextVictim) { return null; }
-      return getNode(nextVictim, hierarchyKeyPath)
     }
+    // Figure out which of the child values is in the hierarhcykeypath, if any
+    const nextVictim = inputNode.values.find(val => val.key === hierarchyKeyPath[val.depth]);
+    if (!nextVictim) { return null; }
+    return getNode(nextVictim, hierarchyKeyPath);
   }
   // Else it's a dud and don't bother
-  return null;;
+  return null;
 }
 
 class HierarchicalSelect extends Component {
   constructor(props) {
     super(props);
-    const thisEdges = this.customNestEntries(
-      {
-        key: 'All Permits',
-        values: this.props.data,
-      },
-    );
+    const thisEdges = this.customNestEntries({
+      key: 'All Permits',
+      values: this.props.data,
+    });
 
     this.state = {
       activeDepth: this.props.activeDepth,
@@ -120,15 +115,15 @@ class HierarchicalSelect extends Component {
       node.allUnnestedValues = node.values;
       const childrenNest = nest()
         .key(d => d[this.props.hierarchyOrder[depth]])
-        .entries(node.allUnnestedValues)
+        .entries(node.allUnnestedValues);
 
-      childrenNest.sort((a, b) => b.values.length - a.values.length)
+      childrenNest.sort((a, b) => b.values.length - a.values.length);
 
       node.values = childrenNest.map((child) => {
         const thisChild = Object.assign({}, child);
-        thisChild.heritage = nodeHeritage.concat([node.key])
+        thisChild.heritage = nodeHeritage.concat([node.key]);
         return this.customNestEntries(thisChild, depth + 1);
-      })
+      });
     } else {
       node.allUnnestedValues = node.values;
       node.value = node.values.length;
@@ -140,37 +135,43 @@ class HierarchicalSelect extends Component {
 
   setActiveDepth(newDepth) {
     const selectedNodes = selectedActiveDepthNodes(this.state.edges, newDepth);
-    const colorfulNodes = this.setNodeDisplayOpts(selectedNodes, this.props.colorScheme);
+    const colorfulNodes = HierarchicalSelect.setNodeDisplayOpts(
+      selectedNodes,
+      this.props.colorScheme,
+    );
 
     this.setState({
       activeDepth: newDepth,
-      colorfulNodes: colorfulNodes,
+      colorfulNodes,
     });
 
     this.props.onFilterSelect(
       this.state.edges.selectedActiveValues,
       colorfulNodes,
       this.props.hierarchyOrder[newDepth - 1],
-    )
+    );
   }
 
   handleNodeClick(inputNode) {
-    const clickedNode = Object.assign({}, inputNode)
+    const clickedNode = Object.assign({}, inputNode);
     const newEdges = this.toggleHierarchy(clickedNode, this.state.edges);
     const selectedNodes = selectedActiveDepthNodes(newEdges, this.state.activeDepth);
-    const colorfulNodes = this.setNodeDisplayOpts(selectedNodes, this.props.colorScheme);
+    const colorfulNodes = HierarchicalSelect.setNodeDisplayOpts(
+      selectedNodes,
+      this.props.colorScheme,
+    );
 
     this.setState({
       activeDepth: this.state.activeDepth,
-      colorfulNodes: colorfulNodes,
+      colorfulNodes,
       edges: newEdges,
-    })
+    });
 
     this.props.onFilterSelect(
       newEdges.selectedActiveValues,
       colorfulNodes,
       this.props.hierarchyOrder[this.state.activeDepth - 1],
-    )
+    );
   }
 
   toggleHierarchy(clickedNode, inputNode) {
@@ -189,20 +190,19 @@ class HierarchicalSelect extends Component {
           if (childrenAtDepth.length === 1) {
             const relationshipWithClicked = getNodeRelationship(clickedNode, childrenAtDepth[0]);
             // Deselect if self or if parent
-            node.selected = !(relationshipWithClicked === 'self')
+            node.selected = !(relationshipWithClicked === 'self');
           }
         }
-      } else if (!clickedNode.selected){
+      } else if (!clickedNode.selected) {
         // If clicked node is being selected, select itself and its children and parent
         node.selected = true;
       }
       if (node.values) {
-        node.values = inputNode.values.map((child) => {
-          return this.toggleHierarchy(clickedNode, child);
-        })
+        node.values = inputNode.values.map(child =>
+          this.toggleHierarchy(clickedNode, child));
       }
     }
-    node.selectedActiveValues = selectedDataFromHierarchy(node, this.state.activeDepth)
+    node.selectedActiveValues = selectedDataFromHierarchy(node, this.state.activeDepth);
     return node;
   }
 
@@ -219,9 +219,8 @@ class HierarchicalSelect extends Component {
     // TODO: also use this in hierarchicalDropdown
     let color = '#a6a6a6';
     if (d.depth === this.state.activeDepth && d.selected) {
-      const colorfulNode = this.state.colorfulNodes.find(candidate => {
-        return candidate.key === d.key && candidate.heritage.join() === d.heritage.join();
-      })
+      const colorfulNode = this.state.colorfulNodes.find(candidate => candidate.key === d.key
+        && candidate.heritage.join() === d.heritage.join());
       if (colorfulNode) {
         // For some reason there is still a colorful node for an unselected node
         // But only if its child was unselected first???
@@ -232,7 +231,7 @@ class HierarchicalSelect extends Component {
     return color;
   }
 
-  setNodeDisplayOpts(nodesToDisplay, colors, maxNodes = 6) {
+  static setNodeDisplayOpts(nodesToDisplay, colors, maxNodes = 6) {
     // Needs output from selectedActiveDepthNodes
     return nodesToDisplay
       .sort((a, b) => b.selectedActiveValues.length - a.selectedActiveValues.length)
@@ -245,13 +244,13 @@ class HierarchicalSelect extends Component {
         }
         rVal.color = colors[colorIndex];
         return rVal;
-      })
+      });
   }
 
   componentWillMount() {
     // Filter out services by default
-    const servicesNode = getNode(this.state.edges, ['All Permits', 'Services'])
-    this.handleNodeClick(servicesNode)
+    const servicesNode = getNode(this.state.edges, ['All Permits', 'Services']);
+    this.handleNodeClick(servicesNode);
   }
 
   htmlAnnotationButton(d, leftMargin) {
@@ -260,11 +259,12 @@ class HierarchicalSelect extends Component {
     }
     const sameDepthNode = d.nodes.find(node => node.depth === d.d.depth);
     const buttonHeight = sameDepthNode.y1 - sameDepthNode.y0 - 2;
-    return (<div className="input-group"
+    return (<div
+      className="input-group"
       key={d.d.key}
     >
       <div
-        className='input-group-btn'
+        className="input-group-btn"
         style={{
           cursor: 'pointer',
           pointerEvents: 'all',
@@ -286,7 +286,7 @@ class HierarchicalSelect extends Component {
           {d.d.key}
         </button>
       </div>
-    </div>)
+    </div>);
   }
 
   handleDoubleClick(node) {
@@ -327,16 +327,15 @@ class HierarchicalSelect extends Component {
     ]
     const legendLabelItems = this.state.colorfulNodes
       .filter((d, i, array) => !d.othered || array.findIndex(datum => datum.othered) === i)
-      .map(entry => {
-        const heritage = entry.heritage.slice(1)
-        heritage.push(entry.key)
+      .map((entry) => {
+        const heritage = entry.heritage.slice(1);
+        heritage.push(entry.key);
         const title = heritage.join(' > ');
-
         return {
           label: entry.othered ? 'Other' : title,
           color: entry.color,
-        }
-      })
+        };
+      });
 
     return (
       <div className="interactiveAnnotation">
@@ -351,7 +350,7 @@ class HierarchicalSelect extends Component {
           responsiveWidth
           edges={this.state.edges}
           annotations={annotations}
-          htmlAnnotationRules={(d) => this.htmlAnnotationButton(d, margin.left)}
+          htmlAnnotationRules={d => this.htmlAnnotationButton(d, margin.left)}
           nodeStyle={(d) => {
             const color = this.getNodeColor(d);
             return {
@@ -369,20 +368,20 @@ class HierarchicalSelect extends Component {
           nodeIDAccessor="key"
           hoverAnnotation
           tooltipContent={(d) => {
-            const heritage = d.heritage.slice(1)
-            heritage.push(d.key)
+            const heritage = d.heritage.slice(1);
+            heritage.push(d.key);
             const title = heritage.join(' > ');
             // TODO: darker gray for get node color-- optionally pass in default
             return (<Tooltip
               style={{
                 minWdith: title.length * 5,
                 color: this.getNodeColor(d),
-               }}
+              }}
               textLines={[
                 { text: title },
-                { text: `${d.selectedActiveValues.length} of ${d.value} selected` }
+                { text: `${d.selectedActiveValues.length} of ${d.value} selected` },
               ]}
-            />)
+            />);
           }}
           networkType={{
             type: 'partition',
@@ -395,7 +394,7 @@ class HierarchicalSelect extends Component {
         />
         <HorizontalLegend
           style={{
-            textAlign: 'center'
+            textAlign: 'center',
           }}
           labelItems={legendLabelItems}
         />

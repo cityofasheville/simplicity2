@@ -9,10 +9,7 @@ import { colorScheme } from './granularUtils'
 
 
 /*
-TODO
-fix focus and hover behavior of dropdown button
-fix focus behavior of dropdown items
-move styling out of general maybe
+TODO: move styling out of general maybe
 */
 function getNodeRelationship(clickedNode, candidate) {
   // The parent value really just means ancestor
@@ -37,35 +34,14 @@ function getNodeRelationship(clickedNode, candidate) {
   return null;
 }
 
-function toggleHierarchy(clickedNode, inputNode) {
-  const node = Object.assign({}, inputNode);
-  const relationship = getNodeRelationship(clickedNode, node);
-  if (relationship) {
-    // Don't iterate if they have nothing to do with each other
-    if (clickedNode.selected) {
-      if (relationship === 'self' || relationship === 'child') {
-        // If clicked node was already selected, deselect itself and its children
-        node.selected = false;
-      } else if (relationship === 'parent') {
-        // If relationship is parent and the only selected child got clicked
-        const selectedNodeChildren = node.values.filter(candidateChild => candidateChild.selected);
-        if (selectedNodeChildren.length === 1) {
-          const relationshipWithClicked = getNodeRelationship(clickedNode, selectedNodeChildren[0]);
-          // Deselect if self or if parent
-          node.selected = !(relationshipWithClicked === 'self' || relationshipWithClicked === 'parent')
-        }
-      }
-    } else if (!clickedNode.selected){
-      // If clicked node is being selected, select itself and its children
-      node.selected = true;
+function activeLowestDescendents(node) {
+    if (node.depth === 4 && node.selected) {
+      // TODO: THIS SHOULD NOT BE HARD CODED
+      return [node];
     }
-    if (node.values) {
-      node.values = inputNode.values.map((child) => {
-        return toggleHierarchy(clickedNode, child);
-      })
-    }
-  }
-  return node;
+    return [].concat(...node.values
+      .filter(v => v.selected)
+      .map(v => activeLowestDescendents(v)));
 }
 
 function selectedActiveDepthNodes(inputNode, activeDepth) {
@@ -139,7 +115,7 @@ class HierarchicalSelect extends Component {
     this.htmlAnnotationButton = this.htmlAnnotationButton.bind(this);
 
     this.props.onFilterSelect(
-      selectedDataFromHierarchy(thisEdges),
+      thisEdges.selectedActiveValues,
       colorfulNodes,
       this.props.hierarchyOrder[this.state.activeDepth - 1]
     )
@@ -169,6 +145,7 @@ class HierarchicalSelect extends Component {
       node.value = node.values.length;
       node.values = undefined;
     }
+    node.selectedActiveValues = node.allUnnestedValues;
     return node;
   }
 
@@ -182,7 +159,7 @@ class HierarchicalSelect extends Component {
     });
 
     this.props.onFilterSelect(
-      selectedDataFromHierarchy(this.state.edges),
+      this.state.edges.selectedActiveValues,
       colorfulNodes,
       this.props.hierarchyOrder[newDepth - 1],
     )
@@ -190,7 +167,7 @@ class HierarchicalSelect extends Component {
 
   handleNodeClick(inputNode) {
     const clickedNode = Object.assign({}, inputNode)
-    const newEdges = toggleHierarchy(clickedNode, this.state.edges);
+    const newEdges = this.toggleHierarchy(clickedNode, this.state.edges);
     const selectedNodes = selectedActiveDepthNodes(newEdges, this.state.activeDepth);
     const colorfulNodes = this.setNodeDisplayOpts(selectedNodes, this.props.colorScheme);
 
@@ -201,10 +178,43 @@ class HierarchicalSelect extends Component {
     })
 
     this.props.onFilterSelect(
-      selectedDataFromHierarchy(newEdges),
+      newEdges.selectedActiveValues,
       colorfulNodes,
       this.props.hierarchyOrder[this.state.activeDepth - 1],
     )
+  }
+
+  toggleHierarchy(clickedNode, inputNode) {
+    const node = Object.assign({}, inputNode);
+    const relationship = getNodeRelationship(clickedNode, node);
+    // Don't iterate if they have nothing to do with each other
+    if (relationship) {
+      if (clickedNode.selected) {
+        if (relationship === 'self' || relationship === 'child') {
+          // If clicked node was already selected, deselect itself and its children
+          node.selected = false;
+        } else if (relationship === 'parent') {
+          // If relationship is parent and the only selected child got clicked
+          const selectedNodeChildren = activeLowestDescendents(inputNode);
+          if (selectedNodeChildren.length === 1) {
+            // Check on that node's children
+            const relationshipWithClicked = getNodeRelationship(clickedNode, selectedNodeChildren[0]);
+            // Deselect if self or if parent
+            node.selected = !(relationshipWithClicked === 'self' || relationshipWithClicked === 'parent')
+          }
+        }
+      } else if (!clickedNode.selected){
+        // If clicked node is being selected, select itself and its children
+        node.selected = true;
+      }
+      if (node.values) {
+        node.values = inputNode.values.map((child) => {
+          return this.toggleHierarchy(clickedNode, child);
+        })
+      }
+      node.selectedActiveValues = selectedDataFromHierarchy(node, this.state.activeDepth)
+    }
+    return node;
   }
 
   getNodeColor(d) {
@@ -246,6 +256,7 @@ class HierarchicalSelect extends Component {
   componentWillMount() {
     // Filter out services by default
     // use the getNode function with the hierarchyKeyPath ['All Permits', 'Services']
+    console.log(this.state)
     const servicesNode = getNode(this.state.edges, ['All Permits', 'Services'])
     this.handleNodeClick(servicesNode)
   }
@@ -362,7 +373,6 @@ class HierarchicalSelect extends Component {
             heritage.push(d.key)
             const title = heritage.join(' > ');
             // TODO: darker gray for get node color-- optionally pass in default
-            // TODO: "400 selected of 500 total" or something
             return (<Tooltip
               style={{
                 minWdith: title.length * 5,
@@ -370,7 +380,7 @@ class HierarchicalSelect extends Component {
                }}
               textLines={[
                 { text: title },
-                { text: `${d.value} records` }
+                { text: `${d.selectedActiveValues.length} of ${d.value} selected` }
               ]}
             />)
           }}

@@ -33,6 +33,7 @@ class TimeSlider extends Component {
   }
 
   render() {
+    // TODO: add hover annotation
     return (
       <div
         className={this.props.brushWidthLocked ?

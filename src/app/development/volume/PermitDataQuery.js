@@ -21,7 +21,7 @@ class PermitDataQuery extends React.Component {
   render() {
     const includedDates = [];
     const oneDayMilliseconds = (24 * 60 * 60 * 1000);
-    let dateToAdd = new Date(this.props.timeSpan[0]).getTime();
+    let dateToAdd = new Date(this.props.timeSpan[0]).getTime() + oneDayMilliseconds;
     const lastDate = new Date(this.props.timeSpan[1]).getTime();
     while (dateToAdd <= lastDate) {
       includedDates.push(new Date(dateToAdd));

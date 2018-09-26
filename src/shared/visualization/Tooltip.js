@@ -5,10 +5,10 @@ import PropTypes from 'prop-types';
 const Tooltip = (props) => {
   const styles = props.style || {};
   styles.fontSize = '0.75rem';
-  styles.padding = '0.5rem';
+  styles.padding = '0.35rem';
   styles.letterSpacing = '0.015rem'
   const minWidth = Math.min(
-    (props.textLines.map(line => line.text).join('').length) / props.textLines.length,
+    (props.textLines.map(line => line.text).join('').length + 1) / props.textLines.length,
     10
   );
   styles.minWidth = `${minWidth}em`;

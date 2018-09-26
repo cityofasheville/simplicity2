@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { histogram } from 'd3-array';
 import { nest } from 'd3-collection';
 import { scaleLinear } from 'd3-scale';
-import { histogram } from 'd3-array';
 import { ResponsiveOrdinalFrame } from 'semiotic';
 import Tooltip from '../../../shared/visualization/Tooltip';
 import { groupStatuses, dateComparisonOpts } from './granularUtils';

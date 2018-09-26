@@ -13,8 +13,11 @@ const PermitTypeMenus = props => (
       for (let index = 0; index < levelIndex; index++) {
         keyLevel = keyLevel[array[index].selectedCat];
       }
-      // If the value is not null, make it a selected dropdown
-      // If someone changes the selected dropdown of one earlier in the array, the later one's value should be cleared
+      /*
+       * If the value is not null, make it a selected dropdown
+       * If someone changes the selected dropdown of
+       * one earlier in the array, the later one's value should be cleared
+      */
       const orderedKeys = Object.keys(keyLevel).sort((a, b) => {
         if (a > b) {
           return 1;
@@ -33,7 +36,9 @@ const PermitTypeMenus = props => (
         }}
         key={level.name}
       >
-        <div style={{ display: 'inline-block' }}>{`${level.name.replace('_', ' ')}: `}&nbsp;</div>
+        <div style={{ display: 'inline-block' }}>
+          {`${level.name.replace('_', ' ')}: `}&nbsp;
+        </div>
         <select
           name={level.name}
           onChange={e => props.onSelect(e, levelIndex)}
@@ -50,8 +55,7 @@ const PermitTypeMenus = props => (
           ))}
         </select>
       </div>);
-    }
-    )}
+    })}
   </div>
 );
 

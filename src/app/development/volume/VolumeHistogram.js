@@ -45,9 +45,11 @@ const VolumeHistogram = props => (
     oAccessor="binStartDate"
     oPadding={5}
     rAccessor="count"
-    style={d => {
-      return { fill: d.count === 0 ? 'none' : d.color, stroke: 'white', strokeWidth: 0.1 }
-    }}
+    style={d => ({
+      fill: d.count === 0 ? 'none' : d.color,
+      stroke: 'white',
+      strokeWidth: 0.1,
+    })}
     hoverAnnotation
     tooltipContent={(d) => {
       const pieces = d.type === 'column-hover' ? d.pieces : [d.data];
@@ -55,22 +57,25 @@ const VolumeHistogram = props => (
 
       const othered = [];
       const notOthered = [];
-      pieces.forEach(piece => {
-        piece.othered ? othered.push(piece) : notOthered.push(piece);
-      })
+      pieces.forEach((piece) => {
+        if (piece.othered) {
+          othered.push(piece);
+        }
+        notOthered.push(piece);
+      });
 
       // TODO: do this elsewhere?
 
       let textLines = notOthered.map(piece => ({
         text: `${piece.key}: ${piece.count}`,
         color: piece.color,
-      }))
+      }));
 
       if (othered.length > 0) {
         textLines.push({
           text: `Other: ${othered.map(other => other.count).reduce((a, b) => a + b)}`,
           color: othered[0].color,
-        })
+        });
       }
 
       textLines = textLines.reverse();

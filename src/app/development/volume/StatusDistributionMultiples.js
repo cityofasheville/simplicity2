@@ -5,7 +5,7 @@ import { nest } from 'd3-collection';
 import { scaleLinear } from 'd3-scale';
 import { ResponsiveOrdinalFrame } from 'semiotic';
 import Tooltip from '../../../shared/visualization/Tooltip';
-import { groupStatuses, dateComparisonOpts } from './granularUtils';
+import { groupStatuses } from './granularUtils';
 
 function dotBin(input) {
   const renderedPieces = [];

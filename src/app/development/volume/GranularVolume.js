@@ -9,7 +9,8 @@ class GranularVolume extends React.Component {
 
     this.state = {
       timeSpan: [
-        new Date().getTime() - 2592000000,
+        new Date().getTime() - 2678400000,
+        // between today and today minus 31 days
         new Date().getTime(),
       ],
       dateField: 'applied_date',

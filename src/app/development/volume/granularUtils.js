@@ -119,6 +119,16 @@ export function splitOrdinalByBool(inputData, matchTestFunc, nameTrue) {
   return splitOrdinal;
 }
 
+export const GET_PERMITS_FOR_COUNTING = gql`
+  query getPermitsQuery($after: String) {
+    permits(after: $after) {
+        applied_date
+        permit_category
+        permit_group
+    }
+  }
+`;
+
 
 export const GET_PERMITS = gql`
   query getPermitsQuery($date_field: String!, $after: String, $before: String) {

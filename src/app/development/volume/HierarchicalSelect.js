@@ -15,7 +15,7 @@ function getNodeRelationship(clickedNode, candidate) {
   // The parent value really just means ancestor
   if (candidate.depth === 0) {
     // If it's the root
-    return 'parent';
+    return 'ancestor';
   }
   const candidateHeritage = candidate.heritage.join();
   const clickedHeritage = clickedNode.heritage.join();
@@ -29,24 +29,13 @@ function getNodeRelationship(clickedNode, candidate) {
     return 'child';
   } else if ( clickedHeritage.includes(candidateHeritage) &&
     clickedNode.heritage.indexOf(candidate.key) === candidate.depth) {
-    return 'parent';
+    return 'ancestor';
   }
   return null;
 }
 
-function activeLowestDescendents(node) {
-    if (node.depth === 4 && node.selected) {
-      // TODO: THIS SHOULD NOT BE HARD CODED
-      return [node];
-    }
-    return [].concat(...node.values
-      .filter(v => v.selected)
-      .map(v => activeLowestDescendents(v)));
-}
-
 function selectedActiveDepthNodes(inputNode, activeDepth) {
   const node = Object.assign({}, inputNode)
-  node.selectedActiveValues = selectedDataFromHierarchy(inputNode)
   if (node.depth === activeDepth) {
     if (activeDepth === 0) {
       return [node];
@@ -62,9 +51,14 @@ function selectedActiveDepthNodes(inputNode, activeDepth) {
 }
 
 function selectedDataFromHierarchy(node) {
+  // Given a node, return only the selected raw values
   if (!node.values) {
-    // If it has no values attached, return it
-    return node.allUnnestedValues;
+    if (node.selected) {
+      // If it is selected and at the lowest level, return its values
+      return node.allUnnestedValues;
+    }
+    // Return empty array to be concatenated if it's not selected
+    return [];
   }
   return [].concat(...node.values
     .filter(v => v.selected)
@@ -100,28 +94,22 @@ class HierarchicalSelect extends Component {
       },
     );
 
-    // TODO: meld these two functions into one since they *always* appear together?
-    const selectedNodes = selectedActiveDepthNodes(thisEdges, this.props.activeDepth);
-    const colorfulNodes = this.setNodeDisplayOpts(selectedNodes, this.props.colorScheme);
-
     this.state = {
       activeDepth: this.props.activeDepth,
       edges: thisEdges,
-      colorfulNodes: colorfulNodes,
+      colorfulNodes: null, // This gets set by componentWillMount
     };
 
     this.setActiveDepth = this.setActiveDepth.bind(this);
     this.handleNodeClick = this.handleNodeClick.bind(this);
     this.htmlAnnotationButton = this.htmlAnnotationButton.bind(this);
-
-    this.props.onFilterSelect(
-      thisEdges.selectedActiveValues,
-      colorfulNodes,
-      this.props.hierarchyOrder[this.state.activeDepth - 1]
-    )
   }
 
   customNestEntries(inputNode, depth = 0) {
+    /*
+     * Called only in constructor
+     * Input node is starter root
+    */
     const node = Object.assign({}, inputNode);
     const nodeHeritage = node.heritage || [];
     node.depth = depth;
@@ -168,6 +156,7 @@ class HierarchicalSelect extends Component {
   handleNodeClick(inputNode) {
     const clickedNode = Object.assign({}, inputNode)
     const newEdges = this.toggleHierarchy(clickedNode, this.state.edges);
+    console.log(newEdges)
     const selectedNodes = selectedActiveDepthNodes(newEdges, this.state.activeDepth);
     const colorfulNodes = this.setNodeDisplayOpts(selectedNodes, this.props.colorScheme);
 
@@ -190,21 +179,21 @@ class HierarchicalSelect extends Component {
     // Don't iterate if they have nothing to do with each other
     if (relationship) {
       if (clickedNode.selected) {
+        // If clicked node was already selected, deselect itself and its children
         if (relationship === 'self' || relationship === 'child') {
-          // If clicked node was already selected, deselect itself and its children
           node.selected = false;
-        } else if (relationship === 'parent') {
-          // If relationship is parent and the only selected child got clicked
-          const selectedNodeChildren = activeLowestDescendents(inputNode);
-          if (selectedNodeChildren.length === 1) {
-            // Check on that node's children
-            const relationshipWithClicked = getNodeRelationship(clickedNode, selectedNodeChildren[0]);
+        } else if (relationship === 'ancestor') {
+          // If input node is parent of clicked and the only selected child got deselected
+          // If clicked was only child at that depth, deselect
+          const childrenAtDepth = this.activeDescendentsAtDepth(inputNode, clickedNode.depth);
+          if (childrenAtDepth.length === 1) {
+            const relationshipWithClicked = getNodeRelationship(clickedNode, childrenAtDepth[0]);
             // Deselect if self or if parent
-            node.selected = !(relationshipWithClicked === 'self' || relationshipWithClicked === 'parent')
+            node.selected = !(relationshipWithClicked === 'self')
           }
         }
       } else if (!clickedNode.selected){
-        // If clicked node is being selected, select itself and its children
+        // If clicked node is being selected, select itself and its children and parent
         node.selected = true;
       }
       if (node.values) {
@@ -212,26 +201,36 @@ class HierarchicalSelect extends Component {
           return this.toggleHierarchy(clickedNode, child);
         })
       }
-      node.selectedActiveValues = selectedDataFromHierarchy(node, this.state.activeDepth)
+    }
+    node.selectedActiveValues = selectedDataFromHierarchy(node, this.state.activeDepth)
+    if (!node.selected && node.depth === 4) {
+      console.log(node)
     }
     return node;
   }
 
+  activeDescendentsAtDepth(node, depth) {
+    if (node.depth === depth && node.selected) {
+      return [node];
+    }
+    return [].concat(...node.values
+      .filter(v => v.selected)
+      .map(v => this.activeDescendentsAtDepth(v, depth)));
+  }
+
   getNodeColor(d) {
     // TODO: also use this in hierarchicalDropdown
-    const atActiveDepth = d.depth === this.state.activeDepth ? 1 : 0;
     let color = '#a6a6a6';
-    if (atActiveDepth && d.selected) {
+    if (d.depth === this.state.activeDepth && d.selected) {
       const colorfulNode = this.state.colorfulNodes.find(candidate => {
         return candidate.key === d.key && candidate.heritage.join() === d.heritage.join();
       })
-      if (!colorfulNode) {
-        // If you deselect a node's child, and then deselect that node, things break
-        // TODO: why tho
-        console.log('A LOGIC ERROR OF SOME SORT IN GET NODE COLOR: ', d)
-        console.log(this.state.colorfulNodes)
-      } else {
+      if (colorfulNode) {
+        // For some reason there is still a colorful node for an unselected node
+        // But only if its child was unselected first???
         color = colorfulNode.color;
+      } else {
+        console.log(colorfulNode, d)
       }
     }
     return color;
@@ -255,8 +254,6 @@ class HierarchicalSelect extends Component {
 
   componentWillMount() {
     // Filter out services by default
-    // use the getNode function with the hierarchyKeyPath ['All Permits', 'Services']
-    console.log(this.state)
     const servicesNode = getNode(this.state.edges, ['All Permits', 'Services'])
     this.handleNodeClick(servicesNode)
   }

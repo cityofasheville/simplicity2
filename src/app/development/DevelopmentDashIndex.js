@@ -38,9 +38,7 @@ const DevelopmentDashIndex = props => (
         <div className="card-item" key={['topic', i].join('_')}>
           <Link
             className="topic-card"
-            to={{
-              pathname: topic.linkPath,
-            }}
+            to={topic.linkTo}
           >
             <div>
               {/* <div className="text-primary text-center">Picture</div> */}
@@ -63,23 +61,32 @@ DevelopmentDashIndex.defaultProps = {
   topics: [
     {
       name: 'Permit Module Volume Detail',
-      linkPath: '/development/granular_volume?module=permits',
+      linkTo: {
+        pathname: '/development/granular_volume',
+        search: '?module=permits',
+      },
     },
     {
       name: 'Planning Module Volume Detail',
-      linkPath: '/development/granular_volume?module=planning',
+      linkTo: {
+        pathname: '/development/granular_volume',
+        search: '?module=planning'
+      }
     },
     {
       name: 'Service Module Volume Detail',
-      linkPath: '/development/granular_volume?module=services',
+      linkTo: {
+        pathname: '/development/granular_volume',
+        search: '?module=services',
+      },
     },
     {
       name: 'Yearly Volume Overlay',
-      linkPath: '/development/volume',
+      linkTo: { pathname: '/development/volume' },
     },
     {
       name: 'TRC Timeline',
-      linkPath: '/development/trc',
+      linkTo: { pathname: '/development/trc' },
     },
   ],
 };

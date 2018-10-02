@@ -2,10 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import { GET_PERMITS } from './granularUtils';
-import { URLSearchParams } from 'react-router';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import GranularDataReceivers from './GranularDataReceivers';
 
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 const PermitDataQuery = (props) => {
   const includedDates = [];
@@ -31,12 +34,20 @@ const PermitDataQuery = (props) => {
         console.log(error);
         return <div>Error :( </div>;
       }
-      // use query params to filter for modules
+
+      let filteredData = data.permits;
+      let capitalizedModule;
+      if (props.module) {
+        // TODO: IF IT'S PLANNING MODULE, DON'T USE THE CATEGORY LEVEL
+        capitalizedModule = capitalizeFirstLetter(props.module);
+        filteredData = data.permits.filter(d => d.permit_group === capitalizedModule)
+      }
 
       return (<div className="dashRows">
+        {props.module && <h2>Module: {capitalizedModule}</h2>}
         <div>
           <GranularDataReceivers
-            data={data.permits}
+            data={filteredData}
             includedDates={includedDates}
           />
         </div>

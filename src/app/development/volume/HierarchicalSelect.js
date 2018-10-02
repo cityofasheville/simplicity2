@@ -215,9 +215,12 @@ class HierarchicalSelect extends Component {
       .map(v => this.activeDescendentsAtDepth(v, depth)));
   }
 
-  getNodeColor(d) {
+  getNodeColor(d, isText = false) {
     // TODO: also use this in hierarchicalDropdown
     let color = '#a6a6a6';
+    if (isText) {
+      color = 'gray';
+    }
     if (d.depth === this.state.activeDepth && d.selected) {
       const colorfulNode = this.state.colorfulNodes.find(candidate => candidate.key === d.key
         && candidate.heritage.join() === d.heritage.join());
@@ -371,11 +374,10 @@ class HierarchicalSelect extends Component {
             const heritage = d.heritage.slice(1);
             heritage.push(d.key);
             const title = heritage.join(' > ');
-            // TODO: darker gray for get node color-- optionally pass in default
             return (<Tooltip
               style={{
                 minWdith: title.length * 5,
-                color: this.getNodeColor(d),
+                color: this.getNodeColor(d, true),
               }}
               textLines={[
                 { text: title },

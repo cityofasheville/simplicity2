@@ -2,20 +2,13 @@ import gql from 'graphql-tag';
 import { histogram } from 'd3-array';
 
 export const colorScheme = [
-  /* This is two of the color schemes from the other color scheme file
-    (under shared/visualizations) joined and deduped
-  */
+  '#490092',
+  '#920000',
   '#B66DFF',
   '#DB6D00',
-  '#920000',
   '#006DDB',
   '#FF6DB6',
-  '#01b0b0',
-  '#004949',
-  '#2fe12f',
   '#6DB6FF',
-  '#490092',
-  '#ff99c7',
 ];
 
 export function groupStatuses(data) {

@@ -58,6 +58,7 @@ class GranularVolume extends React.Component {
         <PermitDataQuery
           timeSpan={this.state.timeSpan}
           dateField={this.state.dateField}
+          module={this.props.location.search.split('module=')[1]}
         />
       </div>
     </div>);

@@ -32,7 +32,7 @@ class HierarchicalDropdown extends Component {
           borderRadius: 6,
         }}
       >
-        Permit Types
+        Filter Permit Types
         <span className="caret"></span>
       </button>
       <ul

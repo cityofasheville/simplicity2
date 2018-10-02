@@ -54,7 +54,7 @@ export default class Navbar extends React.Component { // eslint-disable-line rea
                       <h2>City of Asheville, NC</h2>
                     </span>
                   </div>
-                </IndexLink>              
+                </IndexLink>
                 <br />
               </div>
             </div>
@@ -62,7 +62,10 @@ export default class Navbar extends React.Component { // eslint-disable-line rea
               <ul className="nav navbar-nav navbar-right">
                 {/* <li><Link to="/my-simplicity" activeClassName="active">My SimpliCity</Link></li> */}
                 <li><Link to="/dashboards" activeClassName="active">Dashboards</Link></li>
-                <li><Link to="https://docs.google.com/a/ashevillenc.gov/forms/d/e/1FAIpQLSdjNwOmoDY3PjQOVreeSL07zgI8otIIPWjY7BnejWMAjci8-w/viewform?c=0&w=1" target="_blank" activeClassName="active">Feedback</Link></li>
+                {/* We're not really using the activeClassName property anyway,
+                  so we may as well silence that warning by using an <a> rather than
+                  a Link */}
+                <li><a href="https://docs.google.com/a/ashevillenc.gov/forms/d/e/1FAIpQLSdjNwOmoDY3PjQOVreeSL07zgI8otIIPWjY7BnejWMAjci8-w/viewform?c=0&w=1" target="_blank">Feedback</a></li>
                 <li><a onClick={() => { browserHistory.push('/search?entities=address,property,neighborhood,street,owner') }}><Icon path={IM_SEARCH} size={16} /></a></li>
                 <AuthControl />
                 {(window.location.href.indexOf('localhost') > -1 || window.location.href.indexOf('dev-simplicity') > -1) &&

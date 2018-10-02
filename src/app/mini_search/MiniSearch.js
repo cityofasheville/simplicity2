@@ -110,7 +110,18 @@ class MiniSearch extends React.Component {
       />
       <div className="container">
         <div className="col-sm-12">
-          <div style={{ fontStyle: 'italic' }} className="text-right"><a className="inText" href="https://docs.google.com/a/ashevillenc.gov/forms/d/e/1FAIpQLSdjNwOmoDY3PjQOVreeSL07zgI8otIIPWjY7BnejWMAjci8-w/viewform?c=0&w=1" target="_blank" title="website feedback form">Report bugs or give feedback on this tool</a>
+          <div
+            style={{ fontStyle: 'italic' }}
+            className="text-right"
+          >
+            <a
+              className="inText"
+              href="https://docs.google.com/a/ashevillenc.gov/forms/d/e/1FAIpQLSdjNwOmoDY3PjQOVreeSL07zgI8otIIPWjY7BnejWMAjci8-w/viewform?c=0&w=1"
+              target="_blank"
+              title="website feedback form"
+            >
+              Report a bug or give feedback on this tool
+            </a>
           </div>
         </div>
       </div>
@@ -151,4 +162,3 @@ export default compose(
     }),
   })
 )(MiniSearch);
-

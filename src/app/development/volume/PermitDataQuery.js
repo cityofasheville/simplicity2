@@ -6,6 +6,10 @@ import LoadingAnimation from '../../../shared/LoadingAnimation';
 import GranularDataReceivers from './GranularDataReceivers';
 
 
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 const PermitDataQuery = (props) => {
   const includedDates = [];
   const oneDayMilliseconds = (24 * 60 * 60 * 1000);
@@ -30,10 +34,20 @@ const PermitDataQuery = (props) => {
         console.log(error);
         return <div>Error :( </div>;
       }
+
+      let filteredData = data.permits;
+      let capitalizedModule;
+      if (props.module) {
+        // TODO: IF IT'S PLANNING MODULE, DON'T USE THE CATEGORY LEVEL
+        capitalizedModule = capitalizeFirstLetter(props.module);
+        filteredData = data.permits.filter(d => d.permit_group === capitalizedModule)
+      }
+
       return (<div className="dashRows">
+        {props.module && <h2>Module: {capitalizedModule}</h2>}
         <div>
           <GranularDataReceivers
-            data={data.permits}
+            data={filteredData}
             includedDates={includedDates}
           />
         </div>

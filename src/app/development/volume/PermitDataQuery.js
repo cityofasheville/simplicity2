@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import { GET_PERMITS } from './granularUtils';
+import { URLSearchParams } from 'react-router';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import GranularDataReceivers from './GranularDataReceivers';
 
@@ -30,6 +31,8 @@ const PermitDataQuery = (props) => {
         console.log(error);
         return <div>Error :( </div>;
       }
+      // use query params to filter for modules
+
       return (<div className="dashRows">
         <div>
           <GranularDataReceivers

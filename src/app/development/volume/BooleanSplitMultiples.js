@@ -42,6 +42,10 @@ const BooleanSplitMultiples = (props) => {
             numInPerson += nodeDay.count;
           }
         });
+        const slicedHeritage = node.heritage.slice(1)
+        const title = slicedHeritage.length > 0 ?
+          `${node.heritage.slice(1).join(' > ')} > ${node.key}`
+          : `${node.key}`;
 
         return (<div
           style={{ display: 'inline-block' }}
@@ -101,7 +105,7 @@ const BooleanSplitMultiples = (props) => {
               );
             }}
             data={thisData}
-            title={`${node.heritage.slice(1).join(' > ')} > ${node.key}`}
+            title={title}
             style={(d) => {
               if (d.count === 0) {
                 return {

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { nest } from 'd3-collection';
 import { ResponsiveNetworkFrame } from 'semiotic';
+import { URLSearchParams } from 'react-router';
 import Tooltip from '../../../shared/visualization/Tooltip';
 import HierarchicalDropdown from './HierarchicalDropdown';
 import HorizontalLegend from '../../../shared/visualization/HorizontalLegend';
@@ -98,13 +99,21 @@ class HierarchicalSelect extends Component {
     this.setActiveDepth = this.setActiveDepth.bind(this);
     this.handleNodeClick = this.handleNodeClick.bind(this);
     this.htmlAnnotationButton = this.htmlAnnotationButton.bind(this);
-    this.handleDoubleClick = this.handleDoubleClick.bind(this);
   }
 
   customNestEntries(inputNode, depth = 0) {
     /*
      * Called only in constructor
      * Input node is starter root
+     * Functions like d3 nest, except adds extra key/val pairs
+     * Output is {
+        key: String,
+        values: Array of Objects that are shaped like this one,
+        heritage: Array of Strings representing keys of parent/grandparent/etc
+        allUnnestedValues: Array of raw data, not filtered by any params
+        value: number of raw data aka leaves for last layer of nodes
+        selectedActiveValues: number of allUnnestedValues--- gets reset with toggleHierarchy
+       }
     */
     const node = Object.assign({}, inputNode);
     const nodeHeritage = node.heritage || [];
@@ -113,6 +122,7 @@ class HierarchicalSelect extends Component {
 
     if (depth < this.props.hierarchyOrder.length) {
       node.allUnnestedValues = node.values;
+
       const childrenNest = nest()
         .key(d => d[this.props.hierarchyOrder[depth]])
         .entries(node.allUnnestedValues);
@@ -134,9 +144,9 @@ class HierarchicalSelect extends Component {
   }
 
   setActiveDepth(newDepth) {
-    const selectedNodes = selectedActiveDepthNodes(this.state.edges, newDepth);
     const colorfulNodes = HierarchicalSelect.setNodeDisplayOpts(
-      selectedNodes,
+      this.state.edges,
+      newDepth,
       this.props.colorScheme,
     );
 
@@ -154,10 +164,11 @@ class HierarchicalSelect extends Component {
 
   handleNodeClick(inputNode) {
     const clickedNode = Object.assign({}, inputNode);
-    const newEdges = this.toggleHierarchy(clickedNode, this.state.edges);
-    const selectedNodes = selectedActiveDepthNodes(newEdges, this.state.activeDepth);
+    const newEdges = this.toggleHierarchy(inputNode, this.state.edges);
+
     const colorfulNodes = HierarchicalSelect.setNodeDisplayOpts(
-      selectedNodes,
+      newEdges,
+      this.state.activeDepth,
       this.props.colorScheme,
     );
 
@@ -234,8 +245,9 @@ class HierarchicalSelect extends Component {
     return color;
   }
 
-  static setNodeDisplayOpts(nodesToDisplay, colors, maxNodes = 6) {
+  static setNodeDisplayOpts(edges, depth, colors, maxNodes = 6) {
     // Needs output from selectedActiveDepthNodes
+    const nodesToDisplay = selectedActiveDepthNodes(edges, depth);
     return nodesToDisplay
       .sort((a, b) => b.selectedActiveValues.length - a.selectedActiveValues.length)
       .map((d, i) => {
@@ -251,9 +263,7 @@ class HierarchicalSelect extends Component {
   }
 
   componentWillMount() {
-    // Filter out services by default
-    const servicesNode = getNode(this.state.edges, ['All Permits', 'Services']);
-    this.handleNodeClick(servicesNode);
+    this.setActiveDepth(this.props.activeDepth)
   }
 
   htmlAnnotationButton(d, leftMargin) {
@@ -292,13 +302,6 @@ class HierarchicalSelect extends Component {
     </div>);
   }
 
-  handleDoubleClick(node) {
-    console.log(node)
-    // this.setState({
-    //   edges: node,
-    // })
-  }
-
   render() {
     const margin = {
       top: 5,
@@ -306,28 +309,6 @@ class HierarchicalSelect extends Component {
       bottom: 5,
       left: 50,
     };
-    const annotations = [
-      {
-        depth: 1,
-        key: 'Module',
-        type: 'custom',
-      },
-      {
-        depth: 2,
-        key: 'Type',
-        type: 'custom',
-      },
-      {
-        depth: 3,
-        key: 'Subtype',
-        type: 'custom',
-      },
-      {
-        depth: 4,
-        key: 'Category',
-        type: 'custom',
-      },
-    ]
     const legendLabelItems = this.state.colorfulNodes
       .filter((d, i, array) => !d.othered || array.findIndex(datum => datum.othered) === i)
       .map((entry) => {
@@ -352,7 +333,7 @@ class HierarchicalSelect extends Component {
           margin={margin}
           responsiveWidth
           edges={this.state.edges}
-          annotations={annotations}
+          annotations={this.props.annotations}
           htmlAnnotationRules={d => this.htmlAnnotationButton(d, margin.left)}
           nodeStyle={(d) => {
             const color = this.getNodeColor(d);
@@ -392,7 +373,6 @@ class HierarchicalSelect extends Component {
             hierarchySum: d => d.value,
           }}
           customClickBehavior={d => this.handleNodeClick(d.data)}
-          customDoubleClickBehavior={d => this.handleDoubleClick(d)}
         />
         <HorizontalLegend
           style={{
@@ -406,36 +386,43 @@ class HierarchicalSelect extends Component {
 }
 
 HierarchicalSelect.propTypes = {
+  activeDepth: PropTypes.number,
+  annotations: PropTypes.arrayOf(PropTypes.object),
+  colorScheme: PropTypes.arrayOf(PropTypes.string),
   data: PropTypes.arrayOf(PropTypes.object),
   hierarchyOrder: PropTypes.arrayOf(PropTypes.string),
-  activeDepth: PropTypes.number,
-  defaultSelected: PropTypes.arrayOf(PropTypes.object),
   onFilterSelect: PropTypes.func,
-  colorScheme: PropTypes.arrayOf(PropTypes.string),
 };
 
 HierarchicalSelect.defaultProps = {
+  activeDepth: 1,
+  annotations: [
+    {
+      depth: 1,
+      key: 'Type',
+      type: 'custom',
+    },
+    {
+      depth: 2,
+      key: 'Subtype',
+      type: 'custom',
+    },
+    {
+      depth: 3,
+      key: 'Category',
+      type: 'custom',
+    },
+  ],
+  colorScheme: colorScheme,
   data: [],
   hierarchyOrder: [
-    'permit_group',
     'permit_type',
     'permit_subtype',
     'permit_category',
   ],
-  activeDepth: 2,
-  defaultSelected: [
-    {
-      level: 'permit_group',
-      keys: [
-        'Permits',
-        'Planning',
-      ],
-    },
-  ],
   onFilterSelect: (selectedData, selectedNodes, selectedHierarchyLevel) => {
     console.log(selectedData, selectedNodes, selectedHierarchyLevel);
   },
-  colorScheme: colorScheme,
 };
 
 export default HierarchicalSelect;

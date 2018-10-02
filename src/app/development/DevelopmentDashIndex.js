@@ -62,8 +62,16 @@ DevelopmentDashIndex.propTypes = {
 DevelopmentDashIndex.defaultProps = {
   topics: [
     {
-      name: 'Permit Volume Detail',
-      linkPath: '/development/granular_volume',
+      name: 'Permit Module Volume Detail',
+      linkPath: '/development/granular_volume?module=permits',
+    },
+    {
+      name: 'Planning Module Volume Detail',
+      linkPath: '/development/granular_volume?module=planning',
+    },
+    {
+      name: 'Service Module Volume Detail',
+      linkPath: '/development/granular_volume?module=services',
     },
     {
       name: 'Yearly Volume Overlay',

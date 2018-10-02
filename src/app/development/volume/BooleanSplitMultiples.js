@@ -9,7 +9,11 @@ import {
 } from './granularUtils';
 
 const BooleanSplitMultiples = (props) => {
-  const openedOnline = splitOrdinalByBool(props.histogramData, openedOnlineRule, 'openedOnline');
+  const openedOnline = splitOrdinalByBool(
+    props.histogramData,
+    openedOnlineRule,
+    'openedOnline',
+  );
   return (
     <div
       style={{
@@ -20,19 +24,24 @@ const BooleanSplitMultiples = (props) => {
         const thisColor = node.color;
         const brighterColor = color(thisColor).brighter(1.25);
         // PREVENT THINGS WITH SAME NAME FROM GETTING ADDED TOGETHER by adding heritage
-        const thisData = openedOnline.filter(d => d.key === node.key && d.heritage.join() === node.heritage.join());
+        const thisData = openedOnline.filter(d =>
+          d.key === node.key && d.heritage.join() === node.heritage.join());
         const margins = {
           top: 40,
           right: 10,
           bottom: 35,
           left: 25,
-        }
+        };
 
         let numOnline = 0;
         let numInPerson = 0;
-        thisData.forEach(nodeDay => {
-          nodeDay.openedOnline ? numOnline += nodeDay.count : numInPerson += nodeDay.count;
-        })
+        thisData.forEach((nodeDay) => {
+          if (nodeDay.openedOnline) {
+            numOnline += nodeDay.count;
+          } else {
+            numInPerson += nodeDay.count;
+          }
+        });
 
         return (<div
           style={{ display: 'inline-block' }}
@@ -78,8 +87,9 @@ const BooleanSplitMultiples = (props) => {
               />);
             }}
             oLabel={(d, pieces, i) => {
-              if (i % 5 !== 0) { return null }
-              const dateString = new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+              if (i % 5 !== 0) { return null; }
+              const dateString = new Date(d)
+                .toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
               return (
                 <text
                   textAnchor="end"
@@ -106,27 +116,27 @@ const BooleanSplitMultiples = (props) => {
               };
             }}
           />
-          <svg style={{ height: 100, width: 185, fontSize: '0.75em'}}>
+          <svg style={{ height: 100, width: 185, fontSize: '0.75em' }} >
             <g transform={`translate(${margins.left},-10)`}>
               <Legend
                 legendGroups={[
                   {
-                    styleFn: (d) => ({ fill: d.color, stroke: thisColor }),
+                    styleFn: d => ({ fill: d.color, stroke: thisColor }),
                     items: [
                       { label: `Online: ${numOnline}`, color: thisColor },
                       { label: `In Person: ${numInPerson}`, color: brighterColor },
-                    ]
-                  }
+                    ],
+                  },
                 ]}
                 title=""
-            />
+              />
             </g>
           </svg>
         </div>);
       })}
     </div>
-  )
-}
+  );
+};
 
 BooleanSplitMultiples.propTypes = {
 };

@@ -1,15 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  stackedHistogramFromNodes,
-  GET_PERMITS,
-} from './granularUtils';
+import { stackedHistogramFromNodes } from './granularUtils';
 import BooleanSplitMultiples from './BooleanSplitMultiples';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import PermitVolCirclepack from './PermitVolCirclepack';
 import VolumeHistogram from './VolumeHistogram';
-import DataModal from './DataModal';
-import HierarchicalSelect from './HierarchicalSelect'
+// import DataModal from './DataModal';
+import HierarchicalSelect from './HierarchicalSelect';
 
 
 class GranularDataReceivers extends React.Component {
@@ -44,7 +41,7 @@ class GranularDataReceivers extends React.Component {
     this.setState({
       selectedData,
       selectedNodes,
-      selectedHierarchyLevel
+      selectedHierarchyLevel,
     });
   }
 
@@ -58,20 +55,22 @@ class GranularDataReceivers extends React.Component {
       color: 'none',
       heritage: [],
       values: this.state.selectedNodes ?
-        this.state.selectedNodes.map(node => {
-          return {
+        this.state.selectedNodes.map(node =>
+          ({
             color: node.color,
             heritage: node.heritage,
             key: node.key,
             selected: node.selected,
             value: node.selectedActiveValues.length,
-          }
-        }) :
+          })) :
         [],
-    }
+    };
 
     return (<div className="dashRows">
-      {/* {this.state.modalData && <DataModal data={this.state.modalData} closeModal={this.onModalClose} />} */}
+      {/* {this.state.modalData && <DataModal
+        data={this.state.modalData}
+        closeModal={this.onModalClose}
+      />} */}
       <div
         className="row col-md-12"
       >
@@ -86,20 +85,20 @@ class GranularDataReceivers extends React.Component {
       >
         <div className="col-md-9">
           <h2>Daily</h2>
-            <VolumeHistogram
-              data={histData}
-            />
+          <VolumeHistogram
+            data={histData}
+          />
         </div>
         <div className="col-md-3 granularVolCirclepack">
-        <h2>{`Total: ${totalCount}`}</h2>
-        {this.state.selectedNodes ?
-          (<PermitVolCirclepack
-            data={circlePackData}
-            // onCircleClick={circleData => this.onModalOpen(circleData)}
-          />) :
-        <LoadingAnimation />
-        }
-      </div>
+          <h2>{`Total: ${totalCount}`}</h2>
+          {this.state.selectedNodes ?
+            (<PermitVolCirclepack
+              data={circlePackData}
+              // onCircleClick={circleData => this.onModalOpen(circleData)}
+            />) :
+            <LoadingAnimation />
+          }
+        </div>
       </div>
       <div id="percentOnline" className="row">
         <h2>Online vs In Person</h2>

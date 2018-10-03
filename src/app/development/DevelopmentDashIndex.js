@@ -15,7 +15,6 @@ const DevelopmentDashIndex = props => (
       <h2>Last 30 Days</h2>
       <BigNumber
         label="New Permits"
-        tempNumber="42"
         query={GET_PERMITS_FOR_COUNTING}
         aggregateFunction={allData => allData.length}
       />
@@ -77,6 +76,27 @@ DevelopmentDashIndex.defaultProps = {
       name: 'Service Module Volume Detail',
       linkTo: {
         pathname: '/development/granular_volume',
+        search: '?module=services',
+      },
+    },
+    {
+      name: 'Permit Module Status Detail',
+      linkTo: {
+        pathname: '/development/status_volume',
+        search: '?module=permits',
+      },
+    },
+    {
+      name: 'Planning Module Status Detail',
+      linkTo: {
+        pathname: '/development/status_volume',
+        search: '?module=planning'
+      }
+    },
+    {
+      name: 'Service Module Status Detail',
+      linkTo: {
+        pathname: '/development/status_volume',
         search: '?module=services',
       },
     },

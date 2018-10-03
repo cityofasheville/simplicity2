@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import { GET_PERMITS } from './granularUtils';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
-import GranularDataReceivers from './GranularDataReceivers';
-
+import VolumeDataReceivers from './VolumeDataReceivers';
 
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -35,18 +34,23 @@ const PermitDataQuery = (props) => {
         return <div>Error :( </div>;
       }
 
+      const module = props.location.search.split('module=')[1];
       let filteredData = data.permits;
       let capitalizedModule;
-      if (props.module) {
+      if (module) {
         // TODO: IF IT'S PLANNING MODULE, DON'T USE THE CATEGORY LEVEL
-        capitalizedModule = capitalizeFirstLetter(props.module);
+        capitalizedModule = capitalizeFirstLetter(module);
         filteredData = data.permits.filter(d => d.permit_group === capitalizedModule)
       }
 
+      // if the URL is granular, then show granular data receivers
+      // if the URL is status_volume, show status details
+
       return (<div className="dashRows">
-        {props.module && <h2>Module: {capitalizedModule}</h2>}
+        {module && <h2>Module: {capitalizedModule}</h2>}
         <div>
-          <GranularDataReceivers
+          <VolumeDataReceivers
+            {...props}
             data={filteredData}
             includedDates={includedDates}
           />

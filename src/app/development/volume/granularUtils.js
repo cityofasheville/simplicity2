@@ -81,12 +81,12 @@ export function stackedHistogramFromNodes(nodes, timeSpan) {
   // TODO: ROUND THESE
 
   let includedDates;
-  if (daySpan <= 15) {
+  if (daySpan <= 30) {
     includedDates = timeDay.range(firstTime, lastTime)
   }
-  if (daySpan > 15 && daySpan / 7 <= 15) {
+  if (daySpan > 30 && daySpan / 7 <= 30) {
     includedDates = timeMonday.range(firstTime, lastTime)
-  } else if (daySpan / 7 > 15) {
+  } else if (daySpan / 7 > 30) {
     includedDates = timeMonth.range(firstTime, lastTime)
   }
 

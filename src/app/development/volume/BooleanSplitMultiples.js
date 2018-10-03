@@ -15,7 +15,7 @@ const BooleanSplitMultiples = (props) => {
     openedOnlineRule,
     'openedOnline',
   );
-  const maxRExtent = max(openedOnline.map(v => +v.count)) + 5
+  const maxRExtent = max(props.histogramData.map(v => +v.count)) + 5
   return (
     <div
       style={{
@@ -29,10 +29,10 @@ const BooleanSplitMultiples = (props) => {
         const thisData = openedOnline.filter(d =>
           d.key === node.key && d.heritage.join() === node.heritage.join());
         const margins = {
-          top: 40,
+          top: 45,
           right: 10,
           bottom: 35,
-          left: 25,
+          left: 30,
         };
 
         let numOnline = 0;
@@ -58,7 +58,7 @@ const BooleanSplitMultiples = (props) => {
             size={[185, 185]}
             responsiveWidth
             margin={margins}
-            oPadding={1}
+            oPadding={3}
             oAccessor="binStartDate"
             rAccessor="count"
             rExtent={[0, maxRExtent]}

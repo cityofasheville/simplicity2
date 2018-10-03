@@ -4,7 +4,7 @@ import { Query } from 'react-apollo';
 import { GET_PERMITS } from './granularUtils';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import GranularDataReceivers from './GranularDataReceivers';
-
+import StatusDistributionMultiples from './StatusDistributionMultiples';
 
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -42,6 +42,9 @@ const PermitDataQuery = (props) => {
         capitalizedModule = capitalizeFirstLetter(props.module);
         filteredData = data.permits.filter(d => d.permit_group === capitalizedModule)
       }
+
+      // if the URL is granular, then show granular data receivers
+      // if the URL is status_volume, show status details
 
       return (<div className="dashRows">
         {props.module && <h2>Module: {capitalizedModule}</h2>}

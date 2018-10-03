@@ -8,6 +8,7 @@ class GranularVolume extends React.Component {
     super();
 
     this.state = {
+      // TODO: once timespans suck less, change this based on URL
       timeSpan: [
         new Date().getTime() - 2678400000,
         // between today and today minus 31 days

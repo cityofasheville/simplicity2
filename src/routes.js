@@ -27,7 +27,7 @@ import DevelopmentDetail from './app/development/DevelopmentDetail';
 import DevelopmentSLADashboard from './app/development/sla_dashboard/SLADashboard';
 import DevelopmentDashIndex from './app/development/DevelopmentDashIndex';
 import TRCDashboard from './app/development/trc/TRCDashboard';
-import VolumeDashboard from './app/development/volume/VolumeDashboard';
+import VolumeDashboard from './app/development/static_volume/VolumeDashboard';
 import GranularVolume from './app/development/volume/GranularVolume';
 import ProjectFlowDashboard from './app/internal/bpt_projects/ProjectFlow';
 import CrimeSummary from './app/crime/CrimeSummary';

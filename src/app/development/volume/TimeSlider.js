@@ -1,7 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ResponsiveXYFrame } from 'semiotic';
-import { timeDay } from 'd3-time';
+import { timeDay, timeMonday, timeMonth } from 'd3-time';
+
+function spanOfYears(numYears) {
+  const today = new Date();
+  const currMonth = today.getMonth()
+  const currYear = today.getFullYear()
+  return [
+    timeMonday.round(new Date(currYear - numYears, currMonth - 1)).getTime(),
+    timeDay.round(today).getTime(),
+  ];
+}
 
 class TimeSlider extends Component {
   constructor(props) {
@@ -15,10 +25,18 @@ class TimeSlider extends Component {
   brushEnd(e) {
     let newExtent;
     if (e) {
-      // Snap brush to the day
-      // TODO: make this flexible based on timespan
-      newExtent = e.map(timeDay.round);
+      const oneDayMilliseconds = (24 * 60 * 60 * 1000);
+      const firstTime = new Date(e[0]).getTime();
+      const lastTime = new Date(e[1]).getTime();
+      const daySpan = (lastTime - firstTime) / oneDayMilliseconds;
+      if (daySpan <= 15) {
+        newExtent = e.map(timeDay.round);
+      }
+      if (daySpan > 15) {
+        newExtent = e.map(timeMonday.round);
+      }
       if (newExtent[0] >= newExtent[1]) {
+        // TODO: REEVALUTE THIS
         newExtent[0] = timeDay.floor(newExtent[0]);
         newExtent[1] = timeDay.ciel(newExtent[1]);
       }
@@ -33,7 +51,9 @@ class TimeSlider extends Component {
   }
 
   render() {
-    // TODO: add hover annotation
+    const tickSpan = this.props.xSpan;
+    const ticks = timeMonth.range(tickSpan[0], tickSpan[1])
+    // TODO: Use hover annotation and fake lines to make tooltip
     return (
       <div
         className="brushedChart"
@@ -42,12 +62,12 @@ class TimeSlider extends Component {
         <ResponsiveXYFrame
           responsiveWidth
           margin={{
-            top: 35,
-            right: 5,
+            top: 50,
+            right: 15,
             bottom: 15,
-            left: 5,
+            left: 15,
           }}
-          size={[1000, 60]}
+          size={[1000, 70]}
           xAccessor={d => new Date(d)}
           yAccessor={() => 0}
           xExtent={this.props.xSpan}
@@ -60,17 +80,19 @@ class TimeSlider extends Component {
                   style={{ fontSize: '0.70em' }}
                   transform="rotate(-45)"
                 >
-                  {new Date(d).toLocaleDateString(
+                  {d.toLocaleDateString(
                     'en-US',
                     {
                       month: 'short',
-                      day: 'numeric',
+                      year: '2-digit',
                     },
                   )}
                 </text>
               ),
+              tickValues: ticks,
             },
           ]}
+          hoverAnnotation
           interaction={{
             end: this.brushEnd,
             brush: 'xBrush',
@@ -95,10 +117,7 @@ TimeSlider.defaultProps = {
   ], // today and today minus thirty-one days
   // TODO: get rid of width locked since it doesn't work anyway
   onBrushEnd: newExtent => console.log(newExtent),
-  xSpan: [
-    new Date().setFullYear(new Date().getFullYear() - 1),
-    new Date().getTime(),
-  ], // today and today minus one year
+  xSpan: spanOfYears(2), // today and today minus one year
 };
 
 export default TimeSlider;

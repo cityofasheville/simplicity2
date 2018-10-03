@@ -31,7 +31,7 @@ const VolumeHistogram = props => (
       },
     ]}
     oLabel={(d) => {
-      const dateString = new Date(d).toLocaleDateString('en-US', props.dateOptions);
+      const dateString = props.timeFormatter(new Date(d));
       return (
         <text
           textAnchor="end"
@@ -53,7 +53,7 @@ const VolumeHistogram = props => (
     hoverAnnotation
     tooltipContent={(d) => {
       const pieces = d.type === 'column-hover' ? d.pieces : [d.data];
-      const title = new Date(pieces[0].binStartDate).toLocaleDateString('en-US', props.dateOptions);
+      const title = props.timeFormatter(new Date(pieces[0].binStartDate), true);
 
       const othered = [];
       const notOthered = [];
@@ -91,15 +91,10 @@ const VolumeHistogram = props => (
 
 VolumeHistogram.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object),
-  dateOptions: PropTypes.object,
 };
 
 VolumeHistogram.defaultProps = {
   data: [],
-  dateOptions: {
-    month: 'short',
-    day: 'numeric',
-  },
 };
 
 export default VolumeHistogram;

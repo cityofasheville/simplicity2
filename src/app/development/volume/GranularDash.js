@@ -9,8 +9,9 @@ import VolumeHistogram from './VolumeHistogram';
 
 const GranularDash = (props) => {
   const histData = props.selectedNodes ?
-    stackedHistogramFromNodes(props.selectedNodes, props.includedDates) :
+    stackedHistogramFromNodes(props.selectedNodes, props.timeSpan) :
     [];
+
   const totalCount = props.selectedData.length;
   const circlePackData = {
     key: 'root',
@@ -36,6 +37,7 @@ const GranularDash = (props) => {
       <div className="col-md-9">
         <h2>Daily</h2>
         <VolumeHistogram
+          {...props}
           data={histData}
         />
       </div>
@@ -43,6 +45,7 @@ const GranularDash = (props) => {
         <h2>{`Total: ${totalCount}`}</h2>
         {props.selectedNodes ?
           (<PermitVolCirclepack
+            {...props}
             data={circlePackData}
             // onCircleClick={circleData => this.onModalOpen(circleData)}
           />) :
@@ -55,9 +58,9 @@ const GranularDash = (props) => {
       {/* Make shared extent with FacetController after issue is fixed */}
       {props.selectedNodes ?
         (<BooleanSplitMultiples
+          {...props}
           histogramData={histData}
-          entriesHierarchy={props.selectedNodes.filter(node => !node.othered)}
-          nodeColors={{}}
+          selectedNodes={props.selectedNodes.filter(node => !node.othered)}
         />) :
         <LoadingAnimation />
       }

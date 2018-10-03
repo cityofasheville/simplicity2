@@ -1,5 +1,6 @@
 import gql from 'graphql-tag';
 import { histogram } from 'd3-array';
+import { timeDay, timeMonday, timeMonth } from 'd3-time';
 
 export const colorScheme = [
   '#490092',
@@ -10,6 +11,43 @@ export const colorScheme = [
   '#FF6DB6',
   '#6DB6FF',
 ];
+
+function whichD3TimeFunction(timeExtent) {
+  const oneDayMilliseconds = (24 * 60 * 60 * 1000);
+  const firstTime = new Date(timeExtent[0]).getTime();
+  const lastTime = new Date(timeExtent[1]).getTime();
+  const daySpan = (lastTime - firstTime) / oneDayMilliseconds;
+  if (daySpan <= 30) {
+    return timeDay
+  } else if (daySpan > 30 && daySpan / 7 <= 30) {
+    return timeMonday
+  } else if (daySpan / 7 > 30) {
+    return timeMonth
+  }
+}
+
+export function dateDisplayOptsFuncMaker(timeExtent) {
+  const timeFunc = whichD3TimeFunction(timeExtent);
+  let dateOpts = {
+    // timeZone: 'America/New_York',
+    // why is this messed up?
+  }
+  if (timeFunc === timeDay || timeFunc === timeMonday) {
+    dateOpts.day = 'numeric';
+    dateOpts.month = 'short';
+  } else if (timeFunc === timeMonth) {
+    dateOpts.month = 'short';
+    dateOpts.year = 'numeric';
+  }
+  return function(inputDate, longTitle = false) {
+    let returnString = timeFunc.round(inputDate)
+      .toLocaleDateString('en-US', dateOpts)
+    if (timeFunc === timeMonday && longTitle) {
+      returnString = `Week of ${returnString}`
+    }
+    return returnString
+  }
+}
 
 export function groupStatuses(data) {
   // Issued/Finaled/Closed
@@ -53,33 +91,17 @@ export const openedOnlineRule = inputDatum =>
     || inputDatum.created_by === 'TALLEY'
     || inputDatum.created_by === 'CSHORT';
 
-export function groupHierachyOthers(inputHierarchy, otherGroupCutoff = 5) {
-  if (inputHierarchy.length <= otherGroupCutoff) {
-    return inputHierarchy;
-  }
-  const hierarchyToUse = inputHierarchy.slice(0, otherGroupCutoff);
 
-  const others = [].concat(...inputHierarchy.slice(
-    otherGroupCutoff,
-    inputHierarchy.length - 1
-  ).map(d => d.values));
-
-  hierarchyToUse.push({
-    key: 'Other',
-    values: others,
-    value: others.length,
-  });
-  return hierarchyToUse.sort((a, b) => b.value - a.value);
+export function getIncludedDates(timeSpan) {
+  return whichD3TimeFunction(timeSpan).range(timeSpan[0], timeSpan[1])
 }
 
-export function stackedHistogramFromNodes(nodes, includedDates) {
+export function stackedHistogramFromNodes(nodes, timeSpan) {
+  const includedDates = getIncludedDates(timeSpan)
   const histFunc = histogram()
     .value(d => new Date(d.applied_date))
     .thresholds(includedDates)
-    .domain([
-      includedDates[0],
-      includedDates[includedDates.length - 1],
-    ]);
+    .domain(timeSpan);
   return [].concat(...nodes
     .map(node => histFunc(node.selectedActiveValues)
       .map(d => ({
@@ -129,7 +151,6 @@ export const GET_PERMITS_FOR_COUNTING = gql`
     }
   }
 `;
-
 
 export const GET_PERMITS = gql`
   query getPermitsQuery($date_field: String!, $after: String, $before: String) {

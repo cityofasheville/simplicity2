@@ -10,15 +10,6 @@ function capitalizeFirstLetter(string) {
 }
 
 const PermitDataQuery = (props) => {
-  const includedDates = [];
-  const oneDayMilliseconds = (24 * 60 * 60 * 1000);
-  let dateToAdd = new Date(props.timeSpan[0]).getTime() + oneDayMilliseconds;
-  const lastDate = new Date(props.timeSpan[1]).getTime();
-  while (dateToAdd <= lastDate) {
-    includedDates.push(new Date(dateToAdd));
-    dateToAdd += oneDayMilliseconds;
-  }
-
   return (<Query
     query={GET_PERMITS}
     variables={{
@@ -52,7 +43,6 @@ const PermitDataQuery = (props) => {
           <VolumeDataReceivers
             {...props}
             data={filteredData}
-            includedDates={includedDates}
           />
         </div>
       </div>);

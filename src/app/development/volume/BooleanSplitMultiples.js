@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Legend, ResponsiveOrdinalFrame } from 'semiotic';
 import { color } from 'd3-color';
+import { max } from 'd3-array';
 import Tooltip from '../../../shared/visualization/Tooltip';
 import {
   openedOnlineRule,
@@ -14,13 +15,14 @@ const BooleanSplitMultiples = (props) => {
     openedOnlineRule,
     'openedOnline',
   );
+  const maxRExtent = max(openedOnline.map(v => +v.count)) + 5
   return (
     <div
       style={{
         textTransform: 'capitalize',
       }}
     >
-      {props.entriesHierarchy.map((node) => {
+      {props.selectedNodes.map((node) => {
         const thisColor = node.color;
         const brighterColor = color(thisColor).brighter(1.25);
         // PREVENT THINGS WITH SAME NAME FROM GETTING ADDED TOGETHER by adding heritage
@@ -59,7 +61,7 @@ const BooleanSplitMultiples = (props) => {
             oPadding={1}
             oAccessor="binStartDate"
             rAccessor="count"
-            rExtent={[0, 50]}
+            rExtent={[0, maxRExtent]}
             type="bar"
             pieceIDAccessor="key"
             axis={[

@@ -25,18 +25,14 @@ class TimeSlider extends Component {
   brushEnd(e) {
     let newExtent;
     if (e) {
-      // if the extent is less than 30 days, use timeday
-      // if the extent is more than 30 days, use week
-      // if the extent is more than 8 weeks, use month
       const oneDayMilliseconds = (24 * 60 * 60 * 1000);
       const firstTime = new Date(e[0]).getTime();
       const lastTime = new Date(e[1]).getTime();
       const daySpan = (lastTime - firstTime) / oneDayMilliseconds;
-
       if (daySpan <= 15) {
         newExtent = e.map(timeDay.round);
       }
-      if (daySpan > 15 && daySpan / 7 <= 15) {
+      if (daySpan > 15) {
         newExtent = e.map(timeMonday.round);
       }
       if (newExtent[0] >= newExtent[1]) {

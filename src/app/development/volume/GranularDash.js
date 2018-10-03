@@ -57,8 +57,7 @@ const GranularDash = (props) => {
       {props.selectedNodes ?
         (<BooleanSplitMultiples
           histogramData={histData}
-          entriesHierarchy={props.selectedNodes.filter(node => !node.othered)}
-          nodeColors={{}}
+          selectedNodes={props.selectedNodes.filter(node => !node.othered)}
         />) :
         <LoadingAnimation />
       }

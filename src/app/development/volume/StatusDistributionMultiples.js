@@ -11,6 +11,8 @@ function dotBin(input) {
   const renderedPieces = [];
   const keys = Object.keys(input.data);
 
+  {/* Make shared extent with FacetController after issue is fixed */}
+
   const radiusFunc = scaleLinear()
     // TODO: DETERMINE RANGE PROGRAMMATICALLY
     .range([2, 10])
@@ -71,9 +73,10 @@ class StatusDistributionMultiples extends React.Component {
 
   render() {
     const statusNest = nest().key(d => d.status_current);
-    const filteredStatuses = this.props.entriesHierarchy.map(hierarchyObj => {
+
+    const filteredStatuses = this.props.selectedNodes.map(hierarchyObj => {
       const rObj = Object.assign({}, hierarchyObj);
-      rObj.values = groupStatuses(hierarchyObj.values)
+      rObj.values = groupStatuses(hierarchyObj.selectedActiveValues)
       rObj.histByStatus = [].concat(...statusNest.entries(rObj.values).map(status => {
         const histBuckets = this.histFunc(status.values).map(bucket => {
           const histBucket = Object.assign({}, bucket)
@@ -126,8 +129,8 @@ class StatusDistributionMultiples extends React.Component {
             type={{
               type: dotBin,
               style: {
-                fill: this.props.nodeColors[datum.key],
-                stroke: this.props.nodeColors[datum.key],
+                fill: datum.color,
+                stroke: datum.color,
                 fillOpacity: 0.5,
               },
               maxRadius: maxRadius,
@@ -197,8 +200,7 @@ class StatusDistributionMultiples extends React.Component {
 }
 
 StatusDistributionMultiples.propTypes = {
-  entriesHierarchy: PropTypes.arrayOf(PropTypes.object),
-  nodeColors: PropTypes.object,
+  selectedNodes: PropTypes.arrayOf(PropTypes.object),
   dateField: PropTypes.string,
   includedDates: PropTypes.arrayOf(PropTypes.object),
 };

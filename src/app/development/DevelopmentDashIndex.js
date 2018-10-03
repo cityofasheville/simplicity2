@@ -80,6 +80,27 @@ DevelopmentDashIndex.defaultProps = {
       },
     },
     {
+      name: 'Permit Module Status Detail',
+      linkTo: {
+        pathname: '/development/status_volume',
+        search: '?module=permits',
+      },
+    },
+    {
+      name: 'Planning Module Status Detail',
+      linkTo: {
+        pathname: '/development/status_volume',
+        search: '?module=planning'
+      }
+    },
+    {
+      name: 'Service Module Status Detail',
+      linkTo: {
+        pathname: '/development/status_volume',
+        search: '?module=services',
+      },
+    },
+    {
       name: 'Yearly Volume Overlay',
       linkTo: { pathname: '/development/volume' },
     },

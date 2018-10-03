@@ -72,7 +72,7 @@ const BooleanSplitMultiples = (props) => {
                     textAnchor="end"
                     style={{ fontSize: '0.70em' }}
                   >
-                    {d}
+                    {props.timeFormatter(new Date(d))}
                   </text>
                 ),
               },
@@ -80,7 +80,7 @@ const BooleanSplitMultiples = (props) => {
             hoverAnnotation
             tooltipContent={(d) => {
               const pieces = d.type === 'column-hover' ? d.pieces : [d.data];
-              const title = new Date(pieces[0].binStartDate).toLocaleDateString('en-US');
+              const title = props.timeFormatter(new Date(pieces[0].binStartDate), true);
 
               const textLines = pieces.map(piece => ({
                 text: `${piece.openedOnline ? 'Online' : 'In Person'}: ${piece.count}`,

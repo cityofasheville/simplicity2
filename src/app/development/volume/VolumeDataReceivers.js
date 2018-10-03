@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 // import DataModal from './DataModal';
 import HierarchicalSelect from './HierarchicalSelect';
-import GranularDash from './GranularDash'
-import StatusDash from './StatusDash'
+import GranularDash from './GranularDash';
+import StatusDash from './StatusDash';
+import { dateDisplayOptsFuncMaker } from './granularUtils';
 
 
 class VolumeDataReceivers extends React.Component {
@@ -43,6 +44,7 @@ class VolumeDataReceivers extends React.Component {
   }
 
   render() {
+    const timeFormatter = dateDisplayOptsFuncMaker(this.props.timeSpan);
     const whichDash = this.props.location.pathname
       .split('/development')[1]
       .split('_volume')[0]
@@ -66,12 +68,14 @@ class VolumeDataReceivers extends React.Component {
           {...this.props}
           selectedNodes={this.state.selectedNodes}
           selectedData={this.state.selectedData}
+          timeFormatter={timeFormatter}
         />
       }
       {whichDash === 'status' &&
         <StatusDash
           {...this.props}
           selectedNodes={this.state.selectedNodes}
+          timeFormatter={timeFormatter}
         />
       }
     </div>);

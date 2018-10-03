@@ -37,6 +37,7 @@ const GranularDash = (props) => {
       <div className="col-md-9">
         <h2>Daily</h2>
         <VolumeHistogram
+          {...props}
           data={histData}
         />
       </div>
@@ -44,6 +45,7 @@ const GranularDash = (props) => {
         <h2>{`Total: ${totalCount}`}</h2>
         {props.selectedNodes ?
           (<PermitVolCirclepack
+            {...props}
             data={circlePackData}
             // onCircleClick={circleData => this.onModalOpen(circleData)}
           />) :
@@ -56,6 +58,7 @@ const GranularDash = (props) => {
       {/* Make shared extent with FacetController after issue is fixed */}
       {props.selectedNodes ?
         (<BooleanSplitMultiples
+          {...props}
           histogramData={histData}
           selectedNodes={props.selectedNodes.filter(node => !node.othered)}
         />) :

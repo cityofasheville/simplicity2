@@ -60,20 +60,10 @@ class StatusDistributionMultiples extends React.Component {
         this.props.includedDates[0],
         this.props.includedDates[this.props.includedDates.length - 1],
       ]);
-
-    this.state = {
-      // tooltip: {
-      //   coords: [0, 0],
-      //   opacity: 0,
-      //   title: '',
-      //   data: [],
-      // }
-    }
   }
 
   render() {
     const statusNest = nest().key(d => d.status_current);
-
 
     // TODO: make this a granular util?  break up the granular util hist method to use this or something?
     const filteredStatuses = this.props.selectedNodes.map(hierarchyObj => {
@@ -136,23 +126,6 @@ class StatusDistributionMultiples extends React.Component {
                 fillOpacity: 0.5,
               },
               maxRadius: maxRadius,
-              // mouseOver: (k, d, e) => {
-              //   this.setState({
-              //     tooltip: {
-              //       title: k,
-              //       data: d,
-              //       coords: [e.pageX, e.pageY],
-              //       opacity: 1,
-              //     }
-              //   })
-              // },
-              // mouseOut: () => this.setState({
-              //   tooltip: {
-              //     opacity: 0,
-              //     data: [],
-              //     coords: [0, 0]
-              //   }
-              // })
             }}
             rAccessor={d => new Date(d.x0)}
             rExtent={[
@@ -169,10 +142,7 @@ class StatusDistributionMultiples extends React.Component {
                     transform="translate(0,-10)rotate(-35)"
                     style={{ fontSize: '0.65em' }}
                   >
-                    {new Date(d).toLocaleDateString(
-                      'en-US',
-                      { month: 'short', day: 'numeric' }
-                    )}
+                    {this.props.timeFormatter(new Date(d))}
                   </text>
                 ),
                 tickValues: this.props.includedDates.filter((tick, i) => i % 2 === 0),
@@ -185,16 +155,6 @@ class StatusDistributionMultiples extends React.Component {
         </div>
         );
       })}
-      {/* <Tooltip */}
-      {/*   title={this.state.tooltip.title} */}
-      {/*   textLines={[{ text: this.state.tooltip.data.length }]} */}
-      {/*   style={{ */}
-      {/*     opacity: this.state.tooltip.opacity, */}
-      {/*     position: 'absolute', */}
-      {/*     left: this.state.tooltip.coords[0], */}
-      {/*     top: this.state.tooltip.coords[1] */}
-      {/*   }} */}
-      {/* /> */}
     </div>)
   }
 

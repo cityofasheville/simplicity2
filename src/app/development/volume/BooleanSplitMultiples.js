@@ -72,7 +72,7 @@ const BooleanSplitMultiples = (props) => {
                     textAnchor="end"
                     style={{ fontSize: '0.70em' }}
                   >
-                    {props.timeFormatter(new Date(d))}
+                    {d}
                   </text>
                 ),
               },
@@ -93,9 +93,8 @@ const BooleanSplitMultiples = (props) => {
               />);
             }}
             oLabel={(d, pieces, i) => {
-              if (i % 5 !== 0) { return null; }
-              const dateString = new Date(d)
-                .toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+              if (i % 2 !== 0) { return null; }
+              const dateString = props.timeFormatter(new Date(d));
               return (
                 <text
                   textAnchor="end"

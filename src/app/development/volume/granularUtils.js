@@ -91,8 +91,13 @@ export const openedOnlineRule = inputDatum =>
     || inputDatum.created_by === 'TALLEY'
     || inputDatum.created_by === 'CSHORT';
 
+
+export function getIncludedDates(timeSpan) {
+  return whichD3TimeFunction(timeSpan).range(timeSpan[0], timeSpan[1])
+}
+
 export function stackedHistogramFromNodes(nodes, timeSpan) {
-  const includedDates = whichD3TimeFunction(timeSpan).range(timeSpan[0], timeSpan[1])
+  const includedDates = getIncludedDates(timeSpan)
   const histFunc = histogram()
     .value(d => new Date(d.applied_date))
     .thresholds(includedDates)

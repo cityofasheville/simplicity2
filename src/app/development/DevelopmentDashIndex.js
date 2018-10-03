@@ -15,7 +15,6 @@ const DevelopmentDashIndex = props => (
       <h2>Last 30 Days</h2>
       <BigNumber
         label="New Permits"
-        tempNumber="42"
         query={GET_PERMITS_FOR_COUNTING}
         aggregateFunction={allData => allData.length}
       />

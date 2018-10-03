@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ResponsiveXYFrame } from 'semiotic';
-import { timeDay } from 'd3-time';
+import { timeDay, timeMonday, timeMonth } from 'd3-time';
 
 function spanOfYears(numYears) {
   const today = new Date();
   const currMonth = today.getMonth()
   const currYear = today.getFullYear()
   return [
-    new Date(currYear - numYears, currMonth - 1).getTime(),
-    today.getTime(),
+    timeMonday.round(new Date(currYear - numYears, currMonth - 1)).getTime(),
+    timeDay.round(today).getTime(),
   ];
 }
 
@@ -25,10 +25,22 @@ class TimeSlider extends Component {
   brushEnd(e) {
     let newExtent;
     if (e) {
-      // Snap brush to the day
-      // TODO: make this flexible based on timespan
-      newExtent = e.map(timeDay.round);
+      // if the extent is less than 30 days, use timeday
+      // if the extent is more than 30 days, use week
+      // if the extent is more than 8 weeks, use month
+      const oneDayMilliseconds = (24 * 60 * 60 * 1000);
+      const firstTime = new Date(e[0]).getTime();
+      const lastTime = new Date(e[1]).getTime();
+      const daySpan = (lastTime - firstTime) / oneDayMilliseconds;
+
+      if (daySpan <= 15) {
+        newExtent = e.map(timeDay.round);
+      }
+      if (daySpan > 15 && daySpan / 7 <= 15) {
+        newExtent = e.map(timeMonday.round);
+      }
       if (newExtent[0] >= newExtent[1]) {
+        // TODO: REEVALUTE THIS
         newExtent[0] = timeDay.floor(newExtent[0]);
         newExtent[1] = timeDay.ciel(newExtent[1]);
       }
@@ -43,26 +55,9 @@ class TimeSlider extends Component {
   }
 
   render() {
-
-    const ticks = [];
-    let addDate = new Date(this.props.xSpan[0])
-    let currMonth = addDate.getMonth()
-    let currYear = addDate.getFullYear()
-    addDate = new Date(currYear, currMonth + 1);
-    // Start a month later so it doesn't go of the screen
-
-    const lastDate = new Date(this.props.xSpan[1])
-
-    while (addDate <= lastDate) {
-      ticks.push(addDate);
-      currMonth = (currMonth + 1) % 12;
-      if (currMonth === 0) {
-        currYear += 1;
-      }
-      addDate = new Date(currYear, currMonth);
-    }
-
-    // TODO: add hover annotation
+    const tickSpan = this.props.xSpan;
+    const ticks = timeMonth.range(tickSpan[0], tickSpan[1])
+    // TODO: Use hover annotation and fake lines to make tooltip
     return (
       <div
         className="brushedChart"
@@ -81,7 +76,6 @@ class TimeSlider extends Component {
           yAccessor={() => 0}
           xExtent={this.props.xSpan}
           axes={[
-            // todo: tick at the beginning of each month
             {
               orient: 'top',
               tickFormat: d => (
@@ -94,7 +88,7 @@ class TimeSlider extends Component {
                     'en-US',
                     {
                       month: 'short',
-                      year: 'numeric',
+                      year: '2-digit',
                     },
                   )}
                 </text>
@@ -102,6 +96,7 @@ class TimeSlider extends Component {
               tickValues: ticks,
             },
           ]}
+          hoverAnnotation
           interaction={{
             end: this.brushEnd,
             brush: 'xBrush',

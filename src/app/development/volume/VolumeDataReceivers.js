@@ -63,9 +63,9 @@ class VolumeDataReceivers extends React.Component {
       </div>
       {whichDash === 'granular' &&
         <GranularDash
+          {...this.props}
           selectedNodes={this.state.selectedNodes}
           selectedData={this.state.selectedData}
-          includedDates={this.props.includedDates}
         />
       }
       {whichDash === 'status' &&

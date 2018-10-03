@@ -9,8 +9,9 @@ import VolumeHistogram from './VolumeHistogram';
 
 const GranularDash = (props) => {
   const histData = props.selectedNodes ?
-    stackedHistogramFromNodes(props.selectedNodes, props.includedDates) :
+    stackedHistogramFromNodes(props.selectedNodes, props.timeSpan) :
     [];
+
   const totalCount = props.selectedData.length;
   const circlePackData = {
     key: 'root',

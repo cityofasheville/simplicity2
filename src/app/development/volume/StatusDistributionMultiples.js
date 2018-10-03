@@ -74,6 +74,8 @@ class StatusDistributionMultiples extends React.Component {
   render() {
     const statusNest = nest().key(d => d.status_current);
 
+
+    // TODO: make this a granular util?  break up the granular util hist method to use this or something?
     const filteredStatuses = this.props.selectedNodes.map(hierarchyObj => {
       const rObj = Object.assign({}, hierarchyObj);
       rObj.values = groupStatuses(hierarchyObj.selectedActiveValues)

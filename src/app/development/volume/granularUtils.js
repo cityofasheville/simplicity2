@@ -1,5 +1,6 @@
 import gql from 'graphql-tag';
 import { histogram } from 'd3-array';
+import { timeDay, timeMonday, timeMonth } from 'd3-time';
 
 export const colorScheme = [
   '#490092',
@@ -72,14 +73,27 @@ export function groupHierachyOthers(inputHierarchy, otherGroupCutoff = 5) {
   return hierarchyToUse.sort((a, b) => b.value - a.value);
 }
 
-export function stackedHistogramFromNodes(nodes, includedDates) {
+export function stackedHistogramFromNodes(nodes, timeSpan) {
+  const oneDayMilliseconds = (24 * 60 * 60 * 1000);
+  const firstTime = new Date(timeSpan[0]).getTime();
+  const lastTime = new Date(timeSpan[1]).getTime();
+  const daySpan = (lastTime - firstTime) / oneDayMilliseconds;
+  // TODO: ROUND THESE
+
+  let includedDates;
+  if (daySpan <= 15) {
+    includedDates = timeDay.range(firstTime, lastTime)
+  }
+  if (daySpan > 15 && daySpan / 7 <= 15) {
+    includedDates = timeMonday.range(firstTime, lastTime)
+  } else if (daySpan / 7 > 15) {
+    includedDates = timeMonth.range(firstTime, lastTime)
+  }
+
   const histFunc = histogram()
     .value(d => new Date(d.applied_date))
     .thresholds(includedDates)
-    .domain([
-      includedDates[0],
-      includedDates[includedDates.length - 1],
-    ]);
+    .domain(timeSpan);
   return [].concat(...nodes
     .map(node => histFunc(node.selectedActiveValues)
       .map(d => ({

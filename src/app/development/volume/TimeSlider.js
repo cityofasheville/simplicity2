@@ -3,6 +3,16 @@ import PropTypes from 'prop-types';
 import { ResponsiveXYFrame } from 'semiotic';
 import { timeDay } from 'd3-time';
 
+function spanOfYears(numYears) {
+  const today = new Date();
+  const currMonth = today.getMonth()
+  const currYear = today.getFullYear()
+  return [
+    new Date(currYear - numYears, currMonth - 1).getTime(),
+    today.getTime(),
+  ];
+}
+
 class TimeSlider extends Component {
   constructor(props) {
     super(props);
@@ -33,6 +43,25 @@ class TimeSlider extends Component {
   }
 
   render() {
+
+    const ticks = [];
+    let addDate = new Date(this.props.xSpan[0])
+    let currMonth = addDate.getMonth()
+    let currYear = addDate.getFullYear()
+    addDate = new Date(currYear, currMonth + 1);
+    // Start a month later so it doesn't go of the screen
+
+    const lastDate = new Date(this.props.xSpan[1])
+
+    while (addDate <= lastDate) {
+      ticks.push(addDate);
+      currMonth = (currMonth + 1) % 12;
+      if (currMonth === 0) {
+        currYear += 1;
+      }
+      addDate = new Date(currYear, currMonth);
+    }
+
     // TODO: add hover annotation
     return (
       <div
@@ -42,16 +71,17 @@ class TimeSlider extends Component {
         <ResponsiveXYFrame
           responsiveWidth
           margin={{
-            top: 35,
-            right: 5,
+            top: 50,
+            right: 15,
             bottom: 15,
-            left: 5,
+            left: 15,
           }}
-          size={[1000, 60]}
+          size={[1000, 70]}
           xAccessor={d => new Date(d)}
           yAccessor={() => 0}
           xExtent={this.props.xSpan}
           axes={[
+            // todo: tick at the beginning of each month
             {
               orient: 'top',
               tickFormat: d => (
@@ -60,15 +90,16 @@ class TimeSlider extends Component {
                   style={{ fontSize: '0.70em' }}
                   transform="rotate(-45)"
                 >
-                  {new Date(d).toLocaleDateString(
+                  {d.toLocaleDateString(
                     'en-US',
                     {
                       month: 'short',
-                      day: 'numeric',
+                      year: 'numeric',
                     },
                   )}
                 </text>
               ),
+              tickValues: ticks,
             },
           ]}
           interaction={{
@@ -95,10 +126,7 @@ TimeSlider.defaultProps = {
   ], // today and today minus thirty-one days
   // TODO: get rid of width locked since it doesn't work anyway
   onBrushEnd: newExtent => console.log(newExtent),
-  xSpan: [
-    new Date().setFullYear(new Date().getFullYear() - 1),
-    new Date().getTime(),
-  ], // today and today minus one year
+  xSpan: spanOfYears(2), // today and today minus one year
 };
 
 export default TimeSlider;

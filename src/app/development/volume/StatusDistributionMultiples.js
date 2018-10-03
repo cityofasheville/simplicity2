@@ -31,14 +31,12 @@ function dotBin(input) {
           cx={pieceDatum.scaledValue}
           cy={column.middle - column.padding}
           style={input.type.style}
-          // onMouseOver={(e) => input.type.mouseOver(circleKey, circles[circleKey], e)}
         ></circle>
       })
 
     const dotArray = (
       <g
         key={`piece-${key}`}
-        // onMouseOut={() => input.type.mouseOut()}
       >
         {circleArray}
       </g>
@@ -95,6 +93,7 @@ class StatusDistributionMultiples extends React.Component {
           key={datum.key}
         >
           <ResponsiveOrdinalFrame
+            // pieceHoverAnnotation
             projection="horizontal"
             size={[300, 300]}
             responsiveWidth

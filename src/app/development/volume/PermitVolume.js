@@ -39,6 +39,16 @@ class GranularVolume extends React.Component {
       props validation
     */
 
+    const isGranularVolumePath = this.props.location.pathname.includes('granular_volume');
+    const thirtyDays = 2678400000;
+    let defaultBrushExtent = [
+      new Date().getTime() - thirtyDays,
+      new Date().getTime(),
+    ]
+    if (isGranularVolumePath) {
+      defaultBrushExtent[0] = defaultBrushExtent[1] - thirtyDays * 6
+    }
+
     return (<div>
       <h1 style={{ width: '62.5%', display: 'inline-block' }} >Permits by <select
         style={{ fontSize: '0.85em' }}
@@ -52,6 +62,7 @@ class GranularVolume extends React.Component {
       <div className="col-md-12">
         <TimeSlider
           onBrushEnd={this.onTimeBrushEnd}
+          defaultBrushExtent={defaultBrushExtent}
         />
       </div>
       <div>

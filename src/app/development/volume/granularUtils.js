@@ -120,6 +120,7 @@ export function stackedHistogramFromNodes(nodes, timeSpan) {
     .domain(getHistDomain(timeSpan));
   return [].concat(...nodes
     .map(node => histFunc(node.selectedActiveValues)
+      .slice(0, -1)
       .map(d => ({
         key: node.key,
         count: d.length,

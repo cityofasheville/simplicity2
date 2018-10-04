@@ -33,12 +33,14 @@ class StatusDistributionMultiples extends React.Component {
       const rObj = Object.assign({}, hierarchyObj);
       rObj.values = groupStatuses(hierarchyObj.selectedActiveValues)
       rObj.histByStatus = [].concat(...statusNest.entries(rObj.values).map(status => {
-        const histBuckets = this.histFunc(status.values).map(bucket => {
-          const histBucket = Object.assign({}, bucket)
-          histBucket.key = status.key
-          histBucket.count = bucket.length;
-          return histBucket
-        })
+        const histBuckets = this.histFunc(status.values)
+          .slice(0, -1)
+          .map(bucket => {
+            const histBucket = Object.assign({}, bucket)
+            histBucket.key = status.key
+            histBucket.count = bucket.length;
+            return histBucket
+          })
         return histBuckets;
       }))
       return rObj;
@@ -80,6 +82,7 @@ class StatusDistributionMultiples extends React.Component {
                   position: 'absolute',
                   top: datum.y,
                   left: datum.x,
+                  textTransform: 'capitalize',
                 }}
               />)
             }}
@@ -88,11 +91,11 @@ class StatusDistributionMultiples extends React.Component {
             responsiveWidth
             margin={{
               top: 45,
-              right: 10,
+              right: 15,
               bottom: 55,
               left: 150,
             }}
-            oPadding={5}
+            oPadding={2}
             oAccessor={d => d.key || 'No Status'}
             oLabel={(d) => {
               const fontSize = '0.65'
@@ -118,7 +121,8 @@ class StatusDistributionMultiples extends React.Component {
             rAccessor={d => new Date(d.x0)}
             rExtent={[
               this.props.includedDates[0],
-              this.props.includedDates[this.props.includedDates.length - 1],
+              // TODO: why tho
+              this.props.includedDates[this.props.includedDates.length - 2],
             ]}
             pieceIDAccessor={d => {
               const timeVal = new Date(d.x0).getTime()
@@ -126,7 +130,7 @@ class StatusDistributionMultiples extends React.Component {
             axis={[
               {
                 orient: 'bottom',
-                tickFormat: (d, i) => (i % 2 === 0) ? '' : (
+                tickFormat: (d, i) => (
                   <text
                     textAnchor="end"
                     transform="translate(0,-10)rotate(-35)"

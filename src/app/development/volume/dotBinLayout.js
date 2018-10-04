@@ -14,9 +14,8 @@ export default function dotBinLayout({
   keys.forEach(key => {
     const ordset = data[key];
     const radiusFunc = scaleLinear()
-      // TODO: make the range settable with type
-      .range([2, ordset.width - ordset.padding])
-      .domain([0, type.maxRadius]);
+      .range([2, type.maxRadius])
+      .domain([0, type.maxRadiusVal]);
     const calculatedPieces = ordset.pieceData
       .filter(pieceDatum => pieceDatum.data.count > 0)
       .map((piece, i) => {

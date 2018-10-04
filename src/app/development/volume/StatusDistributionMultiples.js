@@ -116,7 +116,8 @@ class StatusDistributionMultiples extends React.Component {
                 stroke: datum.color,
                 fillOpacity: 0.5,
               },
-              maxRadius: maxRadius,
+              maxRadiusVal: maxRadius,
+              maxRadius: 15,
             }}
             rAccessor={d => new Date(d.x0)}
             rExtent={[

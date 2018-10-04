@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ResponsiveXYFrame } from 'semiotic';
 import { timeDay, timeMonday, timeMonth } from 'd3-time';
+import { whichD3TimeFunction } from './granularUtils';
 
 function spanOfYears(numYears) {
   const today = new Date();
@@ -9,7 +10,7 @@ function spanOfYears(numYears) {
   const currYear = today.getFullYear()
   return [
     timeMonday.round(new Date(currYear - numYears, currMonth - 1)).getTime(),
-    timeDay.round(today).getTime(),
+    timeDay.ceil(today).getTime(),
   ];
 }
 
@@ -25,21 +26,10 @@ class TimeSlider extends Component {
   brushEnd(e) {
     let newExtent;
     if (e) {
-      const oneDayMilliseconds = (24 * 60 * 60 * 1000);
-      const firstTime = new Date(e[0]).getTime();
-      const lastTime = new Date(e[1]).getTime();
-      const daySpan = (lastTime - firstTime) / oneDayMilliseconds;
-      if (daySpan <= 15) {
-        newExtent = e.map(timeDay.round);
-      }
-      if (daySpan > 15) {
-        newExtent = e.map(timeMonday.round);
-      }
-      if (newExtent[0] >= newExtent[1]) {
-        // TODO: REEVALUTE THIS
-        newExtent[0] = timeDay.floor(newExtent[0]);
-        newExtent[1] = timeDay.ciel(newExtent[1]);
-      }
+      // Snap to something reasonable
+      const daySpan = timeDay.count(e[0], e[1]);
+      const timeFunc = whichD3TimeFunction(e)
+      newExtent = [timeFunc.floor(e[0]), timeFunc.ceil(e[1])];
     } else {
       newExtent = this.state.brushExtent;
     }
@@ -51,8 +41,7 @@ class TimeSlider extends Component {
   }
 
   render() {
-    const tickSpan = this.props.xSpan;
-    const ticks = timeMonth.range(tickSpan[0], tickSpan[1])
+    const ticks = timeMonth.range(this.props.xSpan[0], this.props.xSpan[1])
     // TODO: Use hover annotation and fake lines to make tooltip
     return (
       <div
@@ -65,7 +54,7 @@ class TimeSlider extends Component {
             top: 50,
             right: 15,
             bottom: 15,
-            left: 15,
+            left: 20,
           }}
           size={[1000, 70]}
           xAccessor={d => new Date(d)}
@@ -84,7 +73,7 @@ class TimeSlider extends Component {
                     'en-US',
                     {
                       month: 'short',
-                      year: '2-digit',
+                      year: 'numeric',
                     },
                   )}
                 </text>
@@ -105,17 +94,16 @@ class TimeSlider extends Component {
 }
 
 TimeSlider.propTypes = {
-  defaultBrushExtent: PropTypes.arrayOf(PropTypes.number),
+  // defaultBrushExtent: PropTypes.arrayOf(PropTypes.number),
   onBrushEnd: PropTypes.func,
   xSpan: PropTypes.arrayOf(PropTypes.number),
 };
 
 TimeSlider.defaultProps = {
   defaultBrushExtent: [
-    new Date().getTime() - 2678400000,
-    new Date().getTime(),
+    timeDay.floor(new Date()).getTime() - 2678400000,
+    timeDay.ceil(new Date()).getTime(),
   ], // today and today minus thirty-one days
-  // TODO: get rid of width locked since it doesn't work anyway
   onBrushEnd: newExtent => console.log(newExtent),
   xSpan: spanOfYears(2), // today and today minus one year
 };

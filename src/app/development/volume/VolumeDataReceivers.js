@@ -65,6 +65,35 @@ class VolumeDataReceivers extends React.Component {
         <HierarchicalSelect
           data={this.props.data}
           onFilterSelect={this.onHierarchySelect}
+          activeDepth={2}
+          annotations={[
+            {
+              depth: 1,
+              key: 'Module',
+              type: 'custom',
+            },
+            {
+              depth: 2,
+              key: 'Type',
+              type: 'custom',
+            },
+            {
+              depth: 3,
+              key: 'Subtype',
+              type: 'custom',
+            },
+            {
+              depth: 4,
+              key: 'Category',
+              type: 'custom',
+            },
+          ]}
+          hierarchyOrder={[
+            'permit_group',
+            'permit_type',
+            'permit_subtype',
+            'permit_category',
+          ]}
         />
       </div>
       {whichDash === 'granular' &&

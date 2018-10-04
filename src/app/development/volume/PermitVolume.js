@@ -1,18 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { timeDay, timeMonth } from 'd3-time';
 import PermitDataQuery from './PermitDataQuery';
 import TimeSlider from './TimeSlider';
 
 class GranularVolume extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    const isGranularVolumePath = this.props.location.pathname.includes('granular_volume');
+    const thirtyDays = 2678400000;
+
+    let defaultBrushExtent = [ // AKA brush extent
+      timeDay.ceil(new Date()).getTime() - thirtyDays,
+      // between today and today minus 31 days
+      timeDay.ceil(new Date()).getTime(),
+    ];
+    if (isGranularVolumePath) {
+      defaultBrushExtent[0] = defaultBrushExtent[1] - thirtyDays * 6
+    }
 
     this.state = {
-      timeSpan: [ // AKA brush extent
-        new Date().getTime() - 2678400000,
-        // between today and today minus 31 days
-        new Date().getTime(),
-      ],
+      timeSpan: defaultBrushExtent,
       dateField: 'applied_date',
     };
 
@@ -39,16 +47,6 @@ class GranularVolume extends React.Component {
       props validation
     */
 
-    const isGranularVolumePath = this.props.location.pathname.includes('granular_volume');
-    const thirtyDays = 2678400000;
-    let defaultBrushExtent = [
-      new Date().getTime() - thirtyDays,
-      new Date().getTime(),
-    ]
-    if (isGranularVolumePath) {
-      defaultBrushExtent[0] = defaultBrushExtent[1] - thirtyDays * 6
-    }
-
     return (<div>
       <h1 style={{ width: '62.5%', display: 'inline-block' }} >Permits by <select
         style={{ fontSize: '0.85em' }}
@@ -62,7 +60,7 @@ class GranularVolume extends React.Component {
       <div className="col-md-12">
         <TimeSlider
           onBrushEnd={this.onTimeBrushEnd}
-          defaultBrushExtent={defaultBrushExtent}
+          defaultBrushExtent={this.state.timeSpan}
         />
       </div>
       <div>

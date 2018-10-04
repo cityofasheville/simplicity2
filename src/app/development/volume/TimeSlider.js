@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ResponsiveXYFrame } from 'semiotic';
 import { timeDay, timeMonday, timeMonth } from 'd3-time';
+import { whichD3TimeFunction } from './granularUtils';
 
 function spanOfYears(numYears) {
   const today = new Date();
@@ -27,12 +28,8 @@ class TimeSlider extends Component {
     if (e) {
       // Snap to something reasonable
       const daySpan = timeDay.count(e[0], e[1]);
-      if (daySpan <= 15) {
-        newExtent = [timeDay.floor(e[0]), timeDay.ceil(e[1])];
-      }
-      if (daySpan > 15) {
-        newExtent = [timeMonday.floor(e[0]), timeMonday.ceil(e[1])];
-      }
+      const timeFunc = whichD3TimeFunction(e)
+      newExtent = [timeFunc.floor(e[0]), timeFunc.ceil(e[1])];
     } else {
       newExtent = this.state.brushExtent;
     }

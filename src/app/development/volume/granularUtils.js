@@ -19,7 +19,7 @@ export function multiplesTitle(node) {
     : `${node.key}`;
 }
 
-function whichD3TimeFunction(timeExtent) {
+export function whichD3TimeFunction(timeExtent) {
   const oneDayMilliseconds = (24 * 60 * 60 * 1000);
   const firstTime = new Date(timeExtent[0]).getTime();
   const lastTime = new Date(timeExtent[1]).getTime();

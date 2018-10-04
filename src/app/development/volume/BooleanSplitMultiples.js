@@ -32,8 +32,8 @@ const BooleanSplitMultiples = (props) => {
         const margins = {
           top: 45,
           right: 10,
-          bottom: 35,
-          left: 30,
+          bottom: 45,
+          left: 40,
         };
 
         let numOnline = 0;
@@ -53,7 +53,7 @@ const BooleanSplitMultiples = (props) => {
           className="col-md-4"
         >
           <ResponsiveOrdinalFrame
-            size={[185, 185]}
+            size={[185, 200]}
             responsiveWidth
             margin={margins}
             oPadding={3}

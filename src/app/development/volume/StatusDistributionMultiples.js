@@ -66,7 +66,6 @@ class StatusDistributionMultiples extends React.Component {
               const datum = d.d;
               const title = this.props.timeFormatter(datum.value);
               const textLine = `${datum.column}: ${datum.data.count}`;
-              console.log(datum)
               return (<Tooltip
                 title={title}
                 textLines={[{ text: textLine }]}

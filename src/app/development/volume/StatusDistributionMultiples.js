@@ -2,50 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { histogram } from 'd3-array';
 import { nest } from 'd3-collection';
-import { scaleLinear } from 'd3-scale';
 import { ResponsiveOrdinalFrame } from 'semiotic';
 import Tooltip from '../../../shared/visualization/Tooltip';
 import { groupStatuses, multiplesTitle } from './granularUtils';
-
-function dotBin(input) {
-  const renderedPieces = [];
-  const keys = Object.keys(input.data);
-
-  {/* Make shared extent with FacetController after issue is fixed */}
-
-  const radiusFunc = scaleLinear()
-    // TODO: DETERMINE RANGE PROGRAMMATICALLY
-    .range([2, 10])
-    .domain([0, input.type.maxRadius]);
-
-  keys.forEach(key => {
-    const column = input.data[key];
-    const circles = {}
-
-    const circleArray = column.pieceData
-      .filter(pieceDatum => pieceDatum.data.count > 0)
-      .map((pieceDatum) => {
-        return <circle
-          key={pieceDatum.renderKey}
-          r={radiusFunc(pieceDatum.data.count)}
-          cx={pieceDatum.scaledValue}
-          cy={column.middle - column.padding}
-          style={input.type.style}
-        ></circle>
-      })
-
-    const dotArray = (
-      <g
-        key={`piece-${key}`}
-      >
-        {circleArray}
-      </g>
-    );
-    renderedPieces.push(dotArray);
-  });
-  return renderedPieces;
-}
-
+import dotBinLayout from './dotBinLayout';
 
 class StatusDistributionMultiples extends React.Component {
   constructor(props) {
@@ -61,9 +21,8 @@ class StatusDistributionMultiples extends React.Component {
   }
 
   render() {
-    const statusNest = nest().key(d => d.status_current);
-
     // TODO: make this a granular util?  break up the granular util hist method to use this or something?
+    const statusNest = nest().key(d => d.status_current);
     const filteredStatuses = this.props.selectedNodes.map(hierarchyObj => {
       const rObj = Object.assign({}, hierarchyObj);
       rObj.values = groupStatuses(hierarchyObj.selectedActiveValues)
@@ -79,8 +38,12 @@ class StatusDistributionMultiples extends React.Component {
       return rObj;
     });
 
-    const maxRadius = filteredStatuses.map(d => d.histByStatus.map(datum => datum.count).sort((a, b) => b - a)[0])[0]
+    const maxRadius = filteredStatuses.map(d =>
+      d.histByStatus.map(datum => datum.count)
+        .sort((a, b) => b - a)[0]
+    )[0];
 
+    // TODO: WHY ARE DATES SCREWY?
 
     return (<div
       style={{
@@ -89,14 +52,32 @@ class StatusDistributionMultiples extends React.Component {
     >
       {filteredStatuses.map((datum) => {
         const title = multiplesTitle(datum)
-        console.log(datum)
         return (<div
           className="col-md-6"
           style={{ display: 'inline-block' }}
           key={title}
         >
           <ResponsiveOrdinalFrame
-            // pieceHoverAnnotation
+            pieceHoverAnnotation
+            htmlAnnotationRules={d => {
+              if (!d.d.type === 'frame-hover') {
+                return null;
+              }
+              const datum = d.d;
+              const title = this.props.timeFormatter(datum.value);
+              const textLine = `${datum.column}: ${datum.data.count}`;
+              console.log(datum)
+              return (<Tooltip
+                title={title}
+                textLines={[{ text: textLine }]}
+                key={title + textLine}
+                style={{
+                  position: 'absolute',
+                  top: datum.y,
+                  left: datum.x,
+                }}
+              />)
+            }}
             projection="horizontal"
             size={[300, 300]}
             responsiveWidth
@@ -121,7 +102,7 @@ class StatusDistributionMultiples extends React.Component {
               );
             }}
             type={{
-              type: dotBin,
+              type: dotBinLayout,
               style: {
                 fill: datum.color,
                 stroke: datum.color,
@@ -134,11 +115,13 @@ class StatusDistributionMultiples extends React.Component {
               this.props.includedDates[0],
               this.props.includedDates[this.props.includedDates.length - 1],
             ]}
-            pieceIDAccessor="key"
+            pieceIDAccessor={d => {
+              const timeVal = new Date(d.x0).getTime()
+              return `${timeVal}-${d.key.replace('', '-')}`}}
             axis={[
               {
                 orient: 'bottom',
-                tickFormat: d => (
+                tickFormat: (d, i) => (i % 2 === 0) ? '' : (
                   <text
                     textAnchor="end"
                     transform="translate(0,-10)rotate(-35)"
@@ -147,7 +130,7 @@ class StatusDistributionMultiples extends React.Component {
                     {this.props.timeFormatter(new Date(d))}
                   </text>
                 ),
-                tickValues: this.props.includedDates.filter((tick, i) => i % 2 === 0),
+                tickValues: this.props.includedDates,
               },
             ]}
             data={datum.histByStatus}

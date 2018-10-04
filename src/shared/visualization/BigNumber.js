@@ -13,7 +13,7 @@ const BigNumber = props => (
     }}
   >
     {({ loading, error, data }) => {
-      if (loading) return <LoadingAnimation/>
+      if (loading) return <LoadingAnimation size="small" />
       let val = ''
       if (error) {
         val = 'Error'

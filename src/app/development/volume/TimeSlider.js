@@ -9,7 +9,7 @@ function spanOfYears(numYears) {
   const currMonth = today.getMonth()
   const currYear = today.getFullYear()
   return [
-    timeMonday.round(new Date(currYear - numYears, currMonth - 1)).getTime(),
+    timeMonth.round(new Date(currYear - numYears, currMonth - 1)).getTime(),
     timeDay.ceil(today).getTime(),
   ];
 }
@@ -30,6 +30,12 @@ class TimeSlider extends Component {
       const daySpan = timeDay.count(e[0], e[1]);
       const timeFunc = whichD3TimeFunction(e)
       newExtent = [timeFunc.floor(e[0]), timeFunc.ceil(e[1])];
+      if (+newExtent[1] > +this.props.xSpan[1]) {
+        newExtent[1] = this.props.xSpan[1];
+      }
+      if (+newExtent[0] < +this.props.xSpan[0]) {
+        newExtent[0] = this.props.xSpan[0];
+      }
     } else {
       newExtent = this.state.brushExtent;
     }
@@ -54,7 +60,7 @@ class TimeSlider extends Component {
             top: 50,
             right: 15,
             bottom: 15,
-            left: 20,
+            left: 25,
           }}
           size={[1000, 70]}
           xAccessor={d => new Date(d)}

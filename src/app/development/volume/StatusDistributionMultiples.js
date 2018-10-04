@@ -91,7 +91,7 @@ class StatusDistributionMultiples extends React.Component {
             responsiveWidth
             margin={{
               top: 45,
-              right: 15,
+              right: 20,
               bottom: 55,
               left: 150,
             }}

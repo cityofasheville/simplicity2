@@ -54,6 +54,39 @@ class VolumeDataReceivers extends React.Component {
       .split('_volume')[0]
       .replace('/', '')
 
+    let annotations = [
+      {
+        depth: 1,
+        key: 'Module',
+        type: 'custom',
+      },
+      {
+        depth: 2,
+        key: 'Type',
+        type: 'custom',
+      },
+      {
+        depth: 3,
+        key: 'Subtype',
+        type: 'custom',
+      },
+      {
+        depth: 4,
+        key: 'Category',
+        type: 'custom',
+      },
+    ]
+    let hierarchyOrder = [
+      'permit_group',
+      'permit_type',
+      'permit_subtype',
+      'permit_category',
+    ]
+    if (this.props.module === 'planning') {
+      annotations = annotations.slice(0, -1)
+      hierarchyOrder = hierarchyOrder.slice(0, -1)
+    }
+
     return (<div className="dashRows">
       {/* {this.state.modalData && <DataModal
         data={this.state.modalData}
@@ -66,34 +99,8 @@ class VolumeDataReceivers extends React.Component {
           data={this.props.data}
           onFilterSelect={this.onHierarchySelect}
           activeDepth={2}
-          annotations={[
-            {
-              depth: 1,
-              key: 'Module',
-              type: 'custom',
-            },
-            {
-              depth: 2,
-              key: 'Type',
-              type: 'custom',
-            },
-            {
-              depth: 3,
-              key: 'Subtype',
-              type: 'custom',
-            },
-            {
-              depth: 4,
-              key: 'Category',
-              type: 'custom',
-            },
-          ]}
-          hierarchyOrder={[
-            'permit_group',
-            'permit_type',
-            'permit_subtype',
-            'permit_category',
-          ]}
+          annotations={annotations}
+          hierarchyOrder={hierarchyOrder}
         />
       </div>
       {whichDash === 'granular' &&

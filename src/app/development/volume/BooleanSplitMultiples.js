@@ -7,6 +7,7 @@ import Tooltip from '../../../shared/visualization/Tooltip';
 import {
   openedOnlineRule,
   splitOrdinalByBool,
+  multiplesTitle,
 } from './granularUtils';
 
 const BooleanSplitMultiples = (props) => {
@@ -44,10 +45,7 @@ const BooleanSplitMultiples = (props) => {
             numInPerson += nodeDay.count;
           }
         });
-        const slicedHeritage = node.heritage.slice(1)
-        const title = slicedHeritage.length > 0 ?
-          `${node.heritage.slice(1).join(' > ')} > ${node.key}`
-          : `${node.key}`;
+        const title = multiplesTitle(node)
 
         return (<div
           style={{ display: 'inline-block' }}

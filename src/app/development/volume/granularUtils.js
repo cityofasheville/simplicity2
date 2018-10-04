@@ -12,6 +12,13 @@ export const colorScheme = [
   '#6DB6FF',
 ];
 
+export function multiplesTitle(node) {
+  const slicedHeritage = node.heritage.slice(1)
+  return slicedHeritage.length > 0 ?
+    `${node.heritage.slice(1).join(' > ')} > ${node.key}`
+    : `${node.key}`;
+}
+
 function whichD3TimeFunction(timeExtent) {
   const oneDayMilliseconds = (24 * 60 * 60 * 1000);
   const firstTime = new Date(timeExtent[0]).getTime();

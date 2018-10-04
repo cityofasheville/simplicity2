@@ -5,7 +5,7 @@ import { nest } from 'd3-collection';
 import { scaleLinear } from 'd3-scale';
 import { ResponsiveOrdinalFrame } from 'semiotic';
 import Tooltip from '../../../shared/visualization/Tooltip';
-import { groupStatuses } from './granularUtils';
+import { groupStatuses, multiplesTitle } from './granularUtils';
 
 function dotBin(input) {
   const renderedPieces = [];
@@ -81,16 +81,19 @@ class StatusDistributionMultiples extends React.Component {
 
     const maxRadius = filteredStatuses.map(d => d.histByStatus.map(datum => datum.count).sort((a, b) => b - a)[0])[0]
 
+
     return (<div
       style={{
         textTransform: 'capitalize',
       }}
     >
       {filteredStatuses.map((datum) => {
+        const title = multiplesTitle(datum)
+        console.log(datum)
         return (<div
           className="col-md-6"
           style={{ display: 'inline-block' }}
-          key={datum.key}
+          key={title}
         >
           <ResponsiveOrdinalFrame
             // pieceHoverAnnotation
@@ -147,9 +150,8 @@ class StatusDistributionMultiples extends React.Component {
                 tickValues: this.props.includedDates.filter((tick, i) => i % 2 === 0),
               },
             ]}
-            key={datum.key}
             data={datum.histByStatus}
-            title={datum.key}
+            title={title}
           />
         </div>
         );

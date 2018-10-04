@@ -70,12 +70,14 @@ export function groupStatuses(data) {
     'Approved',
   ];
   // Plan Check/In Review
-  const inReview = ['Plan Check',
+  const inReview = [
+    'Plan Check',
     'Plan Check 2',
     'In Review',
   ];
   // Application Phase
-  const appPhase = ['Application Received',
+  const appPhase = [
+    'Application Received',
     'Application Submitted',
     'Submittal Required',
   ]
@@ -85,7 +87,6 @@ export function groupStatuses(data) {
     if (done.includes(d.status_current)) {
       rVal.status_current = 'Issued/Finaled/Closed'
     } else if (appPhase.includes(d.status_current)) {
-      console.log(d)
       rVal.status_current = 'Application Phase'
     } else if (inReview.includes(d.status_current)) {
       rVal.status_current = 'Plan Check/In Review'
@@ -101,7 +102,14 @@ export const openedOnlineRule = inputDatum =>
 
 
 export function getIncludedDates(timeSpan) {
-  return whichD3TimeFunction(timeSpan).range(timeSpan[0], timeSpan[1])
+  const timeFunc = whichD3TimeFunction(timeSpan);
+  timeSpan[1] = new Date(timeSpan[1]).getTime() + 86400
+  return timeFunc.range(timeSpan[0], timeFunc.ceil(timeSpan[1]))
+}
+
+export function getHistDomain(timeSpan) {
+  const timeFunc = whichD3TimeFunction(timeSpan);
+  return [timeSpan[0], timeFunc.ceil(timeSpan[1])];
 }
 
 export function stackedHistogramFromNodes(nodes, timeSpan) {
@@ -109,7 +117,7 @@ export function stackedHistogramFromNodes(nodes, timeSpan) {
   const histFunc = histogram()
     .value(d => new Date(d.applied_date))
     .thresholds(includedDates)
-    .domain(timeSpan);
+    .domain(getHistDomain(timeSpan));
   return [].concat(...nodes
     .map(node => histFunc(node.selectedActiveValues)
       .map(d => ({
@@ -122,7 +130,7 @@ export function stackedHistogramFromNodes(nodes, timeSpan) {
         heritage: node.heritage,
       }))
     )
-  );
+  )
 }
 
 export function splitOrdinalByBool(inputData, matchTestFunc, nameTrue) {

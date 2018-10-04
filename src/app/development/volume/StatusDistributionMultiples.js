@@ -4,20 +4,26 @@ import { histogram } from 'd3-array';
 import { nest } from 'd3-collection';
 import { ResponsiveOrdinalFrame } from 'semiotic';
 import Tooltip from '../../../shared/visualization/Tooltip';
-import { groupStatuses, multiplesTitle } from './granularUtils';
+import {
+  groupStatuses,
+  multiplesTitle,
+  getHistDomain,
+ } from './granularUtils';
 import dotBinLayout from './dotBinLayout';
 
 class StatusDistributionMultiples extends React.Component {
   constructor(props) {
     super(props)
 
+    const domain = getHistDomain([
+      this.props.includedDates[0],
+      this.props.includedDates[this.props.includedDates.length - 1],
+    ])
+
     this.histFunc = histogram()
       .value(d => new Date(d[this.props.dateField]))
       .thresholds(this.props.includedDates)
-      .domain([
-        this.props.includedDates[0],
-        this.props.includedDates[this.props.includedDates.length - 1],
-      ]);
+      .domain(domain);
   }
 
   render() {

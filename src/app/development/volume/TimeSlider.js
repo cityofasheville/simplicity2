@@ -9,7 +9,7 @@ function spanOfYears(numYears) {
   const currYear = today.getFullYear()
   return [
     timeMonday.round(new Date(currYear - numYears, currMonth - 1)).getTime(),
-    timeDay.round(today).getTime(),
+    timeDay.round(today).getTime() + 86400,
   ];
 }
 
@@ -25,20 +25,12 @@ class TimeSlider extends Component {
   brushEnd(e) {
     let newExtent;
     if (e) {
-      const oneDayMilliseconds = (24 * 60 * 60 * 1000);
-      const firstTime = new Date(e[0]).getTime();
-      const lastTime = new Date(e[1]).getTime();
-      const daySpan = (lastTime - firstTime) / oneDayMilliseconds;
+      const daySpan = timeDay.count(e[0], e[1]);
       if (daySpan <= 15) {
-        newExtent = e.map(timeDay.round);
+        newExtent = [timeDay.floor(e[0]), timeDay.ceil(e[1])];
       }
       if (daySpan > 15) {
-        newExtent = e.map(timeMonday.round);
-      }
-      if (newExtent[0] >= newExtent[1]) {
-        // TODO: REEVALUTE THIS
-        newExtent[0] = timeDay.floor(newExtent[0]);
-        newExtent[1] = timeDay.ciel(newExtent[1]);
+        newExtent = [timeMonday.floor(e[0]), timeMonday.ceil(e[1])];
       }
     } else {
       newExtent = this.state.brushExtent;
@@ -105,17 +97,16 @@ class TimeSlider extends Component {
 }
 
 TimeSlider.propTypes = {
-  defaultBrushExtent: PropTypes.arrayOf(PropTypes.number),
+  // defaultBrushExtent: PropTypes.arrayOf(PropTypes.number),
   onBrushEnd: PropTypes.func,
   xSpan: PropTypes.arrayOf(PropTypes.number),
 };
 
 TimeSlider.defaultProps = {
   defaultBrushExtent: [
-    new Date().getTime() - 2678400000,
-    new Date().getTime(),
+    timeDay.floor(new Date()).getTime() - 2678400000,
+    timeDay.ceil(new Date()).getTime(),
   ], // today and today minus thirty-one days
-  // TODO: get rid of width locked since it doesn't work anyway
   onBrushEnd: newExtent => console.log(newExtent),
   xSpan: spanOfYears(2), // today and today minus one year
 };

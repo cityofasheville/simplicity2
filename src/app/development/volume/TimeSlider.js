@@ -84,7 +84,7 @@ class TimeSlider extends Component {
                     'en-US',
                     {
                       month: 'short',
-                      year: '2-digit',
+                      year: 'numeric',
                     },
                   )}
                 </text>

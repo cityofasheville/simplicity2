@@ -85,6 +85,7 @@ export function groupStatuses(data) {
     if (done.includes(d.status_current)) {
       rVal.status_current = 'Issued/Finaled/Closed'
     } else if (appPhase.includes(d.status_current)) {
+      console.log(d)
       rVal.status_current = 'Application Phase'
     } else if (inReview.includes(d.status_current)) {
       rVal.status_current = 'Plan Check/In Review'

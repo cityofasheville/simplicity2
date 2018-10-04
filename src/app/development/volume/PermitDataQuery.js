@@ -43,6 +43,7 @@ const PermitDataQuery = (props) => {
           <VolumeDataReceivers
             {...props}
             data={filteredData}
+            module={module}
           />
         </div>
       </div>);

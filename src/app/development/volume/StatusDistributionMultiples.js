@@ -34,7 +34,6 @@ class StatusDistributionMultiples extends React.Component {
       rObj.values = groupStatuses(hierarchyObj.selectedActiveValues)
       rObj.histByStatus = [].concat(...statusNest.entries(rObj.values).map(status => {
         const histBuckets = this.histFunc(status.values)
-          .slice(0, -1)
           .map(bucket => {
             const histBucket = Object.assign({}, bucket)
             histBucket.key = status.key
@@ -123,7 +122,7 @@ class StatusDistributionMultiples extends React.Component {
             rExtent={[
               this.props.includedDates[0],
               // TODO: why tho
-              this.props.includedDates[this.props.includedDates.length - 2],
+              this.props.includedDates[this.props.includedDates.length - 1],
             ]}
             pieceIDAccessor={d => {
               const timeVal = new Date(d.x0).getTime()

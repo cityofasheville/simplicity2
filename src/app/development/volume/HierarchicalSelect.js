@@ -9,9 +9,6 @@ import HorizontalLegend from '../../../shared/visualization/HorizontalLegend';
 import { colorScheme } from './granularUtils';
 
 
-/*
-TODO: move styling out of general maybe
-*/
 function getNodeRelationship(clickedNode, candidate) {
   // The parent value really just means ancestor
   if (candidate.depth === 0) {

@@ -1,34 +1,34 @@
+// The button that says "filter record types" and hierarchy level buttons
 .hierarchicalDropdown button.dropdown-toggle, .input-group-btn.hierarchy-level-btn button {
   background-color: #fbfbfb;
   border-radius: 6px;
 }
 
+// Same buttons as above but when selected
 .hierarchicalDropdown.open .dropdown-toggle, .input-group-btn.hierarchy-level-btn.active button {
   background-color: lighten(#c8c8c8, 8%);
   border-color: gray;
 }
 
+// Tne active hierarchy level button should be bold
 .input-group-btn.hierarchy-level-btn.active button {
-  font-weight: bolder;
+  font-weight: bold;
 }
 
+// Child menu things
 .hierarchicalDropdown .dropdown-menu > li > a {
 	padding: 0px 2em 0px 0.5em;
 	display: inline-block;
 }
 
-
-// TODO: SOMETHING OTHER THAN OPACITY - NOT ACCESSIBLE
-.hierarchicalDropdown .dropdown-menu > li .addOrDelete {
-  margin-right: 2em;
+.hierarchicalDropdown .dropdown-menu > li > a > span.child-menu-checkmark {
+  margin-right: 0.5em;
   opacity: 0;
 }
 
-// TODO: MAKE IT WORK FOR FOCUS TOO
-.hierarchicalDropdown .dropdown-menu > li > a:hover .addOrDelete {
+.hierarchicalDropdown .dropdown-menu > li.selected-child-menu-item > a > span.child-menu-checkmark {
   opacity: 1;
 }
-
 
 .hierarchicalDropdown .dropdown-menu > li > a:hover, .hierarchicalDropdown .dropdown-menu > li > a:focus {
 	background-color: inherit;

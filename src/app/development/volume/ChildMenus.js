@@ -13,6 +13,7 @@ class ChildMenus extends Component {
     }
     let color = 'gray';
     if (this.props.node.selected) {
+      className = `${className} selected-child-menu-item`
       const activeSelected = this.props.activeSelectedNodes.find(candidate => {
         if (!candidate.heritage) { return false; }
         return candidate.heritage.join() === this.props.node.heritage.join() &&
@@ -36,10 +37,11 @@ class ChildMenus extends Component {
           style={{
             color: color,
             width: '100%',
+            fontWeight: this.props.node.selected ? 'bold' : 'inherit',
           }}
           role="button"
         >
-          <span className="addOrDelete">{this.props.node.selected ? 'x' : '+'}</span>
+          <span className="child-menu-checkmark">&#10003;</span>
           {this.props.node.key}
         </a>
         {this.props.node.values &&(

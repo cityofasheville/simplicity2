@@ -9,9 +9,6 @@ import HorizontalLegend from '../../../shared/visualization/HorizontalLegend';
 import { colorScheme } from './granularUtils';
 
 
-/*
-TODO: move styling out of general maybe
-*/
 function getNodeRelationship(clickedNode, candidate) {
   // The parent value really just means ancestor
   if (candidate.depth === 0) {
@@ -228,7 +225,7 @@ class HierarchicalSelect extends Component {
 
   getNodeColor(d, isText = false) {
     // TODO: also use this in hierarchicalDropdown
-    let color = '#a6a6a6';
+    let color = '#c8c8c8';
     if (isText) {
       color = 'gray';
     }
@@ -271,13 +268,17 @@ class HierarchicalSelect extends Component {
       return null;
     }
     const sameDepthNode = d.nodes.find(node => node.depth === d.d.depth);
+    if (!sameDepthNode) {
+      return null;
+    }
     const buttonHeight = sameDepthNode.y1 - sameDepthNode.y0 - 2;
+    const active = d.d.depth === this.state.activeDepth;
     return (<div
       className="input-group"
       key={d.d.key}
     >
       <div
-        className="input-group-btn"
+        className={`input-group-btn hierarchy-level-btn${active ? ' active' : ''}`}
         style={{
           cursor: 'pointer',
           pointerEvents: 'all',
@@ -285,7 +286,6 @@ class HierarchicalSelect extends Component {
           position: 'absolute',
           top: `${sameDepthNode.y0}px`,
           left: `-${leftMargin}px`,
-          color: d.d.depth === this.state.activeDepth ? '#00a4f6' : 'inherit',
         }}
       >
         <button
@@ -339,8 +339,9 @@ class HierarchicalSelect extends Component {
             const color = this.getNodeColor(d);
             return {
               fill: color,
-              stroke: 'white',
-              fillOpacity: d.selected ? 1 : 0.5,
+              strokeWidth: '0.5px',
+              stroke: d.selected ? 'white' : color,
+              fillOpacity: d.selected ? 1 : 0.25,
             };
           }}
           filterRenderedNodes={(d) => {

@@ -724,58 +724,6 @@ label {
 }
 
 
-.brushedChart rect.selection {
-	fill: darken(#f6fcff, 10%);
-	stroke: darken(#f6fcff, 30%)
-}
-
-.brushedChart rect.handle {
-	fill: darken(#f6fcff, 50%);
-}
-
-
-.hierarchicalDropdown .dropdown-menu > li > a {
-	padding: 0px 2em 0px 0.5em;
-	display: inline-block;
-}
-.hierarchicalDropdown .dropdown-menu > li > a:hover, .hierarchicalDropdown .dropdown-menu > li > a:focus {
-	background-color: inherit;
-}
-.hierarchicalDropdown .dropdown-menu > li:hover, .hierarchicalDropdown .dropdown-menu > li:focus {
-	background-color: #c8c8c8;
-}
-.hierarchicalDropdown .dropdown-submenu{
-	position: relative;
-}
-.hierarchicalDropdown .dropdown-submenu>.dropdown-menu{
-	top:0;
-	left: 100%;
-	margin-top:-6px;
-	margin-right:-1px;
-	-webkit-border-radius:6px 6px 6px 6px;
-	-moz-border-radius:6px 6px 6px 6px;
-	border-radius:6px 6px 6px 6px;
-}
-.hierarchicalDropdown .dropdown-submenu:hover>.dropdown-menu{
-	display: inherit;
-	right: inherit;
- }
-.hierarchicalDropdown .dropdown-submenu>a:after{
-	display: inline-block;
-	content:" ";
-	position: absolute;
-	right: 0;
-	height: 0;
-	border-color:transparent;
-	border-style:solid;
-	border-left-color:#999;
-	margin-top: 5px;
-	padding-left: 10px;
-}
-.hierarchicalDropdown .dropdown-submenu:hover>a:after{
-	border-left-color: darken(#f6fcff, 50%);
-}
-
 
 /*************************************************************************************/
 /***************************           FOOTER          *******************************/

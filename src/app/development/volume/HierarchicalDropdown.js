@@ -12,28 +12,49 @@ class HierarchicalDropdown extends Component {
       hover style should also match nodes
       focus style should match hover style
   */
-  state = {
-    open: false,
+  constructor() {
+    super()
+    this.state = {
+      open: false,
+    }
+    this.setWrapperRef = this.setWrapperRef.bind(this);
+    this.handleClickOutside = this.handleClickOutside.bind(this);
+  }
+
+  componentDidMount() {
+    document.addEventListener('mousedown', this.handleClickOutside);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.handleClickOutside);
+  }
+
+  setWrapperRef(node) {
+    this.wrapperRef = node;
+  }
+
+  handleClickOutside(event) {
+    if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
+      this.setState({ open: false })
+    }
   }
 
   render() {
     return (<div
+      ref={this.setWrapperRef}
       className={`hierarchicalDropdown btn-group ${this.state.open ? 'open' : ''}`}
     >
       <button
         className="dropdown-toggle"
-        href=""
         onClick={(e) => {
           e.preventDefault();
           this.setState({ open: !this.state.open })
         }}
-        style={{
-          backgroundColor: '#fbfbfb',
-          borderRadius: 6,
-        }}
       >
         Filter Record Types
-        <span className="caret"></span>
+        <span className="caret" style={{
+          transform: 'rotate(180)'
+        }}></span>
       </button>
       <ul
         className="dropdown-menu"

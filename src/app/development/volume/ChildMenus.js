@@ -11,15 +11,17 @@ class ChildMenus extends Component {
     if (this.props.node.values) {
       className = `${className} dropdown-submenu`
     }
-    let color = 'inherit';
+    let color = 'gray';
     if (this.props.node.selected) {
+      className = `${className} selected-child-menu-item`
       const activeSelected = this.props.activeSelectedNodes.find(candidate => {
         if (!candidate.heritage) { return false; }
         return candidate.heritage.join() === this.props.node.heritage.join() &&
           candidate.key === this.props.node.key;
       });
-      color = activeSelected ? activeSelected.color : '#00a4f6';
+      color = activeSelected ? activeSelected.color : 'black';
     }
+    // TODO: USE REAL X SYMBOL INSTEAD OF LETTER
     return (
       <li
         className={className}
@@ -38,6 +40,7 @@ class ChildMenus extends Component {
           }}
           role="button"
         >
+          <span className="child-menu-checkmark">&#10003;</span>
           {this.props.node.key}
         </a>
         {this.props.node.values &&(

@@ -29,20 +29,25 @@ const GranularDash = (props) => {
       [],
   };
 
+  const subTitle = props.selectedHierarchyTitle ?
+    `Volume by Record ${props.selectedHierarchyTitle}` :
+    'Volume';
+
   return (<div>
     <div
       id="controls-n-summary"
       className="row col-md-12"
     >
+      <h2>{subTitle}</h2>
       <div className="col-md-9">
-        <h2>Daily</h2>
+        <h3>Daily</h3>
         <VolumeHistogram
           {...props}
           data={histData}
         />
       </div>
       <div className="col-md-3 granularVolCirclepack">
-        <h2>{`Total: ${totalCount}`}</h2>
+        <h3>{`Total: ${totalCount}`}</h3>
         {props.selectedNodes ?
           (<PermitVolCirclepack
             {...props}
@@ -54,7 +59,7 @@ const GranularDash = (props) => {
       </div>
     </div>
     <div id="percentOnline" className="row">
-      <h2>Online vs In Person</h2>
+      <h3>Online vs In Person</h3>
       {/* Make shared extent with FacetController after issue is fixed */}
       {props.selectedNodes ?
         (<BooleanSplitMultiples

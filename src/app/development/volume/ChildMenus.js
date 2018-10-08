@@ -20,6 +20,7 @@ class ChildMenus extends Component {
       });
       color = activeSelected ? activeSelected.color : 'black';
     }
+    // TODO: USE REAL X SYMBOL INSTEAD OF LETTER
     return (
       <li
         className={className}
@@ -38,6 +39,7 @@ class ChildMenus extends Component {
           }}
           role="button"
         >
+          <span className="addOrDelete">{this.props.node.selected ? 'x' : '+'}</span>
           {this.props.node.key}
         </a>
         {this.props.node.values &&(

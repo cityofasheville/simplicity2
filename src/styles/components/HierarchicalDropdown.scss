@@ -8,15 +8,20 @@
   border-color: gray;
 }
 
+.input-group-btn.hierarchy-level-btn.active button {
+  font-weight: bolder;
+}
+
 .hierarchicalDropdown .dropdown-menu > li > a {
 	padding: 0px 2em 0px 0.5em;
 	display: inline-block;
 }
 .hierarchicalDropdown .dropdown-menu > li > a:hover, .hierarchicalDropdown .dropdown-menu > li > a:focus {
 	background-color: inherit;
+  color: black;
 }
 .hierarchicalDropdown .dropdown-menu > li:hover, .hierarchicalDropdown .dropdown-menu > li:focus {
-	background-color: #c8c8c8;
+	background-color: lighten(#c8c8c8, 10%);
 }
 .hierarchicalDropdown .dropdown-submenu{
 	position: relative;
@@ -46,6 +51,6 @@
 	margin-top: 5px;
 	padding-left: 10px;
 }
-.hierarchicalDropdown .dropdown-submenu:hover>a:after{
-	border-left-color: darken(#f6fcff, 50%);
+.hierarchicalDropdown .dropdown-submenu:hover>a:after, .hierarchicalDropdown .dropdown-submenu:focus>a:after{
+	border-left-color: black;
 }

@@ -4,7 +4,7 @@
 }
 
 .hierarchicalDropdown.open .dropdown-toggle, .input-group-btn.hierarchy-level-btn.active button {
-  background-color: #c8c8c8;
+  background-color: lighten(#c8c8c8, 8%);
   border-color: gray;
 }
 

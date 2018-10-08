@@ -48,7 +48,7 @@ class GranularVolume extends React.Component {
     */
 
     return (<div>
-      <h1 style={{ width: '62.5%', display: 'inline-block' }} >Permits by <select
+      <h1 style={{ width: '62.5%', display: 'inline-block' }} >Records by <select
         style={{ fontSize: '0.85em' }}
         value={this.state.dateField}
         onChange={e => this.setState({ dateField: e.target.value })}

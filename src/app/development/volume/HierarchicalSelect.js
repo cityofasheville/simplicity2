@@ -225,7 +225,7 @@ class HierarchicalSelect extends Component {
 
   getNodeColor(d, isText = false) {
     // TODO: also use this in hierarchicalDropdown
-    let color = '#a6a6a6';
+    let color = '#c8c8c8';
     if (isText) {
       color = 'gray';
     }
@@ -339,8 +339,9 @@ class HierarchicalSelect extends Component {
             const color = this.getNodeColor(d);
             return {
               fill: color,
-              stroke: 'white',
-              fillOpacity: d.selected ? 1 : 0.5,
+              strokeWidth: '0.5px',
+              stroke: d.selected ? 'white' : color,
+              fillOpacity: d.selected ? 1 : 0.25,
             };
           }}
           filterRenderedNodes={(d) => {

@@ -58,11 +58,11 @@ class TimeSlider extends Component {
           responsiveWidth
           margin={{
             top: 50,
-            right: 15,
-            bottom: 15,
+            right: 25,
+            bottom: 25,
             left: 25,
           }}
-          size={[1000, 70]}
+          size={[1000, 80]}
           xAccessor={d => new Date(d)}
           yAccessor={() => 0}
           xExtent={this.props.xSpan}

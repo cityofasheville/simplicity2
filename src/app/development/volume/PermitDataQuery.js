@@ -29,13 +29,9 @@ const PermitDataQuery = (props) => {
       let filteredData = data.permits;
       let capitalizedModule;
       if (module) {
-        // TODO: IF IT'S PLANNING MODULE, DON'T USE THE CATEGORY LEVEL
         capitalizedModule = capitalizeFirstLetter(module);
         filteredData = data.permits.filter(d => d.permit_group === capitalizedModule)
       }
-
-      // if the URL is granular, then show granular data receivers
-      // if the URL is status_volume, show status details
 
       return (<div className="dashRows">
         {module && <h2>Module: {capitalizedModule}</h2>}

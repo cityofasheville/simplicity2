@@ -36,11 +36,6 @@ class GranularVolume extends React.Component {
 
   render() {
     /* TODO:
-      bin by week if it's over 6 weeks, by month if it's over 1 year
-        do binning on server? is this going to be slow AF?
-      group header things-- make it smaller?
-        fixed pos? to keep updated vs opened, date range, and permit type in view
-      add tooltip to dotbin pieces
       allow users to drill into permits with click/modal behavior
         todo: make modal faster-- put on individual visualizations?
       update URL to allow bookmarking

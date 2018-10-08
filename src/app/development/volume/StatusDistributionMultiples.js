@@ -64,6 +64,7 @@ class StatusDistributionMultiples extends React.Component {
           style={{ display: 'inline-block' }}
           key={title}
         >
+          <div className="visualization-title">{title}</div>
           <ResponsiveOrdinalFrame
             pieceHoverAnnotation
             htmlAnnotationRules={d => {
@@ -143,7 +144,6 @@ class StatusDistributionMultiples extends React.Component {
               },
             ]}
             data={datum.histByStatus}
-            title={title}
           />
         </div>
         );

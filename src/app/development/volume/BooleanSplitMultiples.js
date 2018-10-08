@@ -52,6 +52,7 @@ const BooleanSplitMultiples = (props) => {
           key={`${node.key}-${node.heritage.join('-')}`}
           className="col-md-4"
         >
+          <div className="visualization-title">{title}</div>
           <ResponsiveOrdinalFrame
             size={[185, 200]}
             responsiveWidth
@@ -104,7 +105,6 @@ const BooleanSplitMultiples = (props) => {
               );
             }}
             data={thisData}
-            title={title}
             style={(d) => {
               if (d.count === 0) {
                 return {

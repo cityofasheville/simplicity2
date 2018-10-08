@@ -14,9 +14,15 @@ export const colorScheme = [
 
 export function multiplesTitle(node) {
   const slicedHeritage = node.heritage.slice(1)
+  const selectedActiveLength = node.selectedActiveValues.length;
+  const allUnnestedLength = node.allUnnestedValues.length;
+  let parentheticalFraction = '';
+  if (selectedActiveLength !== allUnnestedLength) {
+    parentheticalFraction = ` (${selectedActiveLength} of ${allUnnestedLength})`;
+  }
   return slicedHeritage.length > 0 ?
-    `${node.heritage.slice(1).join(' > ')} > ${node.key}`
-    : `${node.key}`;
+    `${node.heritage.slice(1).join(' > ')} > ${node.key}${parentheticalFraction}`
+    : `${node.key}${parentheticalFraction}`;
 }
 
 export function whichD3TimeFunction(timeExtent) {

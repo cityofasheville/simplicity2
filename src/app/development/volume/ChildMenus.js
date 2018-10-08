@@ -37,7 +37,6 @@ class ChildMenus extends Component {
           style={{
             color: color,
             width: '100%',
-            fontWeight: this.props.node.selected ? 'bold' : 'inherit',
           }}
           role="button"
         >

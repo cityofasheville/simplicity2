@@ -26,6 +26,10 @@
   opacity: 0;
 }
 
+.hierarchicalDropdown .dropdown-menu > li.selected-child-menu-item > a {
+  font-weight: bold;
+}
+
 .hierarchicalDropdown .dropdown-menu > li.selected-child-menu-item > a > span.child-menu-checkmark {
   opacity: 1;
 }

@@ -1,10 +1,11 @@
-.hierarchicalDropdown button.dropdown-toggle {
+.hierarchicalDropdown button.dropdown-toggle, .input-group-btn.hierarchy-level-btn button {
   background-color: #fbfbfb;
   border-radius: 6px;
 }
 
-.hierarchicalDropdown.open .dropdown-toggle {
-  background-color: gray;
+.hierarchicalDropdown.open .dropdown-toggle, .input-group-btn.hierarchy-level-btn.active button {
+  background-color: #c8c8c8;
+  border-color: gray;
 }
 
 .hierarchicalDropdown .dropdown-menu > li > a {

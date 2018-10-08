@@ -268,13 +268,17 @@ class HierarchicalSelect extends Component {
       return null;
     }
     const sameDepthNode = d.nodes.find(node => node.depth === d.d.depth);
+    if (!sameDepthNode) {
+      return null;
+    }
     const buttonHeight = sameDepthNode.y1 - sameDepthNode.y0 - 2;
+    const active = d.d.depth === this.state.activeDepth;
     return (<div
       className="input-group"
       key={d.d.key}
     >
       <div
-        className="input-group-btn"
+        className={`input-group-btn hierarchy-level-btn${active ? ' active' : ''}`}
         style={{
           cursor: 'pointer',
           pointerEvents: 'all',
@@ -282,7 +286,6 @@ class HierarchicalSelect extends Component {
           position: 'absolute',
           top: `${sameDepthNode.y0}px`,
           left: `-${leftMargin}px`,
-          color: d.d.depth === this.state.activeDepth ? '#00a4f6' : 'inherit',
         }}
       >
         <button

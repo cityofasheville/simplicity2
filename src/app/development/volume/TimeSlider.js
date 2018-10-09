@@ -10,7 +10,7 @@ function spanOfYears(numYears) {
   const currYear = today.getFullYear()
   return [
     timeMonth.round(new Date(currYear - numYears, currMonth - 1)).getTime(),
-    timeDay.ceil(today).getTime(),
+    timeMonth.ceil(today).getTime(),
   ];
 }
 
@@ -47,7 +47,10 @@ class TimeSlider extends Component {
   }
 
   render() {
-    const ticks = timeMonth.range(this.props.xSpan[0], this.props.xSpan[1])
+    const ticks = timeMonth.range(
+      this.props.xSpan[0],
+      timeMonth.floor(this.props.xSpan[1] + 2678400000),
+    )
     // TODO: Use hover annotation and fake lines to make tooltip
     return (
       <div

@@ -30,11 +30,11 @@ export function whichD3TimeFunction(timeExtent) {
   const firstTime = new Date(timeExtent[0]).getTime();
   const lastTime = new Date(timeExtent[1]).getTime();
   const daySpan = (lastTime - firstTime) / oneDayMilliseconds;
-  if (daySpan <= 30) {
+  if (daySpan <= 20) {
     return timeDay
-  } else if (daySpan > 30 && daySpan / 7 <= 30) {
+  } else if (daySpan > 20 && daySpan / 7 <= 20) {
     return timeMonday
-  } else if (daySpan / 7 > 30) {
+  } else if (daySpan / 7 > 20) {
     return timeMonth
   }
 }

@@ -118,16 +118,19 @@ class StatusDistributionMultiples extends React.Component {
               },
               maxRadiusVal: maxRadius,
               maxRadius: 15,
+              ariaLabelFormatter: (piece) =>
+                `${piece.data.count} records with ${piece.column} status for ${this.props.timeFormatter(piece.value, true)}`
             }}
             rAccessor={d => new Date(d.x0)}
             rExtent={[
               this.props.includedDates[0],
-              // TODO: why tho
               this.props.includedDates[this.props.includedDates.length - 1],
             ]}
             pieceIDAccessor={d => {
-              const timeVal = new Date(d.x0).getTime()
-              return `${timeVal}-${d.key.replace('', '-')}`}}
+              const datum = d.x0 ? d : d.data;
+              const timeVal = new Date(datum.x0).getTime()
+              return `${timeVal}-${datum.key.replace('', '-')}`
+            }}
             axis={[
               {
                 orient: 'bottom',

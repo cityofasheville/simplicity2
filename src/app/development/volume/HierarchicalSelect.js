@@ -329,7 +329,7 @@ class HierarchicalSelect extends Component {
           onNodeClick={node => this.handleNodeClick(node)}
         />
         <ResponsiveNetworkFrame
-          size={[1000, 125]}
+          size={[1000, this.props.hierarchyOrder.length * 27.5]}
           margin={margin}
           responsiveWidth
           edges={this.state.edges}

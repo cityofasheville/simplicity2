@@ -32,13 +32,6 @@ const DevelopmentDashIndex = props => (
         }}
         aggregateFunction={data => data.permit_tasks.length}
       />
-      {/*
-      <BigNumber
-        label="Tasks Completed"
-        tempNumber="???"
-        query=""
-        aggregateFunction=""
-      /> */}
     </div>
     <div className="row">
       <h2>Dashboards</h2>

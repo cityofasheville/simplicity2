@@ -124,7 +124,6 @@ class StatusDistributionMultiples extends React.Component {
             rAccessor={d => new Date(d.x0)}
             rExtent={[
               this.props.includedDates[0],
-              // TODO: why tho
               this.props.includedDates[this.props.includedDates.length - 1],
             ]}
             pieceIDAccessor={d => {

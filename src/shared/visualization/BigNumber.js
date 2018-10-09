@@ -7,10 +7,7 @@ import LoadingAnimation from '../LoadingAnimation';
 const BigNumber = props => (
   <Query
     query={props.query}
-    variables={{
-      // Today minus 31 days
-      after: new Date(new Date().getTime() - 2678400000),
-    }}
+    variables={props.queryVars}
   >
     {({ loading, error, data }) => {
       if (loading) return <LoadingAnimation size="small" />
@@ -18,7 +15,7 @@ const BigNumber = props => (
       if (error) {
         val = 'Error'
       }
-      val = props.aggregateFunction(data.permits)
+      val = props.aggregateFunction(data)
       return (<div className='card-item'>
         <div
           className='topic-card'

@@ -53,6 +53,7 @@ export default function dotBinLayout({
             transform={`translate(${xPosition},${yPosition})`}
             role="img"
             tabIndex="-1"
+            aria-label={type.ariaLabelFormatter(piece)}
           >
             <circle
               r={radiusFunc(piece.data.count)}

@@ -48,7 +48,7 @@ const BooleanSplitMultiples = (props) => {
         const title = multiplesTitle(node)
 
         return (<div
-          style={{ display: 'inline-block' }}
+          style={{ display: 'inline-block', float: 'none' }}
           key={`${node.key}-${node.heritage.join('-')}`}
           className="col-md-4"
         >

@@ -62,7 +62,6 @@ const BooleanSplitMultiples = (props) => {
             rAccessor="count"
             rExtent={[0, maxRExtent]}
             type="bar"
-            pieceIDAccessor="key"
             axis={[
               {
                 orient: 'left',

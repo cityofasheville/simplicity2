@@ -52,6 +52,18 @@ class GranularVolume extends React.Component {
         <option value="status_date">Date Updated</option>
       </select>
       </h1>
+      <div>
+        <a
+          href="https://goo.gl/forms/RpZcZs7m13IZzGrw1"
+          rel="noreferrer nooopener"
+          target="_blank"
+          style={{
+            right: 0,
+          }}
+        >
+          Give feedback about this dashboard
+        </a>
+      </div>
       <div className="col-md-12">
         <TimeSlider
           onBrushEnd={this.onTimeBrushEnd}

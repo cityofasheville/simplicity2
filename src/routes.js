@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, Route, IndexRoute, browserHistory, Switch } from 'react-router';
+import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import { ApolloProvider } from 'react-apollo';
 
 // GraphQL Client

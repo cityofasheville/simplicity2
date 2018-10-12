@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+import { Router, Route, IndexRoute, browserHistory, Switch } from 'react-router';
 import { ApolloProvider } from 'react-apollo';
 
 // GraphQL Client
@@ -61,6 +61,7 @@ import PCardCompliance from './app/internal/pcard_compliance/PCardCompliance';
 import PCardComplianceReceipts from './app/internal/pcard_compliance/PCardComplianceReceipts';
 // City Website
 import AnalyticsCirclePack from './app/internal/city_website_analytics/AnalyticsCirclePack';
+import NotFound from './shared/NotFound';
 
 // Google Analytics
 const ReactGA = require('react-ga');
@@ -158,6 +159,7 @@ const Routes = () => (
         <Route path="mini_search">
           <IndexRoute component={MiniSearch} />
         </Route>
+        <Route path="*" component={NotFound} />
       </Route>
     </Router>
   </ApolloProvider>

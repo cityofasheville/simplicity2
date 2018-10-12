@@ -43,6 +43,18 @@ class GranularVolume extends React.Component {
     */
 
     return (<div>
+      <div
+        id="loading-modal"
+        style={{
+          height: '100%',
+          width: '100%',
+          opacity: 0.1,
+          zIndex: 1,
+          position: 'absolute',
+          cursor: 'progress',
+          display: 'none',
+        }}
+      ></div>
       <h1 style={{ width: '62.5%', display: 'inline-block' }} >Records by <select
         style={{ fontSize: '0.85em' }}
         value={this.state.dateField}

@@ -72,3 +72,10 @@
 .hierarchicalDropdown .dropdown-submenu:hover>a:after, .hierarchicalDropdown .dropdown-submenu:focus>a:after{
 	border-left-color: black;
 }
+.hierarchicalDropdown .caret {
+  margin-left: 0.5em;
+}
+.hierarchicalDropdown.open .caret{
+    border-top: none;
+    border-bottom: 4px solid #000000;
+}

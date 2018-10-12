@@ -59,6 +59,8 @@ class GranularVolume extends React.Component {
           target="_blank"
           style={{
             right: 0,
+            position: 'absolute',
+            top: '2vh',
           }}
         >
           Give feedback about this dashboard

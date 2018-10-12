@@ -36,6 +36,10 @@ class GranularVolume extends React.Component {
 
   render() {
     /* TODO:
+      on timeslider click, have loading modal until data
+      on hierarchical select click, have loading modal until done
+
+
       allow users to drill into permits with click/modal behavior
         todo: make modal faster-- put on individual visualizations?
       update URL to allow bookmarking
@@ -52,6 +56,20 @@ class GranularVolume extends React.Component {
         <option value="status_date">Date Updated</option>
       </select>
       </h1>
+      <div>
+        <a
+          href="https://goo.gl/forms/RpZcZs7m13IZzGrw1"
+          rel="noreferrer nooopener"
+          target="_blank"
+          style={{
+            right: 0,
+            position: 'absolute',
+            top: '2vh',
+          }}
+        >
+          Give feedback about this dashboard
+        </a>
+      </div>
       <div className="col-md-12">
         <TimeSlider
           onBrushEnd={this.onTimeBrushEnd}

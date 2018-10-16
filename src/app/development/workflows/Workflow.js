@@ -5,17 +5,31 @@ import { nest } from 'd3-collection';
 
 const Workflow = (props) => {
   const uniqueTasks = props.data.length;
-  const uniquePermits = nest()
-    // .key(d => d.permit_type)
-    // .key(d => d.permit_subtype)
-    // .key(d => d.permit_category)
-    .key(d => d.permit_number).entries(props.data);
 
-  console.log(uniqueTasks, uniquePermits)
+  const uniquePermitsNest = nest()
+    .key(d => d.permit_number);
+
+  const typeNest = nest()
+    // .key(d => d.permit_group)
+    .key(d => d.permit_type)
+    .key(d => d.permit_subtype)
+    .key(d => d.permit_category)
+
+  const byPerson = nest()
+    .key(d => d.user_name)
+    .entries(props.data)
+    .sort((a, b) => b.values.length - a.values.length)
+    .map(person => {
+      person.valuesByType = typeNest.entries(person.values)
+      person.uniquePermits = uniquePermitsNest.entries(person.values)
+      return person;
+    })
+
+  console.log(uniqueTasks, byPerson)
 
   return (<div className="dashRows">
     <div>
-      {props.data.length + ' tasks on ' + uniquePermits.length + ' permits'}
+      {props.data.length + ' tasks'}
     </div>
   </div>);
 };

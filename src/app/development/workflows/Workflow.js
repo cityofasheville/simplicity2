@@ -16,7 +16,8 @@ const Workflow = (props) => {
     .key(d => d.permit_category)
 
   const byPerson = nest()
-    .key(d => d.user_name)
+    .key(d => d.user_department)
+    // .key(d => d.user_name)
     .entries(props.data)
     .sort((a, b) => b.values.length - a.values.length)
     .map(person => {
@@ -25,7 +26,9 @@ const Workflow = (props) => {
       return person;
     })
 
-  console.log(uniqueTasks, byPerson)
+
+  console.log(byPerson)
+
 
   return (<div className="dashRows">
     <div>

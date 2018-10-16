@@ -103,6 +103,12 @@ DevelopmentDashIndex.defaultProps = {
       },
     },
     {
+      name: 'Workflow Tasks',
+      linkTo: {
+        pathname: '/development/tasks',
+      }
+    },
+    {
       name: 'Yearly Volume Overlay',
       linkTo: { pathname: '/development/volume' },
     },

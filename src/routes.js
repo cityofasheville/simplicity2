@@ -22,6 +22,7 @@ import Owner from './app/owner/Owner';
 import GooglePlaceResults from './app/search/searchResults/GooglePlaceResults';
 // Topics
 import Topics from './app/Topics';
+//Development endpoints
 import DevelopmentSummary from './app/development/DevelopmentSummary';
 import DevelopmentDetail from './app/development/DevelopmentDetail';
 import DevelopmentSLADashboard from './app/development/sla_dashboard/SLADashboard';
@@ -29,6 +30,8 @@ import DevelopmentDashIndex from './app/development/DevelopmentDashIndex';
 import TRCDashboard from './app/development/trc/TRCDashboard';
 import VolumeDashboard from './app/development/static_volume/VolumeDashboard';
 import PermitVolume from './app/development/volume/PermitVolume';
+import WorkflowContainer from './app/development/workflows/WorkflowContainer';
+//
 import ProjectFlowDashboard from './app/internal/bpt_projects/ProjectFlow';
 import CrimeSummary from './app/crime/CrimeSummary';
 import Maintenance from './app/maintenance/Maintenance';
@@ -140,6 +143,7 @@ const Routes = () => (
           <Route path="volume" component={VolumeDashboard}></Route>
           <Route path="granular_volume" component={PermitVolume}></Route>
           <Route path="status_volume" component={PermitVolume}></Route>
+          <Route path="tasks" component={WorkflowContainer}></Route>
         </Route>
         <Route path="homelessness">
           <IndexRoute component={HomelessnessSummary} />

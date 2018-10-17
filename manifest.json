@@ -1,0 +1,17 @@
+{
+  "short_name": "SimpliCity",
+  "name": "SimpliCity",
+  "icons": [{
+    "src": "src/favicon.ico",
+    "sizes": "512x512",
+    "type": "image/x-icon"
+  }, {
+    "src": "src/favicon.ico",
+    "sizes": "192x192",
+    "type": "image/x-icon"
+  }],
+  "start_url": "/",
+  "display": "browser",
+  "theme_color": "#c3ebff",
+  "background_color": "#c3ebff"
+}

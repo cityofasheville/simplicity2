@@ -3,14 +3,10 @@
   "name": "SimpliCity",
   "icons": [{
     "src": "src/favicon.ico",
-    "sizes": "512x512",
-    "type": "image/x-icon"
-  }, {
-    "src": "src/favicon.ico",
-    "sizes": "192x192",
+    "sizes": "64x64 32x32 24x24 16x16",
     "type": "image/x-icon"
   }],
-  "start_url": "/",
+  "start_url": "./index.html",
   "display": "browser",
   "theme_color": "#c3ebff",
   "background_color": "#c3ebff"

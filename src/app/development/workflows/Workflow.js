@@ -4,6 +4,7 @@ import { timeDay, timeMonday, timeMonth } from 'd3-time';
 import { nest } from 'd3-collection';
 import { scaleLinear } from 'd3-scale';
 import { ResponsiveNetworkFrame } from 'semiotic';
+import Tooltip from '../../../shared/visualization/Tooltip';
 
 
 class Workflow extends React.Component {
@@ -19,7 +20,8 @@ class Workflow extends React.Component {
     .key(d => d.permit_number);
 
     const typeNest = nest()
-    .key(d => d.permit_group)
+    // TODO: USER RESEARCH TO FIND OUT IF THIS IS BEST WAY TO BREAK DOWN
+    // .key(d => d.permit_group)
     .key(d => d.permit_type)
     // .key(d => d.permit_subtype)
     // .key(d => d.permit_category)
@@ -58,10 +60,10 @@ class Workflow extends React.Component {
     }
 
     // TODO: figure out how to get correct size of root
-    const rootSize = 200
+    const rootSize = 300
     const nodeSizeFunc = scaleLinear()
-    .range([2, rootSize])
-    .domain([0, this.props.data.length]);
+      .range([2, rootSize])
+      .domain([0, this.props.data.length]);
 
 
     // TODO: PUT NODE LABELS BELOW CIRCLEPACKS, GIVE THEM PLUS/MINUS FUNCTIONALITY
@@ -69,12 +71,23 @@ class Workflow extends React.Component {
     return (<div className="dashRows">
       <div>
         <ResponsiveNetworkFrame
-          size={[900, 800]}
+          size={[900, 900]}
           responsiveWidth
           edges={nestedWithRoot}
           edgeStyle={{ stroke: 'gray' }}
           nodeIDAccessor="key"
-          nodeLabels
+          nodeLabels={d => {
+            console.log(d)
+            return (<text
+              y={-d.nodeSize / 2}
+              style={{
+                textAnchor: 'middle',
+                fontSize: '0.75em'
+              }}
+            >
+              {d.key}
+            </text>)
+          }}
           nodeSizeAccessor={d => {
             return nodeSizeFunc(d.values.length)
           }}
@@ -90,11 +103,23 @@ class Workflow extends React.Component {
               >
                 <ResponsiveNetworkFrame
                   hoverAnnotation
+                  tooltipContent={datum => {
+                    if (datum.key === 'root') {
+                      return null;
+                    }
+                    return <Tooltip
+                      style={{ zIndex: 2 }}
+                      title={d.key}
+                      textLines={[{
+                        text: `${datum.key}: ${datum.data.value}`
+                      }]}
+                    />
+                  }}
                   key={d.key}
                   size={[size, size]}
                   edges={{ key: 'root', values: d.d.data.byType }}
                   nodeStyle={node => node.key === 'root' ?
-                    ({ fill: '#e6e6e6' }) :
+                    ({ fill: '#e6e6e6', stroke: 'gray', strokeWidth: '0.2px' }) :
                     ({ fill: 'gray', fillOpacity: 0.5 })
                   }
                   nodeIDAccessor="key"
@@ -110,11 +135,16 @@ class Workflow extends React.Component {
           }}
           networkType={{
             type: "tree",
-            projection: "vertical",
+            projection: "horizontal",
             nodePadding: 5,
             hierarchySum: d => d.values.length,
           }}
-          margin={5}
+          margin={{
+            top: 0,
+            right: 15,
+            bottom: 0,
+            left: 0,
+          }}
         />
       </div>
     </div>);

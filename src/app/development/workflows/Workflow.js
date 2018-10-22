@@ -8,11 +8,56 @@ import { colorScheme } from '../volume/granularUtils';
 import Tooltip from '../../../shared/visualization/Tooltip';
 
 
+const circlePackNode = (d, nodeSizeFunc, colorCode) => {
+  const size = nodeSizeFunc(d.d.values.length)
+  return (
+    <foreignObject
+      key={d.key}
+      x={d.d.x - size / 2}
+      y={d.d.y - size / 2}
+      width={size}
+      height={size}
+    >
+    <ResponsiveNetworkFrame
+      hoverAnnotation
+      tooltipContent={datum => {
+        if (datum.key === 'root') {
+          return null;
+        }
+        return (<Tooltip
+          style={{ zIndex: 99 }}
+          title={d.key}
+          textLines={[{
+            text: `${datum.key}: ${datum.data.value}`
+          }]}
+        />);
+      }}
+      key={d.key}
+      size={[size, size]}
+      edges={{ key: 'root', values: d.d.data.byType }}
+      nodeStyle={node => node.key === 'root' ?
+        ({ fill: '#e6e6e6', stroke: 'gray', strokeWidth: '0.2px' }) :
+        ({ fill: colorCode[node.key] })
+    }
+    nodeIDAccessor="key"
+    hoverAnnotation
+    networkType={{
+      type: 'circlepack',
+      hierarchyChildren: datum => datum.values,
+      hierarchySum: datum => datum.value,
+    }}
+  />
+  </foreignObject>
+)
+}
+
 class Workflow extends React.Component {
   constructor() {
     super();
     this.state = {
-      deptDetailShowing: 'Permit Application Center',
+      // deptDetailShowing: 'Permit Application Center',
+      depthShowing: 3,
+      deptDetailShowing: 'Stormwater',
     }
   }
 
@@ -46,6 +91,7 @@ class Workflow extends React.Component {
             // person.uniquePermits = uniquePermitsNest.entries(person.values)
             return person;
           })
+          dept.isDeptLevel = true;
         }
         dept.byType = typeNest.entries(dept.values)
         // dept.uniquePermits = uniquePermitsNest.entries(dept.values)
@@ -99,7 +145,7 @@ class Workflow extends React.Component {
         <svg
           style={{
             position: 'absolute',
-            top: '15px',
+            top: '30px',
             left: '0px',
             height: `${legendGroups[0].items.length * 16 + 16}px`,
             overflow: 'visible'
@@ -112,6 +158,12 @@ class Workflow extends React.Component {
         </svg>
         <ResponsiveNetworkFrame
           size={[900, 900]}
+          margin={{
+            top: 0,
+            right: 50,
+            bottom: 0,
+            left: 0,
+          }}
           responsiveWidth
           networkType={{
             type: "tree",
@@ -123,67 +175,28 @@ class Workflow extends React.Component {
           edgeStyle={{ stroke: 'gray' }}
           nodeIDAccessor="key"
           nodeLabels={d => {
-            return (<text
-              y={-d.nodeSize / 2}
-              style={{
-                textAnchor: 'middle',
-                fontSize: '0.75em'
-              }}
+            console.log(d)
+            const width = Math.max(100, d.nodeSize);
+            return (<g
             >
-              {d.key}
-            </text>)
+              <foreignObject
+                style={{
+                  x: - width / 2,
+                  y: -d.nodeSize / 2 - 25,
+                  width: width,
+                  height: 25,
+                  fontSize: '0.75em',
+                  textAlign: 'center',
+                }}
+              >
+                {d.key}
+              </foreignObject>
+            </g>)
           }}
           nodeSizeAccessor={d => {
             return nodeSizeFunc(d.values.length)
           }}
-          margin={{
-            top: 0,
-            right: 15,
-            bottom: 0,
-            left: 0,
-          }}
-          customNodeIcon={d => {
-            const size = nodeSizeFunc(d.d.values.length)
-            return (
-              <foreignObject
-              key={d.key}
-              x={d.d.x - size / 2}
-              y={d.d.y - size / 2}
-              width={size}
-              height={size}
-              >
-              <ResponsiveNetworkFrame
-              hoverAnnotation
-              tooltipContent={datum => {
-                if (datum.key === 'root') {
-                  return null;
-                }
-                return (<Tooltip
-                  style={{ zIndex: 99 }}
-                  title={d.key}
-                  textLines={[{
-                    text: `${datum.key}: ${datum.data.value}`
-                  }]}
-                />);
-              }}
-              key={d.key}
-              size={[size, size]}
-              edges={{ key: 'root', values: d.d.data.byType }}
-              nodeStyle={node => node.key === 'root' ?
-              ({ fill: '#e6e6e6', stroke: 'gray', strokeWidth: '0.2px' }) :
-              ({ fill: colorCode[node.key] })
-            }
-            nodeIDAccessor="key"
-            hoverAnnotation
-            networkType={{
-              type: 'circlepack',
-              hierarchyChildren: datum => datum.values,
-              hierarchySum: datum => datum.value,
-            }}
-            />
-            </foreignObject>
-          )
-        }}
+          customNodeIcon={d => circlePackNode(d, nodeSizeFunc, colorCode)}
         />
       </div>
     </div>);

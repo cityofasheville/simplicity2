@@ -93,7 +93,10 @@ class Workflow extends React.Component {
                   key={d.key}
                   size={[size, size]}
                   edges={{ key: 'root', values: d.d.data.byType }}
-                  nodeStyle={{ fill: 'gray', fillOpacity: 0.25 }}
+                  nodeStyle={node => node.key === 'root' ?
+                    ({ fill: '#e6e6e6' }) :
+                    ({ fill: 'gray', fillOpacity: 0.5 })
+                  }
                   nodeIDAccessor="key"
                   hoverAnnotation
                   networkType={{

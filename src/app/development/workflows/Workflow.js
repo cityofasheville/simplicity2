@@ -10,7 +10,7 @@ class Workflow extends React.Component {
   constructor() {
     super();
     this.state = {
-      deptDetailShowing: null,
+      deptDetailShowing: 'Permit Application Center',
     }
   }
 
@@ -35,15 +35,17 @@ class Workflow extends React.Component {
     .entries(this.props.data)
     .sort((a, b) => b.values.length - a.values.length)
     .map(dept => {
-      // dept.children = personNest.entries(dept.values)
-      //   .sort((a, b) => b.values.length - a.values.length)
+      if (dept.key === this.state.deptDetailShowing) {
+        dept.children = personNest.entries(dept.values)
+          .sort((a, b) => b.values.length - a.values.length)
+        dept.children.map(person => {
+          person.byType = typeNest.entries(person.values)
+          // person.uniquePermits = uniquePermitsNest.entries(person.values)
+          return person;
+        })
+      }
       dept.byType = typeNest.entries(dept.values)
       // dept.uniquePermits = uniquePermitsNest.entries(dept.values)
-      // dept.children.map(person => {
-      //   person.byType = typeNest.entries(person.values)
-      //   // person.uniquePermits = uniquePermitsNest.entries(person.values)
-      //   return person;
-      // })
       return dept;
     })
 
@@ -62,17 +64,16 @@ class Workflow extends React.Component {
     .domain([0, this.props.data.length]);
 
 
-    // TODO: PUT NODE LABELS ABOVE CIRCLEPACKS, GIVE THEM PLUS/MINUS FUNCTIONALITY
+    // TODO: PUT NODE LABELS BELOW CIRCLEPACKS, GIVE THEM PLUS/MINUS FUNCTIONALITY
 
     return (<div className="dashRows">
       <div>
         <ResponsiveNetworkFrame
-          size={[900, 500]}
+          size={[900, 800]}
           responsiveWidth
           edges={nestedWithRoot}
           edgeStyle={{ stroke: 'gray' }}
           nodeIDAccessor="key"
-          hoverAnnotation
           nodeLabels
           nodeSizeAccessor={d => {
             return nodeSizeFunc(d.values.length)
@@ -81,25 +82,26 @@ class Workflow extends React.Component {
             const size = nodeSizeFunc(d.d.values.length)
             return (
               <foreignObject
-              key={d.key}
-              x={d.d.x - size / 2}
-              y={d.d.y - size / 2}
-              width={size}
-              height={size}
+                key={d.key}
+                x={d.d.x - size / 2}
+                y={d.d.y - size / 2}
+                width={size}
+                height={size}
               >
-              <ResponsiveNetworkFrame
-              key={d.key}
-              size={[size, size]}
-              edges={{ key: 'root', values: d.d.data.byType }}
-              nodeStyle={{ fill: 'white', stroke: 'black' }}
-              nodeIDAccessor="key"
-              hoverAnnotation
-              networkType={{
-                type: 'circlepack',
-                hierarchyChildren: datum => datum.values,
-                hierarchySum: datum => datum.value,
-              }}
-              />
+                <ResponsiveNetworkFrame
+                  hoverAnnotation
+                  key={d.key}
+                  size={[size, size]}
+                  edges={{ key: 'root', values: d.d.data.byType }}
+                  nodeStyle={{ fill: 'white', stroke: 'black' }}
+                  nodeIDAccessor="key"
+                  hoverAnnotation
+                  networkType={{
+                    type: 'circlepack',
+                    hierarchyChildren: datum => datum.values,
+                    hierarchySum: datum => datum.value,
+                  }}
+                />
               </foreignObject>
             )
           }}

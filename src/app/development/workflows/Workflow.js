@@ -208,23 +208,21 @@ class Workflow extends React.Component {
         <ResponsiveNetworkFrame
           size={[900, 900]}
           margin={{
-            top: 0,
+            top: 5,
             right: 50,
-            bottom: 15,
-            left: 0,
+            bottom: 5,
+            left: 5,
           }}
           responsiveWidth
           networkType={{
             type: "tree",
             projection: "horizontal",
-            nodePadding: 5,
             hierarchySum: d => d.values.length,
           }}
           edges={this.state.nestedData}
           edgeStyle={{ stroke: 'gray' }}
           nodeIDAccessor="key"
           nodeLabels={d => {
-            // console.log(d)
             const width = Math.max(100, d.nodeSize);
             return (<g
             >
@@ -243,20 +241,28 @@ class Workflow extends React.Component {
             </g>)
           }}
           nodeSizeAccessor={d => {
-            console.log(d)
             return d.depth === this.state.depthShowing && d.parent.key === this.state.parentNodeKeyShowing ?
-              nodeSizeFunc(d.values.length) : 1;
+              nodeSizeFunc(d.values.length) : 10;
           }}
           customNodeIcon={d =>
             d.d.depth === this.state.depthShowing && d.d.parent.key === this.state.parentNodeKeyShowing ?
               circlePackNode(d, nodeSizeFunc, this.state.colorCode) :
-              (<circle
+              (<g
                 key={d.d.key}
-                r={d.d.nodeSize}
-                cx={d.d.x}
-                cy={d.d.y}
-                style={{ fill: 'gray' }}
-              ></circle>)
+                style={{
+                  transform: `translate(${d.d.x}px, ${d.d.y}px)`
+                }}
+              >
+                <circle
+                  r={d.d.nodeSize}
+                  style={{ fill: 'white', stroke: 'gray' }}
+                ></circle>
+                <text
+                  dy={`${d.d.nodeSize / 2}px`}
+                  textAnchor="middle"
+                  style={{ alignmentBaseline: 'baseline' }}
+                >{d.d.key === this.state.parentNodeKeyShowing ? '-' : '+'}</text>
+              </g>)
           }
         />
       </div>

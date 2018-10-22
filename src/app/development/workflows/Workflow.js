@@ -93,7 +93,7 @@ class Workflow extends React.Component {
                   key={d.key}
                   size={[size, size]}
                   edges={{ key: 'root', values: d.d.data.byType }}
-                  nodeStyle={{ fill: 'white', stroke: 'black' }}
+                  nodeStyle={{ fill: 'gray', fillOpacity: 0.25 }}
                   nodeIDAccessor="key"
                   hoverAnnotation
                   networkType={{
@@ -111,7 +111,7 @@ class Workflow extends React.Component {
             nodePadding: 5,
             hierarchySum: d => d.values.length,
           }}
-          margin={50}
+          margin={5}
         />
       </div>
     </div>);

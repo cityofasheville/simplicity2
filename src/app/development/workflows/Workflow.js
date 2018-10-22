@@ -61,6 +61,9 @@ class Workflow extends React.Component {
     .range([2, rootSize])
     .domain([0, this.props.data.length]);
 
+
+    // TODO: PUT NODE LABELS ABOVE CIRCLEPACKS, GIVE THEM PLUS/MINUS FUNCTIONALITY
+
     return (<div className="dashRows">
       <div>
         <ResponsiveNetworkFrame

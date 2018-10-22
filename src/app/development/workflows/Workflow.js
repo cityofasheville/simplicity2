@@ -51,6 +51,22 @@ const circlePackNode = (d, nodeSizeFunc, colorCode) => {
 )
 }
 
+function nodesAtDepth(inputNode, activeDepth, parentNodeKeyShowing) {
+  const node = Object.assign({}, inputNode);
+  if (node.depth === activeDepth) {
+    if (activeDepth === 0) {
+      return [node];
+    }
+    return node;
+  }
+  if (!node.children) {
+    return [];
+  }
+  return [].concat(...node.children
+    .map(v => nodesAtDepth(v, activeDepth))
+  );
+}
+
 class Workflow extends React.Component {
   constructor(props) {
     super(props);
@@ -59,24 +75,22 @@ class Workflow extends React.Component {
       // uniquePermits: nest()
       //   .key(d => d.permit_number),
       types: nest()
-      // TODO: USER RESEARCH TO FIND OUT IF THIS IS BEST WAY TO BREAK DOWN
-      // .key(d => d.permit_group)
-      .key(d => d.permit_type)
-      // .key(d => d.permit_subtype)
-      // .key(d => d.permit_category)
-      .rollup(d => d.length),
-      dept: nest()
-      .key(d => d.user_department),
-      people: nest()
-      .key(d => d.user_name)
-    }
+        // TODO: USER RESEARCH TO FIND OUT IF THIS IS BEST WAY TO BREAK DOWN
+        // .key(d => d.permit_group)
+        .key(d => d.permit_type)
+        // .key(d => d.permit_subtype)
+        // .key(d => d.permit_category)
+        .rollup(d => d.length),
+      department: nest().key(d => d.user_department),
+      people: nest().key(d => d.user_name),
+    };
 
-    const colorCodedTypes = this.getColorCodedTypes()
+    const colorCodedTypes = this.getColorCodedTypes();
     this.state = {
-      // deptDetailShowing: 'Permit Application Center',
+      parentNodeKeyShowing: 'Permit Application Center',
       depthShowing: 2,
-      deptDetailShowing: 'Stormwater',
-    }
+      // parentNodeKeyShowing: 'Stormwater',
+    };
     this.state.nestedData = this.getNestedData(props.data);
     this.state.colorCode = this.getColorCode(colorCodedTypes);
     this.state.legendGroups = this.getLegendGroups(colorCodedTypes);
@@ -86,22 +100,24 @@ class Workflow extends React.Component {
     return {
       key: 'All Tasks',
       values: this.props.data,
-      children: this.nests.dept.entries(this.props.data)
-      .sort((a, b) => b.values.length - a.values.length)
-      .map(dept => {
-        if (dept.key === this.state.deptDetailShowing) {
-          dept.children = this.nests.people.entries(dept.values)
-          .sort((a, b) => b.values.length - a.values.length)
-          dept.children.map(person => {
-            person.byType = this.nests.types.entries(person.values)
-            // person.uniquePermits = uniquePermitsNest.entries(person.values)
-            return person;
-          })
-          dept.isDeptLevel = true;
-        }
-        dept.byType = this.nests.types.entries(dept.values)
-        // dept.uniquePermits = uniquePermitsNest.entries(dept.values)
-        return dept;
+      depth: 0,
+      children: this.nests.department.entries(this.props.data)
+        .sort((a, b) => b.values.length - a.values.length)
+        .map(department => {
+          if (department.key === this.state.parentNodeKeyShowing) {
+            department.children = this.nests.people.entries(department.values)
+              .sort((a, b) => b.values.length - a.values.length)
+            department.children.map(person => {
+              person.byType = this.nests.types.entries(person.values)
+              person.depth = 2;
+              // person.uniquePermits = uniquePermitsNest.entries(person.values)
+              return person;
+            })
+          }
+          department.depth = 1;
+          department.byType = this.nests.types.entries(department.values)
+          // department.uniquePermits = uniquePermitsNest.entries(department.values)
+          return department;
       }),
       // uniquePermits: uniquePermitsNest.entries(this.props.data),
       byType: this.nests.types.entries(this.props.data),
@@ -140,13 +156,29 @@ class Workflow extends React.Component {
     }]
   }
 
+  getSizeFunc() {
+    // TODO: figure out how to get correct size of root
+    // DETERMINE SIZE WITH RECURSIVE FUNCTION BASED ON LEVEL?
+    const largestNode = nodesAtDepth(
+      this.state.nestedData,
+      this.state.depthShowing,
+      this.state.parentNodeKeyShowing,
+    )
+      .sort((a, b) => b.values.length - a.values.length)[0].values.length
+    const maxSize = 100
+    return scaleLinear()
+      .range([2, maxSize])
+      .domain([0, largestNode]);
+  }
+
   componentWillReceiveProps(nextProps) {
     // TODO: less hacky
-    if (this.nextProps.data.length !== this.props.data.length
-      || this.nextProps.data[0].key !== this.props.data[0].key
+    if (this.nextProps.data[0].permit_number !== this.props.data[0].permit_number
+      || this.nextProps.data[0].current_status_date !== this.props.data[0].current_status_date
     ) {
       const colorCodedTypes = this.getColorCodedTypes(nextProps.data)
       this.setState({
+        nestedData: this.getNestedData(nextProps.data),
         colorCode: this.getColorCode(colorCodedTypes),
         legendGroups: this.getLegendGroups(colorCodedTypes),
       })
@@ -155,12 +187,7 @@ class Workflow extends React.Component {
 
   render() {
     // TODO: PUT NODE LABELS BELOW CIRCLEPACKS, GIVE THEM PLUS/MINUS FUNCTIONALITY
-    // TODO: figure out how to get correct size of root
-    // DETERMINE SIZE WITH RECURSIVE FUNCTION BASED ON LEVEL?
-    const rootSize = 300
-    const nodeSizeFunc = scaleLinear()
-      .range([2, rootSize])
-      .domain([0, this.props.data.length]);
+    const nodeSizeFunc = this.getSizeFunc()
 
     return (<div className="dashRows">
       <div>
@@ -183,7 +210,7 @@ class Workflow extends React.Component {
           margin={{
             top: 0,
             right: 50,
-            bottom: 0,
+            bottom: 15,
             left: 0,
           }}
           responsiveWidth
@@ -216,11 +243,21 @@ class Workflow extends React.Component {
             </g>)
           }}
           nodeSizeAccessor={d => {
-            return nodeSizeFunc(d.values.length)
+            console.log(d)
+            return d.depth === this.state.depthShowing && d.parent.key === this.state.parentNodeKeyShowing ?
+              nodeSizeFunc(d.values.length) : 1;
           }}
-          customNodeIcon={d => { console.log(d); return d.d.depth === this.state.depthShowing ?
-            circlePackNode(d, nodeSizeFunc, this.state.colorCode) : null
-          }}
+          customNodeIcon={d =>
+            d.d.depth === this.state.depthShowing && d.d.parent.key === this.state.parentNodeKeyShowing ?
+              circlePackNode(d, nodeSizeFunc, this.state.colorCode) :
+              (<circle
+                key={d.d.key}
+                r={d.d.nodeSize}
+                cx={d.d.x}
+                cy={d.d.y}
+                style={{ fill: 'gray' }}
+              ></circle>)
+          }
         />
       </div>
     </div>);

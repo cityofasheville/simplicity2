@@ -52,68 +52,64 @@ const circlePackNode = (d, nodeSizeFunc, colorCode) => {
 }
 
 class Workflow extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      // deptDetailShowing: 'Permit Application Center',
-      depthShowing: 3,
-      deptDetailShowing: 'Stormwater',
-    }
-  }
+  constructor(props) {
+    super(props);
 
-  render() {
-    const uniquePermitsNest = nest()
-    .key(d => d.permit_number);
-
-    const typeNest = nest()
+    this.nests = {
+      // uniquePermits: nest()
+      //   .key(d => d.permit_number),
+      types: nest()
       // TODO: USER RESEARCH TO FIND OUT IF THIS IS BEST WAY TO BREAK DOWN
       // .key(d => d.permit_group)
       .key(d => d.permit_type)
       // .key(d => d.permit_subtype)
       // .key(d => d.permit_category)
-      .rollup(d => d.length)
-
-    const deptNest = nest()
-      .key(d => d.user_department)
-
-    const personNest = nest()
+      .rollup(d => d.length),
+      dept: nest()
+      .key(d => d.user_department),
+      people: nest()
       .key(d => d.user_name)
+    }
 
-    const nestedData = deptNest
-      .entries(this.props.data)
+    const colorCodedTypes = this.getColorCodedTypes()
+    this.state = {
+      // deptDetailShowing: 'Permit Application Center',
+      depthShowing: 2,
+      deptDetailShowing: 'Stormwater',
+    }
+    this.state.nestedData = this.getNestedData(props.data);
+    this.state.colorCode = this.getColorCode(colorCodedTypes);
+    this.state.legendGroups = this.getLegendGroups(colorCodedTypes);
+  }
+
+  getNestedData(inputData) {
+    return {
+      key: 'All Tasks',
+      values: this.props.data,
+      children: this.nests.dept.entries(this.props.data)
       .sort((a, b) => b.values.length - a.values.length)
       .map(dept => {
         if (dept.key === this.state.deptDetailShowing) {
-          dept.children = personNest.entries(dept.values)
-            .sort((a, b) => b.values.length - a.values.length)
+          dept.children = this.nests.people.entries(dept.values)
+          .sort((a, b) => b.values.length - a.values.length)
           dept.children.map(person => {
-            person.byType = typeNest.entries(person.values)
+            person.byType = this.nests.types.entries(person.values)
             // person.uniquePermits = uniquePermitsNest.entries(person.values)
             return person;
           })
           dept.isDeptLevel = true;
         }
-        dept.byType = typeNest.entries(dept.values)
+        dept.byType = this.nests.types.entries(dept.values)
         // dept.uniquePermits = uniquePermitsNest.entries(dept.values)
         return dept;
-      })
-
-    const nestedWithRoot = {
-      key: 'All Tasks',
-      values: this.props.data,
-      children: nestedData,
+      }),
       // uniquePermits: uniquePermitsNest.entries(this.props.data),
-      byType: typeNest.entries(this.props.data),
+      byType: this.nests.types.entries(this.props.data),
     }
+  }
 
-    // TODO: figure out how to get correct size of root
-    const rootSize = 300
-    const nodeSizeFunc = scaleLinear()
-      .range([2, rootSize])
-      .domain([0, this.props.data.length]);
-
-    // TODO: PUT NODE LABELS BELOW CIRCLEPACKS, GIVE THEM PLUS/MINUS FUNCTIONALITY
-    const colorCoded = typeNest.entries(this.props.data)
+  getColorCodedTypes() {
+    return this.nests.types.entries(this.props.data)
       .sort((a, b) => b.value - a.value)
       .map((d, i) => {
         const rObj = Object.assign({}, d);
@@ -127,18 +123,44 @@ class Workflow extends React.Component {
         }
         return rObj;
       })
+  }
 
-    const colorCode = colorCoded.reduce(function(obj, item){
+  getColorCode(colorCodedTypes) {
+    return colorCodedTypes.reduce(function(obj, item){
       obj[item.key] = item.color;
       return obj;
     }, {});
+  }
 
-    // Dedupe "other" categories
-    const legendGroups = [{
+  getLegendGroups(colorCodedTypes) {
+    return [{
       styleFn: d => ({ fill: d.color, stroke: 'none' }),
-      items: colorCoded.filter((d, i) =>
-        i <= colorScheme.length - 1),
+      items: colorCodedTypes.filter((d, i) =>
+      i <= colorScheme.length - 1),
     }]
+  }
+
+  componentWillReceiveProps(nextProps) {
+    // TODO: less hacky
+    if (this.nextProps.data.length !== this.props.data.length
+      || this.nextProps.data[0].key !== this.props.data[0].key
+    ) {
+      const colorCodedTypes = this.getColorCodedTypes(nextProps.data)
+      this.setState({
+        colorCode: this.getColorCode(colorCodedTypes),
+        legendGroups: this.getLegendGroups(colorCodedTypes),
+      })
+    }
+  }
+
+  render() {
+    // TODO: PUT NODE LABELS BELOW CIRCLEPACKS, GIVE THEM PLUS/MINUS FUNCTIONALITY
+    // TODO: figure out how to get correct size of root
+    // DETERMINE SIZE WITH RECURSIVE FUNCTION BASED ON LEVEL?
+    const rootSize = 300
+    const nodeSizeFunc = scaleLinear()
+      .range([2, rootSize])
+      .domain([0, this.props.data.length]);
 
     return (<div className="dashRows">
       <div>
@@ -147,13 +169,13 @@ class Workflow extends React.Component {
             position: 'absolute',
             top: '30px',
             left: '0px',
-            height: `${legendGroups[0].items.length * 16 + 16}px`,
+            height: `${this.state.legendGroups[0].items.length * 16 + 16}px`,
             overflow: 'visible'
           }}
         >
           <Legend
             title="Permit Type"
-            legendGroups={legendGroups}
+            legendGroups={this.state.legendGroups}
           />
         </svg>
         <ResponsiveNetworkFrame
@@ -171,11 +193,11 @@ class Workflow extends React.Component {
             nodePadding: 5,
             hierarchySum: d => d.values.length,
           }}
-          edges={nestedWithRoot}
+          edges={this.state.nestedData}
           edgeStyle={{ stroke: 'gray' }}
           nodeIDAccessor="key"
           nodeLabels={d => {
-            console.log(d)
+            // console.log(d)
             const width = Math.max(100, d.nodeSize);
             return (<g
             >
@@ -196,7 +218,9 @@ class Workflow extends React.Component {
           nodeSizeAccessor={d => {
             return nodeSizeFunc(d.values.length)
           }}
-          customNodeIcon={d => circlePackNode(d, nodeSizeFunc, colorCode)}
+          customNodeIcon={d => { console.log(d); return d.d.depth === this.state.depthShowing ?
+            circlePackNode(d, nodeSizeFunc, this.state.colorCode) : null
+          }}
         />
       </div>
     </div>);

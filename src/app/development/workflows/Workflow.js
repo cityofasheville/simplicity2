@@ -88,7 +88,7 @@ class Workflow extends React.Component {
     const colorCodedTypes = this.getColorCodedTypes();
     this.state = {
       parentNodeKeyShowing: 'Permit Application Center',
-      depthShowing: 2,
+      activeDepth: 2,
       // parentNodeKeyShowing: 'Stormwater',
     };
     this.state.nestedData = this.getNestedData(props.data);
@@ -157,12 +157,12 @@ class Workflow extends React.Component {
     }]
   }
 
-  getSizeFunc() {
+  getSizeFunc(filteredData) {
     // TODO: figure out how to get correct size of root
     // DETERMINE SIZE WITH RECURSIVE FUNCTION BASED ON LEVEL?
     const largestNode = nodesAtDepth(
-      this.state.nestedData,
-      this.state.depthShowing,
+      filteredData,
+      this.state.activeDepth,
       this.state.parentNodeKeyShowing,
     )
       .sort((a, b) => b.values.length - a.values.length)[0].values.length
@@ -186,25 +186,41 @@ class Workflow extends React.Component {
   }
 
   handleCollapsedNodeClick(d) {
-    // if depth and key match state.depthShowing and state.parentNodeKeyShowing, toggle closed
-    if (d.d.depth === this.state.depthShowing && d.d.key === this.state.parentNodeKeyShowing) {
+    // if depth and key match state.activeDepth and state.parentNodeKeyShowing, toggle closed
+    if (d.d.depth === this.state.activeDepth && d.d.key === this.state.parentNodeKeyShowing) {
       this.setState({
-        depthShowing: Math.max(this.state.depthShowing - 1, 0),
+        activeDepth: Math.max(this.state.activeDepth - 1, 0),
         parentNodeKeyShowing: null,
       })
     } else {
       this.setState({
         nestedData: this.getNestedData(this.props.data),
-        depthShowing: d.d.depth + 1,
+        activeDepth: d.d.depth + 1,
         parentNodeKeyShowing: d.d.key,
       })
     }
   }
 
+  filterData(inputNode) {
+    const node = Object.assign({}, inputNode);
+    if (!node.children) {
+      return node;
+    }
+    if ((node.depth + 1 === this.state.activeDepth && node.key !== this.state.parentNodeKeyShowing)
+      || (this.state.activeDepth === node.depth)
+    ) {
+      node.children = null;
+    } else {
+      node.children = node.children.map(v => this.filterData(v));
+    }
+    return node;
+  }
+
   render() {
     // TODO: PUT NODE LABELS BELOW CIRCLEPACKS, GIVE THEM PLUS/MINUS FUNCTIONALITY
-    const nodeSizeFunc = this.getSizeFunc()
-    console.log(this.state)
+    // DO THIS INSTEAD OF HAVING PLUS MINUS ON NODES-- BECAUSE WHEN ACTIVE DEPTH 1, STILL NEED TO ACCESS LOWER NODES
+    const filteredData = this.filterData(this.state.nestedData)
+    const nodeSizeFunc = this.getSizeFunc(filteredData)
 
     return (<div className="dashRows">
       <div>
@@ -236,7 +252,7 @@ class Workflow extends React.Component {
             projection: "horizontal",
             hierarchySum: d => d.values.length,
           }}
-          edges={this.state.nestedData}
+          edges={filteredData}
           edgeStyle={{ stroke: 'gray' }}
           nodeIDAccessor="key"
           nodeLabels={d => {
@@ -258,17 +274,17 @@ class Workflow extends React.Component {
             </g>)
           }}
           nodeSizeAccessor={d => {
-            return d.depth === this.state.depthShowing && d.parent.key === this.state.parentNodeKeyShowing ?
+            return d.depth === this.state.activeDepth && d.parent.key === this.state.parentNodeKeyShowing ?
               nodeSizeFunc(d.values.length) : 10;
           }}
           // customClickBehavior={d => {
           //   console.log(d)
-          //   if (d.d.depth !== this.state.depthShowing) {
+          //   if (d.d.depth !== this.state.activeDepth) {
           //     this.handleCollapsedNodeClick(d)
           //   }
           // }}
           customNodeIcon={d =>
-            d.d.depth === this.state.depthShowing && d.d.parent.key === this.state.parentNodeKeyShowing ?
+            d.d.depth === this.state.activeDepth && d.d.parent.key === this.state.parentNodeKeyShowing ?
               circlePackNode(d, nodeSizeFunc, this.state.colorCode) :
               (<g
                 key={d.d.key}

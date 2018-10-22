@@ -94,17 +94,18 @@ class Workflow extends React.Component {
     this.state.nestedData = this.getNestedData(props.data);
     this.state.colorCode = this.getColorCode(colorCodedTypes);
     this.state.legendGroups = this.getLegendGroups(colorCodedTypes);
+    this.handleCollapsedNodeClick = this.handleCollapsedNodeClick.bind(this)
   }
 
   getNestedData(inputData) {
     return {
       key: 'All Tasks',
-      values: this.props.data,
+      values: inputData,
       depth: 0,
-      children: this.nests.department.entries(this.props.data)
+      children: this.nests.department.entries(inputData)
         .sort((a, b) => b.values.length - a.values.length)
         .map(department => {
-          if (department.key === this.state.parentNodeKeyShowing) {
+          // if (department.key === this.state.parentNodeKeyShowing) {
             department.children = this.nests.people.entries(department.values)
               .sort((a, b) => b.values.length - a.values.length)
             department.children.map(person => {
@@ -113,14 +114,14 @@ class Workflow extends React.Component {
               // person.uniquePermits = uniquePermitsNest.entries(person.values)
               return person;
             })
-          }
+          // }
           department.depth = 1;
           department.byType = this.nests.types.entries(department.values)
           // department.uniquePermits = uniquePermitsNest.entries(department.values)
           return department;
       }),
-      // uniquePermits: uniquePermitsNest.entries(this.props.data),
-      byType: this.nests.types.entries(this.props.data),
+      // uniquePermits: uniquePermitsNest.entries(inputData),
+      byType: this.nests.types.entries(inputData),
     }
   }
 
@@ -178,9 +179,24 @@ class Workflow extends React.Component {
     ) {
       const colorCodedTypes = this.getColorCodedTypes(nextProps.data)
       this.setState({
-        nestedData: this.getNestedData(nextProps.data),
         colorCode: this.getColorCode(colorCodedTypes),
         legendGroups: this.getLegendGroups(colorCodedTypes),
+      })
+    }
+  }
+
+  handleCollapsedNodeClick(d) {
+    // if depth and key match state.depthShowing and state.parentNodeKeyShowing, toggle closed
+    if (d.d.depth === this.state.depthShowing && d.d.key === this.state.parentNodeKeyShowing) {
+      this.setState({
+        depthShowing: Math.max(this.state.depthShowing - 1, 0),
+        parentNodeKeyShowing: null,
+      })
+    } else {
+      this.setState({
+        nestedData: this.getNestedData(this.props.data),
+        depthShowing: d.d.depth + 1,
+        parentNodeKeyShowing: d.d.key,
       })
     }
   }
@@ -188,6 +204,7 @@ class Workflow extends React.Component {
   render() {
     // TODO: PUT NODE LABELS BELOW CIRCLEPACKS, GIVE THEM PLUS/MINUS FUNCTIONALITY
     const nodeSizeFunc = this.getSizeFunc()
+    console.log(this.state)
 
     return (<div className="dashRows">
       <div>
@@ -244,6 +261,12 @@ class Workflow extends React.Component {
             return d.depth === this.state.depthShowing && d.parent.key === this.state.parentNodeKeyShowing ?
               nodeSizeFunc(d.values.length) : 10;
           }}
+          // customClickBehavior={d => {
+          //   console.log(d)
+          //   if (d.d.depth !== this.state.depthShowing) {
+          //     this.handleCollapsedNodeClick(d)
+          //   }
+          // }}
           customNodeIcon={d =>
             d.d.depth === this.state.depthShowing && d.d.parent.key === this.state.parentNodeKeyShowing ?
               circlePackNode(d, nodeSizeFunc, this.state.colorCode) :
@@ -252,10 +275,12 @@ class Workflow extends React.Component {
                 style={{
                   transform: `translate(${d.d.x}px, ${d.d.y}px)`
                 }}
+                className="toggleAbleNode"
+                onClick={() => this.handleCollapsedNodeClick(d)}
               >
                 <circle
                   r={d.d.nodeSize}
-                  style={{ fill: 'white', stroke: 'gray' }}
+                  style={{ stroke: 'gray' }}
                 ></circle>
                 <text
                   dy={`${d.d.nodeSize / 2}px`}

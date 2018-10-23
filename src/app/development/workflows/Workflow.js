@@ -276,7 +276,7 @@ class Workflow extends React.Component {
                   textAlign: 'center',
                 }}
               >
-                {`${d.key}: ${d.value}`}
+                {`${d.key}: ${d.values.length}`}
               </foreignObject>
             </g>)
           }}

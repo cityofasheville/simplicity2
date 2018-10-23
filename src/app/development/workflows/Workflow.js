@@ -227,8 +227,8 @@ class Workflow extends React.Component {
         <svg
           style={{
             position: 'absolute',
-            top: '30px',
-            left: '0px',
+            top: '100px',
+            left: '25px',
             height: `${this.state.legendGroups[0].items.length * 16 + 16}px`,
             overflow: 'visible'
           }}
@@ -239,7 +239,7 @@ class Workflow extends React.Component {
           />
         </svg>
         <ResponsiveNetworkFrame
-          size={[900, 1000]}
+          size={[900, 900]}
           margin={{
             top: 10,
             right: 40,
@@ -256,7 +256,7 @@ class Workflow extends React.Component {
                 // If it's not a circlepack, evenly space them
                 return 15;
               }
-              const basicSeparation = Math.max(nodeSizeFunc(a.value)/2, nodeSizeFunc(b.value)/2, 10);
+              const basicSeparation = Math.max(nodeSizeFunc(a.value)/3, nodeSizeFunc(b.value)/3) + 10;
               return basicSeparation;
             }),
           }}

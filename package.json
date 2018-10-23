@@ -103,7 +103,7 @@
     "react-widgets": "^4.4.4",
     "react-widgets-moment": "^4.0.20",
     "selectly": "^0.5.0",
-    "semiotic": "^1.15.3",
+    "semiotic": "^1.15.5",
     "semiotic-mark": "^0.1.2",
     "unfetch": "^3.0.0",
     "url-loader": "^1.0.1"

@@ -239,21 +239,31 @@ class Workflow extends React.Component {
           />
         </svg>
         <ResponsiveNetworkFrame
-          size={[900, 900]}
+          size={[900, 1000]}
           margin={{
-            top: 5,
-            right: 50,
-            bottom: 5,
+            top: 10,
+            right: 40,
+            bottom: 10,
             left: 5,
           }}
           responsiveWidth
+          edgeType="comet"
           networkType={{
             type: "tree",
             projection: "horizontal",
             hierarchySum: d => d.values.length,
+            separation: ((a, b) => {
+              // console.log(a, b)
+              if (a.depth !== this.state.activeDepth) {
+                // If it's not a circlepack, evenly space them
+                return 15;
+              }
+              const basicSeparation = Math.max(nodeSizeFunc(a.value)/2, nodeSizeFunc(b.value)/2, 10);
+              return basicSeparation;
+            }),
           }}
           edges={filteredData}
-          edgeStyle={{ stroke: 'gray' }}
+          edgeStyle={{ stroke: 'gray', fill: 'gray', opacity: 0.25 }}
           nodeIDAccessor="key"
           nodeLabels={d => {
             const width = Math.max(100, d.nodeSize);

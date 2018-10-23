@@ -165,6 +165,37 @@ export function splitOrdinalByBool(inputData, matchTestFunc, nameTrue) {
   return splitOrdinal;
 }
 
+export const GET_WORKFLOW_TASKS = gql`
+query getTasksQuery($after: String) {
+  permit_tasks(after: $after) {
+    permit_number
+    permit_group
+    permit_type
+    permit_subtype
+    permit_category
+    process_code
+    task
+    task_status
+    current_status_date
+    step_number
+    relation_sequence_id
+    parent_task_name
+    user_name
+    user_id
+    user_department
+    due_date
+    record_date
+    comments
+    is_completed
+    is_active
+    assigned_date
+    assigned_user
+    assigned_department
+    process_history_sequence_number
+    record_id
+  }
+}`
+
 export const GET_WORKFLOW_TASKS_FOR_COUNTING = gql`
   query getTasksQuery($after: String) {
     permit_tasks(after: $after) {
@@ -172,7 +203,6 @@ export const GET_WORKFLOW_TASKS_FOR_COUNTING = gql`
       permit_group
     }
   }
-
 `
 
 export const GET_PERMITS_FOR_COUNTING = gql`

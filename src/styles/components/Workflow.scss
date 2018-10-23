@@ -3,9 +3,10 @@
 }
 
 .toggleAbleNode circle {
-  fill: white;
+  fill: #e6e6e6;
+  stroke: #e6e6e6;
 }
 
 .toggleAbleNode:hover circle, .toggleAbleNode:focus circle {
-  fill: #b3b3b3;
+  stroke: gray;
 }

@@ -25,7 +25,7 @@ const circlePackNode = (d, nodeSizeFunc, colorCode) => {
           return null;
         }
         return (<Tooltip
-          style={{ zIndex: 99 }}
+          style={{ zIndex: 1000 }}
           title={d.key}
           textLines={[{
             text: `${datum.key}: ${datum.data.value}`
@@ -36,17 +36,17 @@ const circlePackNode = (d, nodeSizeFunc, colorCode) => {
       size={[size, size]}
       edges={{ key: 'root', values: d.d.data.byType }}
       nodeStyle={node => node.key === 'root' ?
-        ({ fill: '#e6e6e6', stroke: 'gray', strokeWidth: '0.2px' }) :
+        ({ fill: '#e6e6e6', stroke: 'none' }) :
         ({ fill: colorCode[node.key] })
-    }
-    nodeIDAccessor="key"
-    hoverAnnotation
-    networkType={{
-      type: 'circlepack',
-      hierarchyChildren: datum => datum.values,
-      hierarchySum: datum => datum.value,
-    }}
-  />
+      }
+      nodeIDAccessor="key"
+      hoverAnnotation
+      networkType={{
+        type: 'circlepack',
+        hierarchyChildren: datum => datum.values,
+        hierarchySum: datum => datum.value,
+      }}
+    />
   </foreignObject>
 )
 }
@@ -247,13 +247,11 @@ class Workflow extends React.Component {
             left: 5,
           }}
           responsiveWidth
-          edgeType="comet"
           networkType={{
             type: "tree",
             projection: "horizontal",
             hierarchySum: d => d.values.length,
             separation: ((a, b) => {
-              // console.log(a, b)
               if (a.depth !== this.state.activeDepth) {
                 // If it's not a circlepack, evenly space them
                 return 15;
@@ -263,12 +261,11 @@ class Workflow extends React.Component {
             }),
           }}
           edges={filteredData}
-          edgeStyle={{ stroke: 'gray', fill: 'gray', opacity: 0.25 }}
+          edgeStyle={{ stroke: 'gray', fill: 'gray', opacity: 0.5 }}
           nodeIDAccessor="key"
           nodeLabels={d => {
-            const width = Math.max(100, d.nodeSize);
-            return (<g
-            >
+            const width = Math.max(200, d.nodeSize);
+            return (<g>
               <foreignObject
                 style={{
                   x: - width / 2,
@@ -279,7 +276,7 @@ class Workflow extends React.Component {
                   textAlign: 'center',
                 }}
               >
-                {d.key}
+                {`${d.key}: ${d.value}`}
               </foreignObject>
             </g>)
           }}
@@ -287,16 +284,14 @@ class Workflow extends React.Component {
             return d.depth === this.state.activeDepth && d.parent.key === this.state.parentNodeKeyShowing ?
               nodeSizeFunc(d.values.length) : 10;
           }}
-          // customClickBehavior={d => {
-          //   console.log(d)
-          //   if (d.d.depth !== this.state.activeDepth) {
-          //     this.handleCollapsedNodeClick(d)
-          //   }
-          // }}
-          customNodeIcon={d =>
-            d.d.depth === this.state.activeDepth && d.d.parent.key === this.state.parentNodeKeyShowing ?
-              circlePackNode(d, nodeSizeFunc, this.state.colorCode) :
-              (<g
+          customNodeIcon={d => {
+            if (d.d.depth === 0) {
+              return null;
+            } else if (d.d.depth === this.state.activeDepth && d.d.parent.key === this.state.parentNodeKeyShowing) {
+              return circlePackNode(d, nodeSizeFunc, this.state.colorCode);
+            }
+            return (
+              <g
                 key={d.d.key}
                 style={{
                   transform: `translate(${d.d.x}px, ${d.d.y}px)`
@@ -306,15 +301,18 @@ class Workflow extends React.Component {
               >
                 <circle
                   r={d.d.nodeSize}
-                  style={{ stroke: 'gray' }}
-                ></circle>
+                >
+                </circle>
                 <text
                   dy={`${d.d.nodeSize / 2}px`}
                   textAnchor="middle"
                   style={{ alignmentBaseline: 'baseline' }}
-                >{d.d.key === this.state.parentNodeKeyShowing ? '-' : '+'}</text>
-              </g>)
-          }
+                >
+                  {d.d.key === this.state.parentNodeKeyShowing ? '-' : '+'}
+                </text>
+              </g>
+            )
+          }}
         />
       </div>
     </div>);

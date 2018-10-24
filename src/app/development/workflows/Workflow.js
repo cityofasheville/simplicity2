@@ -5,50 +5,7 @@ import { scaleLinear } from 'd3-scale';
 import { ResponsiveNetworkFrame, Legend } from 'semiotic';
 import { colorScheme } from '../volume/granularUtils';
 import Tooltip from '../../../shared/visualization/Tooltip';
-
-
-const circlePackNode = (d, nodeSizeFunc, colorCode) => {
-  const size = nodeSizeFunc(d.d.values.length)
-  return (
-    <foreignObject
-      key={d.key}
-      x={d.d.x - size / 2}
-      y={d.d.y - size / 2}
-      width={size}
-      height={size}
-    >
-    <ResponsiveNetworkFrame
-      hoverAnnotation
-      tooltipContent={datum => {
-        if (datum.key === 'root') {
-          return null;
-        }
-        return (<Tooltip
-          style={{ zIndex: 1000 }}
-          title={d.key}
-          textLines={[{
-            text: `${datum.key}: ${datum.data.value}`
-          }]}
-        />);
-      }}
-      key={d.key}
-      size={[size, size]}
-      edges={{ key: 'root', values: d.d.data.byType }}
-      nodeStyle={node => node.key === 'root' ?
-        ({ fill: '#e6e6e6', stroke: 'none' }) :
-        ({ fill: colorCode[node.key] })
-      }
-      nodeIDAccessor="key"
-      hoverAnnotation
-      networkType={{
-        type: 'circlepack',
-        hierarchyChildren: datum => datum.values,
-        hierarchySum: datum => datum.value,
-      }}
-    />
-  </foreignObject>
-)
-}
+import CirclePackNode from './CirclePackNode';
 
 function nodesAtDepth(inputNode, activeDepth, parentNodeKeyShowing) {
   const node = Object.assign({}, inputNode);
@@ -232,8 +189,8 @@ class Workflow extends React.Component {
         <svg
           style={{
             position: 'absolute',
-            top: '100px',
-            left: '25px',
+            top: `${height / 2 * 0.025}px`,
+            left: '0px',
             height: `${this.state.legendGroups[0].items.length * 16 + 16}px`,
             overflow: 'visible'
           }}
@@ -293,7 +250,12 @@ class Workflow extends React.Component {
             if (d.d.depth === 0) {
               return null;
             } else if (d.d.depth === this.state.activeDepth && d.d.parent.key === this.state.parentNodeKeyShowing) {
-              return circlePackNode(d, nodeSizeFunc, this.state.colorCode);
+              return (<CirclePackNode
+                key={d.key}
+                d={d}
+                nodeSizeFunc={nodeSizeFunc}
+                colorCode={this.state.colorCode}
+              />)
             }
             return (
               <g

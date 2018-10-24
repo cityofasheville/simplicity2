@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 
 const Tooltip = (props) => {
   const styles = props.style || {};
-  styles.fontSize = '0.75rem';
   styles.padding = '0.35rem';
   styles.letterSpacing = '0.015rem'
   const minWidth = Math.min(

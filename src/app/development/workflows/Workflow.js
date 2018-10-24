@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { timeDay, timeMonday, timeMonth } from 'd3-time';
 import { nest } from 'd3-collection';
 import { scaleLinear } from 'd3-scale';
 import { ResponsiveNetworkFrame, Legend } from 'semiotic';
@@ -85,6 +84,9 @@ class Workflow extends React.Component {
       people: nest().key(d => d.user_name),
     };
 
+    // TODO: DETERMINE BETTER?
+    this.maxNodeSize = 100;
+
     const colorCodedTypes = this.getColorCodedTypes();
     this.state = {
       parentNodeKeyShowing: 'Permit Application Center',
@@ -157,18 +159,12 @@ class Workflow extends React.Component {
     }]
   }
 
-  getSizeFunc(filteredData) {
+  getSizeFunc(showingNodes) {
     // TODO: figure out how to get correct size of root
     // DETERMINE SIZE WITH RECURSIVE FUNCTION BASED ON LEVEL?
-    const largestNode = nodesAtDepth(
-      filteredData,
-      this.state.activeDepth,
-      this.state.parentNodeKeyShowing,
-    )
-      .sort((a, b) => b.values.length - a.values.length)[0].values.length
-    const maxSize = 100
+    const largestNode = showingNodes[0].values.length
     return scaleLinear()
-      .range([2, maxSize])
+      .range([2, this.maxNodeSize])
       .domain([0, largestNode]);
   }
 
@@ -220,7 +216,16 @@ class Workflow extends React.Component {
     // TODO: PUT NODE LABELS BELOW CIRCLEPACKS, GIVE THEM PLUS/MINUS FUNCTIONALITY
     // DO THIS INSTEAD OF HAVING PLUS MINUS ON NODES-- BECAUSE WHEN ACTIVE DEPTH 1, STILL NEED TO ACCESS LOWER NODES
     const filteredData = this.filterData(this.state.nestedData)
-    const nodeSizeFunc = this.getSizeFunc(filteredData)
+    const showingNodes = nodesAtDepth(
+      filteredData,
+      this.state.activeDepth,
+      this.state.parentNodeKeyShowing,
+    )
+      .sort((a, b) => b.values.length - a.values.length)
+    const nodeSizeFunc = this.getSizeFunc(showingNodes)
+
+    const height = Math.max(this.maxNodeSize * showingNodes.length * 0.9, 500)
+    const nodeLabelHeight = 18;
 
     return (<div className="dashRows">
       <div>
@@ -239,7 +244,7 @@ class Workflow extends React.Component {
           />
         </svg>
         <ResponsiveNetworkFrame
-          size={[900, 900]}
+          size={[900, height]}
           margin={{
             top: 10,
             right: 40,
@@ -256,7 +261,7 @@ class Workflow extends React.Component {
                 // If it's not a circlepack, evenly space them
                 return 15;
               }
-              const basicSeparation = Math.max(nodeSizeFunc(a.value)/3, nodeSizeFunc(b.value)/3) + 10;
+              const basicSeparation = Math.min(nodeSizeFunc(a.value)/3, nodeSizeFunc(b.value)/3) + nodeLabelHeight;
               return basicSeparation;
             }),
           }}
@@ -269,9 +274,9 @@ class Workflow extends React.Component {
               <foreignObject
                 style={{
                   x: - width / 2,
-                  y: -d.nodeSize / 2 - 25,
+                  y: -d.nodeSize / 2 - 15,
                   width: width,
-                  height: 25,
+                  height: nodeLabelHeight,
                   fontSize: '0.75em',
                   textAlign: 'center',
                 }}

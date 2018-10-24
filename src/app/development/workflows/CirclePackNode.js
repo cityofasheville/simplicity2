@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ResponsiveNetworkFrame } from 'semiotic';
+import Tooltip from '../../../shared/visualization/Tooltip';
 
 
 const CirclePackNode = ({ d, nodeSizeFunc, colorCode }) => {

@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { mean, max } from 'd3-array';
 import { nest } from 'd3-collection';
 import { scaleLinear } from 'd3-scale';
 import { ResponsiveNetworkFrame, Legend } from 'semiotic';
 import { colorScheme } from '../volume/granularUtils';
-import Tooltip from '../../../shared/visualization/Tooltip';
 import CirclePackNode from './CirclePackNode';
 
 function nodesAtDepth(inputNode, activeDepth, parentNodeKeyShowing) {
@@ -172,6 +172,7 @@ class Workflow extends React.Component {
   render() {
     // TODO: PUT NODE LABELS BELOW CIRCLEPACKS, GIVE THEM PLUS/MINUS FUNCTIONALITY
     // DO THIS INSTEAD OF HAVING PLUS MINUS ON NODES-- BECAUSE WHEN ACTIVE DEPTH 1, STILL NEED TO ACCESS LOWER NODES
+    const nodeLabelHeight = 16;
     const filteredData = this.filterData(this.state.nestedData)
     const showingNodes = nodesAtDepth(
       filteredData,
@@ -181,17 +182,20 @@ class Workflow extends React.Component {
       .sort((a, b) => b.values.length - a.values.length)
     const nodeSizeFunc = this.getSizeFunc(showingNodes)
 
-    const height = Math.max(this.maxNodeSize * showingNodes.length * 0.9, 500)
-    const nodeLabelHeight = 18;
+    const approxLegendHeight = this.state.legendGroups[0].items.length * 16 + 16
+    const height = Math.max(
+      showingNodes.map(d => nodeSizeFunc(d.values.length) + nodeLabelHeight * 3).reduce((a, b) => a + b),
+      approxLegendHeight * 4,
+    )
 
     return (<div className="dashRows">
       <div>
         <svg
           style={{
             position: 'absolute',
-            top: `${height / 2 * 0.025}px`,
+            top: `${Math.max(0, (height / 4 - approxLegendHeight))}px`,
             left: '0px',
-            height: `${this.state.legendGroups[0].items.length * 16 + 16}px`,
+            height: `${approxLegendHeight}px`,
             overflow: 'visible'
           }}
         >
@@ -216,10 +220,9 @@ class Workflow extends React.Component {
             separation: ((a, b) => {
               if (a.depth !== this.state.activeDepth) {
                 // If it's not a circlepack, evenly space them
-                return 15;
+                return nodeLabelHeight;
               }
-              const basicSeparation = Math.min(nodeSizeFunc(a.value)/3, nodeSizeFunc(b.value)/3) + nodeLabelHeight;
-              return basicSeparation;
+              return Math.min(nodeSizeFunc(a.value) / 3, nodeSizeFunc(b.value) / 3) + nodeLabelHeight;
             }),
           }}
           edges={filteredData}
@@ -231,7 +234,7 @@ class Workflow extends React.Component {
               <foreignObject
                 style={{
                   x: - width / 2,
-                  y: -d.nodeSize / 2 - 15,
+                  y: -d.nodeSize / 2 - 16,
                   width: width,
                   height: nodeLabelHeight,
                   fontSize: '0.75em',

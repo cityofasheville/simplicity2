@@ -1,55 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { timeDay, timeMonday, timeMonth } from 'd3-time';
+import { mean, max } from 'd3-array';
 import { nest } from 'd3-collection';
 import { scaleLinear } from 'd3-scale';
 import { ResponsiveNetworkFrame, Legend } from 'semiotic';
 import { colorScheme } from '../volume/granularUtils';
-import Tooltip from '../../../shared/visualization/Tooltip';
-
-
-const circlePackNode = (d, nodeSizeFunc, colorCode) => {
-  const size = nodeSizeFunc(d.d.values.length)
-  return (
-    <foreignObject
-      key={d.key}
-      x={d.d.x - size / 2}
-      y={d.d.y - size / 2}
-      width={size}
-      height={size}
-    >
-    <ResponsiveNetworkFrame
-      hoverAnnotation
-      tooltipContent={datum => {
-        if (datum.key === 'root') {
-          return null;
-        }
-        return (<Tooltip
-          style={{ zIndex: 1000 }}
-          title={d.key}
-          textLines={[{
-            text: `${datum.key}: ${datum.data.value}`
-          }]}
-        />);
-      }}
-      key={d.key}
-      size={[size, size]}
-      edges={{ key: 'root', values: d.d.data.byType }}
-      nodeStyle={node => node.key === 'root' ?
-        ({ fill: '#e6e6e6', stroke: 'none' }) :
-        ({ fill: colorCode[node.key] })
-      }
-      nodeIDAccessor="key"
-      hoverAnnotation
-      networkType={{
-        type: 'circlepack',
-        hierarchyChildren: datum => datum.values,
-        hierarchySum: datum => datum.value,
-      }}
-    />
-  </foreignObject>
-)
-}
+import CirclePackNode from './CirclePackNode';
 
 function nodesAtDepth(inputNode, activeDepth, parentNodeKeyShowing) {
   const node = Object.assign({}, inputNode);
@@ -84,6 +40,9 @@ class Workflow extends React.Component {
       department: nest().key(d => d.user_department),
       people: nest().key(d => d.user_name),
     };
+
+    // TODO: DETERMINE BETTER?
+    this.maxNodeSize = 100;
 
     const colorCodedTypes = this.getColorCodedTypes();
     this.state = {
@@ -157,18 +116,12 @@ class Workflow extends React.Component {
     }]
   }
 
-  getSizeFunc(filteredData) {
+  getSizeFunc(showingNodes) {
     // TODO: figure out how to get correct size of root
     // DETERMINE SIZE WITH RECURSIVE FUNCTION BASED ON LEVEL?
-    const largestNode = nodesAtDepth(
-      filteredData,
-      this.state.activeDepth,
-      this.state.parentNodeKeyShowing,
-    )
-      .sort((a, b) => b.values.length - a.values.length)[0].values.length
-    const maxSize = 100
+    const largestNode = showingNodes[0].values.length
     return scaleLinear()
-      .range([2, maxSize])
+      .range([2, this.maxNodeSize])
       .domain([0, largestNode]);
   }
 
@@ -219,17 +172,30 @@ class Workflow extends React.Component {
   render() {
     // TODO: PUT NODE LABELS BELOW CIRCLEPACKS, GIVE THEM PLUS/MINUS FUNCTIONALITY
     // DO THIS INSTEAD OF HAVING PLUS MINUS ON NODES-- BECAUSE WHEN ACTIVE DEPTH 1, STILL NEED TO ACCESS LOWER NODES
+    const nodeLabelHeight = 16;
     const filteredData = this.filterData(this.state.nestedData)
-    const nodeSizeFunc = this.getSizeFunc(filteredData)
+    const showingNodes = nodesAtDepth(
+      filteredData,
+      this.state.activeDepth,
+      this.state.parentNodeKeyShowing,
+    )
+      .sort((a, b) => b.values.length - a.values.length)
+    const nodeSizeFunc = this.getSizeFunc(showingNodes)
+
+    const approxLegendHeight = this.state.legendGroups[0].items.length * 16 + 16;
+    const height = Math.max(
+      showingNodes.map(d => nodeSizeFunc(d.values.length) + nodeLabelHeight * 2.5).reduce((a, b) => a + b),
+      approxLegendHeight * 4,
+    )
 
     return (<div className="dashRows">
       <div>
         <svg
           style={{
             position: 'absolute',
-            top: '100px',
-            left: '25px',
-            height: `${this.state.legendGroups[0].items.length * 16 + 16}px`,
+            top: `${Math.max(0, (height / 4 - approxLegendHeight))}px`,
+            left: '0px',
+            height: `${approxLegendHeight}px`,
             overflow: 'visible'
           }}
         >
@@ -239,7 +205,7 @@ class Workflow extends React.Component {
           />
         </svg>
         <ResponsiveNetworkFrame
-          size={[900, 900]}
+          size={[900, height]}
           margin={{
             top: 10,
             right: 40,
@@ -254,10 +220,9 @@ class Workflow extends React.Component {
             separation: ((a, b) => {
               if (a.depth !== this.state.activeDepth) {
                 // If it's not a circlepack, evenly space them
-                return 15;
+                return nodeLabelHeight * 2;
               }
-              const basicSeparation = Math.max(nodeSizeFunc(a.value)/3, nodeSizeFunc(b.value)/3) + 10;
-              return basicSeparation;
+              return nodeLabelHeight * 2 + nodeSizeFunc(a.value) / 2 + nodeSizeFunc(b.value) / 2
             }),
           }}
           edges={filteredData}
@@ -269,9 +234,9 @@ class Workflow extends React.Component {
               <foreignObject
                 style={{
                   x: - width / 2,
-                  y: -d.nodeSize / 2 - 25,
+                  y: -d.nodeSize / 2 - 16,
                   width: width,
-                  height: 25,
+                  height: nodeLabelHeight,
                   fontSize: '0.75em',
                   textAlign: 'center',
                 }}
@@ -288,7 +253,12 @@ class Workflow extends React.Component {
             if (d.d.depth === 0) {
               return null;
             } else if (d.d.depth === this.state.activeDepth && d.d.parent.key === this.state.parentNodeKeyShowing) {
-              return circlePackNode(d, nodeSizeFunc, this.state.colorCode);
+              return (<CirclePackNode
+                key={d.key}
+                d={d}
+                nodeSizeFunc={nodeSizeFunc}
+                colorCode={this.state.colorCode}
+              />)
             }
             return (
               <g

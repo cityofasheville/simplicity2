@@ -182,9 +182,9 @@ class Workflow extends React.Component {
       .sort((a, b) => b.values.length - a.values.length)
     const nodeSizeFunc = this.getSizeFunc(showingNodes)
 
-    const approxLegendHeight = this.state.legendGroups[0].items.length * 16 + 16
+    const approxLegendHeight = this.state.legendGroups[0].items.length * 16 + 16;
     const height = Math.max(
-      showingNodes.map(d => nodeSizeFunc(d.values.length) + nodeLabelHeight * 3).reduce((a, b) => a + b),
+      showingNodes.map(d => nodeSizeFunc(d.values.length) + nodeLabelHeight * 2.5).reduce((a, b) => a + b),
       approxLegendHeight * 4,
     )
 
@@ -220,9 +220,9 @@ class Workflow extends React.Component {
             separation: ((a, b) => {
               if (a.depth !== this.state.activeDepth) {
                 // If it's not a circlepack, evenly space them
-                return nodeLabelHeight;
+                return nodeLabelHeight * 2;
               }
-              return Math.min(nodeSizeFunc(a.value) / 3, nodeSizeFunc(b.value) / 3) + nodeLabelHeight;
+              return nodeLabelHeight * 2 + nodeSizeFunc(a.value) / 2 + nodeSizeFunc(b.value) / 2
             }),
           }}
           edges={filteredData}

@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import { nest } from 'd3-collection';
 import responses from './surveyData';
 
+// TODO: REVERSE GEOCODE to get all zip codes
+// TODO: toggly buttons so that we can show/hide comments and other things
+
 const allResponseKeys = Object.keys(responses[0]);
 
-// TODO: REVERSE GEOCODE to get all zip codes
 const responseGroups = allResponseKeys.map(key => {
   return {
     key,
@@ -126,14 +128,49 @@ class SurveyResults extends React.Component {
     return (<div style={{ display: "flex", flexWrap: "wrap"}}>
       <h1>TRC Survey Results</h1>
       {byDemoProxy.map(demoProxyGroup => (<div style={{ width: '100%' }} key={demoProxyGroup.key}>
-        <h2>{camelToTitle(demoProxyGroup.key)}</h2>
-        {demoProxyGroup.data.map(groupItem =>(<div key={groupItem.key}>
+        <div style={{ width: '100%' }}>
+          <a
+            href=""
+            onClick={(e) => {
+              e.preventDefault();
+              const newState = Object.assign({}, this.state)
+              newState[demoProxyGroup.key].showing = !this.state[demoProxyGroup.key].showing
+              this.setState(newState)
+            }}
+          >
+            <div style={{ display: 'inline-block', padding: '0 1em 0 0' }}>
+              <h2>{camelToTitle(demoProxyGroup.key)}</h2>
+            </div>
+            <div style={{ display: 'inline-block' }}>
+              {this.state[demoProxyGroup.key].showing ? '-' : '+'}
+            </div>
+          </a>
+        </div>
+
+        {this.state[demoProxyGroup.key].showing && demoProxyGroup.data.map(groupItem =>(<div key={groupItem.key}>
           <div className="col-md-3">
-
             <h3>{`${camelToTitle(groupItem.key)}: ${groupItem.count}`}</h3>
+            <div style={{ width: '100%' }}>
+              <a
+                href=""
+                onClick={(e) => {
+                  e.preventDefault();
+                  const newState = Object.assign({}, this.state)
+                  newState[demoProxyGroup.key].notificationPreferences = !this.state[demoProxyGroup.key].notificationPreferences
+                  this.setState(newState)
+                }}
+              >
+                <div style={{ display: 'inline-block', padding: '0 1em 0 0' }}>
+                  <h4>Notification Preferences</h4>
+                </div>
+                <div style={{ display: 'inline-block' }}>
+                  {this.state[demoProxyGroup.key].notificationPreferences ? '-' : '+'}
+                </div>
+              </a>
+            </div>
 
-            <h4>Notification Preferences</h4>
-            {groupItem.notificationPreferences.map(preferenceItem => (<div key={preferenceItem.key}>
+            {this.state[demoProxyGroup.key].notificationPreferences &&
+              groupItem.notificationPreferences.map(preferenceItem => (<div key={preferenceItem.key}>
               <div style={{ width: '60%', display: 'inline-block'}}>
                 {`${camelToTitle(preferenceItem.key)}`}
               </div>
@@ -145,8 +182,27 @@ class SurveyResults extends React.Component {
               </div>
             </div>))}
 
-            <h4>Development Information Wanted</h4>
-            {groupItem.likertPreferences.map(likertItem => (<div key={likertItem.key}>
+            <div style={{ width: '100%' }}>
+              <a
+                href=""
+                onClick={(e) => {
+                  e.preventDefault();
+                  const newState = Object.assign({}, this.state)
+                  newState[demoProxyGroup.key].likertPreferences = !this.state[demoProxyGroup.key].likertPreferences
+                  this.setState(newState)
+                }}
+              >
+                <div style={{ display: 'inline-block', padding: '0 1em 0 0' }}>
+                  <h4>Information Wanted</h4>
+                </div>
+                <div style={{ display: 'inline-block' }}>
+                  {this.state[demoProxyGroup.key].likertPreferences ? '-' : '+'}
+                </div>
+              </a>
+            </div>
+
+            {this.state[demoProxyGroup.key].likertPreferences &&
+              groupItem.likertPreferences.map(likertItem => (<div key={likertItem.key}>
               <div style={{ width: '100%', display: 'inline-block'}}>
                 {`${camelToTitle(likertItem.key)}`}
               </div>
@@ -166,8 +222,26 @@ class SurveyResults extends React.Component {
                 })}
             </div>))}
 
-            <h4>Location</h4>
-            {groupItem.locationInfo.map(locationItem => (<div key={locationItem.key}>
+            <div style={{ width: '100%' }}>
+              <a
+                href=""
+                onClick={(e) => {
+                  e.preventDefault();
+                  const newState = Object.assign({}, this.state)
+                  newState[demoProxyGroup.key].locationInfo = !this.state[demoProxyGroup.key].locationInfo
+                  this.setState(newState)
+                }}
+              >
+                <div style={{ display: 'inline-block', padding: '0 1em 0 0' }}>
+                  <h4>Location</h4>
+                </div>
+                <div style={{ display: 'inline-block' }}>
+                  {this.state[demoProxyGroup.key].locationInfo ? '-' : '+'}
+                </div>
+              </a>
+            </div>
+
+            {this.state[demoProxyGroup.key].locationInfo && groupItem.locationInfo.map(locationItem => (<div key={locationItem.key}>
               <div style={{ width: '60%', display: 'inline-block'}}>
                 {`${camelToTitle(locationItem.key)}`}
               </div>
@@ -179,18 +253,38 @@ class SurveyResults extends React.Component {
               </div>
             </div>))}
 
-              <h4>Web Tools</h4>
-              {groupItem.toolsUsed.map(toolItem => (<div key={toolItem.key}>
-                <div style={{ width: '60%', display: 'inline-block'}}>
-                  {`${camelToTitle(toolItem.key)}`}
+            <div style={{ width: '100%' }}>
+              <a
+                href=""
+                onClick={(e) => {
+                  e.preventDefault();
+                  const newState = Object.assign({}, this.state)
+                  newState[demoProxyGroup.key].toolsUsed = !this.state[demoProxyGroup.key].toolsUsed
+                  this.setState(newState)
+                }}
+              >
+                <div style={{ display: 'inline-block', padding: '0 1em 0 0' }}>
+                  <h4>Web Tools</h4>
                 </div>
-                <div style={{ textAlign: 'right', width: '10%', display: 'inline-block', margin: '0 0.5em' }}>
-                  {`${toolItem.count}`}
+                <div style={{ display: 'inline-block' }}>
+                  {this.state[demoProxyGroup.key].toolsUsed ? '-' : '+'}
                 </div>
-                <div style={{ textAlign: 'right', width: '10%', display: 'inline-block', margin: '0 0.5em' }}>
-                  {`${Number(toolItem.count / groupItem.count * 100).toFixed(0)}%`}
-                </div>
-              </div>))}
+              </a>
+            </div>
+
+            {this.state[demoProxyGroup.key].toolsUsed &&
+              groupItem.toolsUsed.map(toolItem => (<div key={toolItem.key}>
+              <div style={{ width: '60%', display: 'inline-block'}}>
+                {`${camelToTitle(toolItem.key)}`}
+              </div>
+              <div style={{ textAlign: 'right', width: '10%', display: 'inline-block', margin: '0 0.5em' }}>
+                {`${toolItem.count}`}
+              </div>
+              <div style={{ textAlign: 'right', width: '10%', display: 'inline-block', margin: '0 0.5em' }}>
+                {`${Number(toolItem.count / groupItem.count * 100).toFixed(0)}%`}
+              </div>
+            </div>))
+            }
             </div>
           </div>)
         )}

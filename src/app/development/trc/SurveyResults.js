@@ -107,18 +107,32 @@ const camelToTitle = (camelCase) => camelCase
 
 console.log(byDemoProxy)
 
-const SurveyResults = () => (
-  <div style={{ display: "flex", flexWrap: "wrap"}}>
-    <h1>TRC Survey Results</h1>
-    {byDemoProxy.map(demoProxyGroup => (<div style={{ width: '100%' }} key={demoProxyGroup.key}>
+class SurveyResults {
+  constructor(){
+    super()
+    this.state = {}
+    demographicProxyKeys.forEach(key => {
+      this.state[key] = {
+        showing: false,
+        likertPreferences: false,
+        toolsUsed: false,
+        notificationPreferences: false,
+        locationInfo: false,
+        commentary: false,
+      }
+    })
+  }
 
-      <h2>{camelToTitle(demoProxyGroup.key)}</h2>
-
-      {demoProxyGroup.data.map(groupItem => {
-        return (<div key={groupItem.key}>
+  render() {
+    return (<div style={{ display: "flex", flexWrap: "wrap"}}>
+      <h1>TRC Survey Results</h1>
+      {byDemoProxy.map(demoProxyGroup => (<div style={{ width: '100%' }} key={demoProxyGroup.key}>
+        <h2>{camelToTitle(demoProxyGroup.key)}</h2>
+        {demoProxyGroup.data.map(groupItem =>(<div key={groupItem.key}>
           <div className="col-md-3">
-            <h3>{`${camelToTitle(groupItem.key)}: ${groupItem.count}`}</h3>
 
+            <h3>{`${camelToTitle(groupItem.key)}: ${groupItem.count}`}</h3>
+            
             <h4>Notification Preferences</h4>
             {groupItem.notificationPreferences.map(preferenceItem => (<div key={preferenceItem.key}>
               <div style={{ width: '60%', display: 'inline-block'}}>
@@ -137,7 +151,6 @@ const SurveyResults = () => (
               <div style={{ width: '100%', display: 'inline-block'}}>
                 {`${camelToTitle(likertItem.key)}`}
               </div>
-
               {[5, 4, 3, 2, 1, 0].map(num => {
                 const countNum = likertItem.countObject[num] || 0;
                 return (<div key={`${likertItem.key}-${num}`}>
@@ -150,8 +163,8 @@ const SurveyResults = () => (
                   <div style={{ width: '10%', textAlign: 'right', display: 'inline-block', margin: '0 0.5em' }}>
                     {`${Number(countNum / groupItem.count * 100).toFixed(0)}%`}
                   </div>
-                </div>)
-              })}
+                  </div>)
+                })}
             </div>))}
 
             <h4>Location</h4>
@@ -167,24 +180,23 @@ const SurveyResults = () => (
               </div>
             </div>))}
 
-            <h4>Web Tools</h4>
-            {groupItem.toolsUsed.map(toolItem => (<div key={toolItem.key}>
-              <div style={{ width: '60%', display: 'inline-block'}}>
-                {`${camelToTitle(toolItem.key)}`}
-              </div>
-              <div style={{ textAlign: 'right', width: '10%', display: 'inline-block', margin: '0 0.5em' }}>
-                {`${toolItem.count}`}
-              </div>
-              <div style={{ textAlign: 'right', width: '10%', display: 'inline-block', margin: '0 0.5em' }}>
-                {`${Number(toolItem.count / groupItem.count * 100).toFixed(0)}%`}
-              </div>
-            </div>))}
-
-          </div>
-        </div>)
-      })}
-     </div>))}
-  </div>
-);
+              <h4>Web Tools</h4>
+              {groupItem.toolsUsed.map(toolItem => (<div key={toolItem.key}>
+                <div style={{ width: '60%', display: 'inline-block'}}>
+                  {`${camelToTitle(toolItem.key)}`}
+                </div>
+                <div style={{ textAlign: 'right', width: '10%', display: 'inline-block', margin: '0 0.5em' }}>
+                  {`${toolItem.count}`}
+                </div>
+                <div style={{ textAlign: 'right', width: '10%', display: 'inline-block', margin: '0 0.5em' }}>
+                  {`${Number(toolItem.count / groupItem.count * 100).toFixed(0)}%`}
+                </div>
+              </div>))}
+            </div>
+          </div>)
+        )}
+      </div>))}
+    </div>)
+  }
 
 export default SurveyResults;

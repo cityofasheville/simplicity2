@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import { nest } from 'd3-collection';
 import responses from './surveyData';
 
+// TODO: REVERSE GEOCODE to get all zip codes
+// TODO: toggly buttons so that we can show/hide comments and other things
+
 const allResponseKeys = Object.keys(responses[0]);
 
-// TODO: REVERSE GEOCODE to get all zip codes
 const responseGroups = allResponseKeys.map(key => {
   return {
     key,
@@ -126,10 +128,25 @@ class SurveyResults extends React.Component {
     return (<div style={{ display: "flex", flexWrap: "wrap"}}>
       <h1>TRC Survey Results</h1>
       {byDemoProxy.map(demoProxyGroup => (<div style={{ width: '100%' }} key={demoProxyGroup.key}>
-        <h2>{camelToTitle(demoProxyGroup.key)}</h2>
-        {demoProxyGroup.data.map(groupItem =>(<div key={groupItem.key}>
-          <div className="col-md-3">
+        <a
+          href=""
+          onClick={(e) => {
+            e.preventDefault();
+            const newState = Object.assign({}, this.state)
+            newState[demoProxyGroup.key].showing = !this.state[demoProxyGroup.key].showing
+            this.setState(newState)
+          }}
+        >
+          <div style={{ display: 'inline-block', padding: '0 1em 0 0' }}>
+            <h2>{camelToTitle(demoProxyGroup.key)}</h2>
+          </div>
+          <div style={{ display: 'inline-block' }}>
+            {this.state[demoProxyGroup.key].showing ? '-' : '+'}
+          </div>
+        </a>
 
+        {this.state[demoProxyGroup.key].showing && demoProxyGroup.data.map(groupItem =>(<div key={groupItem.key}>
+          <div className="col-md-3">
             <h3>{`${camelToTitle(groupItem.key)}: ${groupItem.count}`}</h3>
 
             <h4>Notification Preferences</h4>

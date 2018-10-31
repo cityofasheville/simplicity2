@@ -28,6 +28,7 @@ import DevelopmentDetail from './app/development/DevelopmentDetail';
 import DevelopmentSLADashboard from './app/development/sla_dashboard/SLADashboard';
 import DevelopmentDashIndex from './app/development/DevelopmentDashIndex';
 import TRCDashboard from './app/development/trc/TRCDashboard';
+import SurveyResults from './app/development/trc/SurveyResults';
 import VolumeDashboard from './app/development/static_volume/VolumeDashboard';
 import PermitVolume from './app/development/volume/PermitVolume';
 import WorkflowContainer from './app/development/workflows/WorkflowContainer';
@@ -140,6 +141,7 @@ const Routes = () => (
           <Route path="dashboards" component={DevelopmentDashIndex}></Route>
           <Route path="sla-dashboard" component={DevelopmentSLADashboard}></Route>
           <Route path="trc" component={TRCDashboard}></Route>
+          <Route path="trcsurveyresults" component={SurveyResults}></Route>
           <Route path="volume" component={VolumeDashboard}></Route>
           <Route path="granular_volume" component={PermitVolume}></Route>
           <Route path="status_volume" component={PermitVolume}></Route>

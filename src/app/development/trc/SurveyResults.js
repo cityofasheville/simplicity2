@@ -116,7 +116,6 @@ const demographicProxyKeys = [
   'ownResidence',
   'zipProvided',
   'dayOfWeek',
-  'hourOfDay',
 ]
 
 const otherKeys = [
@@ -126,6 +125,7 @@ const otherKeys = [
   'pinPlaced',
   'beenNotified',
   'attendedMeeting',
+  'hourOfDay',
 ]
 
 const locationBooleanKeys = [
@@ -148,9 +148,22 @@ const byDemoProxy = demographicProxyKeys.map(key => {
       return {
         key: entry.key,
         count: entry.values.length,
-        // likertPreferences:
+        likertPreferences: likertContentPreferenceKeys.map(likertKey => {
+          return {
+            key: likertKey.replace('likert', ''),
+            countObject: nest()
+              .key(d => d[likertKey])
+              .rollup(d => d.length)
+              .object(entry.values)
+          }
+        }).sort((a, b) => b.countObject[5] > a.countObject[5]),
+        toolsUsed: useToolsKeys.map(toolKey => {
+          return {
+            key: toolKey.replace('useTool', ''),
+            count: entry.values.filter(val => val[toolKey] === true).length,
+          }
+        }),
         // notificationPreferences:
-        // toolsUsed:
         // devicesUsed:
         // otherDemoProxies:
         locationInfo: locationBooleanKeys.map(locationKey => {
@@ -179,16 +192,60 @@ const SurveyResults = () => (
       <h2>{camelToTitle(demoProxyGroup.key)}</h2>
       {demoProxyGroup.data.map(groupItem => {
         return (<div key={groupItem.key}>
-          <div className="col-md-3">
+          <div className="col-md-4">
             <h3>{`${camelToTitle(groupItem.key)}: ${groupItem.count}`}</h3>
+
+            <h4>Notification Preferences</h4>
+            <h4>Development Information Wanted</h4>
+            {groupItem.likertPreferences.map(likertItem => (<div key={likertItem.key}>
+              <div style={{ width: '100%', display: 'inline-block'}}>
+                {`${camelToTitle(likertItem.key)}`}
+              </div>
+              {[5, 4, 3, 2, 1, 0].map(num => {
+                const countNum = likertItem.countObject[num] || 0;
+                return (<div key={`${likertItem.key}-${num}`}>
+                  <div style={{ width: '30%', display: 'inline-block', margin: '0 0.5em' }}>
+                    {`${num}`}
+                  </div>
+                  {countNum && <div>
+                    <div style={{ textAlign: 'right', width: '10%', display: 'inline-block', margin: '0 0.5em' }}>
+                      {`${countNum}`}
+                    </div>
+                    <div style={{ textAlign: 'right', width: '10%', display: 'inline-block', margin: '0 0.5em' }}>
+                      {`${Number(countNum / groupItem.count * 100).toFixed(0)}%`}
+                    </div>
+                  </div>}
+                </div>)
+              })}
+
+            </div>))}
+
+            <h4>Location</h4>
             {groupItem.locationInfo.map(locationItem => (<div key={locationItem.key}>
-                <div style={{ width: '80%', display: 'inline-block'}}>
-                  {`${camelToTitle(locationItem.key)}`}
-                </div>
-                <div style={{ textAlign: 'right', width: '10%', display: 'inline-block' }}>
-                  {`${locationItem.count}`}
-                </div>
-              </div>))}
+              <div style={{ width: '70%', display: 'inline-block'}}>
+                {`${camelToTitle(locationItem.key)}`}
+              </div>
+              <div style={{ textAlign: 'right', width: '10%', display: 'inline-block', margin: '0 0.5em' }}>
+                {`${locationItem.count}`}
+              </div>
+              <div style={{ textAlign: 'right', width: '10%', display: 'inline-block', margin: '0 0.5em' }}>
+                {`${Number(locationItem.count / groupItem.count * 100).toFixed(0)}%`}
+              </div>
+            </div>))}
+
+            <h4>Web Tools</h4>
+            {groupItem.toolsUsed.map(toolItem => (<div key={toolItem.key}>
+              <div style={{ width: '70%', display: 'inline-block'}}>
+                {`${camelToTitle(toolItem.key)}`}
+              </div>
+              <div style={{ textAlign: 'right', width: '10%', display: 'inline-block', margin: '0 0.5em' }}>
+                {`${toolItem.count}`}
+              </div>
+              <div style={{ textAlign: 'right', width: '10%', display: 'inline-block', margin: '0 0.5em' }}>
+                {`${Number(toolItem.count / groupItem.count * 100).toFixed(0)}%`}
+              </div>
+            </div>))}
+
           </div>
         </div>)
       })}

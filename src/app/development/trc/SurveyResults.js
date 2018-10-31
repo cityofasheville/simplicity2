@@ -105,11 +105,10 @@ const camelToTitle = (camelCase) => camelCase
   .replace(/([A-Z])/g, (match) => ` ${match}`)
   .replace(/^./, (match) => match.toUpperCase());
 
-console.log(byDemoProxy)
 
-class SurveyResults {
-  constructor(){
-    super()
+class SurveyResults extends React.Component {
+  constructor() {
+    super();
     this.state = {}
     demographicProxyKeys.forEach(key => {
       this.state[key] = {
@@ -132,7 +131,7 @@ class SurveyResults {
           <div className="col-md-3">
 
             <h3>{`${camelToTitle(groupItem.key)}: ${groupItem.count}`}</h3>
-            
+
             <h4>Notification Preferences</h4>
             {groupItem.notificationPreferences.map(preferenceItem => (<div key={preferenceItem.key}>
               <div style={{ width: '60%', display: 'inline-block'}}>
@@ -198,5 +197,6 @@ class SurveyResults {
       </div>))}
     </div>)
   }
+}
 
 export default SurveyResults;

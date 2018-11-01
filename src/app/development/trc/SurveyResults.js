@@ -88,7 +88,12 @@ const byDemoProxy = demographicProxyKeys.map(key => {
             count: entry.values.filter(val => val[preferenceKey] === true).length,
           }
         }),
-        // devicesUsed:
+        devicesUsed: useDevicesKeys.map(deviceKey => {
+          return {
+            key: deviceKey.replace('useDevice', ''),
+            count: entry.values.filter(val => val[deviceKey] === true).length,
+          }
+        }),
         // otherDemoProxies:
         locationInfo: locationBooleanKeys.map(locationKey => {
           return {
@@ -117,9 +122,11 @@ class SurveyResults extends React.Component {
         showing: false,
         likertPreferences: false,
         toolsUsed: false,
+        devicesUsed: false,
         notificationPreferences: false,
         locationInfo: false,
         commentary: false,
+        commentaryKeys: [],
       }
     })
   }
@@ -149,6 +156,7 @@ class SurveyResults extends React.Component {
 
         {this.state[demoProxyGroup.key].showing && demoProxyGroup.data.map(groupItem =>(<div key={groupItem.key}>
           <div className="col-md-3">
+            {/* NOTIFICATION PREFERENCES */}
             <h3>{`${camelToTitle(groupItem.key)}: ${groupItem.count}`}</h3>
             <div style={{ width: '100%' }}>
               <a
@@ -168,7 +176,6 @@ class SurveyResults extends React.Component {
                 </div>
               </a>
             </div>
-
             {this.state[demoProxyGroup.key].notificationPreferences &&
               groupItem.notificationPreferences.map(preferenceItem => (<div key={preferenceItem.key}>
               <div style={{ width: '60%', display: 'inline-block'}}>
@@ -182,6 +189,7 @@ class SurveyResults extends React.Component {
               </div>
             </div>))}
 
+            {/* INFORMATION WANTED / LIKERT PREFERENCES */}
             <div style={{ width: '100%' }}>
               <a
                 href=""
@@ -200,7 +208,6 @@ class SurveyResults extends React.Component {
                 </div>
               </a>
             </div>
-
             {this.state[demoProxyGroup.key].likertPreferences &&
               groupItem.likertPreferences.map(likertItem => (<div key={likertItem.key}>
               <div style={{ width: '100%', display: 'inline-block'}}>
@@ -222,6 +229,37 @@ class SurveyResults extends React.Component {
                 })}
             </div>))}
 
+            {/* DEVICES USED */}
+            <div style={{ width: '100%' }}>
+              <a
+                href=""
+                onClick={(e) => {
+                  e.preventDefault();
+                  const newState = Object.assign({}, this.state)
+                  newState[demoProxyGroup.key].devicesUsed = !this.state[demoProxyGroup.key].devicesUsed
+                  this.setState(newState)
+                }}
+              >
+                <div style={{ display: 'inline-block', padding: '0 1em 0 0' }}>
+                  <h4>Devices Used</h4>
+                </div>
+                <div style={{ display: 'inline-block' }}>
+                  {this.state[demoProxyGroup.key].devicesUsed ? '-' : '+'}
+                </div>
+              </a>
+            </div>
+            {this.state[demoProxyGroup.key].devicesUsed &&
+              groupItem.devicesUsed.map(device => (<div key={device.key}>
+              <div style={{ width: '60%', display: 'inline-block'}}>
+                {`${camelToTitle(device.key)}`}
+              </div>
+              <div style={{ textAlign: 'right', width: '10%', display: 'inline-block', margin: '0 0.5em' }}>
+                {`${device.count}`}
+              </div>
+              <div style={{ textAlign: 'right', width: '10%', display: 'inline-block', margin: '0 0.5em' }}>
+                {`${Number(device.count / groupItem.count * 100).toFixed(0)}%`}
+              </div>
+            </div>))}
             <div style={{ width: '100%' }}>
               <a
                 href=""
@@ -241,6 +279,7 @@ class SurveyResults extends React.Component {
               </a>
             </div>
 
+            {/* ZIP/LOCATION */}
             {this.state[demoProxyGroup.key].locationInfo && groupItem.locationInfo.map(locationItem => (<div key={locationItem.key}>
               <div style={{ width: '60%', display: 'inline-block'}}>
                 {`${camelToTitle(locationItem.key)}`}
@@ -252,7 +291,6 @@ class SurveyResults extends React.Component {
                 {`${Number(locationItem.count / groupItem.count * 100).toFixed(0)}%`}
               </div>
             </div>))}
-
             <div style={{ width: '100%' }}>
               <a
                 href=""
@@ -272,6 +310,7 @@ class SurveyResults extends React.Component {
               </a>
             </div>
 
+            {/* CITY WEB TOOLS USED */}
             {this.state[demoProxyGroup.key].toolsUsed &&
               groupItem.toolsUsed.map(toolItem => (<div key={toolItem.key}>
               <div style={{ width: '60%', display: 'inline-block'}}>
@@ -285,6 +324,66 @@ class SurveyResults extends React.Component {
               </div>
             </div>))
             }
+            <div style={{ width: '100%' }}>
+              <a
+                href=""
+                onClick={(e) => {
+                  e.preventDefault();
+                  const newState = Object.assign({}, this.state)
+                  newState[demoProxyGroup.key].commentary = !this.state[demoProxyGroup.key].commentary
+                  this.setState(newState)
+                }}
+              >
+                <div style={{ display: 'inline-block', padding: '0 1em 0 0' }}>
+                  <h4>Commentary</h4>
+                </div>
+                <div style={{ display: 'inline-block' }}>
+                  {this.state[demoProxyGroup.key].commentary ? '-' : '+'}
+                </div>
+              </a>
+            </div>
+
+            {/* COMMETNARY */}
+            {this.state[demoProxyGroup.key].commentary &&
+              Object.keys(groupItem.commentary[0]).map(commentaryKey => (<div key={commentaryKey}>
+                <div style={{ width: '100%' }}>
+                  <a
+                    href=""
+                    onClick={(e) => {
+                      e.preventDefault();
+                      const newState = Object.assign({}, this.state)
+                      const commentaryKeyIndex = newState[demoProxyGroup.key].commentaryKeys.indexOf(commentaryKey)
+                      if (commentaryKeyIndex > -1) {
+                        newState[demoProxyGroup.key].commentaryKeys.splice(commentaryKeyIndex, 1);
+                      } else {
+                        newState[demoProxyGroup.key].commentaryKeys.push(commentaryKey)
+                      }
+                      this.setState(newState)
+                    }}
+                  >
+                    <div style={{ display: 'inline-block', padding: '0 1em 0 0' }}>
+                      <h5>{`${camelToTitle(commentaryKey)}`}</h5>
+                    </div>
+                    <div style={{ display: 'inline-block' }}>
+                      {this.state[demoProxyGroup.key].commentaryKeys.includes(commentaryKey) ? '-' : '+'}
+                    </div>
+                  </a>
+                  {this.state[demoProxyGroup.key].commentaryKeys.includes(commentaryKey) &&
+                    <ul>
+                      {groupItem.commentary.map((response, index) => {
+                        if (response[commentaryKey].length === 0) {
+                          return;
+                        }
+                        return (<li key={`${commentaryKey}-${index}`}>
+                          {response[commentaryKey]}
+                        </li>)
+                      })}
+                    </ul>
+                  }
+                </div>
+              </div>))
+            }
+
             </div>
           </div>)
         )}
@@ -292,5 +391,11 @@ class SurveyResults extends React.Component {
     </div>)
   }
 }
+// <div style={{ textAlign: 'right', width: '10%', display: 'inline-block', margin: '0 0.5em' }}>
+//   {`${toolItem.count}`}
+// </div>
+// <div style={{ textAlign: 'right', width: '10%', display: 'inline-block', margin: '0 0.5em' }}>
+//   {`${Number(toolItem.count / groupItem.count * 100).toFixed(0)}%`}
+// </div>
 
 export default SurveyResults;

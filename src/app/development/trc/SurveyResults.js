@@ -120,6 +120,7 @@ class SurveyResults extends React.Component {
         notificationPreferences: false,
         locationInfo: false,
         commentary: false,
+        commentaryKeys: [],
       }
     })
   }
@@ -285,6 +286,66 @@ class SurveyResults extends React.Component {
               </div>
             </div>))
             }
+
+            <div style={{ width: '100%' }}>
+              <a
+                href=""
+                onClick={(e) => {
+                  e.preventDefault();
+                  const newState = Object.assign({}, this.state)
+                  newState[demoProxyGroup.key].commentary = !this.state[demoProxyGroup.key].commentary
+                  this.setState(newState)
+                }}
+              >
+                <div style={{ display: 'inline-block', padding: '0 1em 0 0' }}>
+                  <h4>Commentary</h4>
+                </div>
+                <div style={{ display: 'inline-block' }}>
+                  {this.state[demoProxyGroup.key].commentary ? '-' : '+'}
+                </div>
+              </a>
+            </div>
+
+            {this.state[demoProxyGroup.key].commentary &&
+              Object.keys(groupItem.commentary[0]).map(commentaryKey => (<div key={commentaryKey}>
+                <div style={{ width: '100%' }}>
+                  <a
+                    href=""
+                    onClick={(e) => {
+                      e.preventDefault();
+                      const newState = Object.assign({}, this.state)
+                      const commentaryKeyIndex = newState[demoProxyGroup.key].commentaryKeys.indexOf(commentaryKey)
+                      if (commentaryKeyIndex > -1) {
+                        newState[demoProxyGroup.key].commentaryKeys.splice(commentaryKeyIndex, 1);
+                      } else {
+                        newState[demoProxyGroup.key].commentaryKeys.push(commentaryKey)
+                      }
+                      this.setState(newState)
+                    }}
+                  >
+                    <div style={{ display: 'inline-block', padding: '0 1em 0 0' }}>
+                      <h5>{`${camelToTitle(commentaryKey)}`}</h5>
+                    </div>
+                    <div style={{ display: 'inline-block' }}>
+                      {this.state[demoProxyGroup.key].commentaryKeys.includes(commentaryKey) ? '-' : '+'}
+                    </div>
+                  </a>
+                  {this.state[demoProxyGroup.key].commentaryKeys.includes(commentaryKey) &&
+                    <ul>
+                      {groupItem.commentary.map((response, index) => {
+                        if (response[commentaryKey].length === 0) {
+                          return;
+                        }
+                        return (<li key={`${commentaryKey}-${index}`}>
+                          {response[commentaryKey]}
+                        </li>)
+                      })}
+                    </ul>
+                  }
+                </div>
+              </div>))
+            }
+
             </div>
           </div>)
         )}
@@ -292,5 +353,11 @@ class SurveyResults extends React.Component {
     </div>)
   }
 }
+// <div style={{ textAlign: 'right', width: '10%', display: 'inline-block', margin: '0 0.5em' }}>
+//   {`${toolItem.count}`}
+// </div>
+// <div style={{ textAlign: 'right', width: '10%', display: 'inline-block', margin: '0 0.5em' }}>
+//   {`${Number(toolItem.count / groupItem.count * 100).toFixed(0)}%`}
+// </div>
 
 export default SurveyResults;

@@ -92,10 +92,11 @@ class Treemap extends React.Component {
           }}
           hoverAnnotation
           htmlAnnotationRules={(d) => {
-            if (d.d.type !== 'treemap-label') {
+            if (d.d.type !== 'treemap-label'
+              || !d.d.name
+            ) {
               return null;
             }
-
             const node = d.nodes.filter(n => n.data && n.data.name === d.d.name)[0];
             const nodeName = d.d.name.trim();
             const fontSize = 12;

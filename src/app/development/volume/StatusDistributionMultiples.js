@@ -1,53 +1,108 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { histogram } from 'd3-array';
+import { nest } from 'd3-collection';
 import { ResponsiveOrdinalFrame } from 'semiotic';
-import { dotBin } from './granularUtils';
 import Tooltip from '../../../shared/visualization/Tooltip';
-
+import {
+  groupStatuses,
+  multiplesTitle,
+  getHistDomain,
+ } from './granularUtils';
+import dotBinLayout from './dotBinLayout';
 
 class StatusDistributionMultiples extends React.Component {
+  constructor(props) {
+    super(props)
 
-  constructor() {
-    super()
-    this.state = {
-      // tooltip: {
-      //   coords: [0, 0],
-      //   opacity: 0,
-      //   title: '',
-      //   data: [],
-      // }
-    }
+    const domain = getHistDomain([
+      this.props.includedDates[0],
+      this.props.includedDates[this.props.includedDates.length - 1],
+    ])
+
+    this.histFunc = histogram()
+      .value(d => new Date(d[this.props.dateField]))
+      .thresholds(this.props.includedDates)
+      .domain(domain);
   }
 
   render() {
+    // TODO: make this a granular util?  break up the granular util hist method to use this or something?
+    const statusNest = nest().key(d => d.status_current);
+    const filteredStatuses = this.props.selectedNodes.map(hierarchyObj => {
+      const rObj = Object.assign({}, hierarchyObj);
+      rObj.values = groupStatuses(hierarchyObj.selectedActiveValues)
+      rObj.histByStatus = [].concat(...statusNest.entries(rObj.values).map(status => {
+        const histBuckets = this.histFunc(status.values)
+          .map(bucket => {
+            const histBucket = Object.assign({}, bucket)
+            histBucket.key = status.key
+            histBucket.count = bucket.length;
+            return histBucket
+          })
+        return histBuckets;
+      }))
+      return rObj;
+    });
+
+    const maxRadius = filteredStatuses.map(d =>
+      d.histByStatus.map(datum => datum.count)
+        .sort((a, b) => b - a)[0]
+    )[0];
+
+    // TODO: WHY ARE DATES SCREWY?
+
     return (<div
       style={{
         textTransform: 'capitalize',
       }}
     >
-      {this.props.filteredStatuses.map((datum) => {
+      {filteredStatuses.map((datum) => {
+        const title = multiplesTitle(datum)
         return (<div
           className="col-md-6"
           style={{ display: 'inline-block' }}
-          key={datum.key}
+          key={title}
         >
+          <div className="visualization-title">{title}</div>
           <ResponsiveOrdinalFrame
+            pieceHoverAnnotation
+            htmlAnnotationRules={d => {
+              if (!d.d.type === 'frame-hover') {
+                return null;
+              }
+              const datum = d.d;
+              const title = this.props.timeFormatter(datum.value, true);
+              const textLine = `${datum.column}: ${datum.data.count}`;
+              return (<Tooltip
+                title={title}
+                textLines={[{ text: textLine }]}
+                key={title + textLine}
+                style={{
+                  position: 'absolute',
+                  top: datum.y,
+                  left: datum.x,
+                  textTransform: 'capitalize',
+                }}
+              />)
+            }}
             projection="horizontal"
             size={[300, 300]}
             responsiveWidth
             margin={{
               top: 45,
-              right: 0,
+              right: 20,
               bottom: 55,
               left: 150,
             }}
-            oPadding={5}
-            oAccessor={d => d.status_current || 'No Status'}
+            oPadding={2}
+            oAccessor={d => d.key || 'No Status'}
             oLabel={(d) => {
               const fontSize = '0.65'
               return (
                 <text
                   textAnchor="end"
+                  transform="translate(-10,0)"
                   style={{ fontSize: `${fontSize}em` }}
                 >
                   {d}
@@ -55,72 +110,47 @@ class StatusDistributionMultiples extends React.Component {
               );
             }}
             type={{
-              type: dotBin,
+              type: dotBinLayout,
               style: {
-                fill: this.props.nodeColors[datum.key],
-                stroke: this.props.nodeColors[datum.key],
+                fill: datum.color,
+                stroke: datum.color,
                 fillOpacity: 0.5,
               },
-              maxRadius: this.props.maxRadius,
-              // mouseOver: (k, d, e) => {
-              //   this.setState({
-              //     tooltip: {
-              //       title: k,
-              //       data: d,
-              //       coords: [e.pageX, e.pageY],
-              //       opacity: 1,
-              //     }
-              //   })
-              // },
-              // mouseOut: () => this.setState({
-              //   tooltip: {
-              //     opacity: 0,
-              //     data: [],
-              //     coords: [0, 0]
-              //   }
-              // })
+              maxRadiusVal: maxRadius,
+              maxRadius: 15,
+              ariaLabelFormatter: (piece) =>
+                `${piece.data.count} records with ${piece.column} status for ${this.props.timeFormatter(piece.value, true)}`
             }}
-            rAccessor={d => new Date(d[this.props.dateField])}
+            rAccessor={d => new Date(d.x0)}
             rExtent={[
               this.props.includedDates[0],
               this.props.includedDates[this.props.includedDates.length - 1],
             ]}
-            pieceIDAccessor="key"
+            pieceIDAccessor={d => {
+              const datum = d.x0 ? d : d.data;
+              const timeVal = new Date(datum.x0).getTime()
+              return `${timeVal}-${datum.key.replace('', '-')}`
+            }}
             axis={[
               {
                 orient: 'bottom',
-                tickFormat: d => (
+                tickFormat: (d, i) => (
                   <text
                     textAnchor="end"
                     transform="translate(0,-10)rotate(-35)"
                     style={{ fontSize: '0.65em' }}
                   >
-                    {new Date(d).toLocaleDateString(
-                      'en-US',
-                      { month: 'short', day: 'numeric' }
-                    )}
+                    {this.props.timeFormatter(new Date(d))}
                   </text>
                 ),
-                tickValues: this.props.includedDates.filter((tick, i) => i % 2 === 0),
+                tickValues: this.props.includedDates,
               },
             ]}
-            key={datum.key}
-            data={datum.values}
-            title={datum.key}
+            data={datum.histByStatus}
           />
         </div>
         );
       })}
-      {/* <Tooltip */}
-      {/*   title={this.state.tooltip.title} */}
-      {/*   textLines={[{ text: this.state.tooltip.data.length }]} */}
-      {/*   style={{ */}
-      {/*     opacity: this.state.tooltip.opacity, */}
-      {/*     position: 'absolute', */}
-      {/*     left: this.state.tooltip.coords[0], */}
-      {/*     top: this.state.tooltip.coords[1] */}
-      {/*   }} */}
-      {/* /> */}
     </div>)
   }
 
@@ -128,11 +158,12 @@ class StatusDistributionMultiples extends React.Component {
 }
 
 StatusDistributionMultiples.propTypes = {
+  selectedNodes: PropTypes.arrayOf(PropTypes.object),
+  dateField: PropTypes.string,
+  includedDates: PropTypes.arrayOf(PropTypes.object),
 };
 
 StatusDistributionMultiples.defaultProps = {
 };
 
 export default StatusDistributionMultiples;
-
-

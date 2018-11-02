@@ -1,6 +1,5 @@
 @import "bootstrap/bootstrap";
 @import "components/components";
-@import "components/react-widgets-copied-files/css/react-widgets";
 
 
 /*VARIABLES*/
@@ -718,11 +717,13 @@ label {
   opacity: 1;
   background-color: white;
   border: 0.1px solid gray;
+	font-size: 0.75rem;
 }
 
 .semiotic-axis path {
   opacity: 0.5;
 }
+
 
 
 /*************************************************************************************/

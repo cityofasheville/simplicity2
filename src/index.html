@@ -5,7 +5,10 @@
     <meta charset="utf-8">
     <!-- Make the page mobile compatible -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/favicon.ico">
+    </script>
     <script type="text/javascript">
       if (window.location.href.indexOf('dashboards.ashevillenc.gov') > -1) {
         document.title = 'Dashboards';
@@ -13,6 +16,8 @@
         document.title = 'SimpliCity II';
       }
     </script>
+    <!-- Maybe we should compress these:
+    https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/optimize-encoding-and-transfer -->
     <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.3.0/firebaseui.css" />
     <link type="text/css" rel="stylesheet"
     href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />

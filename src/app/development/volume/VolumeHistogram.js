@@ -31,7 +31,7 @@ const VolumeHistogram = props => (
       },
     ]}
     oLabel={(d) => {
-      const dateString = new Date(d).toLocaleDateString('en-US', props.dateOptions);
+      const dateString = props.timeFormatter(new Date(d));
       return (
         <text
           textAnchor="end"
@@ -45,16 +45,41 @@ const VolumeHistogram = props => (
     oAccessor="binStartDate"
     oPadding={5}
     rAccessor="count"
-    style={d => ({ fill: d.count === 0 ? 'none' : props.nodeColors[d.key], stroke: 'white', strokeWidth: 0.1 })}
+    style={d => ({
+      fill: d.count === 0 ? 'none' : d.color,
+      stroke: 'white',
+      strokeWidth: 0.1,
+    })}
     hoverAnnotation
     tooltipContent={(d) => {
       const pieces = d.type === 'column-hover' ? d.pieces : [d.data];
-      const title = new Date(pieces[0].binStartDate).toLocaleDateString('en-US', props.dateOptions);
+      const title = props.timeFormatter(new Date(pieces[0].binStartDate), true);
 
-      const textLines = pieces.map(piece => ({
+      const othered = [];
+      const notOthered = [];
+      pieces.forEach((piece) => {
+        if (piece.othered) {
+          othered.push(piece);
+        } else {
+          notOthered.push(piece);
+        }
+      });
+
+      // TODO: do this elsewhere?
+
+      let textLines = notOthered.map(piece => ({
         text: `${piece.key}: ${piece.count}`,
-        color: props.nodeColors[piece.key],
-      })).reverse();
+        color: piece.color,
+      }));
+
+      if (othered.length > 0) {
+        textLines.push({
+          text: `Other: ${othered.map(other => other.count).reduce((a, b) => a + b)}`,
+          color: othered[0].color,
+        });
+      }
+
+      textLines = textLines.reverse();
 
       return (<Tooltip
         title={title}
@@ -66,17 +91,10 @@ const VolumeHistogram = props => (
 
 VolumeHistogram.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object),
-  dateOptions: PropTypes.object,
-  nodeColors: PropTypes.object,
 };
 
 VolumeHistogram.defaultProps = {
   data: [],
-  dateOptions: {
-    month: 'short',
-    day: 'numeric',
-  },
-  nodeColors: {},
 };
 
 export default VolumeHistogram;

@@ -22,12 +22,17 @@ import Owner from './app/owner/Owner';
 import GooglePlaceResults from './app/search/searchResults/GooglePlaceResults';
 // Topics
 import Topics from './app/Topics';
+//Development endpoints
 import DevelopmentSummary from './app/development/DevelopmentSummary';
 import DevelopmentDetail from './app/development/DevelopmentDetail';
 import DevelopmentSLADashboard from './app/development/sla_dashboard/SLADashboard';
+import DevelopmentDashIndex from './app/development/DevelopmentDashIndex';
 import TRCDashboard from './app/development/trc/TRCDashboard';
-import VolumeDashboard from './app/development/volume/VolumeDashboard';
-import GranularVolume from './app/development/volume/GranularVolume';
+import SurveyResults from './app/development/trc/SurveyResults';
+import VolumeDashboard from './app/development/static_volume/VolumeDashboard';
+import PermitVolume from './app/development/volume/PermitVolume';
+import WorkflowContainer from './app/development/workflows/WorkflowContainer';
+//
 import ProjectFlowDashboard from './app/internal/bpt_projects/ProjectFlow';
 import CrimeSummary from './app/crime/CrimeSummary';
 import Maintenance from './app/maintenance/Maintenance';
@@ -60,6 +65,7 @@ import PCardCompliance from './app/internal/pcard_compliance/PCardCompliance';
 import PCardComplianceReceipts from './app/internal/pcard_compliance/PCardComplianceReceipts';
 // City Website
 import AnalyticsCirclePack from './app/internal/city_website_analytics/AnalyticsCirclePack';
+import NotFound from './shared/NotFound';
 
 // Google Analytics
 const ReactGA = require('react-ga');
@@ -131,10 +137,15 @@ const Routes = () => (
         <Route path="development">
           <IndexRoute component={DevelopmentSummary} />
           <Route path="detail" component={DevelopmentDetail}></Route>
+          {/* The rest of these are dashboards */}
+          <Route path="dashboards" component={DevelopmentDashIndex}></Route>
           <Route path="sla-dashboard" component={DevelopmentSLADashboard}></Route>
           <Route path="trc" component={TRCDashboard}></Route>
+          <Route path="trcsurveyresults" component={SurveyResults}></Route>
           <Route path="volume" component={VolumeDashboard}></Route>
-          <Route path="granular_volume" component={GranularVolume}></Route>
+          <Route path="granular_volume" component={PermitVolume}></Route>
+          <Route path="status_volume" component={PermitVolume}></Route>
+          <Route path="tasks" component={WorkflowContainer}></Route>
         </Route>
         <Route path="homelessness">
           <IndexRoute component={HomelessnessSummary} />
@@ -154,10 +165,10 @@ const Routes = () => (
         <Route path="mini_search">
           <IndexRoute component={MiniSearch} />
         </Route>
+        <Route path="*" component={NotFound} />
       </Route>
     </Router>
   </ApolloProvider>
 );
 
 export default Routes;
-

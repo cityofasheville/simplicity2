@@ -1,0 +1,12 @@
+.toggleAbleNode:hover {
+  cursor: pointer;
+}
+
+.toggleAbleNode circle {
+  fill: #e6e6e6;
+  stroke: #e6e6e6;
+}
+
+.toggleAbleNode:hover circle, .toggleAbleNode:focus circle {
+  stroke: gray;
+}

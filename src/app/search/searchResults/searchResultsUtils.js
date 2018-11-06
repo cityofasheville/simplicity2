@@ -14,6 +14,7 @@ export const searchQuery = gql`
           civic_address_id
           address
           zipcode
+          is_in_city
         }
         ... on PropertyResult {
           pinnum
@@ -160,6 +161,7 @@ export const formatSearchResults = (search) => {
                   label: [result.address, result.zipcode].join(', '),
                   type: 'address',
                   id: result.civic_address_id,
+                  inCity: result.is_in_city,
                 };
               case 'property':
               case 'pin':

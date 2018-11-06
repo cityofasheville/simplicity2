@@ -72,13 +72,10 @@ const dataColumns = (formattedData, miniResultsProps) => [
                 <div style={{ display: 'inline-block', fontSize: '0.85em' }}>
                   <InCityMessage
                     inTheCity={row.original.is_in_city}
-                    text={inOutBool =>
-                      (inOutBool ? 'In the city' : 'Outside of the city')
-                    }
                     icon={false}
                   />
                 </div>
-              )}
+              ) && console.log(row.original)}
             </div>
           </span>
         )}

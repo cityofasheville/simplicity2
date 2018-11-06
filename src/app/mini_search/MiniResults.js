@@ -68,13 +68,10 @@ const dataColumns = (formattedData, miniResultsProps) => [
                   {row.original.label}
                 </a>
               </div>
-              {row.original.is_in_city !== null && (
+              {row.original.inCity !== undefined && (
                 <div style={{ display: 'inline-block', fontSize: '0.85em' }}>
                   <InCityMessage
-                    inTheCity={row.original.is_in_city}
-                    text={inOutBool =>
-                      (inOutBool ? 'In the city' : 'Outside of the city')
-                    }
+                    inTheCity={row.original.inCity}
                     icon={false}
                   />
                 </div>

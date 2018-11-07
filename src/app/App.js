@@ -46,9 +46,6 @@ const initializeFirebaseAuthUI = () => {
 class Main extends React.Component {
   constructor(props) {
     super(props);
-    // This seems hacky and terrible
-    require('../favicon.ico');
-    require('../manifest.json');
     this.state = {};
   }
 

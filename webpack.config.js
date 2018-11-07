@@ -35,6 +35,14 @@ module.exports = {
         loader: 'url-loader?limit=25000',
       },
       {
+        test: /\.ico$/,
+        loader: 'file-loader?name=[name].[ext]'  // <-- retain original file name
+      },
+      {
+        test: /manifest.json/,
+        loader: 'file-loader?name=[name].[ext]'  // <-- retain original file name
+      },
+      {
         test: /\.scss$/,
         use: extractSass.extract({
           use: [{

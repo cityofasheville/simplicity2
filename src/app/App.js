@@ -12,6 +12,7 @@ import AuthProviderModal from '../utilities/auth/authProviderModal';
 import { defaultAuthState } from '../utilities/auth/graphql/authDefaultState';
 import LanguageProvider from '../utilities/lang/LanguageContext';
 
+
 const displayNavbar = (hideNavbar) => {
   if (hideNavbar) {
     return null;
@@ -45,6 +46,9 @@ const initializeFirebaseAuthUI = () => {
 class Main extends React.Component {
   constructor(props) {
     super(props);
+    // This seems hacky and terrible
+    require('../favicon.ico');
+    require('../manifest.json');
     this.state = {};
   }
 

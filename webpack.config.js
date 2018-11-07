@@ -39,6 +39,10 @@ module.exports = {
         loader: 'file-loader?name=[name].[ext]'  // <-- retain original file name
       },
       {
+        test: /manifest.json/,
+        loader: 'file-loader?name=[name].[ext]'  // <-- retain original file name
+      },
+      {
         test: /\.scss$/,
         use: extractSass.extract({
           use: [{

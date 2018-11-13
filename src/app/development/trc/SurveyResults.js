@@ -8,20 +8,6 @@ import responses from './surveyData';
 
 const allResponseKeys = Object.keys(responses[0]);
 
-const responseGroups = allResponseKeys.map(key => {
-  return {
-    key,
-    groups: nest().key(d => d[key])
-      .entries(responses)
-      .sort((a, b) => b.values.length - a.values.length)
-      .map(d => {
-        const rObj = Object.assign({}, d);
-        return rObj;
-      })
-    ,
-  }
-})
-
 const likertContentPreferenceKeys = allResponseKeys.filter(d => d.includes('likert'));
 const notificationPreferenceKeys = allResponseKeys.filter(d => d.includes('prefer'));
 const useToolsKeys = allResponseKeys.filter(d => d.includes('useTool'));
@@ -33,6 +19,7 @@ const qualitativeKeys = [
 ]
 
 const demographicProxyKeys = [
+  'registered',
   'ownResidence',
   'homeInternet',
   'zipProvided',
@@ -67,6 +54,7 @@ const byDemoProxy = demographicProxyKeys.map(key => {
       return {
         key: entry.key,
         count: entry.values.length,
+        registered: entry.values.filter(val => val.registered).length,
         likertPreferences: likertContentPreferenceKeys.map(likertKey => {
           return {
             key: likertKey.replace('likert', ''),
@@ -79,29 +67,31 @@ const byDemoProxy = demographicProxyKeys.map(key => {
         toolsUsed: useToolsKeys.map(toolKey => {
           return {
             key: toolKey.replace('useTool', ''),
-            count: entry.values.filter(val => val[toolKey] === true).length,
+            count: entry.values.filter(val => val[toolKey] === '1').length,
           }
         }),
         notificationPreferences: notificationPreferenceKeys.map(preferenceKey => {
           return {
             key: preferenceKey.replace('prefer', ''),
-            count: entry.values.filter(val => val[preferenceKey] === true).length,
+            count: entry.values.filter(val => val[preferenceKey] === '1').length,
           }
         }),
         devicesUsed: useDevicesKeys.map(deviceKey => {
           return {
             key: deviceKey.replace('useDevice', ''),
-            count: entry.values.filter(val => val[deviceKey] === true).length,
+            count: entry.values.filter(val => val[deviceKey] === '1').length,
           }
         }),
         // otherDemoProxies:
         locationInfo: locationBooleanKeys.map(locationKey => {
           return {
             key: locationKey,
-            count: entry.values.filter(val => val[locationKey] === true).length,
+            count: entry.values.filter(val => val[locationKey] === '1').length,
           }
         }),
         commentary: entry.values.map(value => value.commentary),
+        registeredCommentary: entry.values.filter(val => val.registered).map(value => value.commentary),
+        unRegisteredCommentary: entry.values.filter(val => !val.registered).map(value => value.commentary),
         locations: entry.values.map(value => value.mapLocations),
       }
     })
@@ -158,6 +148,7 @@ class SurveyResults extends React.Component {
           <div className="col-md-3">
             {/* NOTIFICATION PREFERENCES */}
             <h3>{`${camelToTitle(groupItem.key)}: ${groupItem.count}`}</h3>
+            <div style={{ width: '100%' }}>{`${groupItem.registered} registered (${Number(groupItem.registered / groupItem.count * 100).toFixed(0)}%)`}</div>
             <div style={{ width: '100%' }}>
               <a
                 href=""
@@ -369,21 +360,34 @@ class SurveyResults extends React.Component {
                     </div>
                   </a>
                   {this.state[demoProxyGroup.key].commentaryKeys.includes(commentaryKey) &&
-                    <ul>
-                      {groupItem.commentary.map((response, index) => {
-                        if (response[commentaryKey].length === 0) {
-                          return;
-                        }
-                        return (<li key={`${commentaryKey}-${index}`}>
-                          {response[commentaryKey]}
-                        </li>)
-                      })}
-                    </ul>
+                    <div>
+                      <div style={{ width: '100%' }}>Registered User Commentary</div>
+                      <ul>
+                        {groupItem.registeredCommentary.map((response, index) => {
+                          if (response[commentaryKey].length === 0) {
+                            return;
+                          }
+                          return (<li key={`${commentaryKey}-${index}`}>
+                            {response[commentaryKey]}
+                          </li>)
+                        })}
+                      </ul>
+                      <div style={{ width: '100%' }}>Unregistered User Commentary</div>
+                      <ul>
+                        {groupItem.unRegisteredCommentary.map((response, index) => {
+                          if (response[commentaryKey].length === 0) {
+                            return;
+                          }
+                          return (<li key={`${commentaryKey}-${index}`}>
+                            {response[commentaryKey]}
+                          </li>)
+                        })}
+                      </ul>
+                    </div>
                   }
                 </div>
               </div>))
             }
-
             </div>
           </div>)
         )}

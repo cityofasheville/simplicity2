@@ -8,9 +8,6 @@ import Routes from './routes';
 // Import styles
 require('./styles/styles.scss');
 
-require('./favicon.ico');
-require('./manifest.json');
-
 render(
   (<Routes />),
   document.getElementById('app'),

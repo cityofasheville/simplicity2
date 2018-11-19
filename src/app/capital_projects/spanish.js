@@ -1,6 +1,7 @@
 export const spanish = {
   adopted_annual_budget: 'Presupuesto Anual Adoptado',
   back: 'Volver',
+  bond_definition_note: 'En este tablero, proyectos de bono son los proyectos fundados por la fianza de obligaci\xF3n general. La fianza de obligaci\xF3n general fue aprobada por el electorado de Asheville.',
   bond_project: 'Proyecto de bono',
   bond_project_statuses: 'estados de proyectos de bono',
   budget: 'Presupuesto',
@@ -28,7 +29,7 @@ export const spanish = {
   spent: 'Gastado',
   table_of: 'Tabla de',
   total_budget: 'Presupuesto total',
-  total_budget_note: 'La cantidad de los bonos emitidos es $74 millones. El total actual de d\xF3lares incrementar\xE1 debido a fuentes alternativas de financiaci\xF3n.',
+  total_budget_note: 'La cantidad de los bonos de obligaci\xF3n general emitidos es $74 millones. El total actual de d\xF3lares incrementar\xE1 debido a fuentes alternativas de financiaci\xF3n.',
   transportation_bond_info: 'Proyectos del bono del transporte son proyectos adicionals que contribuyen a la finalizaci\xF3n de la repavimentaci\xF3n de carreteras y mejoras de aceras; nuevas proyectos de aceras y caminos verdes; y proyectos de seguridad peatonal como cobertizos de paradas de autob\xFAs, accesibles cruces peatonales, se\xF1ales, y medidas para calmar el tr\xE1fico.',
   try_project_map: 'Probar nuestro mapa de proyectos',
   under_contract: 'Bajo contrato',

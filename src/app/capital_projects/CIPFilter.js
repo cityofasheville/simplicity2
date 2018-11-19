@@ -8,6 +8,8 @@ import { refreshLocation } from '../../utilities/generalUtilities';
 import { withLanguage } from '../../utilities/lang/LanguageContext';
 import { english } from './english';
 import { spanish } from './spanish';
+import Icon from '../../shared/Icon';
+import { IM_INFO } from '../../shared/iconConstants';
 
 const CIPFilter = (props) => {
   // set language
@@ -90,6 +92,11 @@ const CIPFilter = (props) => {
         <div className="toggle toggle--table">
           <div>
             <label>
+              <span
+                title={content.bond_definition_note} // eslint-disable-line
+                style={{ marginRight: '5px' }}
+              ><Icon path={IM_INFO} size={16} color="#4077a7" />
+              </span>
               <span>{content.include_only_bond_projects}</span>
               <Toggle
                 defaultChecked={props.location.query.mode === 'bond'}

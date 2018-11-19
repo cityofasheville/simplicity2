@@ -1,6 +1,7 @@
 export const english = {
   adopted_annual_budget: 'Adopted Annual Budget',
   back: 'Back',
+  bond_definition_note: 'In this dashboard, bond projects refer to those projects funded by the General Obligation (GO) bond funds. The GO bond amounts were approved by Asheville voters.',
   bond_project: 'Bond project',
   bond_project_statuses: 'bond project statuses',
   budget: 'Budget',
@@ -28,7 +29,7 @@ export const english = {
   spent: 'Spent',
   table_of: 'Table of',
   total_budget: 'Total budget',
-  total_budget_note: 'Issued bond amount is $74 million. Actual total dollar amount will increase due to alternative funding sources.',
+  total_budget_note: 'Issued general obligation (GO) bond amount is $74 million. Actual total dollar amount will increase due to alternative funding sources.',
   transportation_bond_info: 'Transportation Bond projects are additional projects that support the completion of road resurfacing and sidewalk improvements; new sidewalk and greenway projects; and pedestrian safety projects such as bus shelters, accessible crossings, signals, and traffic calming.',
   try_project_map: 'Try our project map',
   under_contract: 'Under contract',

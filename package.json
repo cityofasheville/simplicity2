@@ -1,6 +1,6 @@
 {
   "name": "simplicity2",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "description": "Version 2 of SimpliCity",
   "main": "index.js",
   "scripts": {
@@ -11,6 +11,7 @@
     "deployDashboards": "aws s3 sync dist s3://dashboards.ashevillenc.gov --delete --exclude \"*.map\" --exclude \"favicon.ico\"",
     "devDeploy": "aws s3 sync dist s3://dev-simplicity.ashevillenc.gov --delete --exclude \"*.map\" --exclude \"favicon.ico\""
   },
+  "homepage": ".",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cityofasheville/simplicity2.git"

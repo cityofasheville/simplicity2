@@ -7,6 +7,28 @@ import { colorScheme } from '../volume/granularUtils';
 class MajorDevelopmentDashboard extends React.Component {
   constructor(props){
     super(props);
+    // this.handleScroll = this.handleScroll.bind(this)
+  }
+
+  componentDidMount() {
+    // window.addEventListener('scroll', this.handleScroll);
+  }
+
+  componentWillUnmount() {
+    // window.removeEventListener('scroll', this.handleScroll);
+  }
+
+  handleScroll(event) {
+    let scrollTop = event.srcElement.body.scrollTop,
+        itemTranslate = Math.min(0, scrollTop/3 - 60);
+
+    // console.log(window.scrollY)
+    //
+    // console.log(event, scrollTop, itemTranslate)
+    //
+    // this.setState({
+    //   transform: itemTranslate
+    // })
   }
 
   render() {
@@ -41,8 +63,6 @@ class MajorDevelopmentDashboard extends React.Component {
           return rObj;
         })}
       />
-      <br/>
-      <br/>
       <h1 id="about">Major Development in Asheville</h1>
       {/* About */}
       <div className="col-md-12" >

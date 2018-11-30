@@ -17,6 +17,7 @@ class MajorDevelopmentDashboard extends React.Component {
           {
             linkId: 'about',
             linkName: 'About',
+            selected: true,
           },
           {
             linkId: 'notifications',

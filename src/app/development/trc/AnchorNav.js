@@ -18,24 +18,34 @@ class AnchorNav extends React.Component {
         textAlign: 'center',
         zIndex: 99,
       }}
+      className="anchorNav"
     >
-      {this.props.links.map(linkItem => (
-        <a
+      {this.props.links.map(linkItem => {
+        const hslColor = hsl(linkItem.color);
+        const textColor = hsl('white');
+        let fontWeight = 'bold';
+        if (!linkItem.selected) {
+          hslColor.opacity = 0.95;
+          hslColor.s = 0.5;
+          textColor.l = 0.95;
+          fontWeight = 'light';
+        }
+        return (<a
           key={linkItem.linkId}
           href={`#${linkItem.linkId}`}
           style={{
             display: 'inline-block',
-            padding: '0.25em 2em',
-            backgroundColor: color(linkItem.color).brighter(0.25),
-            border: `1px solid ${linkItem.color}`,
+            backgroundColor: hslColor,
+            border: `0.5px solid white`,
             borderRadius: '2px',
-            color: 'white',
-            fontWeight: 0.75,
+            color: textColor,
+            fontWeight: fontWeight,
+            letterSpacing: '0.05em',
           }}
         >
           {linkItem.linkName}
-        </a>
-      ))}
+        </a>)
+      })}
     </div>);
   }
 

@@ -1,0 +1,20 @@
+/*VARIABLES COPIED FROM MAIN STYLES.CSS -- CHANGE THIS TO BE BETTER */
+$desktop-min: 1025px;
+$desktop-max: 1200px;
+$mobile-min: 481px;
+$mobile-max: 767px;
+$tablet-min: $mobile-max + 1;
+$tablet-max: $desktop-min - 1;
+$xs: $mobile-min - 1;
+
+
+.anchorNav a {
+    padding: 0.25em 2em;
+}
+
+@media(max-width: $xs){
+  .anchorNav a {
+    font-size: 0.75em;
+    padding: 0.15em 0.25em;
+  }
+}

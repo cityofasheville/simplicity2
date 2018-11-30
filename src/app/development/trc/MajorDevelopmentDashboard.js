@@ -10,7 +10,7 @@ class MajorDevelopmentDashboard extends React.Component {
   }
 
   render() {
-    return (<div>
+    return (<div id="majorDevDash">
       {/* Highlight/anchor nav button bar */}
       <AnchorNav
         links={[

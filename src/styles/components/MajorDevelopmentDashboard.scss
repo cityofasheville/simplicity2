@@ -12,6 +12,15 @@ $xs: $mobile-min - 1;
     padding: 0.25em 2em;
 }
 
+#majorDevDash h1::before, #majorDevDash h2::before {
+  display: block;
+  content: " ";
+  margin-top: -130px;
+  height: 130px;
+  visibility: hidden;
+  pointer-events: none;
+}
+
 @media(max-width: $xs){
   .anchorNav a {
     font-size: 0.75em;

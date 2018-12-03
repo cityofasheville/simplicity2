@@ -1,7 +1,52 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { ResponsiveNetworkFrame } from 'semiotic';
 import AnchorNav from './AnchorNav';
 import { colorScheme } from '../volume/granularUtils';
+
+
+const processData = {
+  key: 'root',
+  children: [
+    {
+      key: 'Level I, Level II, MS',
+      children: [
+        {
+          key: 'LI Staff Review',
+          children: [
+            {
+              key: 'approved',
+            },
+            {
+              key: 'rejected',
+            }
+          ]
+        },
+        {
+          key: 'LII, MS Staff Review',
+          children: [
+            {
+              key: 'LII MS TRC'
+            }
+          ]
+        }
+      ]
+    },
+    {
+      key: 'LIII CZ CUP',
+      children: [
+        {
+          key: 'LIII CZ CUP Staff Review',
+          children: [
+            {
+              key: 'LIII CZ CUP TRC'
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
 
 
 class MajorDevelopmentDashboard extends React.Component {
@@ -70,11 +115,17 @@ class MajorDevelopmentDashboard extends React.Component {
       <h1 id="about" >Major Development in Asheville</h1>
       {/* About */}
       <div className="col-md-12" >
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
+        <ResponsiveNetworkFrame
+          size={[300, 300]}
+          responsiveWidth
+          edges={processData}
+          nodeIDAccessor="key"
+          networkType={{
+            type: "cluster",
+            projection: "vertical",
+          }}
+          edgeStyle={{ stroke: 'gray' }}
+        />
       </div>
       {/* Get notifications */}
       <h2 id="notifications">Sign up for Notifications</h2>

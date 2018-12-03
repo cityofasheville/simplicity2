@@ -63,7 +63,11 @@ class MajorDevelopmentDashboard extends React.Component {
           return rObj;
         })}
       />
-      <h1 id="about">Major Development in Asheville</h1>
+      <div>
+      <br/>
+      <br/>
+      <br/>
+      <h1 id="about" >Major Development in Asheville</h1>
       {/* About */}
       <div className="col-md-12" >
         <br/>
@@ -92,6 +96,7 @@ class MajorDevelopmentDashboard extends React.Component {
       <br/>
       {/* FAQ */}
       <h2 id="faq">FAQ</h2>
+      </div>
     </div>);
   }
 

@@ -11,12 +11,12 @@ class AnchorNav extends React.Component {
   render() {
     return (<div
       style={{
-        position: 'fixed',
         margin: '0 auto',
         left: 0,
         right: 0,
         textAlign: 'center',
         zIndex: 99,
+        position: 'fixed',
       }}
       className="anchorNav"
     >

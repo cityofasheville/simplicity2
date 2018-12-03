@@ -7,18 +7,13 @@ $tablet-min: $mobile-max + 1;
 $tablet-max: $desktop-min - 1;
 $xs: $mobile-min - 1;
 
-
 .anchorNav a {
     padding: 0.25em 2em;
 }
 
-#majorDevDash h1::before, #majorDevDash h2::before {
-  display: block;
-  content: " ";
-  margin-top: -130px;
-  height: 130px;
-  // visibility: hidden;
-  // pointer-events: none;
+#majorDevDash h1, #majorDevDash h2 {
+  padding-top: 120px;
+  margin-top: -120px;
 }
 
 @media(max-width: $xs){

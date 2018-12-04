@@ -14,13 +14,13 @@ const processData = {
       key: 'Level I',
       children: [
         {
-          key: 'Staff Review',
+          key: 'LI Staff Review',
           children: [
             {
-              key: 'Accepted',
+              key: 'LI Accepted',
             },
             {
-              key: 'Rejected',
+              key: 'LI Rejected',
             }
           ]
         }
@@ -30,24 +30,24 @@ const processData = {
       key: 'Level II and Major Subdivision',
       children: [
         {
-          key: 'Staff Review',
+          key: 'LII MS Staff Review',
           children: [
             {
-              key: 'Technical Review Committee',
+              key: 'LII MS Technical Review Committee',
               children: [
                 {
                   key: 'Major Subdivision Not Downtown',
                   children: [
                     {
-                      key: 'Accepted'
+                      key: 'MS Accepted'
                     },
                     {
-                      key: 'Rejected'
+                      key: 'MS Rejected'
                     }
                   ]
                 },
                 {
-                  key: 'Design Review',
+                  key: 'LII MS Design Review',
                   children: [
                     {
                       key: 'Planning and Zoning Commission',
@@ -72,7 +72,7 @@ const processData = {
       key: 'Level III, Conditional Zoning, Conditional Use Permit',
       children: [
         {
-          key: 'Staff Review',
+          key: 'LIII CZ CUP Staff Review',
           children: [
             {
               key: 'Technical Review Committee',
@@ -169,6 +169,55 @@ class MajorDevelopmentDashboard extends React.Component {
 
   render() {
     const nodeSize = 200;
+    {/*
+      customNodeIcon={(d) => {
+        console.log('nodeIcon', d)
+        const width = nodeSize * 2 / 3
+        const height = nodeSize;
+        if (d.d.data.key === 'Accepted' || d.d.data.key === 'Rejected') {
+          return (<circle
+            key={`${d.i}-${d.d.data.key}`}
+            cx={d.d.x}
+            cy={d.d.y}
+            r={5}
+            />)
+          }
+          return (<g key={`${d.i}-${d.d.data.key}`}>
+            <foreignObject
+            style={{
+              x: d.d.x - width / 2,
+              y: d.d.y - height / 2,
+              width: width,
+              height: height,
+            }}
+            >
+            <div
+            style={{
+              width: '100%',
+              height: '100%',
+              border: '0.5px solid gray',
+              backgroundColor: 'white',
+              fontSize: '0.85em',
+              padding: '0.5em',
+              borderRadius: '2px'
+            }}
+            >
+            <div
+            style={{
+              textAlign: 'center',
+              fontWeight: 'normal',
+            }}
+            >
+            {d.d.data.key}
+            </div>
+            <div>
+            {d.d.description}
+            </div>
+            </div>
+            </foreignObject>
+            </g>)
+          }}
+          */}
     return (<div id="majorDevDash">
       {/* Highlight/anchor nav button bar */}
       <AnchorNav
@@ -210,64 +259,20 @@ class MajorDevelopmentDashboard extends React.Component {
           size={[1000, 1000]}
           responsiveWidth
           responsiveHeight
-          margin={0}
+          margin={20}
           edges={processData}
           nodeIDAccessor="key"
+          nodeLabels
           networkType={{
-            type: "tree",
-            projection: "vertical",
+            type: "sankey",
+            direction: 'down',
+            // projection: "vertical",
+            orient: 'left'
           }}
           edgeType="ribbon"
           edgeStyle={{ stroke: 'none', fill: 'gray', fillOpacity: 0.5 }}
-          nodeSizeAccessor={nodeSize + 20}
-          nodePadding={10}
-          customNodeIcon={(d) => {
-            console.log('nodeIcon', d)
-            const width = nodeSize * 2 / 3
-            const height = nodeSize;
-            if (d.d.data.key === 'Accepted' || d.d.data.key === 'Rejected') {
-              return (<circle
-                key={`${d.i}-${d.d.data.key}`}
-                cx={d.d.x}
-                cy={d.d.y}
-                r={5}
-              />)
-            }
-            return (<g key={`${d.i}-${d.d.data.key}`}>
-              <foreignObject
-                style={{
-                  x: d.d.x - width / 2,
-                  y: d.d.y - height / 2,
-                  width: width,
-                  height: height,
-                }}
-              >
-                <div
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    border: '0.5px solid gray',
-                    backgroundColor: 'white',
-                    fontSize: '0.85em',
-                    padding: '0.5em',
-                    borderRadius: '2px'
-                  }}
-                >
-                  <div
-                    style={{
-                      textAlign: 'center',
-                      fontWeight: 'normal',
-                    }}
-                  >
-                    {d.d.data.key}
-                  </div>
-                  <div>
-                    {d.d.description}
-                  </div>
-                </div>
-              </foreignObject>
-            </g>)
-          }}
+          // nodeSizeAccessor={nodeSize + 20}
+          // nodePadding={10}
         />
       </div>
       {/* Get notifications */}

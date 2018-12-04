@@ -1,143 +1,120 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import dagre from 'dagre';
 import { ResponsiveNetworkFrame } from 'semiotic';
 import AnchorNav from './AnchorNav';
 import { colorScheme } from '../volume/granularUtils';
 
+const g = new dagre.graphlib.Graph()
+g.setGraph({ rankdir:  'TB', ranker: 'network-simplex' })
+g.setDefaultEdgeLabel(() => ({}))
+const nodeSize = 150;
 
-const processData = {
-  key: 'Pre Application Meeting',
-  splitFactor: 'Size and Zoning',
-  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-  children: [
+// https://emeeks.github.io/semiotic/#/semiotic/customnode
+
+const nodes = [
+  {
+    id: 'Staff Review',
+    width: nodeSize * 4,
+  },
+  {
+    id: 'Level I',
+    description: 'Projects less than 35,000 square feet or with fewer than 20 residential units',
+  },
+  {
+    id: 'Major Subdivision',
+  },
+  {
+    id: 'Level II',
+  },
+  {
+    id: 'Level III',
+  },
+  {
+    id: 'Conditional Zoning',
+  },
+  {
+    id: 'Conditional Use Permit',
+  },
+  {
+    id: 'Level I: Accepted',
+    width: nodeSize / 2,
+  },
+  {
+    id: 'Level I: Rejected',
+    width: nodeSize / 2,
+  },
+  {
+    id: 'Technical Review Committee',
+    width: nodeSize * 3,
+  }
+]
+
+const links = [
+  {
+    source: 'Level I',
+    target: 'Staff Review',
+    value: 1,
+  },
+  {
+    source: 'Major Subdivision',
+    target: 'Staff Review',
+    value: 1,
+  },
+  {
+    source: 'Level II',
+    target: 'Staff Review',
+    value: 1,
+  },
+  {
+    source: 'Level III',
+    target: 'Staff Review',
+    value: 1,
+  },
+  {
+    source: 'Conditional Zoning',
+    target: 'Staff Review',
+    value: 1,
+  },
+  {
+    source: 'Conditional Use Permit',
+    target: 'Staff Review',
+    value: 1,
+  },
+  {
+    source: 'Staff Review',
+    target: 'Level I: Accepted',
+    value: 1,
+  },
+  {
+    source: 'Staff Review',
+    target: 'Level I: Rejected',
+    value: 1,
+  },
+  {
+    source: 'Staff Review',
+    target: 'Technical Review Committee',
+    value: 5,
+  }
+]
+
+nodes.forEach(node => {
+  g.setNode(
+    node.id,
     {
-      key: 'Level I',
-      children: [
-        {
-          key: 'LI Staff Review',
-          children: [
-            {
-              key: 'LI Accepted',
-            },
-            {
-              key: 'LI Rejected',
-            }
-          ]
-        }
-      ]
-    },
-    {
-      key: 'Level II and Major Subdivision',
-      children: [
-        {
-          key: 'LII MS Staff Review',
-          children: [
-            {
-              key: 'LII MS Technical Review Committee',
-              children: [
-                {
-                  key: 'Major Subdivision Not Downtown',
-                  children: [
-                    {
-                      key: 'MS Accepted'
-                    },
-                    {
-                      key: 'MS Rejected'
-                    }
-                  ]
-                },
-                {
-                  key: 'LII MS Design Review',
-                  children: [
-                    {
-                      key: 'Planning and Zoning Commission',
-                      children: [
-                        {
-                          key: 'Accepted'
-                        },
-                        {
-                          key: 'Rejected'
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      key: 'Level III, Conditional Zoning, Conditional Use Permit',
-      children: [
-        {
-          key: 'LIII CZ CUP Staff Review',
-          children: [
-            {
-              key: 'Technical Review Committee',
-              children: [
-                {
-                  key: 'Special Zoning Design Review',
-                  children: [
-                    {
-                      key: 'Planning and Zoning Commission',
-                      children: [
-                        {
-                          key: 'City Council',
-                          children: [
-                            {
-                              key: 'Accepted',
-                              children: [
-                                {
-                                  key: 'Technical Review Committee Detail'
-                                }
-                              ]
-                            },
-                            {
-                              key: 'Rejected'
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  key: 'All Else',
-                  dummy: true,
-                  children: [
-                    {
-                      key: 'Planning and Zoning Commission',
-                      children: [
-                        {
-                          key: 'City Council',
-                          children: [
-                            {
-                              key: 'Accepted',
-                              children: [
-                                {
-                                  key: 'Technical Review Committee Detail'
-                                }
-                              ]
-                            },
-                            {
-                              key: 'Rejected'
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
+      label: node.id,
+      width: node.width ? node.width : nodeSize * 0.9,
+      height: nodeSize,
+      description: node.description,
     }
-  ]
-}
+  );
+})
+
+links.forEach(link => {
+  g.setEdge(link.source, link.target, { color: 'gray', weight: link.value });
+})
+
+dagre.layout(g)
 
 
 class MajorDevelopmentDashboard extends React.Component {
@@ -168,56 +145,6 @@ class MajorDevelopmentDashboard extends React.Component {
   }
 
   render() {
-    const nodeSize = 200;
-    {/*
-      customNodeIcon={(d) => {
-        console.log('nodeIcon', d)
-        const width = nodeSize * 2 / 3
-        const height = nodeSize;
-        if (d.d.data.key === 'Accepted' || d.d.data.key === 'Rejected') {
-          return (<circle
-            key={`${d.i}-${d.d.data.key}`}
-            cx={d.d.x}
-            cy={d.d.y}
-            r={5}
-            />)
-          }
-          return (<g key={`${d.i}-${d.d.data.key}`}>
-            <foreignObject
-            style={{
-              x: d.d.x - width / 2,
-              y: d.d.y - height / 2,
-              width: width,
-              height: height,
-            }}
-            >
-            <div
-            style={{
-              width: '100%',
-              height: '100%',
-              border: '0.5px solid gray',
-              backgroundColor: 'white',
-              fontSize: '0.85em',
-              padding: '0.5em',
-              borderRadius: '2px'
-            }}
-            >
-            <div
-            style={{
-              textAlign: 'center',
-              fontWeight: 'normal',
-            }}
-            >
-            {d.d.data.key}
-            </div>
-            <div>
-            {d.d.description}
-            </div>
-            </div>
-            </foreignObject>
-            </g>)
-          }}
-          */}
     return (<div id="majorDevDash">
       {/* Highlight/anchor nav button bar */}
       <AnchorNav
@@ -254,25 +181,56 @@ class MajorDevelopmentDashboard extends React.Component {
       <br/>
       <br/>
       <h1 id="about" >Major Development in Asheville</h1>
-      <div style={{ width: '100%', height: nodeSize * 20 }}>
+      <div style={{ width: '100%', height: nodeSize * 10 }}>
         <ResponsiveNetworkFrame
           size={[1000, 1000]}
           responsiveWidth
           responsiveHeight
           margin={20}
-          edges={processData}
-          nodeIDAccessor="key"
-          nodeLabels
+          graph={g}
           networkType={{
-            type: "sankey",
-            direction: 'down',
-            // projection: "vertical",
-            orient: 'left'
+            type: 'dagre',
           }}
-          edgeType="ribbon"
-          edgeStyle={{ stroke: 'none', fill: 'gray', fillOpacity: 0.5 }}
-          // nodeSizeAccessor={nodeSize + 20}
-          // nodePadding={10}
+          customNodeIcon={(d) => {
+            const width = d.d.width
+            const height = d.d.height;
+            return (<g key={`${d.i}-${d.d.id}`}>
+              <foreignObject
+                style={{
+                  x: d.d.x - width / 2,
+                  y: d.d.y,
+                  width: d.d.width,
+                  height: height,
+                }}
+              >
+                <div
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    border: '0.5px solid #e6e6e6',
+                    backgroundColor: 'white',
+                    fontSize: '0.85em',
+                    padding: '0.5em',
+                    borderRadius: '2px'
+                  }}
+                >
+                  <div
+                    style={{
+                      textAlign: 'center',
+                      fontWeight: 'normal',
+                      padding: '0 0 0.5em 0',
+                    }}
+                  >
+                    {d.d.id}
+                  </div>
+                  <div>
+                    {d.d.description}
+                  </div>
+                </div>
+              </foreignObject>
+              </g>)
+            }}
+          edgeStyle={{ stroke: '#e6e6e6', fill: 'none', strokeWidth: 3, }}
         />
       </div>
       {/* Get notifications */}

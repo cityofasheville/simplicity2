@@ -89,7 +89,7 @@ const links = [
   {
     source: 'Level I',
     target: 'Staff Review',
-    color: 'red'
+    color: 'red',
   },
   {
     source: 'Major Subdivision',
@@ -186,7 +186,6 @@ links.forEach(link => {
     link.target,
     {
       color: link.color ? link.color : 'gray',
-      weight: link.value,
     }
   );
 })

@@ -9,14 +9,16 @@ const g = new dagre.graphlib.Graph()
 g.setGraph({ rankdir:  'TB', ranker: 'network-simplex' })
 g.setDefaultEdgeLabel(() => ({}))
 const nodeSize = 200;
+const orderedColors = ['#FF3A3A','#749B5F','#2d93ad','#004EA3','#9B6681','#9E4F55','#073d49']
+
 
 // https://emeeks.github.io/semiotic/#/semiotic/customnode
 
 const nodes = [
   {
     id: 'Level I',
-    description: 'Projects less than 35,000 square feet or with fewer than 20 residential units',
-    color: 'red',
+    description: 'Projects smaller than 35,000 square feet or with fewer than 20 residential units.',
+    color: orderedColors[0],
   },
   {
     id: 'Major Subdivision',
@@ -39,7 +41,7 @@ const nodes = [
   },
   {
     id: 'Level I Decision',
-    color: 'red',
+    color: orderedColors[0],
   },
   {
     id: 'Technical Review Committee',
@@ -70,53 +72,53 @@ const links = [
   {
     source: 'Level I',
     target: 'Staff Review',
-    color: 'red',
+    color: orderedColors[0],
   },
   {
     source: 'Major Subdivision',
     target: 'Staff Review',
-    color: 'orange',
+    color: orderedColors[1],
   },
   {
     source: 'Level II',
     target: 'Staff Review',
-    color: 'yellow',
+    color: orderedColors[2],
   },
   {
     source: 'Level III',
     target: 'Staff Review',
-    color: 'green',
+    color: orderedColors[3],
   },
   {
     source: 'Conditional Zoning',
     target: 'Staff Review',
-    color: 'blue',
+    color: orderedColors[4],
   },
   {
     source: 'Conditional Use Permit',
     target: 'Staff Review',
-    color: 'purple',
+    color: orderedColors[5],
   },
   {
     source: 'Staff Review',
     target: 'Level I Decision',
-    color: 'red',
+    color: orderedColors[0],
   },
   {
     source: 'Staff Review',
     target: 'Technical Review Committee',
     parallelEdges: [
-      { color: 'orange', weight: 3 },
-      { color: 'yellow', weight: 3 },
-      { color: 'green', weight: 3 },
-      { color: 'blue', weight: 3 },
-      { color: 'purple', weight: 3 },
+      { color: orderedColors[1], weight: 3 },
+      { color: orderedColors[2], weight: 3 },
+      { color: orderedColors[3], weight: 3 },
+      { color: orderedColors[4], weight: 3 },
+      { color: orderedColors[5], weight: 3 },
     ]
   },
   {
     source: 'Technical Review Committee',
     target: 'Major Subdivision Decision',
-    color: 'orange',
+    color: orderedColors[1],
   },
   {
     source: 'Technical Review Committee',
@@ -124,7 +126,7 @@ const links = [
     // All level II, downtown subdivisions, and special district L3 etc go to desgin review?
     parallelEdges: [
       { color: 'gray', weight: 3 },
-      { color: 'yellow', weight: 3 },
+      { color: orderedColors[2], weight: 3 },
     ]
   },
   {
@@ -132,16 +134,16 @@ const links = [
     target: 'Planning and Zoning Commission',
     parallelEdges: [
       { color: 'gray', weight: 3 },
-      { color: 'yellow', weight: 3 },
+      { color: orderedColors[2], weight: 3 },
     ]
   },
   {
     source: 'Technical Review Committee',
     target: 'Planning and Zoning Commission',
     parallelEdges: [
-      { color: 'green', weight: 3 },
-      { color: 'blue', weight: 3 },
-      { color: 'purple', weight: 3 },
+      { color: orderedColors[3], weight: 3 },
+      { color: orderedColors[4], weight: 3 },
+      { color: orderedColors[5], weight: 3 },
     ]
   },
   {
@@ -149,25 +151,25 @@ const links = [
     target: 'Level II and Downtown Major Subdivision Decision',
     parallelEdges: [
       { color: 'gray', weight: 3 },
-      { color: 'yellow', weight: 3 },
+      { color: orderedColors[2], weight: 3 },
     ]
   },
   {
     source: 'Planning and Zoning Commission',
     target: 'City Council',
     parallelEdges: [
-      { color: 'green', weight: 3 },
-      { color: 'blue', weight: 3 },
-      { color: 'purple', weight: 3 },
+      { color: orderedColors[3], weight: 3 },
+      { color: orderedColors[4], weight: 3 },
+      { color: orderedColors[5], weight: 3 },
     ]
   },
   {
     source: 'City Council',
     target: 'City Council Decision',
     parallelEdges: [
-      { color: 'green', weight: 3 },
-      { color: 'blue', weight: 3 },
-      { color: 'purple', weight: 3 },
+      { color: orderedColors[3], weight: 3 },
+      { color: orderedColors[4], weight: 3 },
+      { color: orderedColors[5], weight: 3 },
     ]
   },
 ]

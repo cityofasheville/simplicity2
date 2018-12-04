@@ -17,10 +17,6 @@ body, html{
 	font-weight: lighter;
 }
 
-body{
-	// padding-top: 97px;
-}
-
 h1, h2, h3{
 	margin-bottom: .5em;
 }
@@ -868,6 +864,9 @@ footer.footer{
 }
 
 @media(max-width: $xs){
+	main > div {
+		margin-top: -97px;
+	}
 	.template-header__actions{
 		flex: 1 0 100%;
 	}

@@ -6,17 +6,13 @@ import AnchorNav from './AnchorNav';
 import { colorScheme } from '../volume/granularUtils';
 
 const g = new dagre.graphlib.Graph()
-g.setGraph({ rankdir:  'TB', ranker: 'tight-tree' })
+g.setGraph({ rankdir:  'TB', ranker: 'network-simplex' })
 g.setDefaultEdgeLabel(() => ({}))
-const nodeSize = 75;
+const nodeSize = 200;
 
 // https://emeeks.github.io/semiotic/#/semiotic/customnode
 
 const nodes = [
-  {
-    id: 'Staff Review',
-    width: nodeSize * 4,
-  },
   {
     id: 'Level I',
     description: 'Projects less than 35,000 square feet or with fewer than 20 residential units',
@@ -38,50 +34,34 @@ const nodes = [
     id: 'Conditional Use Permit',
   },
   {
-    id: 'Level I: Accepted',
-    width: nodeSize / 2,
+    id: 'Staff Review',
+  },
+  {
+    id: 'Level I Decision',
     color: 'red',
   },
   {
-    id: 'Level I: Rejected',
-    width: nodeSize / 2,
-    color: 'red'
-  },
-  {
     id: 'Technical Review Committee',
-    width: nodeSize * 3,
   },
   {
-    id: 'Major Subdivision: Accepted',
-    width: nodeSize / 2,
-  },
-  {
-    id: 'Major Subdivision: Rejected',
-    width: nodeSize / 2,
+    id: 'Major Subdivision Decision',
+    description: 'For major subdivisions that are not in a special zoning area like downtown, the Technical Review Committee either accepts or rejects the proposal.'
   },
   {
     id: 'Design Review',
-    width: nodeSize * 2,
+    description: 'All level II, downtown subdivisions, and special zoning district L3 etc go to desgin review. The decision made in this step is a a non-binding recommendation.'
   },
   {
     id: 'Planning and Zoning Commission',
-    width: nodeSize * 3,
   },
   {
-    id: 'Level II and Downtown Major Subdivision: Accepted',
-
-  },
-  {
-    id: 'Level II and Downtown Major Subdivision: Rejected',
+    id: 'Level II and Downtown Major Subdivision Decision',
   },
   {
     id: 'City Council',
   },
   {
-    id: 'City Council: Accepted',
-  },
-  {
-    id: 'City Council: Rejected',
+    id: 'City Council Decision',
   },
 ]
 
@@ -94,76 +74,100 @@ const links = [
   {
     source: 'Major Subdivision',
     target: 'Staff Review',
+    color: 'orange',
   },
   {
     source: 'Level II',
     target: 'Staff Review',
+    color: 'yellow',
   },
   {
     source: 'Level III',
     target: 'Staff Review',
+    color: 'green',
   },
   {
     source: 'Conditional Zoning',
     target: 'Staff Review',
+    color: 'blue',
   },
   {
     source: 'Conditional Use Permit',
     target: 'Staff Review',
+    color: 'purple',
   },
   {
     source: 'Staff Review',
-    target: 'Level I: Accepted',
-    color: 'red',
-  },
-  {
-    source: 'Staff Review',
-    target: 'Level I: Rejected',
+    target: 'Level I Decision',
     color: 'red',
   },
   {
     source: 'Staff Review',
     target: 'Technical Review Committee',
+    parallelEdges: [
+      { color: 'orange', weight: 3 },
+      { color: 'yellow', weight: 3 },
+      { color: 'green', weight: 3 },
+      { color: 'blue', weight: 3 },
+      { color: 'purple', weight: 3 },
+    ]
   },
   {
     source: 'Technical Review Committee',
-    target: 'Major Subdivision: Accepted',
-  },
-  {
-    source: 'Technical Review Committee',
-    target: 'Major Subdivision: Rejected',
+    target: 'Major Subdivision Decision',
+    color: 'orange',
   },
   {
     source: 'Technical Review Committee',
     target: 'Design Review',
+    // All level II, downtown subdivisions, and special district L3 etc go to desgin review?
+    parallelEdges: [
+      { color: 'gray', weight: 3 },
+      { color: 'yellow', weight: 3 },
+    ]
   },
   {
     source: 'Design Review',
     target: 'Planning and Zoning Commission',
+    parallelEdges: [
+      { color: 'gray', weight: 3 },
+      { color: 'yellow', weight: 3 },
+    ]
   },
   {
     source: 'Technical Review Committee',
     target: 'Planning and Zoning Commission',
+    parallelEdges: [
+      { color: 'green', weight: 3 },
+      { color: 'blue', weight: 3 },
+      { color: 'purple', weight: 3 },
+    ]
   },
   {
     source: 'Planning and Zoning Commission',
-    target: 'Level II and Downtown Major Subdivision: Accepted',
-  },
-  {
-    source: 'Planning and Zoning Commission',
-    target: 'Level II and Downtown Major Subdivision: Rejected',
+    target: 'Level II and Downtown Major Subdivision Decision',
+    parallelEdges: [
+      { color: 'gray', weight: 3 },
+      { color: 'yellow', weight: 3 },
+    ]
   },
   {
     source: 'Planning and Zoning Commission',
     target: 'City Council',
+    parallelEdges: [
+      { color: 'green', weight: 3 },
+      { color: 'blue', weight: 3 },
+      { color: 'purple', weight: 3 },
+    ]
   },
   {
     source: 'City Council',
-    target: 'City Council: Accepted',
-  },
-  {
-    source: 'City Council',
-    target: 'City Council: Rejected',
+    target: 'City Council Decision',
+    parallelEdges: [
+      { color: 'green', weight: 3 },
+      { color: 'blue', weight: 3 },
+      { color: 'purple', weight: 3 },
+    ]
   },
 ]
 
@@ -185,7 +189,7 @@ links.forEach(link => {
     link.source,
     link.target,
     {
-      color: link.color ? link.color : 'gray',
+      parallelEdges: link.parallelEdges || [{ color: link.color ? link.color : 'gray', weight: 3 }],
     }
   );
 })
@@ -266,6 +270,7 @@ class MajorDevelopmentDashboard extends React.Component {
           graph={g}
           networkType={{
             type: 'dagre',
+            zoom: 'true'
           }}
           customNodeIcon={(d) => {
             const width = d.d.width
@@ -294,6 +299,7 @@ class MajorDevelopmentDashboard extends React.Component {
                       textAlign: 'center',
                       fontWeight: 'normal',
                       padding: '0 0 0.5em 0',
+                      fontSize: '1.25em',
                     }}
                   >
                     {d.d.id}
@@ -305,7 +311,7 @@ class MajorDevelopmentDashboard extends React.Component {
               </foreignObject>
               </g>)
             }}
-          edgeStyle={d => ({ stroke: d.color, fill: 'none', strokeWidth: 2 })}
+          edgeStyle={d => ({ stroke: 'white', fill: d.color, strokeWidth: 2 })}
         />
       </div>
       {/* Get notifications */}

@@ -35,6 +35,7 @@ const nodes = [
   },
   {
     id: 'Staff Review',
+    width: nodeSize * 3,
   },
   {
     id: 'Level I Decision',

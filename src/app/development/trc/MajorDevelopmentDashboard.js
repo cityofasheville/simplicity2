@@ -6,40 +6,131 @@ import { colorScheme } from '../volume/granularUtils';
 
 
 const processData = {
-  key: 'root',
+  key: 'Pre Application Meeting',
+  splitFactor: 'Size and Zoning',
+  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
   children: [
     {
-      key: 'Level I, Level II, MS',
+      key: 'Level I',
       children: [
         {
-          key: 'LI Staff Review',
+          key: 'Staff Review',
           children: [
             {
-              key: 'approved',
+              key: 'Accepted',
             },
             {
-              key: 'rejected',
-            }
-          ]
-        },
-        {
-          key: 'LII, MS Staff Review',
-          children: [
-            {
-              key: 'LII MS TRC'
+              key: 'Rejected',
             }
           ]
         }
       ]
     },
     {
-      key: 'LIII CZ CUP',
+      key: 'Level II and Major Subdivision',
       children: [
         {
-          key: 'LIII CZ CUP Staff Review',
+          key: 'Staff Review',
           children: [
             {
-              key: 'LIII CZ CUP TRC'
+              key: 'Technical Review Committee',
+              children: [
+                {
+                  key: 'Major Subdivision Not Downtown',
+                  children: [
+                    {
+                      key: 'Accepted'
+                    },
+                    {
+                      key: 'Rejected'
+                    }
+                  ]
+                },
+                {
+                  key: 'Design Review',
+                  children: [
+                    {
+                      key: 'Planning and Zoning Commission',
+                      children: [
+                        {
+                          key: 'Accepted'
+                        },
+                        {
+                          key: 'Rejected'
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      key: 'Level III, Conditional Zoning, Conditional Use Permit',
+      children: [
+        {
+          key: 'Staff Review',
+          children: [
+            {
+              key: 'Technical Review Committee',
+              children: [
+                {
+                  key: 'Special Zoning Design Review',
+                  children: [
+                    {
+                      key: 'Planning and Zoning Commission',
+                      children: [
+                        {
+                          key: 'City Council',
+                          children: [
+                            {
+                              key: 'Accepted',
+                              children: [
+                                {
+                                  key: 'Technical Review Committee Detail'
+                                }
+                              ]
+                            },
+                            {
+                              key: 'Rejected'
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  key: 'All Else',
+                  dummy: true,
+                  children: [
+                    {
+                      key: 'Planning and Zoning Commission',
+                      children: [
+                        {
+                          key: 'City Council',
+                          children: [
+                            {
+                              key: 'Accepted',
+                              children: [
+                                {
+                                  key: 'Technical Review Committee Detail'
+                                }
+                              ]
+                            },
+                            {
+                              key: 'Rejected'
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
             }
           ]
         }
@@ -77,6 +168,7 @@ class MajorDevelopmentDashboard extends React.Component {
   }
 
   render() {
+    const nodeSize = 200;
     return (<div id="majorDevDash">
       {/* Highlight/anchor nav button bar */}
       <AnchorNav
@@ -113,18 +205,69 @@ class MajorDevelopmentDashboard extends React.Component {
       <br/>
       <br/>
       <h1 id="about" >Major Development in Asheville</h1>
-      {/* About */}
-      <div className="col-md-12" >
+      <div style={{ width: '100%', height: nodeSize * 20 }}>
         <ResponsiveNetworkFrame
-          size={[300, 300]}
+          size={[1000, 1000]}
           responsiveWidth
+          responsiveHeight
+          margin={0}
           edges={processData}
           nodeIDAccessor="key"
           networkType={{
-            type: "cluster",
+            type: "tree",
             projection: "vertical",
           }}
-          edgeStyle={{ stroke: 'gray' }}
+          edgeType="ribbon"
+          edgeStyle={{ stroke: 'none', fill: 'gray', fillOpacity: 0.5 }}
+          nodeSizeAccessor={nodeSize + 20}
+          nodePadding={10}
+          customNodeIcon={(d) => {
+            console.log('nodeIcon', d)
+            const width = nodeSize * 2 / 3
+            const height = nodeSize;
+            if (d.d.data.key === 'Accepted' || d.d.data.key === 'Rejected') {
+              return (<circle
+                key={`${d.i}-${d.d.data.key}`}
+                cx={d.d.x}
+                cy={d.d.y}
+                r={5}
+              />)
+            }
+            return (<g key={`${d.i}-${d.d.data.key}`}>
+              <foreignObject
+                style={{
+                  x: d.d.x - width / 2,
+                  y: d.d.y - height / 2,
+                  width: width,
+                  height: height,
+                }}
+              >
+                <div
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    border: '0.5px solid gray',
+                    backgroundColor: 'white',
+                    fontSize: '0.85em',
+                    padding: '0.5em',
+                    borderRadius: '2px'
+                  }}
+                >
+                  <div
+                    style={{
+                      textAlign: 'center',
+                      fontWeight: 'normal',
+                    }}
+                  >
+                    {d.d.data.key}
+                  </div>
+                  <div>
+                    {d.d.description}
+                  </div>
+                </div>
+              </foreignObject>
+            </g>)
+          }}
         />
       </div>
       {/* Get notifications */}

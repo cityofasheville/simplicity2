@@ -240,8 +240,8 @@ class MajorDevelopmentDashboard extends React.Component {
       }
       // if number of parallels is more than 1, stagger them vertically in a pattern
       if (numParallels > 1) {
-        const numRows = parallelNodes / 2;
-        g._nodes[nodeKey].y += (parallelNodes.indexOf(n => n.key === nodeKey) / numRows * thisNode.height);
+        console.log(parallelNodes, parallelNodes.indexOf(n => n.id === nodeKey))
+        g._nodes[nodeKey].y += (parallelNodes.indexOf(n => n.id === nodeKey) / 2) * thisNode.height;
       }
     })
     console.log(g._nodes)

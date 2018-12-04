@@ -6,7 +6,7 @@ import AnchorNav from './AnchorNav';
 import { colorScheme } from '../volume/granularUtils';
 
 const g = new dagre.graphlib.Graph()
-g.setGraph({ rankdir:  'TB', ranker: 'network-simplex' })
+g.setGraph({ rankdir:  'TB', ranker: 'tight-tree' })
 g.setDefaultEdgeLabel(() => ({}))
 const nodeSize = 150;
 
@@ -20,6 +20,7 @@ const nodes = [
   {
     id: 'Level I',
     description: 'Projects less than 35,000 square feet or with fewer than 20 residential units',
+    color: 'red',
   },
   {
     id: 'Major Subdivision',
@@ -39,63 +40,131 @@ const nodes = [
   {
     id: 'Level I: Accepted',
     width: nodeSize / 2,
+    color: 'red',
   },
   {
     id: 'Level I: Rejected',
     width: nodeSize / 2,
+    color: 'red'
   },
   {
     id: 'Technical Review Committee',
     width: nodeSize * 3,
-  }
+  },
+  {
+    id: 'Major Subdivision: Accepted',
+    width: nodeSize / 2,
+  },
+  {
+    id: 'Major Subdivision: Rejected',
+    width: nodeSize / 2,
+  },
+  {
+    id: 'Design Review',
+    width: nodeSize * 2,
+  },
+  {
+    id: 'Planning and Zoning Commission',
+    width: nodeSize * 3,
+  },
+  {
+    id: 'Level II and Downtown Major Subdivision: Accepted',
+
+  },
+  {
+    id: 'Level II and Downtown Major Subdivision: Rejected',
+  },
+  {
+    id: 'City Council',
+  },
+  {
+    id: 'City Council: Accepted',
+  },
+  {
+    id: 'City Council: Rejected',
+  },
 ]
 
 const links = [
   {
     source: 'Level I',
     target: 'Staff Review',
-    value: 1,
+    color: 'red'
   },
   {
     source: 'Major Subdivision',
     target: 'Staff Review',
-    value: 1,
   },
   {
     source: 'Level II',
     target: 'Staff Review',
-    value: 1,
   },
   {
     source: 'Level III',
     target: 'Staff Review',
-    value: 1,
   },
   {
     source: 'Conditional Zoning',
     target: 'Staff Review',
-    value: 1,
   },
   {
     source: 'Conditional Use Permit',
     target: 'Staff Review',
-    value: 1,
   },
   {
     source: 'Staff Review',
     target: 'Level I: Accepted',
-    value: 1,
+    color: 'red',
   },
   {
     source: 'Staff Review',
     target: 'Level I: Rejected',
-    value: 1,
+    color: 'red',
   },
   {
     source: 'Staff Review',
     target: 'Technical Review Committee',
-    value: 5,
-  }
+  },
+  {
+    source: 'Technical Review Committee',
+    target: 'Major Subdivision: Accepted',
+  },
+  {
+    source: 'Technical Review Committee',
+    target: 'Major Subdivision: Rejected',
+  },
+  {
+    source: 'Technical Review Committee',
+    target: 'Design Review',
+  },
+  {
+    source: 'Design Review',
+    target: 'Planning and Zoning Commission',
+  },
+  {
+    source: 'Technical Review Committee',
+    target: 'Planning and Zoning Commission',
+  },
+  {
+    source: 'Planning and Zoning Commission',
+    target: 'Level II and Downtown Major Subdivision: Accepted',
+  },
+  {
+    source: 'Planning and Zoning Commission',
+    target: 'Level II and Downtown Major Subdivision: Rejected',
+  },
+  {
+    source: 'Planning and Zoning Commission',
+    target: 'City Council',
+  },
+  {
+    source: 'City Council',
+    target: 'City Council: Accepted',
+  },
+  {
+    source: 'City Council',
+    target: 'City Council: Rejected',
+  },
 ]
 
 nodes.forEach(node => {
@@ -106,12 +175,20 @@ nodes.forEach(node => {
       width: node.width ? node.width : nodeSize * 0.9,
       height: nodeSize,
       description: node.description,
+      color: node.color ? node.color : 'gray',
     }
   );
 })
 
 links.forEach(link => {
-  g.setEdge(link.source, link.target, { color: 'gray', weight: link.value });
+  g.setEdge(
+    link.source,
+    link.target,
+    {
+      color: link.color ? link.color : 'gray',
+      weight: link.value,
+    }
+  );
 })
 
 dagre.layout(g)
@@ -184,9 +261,9 @@ class MajorDevelopmentDashboard extends React.Component {
       <div style={{ width: '100%', height: nodeSize * 10 }}>
         <ResponsiveNetworkFrame
           size={[1000, 1000]}
+          margin={10}
           responsiveWidth
           responsiveHeight
-          margin={20}
           graph={g}
           networkType={{
             type: 'dagre',
@@ -198,7 +275,7 @@ class MajorDevelopmentDashboard extends React.Component {
               <foreignObject
                 style={{
                   x: d.d.x - width / 2,
-                  y: d.d.y,
+                  y: d.d.y - height / 2,
                   width: d.d.width,
                   height: height,
                 }}
@@ -207,7 +284,7 @@ class MajorDevelopmentDashboard extends React.Component {
                   style={{
                     width: '100%',
                     height: '100%',
-                    border: '0.5px solid #e6e6e6',
+                    border: `0.5px solid ${d.d.color}`,
                     backgroundColor: 'white',
                     fontSize: '0.85em',
                     padding: '0.5em',
@@ -230,7 +307,7 @@ class MajorDevelopmentDashboard extends React.Component {
               </foreignObject>
               </g>)
             }}
-          edgeStyle={{ stroke: '#e6e6e6', fill: 'none', strokeWidth: 3, }}
+          edgeStyle={d => ({ stroke: d.color, fill: 'none', strokeWidth: 2 })}
         />
       </div>
       {/* Get notifications */}

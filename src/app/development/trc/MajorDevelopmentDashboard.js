@@ -8,7 +8,8 @@ import { colorScheme } from '../volume/granularUtils';
 const g = new dagre.graphlib.Graph()
 g.setGraph({ rankdir:  'TB', ranker: 'network-simplex' })
 g.setDefaultEdgeLabel(() => ({}))
-const nodeSize = 200;
+
+const nodeSize = 160;
 const orderedColors = ['#FF3A3A','#749B5F','#2d93ad','#004EA3','#9B6681','#9E4F55','#073d49']
 
 
@@ -228,6 +229,23 @@ class MajorDevelopmentDashboard extends React.Component {
   }
 
   render() {
+    const nodeObjects = Object.values(g._nodes);
+    Object.keys(g._nodes).forEach(nodeKey => {
+      const thisNode = g._nodes[nodeKey]
+      const parallelNodes = nodeObjects.filter(d => d.y === thisNode.y)
+      const numParallels = parallelNodes.length - 1;
+      if (numParallels === 0) {
+        g._nodes[nodeKey].width === 320;
+        // Smallest screen is iphone 5/SE
+      }
+      // if number of parallels is more than 1, stagger them vertically in a pattern
+      if (numParallels > 1) {
+        const numRows = parallelNodes / 2;
+        g._nodes[nodeKey].y += (parallelNodes.indexOf(n => n.key === nodeKey) / numRows * thisNode.height);
+      }
+    })
+    console.log(g._nodes)
+
     return (<div id="majorDevDash">
       {/* Highlight/anchor nav button bar */}
       <AnchorNav
@@ -294,7 +312,8 @@ class MajorDevelopmentDashboard extends React.Component {
                     backgroundColor: '#f2f2f2',
                     fontSize: '0.85em',
                     padding: '0.5em',
-                    borderRadius: '2px'
+                    borderRadius: '2px',
+                    border: '1px solid #e6e6e6'
                   }}
                 >
                   <div

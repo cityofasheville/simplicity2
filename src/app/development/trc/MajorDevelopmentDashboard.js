@@ -8,7 +8,7 @@ import { colorScheme } from '../volume/granularUtils';
 const g = new dagre.graphlib.Graph()
 g.setGraph({ rankdir:  'TB', ranker: 'tight-tree' })
 g.setDefaultEdgeLabel(() => ({}))
-const nodeSize = 150;
+const nodeSize = 75;
 
 // https://emeeks.github.io/semiotic/#/semiotic/customnode
 
@@ -257,7 +257,7 @@ class MajorDevelopmentDashboard extends React.Component {
       <br/>
       <br/>
       <h1 id="about" >Major Development in Asheville</h1>
-      <div style={{ width: '100%', height: nodeSize * 10 }}>
+      <div style={{ width: '100%', height: nodeSize * 15 }}>
         <ResponsiveNetworkFrame
           size={[1000, 1000]}
           margin={10}
@@ -283,8 +283,7 @@ class MajorDevelopmentDashboard extends React.Component {
                   style={{
                     width: '100%',
                     height: '100%',
-                    border: `0.5px solid ${d.d.color}`,
-                    backgroundColor: 'white',
+                    backgroundColor: '#f2f2f2',
                     fontSize: '0.85em',
                     padding: '0.5em',
                     borderRadius: '2px'

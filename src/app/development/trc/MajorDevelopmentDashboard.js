@@ -230,20 +230,35 @@ class MajorDevelopmentDashboard extends React.Component {
 
   render() {
     const nodeObjects = Object.values(g._nodes);
-    Object.keys(g._nodes).forEach(nodeKey => {
+    const nodeKeys = Object.keys(g._nodes);
+
+    // Have to iterate twice because otherwise there are fewer parallel nodes after you change one
+    nodeKeys.forEach(nodeKey => {
       const thisNode = g._nodes[nodeKey]
-      const parallelNodes = nodeObjects.filter(d => d.y === thisNode.y)
-      const numParallels = parallelNodes.length - 1;
+      thisNode.parallelNodes = nodeObjects.filter(d => d.y === thisNode.y);
+      console.log(thisNode.numRowsInGroup)
+    })
+
+    let nextNodeOffset = 0;
+    nodeKeys.forEach(nodeKey => {
+      const thisNode = g._nodes[nodeKey]
+      const numParallels = thisNode.parallelNodes.length - 1;
       if (numParallels === 0) {
         g._nodes[nodeKey].width === 320;
         // Smallest screen is iphone 5/SE
       }
-      // if number of parallels is more than 1, stagger them vertically in a pattern
+
+      const nodeIndex = nodeObjects.indexOf(thisNode);
       if (numParallels > 1) {
-        console.log(parallelNodes, parallelNodes.indexOf(n => n.id === nodeKey))
-        g._nodes[nodeKey].y += (parallelNodes.indexOf(n => n.id === nodeKey) / 2) * thisNode.height;
+        g._nodes[nodeKey].y += Math.floor(nodeIndex / 2) * thisNode.height;
+        if (nodeIndex > 1 && nodeIndex % 2 === 0) {
+          nextNodeOffset += thisNode.height;
+        }
       }
+      g._nodes[nodeKey].y += nextNodeOffset;
+      // Everything after that also has to move down
     })
+
     console.log(g._nodes)
 
     return (<div id="majorDevDash">

@@ -6,7 +6,9 @@ import AnchorNav from './AnchorNav';
 import { colorScheme } from '../volume/granularUtils';
 
 const g = new dagre.graphlib.Graph()
-g.setGraph({ rankdir:  'TB', ranker: 'network-simplex' })
+console.log(g)
+console.log(dagre.graphlib.Graph)
+g.setGraph({ rankdir:  'TB', ranker: 'network-simplex', nodesep: 10, ranksep: 10, width: 320 })
 g.setDefaultEdgeLabel(() => ({}))
 
 const nodeSize = 160;
@@ -229,37 +231,38 @@ class MajorDevelopmentDashboard extends React.Component {
   }
 
   render() {
-    const nodeObjects = Object.values(g._nodes);
-    const nodeKeys = Object.keys(g._nodes);
-
-    // Have to iterate twice because otherwise there are fewer parallel nodes after you change one
-    nodeKeys.forEach(nodeKey => {
-      const thisNode = g._nodes[nodeKey]
-      thisNode.parallelNodes = nodeObjects.filter(d => d.y === thisNode.y);
-      console.log(thisNode.numRowsInGroup)
-    })
-
-    let nextNodeOffset = 0;
-    nodeKeys.forEach(nodeKey => {
-      const thisNode = g._nodes[nodeKey]
-      const numParallels = thisNode.parallelNodes.length - 1;
-      if (numParallels === 0) {
-        g._nodes[nodeKey].width === 320;
-        // Smallest screen is iphone 5/SE
-      }
-
-      const nodeIndex = nodeObjects.indexOf(thisNode);
-      if (numParallels > 1) {
-        g._nodes[nodeKey].y += Math.floor(nodeIndex / 2) * thisNode.height;
-        if (nodeIndex > 1 && nodeIndex % 2 === 0) {
-          nextNodeOffset += thisNode.height;
-        }
-      }
-      g._nodes[nodeKey].y += nextNodeOffset;
-      // Everything after that also has to move down
-    })
-
-    console.log(g._nodes)
+    // const nodeObjects = Object.values(g._nodes);
+    // const nodeKeys = Object.keys(g._nodes);
+    //
+    // // Have to iterate twice because otherwise there are fewer parallel nodes after you change one
+    // nodeKeys.forEach(nodeKey => {
+    //   const thisNode = g._nodes[nodeKey]
+    //   thisNode.parallelNodes = nodeObjects.filter(d => d.y === thisNode.y);
+    //   console.log(thisNode.numRowsInGroup)
+    // })
+    //
+    // let nextNodeOffset = 0;
+    // nodeKeys.forEach(nodeKey => {
+    //   const thisNode = g._nodes[nodeKey]
+    //   const numParallels = thisNode.parallelNodes.length - 1;
+    //   if (numParallels === 0) {
+    //     g._nodes[nodeKey].width === 320;
+    //     // Smallest screen is iphone 5/SE
+    //   }
+    //
+    //   const nodeIndex = nodeObjects.indexOf(thisNode);
+    //   if (numParallels > 1) {
+    //     g._nodes[nodeKey].y += Math.floor(nodeIndex / 2) * thisNode.height;
+    //     if (nodeIndex > 1 && nodeIndex % 2 === 0) {
+    //       nextNodeOffset += thisNode.height;
+    //     }
+    //   }
+    //   g._nodes[nodeKey].y += nextNodeOffset;
+    // })
+    //
+    // //  ALSO HAVE TO CHANGE EDGELABELS
+    //
+    // console.log(g)
 
     return (<div id="majorDevDash">
       {/* Highlight/anchor nav button bar */}

@@ -174,6 +174,20 @@ const links = [
   },
 ]
 
+const scrollyElements = [
+  {
+    id: 'one',
+    element: (<div>
+      <h1 id="about" >Major Development in Asheville</h1>
+      <p>The Unified Development Ordinance defines six types of large scale development in Asheville.</p>
+    </div>),
+  },
+  {
+    id: 'two',
+    element: <div>Foo</div>,
+  },
+]
+
 nodes.forEach(node => {
   g.setNode(
     node.id,
@@ -251,7 +265,7 @@ class MajorDevelopmentDashboard extends React.Component {
   }
 
   render() {
-    const textBoxSize = nodeSize * 10;
+    const textBoxSize = document.documentElement.clientHeight / 3;
     return (<div id="majorDevDash">
       {/* Highlight/anchor nav button bar */}
       <AnchorNav
@@ -284,28 +298,26 @@ class MajorDevelopmentDashboard extends React.Component {
         })}
       />
       <div>
-      <br/>
-      <br/>
-      <br/>
-      <h1 id="about" >Major Development in Asheville</h1>
+      <div style={{ height: '4em' }}></div>
+      <div
+        className="col-md-12"
+        style={{
+          margin: '0 1em 1em 0',
+          minHeight: textBoxSize,
+          position: 'fixed',
+          outline: '1px solid gray',
+          padding: '0.25em',
+          backgroundColor: 'rgba(255, 255, 255, .6)',
+          zIndex: 99,
+        }}
+      >
+        {scrollyElements[0].element}
+      </div>
+      <div style={{ height: textBoxSize }}></div>
       <div style={{ width: '100%', height: nodeSize * 200 }}>
-        <div
-          className="col-md-12"
-          style={{
-            margin: '0 1em 1em 0',
-            minHeight: textBoxSize,
-            position: 'fixed',
-            outline: '1px solid gray',
-            padding: '0.25em',
-            backgroundColor: 'rgba(255, 255, 255, .6)',
-            zIndex: 99,
-          }}
-        >
-          The Unified Development Ordinance defines six types of large scale development in Asheville.
-        </div>
         <ResponsiveNetworkFrame
           size={[320, 1000]}
-          margin={{ top: textBoxSize, right: nodeSize, bottom: nodeSize, left: nodeSize }}
+          margin={nodeSize}
           responsiveWidth
           responsiveHeight
           graph={g}

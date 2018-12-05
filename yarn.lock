@@ -2467,7 +2467,7 @@ d3-shape@1.0.3:
   dependencies:
     d3-path "1"
 
-d3-shape@^1.0.3, d3-shape@^1.0.4, d3-shape@^1.2.0:
+d3-shape@^1.0.3, d3-shape@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/d3-shape/-/d3-shape-1.2.0.tgz#45d01538f064bafd05ea3d6d2cb748fd8c41f777"
   dependencies:
@@ -2518,6 +2518,13 @@ d@1:
   resolved "https://registry.yarnpkg.com/d/-/d-1.0.0.tgz#754bb5bfe55451da69a58b94d45f4c5b0462d58f"
   dependencies:
     es5-ext "^0.10.9"
+
+dagre@^0.8.2:
+  version "0.8.2"
+  resolved "https://registry.yarnpkg.com/dagre/-/dagre-0.8.2.tgz#755b79f4d5499d63cf74c3368fb08add93eceafe"
+  dependencies:
+    graphlib "^2.1.5"
+    lodash "^4.17.4"
 
 damerau-levenshtein@^1.0.4:
   version "1.0.4"
@@ -3880,6 +3887,12 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.2:
   version "4.1.11"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.11.tgz#0e8bdfe4d1ddb8854d64e04ea7c00e2a026e5658"
 
+graphlib@^2.1.5:
+  version "2.1.5"
+  resolved "https://registry.yarnpkg.com/graphlib/-/graphlib-2.1.5.tgz#6afe1afcc5148555ec799e499056795bd6938c87"
+  dependencies:
+    lodash "^4.11.1"
+
 graphql-anywhere@^4.1.0-alpha.0, graphql-anywhere@^4.1.17:
   version "4.1.17"
   resolved "https://registry.yarnpkg.com/graphql-anywhere/-/graphql-anywhere-4.1.17.tgz#5c9128d0c5c1623dc46ecbdf0916845061f1965a"
@@ -5039,6 +5052,10 @@ lodash.uniq@^4.5.0:
 lodash@^4.0.0, lodash@^4.13.1, lodash@^4.15.0, lodash@^4.17.10, lodash@^4.17.2, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.2.0, lodash@^4.3.0, lodash@~4.17.10:
   version "4.17.10"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.10.tgz#1b7793cf7259ea38fb3661d4d38b3260af8ae4e7"
+
+lodash@^4.11.1:
+  version "4.17.11"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
 
 log-symbols@^1.0.2:
   version "1.0.2"
@@ -7249,9 +7266,9 @@ semiotic-mark@^0.1.2:
     d3-transition "1.0.3"
     prop-types "15.6.0"
 
-semiotic@^1.15.7:
-  version "1.15.7"
-  resolved "https://registry.yarnpkg.com/semiotic/-/semiotic-1.15.7.tgz#9985fb786a3ff30cefe31100ce63a1438a53d021"
+semiotic@^1.16.0:
+  version "1.16.0"
+  resolved "https://registry.yarnpkg.com/semiotic/-/semiotic-1.16.0.tgz#16bf40d24c3e4a415544c43c34ab230a736771d0"
   dependencies:
     "@mapbox/polylabel" "1"
     d3-array "^1.2.0"
@@ -7269,7 +7286,7 @@ semiotic@^1.15.7:
     d3-sankey-circular "0.25.0"
     d3-scale "^1.0.3"
     d3-selection "^1.1.0"
-    d3-shape "^1.0.4"
+    d3-shape "^1.2.0"
     d3-voronoi "^1.0.2"
     json2csv "3.11.5"
     labella "1.1.4"

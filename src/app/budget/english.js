@@ -31,7 +31,7 @@ export const english = {
   proposed_budget: 'Proposed budget',
   revenue: 'Revenue',
   summary: 'Summary',
-  spending_by_department: 'Spanding By Department',
+  spending_by_department: 'Spending By Department',
   spending_by_use: 'Spending By Use',
   table_of: 'Table of',
   top: 'Top',

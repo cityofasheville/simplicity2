@@ -215,29 +215,43 @@ class MajorDevelopmentDashboard extends React.Component {
   constructor(){
     super();
 
-    this.handleScroll = this.handleScroll.bind(this)
-
-    this.graph = g;
-    const nodeKeys = Object.keys(g._nodes);
+    this.nodeRefs = {};
+    Object.keys(g._nodes).forEach(nodeKey => {
+      this.nodeRefs[nodeKey] = React.createRef();
+    })
 
     this.state = {
-      highlightedNode: nodeKeys[0],
+      showingNodes: [],
     }
+
+    this.handleScroll = this.handleScroll.bind(this)
   }
 
   componentDidMount() {
-    window.addEventListener('scroll', this.handleScroll);
+    // window.addEventListener('scroll', this.handleScroll);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll);
+    // window.removeEventListener('scroll', this.handleScroll);
   }
 
   handleScroll(event) {
-    console.log(event, window.scrollY)
+    const showingNodes = [];
+    Object.keys(this.nodeRefs).forEach((nodeRefKey, i) => {
+      const thisRef = this.nodeRefs[nodeRefKey].current.getBoundingClientRect();
+      const nodeShowing = thisRef.top > 120 && thisRef.top < document.documentElement.clientHeight;
+      if (nodeShowing) {
+        showingNodes.push(nodeRefKey)
+      }
+    })
+
+    this.setState({
+      showingNodes
+    })
   }
 
   render() {
+    const textBoxSize = nodeSize * 10;
     return (<div id="majorDevDash">
       {/* Highlight/anchor nav button bar */}
       <AnchorNav
@@ -274,25 +288,44 @@ class MajorDevelopmentDashboard extends React.Component {
       <br/>
       <br/>
       <h1 id="about" >Major Development in Asheville</h1>
-      <div style={{ width: '100%', height: nodeSize * 150 }}>
+      <div style={{ width: '100%', height: nodeSize * 200 }}>
+        <div
+          className="col-md-12"
+          style={{
+            margin: '0 1em 1em 0',
+            minHeight: textBoxSize,
+            position: 'fixed',
+            outline: '1px solid gray',
+            padding: '0.25em',
+            backgroundColor: 'rgba(255, 255, 255, .6)',
+            zIndex: 99,
+          }}
+        >
+          The Unified Development Ordinance defines six types of large scale development in Asheville.
+        </div>
         <ResponsiveNetworkFrame
-          size={[320, 320]}
-          margin={{ top: nodeSize * 10, right: nodeSize, bottom: nodeSize, left: nodeSize }}
+          size={[320, 1000]}
+          margin={{ top: textBoxSize, right: nodeSize, bottom: nodeSize, left: nodeSize }}
           responsiveWidth
           responsiveHeight
-          graph={this.graph}
+          graph={g}
           networkType={{
             type: 'dagre',
             zoom: 'true',
           }}
           edgeStyle={d => ({ stroke: 'white', fill: d.color, strokeWidth: 1 })}
           customNodeIcon={(d) => {
-            console.log(d.d.y)
+            let fill = 'white';
+            if (this.state.showingNodes.indexOf(d.d.id) > -1) {
+              fill = 'gray'
+            }
+
             return (<circle
               cx={d.d.x}
               cy={d.d.y}
               r={nodeSize}
-              style={{ fill: 'white', stroke: 'gray' }}
+              style={{ fill: fill, stroke: 'gray' }}
+              ref={this.nodeRefs[d.d.id]}
             />)
           }}
         />

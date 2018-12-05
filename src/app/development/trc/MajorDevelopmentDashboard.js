@@ -265,6 +265,11 @@ class MajorDevelopmentDashboard extends React.Component {
   }
 
   render() {
+
+    // TODO:
+    // style node labels
+    // show node labels if node is showing
+    // don't let major development scroll down with the rest of the content-- fixed up until a point?
     const textBoxSize = document.documentElement.clientHeight / 3;
     return (<div id="majorDevDash">
       {/* Highlight/anchor nav button bar */}

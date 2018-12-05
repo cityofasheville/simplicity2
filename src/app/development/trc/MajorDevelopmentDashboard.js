@@ -6,13 +6,11 @@ import AnchorNav from './AnchorNav';
 import { colorScheme } from '../volume/granularUtils';
 
 const g = new dagre.graphlib.Graph()
-console.log(g)
-console.log(dagre.graphlib.Graph)
-g.setGraph({ rankdir:  'TB', ranker: 'network-simplex', nodesep: 10, ranksep: 10, width: 320 })
+g.setGraph({ rankdir:  'TB', ranker: 'network-simplex'})
 g.setDefaultEdgeLabel(() => ({}))
 
-const nodeSize = 160;
 const orderedColors = ['#FF3A3A','#749B5F','#2d93ad','#004EA3','#9B6681','#9E4F55','#073d49']
+const nodeSize = 8;
 
 
 // https://emeeks.github.io/semiotic/#/semiotic/customnode
@@ -40,7 +38,6 @@ const nodes = [
   },
   {
     id: 'Staff Review',
-    width: nodeSize * 3,
   },
   {
     id: 'Level I Decision',
@@ -182,20 +179,31 @@ nodes.forEach(node => {
     node.id,
     {
       label: node.id,
-      width: node.width ? node.width : nodeSize * 0.9,
-      height: nodeSize,
+      width: node.width || nodeSize,
+      height: node.height || nodeSize,
       description: node.description,
       color: node.color ? node.color : 'gray',
     }
   );
 })
 
+function calculateEdges(link) {
+  if (link.parallelEdges) {
+    return link.parallelEdges.map(e => {
+      const thisEdge = Object.assign({}, e);
+      thisEdge.weight = 1;
+      return thisEdge;
+    })
+  }
+  return [{ color: link.color ? link.color : 'gray', weight: 1 }];
+}
+
 links.forEach(link => {
   g.setEdge(
     link.source,
     link.target,
     {
-      parallelEdges: link.parallelEdges || [{ color: link.color ? link.color : 'gray', weight: 3 }],
+      parallelEdges: calculateEdges(link),
     }
   );
 })
@@ -204,66 +212,32 @@ dagre.layout(g)
 
 
 class MajorDevelopmentDashboard extends React.Component {
-  constructor(props){
-    super(props);
-    // this.handleScroll = this.handleScroll.bind(this)
+  constructor(){
+    super();
+
+    this.handleScroll = this.handleScroll.bind(this)
+
+    this.graph = g;
+    const nodeKeys = Object.keys(g._nodes);
+
+    this.state = {
+      highlightedNode: nodeKeys[0],
+    }
   }
 
   componentDidMount() {
-    // window.addEventListener('scroll', this.handleScroll);
+    window.addEventListener('scroll', this.handleScroll);
   }
 
   componentWillUnmount() {
-    // window.removeEventListener('scroll', this.handleScroll);
+    window.removeEventListener('scroll', this.handleScroll);
   }
 
   handleScroll(event) {
-    let scrollTop = event.srcElement.body.scrollTop,
-        itemTranslate = Math.min(0, scrollTop/3 - 60);
-
-    // console.log(window.scrollY)
-    //
-    // console.log(event, scrollTop, itemTranslate)
-    //
-    // this.setState({
-    //   transform: itemTranslate
-    // })
+    console.log(event, window.scrollY)
   }
 
   render() {
-    // const nodeObjects = Object.values(g._nodes);
-    // const nodeKeys = Object.keys(g._nodes);
-    //
-    // // Have to iterate twice because otherwise there are fewer parallel nodes after you change one
-    // nodeKeys.forEach(nodeKey => {
-    //   const thisNode = g._nodes[nodeKey]
-    //   thisNode.parallelNodes = nodeObjects.filter(d => d.y === thisNode.y);
-    //   console.log(thisNode.numRowsInGroup)
-    // })
-    //
-    // let nextNodeOffset = 0;
-    // nodeKeys.forEach(nodeKey => {
-    //   const thisNode = g._nodes[nodeKey]
-    //   const numParallels = thisNode.parallelNodes.length - 1;
-    //   if (numParallels === 0) {
-    //     g._nodes[nodeKey].width === 320;
-    //     // Smallest screen is iphone 5/SE
-    //   }
-    //
-    //   const nodeIndex = nodeObjects.indexOf(thisNode);
-    //   if (numParallels > 1) {
-    //     g._nodes[nodeKey].y += Math.floor(nodeIndex / 2) * thisNode.height;
-    //     if (nodeIndex > 1 && nodeIndex % 2 === 0) {
-    //       nextNodeOffset += thisNode.height;
-    //     }
-    //   }
-    //   g._nodes[nodeKey].y += nextNodeOffset;
-    // })
-    //
-    // //  ALSO HAVE TO CHANGE EDGELABELS
-    //
-    // console.log(g)
-
     return (<div id="majorDevDash">
       {/* Highlight/anchor nav button bar */}
       <AnchorNav
@@ -300,58 +274,27 @@ class MajorDevelopmentDashboard extends React.Component {
       <br/>
       <br/>
       <h1 id="about" >Major Development in Asheville</h1>
-      <div style={{ width: '100%', height: nodeSize * 15 }}>
+      <div style={{ width: '100%', height: nodeSize * 150 }}>
         <ResponsiveNetworkFrame
-          size={[1000, 1000]}
-          margin={10}
+          size={[320, 320]}
+          margin={{ top: nodeSize * 10, right: nodeSize, bottom: nodeSize, left: nodeSize }}
           responsiveWidth
           responsiveHeight
-          graph={g}
+          graph={this.graph}
           networkType={{
             type: 'dagre',
-            zoom: 'true'
+            zoom: 'true',
           }}
+          edgeStyle={d => ({ stroke: 'white', fill: d.color, strokeWidth: 1 })}
           customNodeIcon={(d) => {
-            const width = d.d.width
-            const height = d.d.height;
-            return (<g key={`${d.i}-${d.d.id}`}>
-              <foreignObject
-                style={{
-                  x: d.d.x - width / 2,
-                  y: d.d.y - height / 2,
-                  width: d.d.width,
-                  height: height,
-                }}
-              >
-                <div
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    backgroundColor: '#f2f2f2',
-                    fontSize: '0.85em',
-                    padding: '0.5em',
-                    borderRadius: '2px',
-                    border: '1px solid #e6e6e6'
-                  }}
-                >
-                  <div
-                    style={{
-                      textAlign: 'center',
-                      fontWeight: 'normal',
-                      padding: '0 0 0.5em 0',
-                      fontSize: '1.25em',
-                    }}
-                  >
-                    {d.d.id}
-                  </div>
-                  <div>
-                    {d.d.description}
-                  </div>
-                </div>
-              </foreignObject>
-              </g>)
-            }}
-          edgeStyle={d => ({ stroke: 'white', fill: d.color, strokeWidth: 2 })}
+            console.log(d.d.y)
+            return (<circle
+              cx={d.d.x}
+              cy={d.d.y}
+              r={nodeSize}
+              style={{ fill: 'white', stroke: 'gray' }}
+            />)
+          }}
         />
       </div>
       {/* Get notifications */}

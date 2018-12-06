@@ -16,6 +16,13 @@ $xs: $mobile-min - 1;
   margin-top: -120px;
 }
 
+#majorDevDash .annotation-note-bg {
+  fill: white;
+  padding: 10px;
+  fill-opacity: 1;
+  border: 1px solid gray;
+}
+
 @media(max-width: $xs){
   .anchorNav a {
     font-size: 0.75em;

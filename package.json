@@ -89,6 +89,7 @@
     "moment": "^2.21.0",
     "prop-types": "^15.5.10",
     "react": "^16.3.2",
+    "react-annotation": "^1.4.1",
     "react-apollo": "^2.1.4",
     "react-collapsible": "^2.0.4",
     "react-csv": "^1.0.10",

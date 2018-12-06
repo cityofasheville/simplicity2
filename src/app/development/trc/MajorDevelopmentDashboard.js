@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import dagre from 'dagre';
 import { ResponsiveNetworkFrame } from 'semiotic';
+import { AnnotationCalloutCustom } from 'react-annotation';
 import AnchorNav from './AnchorNav';
 import { colorScheme } from '../volume/granularUtils';
 
@@ -222,30 +223,25 @@ links.forEach(link => {
 dagre.layout(g)
 
 const nodeValues = Object.values(g._nodes);
-nodeValues.forEach(d => {
-  d.coincidents = nodeValues.filter(val => val.y === d.y)
-})
+// nodeValues.forEach(d => {
+//   d.coincidents = nodeValues.filter(val => val.y === d.y)
+// })
 const annotations = nodeValues.map(d => {
   const rVal = {
     description: d.description,
     color: 'black',
     connector: { end: 'none' },
     disable: 'subject',
-    nodeSize: nodeSize,
+    type: 'node',
+    id: d.label,
   };
-  // if (d.coincidents.length > 1) {
-  //   rVal.type = 'enclose';
-  //   rVal.ids = d.coincidents.map(c => c.label);
-  //   rVal.label = d.coincidents.map(c => `${c.label}: ${c.description}`).join('\n')
-  // } else {
-    rVal.type = 'node';
-    rVal.id = d.label;
-  // }
   return rVal;
-}).filter((d, i, array) => {
-  if (d.ids === undefined) { return true; }
-  return array.findIndex(f => f.ids !== undefined && f.ids.join() === d.ids.join()) === i;
 })
+
+// .filter((d, i, array) => {
+//   if (d.ids === undefined) { return true; }
+//   return array.findIndex(f => f.ids !== undefined && f.ids.join() === d.ids.join()) === i;
+// })
 
 console.log(nodes, annotations)
 
@@ -352,7 +348,6 @@ class MajorDevelopmentDashboard extends React.Component {
           annotations={annotations}
           annotationSettings={{
             layout: { type: 'bump', orient: 'nearest' },
-            pointSizeFunction: d => {console.log(d); return nodeSize * 2},
             connector: { end: 'none' },
           }}
           svgAnnotationRules={(d) => {

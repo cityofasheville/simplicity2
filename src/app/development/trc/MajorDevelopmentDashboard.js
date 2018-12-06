@@ -228,15 +228,19 @@ nodeValues.forEach(d => {
 const annotations = nodeValues.map(d => {
   const rVal = {
     description: d.description,
+    color: 'black',
+    connector: { end: 'none' },
+    disable: 'subject',
+    nodeSize: nodeSize,
   };
-  if (d.coincidents.length > 1) {
-    rVal.type = 'enclose';
-    rVal.ids = d.coincidents.map(c => c.label);
-    rVal.label = d.coincidents.map(c => `${c.label}: ${c.description}`).join('\n')
-  } else {
+  // if (d.coincidents.length > 1) {
+  //   rVal.type = 'enclose';
+  //   rVal.ids = d.coincidents.map(c => c.label);
+  //   rVal.label = d.coincidents.map(c => `${c.label}: ${c.description}`).join('\n')
+  // } else {
     rVal.type = 'node';
     rVal.id = d.label;
-  }
+  // }
   return rVal;
 }).filter((d, i, array) => {
   if (d.ids === undefined) { return true; }
@@ -292,9 +296,6 @@ class MajorDevelopmentDashboard extends React.Component {
     // TODO:
     // Why is H1 smaller than H2 on mobile?
 
-    const rightMargin = document.documentElement.clientWidth * 0.25;
-
-
     return (<div id="majorDevDash" style={{ width: 'inherit' }}>
       {/* Highlight/anchor nav button bar */}
       <AnchorNav
@@ -331,7 +332,7 @@ class MajorDevelopmentDashboard extends React.Component {
         id="about"
         className="col-md-12"
         style={{
-          margin: '0 1em 1em 0',
+          margin: '0 auto',
           outline: '1px solid gray',
           padding: '0.25em',
           width: 'inherit',
@@ -341,16 +342,22 @@ class MajorDevelopmentDashboard extends React.Component {
         <h1>Major Development in Asheville</h1>
         <p>The Unified Development Ordinance defines six types of large scale development in Asheville.</p>
       </div>
-      <div style={{ width: '100%', height: nodeSize * 300, display: 'inline-block' }}>
+      <div style={{ width: '80%', height: document.documentElement.clientHeight * 3, display: 'inline-block' }}>
         <ResponsiveNetworkFrame
           size={[200, 1000]}
-          margin={{ top: nodeSize, right: rightMargin, bottom: nodeSize, left: nodeSize }}
+          margin={{ top: 60, right: 70, bottom: 16, left: 16 }}
           responsiveWidth
           responsiveHeight
           graph={g}
           annotations={annotations}
           annotationSettings={{
-            layout: { type: "marginalia", orient: "right" },
+            layout: { type: 'bump', orient: 'nearest' },
+            pointSizeFunction: d => {console.log(d); return nodeSize * 2},
+            connector: { end: 'none' },
+          }}
+          svgAnnotationRules={(d) => {
+            console.log(d)
+            return null
           }}
           networkType={{
             type: 'dagre',

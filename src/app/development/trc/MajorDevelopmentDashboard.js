@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import dagre from 'dagre';
 import { ResponsiveNetworkFrame } from 'semiotic';
-import { AnnotationCalloutCustom } from 'react-annotation';
+import { Annotation, ConnectorLine, Note } from 'react-annotation';
 import AnchorNav from './AnchorNav';
 import { colorScheme } from '../volume/granularUtils';
 
@@ -223,17 +223,21 @@ links.forEach(link => {
 dagre.layout(g)
 
 const nodeValues = Object.values(g._nodes);
-// nodeValues.forEach(d => {
-//   d.coincidents = nodeValues.filter(val => val.y === d.y)
-// })
+nodeValues.forEach(d => {
+  d.coincidents = nodeValues.filter(val => val.y === d.y)
+  console.log(d.coincidents)
+  d.indexInCoincidents = d.coincidents.findIndex(c => c.label === d.label)
+})
 const annotations = nodeValues.map(d => {
   const rVal = {
+    id: d.label,
+    coincidents: d.coincidents,
+    indexInCoincidents: d.indexInCoincidents,
     description: d.description,
     color: 'black',
     connector: { end: 'none' },
     disable: 'subject',
     type: 'node',
-    id: d.label,
   };
   return rVal;
 })
@@ -291,6 +295,8 @@ class MajorDevelopmentDashboard extends React.Component {
 
     // TODO:
     // Why is H1 smaller than H2 on mobile?
+    const margin = document.documentElement.clientWidth / 12;
+    const midPageX = document.documentElement.clientWidth / 2;
 
     return (<div id="majorDevDash" style={{ width: 'inherit' }}>
       {/* Highlight/anchor nav button bar */}
@@ -329,30 +335,65 @@ class MajorDevelopmentDashboard extends React.Component {
         className="col-md-12"
         style={{
           margin: '0 auto',
-          outline: '1px solid gray',
-          padding: '0.25em',
           width: 'inherit',
           display: 'block',
+          padding: 0,
         }}
       >
         <h1>Major Development in Asheville</h1>
         <p>The Unified Development Ordinance defines six types of large scale development in Asheville.</p>
       </div>
-      <div style={{ width: '80%', height: document.documentElement.clientHeight * 3, display: 'inline-block' }}>
+      <div style={{ width: '100%', height: document.documentElement.clientHeight * 4, display: 'inline-block' }}>
         <ResponsiveNetworkFrame
-          size={[200, 1000]}
-          margin={{ top: 60, right: 70, bottom: 16, left: 16 }}
+          size={[320, 1000]}
+          margin={margin}
           responsiveWidth
           responsiveHeight
           graph={g}
           annotations={annotations}
-          annotationSettings={{
-            layout: { type: 'bump', orient: 'nearest' },
-            connector: { end: 'none' },
-          }}
           svgAnnotationRules={(d) => {
             console.log(d)
-            return null
+            const offset = margin * 0.5
+
+            let dY = offset;
+            let dX = offset;
+
+            if (d.d.coincidents.length === 2) {
+              if (d.d.indexInCoincidents === 0) {
+                dX = - offset;
+              }
+            }
+
+            if (d.d.coincidents.length > 2) {
+              if (d.i % 2 !== 0) {
+                dY = -1 * offset
+              }
+              if (d.d.x < midPageX) {
+                dX = - offset
+              }
+            }
+
+            return (<Annotation
+              x={d.d.x}
+              y={d.d.y}
+              dy={dY}
+              dx={dX}
+              color="gray"
+              title={d.d.label}
+              label={d.d.description}
+              className="show-bg"
+              disable="subject"
+            >
+              <ConnectorLine />
+              <Note
+                align={null}
+                orientation={"topBottom"}
+                bgPadding={5}
+                padding={5}
+                titleColor={"gray"}
+                lineType={null}
+              />
+            </Annotation>)
           }}
           networkType={{
             type: 'dagre',

@@ -20,7 +20,7 @@ $xs: $mobile-min - 1;
   fill: white;
   padding: 10px;
   fill-opacity: 1;
-  border: 1px solid gray;
+  stroke: gray;
 }
 
 @media(max-width: $xs){

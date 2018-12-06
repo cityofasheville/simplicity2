@@ -11,9 +11,16 @@ $xs: $mobile-min - 1;
     padding: 0.25em 2em;
 }
 
-#majorDevDash h1, #majorDevDash h2 {
+#majorDevDash h2, #about {
   padding-top: 120px;
   margin-top: -120px;
+}
+
+#majorDevDash .annotation-note-bg {
+  fill: white;
+  padding: 10px;
+  fill-opacity: 0.85;
+  stroke: gray;
 }
 
 @media(max-width: $xs){

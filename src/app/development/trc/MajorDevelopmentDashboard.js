@@ -2,14 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import dagre from 'dagre';
 import { ResponsiveNetworkFrame } from 'semiotic';
+import { Annotation, ConnectorLine, Note } from 'react-annotation';
 import AnchorNav from './AnchorNav';
 import { colorScheme } from '../volume/granularUtils';
 
 const g = new dagre.graphlib.Graph()
-g.setGraph({ rankdir:  'TB', ranker: 'network-simplex' })
+g.setGraph({ rankdir:  'TB', ranker: 'network-simplex'})
 g.setDefaultEdgeLabel(() => ({}))
-const nodeSize = 200;
+
 const orderedColors = ['#FF3A3A','#749B5F','#2d93ad','#004EA3','#9B6681','#9E4F55','#073d49']
+const nodeSize = 8;
 
 
 // https://emeeks.github.io/semiotic/#/semiotic/customnode
@@ -18,33 +20,38 @@ const nodes = [
   {
     id: 'Level I',
     description: 'Projects smaller than 35,000 square feet or with fewer than 20 residential units.',
-    color: orderedColors[0],
   },
   {
     id: 'Major Subdivision',
+    description: 'Foo',
   },
   {
     id: 'Level II',
+    description: 'Foo',
   },
   {
     id: 'Level III',
+    description: 'Foo',
   },
   {
     id: 'Conditional Zoning',
+    description: 'Foo',
   },
   {
     id: 'Conditional Use Permit',
+    description: 'Foo',
   },
   {
     id: 'Staff Review',
-    width: nodeSize * 3,
+    description: 'Foo',
   },
   {
     id: 'Level I Decision',
-    color: orderedColors[0],
+    description: 'Foo',
   },
   {
     id: 'Technical Review Committee',
+    description: 'Foo',
   },
   {
     id: 'Major Subdivision Decision',
@@ -56,15 +63,19 @@ const nodes = [
   },
   {
     id: 'Planning and Zoning Commission',
+    description: 'Foo',
   },
   {
     id: 'Level II and Downtown Major Subdivision Decision',
+    description: 'Foo',
   },
   {
     id: 'City Council',
+    description: 'Foo',
   },
   {
     id: 'City Council Decision',
+    description: 'Foo',
   },
 ]
 
@@ -179,31 +190,82 @@ nodes.forEach(node => {
     node.id,
     {
       label: node.id,
-      width: node.width ? node.width : nodeSize * 0.9,
-      height: nodeSize,
+      width: node.width || nodeSize,
+      height: node.height || nodeSize,
       description: node.description,
       color: node.color ? node.color : 'gray',
     }
   );
 })
 
+function calculateEdges(link) {
+  const weight = 1.5;
+  if (link.parallelEdges) {
+    return link.parallelEdges.map(e => {
+      const thisEdge = Object.assign({}, e);
+      thisEdge.weight = weight;
+      return thisEdge;
+    })
+  }
+  return [{ color: link.color ? link.color : 'gray', weight: weight}];
+}
+
 links.forEach(link => {
   g.setEdge(
     link.source,
     link.target,
     {
-      parallelEdges: link.parallelEdges || [{ color: link.color ? link.color : 'gray', weight: 3 }],
+      parallelEdges: calculateEdges(link),
     }
   );
 })
 
 dagre.layout(g)
 
+const nodeValues = Object.values(g._nodes);
+nodeValues.forEach(d => {
+  d.coincidents = nodeValues.filter(val => val.y === d.y)
+  console.log(d.coincidents)
+  d.indexInCoincidents = d.coincidents.findIndex(c => c.label === d.label)
+})
+const annotations = nodeValues.map(d => {
+  const rVal = {
+    id: d.label,
+    coincidents: d.coincidents,
+    indexInCoincidents: d.indexInCoincidents,
+    description: d.description,
+    color: 'black',
+    connector: { end: 'none' },
+    disable: 'subject',
+    type: 'node',
+  };
+  return rVal;
+})
+
+// .filter((d, i, array) => {
+//   if (d.ids === undefined) { return true; }
+//   return array.findIndex(f => f.ids !== undefined && f.ids.join() === d.ids.join()) === i;
+// })
+
+console.log(nodes, annotations)
+
 
 class MajorDevelopmentDashboard extends React.Component {
-  constructor(props){
-    super(props);
-    // this.handleScroll = this.handleScroll.bind(this)
+  constructor(){
+    super();
+
+    this.dashRef = React.createRef();
+
+    this.nodeRefs = {};
+    Object.keys(g._nodes).forEach(nodeKey => {
+      this.nodeRefs[nodeKey] = React.createRef();
+    })
+
+    this.state = {
+      showingNodes: [],
+    }
+
+    this.handleScroll = this.handleScroll.bind(this)
   }
 
   componentDidMount() {
@@ -215,20 +277,28 @@ class MajorDevelopmentDashboard extends React.Component {
   }
 
   handleScroll(event) {
-    let scrollTop = event.srcElement.body.scrollTop,
-        itemTranslate = Math.min(0, scrollTop/3 - 60);
+    const showingNodes = [];
+    Object.keys(this.nodeRefs).forEach((nodeRefKey, i) => {
+      const thisRef = this.nodeRefs[nodeRefKey].current.getBoundingClientRect();
+      const nodeShowing = thisRef.top > 120 && thisRef.top < document.documentElement.clientHeight;
+      if (nodeShowing) {
+        showingNodes.push(nodeRefKey)
+      }
+    })
 
-    // console.log(window.scrollY)
-    //
-    // console.log(event, scrollTop, itemTranslate)
-    //
-    // this.setState({
-    //   transform: itemTranslate
-    // })
+    this.setState({
+      showingNodes
+    })
   }
 
   render() {
-    return (<div id="majorDevDash">
+
+    // TODO:
+    // Why is H1 smaller than H2 on mobile?
+    const margin = document.documentElement.clientWidth / 12;
+    const midPageX = document.documentElement.clientWidth / 2;
+
+    return (<div id="majorDevDash" style={{ width: 'inherit' }}>
       {/* Highlight/anchor nav button bar */}
       <AnchorNav
         links={[
@@ -259,62 +329,91 @@ class MajorDevelopmentDashboard extends React.Component {
           return rObj;
         })}
       />
-      <div>
-      <br/>
-      <br/>
-      <br/>
-      <h1 id="about" >Major Development in Asheville</h1>
-      <div style={{ width: '100%', height: nodeSize * 15 }}>
+      <div style={{ height: '4em' }}></div>
+      <div
+        id="about"
+        className="col-md-12"
+        style={{
+          margin: '0 auto',
+          width: 'inherit',
+          display: 'block',
+          padding: 0,
+        }}
+      >
+        <h1>Major Development in Asheville</h1>
+        <p>The Unified Development Ordinance defines six types of large scale development in Asheville.</p>
+      </div>
+      <div style={{ width: '100%', height: document.documentElement.clientHeight * 4, display: 'inline-block' }}>
         <ResponsiveNetworkFrame
-          size={[1000, 1000]}
-          margin={10}
+          size={[320, 1000]}
+          margin={margin}
           responsiveWidth
           responsiveHeight
           graph={g}
+          annotations={annotations}
+          svgAnnotationRules={(d) => {
+            console.log(d)
+            const offset = margin * 0.5
+
+            let dY = offset;
+            let dX = offset;
+
+            if (d.d.coincidents.length === 2) {
+              if (d.d.indexInCoincidents === 0) {
+                dX = - offset;
+              }
+            }
+
+            if (d.d.coincidents.length > 2) {
+              if (d.i % 2 !== 0) {
+                dY = -1 * offset
+              }
+              if (d.d.x < midPageX) {
+                dX = - offset
+              }
+            }
+
+            return (<Annotation
+              x={d.d.x}
+              y={d.d.y}
+              dy={dY}
+              dx={dX}
+              color="gray"
+              title={d.d.label}
+              label={d.d.description}
+              className="show-bg"
+              disable="subject"
+            >
+              <ConnectorLine />
+              <Note
+                align={null}
+                orientation={"topBottom"}
+                bgPadding={5}
+                padding={5}
+                titleColor={"gray"}
+                lineType={null}
+              />
+            </Annotation>)
+          }}
           networkType={{
             type: 'dagre',
-            zoom: 'true'
+            zoom: 'true',
           }}
+          edgeStyle={d => ({ stroke: 'white', fill: d.color, strokeWidth: 1 })}
           customNodeIcon={(d) => {
-            const width = d.d.width
-            const height = d.d.height;
-            return (<g key={`${d.i}-${d.d.id}`}>
-              <foreignObject
-                style={{
-                  x: d.d.x - width / 2,
-                  y: d.d.y - height / 2,
-                  width: d.d.width,
-                  height: height,
-                }}
-              >
-                <div
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    backgroundColor: '#f2f2f2',
-                    fontSize: '0.85em',
-                    padding: '0.5em',
-                    borderRadius: '2px'
-                  }}
-                >
-                  <div
-                    style={{
-                      textAlign: 'center',
-                      fontWeight: 'normal',
-                      padding: '0 0 0.5em 0',
-                      fontSize: '1.25em',
-                    }}
-                  >
-                    {d.d.id}
-                  </div>
-                  <div>
-                    {d.d.description}
-                  </div>
-                </div>
-              </foreignObject>
-              </g>)
-            }}
-          edgeStyle={d => ({ stroke: 'white', fill: d.color, strokeWidth: 2 })}
+            let fill = 'white';
+            if (this.state.showingNodes.indexOf(d.d.id) > -1 || true) {
+              fill = '#d9d9d9'
+            }
+
+            return (<circle
+              cx={d.d.x}
+              cy={d.d.y}
+              r={nodeSize}
+              style={{ fill: fill, stroke: 'none' }}
+              ref={this.nodeRefs[d.d.id]}
+            />)
+          }}
         />
       </div>
       {/* Get notifications */}
@@ -337,7 +436,6 @@ class MajorDevelopmentDashboard extends React.Component {
       <br/>
       {/* FAQ */}
       <h2 id="faq">FAQ</h2>
-      </div>
     </div>);
   }
 

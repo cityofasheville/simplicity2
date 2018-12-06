@@ -19,32 +19,38 @@ const nodes = [
   {
     id: 'Level I',
     description: 'Projects smaller than 35,000 square feet or with fewer than 20 residential units.',
-    color: orderedColors[0],
   },
   {
     id: 'Major Subdivision',
+    description: 'Foo',
   },
   {
     id: 'Level II',
+    description: 'Foo',
   },
   {
     id: 'Level III',
+    description: 'Foo',
   },
   {
     id: 'Conditional Zoning',
+    description: 'Foo',
   },
   {
     id: 'Conditional Use Permit',
+    description: 'Foo',
   },
   {
     id: 'Staff Review',
+    description: 'Foo',
   },
   {
     id: 'Level I Decision',
-    color: orderedColors[0],
+    description: 'Foo',
   },
   {
     id: 'Technical Review Committee',
+    description: 'Foo',
   },
   {
     id: 'Major Subdivision Decision',
@@ -56,15 +62,19 @@ const nodes = [
   },
   {
     id: 'Planning and Zoning Commission',
+    description: 'Foo',
   },
   {
     id: 'Level II and Downtown Major Subdivision Decision',
+    description: 'Foo',
   },
   {
     id: 'City Council',
+    description: 'Foo',
   },
   {
     id: 'City Council Decision',
+    description: 'Foo',
   },
 ]
 
@@ -174,20 +184,6 @@ const links = [
   },
 ]
 
-const scrollyElements = [
-  {
-    id: 'one',
-    element: (<div>
-      <h1 id="about" >Major Development in Asheville</h1>
-      <p>The Unified Development Ordinance defines six types of large scale development in Asheville.</p>
-    </div>),
-  },
-  {
-    id: 'two',
-    element: <div>Foo</div>,
-  },
-]
-
 nodes.forEach(node => {
   g.setNode(
     node.id,
@@ -202,14 +198,15 @@ nodes.forEach(node => {
 })
 
 function calculateEdges(link) {
+  const weight = 1.5;
   if (link.parallelEdges) {
     return link.parallelEdges.map(e => {
       const thisEdge = Object.assign({}, e);
-      thisEdge.weight = 1;
+      thisEdge.weight = weight;
       return thisEdge;
     })
   }
-  return [{ color: link.color ? link.color : 'gray', weight: 1 }];
+  return [{ color: link.color ? link.color : 'gray', weight: weight}];
 }
 
 links.forEach(link => {
@@ -224,10 +221,36 @@ links.forEach(link => {
 
 dagre.layout(g)
 
+const nodeValues = Object.values(g._nodes);
+nodeValues.forEach(d => {
+  d.coincidents = nodeValues.filter(val => val.y === d.y)
+})
+const annotations = nodeValues.map(d => {
+  const rVal = {
+    description: d.description,
+  };
+  if (d.coincidents.length > 1) {
+    rVal.type = 'enclose';
+    rVal.ids = d.coincidents.map(c => c.label);
+    rVal.label = d.coincidents.map(c => `${c.label}: ${c.description}`).join('\n')
+  } else {
+    rVal.type = 'node';
+    rVal.id = d.label;
+  }
+  return rVal;
+}).filter((d, i, array) => {
+  if (d.ids === undefined) { return true; }
+  return array.findIndex(f => f.ids !== undefined && f.ids.join() === d.ids.join()) === i;
+})
+
+console.log(nodes, annotations)
+
 
 class MajorDevelopmentDashboard extends React.Component {
   constructor(){
     super();
+
+    this.dashRef = React.createRef();
 
     this.nodeRefs = {};
     Object.keys(g._nodes).forEach(nodeKey => {
@@ -267,11 +290,12 @@ class MajorDevelopmentDashboard extends React.Component {
   render() {
 
     // TODO:
-    // style node labels
-    // show node labels if node is showing
-    // don't let major development scroll down with the rest of the content-- fixed up until a point?
-    const textBoxSize = document.documentElement.clientHeight / 3;
-    return (<div id="majorDevDash">
+    // Why is H1 smaller than H2 on mobile?
+
+    const rightMargin = document.documentElement.clientWidth * 0.25;
+
+
+    return (<div id="majorDevDash" style={{ width: 'inherit' }}>
       {/* Highlight/anchor nav button bar */}
       <AnchorNav
         links={[
@@ -302,30 +326,32 @@ class MajorDevelopmentDashboard extends React.Component {
           return rObj;
         })}
       />
-      <div>
       <div style={{ height: '4em' }}></div>
       <div
+        id="about"
         className="col-md-12"
         style={{
           margin: '0 1em 1em 0',
-          minHeight: textBoxSize,
-          position: 'fixed',
           outline: '1px solid gray',
           padding: '0.25em',
-          backgroundColor: 'rgba(255, 255, 255, .6)',
-          zIndex: 99,
+          width: 'inherit',
+          display: 'block',
         }}
       >
-        {scrollyElements[0].element}
+        <h1>Major Development in Asheville</h1>
+        <p>The Unified Development Ordinance defines six types of large scale development in Asheville.</p>
       </div>
-      <div style={{ height: textBoxSize }}></div>
-      <div style={{ width: '100%', height: nodeSize * 200 }}>
+      <div style={{ width: '100%', height: nodeSize * 300, display: 'inline-block' }}>
         <ResponsiveNetworkFrame
-          size={[320, 1000]}
-          margin={nodeSize}
+          size={[200, 1000]}
+          margin={{ top: nodeSize, right: rightMargin, bottom: nodeSize, left: nodeSize }}
           responsiveWidth
           responsiveHeight
           graph={g}
+          annotations={annotations}
+          annotationSettings={{
+            layout: { type: "marginalia", orient: "right" },
+          }}
           networkType={{
             type: 'dagre',
             zoom: 'true',
@@ -333,15 +359,15 @@ class MajorDevelopmentDashboard extends React.Component {
           edgeStyle={d => ({ stroke: 'white', fill: d.color, strokeWidth: 1 })}
           customNodeIcon={(d) => {
             let fill = 'white';
-            if (this.state.showingNodes.indexOf(d.d.id) > -1) {
-              fill = 'gray'
+            if (this.state.showingNodes.indexOf(d.d.id) > -1 || true) {
+              fill = '#d9d9d9'
             }
 
             return (<circle
               cx={d.d.x}
               cy={d.d.y}
               r={nodeSize}
-              style={{ fill: fill, stroke: 'gray' }}
+              style={{ fill: fill, stroke: 'none' }}
               ref={this.nodeRefs[d.d.id]}
             />)
           }}
@@ -367,7 +393,6 @@ class MajorDevelopmentDashboard extends React.Component {
       <br/>
       {/* FAQ */}
       <h2 id="faq">FAQ</h2>
-      </div>
     </div>);
   }
 

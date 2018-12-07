@@ -292,6 +292,7 @@ class MajorDevelopmentDashboard extends React.Component {
 
     // TODO:
     // Why is H1 smaller than H2 on mobile?
+    // spread things out horizontally more on desktop, vertically more on mobile
     const margin = document.documentElement.clientWidth / 11;
 
     return (<div id="majorDevDash" style={{ width: 'inherit' }}>

@@ -17,7 +17,22 @@ const nodeSize = 8;
 
 // https://emeeks.github.io/semiotic/#/semiotic/customnode
 
+/*
+Proposed major subdivisions are reviewed by the Technical Review Committee for compliance with subdivision and all other existing applicable regulations.  Proposed major subdivisions consisting of 50 or more lots are then reviewed by the Planning and Zoning Commission and the Asheville City Council at public meetings.  A pre-application conference with the Technical Review Manager or designee is required prior to acceptance of an application for major subdivision.
+
+The developer is required to arrange a neighborhood meeting inviting all property owners within 200 feet of the proposed subject property. The meeting must be held no more than four months prior to application submittal and at least ten days before application submission. The property must be posted and notice of the meeting mailed at least ten days prior to the meeting.
+
+*/
+
 const nodes = [
+  {
+    id: 'Pre-Application Meeting',
+    description: 'Required for reasons.',
+  },
+  {
+    id: 'Neighborhood Meeting',
+    description: 'The developer must arrange a neighborhood meeting inviting all property owners within 200 feet of the proposed development. The meeting must be no more than four months but at least ten days before application submission. The property must be posted and notice of the meeting mailed at least ten days prior to the meeting.'
+  },
   {
     id: 'Level I',
     description: 'Projects smaller than 35,000 square feet or with fewer than 20 residential units.',
@@ -81,6 +96,66 @@ const nodes = [
 ]
 
 const links = [
+  {
+    source: 'Pre-Application Meeting',
+    target: 'Level I',
+    color: orderedColors[0],
+  },
+  {
+    source: 'Neighborhood Meeting',
+    target: 'Level I',
+    color: orderedColors[0],
+  },
+  {
+    source: 'Pre-Application Meeting',
+    target: 'Major Subdivision',
+    color: orderedColors[1],
+  },
+  {
+    source: 'Neighborhood Meeting',
+    target: 'Major Subdivision',
+    color: orderedColors[1],
+  },
+  {
+    source: 'Pre-Application Meeting',
+    target: 'Level II',
+    color: orderedColors[2],
+  },
+  {
+    source: 'Neighborhood Meeting',
+    target: 'Level II',
+    color: orderedColors[2],
+  },
+  {
+    source: 'Pre-Application Meeting',
+    target: 'Level III',
+    color: orderedColors[3],
+  },
+  {
+    source: 'Neighborhood Meeting',
+    target: 'Level III',
+    color: orderedColors[3],
+  },
+  {
+    source: 'Pre-Application Meeting',
+    target: 'Conditional Zoning',
+    color: orderedColors[4],
+  },
+  {
+    source: 'Neighborhood Meeting',
+    target: 'Conditional Zoning',
+    color: orderedColors[4],
+  },
+  {
+    source: 'Pre-Application Meeting',
+    target: 'Conditional Use Permit',
+    color: orderedColors[5],
+  },
+  {
+    source: 'Neighborhood Meeting',
+    target: 'Conditional Use Permit',
+    color: orderedColors[5],
+  },
   {
     source: 'Level I',
     target: 'Staff Review',
@@ -291,9 +366,10 @@ class MajorDevelopmentDashboard extends React.Component {
   render() {
 
     // TODO:
+    // Make colors/types of project into key val pair to avoid insanity later
     // Why is H1 smaller than H2 on mobile?
     // spread things out horizontally more on desktop, vertically more on mobile
-    const margin = document.documentElement.clientWidth / 11;
+    const margin = Math.min(document.documentElement.clientWidth / 11, 30);
 
     return (<div id="majorDevDash" style={{ width: 'inherit' }}>
       {/* Highlight/anchor nav button bar */}
@@ -343,7 +419,7 @@ class MajorDevelopmentDashboard extends React.Component {
       <div style={{ width: '100%', height: document.documentElement.clientHeight * 5, display: 'inline-block' }}>
         <ResponsiveNetworkFrame
           size={[320, 1000]}
-          margin={{top: 100, right: margin, bottom: margin, left: margin }}
+          margin={{top: 200, right: margin, bottom: margin, left: margin }}
           responsiveWidth
           responsiveHeight
           graph={g}

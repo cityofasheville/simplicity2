@@ -52,7 +52,7 @@ const nodes = [
   },
   {
     id: 'Technical Review Committee',
-    description: 'The Technical Review Committee (TRC) is an eight-member body consisting of six staff, a representative of the Tree Commission, and a member representing the Buncombe County Metropolitan Sewer District (MSD). It was established in 1997 for consideration of site plans, subdivision plats, master plans for Planned Unit Development, plans for conditional use permit or other land development matters consistent with the provisions of the Unified Development Ordinance (UDO). The members shall ensure that the proposed project complies with the development requirements and applicable City standards.',
+    description: 'An eight-member body that ensures that the proposed project complies with standards and requirements. Consists of six staff, a representative of the Tree Commission, and a member representing the Buncombe County Metropolitan Sewer District (MSD).',
   },
   {
     id: 'Major Subdivision Decision',
@@ -348,10 +348,10 @@ class MajorDevelopmentDashboard extends React.Component {
           graph={g}
           annotations={annotations}
           svgAnnotationRules={(d) => {
-            const offsetY = margin * 0.5
+            const offsetY = 10;
             const offsetX = margin * 0.25
 
-            let thisY = offsetY;
+            let thisY = - offsetY;
             let thisX = offsetX;
             let alignment = null;
 
@@ -381,11 +381,11 @@ class MajorDevelopmentDashboard extends React.Component {
               alignment = 'middle';
               thisX = offsetX * 0.25;
               if (d.i % 2 !== 0) {
-                thisY = -1 * offsetY
+                thisY = offsetY;
               }
               const numRows = Math.ceil(d.d.coincidents.length / 2);
               if (d.i % 4 === 0 || d.i % numRows === 0) {
-                thisY *= 8;
+                thisY *= 2;
               }
             }
 

@@ -340,7 +340,7 @@ class MajorDevelopmentDashboard extends React.Component {
         <h1>Major Development in Asheville</h1>
         <p>The Unified Development Ordinance defines six types of large scale development in Asheville.</p>
       </div>
-      <div style={{ width: '100%', height: document.documentElement.clientHeight * 4, display: 'inline-block' }}>
+      <div style={{ width: '100%', height: document.documentElement.clientHeight * 5, display: 'inline-block' }}>
         <ResponsiveNetworkFrame
           size={[320, 1000]}
           margin={{top: 100, right: margin, bottom: margin, left: margin }}

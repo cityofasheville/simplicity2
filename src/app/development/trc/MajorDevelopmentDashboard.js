@@ -369,7 +369,15 @@ class MajorDevelopmentDashboard extends React.Component {
     // Make colors/types of project into key val pair to avoid insanity later
     // Why is H1 smaller than H2 on mobile?
     // spread things out horizontally more on desktop, vertically more on mobile
-    const margin = Math.min(document.documentElement.clientWidth / 11, 30);
+    const screenWidth = document.documentElement.clientWidth;
+    const sideMargin = Math.max(screenWidth / 6, 40);
+    const verticalMargin = (1000 / screenWidth) * 75;
+    const height = document.documentElement.clientHeight * (1200 / screenWidth) * 2
+
+    let fontSize = 14;
+    if (screenWidth < 750) {
+      fontSize = 12;
+    }
 
     return (<div id="majorDevDash" style={{ width: 'inherit' }}>
       {/* Highlight/anchor nav button bar */}
@@ -416,37 +424,40 @@ class MajorDevelopmentDashboard extends React.Component {
         <h1>Major Development in Asheville</h1>
         <p>The Unified Development Ordinance defines six types of large scale development in Asheville.</p>
       </div>
-      <div style={{ width: '100%', height: document.documentElement.clientHeight * 5, display: 'inline-block' }}>
+      <div style={{ width: '100%', height: height, display: 'inline-block', fontSize }}>
         <ResponsiveNetworkFrame
           size={[320, 1000]}
-          margin={{top: 200, right: margin, bottom: margin, left: margin }}
+          margin={{top: verticalMargin, right: sideMargin, bottom: 0, left: sideMargin }}
           responsiveWidth
           responsiveHeight
           graph={g}
           annotations={annotations}
           svgAnnotationRules={(d) => {
-            const offsetY = 10;
-            const offsetX = margin * 0.25
-
+            const offsetY = fontSize * 3;
+            const offsetX = fontSize;
+            let wrap = screenWidth / 3;
             let thisY = - offsetY;
             let thisX = offsetX;
             let alignment = null;
+            let curveBeta = 0.25;
 
-            const midpoint = d.networkFrameState.adjustedSize[0] / 2
+            const midpoint = d.networkFrameState.adjustedSize[0] / 2;
 
             // if it's the only one, position it on whatever side has more room
             if (d.d.coincidents.length === 1) {
               alignment = 'middle';
+              thisY = offsetY / 2;
               // if x is greater than midpoint, position it to the left
               if (d.d.x > d.networkFrameState.adjustedSize[0] / 2) {
-                thisX = - offsetX;
+                thisX = - offsetX * 3;
               } else {
                 // if x is less than midpoint, position it to the right
-                thisX = offsetX;
+                thisX = offsetX * 3;
               }
             }
 
             if (d.d.coincidents.length === 2) {
+              thisY *= 0.25;
               if (d.d.indexInCoincidents === 0) {
                 // If it's the first of two, position it to the left
                 thisX = - offsetX;
@@ -456,13 +467,18 @@ class MajorDevelopmentDashboard extends React.Component {
             // split into rows
             if (d.d.coincidents.length > 2) {
               alignment = 'middle';
-              thisX = offsetX * 0.25;
-              if (d.i % 2 !== 0) {
+              wrap = screenWidth / 4;
+              curveBeta = 0.5;
+              if (d.d.indexInCoincidents < d.d.coincidents.length / 2) {
+                thisY = - offsetY;
+                thisX = d.d.indexInCoincidents * wrap - sideMargin;
+              } else {
                 thisY = offsetY;
+                thisX = - (d.d.coincidents.length - d.d.indexInCoincidents - 1) * wrap + sideMargin;
               }
-              const numRows = Math.ceil(d.d.coincidents.length / 2);
-              if (d.i % 4 === 0 || d.i % numRows === 0) {
-                thisY *= 2;
+
+              if (d.d.indexInCoincidents % (d.d.coincidents.length / 2) === 1) {
+                thisY *= 2.5;
               }
             }
 
@@ -478,14 +494,16 @@ class MajorDevelopmentDashboard extends React.Component {
               disable="subject"
             >
               <ConnectorCurve
-                curve={curveBundle.beta(0.15)}
+                curve={curveBundle.beta(curveBeta)}
               />
               <Note
                 align={alignment}
                 orientation={"topBottom"}
-                bgPadding={5}
+                bgPadding={fontSize}
+                padding={fontSize}
                 titleColor={"gray"}
                 lineType={null}
+                wrap={wrap}
               />
             </Annotation>)
           }}
@@ -504,7 +522,7 @@ class MajorDevelopmentDashboard extends React.Component {
               cx={d.d.x}
               cy={d.d.y}
               r={nodeSize}
-              style={{ fill: fill, stroke: 'none' }}
+              style={{ fill: fill, stroke: 'gray' }}
               ref={this.nodeRefs[d.d.id]}
             />)
           }}

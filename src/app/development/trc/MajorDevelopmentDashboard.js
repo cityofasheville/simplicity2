@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import dagre from 'dagre';
+import { curveBundle } from 'd3-shape';
 import { ResponsiveNetworkFrame } from 'semiotic';
-import { Annotation, ConnectorLine, Note } from 'react-annotation';
+import { Annotation, ConnectorCurve, Note } from 'react-annotation';
 import AnchorNav from './AnchorNav';
 import { colorScheme } from '../volume/granularUtils';
 
@@ -51,7 +52,7 @@ const nodes = [
   },
   {
     id: 'Technical Review Committee',
-    description: 'Foo',
+    description: 'The Technical Review Committee (TRC) is an eight-member body consisting of six staff, a representative of the Tree Commission, and a member representing the Buncombe County Metropolitan Sewer District (MSD). It was established in 1997 for consideration of site plans, subdivision plats, master plans for Planned Unit Development, plans for conditional use permit or other land development matters consistent with the provisions of the Unified Development Ordinance (UDO). The members shall ensure that the proposed project complies with the development requirements and applicable City standards.',
   },
   {
     id: 'Major Subdivision Decision',
@@ -63,7 +64,7 @@ const nodes = [
   },
   {
     id: 'Planning and Zoning Commission',
-    description: 'Foo',
+    description: 'The Commission consists of 7 members, 5 City residents appointed by City Council and 2 residents of the extra-territorial area of the City and appointed by Buncombe County Commissioners. The length of term of office is three years.',
   },
   {
     id: 'Level II and Downtown Major Subdivision Decision',
@@ -225,7 +226,6 @@ dagre.layout(g)
 const nodeValues = Object.values(g._nodes);
 nodeValues.forEach(d => {
   d.coincidents = nodeValues.filter(val => val.y === d.y)
-  console.log(d.coincidents)
   d.indexInCoincidents = d.coincidents.findIndex(c => c.label === d.label)
 })
 const annotations = nodeValues.map(d => {
@@ -246,9 +246,6 @@ const annotations = nodeValues.map(d => {
 //   if (d.ids === undefined) { return true; }
 //   return array.findIndex(f => f.ids !== undefined && f.ids.join() === d.ids.join()) === i;
 // })
-
-console.log(nodes, annotations)
-
 
 class MajorDevelopmentDashboard extends React.Component {
   constructor(){
@@ -295,8 +292,7 @@ class MajorDevelopmentDashboard extends React.Component {
 
     // TODO:
     // Why is H1 smaller than H2 on mobile?
-    const margin = document.documentElement.clientWidth / 12;
-    const midPageX = document.documentElement.clientWidth / 2;
+    const margin = document.documentElement.clientWidth / 11;
 
     return (<div id="majorDevDash" style={{ width: 'inherit' }}>
       {/* Highlight/anchor nav button bar */}
@@ -346,50 +342,71 @@ class MajorDevelopmentDashboard extends React.Component {
       <div style={{ width: '100%', height: document.documentElement.clientHeight * 4, display: 'inline-block' }}>
         <ResponsiveNetworkFrame
           size={[320, 1000]}
-          margin={margin}
+          margin={{top: 100, right: margin, bottom: margin, left: margin }}
           responsiveWidth
           responsiveHeight
           graph={g}
           annotations={annotations}
           svgAnnotationRules={(d) => {
-            console.log(d)
-            const offset = margin * 0.5
+            const offsetY = margin * 0.5
+            const offsetX = margin * 0.25
 
-            let dY = offset;
-            let dX = offset;
+            let thisY = offsetY;
+            let thisX = offsetX;
+            let alignment = null;
 
-            if (d.d.coincidents.length === 2) {
-              if (d.d.indexInCoincidents === 0) {
-                dX = - offset;
+            const midpoint = d.networkFrameState.adjustedSize[0] / 2
+
+            // if it's the only one, position it on whatever side has more room
+            if (d.d.coincidents.length === 1) {
+              alignment = 'middle';
+              // if x is greater than midpoint, position it to the left
+              if (d.d.x > d.networkFrameState.adjustedSize[0] / 2) {
+                thisX = - offsetX;
+              } else {
+                // if x is less than midpoint, position it to the right
+                thisX = offsetX;
               }
             }
 
-            if (d.d.coincidents.length > 2) {
-              if (d.i % 2 !== 0) {
-                dY = -1 * offset
+            if (d.d.coincidents.length === 2) {
+              if (d.d.indexInCoincidents === 0) {
+                // If it's the first of two, position it to the left
+                thisX = - offsetX;
               }
-              if (d.d.x < midPageX) {
-                dX = - offset
+            }
+
+            // split into rows
+            if (d.d.coincidents.length > 2) {
+              alignment = 'middle';
+              thisX = offsetX * 0.25;
+              if (d.i % 2 !== 0) {
+                thisY = -1 * offsetY
+              }
+              const numRows = Math.ceil(d.d.coincidents.length / 2);
+              if (d.i % 4 === 0 || d.i % numRows === 0) {
+                thisY *= 8;
               }
             }
 
             return (<Annotation
               x={d.d.x}
               y={d.d.y}
-              dy={dY}
-              dx={dX}
+              dy={thisY}
+              dx={thisX}
               color="gray"
               title={d.d.label}
               label={d.d.description}
               className="show-bg"
               disable="subject"
             >
-              <ConnectorLine />
+              <ConnectorCurve
+                curve={curveBundle.beta(0.15)}
+              />
               <Note
-                align={null}
+                align={alignment}
                 orientation={"topBottom"}
                 bgPadding={5}
-                padding={5}
                 titleColor={"gray"}
                 lineType={null}
               />

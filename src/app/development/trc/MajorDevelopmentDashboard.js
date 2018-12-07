@@ -372,7 +372,7 @@ class MajorDevelopmentDashboard extends React.Component {
     const screenWidth = document.documentElement.clientWidth;
     const sideMargin = Math.max(screenWidth / 6, 40);
     const verticalMargin = (1000 / screenWidth) * 75;
-    const height = document.documentElement.clientHeight * (1200 / screenWidth) * 2
+    const height = document.documentElement.clientHeight * (1400 / screenWidth) * 1.5
 
     let fontSize = 14;
     if (screenWidth < 750) {
@@ -468,7 +468,7 @@ class MajorDevelopmentDashboard extends React.Component {
             if (d.d.coincidents.length > 2) {
               alignment = 'middle';
               wrap = screenWidth / 4;
-              curveBeta = 0.5;
+              curveBeta = 0.75;
               if (d.d.indexInCoincidents < d.d.coincidents.length / 2) {
                 thisY = - offsetY;
                 thisX = d.d.indexInCoincidents * wrap - sideMargin;

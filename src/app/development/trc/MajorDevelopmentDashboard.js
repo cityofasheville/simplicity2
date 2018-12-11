@@ -307,10 +307,20 @@ const annotations = nodeValues.map(d => {
   return rVal;
 })
 
-// .filter((d, i, array) => {
-//   if (d.ids === undefined) { return true; }
-//   return array.findIndex(f => f.ids !== undefined && f.ids.join() === d.ids.join()) === i;
-// })
+function debounce(func, wait, immediate) {
+	var timeout;
+	return function() {
+		var context = this, args = arguments;
+		var later = function() {
+			timeout = null;
+			if (!immediate) func.apply(context, args);
+		};
+		var callNow = immediate && !timeout;
+		clearTimeout(timeout);
+		timeout = setTimeout(later, wait);
+		if (callNow) func.apply(context, args);
+	};
+};
 
 class MajorDevelopmentDashboard extends React.Component {
   constructor(){
@@ -349,7 +359,7 @@ class MajorDevelopmentDashboard extends React.Component {
       anchorNavLinks,
     }
 
-    this.handleScroll = this.handleScroll.bind(this)
+    this.handleScroll = debounce(this.handleScroll.bind(this), 250)
   }
 
   componentDidMount() {
@@ -361,19 +371,34 @@ class MajorDevelopmentDashboard extends React.Component {
   }
 
   handleScroll(event) {
+    const changePoint = document.documentElement.clientHeight * 0.75;
+    let closestDistanceToChange = null;
+    let closestNavLinkId = null;
+
+    this.state.anchorNavLinks.forEach(navLink => {
+      const thisRef = navLink.ref.current.getBoundingClientRect();
+
+      if (thisRef.top < changePoint && (!closestDistanceToChange || thisRef.top > closestDistanceToChange)) {
+        // If the top of this ref is above the bottom of the screen
+        // AND
+        // If there isn't already a closest distance assigned
+        // OR
+        // If it's above below the current closest ref, make it the selected one
+        closestNavLinkId = navLink.linkId;
+        closestDistanceToChange = thisRef.top;
+      }
+    })
+
     const newAnchorNavLinks = this.state.anchorNavLinks.map(navLink => {
       const rObj = Object.assign({}, navLink)
-      const thisRef = navLink.ref.current.getBoundingClientRect();
-      const showing = thisRef.top > 120 && thisRef.top < document.documentElement.clientHeight;
-      if (showing) {
-        rObj.selected = true
-      } else {
+      if (navLink.linkId !== closestNavLinkId) {
         rObj.selected = false;
+        return rObj;
       }
+      rObj.selected = true;
       return rObj;
     })
 
-    // TODO: DEBOUNCE
     this.setState({
       anchorNavLinks: newAnchorNavLinks,
     });
@@ -382,7 +407,10 @@ class MajorDevelopmentDashboard extends React.Component {
   render() {
 
     // TODO:
-    
+    // put ref on outer div of each section
+    // USE SECTION ELEMENT?
+
+
     // Make colors/types of project into key val pair to avoid insanity later
     // Why is H1 smaller than H2 on mobile?
     // spread things out horizontally more on desktop, vertically more on mobile
@@ -390,11 +418,7 @@ class MajorDevelopmentDashboard extends React.Component {
     const sideMargin = Math.min(screenWidth / 6, 40);
     const height = document.documentElement.clientHeight * Math.min((1024 / screenWidth), 2.5)
     const verticalMargin = document.documentElement.clientHeight * 0.25;
-
-    let fontSize = 14;
-    if (screenWidth < 750) {
-      fontSize = 12;
-    }
+    const fontSize = screenWidth < 750 ? 12 : 14;
 
     return (<div id="majorDevDash" style={{ width: 'inherit' }}>
       {/* Highlight/anchor nav button bar */}
@@ -487,6 +511,7 @@ class MajorDevelopmentDashboard extends React.Component {
               label={d.d.description}
               className="show-bg"
               disable="subject"
+              key={`${d.d.label}-annotation`}
             >
               <ConnectorCurve
                 curve={curveBundle.beta(curveBeta)}

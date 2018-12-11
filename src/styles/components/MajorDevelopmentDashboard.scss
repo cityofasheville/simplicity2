@@ -22,6 +22,10 @@ $xs: $mobile-min - 1;
   stroke: gray;
 }
 
+#majorDevDash .linkItem-selected {
+  font-weight: bold;
+}
+
 @media(max-width: $xs){
   .anchorNav a {
     font-size: 0.75em;

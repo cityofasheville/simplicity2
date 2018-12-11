@@ -25,31 +25,31 @@ const nodes = [
   },
   {
     id: 'Major Subdivision',
-    description: 'Foo',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
   },
   {
     id: 'Level II',
-    description: 'Foo',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
   },
   {
     id: 'Level III',
-    description: 'Foo',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
   },
   {
     id: 'Conditional Zoning',
-    description: 'Foo',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
   },
   {
     id: 'Conditional Use Permit',
-    description: 'Foo',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
   },
   {
     id: 'Staff Review',
-    description: 'Foo',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
   },
   {
     id: 'Level I Decision',
-    description: 'Foo',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
   },
   {
     id: 'Technical Review Committee',
@@ -69,15 +69,15 @@ const nodes = [
   },
   {
     id: 'Level II and Downtown Major Subdivision Decision',
-    description: 'Foo',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
   },
   {
     id: 'City Council',
-    description: 'Foo',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
   },
   {
     id: 'City Council Decision',
-    description: 'Foo',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
   },
 ]
 const links = [
@@ -373,7 +373,7 @@ class MajorDevelopmentDashboard extends React.Component {
   }
 
   componentDidMount() {
-    window.addEventListener('scroll', this.handleScroll);
+    // window.addEventListener('scroll', this.handleScroll);
   }
 
   componentWillUnmount() {
@@ -381,7 +381,7 @@ class MajorDevelopmentDashboard extends React.Component {
   }
 
   handleScroll(event) {
-    const changePoint = document.documentElement.clientHeight * 0.75;
+    const changePoint = document.documentElement.clientHeight * 0.5;
     let closestDistanceToChange = null;
     let closestNavLinkId = null;
 
@@ -421,7 +421,7 @@ class MajorDevelopmentDashboard extends React.Component {
 
     const screenWidth = document.documentElement.clientWidth;
     const sideMargin = Math.min(screenWidth / 6, 40);
-    const height = document.documentElement.clientHeight * Math.min((1024 / screenWidth), 2.5)
+    const height = document.documentElement.clientHeight * Math.max((1100 / screenWidth), 4)
     const verticalMargin = document.documentElement.clientHeight * 0.25;
     const fontSize = screenWidth < 750 ? 12 : 14;
 
@@ -454,60 +454,69 @@ class MajorDevelopmentDashboard extends React.Component {
           graph={this.graph}
           annotations={this.annotations}
           svgAnnotationRules={(d) => {
-            const offsetY = fontSize * 3;
-            const offsetX = fontSize;
-            let wrap = screenWidth / 3;
-            let thisY = - offsetY;
-            let thisX = offsetX;
-            let alignment = null;
-            let curveBeta = 0.25;
+            // Side padding for these is fontSize
+            const annotationMargin = fontSize;
 
+            const numPerRow = Math.min(d.d.coincidents.length, 3);
+            const midRowIndex = (numPerRow - 1) / 2.0;
+            const offsetY = fontSize * 3;
+            const wrap = Math.min(
+              (screenWidth / numPerRow) - (annotationMargin * 2) - (annotationMargin * 2 * midRowIndex),
+              175
+            )
             const midpoint = d.networkFrameState.adjustedSize[0] / 2;
 
-            // if it's the only one, position it on whatever side has more room
-            if (d.d.coincidents.length === 1) {
-              alignment = 'middle';
-              thisY = offsetY / 2;
-              // if x is greater than midpoint, position it to the left
-              if (d.d.x > d.networkFrameState.adjustedSize[0] / 2) {
-                thisX = - offsetX * 3;
-              } else {
-                // if x is less than midpoint, position it to the right
-                thisX = offsetX * 3;
+            let thisYOffset = - offsetY;
+            let thisXOffset = 0;
+            let curveBeta = 0.25;
+
+            if (wrap < 175) {
+              // if it's the only one, position it on whatever side has more room
+              if (d.d.coincidents.length === 1) {
+                thisYOffset =  - offsetY / 2;
+                // if x is greater than midpoint, position it to the left
+                if (d.d.x > midpoint) {
+                  thisXOffset = midpoint - d.d.x;
+                } else {
+                  // if x is less than midpoint, position it to the right
+                  thisXOffset = d.d.x - midpoint;
+                }
+              }
+
+              if (d.d.coincidents.length === 2) {
+                thisYOffset *= 0.25;
+                const xPosition = (d.d.indexInCoincidents + 1) * (annotationMargin * 2) + d.d.indexInCoincidents * wrap;
+                console.log(d.d, d.d.indexInCoincidents, xPosition)
+                thisXOffset = xPosition - d.d.x;
               }
             }
 
-            if (d.d.coincidents.length === 2) {
-              thisY *= 0.25;
-              if (d.d.indexInCoincidents === 0) {
-                // If it's the first of two, position it to the left
-                thisX = - offsetX;
-              }
-            }
 
             // split into rows
-            if (d.d.coincidents.length > 2) {
-              alignment = 'middle';
-              wrap = screenWidth / 4;
-              curveBeta = 0.75;
-              if (d.d.indexInCoincidents < d.d.coincidents.length / 2) {
-                thisY = - offsetY;
-                thisX = d.d.indexInCoincidents * wrap - sideMargin;
-              } else {
-                thisY = offsetY;
-                thisX = - (d.d.coincidents.length - d.d.indexInCoincidents - 1) * wrap + sideMargin;
-              }
-
-              if (d.d.indexInCoincidents % (d.d.coincidents.length / 2) === 1) {
-                thisY *= 2.5;
-              }
-            }
+            // if (d.d.coincidents.length > 2) {
+            //   alignment = 'middle';
+            //   wrap = screenWidth / 4;
+            //   const paddingBtwn = (screenWidth / 4) / 4;
+            //   curveBeta = 0.75;
+            //
+            //   thisXOffset = d.d.x - (d.d.indexInCoincidents % 3) * (screenWidth / 3)
+            //
+            //   if (d.d.indexInCoincidents < d.d.coincidents.length / 2) {
+            //     thisYOffset = - offsetY
+            //   } else {
+            //     thisYOffset = offsetY;
+            //   }
+            //
+            //   // if (d.d.indexInCoincidents % (d.d.coincidents.length / 2) === 1) {
+            //   //   thisYOffset *= 2.5;
+            //   // }
+            // }
 
             return (<Annotation
               x={d.d.x}
               y={d.d.y}
-              dy={thisY}
-              dx={thisX}
+              dy={thisYOffset}
+              dx={thisXOffset}
               color="gray"
               title={d.d.label}
               label={d.d.description}
@@ -519,10 +528,9 @@ class MajorDevelopmentDashboard extends React.Component {
                 curve={curveBundle.beta(curveBeta)}
               />
               <Note
-                align={alignment}
+                align={'middle'}
                 orientation={"topBottom"}
                 bgPadding={fontSize}
-                padding={fontSize}
                 titleColor={"gray"}
                 lineType={null}
                 wrap={wrap}

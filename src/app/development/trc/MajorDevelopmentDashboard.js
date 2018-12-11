@@ -4,16 +4,12 @@ import dagre from 'dagre';
 import { curveBundle } from 'd3-shape';
 import { ResponsiveNetworkFrame } from 'semiotic';
 import { Annotation, ConnectorCurve, Note } from 'react-annotation';
-import AnchorNav from './AnchorNav';
+import SectionNav from './SectionNav';
 import { colorScheme } from '../volume/granularUtils';
 
-const g = new dagre.graphlib.Graph()
-g.setGraph({ rankdir:  'TB', ranker: 'network-simplex'})
-g.setDefaultEdgeLabel(() => ({}))
 
 const orderedColors = ['#FF3A3A','#749B5F','#2d93ad','#004EA3','#9B6681','#9E4F55','#073d49']
 const nodeSize = 8;
-
 const nodes = [
   {
     id: 'Pre-Application Meeting',
@@ -84,7 +80,6 @@ const nodes = [
     description: 'Foo',
   },
 ]
-
 const links = [
   {
     source: 'Pre-Application Meeting',
@@ -251,19 +246,6 @@ const links = [
   },
 ]
 
-nodes.forEach(node => {
-  g.setNode(
-    node.id,
-    {
-      label: node.id,
-      width: node.width || nodeSize,
-      height: node.height || nodeSize,
-      description: node.description,
-      color: node.color ? node.color : 'gray',
-    }
-  );
-})
-
 function calculateEdges(link) {
   const weight = 1.5;
   if (link.parallelEdges) {
@@ -276,57 +258,81 @@ function calculateEdges(link) {
   return [{ color: link.color ? link.color : 'gray', weight: weight}];
 }
 
-links.forEach(link => {
-  g.setEdge(
-    link.source,
-    link.target,
-    {
-      parallelEdges: calculateEdges(link),
-    }
-  );
-})
-
-dagre.layout(g)
-
-const nodeValues = Object.values(g._nodes);
-nodeValues.forEach(d => {
-  d.coincidents = nodeValues.filter(val => val.y === d.y)
-  d.indexInCoincidents = d.coincidents.findIndex(c => c.label === d.label)
-})
-const annotations = nodeValues.map(d => {
-  const rVal = {
-    id: d.label,
-    coincidents: d.coincidents,
-    indexInCoincidents: d.indexInCoincidents,
-    description: d.description,
-    color: 'black',
-    connector: { end: 'none' },
-    disable: 'subject',
-    type: 'node',
-  };
-  return rVal;
-})
-
 function debounce(func, wait, immediate) {
-	var timeout;
-	return function() {
-		var context = this, args = arguments;
-		var later = function() {
-			timeout = null;
-			if (!immediate) func.apply(context, args);
-		};
-		var callNow = immediate && !timeout;
-		clearTimeout(timeout);
-		timeout = setTimeout(later, wait);
-		if (callNow) func.apply(context, args);
-	};
+  var timeout;
+  return function() {
+    var context = this, args = arguments;
+    var later = function() {
+      timeout = null;
+      if (!immediate) func.apply(context, args);
+    };
+    var callNow = immediate && !timeout;
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+    if (callNow) func.apply(context, args);
+  };
 };
+
+function getDagreGraph() {
+  const g = new dagre.graphlib.Graph()
+  g.setGraph({ rankdir:  'TB', ranker: 'network-simplex'})
+  g.setDefaultEdgeLabel(() => ({}))
+
+  nodes.forEach(node => {
+    g.setNode(
+      node.id,
+      {
+        label: node.id,
+        width: node.width || nodeSize,
+        height: node.height || nodeSize,
+        description: node.description,
+        color: node.color ? node.color : 'gray',
+      }
+    );
+  })
+
+  links.forEach(link => {
+    g.setEdge(
+      link.source,
+      link.target,
+      {
+        parallelEdges: calculateEdges(link),
+      }
+    );
+  })
+
+  dagre.layout(g);
+
+  return g;
+}
+
+function getAnnotations(dagreGraph) {
+  const nodeValues = Object.values(dagreGraph._nodes);
+  nodeValues.forEach(d => {
+    d.coincidents = nodeValues.filter(val => val.y === d.y)
+    d.indexInCoincidents = d.coincidents.findIndex(c => c.label === d.label)
+  })
+  return nodeValues.map(d => {
+    const rVal = {
+      id: d.label,
+      coincidents: d.coincidents,
+      indexInCoincidents: d.indexInCoincidents,
+      description: d.description,
+      color: 'black',
+      connector: { end: 'none' },
+      disable: 'subject',
+      type: 'node',
+    };
+    return rVal;
+  })
+}
+
 
 class MajorDevelopmentDashboard extends React.Component {
   constructor(){
     super();
 
-    const anchorNavLinks = [
+    const sectionNavLinks = [
       {
         linkId: 'about',
         linkName: 'About',
@@ -352,11 +358,15 @@ class MajorDevelopmentDashboard extends React.Component {
       const rObj = Object.assign({}, d);
       rObj.color = colorScheme[i];
       rObj.ref = React.createRef();
+      rObj.selected = false;
       return rObj;
     })
 
+    this.graph = getDagreGraph();
+    this.annotations = getAnnotations(this.graph);
+
     this.state = {
-      anchorNavLinks,
+      sectionNavLinks,
     }
 
     this.handleScroll = debounce(this.handleScroll.bind(this), 250)
@@ -375,7 +385,7 @@ class MajorDevelopmentDashboard extends React.Component {
     let closestDistanceToChange = null;
     let closestNavLinkId = null;
 
-    this.state.anchorNavLinks.forEach(navLink => {
+    this.state.sectionNavLinks.forEach(navLink => {
       const thisRef = navLink.ref.current.getBoundingClientRect();
 
       if (thisRef.top < changePoint && (!closestDistanceToChange || thisRef.top > closestDistanceToChange)) {
@@ -389,7 +399,7 @@ class MajorDevelopmentDashboard extends React.Component {
       }
     })
 
-    const newAnchorNavLinks = this.state.anchorNavLinks.map(navLink => {
+    const newSectionNavLinks = this.state.sectionNavLinks.map(navLink => {
       const rObj = Object.assign({}, navLink)
       if (navLink.linkId !== closestNavLinkId) {
         rObj.selected = false;
@@ -400,20 +410,15 @@ class MajorDevelopmentDashboard extends React.Component {
     })
 
     this.setState({
-      anchorNavLinks: newAnchorNavLinks,
+      sectionNavLinks: newSectionNavLinks,
     });
   }
 
   render() {
-
-    // TODO:
-    // put ref on outer div of each section
-    // USE SECTION ELEMENT?
-
-
+    // TODO: use section element?
     // Make colors/types of project into key val pair to avoid insanity later
     // Why is H1 smaller than H2 on mobile?
-    // spread things out horizontally more on desktop, vertically more on mobile
+
     const screenWidth = document.documentElement.clientWidth;
     const sideMargin = Math.min(screenWidth / 6, 40);
     const height = document.documentElement.clientHeight * Math.min((1024 / screenWidth), 2.5)
@@ -422,8 +427,8 @@ class MajorDevelopmentDashboard extends React.Component {
 
     return (<div id="majorDevDash" style={{ width: 'inherit' }}>
       {/* Highlight/anchor nav button bar */}
-      <AnchorNav
-        links={this.state.anchorNavLinks}
+      <SectionNav
+        links={this.state.sectionNavLinks}
       />
       <div style={{ height: '4em' }}></div>
       <div
@@ -435,7 +440,7 @@ class MajorDevelopmentDashboard extends React.Component {
           display: 'block',
           padding: 0,
         }}
-        ref={this.state.anchorNavLinks.find(d => d.linkId === 'about').ref}
+        ref={this.state.sectionNavLinks.find(d => d.linkId === 'about').ref}
       >
         <h1>Major Development in Asheville</h1>
         <p>The Unified Development Ordinance defines six types of large scale development in Asheville.</p>
@@ -446,11 +451,8 @@ class MajorDevelopmentDashboard extends React.Component {
           margin={{top: verticalMargin, right: sideMargin, bottom: 0, left: sideMargin }}
           responsiveWidth
           responsiveHeight
-          graph={g}
-          annotations={annotations}
-          // annotationSettings={{
-          //   layout: { type: 'bump' }
-          // }}
+          graph={this.graph}
+          annotations={this.annotations}
           svgAnnotationRules={(d) => {
             const offsetY = fontSize * 3;
             const offsetX = fontSize;
@@ -545,7 +547,7 @@ class MajorDevelopmentDashboard extends React.Component {
       {/* Get notifications */}
       <h2
         id="notifications"
-        ref={this.state.anchorNavLinks.find(d => d.linkId === 'notifications').ref}
+        ref={this.state.sectionNavLinks.find(d => d.linkId === 'notifications').ref}
       >
         Sign up for Notifications
       </h2>
@@ -554,19 +556,19 @@ class MajorDevelopmentDashboard extends React.Component {
       <br/>
       <br/>
       {/* Data - table and map */}
-      <h2 id="data" ref={this.state.anchorNavLinks.find(d => d.linkId === 'data').ref}>Current Projects</h2>
+      <h2 id="data" ref={this.state.sectionNavLinks.find(d => d.linkId === 'data').ref}>Current Projects</h2>
       <br/>
       <br/>
       <br/>
       <br/>
       {/* Calendar */}
-      <h2 id="calendar" ref={this.state.anchorNavLinks.find(d => d.linkId === 'calendar').ref}>Upcoming Public Events</h2>
+      <h2 id="calendar" ref={this.state.sectionNavLinks.find(d => d.linkId === 'calendar').ref}>Upcoming Public Events</h2>
       <br/>
       <br/>
       <br/>
       <br/>
       {/* FAQ */}
-      <h2 id="faq" ref={this.state.anchorNavLinks.find(d => d.linkId === 'faq').ref}>FAQ</h2>
+      <h2 id="faq" ref={this.state.sectionNavLinks.find(d => d.linkId === 'faq').ref}>FAQ</h2>
     </div>);
   }
 

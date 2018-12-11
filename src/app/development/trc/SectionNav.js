@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { color, hsl } from 'd3-color';
 
 
-class AnchorNav extends React.Component {
+class SectionNav extends React.Component {
   constructor(props){
     super(props);
   }
@@ -49,4 +49,4 @@ class AnchorNav extends React.Component {
 
 }
 
-export default AnchorNav;
+export default SectionNav;

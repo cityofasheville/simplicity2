@@ -14,16 +14,6 @@ g.setDefaultEdgeLabel(() => ({}))
 const orderedColors = ['#FF3A3A','#749B5F','#2d93ad','#004EA3','#9B6681','#9E4F55','#073d49']
 const nodeSize = 8;
 
-
-// https://emeeks.github.io/semiotic/#/semiotic/customnode
-
-/*
-Proposed major subdivisions are reviewed by the Technical Review Committee for compliance with subdivision and all other existing applicable regulations.  Proposed major subdivisions consisting of 50 or more lots are then reviewed by the Planning and Zoning Commission and the Asheville City Council at public meetings.  A pre-application conference with the Technical Review Manager or designee is required prior to acceptance of an application for major subdivision.
-
-The developer is required to arrange a neighborhood meeting inviting all property owners within 200 feet of the proposed subject property. The meeting must be held no more than four months prior to application submittal and at least ten days before application submission. The property must be posted and notice of the meeting mailed at least ten days prior to the meeting.
-
-*/
-
 const nodes = [
   {
     id: 'Pre-Application Meeting',
@@ -31,7 +21,7 @@ const nodes = [
   },
   {
     id: 'Neighborhood Meeting',
-    description: 'The developer must arrange a neighborhood meeting inviting all property owners within 200 feet of the proposed development. The meeting must be no more than four months but at least ten days before application submission. The property must be posted and notice of the meeting mailed at least ten days prior to the meeting.'
+    description: 'The developer must arrange a neighborhood meeting and invite property owners within 200 feet of the proposed development. The meeting must be no more than four months but at least ten days before application submission. At least ten days prior to the meeting, property must be posted and notice of the meeting mailed.'
   },
   {
     id: 'Level I',
@@ -326,53 +316,80 @@ class MajorDevelopmentDashboard extends React.Component {
   constructor(){
     super();
 
-    this.dashRef = React.createRef();
-
-    this.nodeRefs = {};
-    Object.keys(g._nodes).forEach(nodeKey => {
-      this.nodeRefs[nodeKey] = React.createRef();
+    const anchorNavLinks = [
+      {
+        linkId: 'about',
+        linkName: 'About',
+        selected: true,
+      },
+      {
+        linkId: 'notifications',
+        linkName: 'Get Notifications',
+      },
+      {
+        linkId: 'data',
+        linkName: 'Current Projects'
+      },
+      {
+        linkId: 'calendar',
+        linkName: 'Public Events'
+      },
+      {
+        linkId: 'faq',
+        linkName: 'Frequently Asked Questions',
+      },
+    ].map((d, i) => {
+      const rObj = Object.assign({}, d);
+      rObj.color = colorScheme[i];
+      rObj.ref = React.createRef();
+      return rObj;
     })
 
     this.state = {
-      showingNodes: [],
+      anchorNavLinks,
     }
 
     this.handleScroll = this.handleScroll.bind(this)
   }
 
   componentDidMount() {
-    // window.addEventListener('scroll', this.handleScroll);
+    window.addEventListener('scroll', this.handleScroll);
   }
 
   componentWillUnmount() {
-    // window.removeEventListener('scroll', this.handleScroll);
+    window.removeEventListener('scroll', this.handleScroll);
   }
 
   handleScroll(event) {
-    const showingNodes = [];
-    Object.keys(this.nodeRefs).forEach((nodeRefKey, i) => {
-      const thisRef = this.nodeRefs[nodeRefKey].current.getBoundingClientRect();
-      const nodeShowing = thisRef.top > 120 && thisRef.top < document.documentElement.clientHeight;
-      if (nodeShowing) {
-        showingNodes.push(nodeRefKey)
+    const newAnchorNavLinks = this.state.anchorNavLinks.map(navLink => {
+      const rObj = Object.assign({}, navLink)
+      const thisRef = navLink.ref.current.getBoundingClientRect();
+      const showing = thisRef.top > 120 && thisRef.top < document.documentElement.clientHeight;
+      if (showing) {
+        rObj.selected = true
+      } else {
+        rObj.selected = false;
       }
+      return rObj;
     })
 
+    // TODO: DEBOUNCE
     this.setState({
-      showingNodes
-    })
+      anchorNavLinks: newAnchorNavLinks,
+    });
   }
 
   render() {
 
     // TODO:
+    
     // Make colors/types of project into key val pair to avoid insanity later
     // Why is H1 smaller than H2 on mobile?
     // spread things out horizontally more on desktop, vertically more on mobile
     const screenWidth = document.documentElement.clientWidth;
-    const sideMargin = Math.max(screenWidth / 6, 40);
-    const verticalMargin = (1000 / screenWidth) * 75;
-    const height = document.documentElement.clientHeight * (1400 / screenWidth) * 1.5
+    const sideMargin = Math.min(screenWidth / 6, 40);
+    const height = document.documentElement.clientHeight * Math.min((1024 / screenWidth), 2.5)
+    const verticalMargin = document.documentElement.clientHeight * 0.25;
 
     let fontSize = 14;
     if (screenWidth < 750) {
@@ -382,33 +399,7 @@ class MajorDevelopmentDashboard extends React.Component {
     return (<div id="majorDevDash" style={{ width: 'inherit' }}>
       {/* Highlight/anchor nav button bar */}
       <AnchorNav
-        links={[
-          {
-            linkId: 'about',
-            linkName: 'About',
-            selected: true,
-          },
-          {
-            linkId: 'notifications',
-            linkName: 'Get Notifications',
-          },
-          {
-            linkId: 'data',
-            linkName: 'Current Projects'
-          },
-          {
-            linkId: 'calendar',
-            linkName: 'Public Events'
-          },
-          {
-            linkId: 'faq',
-            linkName: 'Frequently Asked Questions',
-          },
-        ].map((d, i) => {
-          const rObj = Object.assign({}, d);
-          rObj.color = colorScheme[i];
-          return rObj;
-        })}
+        links={this.state.anchorNavLinks}
       />
       <div style={{ height: '4em' }}></div>
       <div
@@ -420,6 +411,7 @@ class MajorDevelopmentDashboard extends React.Component {
           display: 'block',
           padding: 0,
         }}
+        ref={this.state.anchorNavLinks.find(d => d.linkId === 'about').ref}
       >
         <h1>Major Development in Asheville</h1>
         <p>The Unified Development Ordinance defines six types of large scale development in Asheville.</p>
@@ -432,6 +424,9 @@ class MajorDevelopmentDashboard extends React.Component {
           responsiveHeight
           graph={g}
           annotations={annotations}
+          // annotationSettings={{
+          //   layout: { type: 'bump' }
+          // }}
           svgAnnotationRules={(d) => {
             const offsetY = fontSize * 3;
             const offsetX = fontSize;
@@ -513,41 +508,40 @@ class MajorDevelopmentDashboard extends React.Component {
           }}
           edgeStyle={d => ({ stroke: 'white', fill: d.color, strokeWidth: 1 })}
           customNodeIcon={(d) => {
-            let fill = 'white';
-            if (this.state.showingNodes.indexOf(d.d.id) > -1 || true) {
-              fill = '#d9d9d9'
-            }
-
             return (<circle
               cx={d.d.x}
               cy={d.d.y}
               r={nodeSize}
-              style={{ fill: fill, stroke: 'gray' }}
-              ref={this.nodeRefs[d.d.id]}
+              style={{ fill: '#d9d9d9', stroke: 'gray' }}
             />)
           }}
         />
       </div>
       {/* Get notifications */}
-      <h2 id="notifications">Sign up for Notifications</h2>
+      <h2
+        id="notifications"
+        ref={this.state.anchorNavLinks.find(d => d.linkId === 'notifications').ref}
+      >
+        Sign up for Notifications
+      </h2>
       <br/>
       <br/>
       <br/>
       <br/>
       {/* Data - table and map */}
-      <h2 id="data">Current Projects</h2>
+      <h2 id="data" ref={this.state.anchorNavLinks.find(d => d.linkId === 'data').ref}>Current Projects</h2>
       <br/>
       <br/>
       <br/>
       <br/>
       {/* Calendar */}
-      <h2 id="calendar">Upcoming Public Events</h2>
+      <h2 id="calendar" ref={this.state.anchorNavLinks.find(d => d.linkId === 'calendar').ref}>Upcoming Public Events</h2>
       <br/>
       <br/>
       <br/>
       <br/>
       {/* FAQ */}
-      <h2 id="faq">FAQ</h2>
+      <h2 id="faq" ref={this.state.anchorNavLinks.find(d => d.linkId === 'faq').ref}>FAQ</h2>
     </div>);
   }
 

@@ -785,7 +785,7 @@ footer.footer{
 			font-size: .75rem;
 		}
 	}
-	h1, .template-header h1{
+	.template-header__title h1, .template-header__title .template-header h1{
 		font-size: 1.5rem;
 	}
 	.template-header__actions{
@@ -811,7 +811,7 @@ footer.footer{
 }
 
 @media(max-width: $tablet-max)and(min-width: $tablet-min){
-	h1{
+	.template-header__title h1{
 		font-size: 2.5rem;
 	}
 	.navbar__inner{

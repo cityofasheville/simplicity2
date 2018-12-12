@@ -8,8 +8,21 @@ $tablet-max: $desktop-min - 1;
 $xs: $mobile-min - 1;
 
 
+#majorDevDash p {
+  width: 80%;
+  margin-left: 10%;
+}
+
+#majorDevDash h1, #majorDevDash h2 {
+  text-align: center;
+}
+
 .anchorNav a {
-    padding: 0.25em 2em;
+  padding: 0.25em 2em;
+}
+
+.anchorNav a.linkItem-selected, .anchorNav a:hover, .anchorNav a:focus {
+  text-decoration: underline;
 }
 
 #majorDevDash h2, #about {
@@ -31,9 +44,18 @@ $xs: $mobile-min - 1;
   font-weight: bold;
 }
 
+#signup-form {
+  text-align: center;
+  margin: 1em 0;
+}
+
+#signup-form > * {
+  margin: 0.5em 0;
+}
+
 @media(max-width: $xs){
   .anchorNav a {
     font-size: 0.75em;
-    padding: 0.15em 0.25em;
+    padding: 0.15em 0.45em;
   }
 }

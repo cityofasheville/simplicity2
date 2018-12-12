@@ -5,7 +5,6 @@ import { curveBundle } from 'd3-shape';
 import { ResponsiveNetworkFrame } from 'semiotic';
 import { Annotation, ConnectorCurve, Note } from 'react-annotation';
 import SectionNav from './SectionNav';
-import { colorScheme } from '../volume/granularUtils';
 
 
 const orderedColors = ['#FF3A3A','#749B5F','#2d93ad','#004EA3','#9B6681','#9E4F55','#073d49']
@@ -357,9 +356,7 @@ class MajorDevelopmentDashboard extends React.Component {
       },
     ].map((d, i) => {
       const rObj = Object.assign({}, d);
-      rObj.color = colorScheme[i];
       rObj.ref = React.createRef();
-      rObj.selected = false;
       return rObj;
     })
 
@@ -374,7 +371,7 @@ class MajorDevelopmentDashboard extends React.Component {
   }
 
   componentDidMount() {
-    // window.addEventListener('scroll', this.handleScroll);
+    window.addEventListener('scroll', this.handleScroll);
   }
 
   componentWillUnmount() {
@@ -445,6 +442,8 @@ class MajorDevelopmentDashboard extends React.Component {
         ref={this.state.sectionNavLinks.find(d => d.linkId === 'about').ref}
       >
         <h1>Major Development in Asheville</h1>
+        <p>When someone wants to build or modify a building on private property in the City of Asheville, they must comply with federal, state, county, and city standards. Which standards apply depends on how large the building is or how much the building will be modified.</p>
+        <p>After the developer submits an application, it goes through a decision-making process that includes city staff, city council, developers, and residents.  Who is involved at what step depends on the type of project.</p>
         <p>The Unified Development Ordinance defines six types of large scale development in Asheville.</p>
       </div>
       <div style={{ width: '100%', height: height, display: 'inline-block', fontSize }}>
@@ -525,17 +524,27 @@ class MajorDevelopmentDashboard extends React.Component {
           }}
         />
       </div>
-      {/* Get notifications */}
-      <h2
+      {/* Get notifications-- TODO: MULTISELECT */}
+      <div
         id="notifications"
         ref={this.state.sectionNavLinks.find(d => d.linkId === 'notifications').ref}
       >
-        Sign up for Notifications
-      </h2>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
+        <h2> Sign up for Notifications </h2>
+        <p>Provide your email or a phone number that can receive text messages to get an update when a new major development application has been submitted.</p>
+        <div id="signup-form">
+          Email: <input type="email" name="email" /><br/>
+          Phone: <input type="tel" name="phone" /><br/>
+          Geographic area: <select>
+            <option value="north">Entire city</option>
+            <option value="north">North Asheville</option>
+            <option value="east">East Asheville</option>
+            <option value="south">South Asheville</option>
+            <option value="west">West Asheville</option>
+          </select><br/>
+          <input type="submit" value="Sign Up" /><br/>
+        </div>
+        <p>You will receive a message asking you to confirm that you wish to receive notifications.</p>
+      </div>
       {/* Data - table and map */}
       <h2 id="data" ref={this.state.sectionNavLinks.find(d => d.linkId === 'data').ref}>Current Projects</h2>
       <br/>
@@ -550,7 +559,11 @@ class MajorDevelopmentDashboard extends React.Component {
       <br/>
       {/* FAQ */}
       <h2 id="faq" ref={this.state.sectionNavLinks.find(d => d.linkId === 'faq').ref}>FAQ</h2>
-    </div>);
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+    </div>)
   }
 
 }

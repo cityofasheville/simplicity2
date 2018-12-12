@@ -421,7 +421,7 @@ class MajorDevelopmentDashboard extends React.Component {
 
     const screenWidth = document.documentElement.clientWidth;
     const sideMargin = Math.min(screenWidth / 6, 40);
-    const height = document.documentElement.clientHeight * Math.max((1100 / screenWidth), 4)
+    const height = document.documentElement.clientHeight * Math.max((1100 / screenWidth), 5)
     const verticalMargin = document.documentElement.clientHeight * 0.25;
     const fontSize = screenWidth < 750 ? 12 : 14;
 
@@ -461,8 +461,8 @@ class MajorDevelopmentDashboard extends React.Component {
             const midRowIndex = (numPerRow - 1) / 2;
             const defaultOffsetY = fontSize * 3;
             const wrap = Math.min(
-              (screenWidth - (annotationMargin + annotationMargin * numPerRow)) / numPerRow,
-              300
+              (screenWidth - sideMargin * 2 - (annotationMargin + annotationMargin * numPerRow)) / numPerRow,
+              400
             )
             const midpointX = d.networkFrameState.adjustedSize[0] / 2;
 
@@ -474,14 +474,12 @@ class MajorDevelopmentDashboard extends React.Component {
             if (d.d.coincidents.length > 2) {
               curveBeta = 0.5
               if (d.d.indexInCoincidents >= d.d.coincidents.length / 2) {
-                thisYOffset = defaultOffsetY;
+                thisYOffset = defaultOffsetY * 2;
               }
             }
 
-            if (screenWidth < 700) {
-              const xPosition = midpointX + ((d.d.indexInCoincidents % numPerRow) - midRowIndex) * (annotationMargin + wrap);
-              thisXOffset = xPosition - d.d.x;
-            }
+            const xPosition = midpointX + ((d.d.indexInCoincidents % numPerRow) - midRowIndex) * (annotationMargin + wrap);
+            thisXOffset = xPosition - d.d.x;
 
             return (<Annotation
               x={d.d.x}

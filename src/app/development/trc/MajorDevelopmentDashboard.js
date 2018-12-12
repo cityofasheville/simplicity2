@@ -247,7 +247,7 @@ const links = [
 ]
 
 function calculateEdges(link) {
-  const weight = 1.5;
+  const weight = 2;
   if (link.parallelEdges) {
     return link.parallelEdges.map(e => {
       const thisEdge = Object.assign({}, e);
@@ -420,7 +420,7 @@ class MajorDevelopmentDashboard extends React.Component {
     // Why is H1 smaller than H2 on mobile?
 
     const screenWidth = document.documentElement.clientWidth;
-    const sideMargin = Math.min(screenWidth / 6, 40);
+    const sideMargin = screenWidth / 12;
     const height = document.documentElement.clientHeight * Math.max((1100 / screenWidth), 5)
     const verticalMargin = document.documentElement.clientHeight * 0.25;
     const fontSize = screenWidth < 750 ? 12 : 14;
@@ -455,10 +455,12 @@ class MajorDevelopmentDashboard extends React.Component {
           annotations={this.annotations}
           svgAnnotationRules={(d) => {
             // Side padding and padding between
-            const annotationMargin = fontSize;
+            const notePadding = fontSize / 2;
+            const annotationMargin = fontSize + notePadding;
             const numPerRow = d.d.coincidents.length < 3 ? d.d.coincidents.length : Math.ceil(d.d.coincidents.length / 2);
             // Max number of rows is two
             const midRowIndex = (numPerRow - 1) / 2;
+            console.log(midRowIndex)
             const defaultOffsetY = fontSize * 3;
             const wrap = Math.min(
               (screenWidth - sideMargin * 2 - (annotationMargin + annotationMargin * numPerRow)) / numPerRow,
@@ -499,8 +501,8 @@ class MajorDevelopmentDashboard extends React.Component {
               <Note
                 align={'middle'}
                 orientation={"topBottom"}
-                bgPadding={fontSize / 2}
-                padding={fontSize / 2}
+                bgPadding={notePadding}
+                padding={notePadding}
                 titleColor={"gray"}
                 lineType={null}
                 wrap={wrap}
@@ -516,7 +518,7 @@ class MajorDevelopmentDashboard extends React.Component {
             return (<circle
               cx={d.d.x}
               cy={d.d.y}
-              r={nodeSize}
+              r={fontSize}
               style={{ fill: '#d9d9d9', stroke: 'gray' }}
             />)
           }}

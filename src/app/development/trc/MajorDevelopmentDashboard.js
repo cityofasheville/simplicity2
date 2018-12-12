@@ -371,7 +371,7 @@ class MajorDevelopmentDashboard extends React.Component {
   }
 
   componentDidMount() {
-    window.addEventListener('scroll', this.handleScroll);
+    // window.addEventListener('scroll', this.handleScroll);
   }
 
   componentWillUnmount() {
@@ -379,7 +379,7 @@ class MajorDevelopmentDashboard extends React.Component {
   }
 
   handleScroll(event) {
-    const changePoint = document.documentElement.clientHeight - 150;
+    const changePoint = document.documentElement.clientHeight - 250;
     let closestDistanceToChange = null;
     let closestNavLinkId = null;
 
@@ -421,7 +421,7 @@ class MajorDevelopmentDashboard extends React.Component {
     const screenHeight = document.documentElement.clientHeight;
     const sideMargin = screenWidth / 12;
     const height = 4500;
-    const verticalMargin = 80 * (768 / screenWidth);
+    const verticalMargin = Math.max(80, 80 * (700 / screenWidth));
     const fontSize = screenWidth < 750 ? 12 : 14;
 
     return (<div id="majorDevDash" style={{ width: 'inherit' }}>
@@ -430,104 +430,100 @@ class MajorDevelopmentDashboard extends React.Component {
         links={this.state.sectionNavLinks}
       />
       <div style={{ height: '4em' }}></div>
-      <div
+
+      <section
         id="about"
         className="col-md-12"
-        style={{
-          margin: '0 auto',
-          width: 'inherit',
-          display: 'block',
-          padding: 0,
-        }}
         ref={this.state.sectionNavLinks.find(d => d.linkId === 'about').ref}
       >
         <h1>Major Development in Asheville</h1>
         <p>When someone wants to build or modify a building on private property in the City of Asheville, they must comply with federal, state, county, and city standards. Which standards apply depends on how large the building is or how much the building will be modified.</p>
         <p>After the developer submits an application, it goes through a decision-making process that includes city staff, city council, developers, and residents.  Who is involved at what step depends on the type of project.</p>
         <p>The Unified Development Ordinance defines six types of large scale development in Asheville.</p>
-      </div>
-      <div style={{ width: '100%', height: height, display: 'inline-block', fontSize }}>
-        <ResponsiveNetworkFrame
-          size={[320, 1000]}
-          margin={{top: verticalMargin, right: sideMargin, bottom: 0, left: sideMargin }}
-          responsiveWidth
-          responsiveHeight
-          graph={this.graph}
-          annotations={this.annotations}
-          svgAnnotationRules={(d) => {
-            // Side padding and padding between
-            const notePadding = fontSize / 2;
-            const annotationMargin = fontSize + notePadding;
-            const numPerRow = d.d.coincidents.length < 3 ? d.d.coincidents.length : Math.ceil(d.d.coincidents.length / 2);
-            // Max number of rows is two
-            const midRowIndex = (numPerRow - 1) / 2;
-            const defaultOffsetY = fontSize * 3;
-            const wrap = Math.min(
-              (screenWidth - sideMargin * 2 - (annotationMargin + annotationMargin * numPerRow)) / numPerRow,
-              400
-            )
-            const midpointX = d.networkFrameState.adjustedSize[0] / 2;
+        <div style={{ width: '100%', height: height, display: 'inline-block', fontSize }}>
+          <ResponsiveNetworkFrame
+            size={[320, 1000]}
+            margin={{top: verticalMargin, right: sideMargin, bottom: 0, left: sideMargin }}
+            responsiveWidth
+            responsiveHeight
+            graph={this.graph}
+            annotations={this.annotations}
+            svgAnnotationRules={(d) => {
+              // Side padding and padding between
+              const notePadding = fontSize / 2;
+              const annotationMargin = fontSize + notePadding;
+              const numPerRow = d.d.coincidents.length < 3 ? d.d.coincidents.length : Math.ceil(d.d.coincidents.length / 2);
+              // Max number of rows is two
+              const midRowIndex = (numPerRow - 1) / 2;
+              const defaultOffsetY = fontSize * 3;
+              const wrap = Math.min(
+                (screenWidth - sideMargin * 2 - (annotationMargin + annotationMargin * numPerRow)) / numPerRow,
+                400
+              )
+              const midpointX = d.networkFrameState.adjustedSize[0] / 2;
 
-            let thisYOffset = - defaultOffsetY;
-            let thisXOffset = 0;
-            let curveBeta = 0.25;
+              let thisYOffset = - defaultOffsetY;
+              let thisXOffset = 0;
+              let curveBeta = 0.25;
 
-            // split into rows
-            if (d.d.coincidents.length > 2) {
-              curveBeta = 0.5
-              if (d.d.indexInCoincidents >= d.d.coincidents.length / 2) {
-                thisYOffset = defaultOffsetY * 2;
+              // split into rows
+              if (d.d.coincidents.length > 2) {
+                curveBeta = 0.5
+                if (d.d.indexInCoincidents >= d.d.coincidents.length / 2) {
+                  thisYOffset = defaultOffsetY * 2;
+                }
               }
-            }
 
-            const xPosition = midpointX + ((d.d.indexInCoincidents % numPerRow) - midRowIndex) * (annotationMargin + wrap);
-            thisXOffset = xPosition - d.d.x;
+              const xPosition = midpointX + ((d.d.indexInCoincidents % numPerRow) - midRowIndex) * (annotationMargin + wrap);
+              thisXOffset = xPosition - d.d.x;
 
-            return (<Annotation
-              x={d.d.x}
-              y={d.d.y}
-              dy={thisYOffset}
-              dx={thisXOffset}
-              color="gray"
-              title={d.d.label}
-              label={d.d.description}
-              className="show-bg"
-              disable="subject"
-              key={`${d.d.label}-annotation`}
-            >
-              <ConnectorCurve
-                curve={curveBundle.beta(curveBeta)}
-              />
-              <Note
-                align={'middle'}
-                orientation={"topBottom"}
-                bgPadding={notePadding}
-                padding={notePadding}
-                titleColor={"gray"}
-                lineType={null}
-                wrap={wrap}
-              />
-            </Annotation>)
-          }}
-          networkType={{
-            type: 'dagre',
-            zoom: 'true',
-          }}
-          edgeStyle={d => ({ stroke: 'white', fill: d.color, strokeWidth: 1 })}
-          customNodeIcon={(d) => {
-            return (<circle
-              cx={d.d.x}
-              cy={d.d.y}
-              r={fontSize}
-              style={{ fill: '#d9d9d9', stroke: 'gray' }}
-            />)
-          }}
-        />
-      </div>
-      {/* Get notifications-- TODO: MULTISELECT */}
-      <div
+              return (<Annotation
+                x={d.d.x}
+                y={d.d.y}
+                dy={thisYOffset}
+                dx={thisXOffset}
+                color="gray"
+                title={d.d.label}
+                label={d.d.description}
+                className="show-bg"
+                disable="subject"
+                key={`${d.d.label}-annotation`}
+              >
+                <ConnectorCurve
+                  curve={curveBundle.beta(curveBeta)}
+                />
+                <Note
+                  align={'middle'}
+                  orientation={"topBottom"}
+                  bgPadding={notePadding}
+                  padding={notePadding}
+                  titleColor={"gray"}
+                  lineType={null}
+                  wrap={wrap}
+                />
+              </Annotation>)
+            }}
+            networkType={{
+              type: 'dagre',
+              zoom: 'true',
+            }}
+            edgeStyle={d => ({ stroke: 'white', fill: d.color, strokeWidth: 1 })}
+            customNodeIcon={(d) => {
+              return (<circle
+                cx={d.d.x}
+                cy={d.d.y}
+                r={fontSize}
+                style={{ fill: '#d9d9d9', stroke: 'gray' }}
+              />)
+            }}
+          />
+        </div>
+      </section>
+
+      <section
         id="notifications"
         ref={this.state.sectionNavLinks.find(d => d.linkId === 'notifications').ref}
+        className="col-md-12"
       >
         <h2> Sign up for Notifications </h2>
         <p>Provide your email or a phone number that can receive text messages to get an update when a new major development application has been submitted.</p>
@@ -544,25 +540,31 @@ class MajorDevelopmentDashboard extends React.Component {
           <input type="submit" value="Sign Up" /><br/>
         </div>
         <p>You will receive a message asking you to confirm that you wish to receive notifications.</p>
-      </div>
-      {/* Data - table and map */}
-      <h2 id="data" ref={this.state.sectionNavLinks.find(d => d.linkId === 'data').ref}>Current Projects</h2>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      {/* Calendar */}
-      <h2 id="calendar" ref={this.state.sectionNavLinks.find(d => d.linkId === 'calendar').ref}>Upcoming Public Events</h2>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      {/* FAQ */}
-      <h2 id="faq" ref={this.state.sectionNavLinks.find(d => d.linkId === 'faq').ref}>FAQ</h2>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
+      </section>
+
+      <section
+        id="data"
+        ref={this.state.sectionNavLinks.find(d => d.linkId === 'data').ref}
+        className="col-md-12"
+      >
+        <h2>Current Projects</h2>
+      </section>
+
+      <section
+        id="calendar"
+        ref={this.state.sectionNavLinks.find(d => d.linkId === 'calendar').ref}
+        className="col-md-12"
+      >
+        <h2>Upcoming Public Events</h2>
+      </section>
+
+      <section
+        id="faq"
+        ref={this.state.sectionNavLinks.find(d => d.linkId === 'faq').ref}
+        className="col-md-12"
+      >
+        <h2>FAQ</h2>
+      </section>
     </div>)
   }
 

@@ -13,7 +13,7 @@ const nodeSize = 8;
 const nodes = [
   {
     id: 'Pre-Application Meeting',
-    description: 'Required for reasons.',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
   },
   {
     id: 'Neighborhood Meeting',
@@ -484,17 +484,13 @@ class MajorDevelopmentDashboard extends React.Component {
               }
 
               if (d.d.coincidents.length === 2) {
+                const xDistanceFromCenter = annotationMargin / 2 + wrap / 2
                 if (d.d.indexInCoincidents === 0) {
-                  xPosition = midpointX - annotationMargin / 2 - wrap / 2;
+                  xPosition = midpointX - xDistanceFromCenter;
                 } else if (d.d.indexInCoincidents === 1) {
-                  xPosition = midpointX + annotationMargin / 2 + wrap / 2;
+                  xPosition = midpointX + xDistanceFromCenter;
                 }
-                if (d.d.x > midpointX) {
-                  thisXOffset = xPosition - d.d.x;
-                } else {
-                  // if x is less than midpointX, position it to the right
-                  thisXOffset = d.d.x - xPosition
-                }
+                thisXOffset = xPosition - d.d.x;
               }
             }
 

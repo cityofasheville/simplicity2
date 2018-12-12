@@ -468,6 +468,7 @@ class MajorDevelopmentDashboard extends React.Component {
             let thisYOffset = - defaultOffsetY;
             let thisXOffset = 0;
             let curveBeta = 0.25;
+            let xPosition = d.d.x;
 
             if (screenWidth < 700) {
               // if it's the only one, position it on whatever side has more room
@@ -483,9 +484,17 @@ class MajorDevelopmentDashboard extends React.Component {
               }
 
               if (d.d.coincidents.length === 2) {
-                const xPosition = (d.d.indexInCoincidents + 1) * (annotationMargin * 2) + d.d.indexInCoincidents * wrap;
-                console.log(d.d, d.d.indexInCoincidents, xPosition)
-                thisXOffset = xPosition - d.d.x;
+                if (d.d.indexInCoincidents === 0) {
+                  xPosition = midpointX - annotationMargin / 2 - wrap / 2;
+                } else if (d.d.indexInCoincidents === 1) {
+                  xPosition = midpointX + annotationMargin / 2 + wrap / 2;
+                }
+                if (d.d.x > midpointX) {
+                  thisXOffset = xPosition - d.d.x;
+                } else {
+                  // if x is less than midpointX, position it to the right
+                  thisXOffset = d.d.x - xPosition
+                }
               }
             }
 

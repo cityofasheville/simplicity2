@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { color, hsl } from 'd3-color';
 
 
-class AnchorNav extends React.Component {
+class SectionNav extends React.Component {
   constructor(props){
     super(props);
   }
@@ -23,23 +23,21 @@ class AnchorNav extends React.Component {
       {this.props.links.map(linkItem => {
         const hslColor = hsl(linkItem.color);
         const textColor = hsl('white');
-        let fontWeight = 'bold';
         if (!linkItem.selected) {
           hslColor.opacity = 0.95;
           hslColor.s = 0.5;
           textColor.l = 0.95;
-          fontWeight = 'light';
         }
         return (<a
           key={linkItem.linkId}
           href={`#${linkItem.linkId}`}
+          className={`linkItem-${linkItem.selected ? 'selected' : 'not-selected'}`}
           style={{
             display: 'inline-block',
             backgroundColor: hslColor,
             border: `0.5px solid white`,
             borderRadius: '2px',
             color: textColor,
-            fontWeight: fontWeight,
             letterSpacing: '0.05em',
           }}
         >
@@ -51,4 +49,4 @@ class AnchorNav extends React.Component {
 
 }
 
-export default AnchorNav;
+export default SectionNav;

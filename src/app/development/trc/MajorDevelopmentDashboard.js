@@ -369,11 +369,11 @@ class MajorDevelopmentDashboard extends React.Component {
       sectionNavLinks,
     }
 
-    this.handleScroll = debounce(this.handleScroll.bind(this), 250)
+    this.handleScroll = debounce(this.handleScroll.bind(this), 200)
   }
 
   componentDidMount() {
-    // window.addEventListener('scroll', this.handleScroll);
+    window.addEventListener('scroll', this.handleScroll);
   }
 
   componentWillUnmount() {
@@ -381,7 +381,7 @@ class MajorDevelopmentDashboard extends React.Component {
   }
 
   handleScroll(event) {
-    const changePoint = document.documentElement.clientHeight * 0.5;
+    const changePoint = document.documentElement.clientHeight - 150;
     let closestDistanceToChange = null;
     let closestNavLinkId = null;
 

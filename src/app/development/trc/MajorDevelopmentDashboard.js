@@ -454,37 +454,35 @@ class MajorDevelopmentDashboard extends React.Component {
           graph={this.graph}
           annotations={this.annotations}
           svgAnnotationRules={(d) => {
-            // Side padding for these is fontSize
+            // Side padding and padding between
             const annotationMargin = fontSize;
-
             const numPerRow = Math.min(d.d.coincidents.length, 3);
             const midRowIndex = (numPerRow - 1) / 2.0;
-            const offsetY = fontSize * 3;
+            const defaultOffsetY = fontSize * 3;
             const wrap = Math.min(
-              (screenWidth / numPerRow) - (annotationMargin * 2) - (annotationMargin * 2 * midRowIndex),
-              175
+              (screenWidth - (annotationMargin + annotationMargin * numPerRow)) / numPerRow,
+              300
             )
-            const midpoint = d.networkFrameState.adjustedSize[0] / 2;
+            const midpointX = d.networkFrameState.adjustedSize[0] / 2;
 
-            let thisYOffset = - offsetY;
+            let thisYOffset = - defaultOffsetY;
             let thisXOffset = 0;
             let curveBeta = 0.25;
 
-            if (wrap < 175) {
+            if (screenWidth < 700) {
               // if it's the only one, position it on whatever side has more room
               if (d.d.coincidents.length === 1) {
-                thisYOffset =  - offsetY / 2;
-                // if x is greater than midpoint, position it to the left
-                if (d.d.x > midpoint) {
-                  thisXOffset = midpoint - d.d.x;
+                thisYOffset =  - defaultOffsetY / 2;
+                // if x is greater than midpointX, position it to the left
+                if (d.d.x > midpointX) {
+                  thisXOffset = midpointX - d.d.x;
                 } else {
-                  // if x is less than midpoint, position it to the right
-                  thisXOffset = d.d.x - midpoint;
+                  // if x is less than midpointX, position it to the right
+                  thisXOffset = d.d.x - midpointX;
                 }
               }
 
               if (d.d.coincidents.length === 2) {
-                thisYOffset *= 0.25;
                 const xPosition = (d.d.indexInCoincidents + 1) * (annotationMargin * 2) + d.d.indexInCoincidents * wrap;
                 console.log(d.d, d.d.indexInCoincidents, xPosition)
                 thisXOffset = xPosition - d.d.x;
@@ -502,9 +500,9 @@ class MajorDevelopmentDashboard extends React.Component {
             //   thisXOffset = d.d.x - (d.d.indexInCoincidents % 3) * (screenWidth / 3)
             //
             //   if (d.d.indexInCoincidents < d.d.coincidents.length / 2) {
-            //     thisYOffset = - offsetY
+            //     thisYOffset = - defaultOffsetY
             //   } else {
-            //     thisYOffset = offsetY;
+            //     thisYOffset = defaultOffsetY;
             //   }
             //
             //   // if (d.d.indexInCoincidents % (d.d.coincidents.length / 2) === 1) {
@@ -530,7 +528,8 @@ class MajorDevelopmentDashboard extends React.Component {
               <Note
                 align={'middle'}
                 orientation={"topBottom"}
-                bgPadding={fontSize}
+                bgPadding={fontSize / 2}
+                padding={fontSize / 2}
                 titleColor={"gray"}
                 lineType={null}
                 wrap={wrap}

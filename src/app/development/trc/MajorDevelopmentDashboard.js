@@ -456,8 +456,9 @@ class MajorDevelopmentDashboard extends React.Component {
           svgAnnotationRules={(d) => {
             // Side padding and padding between
             const annotationMargin = fontSize;
-            const numPerRow = Math.min(d.d.coincidents.length, 3);
-            const midRowIndex = (numPerRow - 1) / 2.0;
+            const numPerRow = d.d.coincidents.length < 3 ? d.d.coincidents.length : Math.ceil(d.d.coincidents.length / 2);
+            // Max number of rows is two
+            const midRowIndex = (numPerRow - 1) / 2;
             const defaultOffsetY = fontSize * 3;
             const wrap = Math.min(
               (screenWidth - (annotationMargin + annotationMargin * numPerRow)) / numPerRow,
@@ -468,52 +469,19 @@ class MajorDevelopmentDashboard extends React.Component {
             let thisYOffset = - defaultOffsetY;
             let thisXOffset = 0;
             let curveBeta = 0.25;
-            let xPosition = d.d.x;
 
-            if (screenWidth < 700) {
-              // if it's the only one, position it on whatever side has more room
-              if (d.d.coincidents.length === 1) {
-                thisYOffset =  - defaultOffsetY / 2;
-                // if x is greater than midpointX, position it to the left
-                if (d.d.x > midpointX) {
-                  thisXOffset = midpointX - d.d.x;
-                } else {
-                  // if x is less than midpointX, position it to the right
-                  thisXOffset = d.d.x - midpointX;
-                }
-              }
-
-              if (d.d.coincidents.length === 2) {
-                const xDistanceFromCenter = annotationMargin / 2 + wrap / 2
-                if (d.d.indexInCoincidents === 0) {
-                  xPosition = midpointX - xDistanceFromCenter;
-                } else if (d.d.indexInCoincidents === 1) {
-                  xPosition = midpointX + xDistanceFromCenter;
-                }
-                thisXOffset = xPosition - d.d.x;
+            // split into rows
+            if (d.d.coincidents.length > 2) {
+              curveBeta = 0.5
+              if (d.d.indexInCoincidents >= d.d.coincidents.length / 2) {
+                thisYOffset = defaultOffsetY;
               }
             }
 
-
-            // split into rows
-            // if (d.d.coincidents.length > 2) {
-            //   alignment = 'middle';
-            //   wrap = screenWidth / 4;
-            //   const paddingBtwn = (screenWidth / 4) / 4;
-            //   curveBeta = 0.75;
-            //
-            //   thisXOffset = d.d.x - (d.d.indexInCoincidents % 3) * (screenWidth / 3)
-            //
-            //   if (d.d.indexInCoincidents < d.d.coincidents.length / 2) {
-            //     thisYOffset = - defaultOffsetY
-            //   } else {
-            //     thisYOffset = defaultOffsetY;
-            //   }
-            //
-            //   // if (d.d.indexInCoincidents % (d.d.coincidents.length / 2) === 1) {
-            //   //   thisYOffset *= 2.5;
-            //   // }
-            // }
+            if (screenWidth < 700) {
+              const xPosition = midpointX + ((d.d.indexInCoincidents % numPerRow) - midRowIndex) * (annotationMargin + wrap);
+              thisXOffset = xPosition - d.d.x;
+            }
 
             return (<Annotation
               x={d.d.x}

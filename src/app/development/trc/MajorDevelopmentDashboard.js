@@ -259,6 +259,7 @@ function calculateEdges(link) {
 }
 
 function debounce(func, wait, immediate) {
+  // from lodash... should probably just use lodash
   var timeout;
   return function() {
     var context = this, args = arguments;
@@ -373,7 +374,7 @@ class MajorDevelopmentDashboard extends React.Component {
   }
 
   componentDidMount() {
-    window.addEventListener('scroll', this.handleScroll);
+    // window.addEventListener('scroll', this.handleScroll);
   }
 
   componentWillUnmount() {

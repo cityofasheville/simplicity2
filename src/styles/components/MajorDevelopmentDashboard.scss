@@ -7,6 +7,7 @@ $tablet-min: $mobile-max + 1;
 $tablet-max: $desktop-min - 1;
 $xs: $mobile-min - 1;
 
+
 .anchorNav a {
     padding: 0.25em 2em;
 }
@@ -14,6 +15,10 @@ $xs: $mobile-min - 1;
 #majorDevDash h2, #about {
   padding-top: 120px;
   margin-top: -120px;
+}
+
+#majorDevDash text.annotation-note-label {
+  font-family: sans-serif;
 }
 
 #majorDevDash .annotation-note-bg {

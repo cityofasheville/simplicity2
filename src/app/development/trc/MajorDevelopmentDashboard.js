@@ -420,9 +420,10 @@ class MajorDevelopmentDashboard extends React.Component {
     // Why is H1 smaller than H2 on mobile?
 
     const screenWidth = document.documentElement.clientWidth;
+    const screenHeight = document.documentElement.clientHeight;
     const sideMargin = screenWidth / 12;
-    const height = document.documentElement.clientHeight * Math.max((1100 / screenWidth), 5)
-    const verticalMargin = document.documentElement.clientHeight * 0.25;
+    const height = 4500;
+    const verticalMargin = screenWidth < 750 ? 150 : 100;
     const fontSize = screenWidth < 750 ? 12 : 14;
 
     return (<div id="majorDevDash" style={{ width: 'inherit' }}>
@@ -460,7 +461,6 @@ class MajorDevelopmentDashboard extends React.Component {
             const numPerRow = d.d.coincidents.length < 3 ? d.d.coincidents.length : Math.ceil(d.d.coincidents.length / 2);
             // Max number of rows is two
             const midRowIndex = (numPerRow - 1) / 2;
-            console.log(midRowIndex)
             const defaultOffsetY = fontSize * 3;
             const wrap = Math.min(
               (screenWidth - sideMargin * 2 - (annotationMargin + annotationMargin * numPerRow)) / numPerRow,

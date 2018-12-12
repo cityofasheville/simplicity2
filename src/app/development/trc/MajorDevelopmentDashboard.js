@@ -423,7 +423,7 @@ class MajorDevelopmentDashboard extends React.Component {
     const screenHeight = document.documentElement.clientHeight;
     const sideMargin = screenWidth / 12;
     const height = 4500;
-    const verticalMargin = screenWidth < 750 ? 150 : 100;
+    const verticalMargin = 80 * (768 / screenWidth);
     const fontSize = screenWidth < 750 ? 12 : 14;
 
     return (<div id="majorDevDash" style={{ width: 'inherit' }}>

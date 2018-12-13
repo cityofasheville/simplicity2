@@ -198,17 +198,7 @@ class MajorDevelopmentDashboard extends React.Component {
         className="col-md-12"
       >
         <h2>Current Projects</h2>
-        <p>Here we should put a table like the <a href="https://simplicity.ashevillenc.gov/CAPITAL_PROJECTS?entities=address%2Cproperty%2Cneighborhood%2Cstreet%2Cowner&entity=city&id=&label=City+of+Asheville&search=&view=map&x=&y=">capital projects dashboard</a> that includes the following Accela record types:</p>
-        <ul>
-          <li>Planning - Subdivision - Major</li>
-          <li>Planning - Development - Level I</li>
-          <li>Planning - Development - Level II</li>
-          <li>Planning - Development - Level III</li>
-          <li>Planning - Development - Conditional Zoning</li>
-          <li>Planning - Development - Conditional Use</li>
-          <li>Anything else?  HRC?  <a href="https://simplicity.ashevillenc.gov/development/granular_volume?module=planning">See here for types</a>, or look <a href="https://bl.ocks.org/mmazanec22/raw/552ea8bb2d9fe624eca79af717bb726b/">here</a></li>
-        </ul>
-        <p>Should probably toggle to map view?</p>
+        <p>The table below contains projects for which a permit application has been submitted in the last three years.</p>
         <ProjectsTable
           projectTypes={projectTypes}
         />

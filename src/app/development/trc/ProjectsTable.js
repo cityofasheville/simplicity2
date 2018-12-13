@@ -41,6 +41,7 @@ const GET_PROJECTS = gql`
 
 const dateFormatter = d => new Date(d).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric'});
 
+// TODO: ADD APPROPRIATE COLOR BASED ON PROJECT TYPE
 const tableHeaders = [
   {
     field: 'applied_date',
@@ -107,8 +108,6 @@ class ProjectsTable extends React.Component {
         })
 
         const maxColWidth = document.documentElement.clientWidth / (tableHeaders.length + 2);
-
-        console.log(filteredData)
 
         return (
           <div>

@@ -6,7 +6,7 @@ import { ResponsiveNetworkFrame } from 'semiotic';
 import { Annotation, ConnectorCurve, Note } from 'react-annotation';
 import SectionNav from './SectionNav';
 import AnnotatedDagre from './AnnotatedDagre';
-import ProjectsTable from './ProjectsTable';
+import ProjectsTableWrapper from './ProjectsTableWrapper';
 
 const projectTypes = {};
 projectTypes['Level I'] = {
@@ -198,8 +198,8 @@ class MajorDevelopmentDashboard extends React.Component {
         className="col-md-12"
       >
         <h2>Current Projects</h2>
-        <p>The table below contains projects for which a permit application has been submitted in the last three years.</p>
-        <ProjectsTable
+        <p>The table below contains projects for which a permit application has been submitted in the last year.</p>
+        <ProjectsTableWrapper
           projectTypes={projectTypes}
         />
       </section>

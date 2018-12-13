@@ -15,8 +15,7 @@ class SectionNav extends React.Component {
         if (!linkItem.selected) {
           textColor.opacity = 0.9;
         }
-        return (<li><a
-          key={linkItem.linkId}
+        return (<li key={linkItem.linkId}><a
           href={`#${linkItem.linkId}`}
           className={`linkItem-${linkItem.selected ? 'selected' : 'not-selected'}`}
           style={{

@@ -39,6 +39,11 @@ projectTypes['Conditional Use Permit'] = {
   permit_type: 'Development',
   permit_subtype: 'Conditional Use',
 };
+projectTypes['Historic Resources Commission'] = {
+  permit_group: 'Planning',
+  permit_type: 'HRC',
+  permit_subtype: 'Major Work',
+};
 
 // Assign colors to project types
 const orderedColors = ['#FF3A3A','#749B5F','#2d93ad','#004EA3','#9B6681','#9E4F55','#073d49'];

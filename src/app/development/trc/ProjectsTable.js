@@ -39,13 +39,35 @@ const GET_PROJECTS = gql`
   }
 `;
 
+const dateFormatter = d => new Date(d).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric'});
+
 const tableHeaders = [
-  'applied_date',
-  'address',
-  'permit_subtype',
-  'status_current',
-  'status_date',
-  'applicant_name',
+  {
+    field: 'applied_date',
+    display: 'Date Applied',
+    formatFunc: dateFormatter,
+  },
+  {
+    field: 'address',
+    display: 'Project Address',
+  },
+  {
+    field: 'permit_subtype',
+    display: 'Project Type',
+  },
+  {
+    field: 'status_current',
+    display: 'Current Status',
+  },
+  {
+    field: 'status_date',
+    display: 'Date Last Updated',
+    formatFunc: dateFormatter,
+  },
+  {
+    field: 'applicant_name',
+    display: 'Applicant',
+  },
 ];
 
 const ExpandableAccessibleReactTable = expandingRows(AccessibleReactTable);
@@ -84,6 +106,8 @@ class ProjectsTable extends React.Component {
           return typeOfInterest;
         })
 
+        const maxColWidth = document.documentElement.clientWidth / (tableHeaders.length + 2);
+
         console.log(filteredData)
 
         return (
@@ -106,12 +130,13 @@ class ProjectsTable extends React.Component {
                       data={filteredData}
                       columns={[{
                         Header: 'Projects',
-                        columns: tableHeaders.map(key => {
+                        columns: tableHeaders.map(headerObj => {
                           return {
-                            Header: key.replace('_', ' '),
-                            id: key,
-                            accessor: d => d[key],
-                            maxWidth: 120,
+                            Header: headerObj.display,
+                            id: headerObj.field,
+                            accessor: d =>
+                              headerObj.formatFunc ? headerObj.formatFunc(d[headerObj.field]) : d[headerObj.field],
+                            maxWidth: maxColWidth,
                           }
                         }),
                       }]}

@@ -30,11 +30,6 @@ const GET_PROJECTS = gql`
         balance
         invoiced_fee_total
         address
-        comments {
-          comment_seq_number
-          comment_date
-          comments
-        }
     }
   }
 `;
@@ -156,81 +151,83 @@ class ProjectsTable extends React.Component {
 
         console.log(filteredData)
 
-
-        return <div>Cat</div>
-
-        // return (
-        //   <div>
-        //     <div className="row">
-        //       <div className="col-sm-12">
-        //         <Measure
-        //           client
-        //           onResize={(contentRect) => {
-        //             this.setState({
-        //               width: contentRect.client.width,
-        //             });
-        //           }}
-        //         >
-        //           {({ measureRef }) => (
-        //             <ExpandableAccessibleReactTable
-        //               // ref={measureRef}
-        //               tableId="projects"
-        //               ariaLabel={this.state.content.capital_projects}
-        //               data={this.props.data}
-        //               columns={this.getColumns(this.props.type, this.props.subType)}
-        //               showPagination
-        //               defaultPageSize={20}
-        //               filterable
-        //               defaultFilterMethod={(filter, row) => {
-        //                 const id = filter.pivotId || filter.id;
-        //                 return row[id] !== undefined ?
-        //                   String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1
-        //                   :
-        //                   true;
-        //               }}
-        //               getTdProps={() => ({
-        //                 style: {
-        //                   whiteSpace: 'normal',
-        //                 },
-        //               })}
-        //               getTrProps={(state, rowInfo) => ({
-        //                 style: {
-        //                   cursor: 'pointer',
-        //                   background: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '#4077a5' : 'none',
-        //                   color: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '#fff' : '',
-        //                   fontWeight: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? 'bold' : 'normal',
-        //                   fontSize: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '1.2em' : '1em',
-        //                 },
-        //               })}
-        //               SubComponent={row => (
-        //                 <div style={{
-        //                   paddingLeft: '34px',
-        //                   paddingRight: '34px',
-        //                   paddingBottom: '15px',
-        //                   backgroundColor: '#f6fcff',
-        //                   borderRadius: '0px',
-        //                   border: '2px solid #4077a5',
-        //                 }}
-        //                 >
-        //                   Project details go here!
-        //                 </div>
-        //               )}
-        //             >
-        //               {(state, makeTable) => (
-        //                 <div
-        //                   ref={measureRef}
-        //                   alt={[this.state.content.table_of, this.props.type, this.props.subType || '', this.state.bond_project_statuses].join(' ')}
-        //                   style={{ marginTop: '10px' }}
-        //                 >
-        //                   {makeTable()}
-        //                 </div>
-        //               )}
-        //             </ExpandableAccessibleReactTable>
-        //           )}
-        //         </Measure>
-        //       </div>
-        //     </div>
-        //   </div>);
+        return (
+          <div>
+            <div className="row">
+              <div className="col-sm-12">
+                <Measure
+                  client
+                  onResize={(contentRect) => {
+                    console.log('on resize')
+                    // this.setState({
+                    //   width: contentRect.client.width,
+                    // });
+                  }}
+                >
+                  {({ measureRef }) => (
+                    <ExpandableAccessibleReactTable
+                      tableId="projects"
+                      ariaLabel={"Table of major development projects"}
+                      data={filteredData}
+                      columns={[{
+                        Header: '???',
+                        columns: Object.keys(filteredData[0]).map(key => {
+                          console.log(key)
+                          // todo: get comments and deal with them appropriately
+                          // they are an object
+                          return {
+                            Header: key,
+                            id: key,
+                            accessor: key,
+                            maxWidth: 120,
+                          }
+                        }),
+                      }]}
+                      showPagination
+                      defaultPageSize={20}
+                      getTdProps={() => ({
+                        style: {
+                          whiteSpace: 'normal',
+                        },
+                      })}
+                      getTrProps={(state, rowInfo) => ({
+                        style: {
+                          cursor: 'pointer',
+                          background: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '#4077a5' : 'none',
+                          color: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '#fff' : '',
+                          fontWeight: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? 'bold' : 'normal',
+                          fontSize: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '1.2em' : '1em',
+                        },
+                      })}
+                      SubComponent={row => (
+                        <div style={{
+                          paddingLeft: '34px',
+                          paddingRight: '34px',
+                          paddingBottom: '15px',
+                          backgroundColor: '#f6fcff',
+                          borderRadius: '0px',
+                          border: '2px solid #4077a5',
+                        }}
+                        >
+                          Project details go here!
+                        </div>
+                      )}
+                    >
+                      {(state, makeTable) => (
+                        <div
+                          ref={measureRef}
+                          alt={'???'}
+                          style={{ marginTop: '10px' }}
+                        >
+                          {makeTable()}
+                        </div>
+                      )}
+                    </ExpandableAccessibleReactTable>
+                  )}
+                </Measure>
+              </div>
+            </div>
+          </div>);
       }}
     </Query>);
 

@@ -10,29 +10,43 @@ import createFilterRenderer from '../../../shared/FilterRenderer';
 const GET_PROJECTS = gql`
   query getPermitsQuery($date_field: String!, $after: String, $permit_groups: [String]) {
     permits(date_field: $date_field, after: $after, permit_groups: $permit_groups) {
-        applicant_name
-        applied_date
-        permit_category
-        permit_description
-        permit_group
-        permit_number
-        permit_subtype
-        permit_type
-        status_current
-        status_date
-        created_by
-        building_value
-        job_value
-        total_project_valuation
-        total_sq_feet
-        fees
-        paid
-        balance
-        invoiced_fee_total
-        address
+      applicant_name
+      applied_date
+      permit_category
+      permit_description
+      permit_group
+      permit_number
+      permit_subtype
+      permit_type
+      status_current
+      status_date
+      created_by
+      building_value
+      job_value
+      total_project_valuation
+      total_sq_feet
+      fees
+      paid
+      balance
+      invoiced_fee_total
+      address
+      comments {
+        comment_seq_number
+        comment_date
+        comments
+      }
     }
   }
 `;
+
+const tableHeaders = [
+  'applied_date',
+  'address',
+  'permit_subtype',
+  'status_current',
+  'status_date',
+  'applicant_name',
+];
 
 const ExpandableAccessibleReactTable = expandingRows(AccessibleReactTable);
 
@@ -40,85 +54,6 @@ class ProjectsTable extends React.Component {
   constructor() {
     super();
   }
-
-  dataColumns = () => ([
-    {
-      Header: this.state.content.project,
-      accessor: 'display_name',
-      Cell: row => (
-        <span>
-          <span title={row.original.category}>{getIcon(row.original.category, row.isExpanded)}</span>
-          {row.original.type === 'Bond' &&
-          <span title={content.bond_project} style={{ marginLeft: '3px' }}><Icon path={LI_BOLD} size={16} color={row.isExpanded ? '#fff' : '#4077a5'} viewBox="0 0 24 24" /></span>
-          }
-          <span style={{ marginLeft: '5px' }}>{row.value}</span>
-        </span>
-      ),
-      Filter: createFilterRenderer(this.state.content.search),
-      getProps: () => ({
-        role: 'rowheader',
-      }),
-    },
-    {
-      Header: (<div>{this.state.content.zip_code}</div>),
-      accessor: 'zip_code',
-      maxWidth: 120,
-      show: this.state.width >= 940,
-      Filter: createFilterRenderer(this.state.content.search),
-    },
-    {
-      Header: (<div>{this.state.content.phase}</div>),
-      accessor: 'status',
-      Cell: row => (
-        <span>
-          {row.original.status === null ?
-            '--'
-            :
-            row.original.status
-          }
-        </span>
-      ),
-      maxWidth: 120,
-      Filter: createFilterRenderer(this.state.content.search),
-    },
-    {
-      Header: (<div>{this.state.content.budget}</div>),
-      accessor: 'total_project_funding_budget_document',
-      maxWidth: 120,
-      show: this.state.width >= 720,
-      Filter: createFilterRenderer(this.state.content.search),
-    },
-    {
-      Header: (<div>{this.state.content.under_contract}</div>),
-      id: 'encumbured',
-      accessor: project => ['$', parseInt(project.encumbered, 10).toLocaleString()].join(''),
-      maxWidth: 120,
-      show: this.state.width >= 720,
-      style: { textAlign: 'right' },
-      Filter: createFilterRenderer(this.state.content.search),
-    },
-    {
-      Header: (<div>{this.state.content.spent}</div>),
-      id: 'spent',
-      accessor: project => ['$', parseInt(project.total_spent, 10).toLocaleString()].join(''),
-      maxWidth: 120,
-      show: this.state.width >= 720,
-      Filter: createFilterRenderer(this.state.content.search),
-    },
-  ]);
-
-  getColumns = (type, subType) => {
-    if (type === 'Transportation') {
-      return [{
-        Header: subType,
-        columns: this.dataColumns(this.state),
-      }];
-    }
-    return [{
-      Header: type,
-      columns: this.dataColumns(this.state),
-    }];
-  };
 
   render() {
     return (<Query
@@ -170,15 +105,12 @@ class ProjectsTable extends React.Component {
                       ariaLabel={"Table of major development projects"}
                       data={filteredData}
                       columns={[{
-                        Header: '???',
-                        columns: Object.keys(filteredData[0]).map(key => {
-                          console.log(key)
-                          // todo: get comments and deal with them appropriately
-                          // they are an object
+                        Header: 'Projects',
+                        columns: tableHeaders.map(key => {
                           return {
-                            Header: key,
+                            Header: key.replace('_', ' '),
                             id: key,
-                            accessor: key,
+                            accessor: d => d[key],
                             maxWidth: 120,
                           }
                         }),

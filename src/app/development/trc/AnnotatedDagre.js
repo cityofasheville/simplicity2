@@ -317,10 +317,6 @@ class AnnotatedDagre extends React.Component {
   }
 
   render() {
-    // TODO: use section element?
-    // Make colors/types of project into key val pair to avoid insanity later
-    // Why is H1 smaller than H2 on mobile?
-
     const screenWidth = document.documentElement.clientWidth;
     const screenHeight = document.documentElement.clientHeight;
     const sideMargin = screenWidth / 12;
@@ -354,7 +350,7 @@ class AnnotatedDagre extends React.Component {
           let thisXOffset = 0;
           let curveBeta = 0.25;
 
-          // split into rows
+          // Split into rows
           if (d.d.coincidents.length > 2) {
             curveBeta = 0.5
             if (d.d.indexInCoincidents >= d.d.coincidents.length / 2) {

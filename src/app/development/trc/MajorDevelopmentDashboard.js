@@ -6,7 +6,7 @@ import { ResponsiveNetworkFrame } from 'semiotic';
 import { Annotation, ConnectorCurve, Note } from 'react-annotation';
 import SectionNav from './SectionNav';
 import AnnotatedDagre from './AnnotatedDagre';
-// import ProjectsTable from './ProjectsTable';
+import ProjectsTable from './ProjectsTable';
 
 const projectTypes = {};
 projectTypes['Level I'] = {
@@ -204,6 +204,9 @@ class MajorDevelopmentDashboard extends React.Component {
           <li>Anything else?  HRC?  <a href="https://simplicity.ashevillenc.gov/development/granular_volume?module=planning">See here for types</a>, or look <a href="https://bl.ocks.org/mmazanec22/raw/552ea8bb2d9fe624eca79af717bb726b/">here</a></li>
         </ul>
         <p>Should probably toggle to map view?</p>
+        <ProjectsTable
+          projectTypes={projectTypes}
+        />
       </section>
 
       <section

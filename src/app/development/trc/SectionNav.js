@@ -62,6 +62,7 @@ class SectionNav extends React.Component {
       }
       rObj.selected = true;
       location.hash = `#${navLink.linkId}`
+      // TODO: DO NOT SCROLL TO THIS
       return rObj;
     })
 

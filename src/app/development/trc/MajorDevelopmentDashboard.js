@@ -7,7 +7,50 @@ import { Annotation, ConnectorCurve, Note } from 'react-annotation';
 import SectionNav from './SectionNav';
 
 
-const orderedColors = ['#FF3A3A','#749B5F','#2d93ad','#004EA3','#9B6681','#9E4F55','#073d49']
+const orderedColors = ['#FF3A3A','#749B5F','#2d93ad','#004EA3','#9B6681','#9E4F55','#073d49'];
+const projectTypes = [
+  {
+    label: 'Level I',
+    permit_group: 'Planning',
+    permit_type: 'Development',
+    permit_subtype: 'Level I',
+  },
+  {
+    label: 'Major Subdivision',
+    permit_group: 'Planning',
+    permit_type: 'Subdivision',
+    permit_subtype: 'Major',
+  },
+  {
+    label: 'Level II',
+    permit_group: 'Planning',
+    permit_type: 'Development',
+    permit_subtype: 'Level II',
+  },
+  {
+    label: 'Level III',
+    permit_group: 'Planning',
+    permit_type: 'Development',
+    permit_subtype: 'Level III',
+  },
+  {
+    label: 'Conditional Zoning',
+    permit_group: 'Planning',
+    permit_type: 'Development',
+    permit_subtype: 'Conditional Zoning',
+  },
+  {
+    label: 'Conditional Use',
+    permit_group: 'Planning',
+    permit_type: 'Development',
+    permit_subtype: 'Conditional Use',
+  },
+].map((type, i) => {
+  const rObj = Object.assign({}, type);
+  rObj.color = orderedColors[i];
+  return rObj;
+})
+
 const nodeSize = 8;
 const nodes = [
   {
@@ -555,8 +598,8 @@ class MajorDevelopmentDashboard extends React.Component {
           <li>Planning - Development - Level II</li>
           <li>Planning - Development - Level III</li>
           <li>Planning - Development - Conditional Zoning</li>
-          <li>CUP-- where are they?</li>
-          <li>Anything else?  HRC?  <a href="https://simplicity.ashevillenc.gov/development/granular_volume?module=planning">See here for types</a></li>
+          <li>Planning - Development - Conditional Use</li>
+          <li>Anything else?  HRC?  <a href="https://simplicity.ashevillenc.gov/development/granular_volume?module=planning">See here for types</a>, or look <a href="https://bl.ocks.org/mmazanec22/raw/552ea8bb2d9fe624eca79af717bb726b/">here</a></li>
         </ul>
         <p>Should probably toggle to map view?</p>
       </section>

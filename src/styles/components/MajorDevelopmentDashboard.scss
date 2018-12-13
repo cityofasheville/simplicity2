@@ -9,7 +9,7 @@
   padding-top: 140px;
 }
 
-#majorDevDash p {
+#majorDevDash p, #majorDevDash p ~ ul {
   width: 70%;
   margin-left: 15%;
 }
@@ -71,7 +71,7 @@ ul.sectionNav li {
 }
 
 @media(max-width: 767px){
-  #majorDevDash p {
+  #majorDevDash p, #majorDevDash p ~ ul {
     width: 90%;
     margin-left: 5%;
   }

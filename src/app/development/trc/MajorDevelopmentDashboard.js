@@ -51,28 +51,12 @@ Object.keys(projectTypes).forEach((type, i) => {
   projectTypes[type].color = orderedColors[i];
 })
 
-function debounce(func, wait, immediate) {
-  // from lodash... should probably just use lodash
-  var timeout;
-  return function() {
-    var context = this, args = arguments;
-    var later = function() {
-      timeout = null;
-      if (!immediate) func.apply(context, args);
-    };
-    var callNow = immediate && !timeout;
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-    if (callNow) func.apply(context, args);
-  };
-};
-
 
 class MajorDevelopmentDashboard extends React.Component {
   constructor(){
     super();
 
-    const sectionNavLinks = [
+    this.sectionNavLinks = [
       {
         linkId: 'about',
         linkName: 'About',
@@ -99,67 +83,19 @@ class MajorDevelopmentDashboard extends React.Component {
       rObj.ref = React.createRef();
       return rObj;
     })
-
-    this.state = {
-      sectionNavLinks,
-    }
-
-    this.handleScroll = debounce(this.handleScroll.bind(this), 200)
-  }
-
-  componentDidMount() {
-    // window.addEventListener('scroll', this.handleScroll);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll);
-  }
-
-  handleScroll(event) {
-    const changePoint = document.documentElement.clientHeight - 250;
-    let closestDistanceToChange = null;
-    let closestNavLinkId = null;
-
-    this.state.sectionNavLinks.forEach(navLink => {
-      const thisRef = navLink.ref.current.getBoundingClientRect();
-
-      if (thisRef.top < changePoint && (!closestDistanceToChange || thisRef.top > closestDistanceToChange)) {
-        // If the top of this ref is above the bottom of the screen
-        // AND
-        // If there isn't already a closest distance assigned
-        // OR
-        // If it's above below the current closest ref, make it the selected one
-        closestNavLinkId = navLink.linkId;
-        closestDistanceToChange = thisRef.top;
-      }
-    })
-
-    const newSectionNavLinks = this.state.sectionNavLinks.map(navLink => {
-      const rObj = Object.assign({}, navLink)
-      if (navLink.linkId !== closestNavLinkId) {
-        rObj.selected = false;
-        return rObj;
-      }
-      rObj.selected = true;
-      return rObj;
-    })
-
-    this.setState({
-      sectionNavLinks: newSectionNavLinks,
-    });
   }
 
   render() {
     return (<div id="majorDevDash" style={{ width: 'inherit' }}>
       <SectionNav
-        links={this.state.sectionNavLinks}
+        links={this.sectionNavLinks}
       />
       <div style={{ height: '4em' }}></div>
 
       <section
         id="about"
         className="col-md-12"
-        ref={this.state.sectionNavLinks.find(d => d.linkId === 'about').ref}
+        ref={this.sectionNavLinks.find(d => d.linkId === 'about').ref}
       >
         <h1>Major Development in Asheville</h1>
         <p>When someone wants to build or modify a building on private property in the City of Asheville, they must comply with federal, state, county, and city standards. Which standards apply depends on how large the building is or how much the building will be modified.</p>
@@ -172,7 +108,7 @@ class MajorDevelopmentDashboard extends React.Component {
 
       <section
         id="notifications"
-        ref={this.state.sectionNavLinks.find(d => d.linkId === 'notifications').ref}
+        ref={this.sectionNavLinks.find(d => d.linkId === 'notifications').ref}
         className="col-md-12"
       >
         <h2> Sign up for Notifications </h2>
@@ -194,7 +130,7 @@ class MajorDevelopmentDashboard extends React.Component {
 
       <section
         id="data"
-        ref={this.state.sectionNavLinks.find(d => d.linkId === 'data').ref}
+        ref={this.sectionNavLinks.find(d => d.linkId === 'data').ref}
         className="col-md-12"
       >
         <h2>Current Projects</h2>
@@ -206,7 +142,7 @@ class MajorDevelopmentDashboard extends React.Component {
 
       <section
         id="calendar"
-        ref={this.state.sectionNavLinks.find(d => d.linkId === 'calendar').ref}
+        ref={this.sectionNavLinks.find(d => d.linkId === 'calendar').ref}
         className="col-md-12"
       >
         <h2>Upcoming Public Events</h2>
@@ -215,7 +151,7 @@ class MajorDevelopmentDashboard extends React.Component {
 
       <section
         id="faq"
-        ref={this.state.sectionNavLinks.find(d => d.linkId === 'faq').ref}
+        ref={this.sectionNavLinks.find(d => d.linkId === 'faq').ref}
         className="col-md-12"
       >
         <h2>FAQ</h2>

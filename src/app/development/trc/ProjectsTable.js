@@ -49,12 +49,7 @@ class ProjectsTable extends React.Component {
         <div className="col-sm-12">
           <Measure
             client
-            onResize={(contentRect) => {
-              console.log('on resize')
-              // this.setState({
-              //   width: contentRect.client.width,
-              // });
-            }}
+
           >
             {({ measureRef }) => (
               <ExpandableAccessibleReactTable

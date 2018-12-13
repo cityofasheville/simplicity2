@@ -53,7 +53,6 @@ const ProjectsTableWrapper = (props) => (
         return <div>Error :( </div>;
       }
 
-
       const filteredData = data.permits.filter(d => {
         let typeOfInterest = false;
         Object.values(props.projectTypes).forEach(type => {

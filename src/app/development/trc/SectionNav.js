@@ -61,6 +61,7 @@ class SectionNav extends React.Component {
         return rObj;
       }
       rObj.selected = true;
+      location.hash = `#${navLink.linkId}`
       return rObj;
     })
 

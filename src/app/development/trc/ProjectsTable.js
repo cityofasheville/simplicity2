@@ -49,7 +49,6 @@ class ProjectsTable extends React.Component {
         <div className="col-sm-12">
           <Measure
             client
-
           >
             {({ measureRef }) => (
               <ExpandableAccessibleReactTable

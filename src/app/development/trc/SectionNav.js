@@ -25,6 +25,7 @@ class SectionNav extends React.Component {
       links: props.links,
     }
     this.handleScroll = debounce(this.handleScroll.bind(this), 200)
+    this.handleAnchorClick = this.handleAnchorClick.bind(this)
   }
 
   componentDidMount() {
@@ -60,15 +61,33 @@ class SectionNav extends React.Component {
       return;
     }
 
+    // https://caniuse.com/#search=pushstate
+    history.pushState({}, '', `${location.pathname}#${closestNavLinkId}`)
+    this.setSelectedNavLink(closestNavLinkId)
+  }
+
+  handleAnchorClick(event) {
+    event.preventDefault();
+    const anchorToId = event.target.getAttribute('href').replace('#', '');
+
+    // Change the URL
+    history.pushState({}, '', `${location.pathname}#${anchorToId}`);
+
+    // Scroll to that element
+    const selectedSection = document.getElementById(anchorToId);
+    document.getElementById(anchorToId).scrollIntoView();
+
+    this.setSelectedNavLink(anchorToId)
+  }
+
+  setSelectedNavLink(selectedLinkId) {
     const newSectionNavLinks = this.state.links.map(navLink => {
       const rObj = Object.assign({}, navLink)
-      if (navLink.linkId !== closestNavLinkId) {
+      if (navLink.linkId !== selectedLinkId) {
         rObj.selected = false;
         return rObj;
       }
       rObj.selected = true;
-      // https://caniuse.com/#search=pushstate
-      history.pushState({}, '', `${location.pathname}#${navLink.linkId}`)
       return rObj;
     })
 
@@ -76,8 +95,6 @@ class SectionNav extends React.Component {
       links: newSectionNavLinks,
     });
   }
-
-handleHashChange
 
   render() {
     return (<ul className="sectionNav" >
@@ -92,6 +109,7 @@ handleHashChange
           style={{
             color: textColor,
           }}
+          onClick={this.handleAnchorClick}
         >
           {linkItem.linkName}
         </a></li>)

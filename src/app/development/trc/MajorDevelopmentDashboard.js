@@ -85,15 +85,15 @@ class MajorDevelopmentDashboard extends React.Component {
     })
   }
 
-  shouldComponentUpdate(nextProps) {
-    console.log(this.props, nextProps)
-    // TODO: THIS IS VERY HACKY
-    // WHY ARE WEIRD SCROLLING THINGS HAPPENING?
-    // if (this.props.location.hash !== nextProps.location.hash) {
-    //   return false;
-    // }
-    return false;
-  }
+  // shouldComponentUpdate(nextProps) {
+  //   console.log(this.props, nextProps)
+  //   // TODO: THIS IS VERY HACKY
+  //   // WHY ARE WEIRD SCROLLING THINGS HAPPENING?
+  //   // if (this.props.location.hash !== nextProps.location.hash) {
+  //   //   return false;
+  //   // }
+  //   // return false;
+  // }
 
   render() {
     return (<div id="majorDevDash" style={{ width: 'inherit' }}>

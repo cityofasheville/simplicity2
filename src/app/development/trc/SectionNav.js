@@ -29,10 +29,12 @@ class SectionNav extends React.Component {
 
   componentDidMount() {
     window.addEventListener('scroll', this.handleScroll);
+    window.addEventListener('hashchange', e => e.preventDefault());
   }
 
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
+    window.removeEventListener('hashchange', e => e.preventDefault());
   }
 
   handleScroll(event) {
@@ -54,6 +56,10 @@ class SectionNav extends React.Component {
       }
     })
 
+    if (closestNavLinkId === location.hash.replace('#', '')) {
+      return;
+    }
+
     const newSectionNavLinks = this.state.links.map(navLink => {
       const rObj = Object.assign({}, navLink)
       if (navLink.linkId !== closestNavLinkId) {
@@ -61,8 +67,8 @@ class SectionNav extends React.Component {
         return rObj;
       }
       rObj.selected = true;
-      location.hash = `#${navLink.linkId}`
-      // TODO: DO NOT SCROLL TO THIS
+      // https://caniuse.com/#search=pushstate
+      history.pushState({}, '', `${location.pathname}#${navLink.linkId}`)
       return rObj;
     })
 
@@ -70,6 +76,8 @@ class SectionNav extends React.Component {
       links: newSectionNavLinks,
     });
   }
+
+handleHashChange
 
   render() {
     return (<ul className="sectionNav" >

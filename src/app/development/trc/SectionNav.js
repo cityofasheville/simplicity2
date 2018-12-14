@@ -30,12 +30,10 @@ class SectionNav extends React.Component {
 
   componentDidMount() {
     window.addEventListener('scroll', this.handleScroll);
-    window.addEventListener('hashchange', e => e.preventDefault());
   }
 
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
-    window.removeEventListener('hashchange', e => e.preventDefault());
   }
 
   handleScroll(event) {

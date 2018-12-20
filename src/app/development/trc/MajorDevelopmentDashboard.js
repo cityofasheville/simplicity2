@@ -101,6 +101,7 @@ class MajorDevelopmentDashboard extends React.Component {
         <p>When someone wants to build or modify a building on private property in the City of Asheville, they must comply with federal, state, county, and city standards. Which standards apply depends on how large the building is or how much the building will be modified.</p>
         <p>After the developer submits an application, it goes through a decision-making process that includes city staff, city council, developers, and residents.  Who is involved at what step depends on the type of project.</p>
         <p>The Unified Development Ordinance defines six types of large scale development in Asheville.</p>
+        <p>Depending on the type of project, there are three to eight steps.</p>
         <AnnotatedDagre
           projectTypes={projectTypes}
         />

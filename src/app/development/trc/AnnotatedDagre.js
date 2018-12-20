@@ -79,12 +79,8 @@ class AnnotatedDagre extends React.Component {
     this.nodeSize = 8;
     this.nodes = [
       {
-        id: 'Pre-Application Meeting',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      },
-      {
-        id: 'Neighborhood Meeting',
-        description: 'The developer must arrange a neighborhood meeting and invite property owners within 200 feet of the proposed development. The meeting must be no more than four months but at least ten days before application submission. At least ten days prior to the meeting, property must be posted and notice of the meeting mailed.'
+        id: 'Pre-Application and Neighborhood Meeting',
+        description: 'The developer must arrange a neighborhood meeting and invite property owners within 200 feet of the proposed development. The meeting must be no more than four months but at least ten days before application submission. At least ten days prior to the meeting, property must be posted and notice of the meeting mailed.  The developer must also meet with city staff at a pre-application meeting.'
       },
       {
         id: 'Level I',
@@ -149,62 +145,27 @@ class AnnotatedDagre extends React.Component {
     ]
     this.links = [
       {
-        source: 'Pre-Application Meeting',
-        target: 'Level I',
-        color: this.projectTypes['Level I'].color,
-      },
-      {
-        source: 'Neighborhood Meeting',
-        target: 'Level I',
-        color: this.projectTypes['Level I'].color,
-      },
-      {
-        source: 'Pre-Application Meeting',
+        source: 'Pre-Application and Neighborhood Meeting',
         target: 'Major Subdivision',
         color: this.projectTypes['Major Subdivision'].color,
       },
       {
-        source: 'Neighborhood Meeting',
-        target: 'Major Subdivision',
-        color: this.projectTypes['Major Subdivision'].color,
-      },
-      {
-        source: 'Pre-Application Meeting',
+        source: 'Pre-Application and Neighborhood Meeting',
         target: 'Level II',
         color: this.projectTypes['Level II'].color,
       },
       {
-        source: 'Neighborhood Meeting',
-        target: 'Level II',
-        color: this.projectTypes['Level II'].color,
-      },
-      {
-        source: 'Pre-Application Meeting',
+        source: 'Pre-Application and Neighborhood Meeting',
         target: 'Level III',
         color: this.projectTypes['Level III'].color,
       },
       {
-        source: 'Neighborhood Meeting',
-        target: 'Level III',
-        color: this.projectTypes['Level III'].color,
-      },
-      {
-        source: 'Pre-Application Meeting',
+        source: 'Pre-Application and Neighborhood Meeting',
         target: 'Conditional Zoning',
         color: this.projectTypes['Conditional Zoning'].color,
       },
       {
-        source: 'Neighborhood Meeting',
-        target: 'Conditional Zoning',
-        color: this.projectTypes['Conditional Zoning'].color,
-      },
-      {
-        source: 'Pre-Application Meeting',
-        target: 'Conditional Use Permit',
-        color: this.projectTypes['Conditional Use Permit'].color,
-      },
-      {
-        source: 'Neighborhood Meeting',
+        source: 'Pre-Application and Neighborhood Meeting',
         target: 'Conditional Use Permit',
         color: this.projectTypes['Conditional Use Permit'].color,
       },
@@ -360,6 +321,10 @@ class AnnotatedDagre extends React.Component {
 
           const xPosition = midpointX + ((d.d.indexInCoincidents % numPerRow) - midRowIndex) * (annotationMargin + wrap);
           thisXOffset = xPosition - d.d.x;
+
+          // const customAnnotation = (<foreignObject width={wrap} x={thisXOffset - wrap / 2} y={thisYOffset}>
+          //   <p>When someone wants to build or modify a building on private property in the City of Asheville, they must comply with federal, state, county, and city standards. Which standards apply depends on how large the building is or how much the building will be modified.</p>
+          // </foreignObject>)
 
           return (<Annotation
             x={d.d.x}

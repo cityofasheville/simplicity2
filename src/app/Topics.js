@@ -30,7 +30,7 @@ Topics.defaultProps = {
     'CAPITAL_PROJECTS',
     //'CRIME',
     //'DEVELOPMENT',
-    'HOMELESSNESS',
+    // 'HOMELESSNESS',
   ],
 };
 

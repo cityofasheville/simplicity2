@@ -1,24 +1,78 @@
-/*VARIABLES COPIED FROM MAIN STYLES.CSS -- CHANGE THIS TO BE BETTER */
-$desktop-min: 1025px;
-$desktop-max: 1200px;
-$mobile-min: 481px;
-$mobile-max: 767px;
-$tablet-min: $mobile-max + 1;
-$tablet-max: $desktop-min - 1;
-$xs: $mobile-min - 1;
+#majorDevDash section {
+  display: block;
+  width: inherit;
+  min-height: 80vh;
+  margin: 0 auto;
+  padding: 0;
+  margin-top: -140px;
+  margin-bottom: 2.5rem;
+  padding-top: 140px;
+}
 
-.anchorNav a {
-    padding: 0.25em 2em;
+#majorDevDash p, #majorDevDash p ~ ul {
+  width: 70%;
+  margin-left: 15%;
 }
 
 #majorDevDash h1, #majorDevDash h2 {
-  padding-top: 120px;
-  margin-top: -120px;
+  text-align: center;
 }
 
-@media(max-width: $xs){
-  .anchorNav a {
-    font-size: 0.75em;
-    padding: 0.15em 0.25em;
+.sectionNav {
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 99;
+  position: fixed;
+  background-color: white;
+  border-bottom: 1px solid gray;
+  padding: 0.25em 1em;
+}
+
+ul.sectionNav  {
+  list-style-type: none;
+}
+
+ul.sectionNav li {
+  display: inline-block;;
+}
+
+.sectionNav a {
+  padding: 0.35em 1.15em 0;
+  letter-spacing: 0.035em;
+}
+
+.sectionNav a.linkItem-selected, .sectionNav a:hover, .sectionNav a:focus {
+  text-decoration: underline;
+}
+
+#majorDevDash text.annotation-note-label {
+  font-family: sans-serif;
+}
+
+#majorDevDash .annotation-note-bg {
+  fill: white;
+  fill-opacity: 0.9;
+  stroke: gray;
+}
+
+#majorDevDash .linkItem-selected {
+  font-weight: bold;
+}
+
+#signup-form {
+  text-align: center;
+  margin: 1em 0;
+}
+
+#signup-form > * {
+  margin: 0.5em 0;
+}
+
+@media(max-width: 767px){
+  #majorDevDash p, #majorDevDash p ~ ul {
+    width: 90%;
+    margin-left: 5%;
   }
 }

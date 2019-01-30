@@ -1,344 +1,163 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import dagre from 'dagre';
+import { curveBundle } from 'd3-shape';
 import { ResponsiveNetworkFrame } from 'semiotic';
-import AnchorNav from './AnchorNav';
-import { colorScheme } from '../volume/granularUtils';
+import { Annotation, ConnectorCurve, Note } from 'react-annotation';
+import SectionNav from './SectionNav';
+import AnnotatedDagre from './AnnotatedDagre';
+import ProjectsTableWrapper from './ProjectsTableWrapper';
 
-const g = new dagre.graphlib.Graph()
-g.setGraph({ rankdir:  'TB', ranker: 'network-simplex' })
-g.setDefaultEdgeLabel(() => ({}))
-const nodeSize = 200;
-const orderedColors = ['#FF3A3A','#749B5F','#2d93ad','#004EA3','#9B6681','#9E4F55','#073d49']
+const projectTypes = {};
+projectTypes['Level I'] = {
+  permit_group: 'Planning',
+  permit_type: 'Development',
+  permit_subtype: 'Level I',
+};
+projectTypes['Major Subdivision'] = {
+  permit_group: 'Planning',
+  permit_type: 'Subdivision',
+  permit_subtype: 'Major',
+};
+projectTypes['Level II'] = {
+  permit_group: 'Planning',
+  permit_type: 'Development',
+  permit_subtype: 'Level II',
+};
+projectTypes['Level III'] = {
+  permit_group: 'Planning',
+  permit_type: 'Development',
+  permit_subtype: 'Level III',
+};
+projectTypes['Conditional Zoning'] = {
+  permit_group: 'Planning',
+  permit_type: 'Development',
+  permit_subtype: 'Conditional Zoning',
+};
+projectTypes['Conditional Use Permit'] = {
+  permit_group: 'Planning',
+  permit_type: 'Development',
+  permit_subtype: 'Conditional Use',
+};
+projectTypes['Historic Resources Commission'] = {
+  permit_group: 'Planning',
+  permit_type: 'HRC',
+  permit_subtype: 'Major Work',
+};
 
-
-// https://emeeks.github.io/semiotic/#/semiotic/customnode
-
-const nodes = [
-  {
-    id: 'Level I',
-    description: 'Projects smaller than 35,000 square feet or with fewer than 20 residential units.',
-    color: orderedColors[0],
-  },
-  {
-    id: 'Major Subdivision',
-  },
-  {
-    id: 'Level II',
-  },
-  {
-    id: 'Level III',
-  },
-  {
-    id: 'Conditional Zoning',
-  },
-  {
-    id: 'Conditional Use Permit',
-  },
-  {
-    id: 'Staff Review',
-    width: nodeSize * 3,
-  },
-  {
-    id: 'Level I Decision',
-    color: orderedColors[0],
-  },
-  {
-    id: 'Technical Review Committee',
-  },
-  {
-    id: 'Major Subdivision Decision',
-    description: 'For major subdivisions that are not in a special zoning area like downtown, the Technical Review Committee either accepts or rejects the proposal.'
-  },
-  {
-    id: 'Design Review',
-    description: 'All level II, downtown subdivisions, and special zoning district L3 etc go to desgin review. The decision made in this step is a a non-binding recommendation.'
-  },
-  {
-    id: 'Planning and Zoning Commission',
-  },
-  {
-    id: 'Level II and Downtown Major Subdivision Decision',
-  },
-  {
-    id: 'City Council',
-  },
-  {
-    id: 'City Council Decision',
-  },
-]
-
-const links = [
-  {
-    source: 'Level I',
-    target: 'Staff Review',
-    color: orderedColors[0],
-  },
-  {
-    source: 'Major Subdivision',
-    target: 'Staff Review',
-    color: orderedColors[1],
-  },
-  {
-    source: 'Level II',
-    target: 'Staff Review',
-    color: orderedColors[2],
-  },
-  {
-    source: 'Level III',
-    target: 'Staff Review',
-    color: orderedColors[3],
-  },
-  {
-    source: 'Conditional Zoning',
-    target: 'Staff Review',
-    color: orderedColors[4],
-  },
-  {
-    source: 'Conditional Use Permit',
-    target: 'Staff Review',
-    color: orderedColors[5],
-  },
-  {
-    source: 'Staff Review',
-    target: 'Level I Decision',
-    color: orderedColors[0],
-  },
-  {
-    source: 'Staff Review',
-    target: 'Technical Review Committee',
-    parallelEdges: [
-      { color: orderedColors[1], weight: 3 },
-      { color: orderedColors[2], weight: 3 },
-      { color: orderedColors[3], weight: 3 },
-      { color: orderedColors[4], weight: 3 },
-      { color: orderedColors[5], weight: 3 },
-    ]
-  },
-  {
-    source: 'Technical Review Committee',
-    target: 'Major Subdivision Decision',
-    color: orderedColors[1],
-  },
-  {
-    source: 'Technical Review Committee',
-    target: 'Design Review',
-    // All level II, downtown subdivisions, and special district L3 etc go to desgin review?
-    parallelEdges: [
-      { color: 'gray', weight: 3 },
-      { color: orderedColors[2], weight: 3 },
-    ]
-  },
-  {
-    source: 'Design Review',
-    target: 'Planning and Zoning Commission',
-    parallelEdges: [
-      { color: 'gray', weight: 3 },
-      { color: orderedColors[2], weight: 3 },
-    ]
-  },
-  {
-    source: 'Technical Review Committee',
-    target: 'Planning and Zoning Commission',
-    parallelEdges: [
-      { color: orderedColors[3], weight: 3 },
-      { color: orderedColors[4], weight: 3 },
-      { color: orderedColors[5], weight: 3 },
-    ]
-  },
-  {
-    source: 'Planning and Zoning Commission',
-    target: 'Level II and Downtown Major Subdivision Decision',
-    parallelEdges: [
-      { color: 'gray', weight: 3 },
-      { color: orderedColors[2], weight: 3 },
-    ]
-  },
-  {
-    source: 'Planning and Zoning Commission',
-    target: 'City Council',
-    parallelEdges: [
-      { color: orderedColors[3], weight: 3 },
-      { color: orderedColors[4], weight: 3 },
-      { color: orderedColors[5], weight: 3 },
-    ]
-  },
-  {
-    source: 'City Council',
-    target: 'City Council Decision',
-    parallelEdges: [
-      { color: orderedColors[3], weight: 3 },
-      { color: orderedColors[4], weight: 3 },
-      { color: orderedColors[5], weight: 3 },
-    ]
-  },
-]
-
-nodes.forEach(node => {
-  g.setNode(
-    node.id,
-    {
-      label: node.id,
-      width: node.width ? node.width : nodeSize * 0.9,
-      height: nodeSize,
-      description: node.description,
-      color: node.color ? node.color : 'gray',
-    }
-  );
+// Assign colors to project types
+const orderedColors = ['#FF3A3A','#749B5F','#2d93ad','#004EA3','#9B6681','#9E4F55','#073d49'];
+Object.keys(projectTypes).forEach((type, i) => {
+  projectTypes[type].color = orderedColors[i];
 })
-
-links.forEach(link => {
-  g.setEdge(
-    link.source,
-    link.target,
-    {
-      parallelEdges: link.parallelEdges || [{ color: link.color ? link.color : 'gray', weight: 3 }],
-    }
-  );
-})
-
-dagre.layout(g)
 
 
 class MajorDevelopmentDashboard extends React.Component {
-  constructor(props){
-    super(props);
-    // this.handleScroll = this.handleScroll.bind(this)
-  }
+  constructor(){
+    super();
 
-  componentDidMount() {
-    // window.addEventListener('scroll', this.handleScroll);
-  }
-
-  componentWillUnmount() {
-    // window.removeEventListener('scroll', this.handleScroll);
-  }
-
-  handleScroll(event) {
-    let scrollTop = event.srcElement.body.scrollTop,
-        itemTranslate = Math.min(0, scrollTop/3 - 60);
-
-    // console.log(window.scrollY)
-    //
-    // console.log(event, scrollTop, itemTranslate)
-    //
-    // this.setState({
-    //   transform: itemTranslate
-    // })
+    this.sectionNavLinks = [
+      {
+        linkId: 'about',
+        linkName: 'About',
+        selected: true,
+      },
+      {
+        linkId: 'notifications',
+        linkName: 'Get Notifications',
+      },
+      {
+        linkId: 'data',
+        linkName: 'Current Projects'
+      },
+      {
+        linkId: 'calendar',
+        linkName: 'Public Events'
+      },
+      {
+        linkId: 'faq',
+        linkName: 'Frequently Asked Questions',
+      },
+    ].map((d, i) => {
+      const rObj = Object.assign({}, d);
+      rObj.ref = React.createRef();
+      return rObj;
+    })
   }
 
   render() {
-    return (<div id="majorDevDash">
-      {/* Highlight/anchor nav button bar */}
-      <AnchorNav
-        links={[
-          {
-            linkId: 'about',
-            linkName: 'About',
-            selected: true,
-          },
-          {
-            linkId: 'notifications',
-            linkName: 'Get Notifications',
-          },
-          {
-            linkId: 'data',
-            linkName: 'Current Projects'
-          },
-          {
-            linkId: 'calendar',
-            linkName: 'Public Events'
-          },
-          {
-            linkId: 'faq',
-            linkName: 'Frequently Asked Questions',
-          },
-        ].map((d, i) => {
-          const rObj = Object.assign({}, d);
-          rObj.color = colorScheme[i];
-          return rObj;
-        })}
+    return (<div id="majorDevDash" style={{ width: 'inherit' }}>
+      <SectionNav
+        links={this.sectionNavLinks}
       />
-      <div>
-      <br/>
-      <br/>
-      <br/>
-      <h1 id="about" >Major Development in Asheville</h1>
-      <div style={{ width: '100%', height: nodeSize * 15 }}>
-        <ResponsiveNetworkFrame
-          size={[1000, 1000]}
-          margin={10}
-          responsiveWidth
-          responsiveHeight
-          graph={g}
-          networkType={{
-            type: 'dagre',
-            zoom: 'true'
-          }}
-          customNodeIcon={(d) => {
-            const width = d.d.width
-            const height = d.d.height;
-            return (<g key={`${d.i}-${d.d.id}`}>
-              <foreignObject
-                style={{
-                  x: d.d.x - width / 2,
-                  y: d.d.y - height / 2,
-                  width: d.d.width,
-                  height: height,
-                }}
-              >
-                <div
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    backgroundColor: '#f2f2f2',
-                    fontSize: '0.85em',
-                    padding: '0.5em',
-                    borderRadius: '2px'
-                  }}
-                >
-                  <div
-                    style={{
-                      textAlign: 'center',
-                      fontWeight: 'normal',
-                      padding: '0 0 0.5em 0',
-                      fontSize: '1.25em',
-                    }}
-                  >
-                    {d.d.id}
-                  </div>
-                  <div>
-                    {d.d.description}
-                  </div>
-                </div>
-              </foreignObject>
-              </g>)
-            }}
-          edgeStyle={d => ({ stroke: 'white', fill: d.color, strokeWidth: 2 })}
+      <div style={{ height: '4em' }}></div>
+
+      <section
+        id="about"
+        className="col-md-12"
+        ref={this.sectionNavLinks.find(d => d.linkId === 'about').ref}
+      >
+        <h1>Major Development in Asheville</h1>
+        <p>When someone wants to build or modify a building on private property in the City of Asheville, they must comply with federal, state, county, and city standards. Which standards apply depends on how large the building is or how much the building will be modified.</p>
+        <p>After the developer submits an application, it goes through a decision-making process that includes city staff, city council, developers, and residents.  Who is involved at what step depends on the type of project.</p>
+        <p>The Unified Development Ordinance defines six types of large scale development in Asheville.</p>
+        <p>Depending on the type of project, there are three to eight steps.</p>
+        <AnnotatedDagre
+          projectTypes={projectTypes}
         />
-      </div>
-      {/* Get notifications */}
-      <h2 id="notifications">Sign up for Notifications</h2>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      {/* Data - table and map */}
-      <h2 id="data">Current Projects</h2>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      {/* Calendar */}
-      <h2 id="calendar">Upcoming Public Events</h2>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      {/* FAQ */}
-      <h2 id="faq">FAQ</h2>
-      </div>
-    </div>);
+      </section>
+
+      <section
+        id="notifications"
+        ref={this.sectionNavLinks.find(d => d.linkId === 'notifications').ref}
+        className="col-md-12"
+      >
+        <h2> Sign up for Notifications </h2>
+        <p>Provide your email or a phone number that can receive text messages to get an update when a new major development application has been submitted.</p>
+        <div id="signup-form">
+          Email: <input type="email" name="email" /><br/>
+          Phone: <input type="tel" name="phone" /><br/>
+          Geographic area: <select>
+            <option value="north">Entire city</option>
+            <option value="north">North Asheville</option>
+            <option value="east">East Asheville</option>
+            <option value="south">South Asheville</option>
+            <option value="west">West Asheville</option>
+          </select><br/>
+          <input type="submit" value="Sign Up" /><br/>
+        </div>
+        <p>You will receive a message asking you to confirm that you wish to receive notifications.</p>
+      </section>
+
+      <section
+        id="data"
+        ref={this.sectionNavLinks.find(d => d.linkId === 'data').ref}
+        className="col-md-12"
+      >
+        <h2>Current Projects</h2>
+        <p>The table below contains projects for which a permit application has been submitted in the last year.</p>
+        <ProjectsTableWrapper
+          projectTypes={projectTypes}
+        />
+      </section>
+
+      <section
+        id="calendar"
+        ref={this.sectionNavLinks.find(d => d.linkId === 'calendar').ref}
+        className="col-md-12"
+      >
+        <h2>Upcoming Public Events</h2>
+        <p>Calendar?  Listed by area?  On a map?  Collapsed into table above?</p>
+      </section>
+
+      <section
+        id="faq"
+        ref={this.sectionNavLinks.find(d => d.linkId === 'faq').ref}
+        className="col-md-12"
+      >
+        <h2>FAQ</h2>
+      </section>
+    </div>)
   }
 
 }

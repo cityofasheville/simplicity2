@@ -2467,9 +2467,15 @@ d3-shape@1.0.3:
   dependencies:
     d3-path "1"
 
-d3-shape@^1.0.3, d3-shape@^1.2.0:
+d3-shape@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/d3-shape/-/d3-shape-1.2.0.tgz#45d01538f064bafd05ea3d6d2cb748fd8c41f777"
+  dependencies:
+    d3-path "1"
+
+d3-shape@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/d3-shape/-/d3-shape-1.2.2.tgz#f9dba3777a5825f9a8ce8bc928da08c17679e9a7"
   dependencies:
     d3-path "1"
 
@@ -6390,7 +6396,7 @@ prop-types@15.6.0:
     loose-envify "^1.3.1"
     object-assign "^4.1.1"
 
-prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2:
+prop-types@15.6.2, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2:
   version "15.6.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.2.tgz#05d5ca77b4453e985d60fc7ff8c859094a497102"
   dependencies:
@@ -6532,11 +6538,18 @@ rc@^1.1.7, rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-annotation@1.3.1:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/react-annotation/-/react-annotation-1.3.1.tgz#eb04ca3483c034773dcce49e2aa433f77dee42ca"
+react-annotation@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-annotation/-/react-annotation-2.0.0.tgz#f14b0f1f39d9a5f92bfb4d7e9619d555305c48ac"
   dependencies:
-    prop-types "15.6.0"
+    prop-types "15.6.2"
+    viz-annotation "0.0.1-3"
+
+react-annotation@^1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/react-annotation/-/react-annotation-1.4.1.tgz#3ea2c6ab66e878eda4208c042970013f07ae125c"
+  dependencies:
+    prop-types "15.6.2"
     viz-annotation "0.0.1-3"
 
 react-apollo@^2.1.4:
@@ -7243,14 +7256,14 @@ selfsigned@^1.9.1:
   dependencies:
     node-forge "0.7.5"
 
-semiotic-mark@0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/semiotic-mark/-/semiotic-mark-0.3.0.tgz#bd658e82031793fcb99cb238fe1ef9fdecc07d8d"
+semiotic-mark@0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/semiotic-mark/-/semiotic-mark-0.3.1.tgz#7295560740bb1254513d35e07702abc0c257de05"
   dependencies:
     d3-interpolate "^1.1.5"
     d3-scale "^1.0.3"
     d3-selection "^1.1.0"
-    d3-shape "^1.0.3"
+    d3-shape "^1.2.0"
     d3-transition "^1.0.3"
     prop-types "^15.6.0"
     roughjs-es5 "0.1.0"
@@ -7266,9 +7279,9 @@ semiotic-mark@^0.1.2:
     d3-transition "1.0.3"
     prop-types "15.6.0"
 
-semiotic@^1.16.0:
-  version "1.16.0"
-  resolved "https://registry.yarnpkg.com/semiotic/-/semiotic-1.16.0.tgz#16bf40d24c3e4a415544c43c34ab230a736771d0"
+semiotic@^1.16.1:
+  version "1.16.1"
+  resolved "https://registry.yarnpkg.com/semiotic/-/semiotic-1.16.1.tgz#8b9497b02e8bb2b82d66ffbb2145fe1dc3521872"
   dependencies:
     "@mapbox/polylabel" "1"
     d3-array "^1.2.0"
@@ -7295,9 +7308,9 @@ semiotic@^1.16.0:
     polygon-offset "0.3.1"
     promise "8.0.1"
     prop-types "15.6.0"
-    react-annotation "1.3.1"
+    react-annotation "2.0.0"
     roughjs-es5 "0.1.0"
-    semiotic-mark "0.3.0"
+    semiotic-mark "0.3.1"
     svg-path-bounding-box "1.0.4"
 
 "semver@2 || 3 || 4 || 5", semver@^5.3.0, semver@^5.5.0:

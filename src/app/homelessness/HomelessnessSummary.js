@@ -11,7 +11,20 @@ import { IM_BED } from '../../shared/iconConstants';
 
 const HomelessnessSummary = props => (
   <div>
-    <PageHeader h1="Homelessness in Asheville / Buncombe County" dataLinkPath="/homelessness/data" externalLink="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=27777" externalLinkText="Five Year Strategic Plan on Homelessness in Buncombe County" icon={<Icon path={IM_BED} size={50} />}>
+    <div className="row" style={{ marginTop: '15px' }}>
+      <div className="col-sm-12">
+        <div className="alert alert-danger h1" style={{ marginBottom: '0px' }}>
+          Warning: this dashboard is out of date!  We're working on updating and refreshing it.  Please contact help@ashevillenc.gov if you have any questions.
+        </div>
+      </div>
+    </div>
+    <PageHeader
+      h1="Homelessness in Asheville / Buncombe County"
+      dataLinkPath="/homelessness/data"
+      externalLink="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=27777"
+      externalLinkText="Five Year Strategic Plan on Homelessness in Buncombe County"
+      icon={<Icon path={IM_BED} size={50} />}
+    >
       <ButtonGroup alignment="">
         <LinkButton pathname="/homelessness" query={{ entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, hideNavbar: props.location.query.hideNavbar }} active positionInGroup="left">Overview</LinkButton>
         <LinkButton pathname="/homelessness/veterans" query={{ entity: props.location.query.entity, id: props.location.query.id, label: props.location.query.label, hideNavbar: props.location.query.hideNavbar }} positionInGroup="right">Veterans</LinkButton>

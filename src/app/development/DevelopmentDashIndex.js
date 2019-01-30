@@ -102,12 +102,12 @@ DevelopmentDashIndex.defaultProps = {
         search: '?module=services',
       },
     },
-    // {
-    //   name: 'Workflow Tasks',
-    //   linkTo: {
-    //     pathname: '/development/tasks',
-    //   }
-    // },
+    {
+      name: 'Service Level Agreement',
+      linkTo: {
+        pathname: '/development/sla-dashboard',
+      }
+    },
     {
       name: 'Yearly Volume Overlay',
       linkTo: { pathname: '/development/volume' },

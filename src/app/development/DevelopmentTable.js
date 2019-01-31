@@ -65,8 +65,8 @@ class DevelopmentTable extends React.Component {
             {(focusRef, focusable) => (
               <span>
                 <span>
-                  <a
-                    title="Click to permit in map"
+                  {/*<a
+                    title="Click to show permit in map"
                     href={[
                       this.state.urlString,
                       '&zoomToPoint=',
@@ -76,10 +76,10 @@ class DevelopmentTable extends React.Component {
                     tabIndex={focusable ? 0 : -1}
                     ref={focusRef}
                     onClick={e => e.stopPropagation()}
-                  >
+                  >*/}
                     <Icon path={IM_MAP5} size={23} />
                     <span style={{ marginLeft: '5px' }}>{row.value}</span>
-                  </a>
+                  {/*</a>*/}
                 </span>
               </span>
             )}

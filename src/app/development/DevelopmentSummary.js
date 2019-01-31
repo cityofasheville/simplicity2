@@ -4,6 +4,7 @@ import moment from 'moment';
 import PageHeader from '../../shared/PageHeader';
 import ButtonGroup from '../../shared/ButtonGroup';
 import Button from '../../shared/Button';
+import MajorDevelopmentDashboard from './trc/MajorDevelopmentDashboard';
 import DevelopmentByAddress from './DevelopmentByAddress';
 import DevelopmentByStreet from './DevelopmentByStreet';
 import DevelopmentByNeighborhood from './DevelopmentByNeighborhood';
@@ -14,6 +15,10 @@ import SpatialEventTopicLocationInfo from '../spatial_event_topic_summary/Spatia
 import { refreshLocation, timeOptions, extentOptions } from '../../utilities/generalUtilities';
 
 const DevelopmentSummary = (props) => {
+  if (Object.keys(props.location.query).length === 0) {
+    return <MajorDevelopmentDashboard />
+  }
+
   const getNewUrlParams = () => (
     {
       within: document.getElementById('extent').value,

@@ -100,13 +100,6 @@ const DevelopmentSummary = (props) => {
           </div>
         </fieldset>
       </form>
-      <div class="row">
-        <div class="col-sm-12">
-          <p>
-            The map, list, and chart represent all permit data for the selected time and area.
-          </p>
-        </div>
-      </div>
       {props.location.query.entity === 'address' ?
         <DevelopmentByAddress
           before={before}
@@ -129,6 +122,33 @@ const DevelopmentSummary = (props) => {
             location={props.location}
           />
       }
+      <div class="row">
+        <div class="col-sm-2">
+        </div>
+        <div class="col-sm-8">
+          <p>
+            The map, list, and chart represent all development permit types, of which there are over 40.  Some permit types included are:
+          </p>
+          <ul>
+            <li>Residential</li>
+            <li>Commercial</li>
+            <li>Fire</li>
+            <li>Sign</li>
+            <li>Over the counter</li>
+            <li>Outdoor vendor</li>
+            <li>Stormwater</li>
+            <li>Right of way</li>
+            <li>Event/temporary use</li>
+            <li>Large scale development</li>
+            <li>Historical resource development</li>
+          </ul>
+          <p>To learn more about permitting in the City of Asheville or apply for a permit, visit <a
+            href="https://beta.ashevillenc.gov/department/development-services/"
+            target="_blank"
+            rel="noopener noreferrer"
+            >the Development Services Department website</a>.</p>
+        </div>
+      </div>
     </div>
   );
 };

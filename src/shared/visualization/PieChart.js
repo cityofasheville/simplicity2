@@ -38,7 +38,7 @@ class PieChart extends React.Component {
             style={{ height: this.props.height, width: this.props.height, margin: '0 auto' }}
           >
             <ResponsiveOrdinalFrame
-              chartTitle={this.props.altText}
+              // chartTitle={this.props.altText}
               data={thisData}
               dynamicColumnWidth="magnitude"
               hoverAnnotation

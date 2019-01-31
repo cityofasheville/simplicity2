@@ -16,7 +16,18 @@ import { refreshLocation, timeOptions, extentOptions } from '../../utilities/gen
 
 const DevelopmentSummary = (props) => {
   if (Object.keys(props.location.query).length === 0) {
-    return <MajorDevelopmentDashboard />
+    props.location.query = {
+      during: "30",
+      entities:"undefined",
+      entity: "address",
+      id: "9688",
+      label: "70 COURT PLZ, 28801",
+      search: "70 court plaza",
+      view: "map",
+      within: "5280",
+      x: "-82.54841807",
+      y: "35.59542839"
+    }
   }
 
   const getNewUrlParams = () => (
@@ -26,8 +37,10 @@ const DevelopmentSummary = (props) => {
     }
   );
 
-  const duringURL = (props.location.query.during === '' || props.location.query.during === undefined) ? '183' : props.location.query.during;
-  const withinURL = (props.location.query.within === '' || props.location.query.within === undefined) ? '660' : props.location.query.within;
+  const duringURL = (props.location.query.during === ''
+    || props.location.query.during === undefined) ? '183' : props.location.query.during;
+  const withinURL = (props.location.query.within === ''
+    || props.location.query.within === undefined) ? '660' : props.location.query.within;
 
   const before = moment.utc().format('YYYY-MM-DD');
   let after = '1970-01-01'; // appears crime only goes back to 2013
@@ -65,7 +78,10 @@ const DevelopmentSummary = (props) => {
                   </select>
                 </div>
               </div>
-              <div className="form-group col-md-3 col-sm-6 col-xs-12" hidden={props.location.query.entity === 'street' || props.location.query.entity === 'neighborhood'}>
+              <div
+                className="form-group col-md-3 col-sm-6 col-xs-12"
+                hidden={props.location.query.entity === 'street' || props.location.query.entity === 'neighborhood'}
+              >
                 <label htmlFor="time" className="control-label">within:</label>
                 <div className="">
                   <select value={withinURL} onChange={() => refreshLocation(getNewUrlParams(), props.location)} name="extent" id="extent" className="form-control">
@@ -75,18 +91,43 @@ const DevelopmentSummary = (props) => {
                   </select>
                 </div>
               </div>
-              <SpatialEventTopicLocationInfo columnClasses="col-md-4 col-sm-6 col-xs-12" spatialType={props.location.query.entity} spatialDescription={props.location.query.label} />
+              <SpatialEventTopicLocationInfo
+                columnClasses="col-md-4 col-sm-6 col-xs-12"
+                spatialType={props.location.query.entity}
+                spatialDescription={props.location.query.label}
+              />
             </div>
           </div>
         </fieldset>
       </form>
+      <div class="row">
+        <div class="col-sm-12">
+          <p>
+            The map, list, and chart represent all permit data for the selected time and area.
+          </p>
+        </div>
+      </div>
       {props.location.query.entity === 'address' ?
-        <DevelopmentByAddress before={before} after={after} radius={withinURL} location={props.location} />
+        <DevelopmentByAddress
+          before={before}
+          after={after}
+          radius={withinURL}
+          location={props.location}
+        />
         :
         props.location.query.entity === 'street' ?
-          <DevelopmentByStreet before={before} after={after} radius={110} location={props.location} />
+          <DevelopmentByStreet
+            before={before}
+            after={after}
+            radius={110}
+            location={props.location}
+          />
           :
-          <DevelopmentByNeighborhood before={before} after={after} location={props.location} />
+          <DevelopmentByNeighborhood
+            before={before}
+            after={after}
+            location={props.location}
+          />
       }
     </div>
   );

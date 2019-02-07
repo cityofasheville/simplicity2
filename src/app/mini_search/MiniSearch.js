@@ -116,7 +116,7 @@ class MiniSearch extends React.Component {
           >
             <a
               className="inText"
-              href="https://docs.google.com/a/ashevillenc.gov/forms/d/e/1FAIpQLSdjNwOmoDY3PjQOVreeSL07zgI8otIIPWjY7BnejWMAjci8-w/viewform?c=0&w=1"
+              href="https://goo.gl/forms/XC9l7PTylog6Q9B83"
               target="_blank"
               title="website feedback form"
             >

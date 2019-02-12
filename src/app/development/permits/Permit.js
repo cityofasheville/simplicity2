@@ -3,20 +3,21 @@ import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
+import Map from '../../../shared/visualization/Map';
 
 // Make query based on URL, render sub components depending on query results
 
 const GET_PERMIT = gql`
   query getPermitsQuery($permit_numbers: [String]) {
     permits(permit_numbers: $permit_numbers) {
-      applicant_name
-      applied_date
-      permit_category
+      permit_number
       permit_description
       permit_group
-      permit_number
-      permit_subtype
       permit_type
+      permit_subtype
+      permit_category
+      applicant_name
+      applied_date
       status_current
       status_date
       created_by
@@ -29,6 +30,15 @@ const GET_PERMIT = gql`
       balance
       invoiced_fee_total
       address
+      x
+      y
+      contractor_names
+      internal_record_id
+      custom_fields {
+        type
+        name
+        value
+      }
       comments {
         comment_seq_number
         comment_date
@@ -58,23 +68,55 @@ const Permit = (props) => (
       const thisPermit = data.permits[0];
       const specialFields = [
         'permit_description',
+        'custom_fields'
       ];
+
+      console.log(thisPermit)
+
+      const mapData = [Object.assign(
+        {},
+        thisPermit,
+        // {
+        //   popup: `<b>${content.address}</b>
+        //     <div>${addressData.street_number} ${addressData.street_prefix} ${addressData.street_name} ${addressData.unit || ''}</div>
+        //     <div>${addressData.city}, NC ${addressData.zipcode}</div>
+        //     <br />
+        //     <b>${content.owner}</b>
+        //     <div>${addressData.owner_name}</div>
+        //     <div>${addressData.owner_address}</div>
+        //     <div>${addressData.owner_cityname}, ${addressData.owner_state} ${addressData.owner_zipcode}</div>`
+        // } // eslint-disable-line
+      )];
 
       return (<div className="container">
         <h1 className="title__text">{thisPermit.permit_description}</h1>
-        <dl className="dl-horizontal">
-          {Object.keys(thisPermit)
-            .filter(d => specialFields.indexOf(d) === -1)
-            .map(d => (<div className="col-sm-12 col-md-6" key={d}>
-              <dt
-                className="text-left text-capitalize"
-              >
-                {d.split('_').join(' ')}:
-              </dt>
-              <dd className="text-right">{thisPermit[d]}</dd>
-            </div>))
-          }
-        </dl>
+        <div className="row">
+          <dl className="dl-horizontal">
+            {Object.keys(thisPermit)
+              .filter(d => specialFields.indexOf(d) === -1)
+              .map(d => (<div className="col-sm-12 col-md-6" key={d}>
+                <dt
+                  className="text-left text-capitalize"
+                >
+                  {d.split('_').join(' ')}:
+                </dt>
+                <dd className="text-right">{typeof thisPermit[d] !== 'object' ? thisPermit[d] : Object.keys(thisPermit[d]).map(k => `${k}: ${thisPermit[d][k]}`)}</dd>
+              </div>))
+            }
+          </dl>
+        </div>
+        <div className="row">
+          <div className="col-sm-12">
+            <div className="map-container" style={{ height: '300px' }}>
+              <Map
+                data={mapData}
+                center={[thisPermit.y, thisPermit.x]}
+                height="100%"
+                width="100%"
+              />
+            </div>
+          </div>
+        </div>
       </div>);
     }}
   </Query>

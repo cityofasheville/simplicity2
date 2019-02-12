@@ -10,28 +10,13 @@ const GET_PROJECTS = gql`
       applicant_name
       applied_date
       permit_category
-      permit_description
       permit_group
       permit_number
       permit_subtype
       permit_type
       status_current
       status_date
-      created_by
-      building_value
-      job_value
-      total_project_valuation
-      total_sq_feet
-      fees
-      paid
-      balance
-      invoiced_fee_total
       address
-      comments {
-        comment_seq_number
-        comment_date
-        comments
-      }
     }
   }
 `;
@@ -42,7 +27,7 @@ const ProjectsTableWrapper = (props) => (
     query={GET_PROJECTS}
     variables={{
       date_field: 'applied_date',
-      after: new Date(new Date().setFullYear(new Date().getFullYear() - 1)),
+      after: new Date(new Date().setFullYear(new Date().getFullYear() - 2)),
       permit_groups: ['Planning'],
     }}
   >

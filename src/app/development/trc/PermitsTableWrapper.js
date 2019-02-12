@@ -5,8 +5,8 @@ import LoadingAnimation from '../../../shared/LoadingAnimation';
 import PermitsTable from './PermitsTable';
 
 const GET_PROJECTS = gql`
-  query getPermitsQuery($date_field: String!, $after: String, $permit_groups: [String]) {
-    permits(date_field: $date_field, after: $after, permit_groups: $permit_groups) {
+  query getPermitsQuery($date_field: String!, $after: String, $before: String, $permit_groups: [String]) {
+    permits(date_field: $date_field, after: $after, before: $before, permit_groups: $permit_groups) {
       applicant_name
       applied_date
       permit_category
@@ -27,7 +27,8 @@ const PermitsTableWrapper = (props) => (
     query={GET_PROJECTS}
     variables={{
       date_field: 'applied_date',
-      after: new Date(new Date().setFullYear(new Date().getFullYear() - 1)),
+      after: props.after || new Date(new Date().setFullYear(new Date().getFullYear() - 1)),
+      before: props.before || new Date(),
       permit_groups: props.permit_groups,
     }}
   >

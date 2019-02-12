@@ -61,7 +61,7 @@ class ProjectsTable extends React.Component {
                 ariaLabel={"Table of development permits"}
                 data={this.props.data}
                 columns={[{
-                  Header: 'Projects',
+                  Header: 'Permits',
                   columns: tableHeaders.map(headerObj => {
                     return {
                       Header: headerObj.display,

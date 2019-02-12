@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import PermitsTableWrapper from '../trc/PermitsTableWrapper';
 
 
-// should proabbaly just be a big ol table with links to other stuff
+// todo: add time slider
+
 
 const PermitsIndex = (props) => (
   <div>

@@ -78,6 +78,9 @@ const Permit = (props) => (
       thisPermit.custom_fields.forEach(customField =>
         permitWithCustomFields[customField.name] = customField.value)
 
+      permitWithCustomFields.contractor_names = Object.values(thisPermit.contractor_names)
+        .join(', ');
+
       const mapData = [Object.assign(
         {},
         thisPermit,

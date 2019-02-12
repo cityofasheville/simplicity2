@@ -4,6 +4,7 @@ import moment from 'moment';
 import PageHeader from '../../shared/PageHeader';
 import ButtonGroup from '../../shared/ButtonGroup';
 import Button from '../../shared/Button';
+import MajorDevelopmentDashboard from './trc/MajorDevelopmentDashboard';
 import DevelopmentByAddress from './DevelopmentByAddress';
 import DevelopmentByStreet from './DevelopmentByStreet';
 import DevelopmentByNeighborhood from './DevelopmentByNeighborhood';
@@ -14,6 +15,21 @@ import SpatialEventTopicLocationInfo from '../spatial_event_topic_summary/Spatia
 import { refreshLocation, timeOptions, extentOptions } from '../../utilities/generalUtilities';
 
 const DevelopmentSummary = (props) => {
+  if (Object.keys(props.location.query).length === 0) {
+    props.location.query = {
+      during: "30",
+      entities:"undefined",
+      entity: "address",
+      id: "9688",
+      label: "70 COURT PLZ, 28801",
+      search: "70 court plaza",
+      view: "map",
+      within: "5280",
+      x: "-82.54841807",
+      y: "35.59542839"
+    }
+  }
+
   const getNewUrlParams = () => (
     {
       within: document.getElementById('extent').value,
@@ -21,8 +37,10 @@ const DevelopmentSummary = (props) => {
     }
   );
 
-  const duringURL = (props.location.query.during === '' || props.location.query.during === undefined) ? '183' : props.location.query.during;
-  const withinURL = (props.location.query.within === '' || props.location.query.within === undefined) ? '660' : props.location.query.within;
+  const duringURL = (props.location.query.during === ''
+    || props.location.query.during === undefined) ? '183' : props.location.query.during;
+  const withinURL = (props.location.query.within === ''
+    || props.location.query.within === undefined) ? '660' : props.location.query.within;
 
   const before = moment.utc().format('YYYY-MM-DD');
   let after = '1970-01-01'; // appears crime only goes back to 2013
@@ -60,7 +78,10 @@ const DevelopmentSummary = (props) => {
                   </select>
                 </div>
               </div>
-              <div className="form-group col-md-3 col-sm-6 col-xs-12" hidden={props.location.query.entity === 'street' || props.location.query.entity === 'neighborhood'}>
+              <div
+                className="form-group col-md-3 col-sm-6 col-xs-12"
+                hidden={props.location.query.entity === 'street' || props.location.query.entity === 'neighborhood'}
+              >
                 <label htmlFor="time" className="control-label">within:</label>
                 <div className="">
                   <select value={withinURL} onChange={() => refreshLocation(getNewUrlParams(), props.location)} name="extent" id="extent" className="form-control">
@@ -70,19 +91,64 @@ const DevelopmentSummary = (props) => {
                   </select>
                 </div>
               </div>
-              <SpatialEventTopicLocationInfo columnClasses="col-md-4 col-sm-6 col-xs-12" spatialType={props.location.query.entity} spatialDescription={props.location.query.label} />
+              <SpatialEventTopicLocationInfo
+                columnClasses="col-md-4 col-sm-6 col-xs-12"
+                spatialType={props.location.query.entity}
+                spatialDescription={props.location.query.label}
+              />
             </div>
           </div>
         </fieldset>
       </form>
       {props.location.query.entity === 'address' ?
-        <DevelopmentByAddress before={before} after={after} radius={withinURL} location={props.location} />
+        <DevelopmentByAddress
+          before={before}
+          after={after}
+          radius={withinURL}
+          location={props.location}
+        />
         :
         props.location.query.entity === 'street' ?
-          <DevelopmentByStreet before={before} after={after} radius={110} location={props.location} />
+          <DevelopmentByStreet
+            before={before}
+            after={after}
+            radius={110}
+            location={props.location}
+          />
           :
-          <DevelopmentByNeighborhood before={before} after={after} location={props.location} />
+          <DevelopmentByNeighborhood
+            before={before}
+            after={after}
+            location={props.location}
+          />
       }
+      <div class="row">
+        <div class="col-sm-2">
+        </div>
+        <div class="col-sm-8">
+          <p>
+            The map, list, and chart represent all development permit types, of which there are over 40.  Some permit types included are:
+          </p>
+          <ul>
+            <li>Residential</li>
+            <li>Commercial</li>
+            <li>Fire</li>
+            <li>Sign</li>
+            <li>Over the counter</li>
+            <li>Outdoor vendor</li>
+            <li>Stormwater</li>
+            <li>Right of way</li>
+            <li>Event/temporary use</li>
+            <li>Large scale development</li>
+            <li>Historical resource development</li>
+          </ul>
+          <p>To learn more about permitting in the City of Asheville or apply for a permit, visit <a
+            href="https://beta.ashevillenc.gov/department/development-services/"
+            target="_blank"
+            rel="noopener noreferrer"
+            >the Development Services Department website</a>.</p>
+        </div>
+      </div>
     </div>
   );
 };

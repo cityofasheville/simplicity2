@@ -2,7 +2,7 @@ import React from 'react';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
-import ProjectsTable from './ProjectsTable';
+import PermitsTable from './PermitsTable';
 
 const GET_PROJECTS = gql`
   query getPermitsQuery($date_field: String!, $after: String, $permit_groups: [String]) {
@@ -22,13 +22,13 @@ const GET_PROJECTS = gql`
 `;
 
 
-const ProjectsTableWrapper = (props) => (
+const PermitsTableWrapper = (props) => (
   <Query
     query={GET_PROJECTS}
     variables={{
       date_field: 'applied_date',
-      after: new Date(new Date().setFullYear(new Date().getFullYear() - 2)),
-      permit_groups: ['Planning'],
+      after: new Date(new Date().setFullYear(new Date().getFullYear() - 1)),
+      permit_groups: props.permit_groups,
     }}
   >
     {({ loading, error, data }) => {
@@ -38,20 +38,24 @@ const ProjectsTableWrapper = (props) => (
         return <div>Error :( </div>;
       }
 
-      const filteredData = data.permits.filter(d => {
-        let typeOfInterest = false;
-        Object.values(props.projectTypes).forEach(type => {
-          // ASSUMING THEY ARE ALL PLANNING
-          if (d.permit_type === type.permit_type && d.permit_subtype === type.permit_subtype) {
-            typeOfInterest = typeOfInterest || true;
-          }
-        })
-        return typeOfInterest;
-      })
+      let filteredData = data.permits;
 
-      return (<ProjectsTable {...props} data={filteredData} />);
+      if (props.projectTypes) {
+        filteredData = data.permits.filter(d => {
+          let typeOfInterest = false;
+          Object.values(props.projectTypes).forEach(type => {
+            // ASSUMING THEY ARE ALL PLANNING
+            if (d.permit_type === type.permit_type && d.permit_subtype === type.permit_subtype) {
+              typeOfInterest = typeOfInterest || true;
+            }
+          })
+          return typeOfInterest;
+        })
+      }
+
+      return (<PermitsTable {...props} data={filteredData} />);
     }}
   </Query>
 );
 
-export default ProjectsTableWrapper;
+export default PermitsTableWrapper;

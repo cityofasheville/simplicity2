@@ -1,12 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import PermitsTableWrapper from '../trc/PermitsTableWrapper';
 
 
 // should proabbaly just be a big ol table with links to other stuff
 
 const PermitsIndex = (props) => (
   <div>
-    TODO: USE ProjectsTableWrapper to make a big list of permits
+    <PermitsTableWrapper
+      permit_groups={['Planning', 'Permits', 'Services']}
+    />
   </div>
 );
 

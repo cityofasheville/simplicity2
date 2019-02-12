@@ -4,8 +4,6 @@ import PermitsTableWrapper from '../trc/PermitsTableWrapper';
 import TimeSlider from '../volume/TimeSlider';
 import { timeDay } from 'd3-time';
 
-// todo: add time slider
-
 
 class PermitsIndex extends React.Component {
 

@@ -73,13 +73,18 @@ const Permit = (props) => (
         'y',
       ];
 
-      const permitWithCustomFields = Object.assign({}, thisPermit)
+      const formattedPermit = Object.assign({}, thisPermit)
 
       thisPermit.custom_fields.forEach(customField =>
-        permitWithCustomFields[customField.name] = customField.value)
+        formattedPermit[customField.name] = customField.value)
 
-      permitWithCustomFields.contractor_names = Object.values(thisPermit.contractor_names)
+      formattedPermit.contractor_names = Object.values(thisPermit.contractor_names)
         .join(', ');
+
+      const dateFormatter = (inputDate) => new Date(inputDate).toLocaleDateString('en-US')
+
+      formattedPermit.applied_date = dateFormatter(thisPermit.applied_date)
+      formattedPermit.status_date = dateFormatter(thisPermit.status_date)
 
       const mapData = [Object.assign(
         {},
@@ -93,17 +98,17 @@ const Permit = (props) => (
         <h1 className="title__text">{thisPermit.permit_description}</h1>
         <div className="row">
           <dl className="dl-horizontal">
-            {Object.keys(permitWithCustomFields)
-              .filter(d => specialFields.indexOf(d) === -1 && +permitWithCustomFields[d] !== 0)
+            {Object.keys(formattedPermit)
+              .filter(d => specialFields.indexOf(d) === -1 && +formattedPermit[d] !== 0)
               .map(d => (<div className="col-sm-12 col-md-6" key={d}>
                 <dt
                   className="text-left text-capitalize"
                 >
                   {d.split('_').join(' ')}:
                 </dt>
-                <dd className="text-right">{typeof permitWithCustomFields[d] !== 'object' ?
-                  permitWithCustomFields[d] :
-                  Object.keys(permitWithCustomFields[d]).map(k => `${k}: ${permitWithCustomFields[d][k]}`)}</dd>
+                <dd className="text-right">{typeof formattedPermit[d] !== 'object' ?
+                  formattedPermit[d] :
+                  Object.keys(formattedPermit[d]).map(k => `${k}: ${formattedPermit[d][k]}`)}</dd>
               </div>))
             }
           </dl>

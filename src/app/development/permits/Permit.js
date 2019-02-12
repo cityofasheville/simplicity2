@@ -91,7 +91,7 @@ const Permit = (props) => (
         <div className="row">
           <dl className="dl-horizontal">
             {Object.keys(permitWithCustomFields)
-              .filter(d => specialFields.indexOf(d) === -1)
+              .filter(d => specialFields.indexOf(d) === -1 && +permitWithCustomFields[d] !== 0)
               .map(d => (<div className="col-sm-12 col-md-6" key={d}>
                 <dt
                   className="text-left text-capitalize"

@@ -32,6 +32,8 @@ import MajorDevelopmentDashboard from './app/development/trc/MajorDevelopmentDas
 import SurveyResults from './app/development/trc/SurveyResults';
 import VolumeDashboard from './app/development/static_volume/VolumeDashboard';
 import PermitVolume from './app/development/volume/PermitVolume';
+import PermitsIndex from './app/development/permits/PermitsIndex';
+import Permit from './app/development/permits/Permit';
 // import WorkflowContainer from './app/development/workflows/WorkflowContainer';
 //
 import ProjectFlowDashboard from './app/internal/bpt_projects/ProjectFlow';
@@ -130,6 +132,10 @@ const Routes = () => (
         <Route path="pcard_compliance">
           <IndexRoute component={PCardCompliance} />
           <Route path="receipts" component={PCardComplianceReceipts} />
+        </Route>
+        <Route path="permits">
+          <IndexRoute component={PermitsIndex} />
+          <Route path="/permits/:id" component={Permit}></Route>
         </Route>
         <Route path="development">
           <IndexRoute component={DevelopmentSummary} />

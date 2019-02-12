@@ -76,16 +76,9 @@ const Permit = (props) => (
       const mapData = [Object.assign(
         {},
         thisPermit,
-        // {
-        //   popup: `<b>${content.address}</b>
-        //     <div>${addressData.street_number} ${addressData.street_prefix} ${addressData.street_name} ${addressData.unit || ''}</div>
-        //     <div>${addressData.city}, NC ${addressData.zipcode}</div>
-        //     <br />
-        //     <b>${content.owner}</b>
-        //     <div>${addressData.owner_name}</div>
-        //     <div>${addressData.owner_address}</div>
-        //     <div>${addressData.owner_cityname}, ${addressData.owner_state} ${addressData.owner_zipcode}</div>`
-        // } // eslint-disable-line
+        {
+          popup: `<b>${thisPermit.address}</b>`
+        },
       )];
 
       return (<div className="container">

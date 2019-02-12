@@ -70,10 +70,10 @@ class MajorDevelopmentDashboard extends React.Component {
         linkId: 'data',
         linkName: 'Current Projects'
       },
-      {
-        linkId: 'calendar',
-        linkName: 'Public Events'
-      },
+      // {
+      //   linkId: 'calendar',
+      //   linkName: 'Public Events'
+      // },
       {
         linkId: 'faq',
         linkName: 'Frequently Asked Questions',
@@ -113,20 +113,7 @@ class MajorDevelopmentDashboard extends React.Component {
         className="col-md-12"
       >
         <h2> Sign up for Notifications </h2>
-        <p>Provide your email or a phone number that can receive text messages to get an update when a new major development application has been submitted.</p>
-        <div id="signup-form">
-          Email: <input type="email" name="email" /><br/>
-          Phone: <input type="tel" name="phone" /><br/>
-          Geographic area: <select>
-            <option value="north">Entire city</option>
-            <option value="north">North Asheville</option>
-            <option value="east">East Asheville</option>
-            <option value="south">South Asheville</option>
-            <option value="west">West Asheville</option>
-          </select><br/>
-          <input type="submit" value="Sign Up" /><br/>
-        </div>
-        <p>You will receive a message asking you to confirm that you wish to receive notifications.</p>
+        <p>The City of Asheville is piloting a new notification system that allows people to sign up for non-emergency alerts based on city data.  You can go to notifications.ashevillenc.gov to sign up for alerts about Level I and larger projects.</p>
       </section>
 
       <section
@@ -141,14 +128,14 @@ class MajorDevelopmentDashboard extends React.Component {
         />
       </section>
 
-      <section
+      {/*<section
         id="calendar"
         ref={this.sectionNavLinks.find(d => d.linkId === 'calendar').ref}
         className="col-md-12"
       >
         <h2>Upcoming Public Events</h2>
         <p>Calendar?  Listed by area?  On a map?  Collapsed into table above?</p>
-      </section>
+      </section>*/}
 
       <section
         id="faq"
@@ -156,6 +143,53 @@ class MajorDevelopmentDashboard extends React.Component {
         className="col-md-12"
       >
         <h2>FAQ</h2>
+        {/* https://getbootstrap.com/docs/3.4/javascript/#collapse */}
+        {/* TODO: WHY DOES COLLAPSE TRIGGER RE-RENDER? */}
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingOne">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  Why is the sky blue?
+                </a>
+              </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+              <div class="panel-body">
+                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingTwo">
+              <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                  Why is the grass green?
+                </a>
+              </h4>
+            </div>
+            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+              <div class="panel-body">
+                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingThree">
+              <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  Why is?
+                </a>
+              </h4>
+            </div>
+            <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+              <div class="panel-body">
+                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+              </div>
+            </div>
+          </div>
+        </div>
+
       </section>
     </div>)
   }

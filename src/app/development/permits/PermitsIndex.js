@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 const PermitsIndex = (props) => (
   <div>
-    Oops, this doesn't exist yet.  Try adding a permit number to the URL like this: /permits/permit-number.
+    TODO: USE ProjectsTableWrapper to make a big list of permits
   </div>
 );
 

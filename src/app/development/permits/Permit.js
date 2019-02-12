@@ -4,7 +4,6 @@ import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 
-
 // Make query based on URL, render sub components depending on query results
 
 const GET_PERMIT = gql`
@@ -43,7 +42,6 @@ const Permit = (props) => (
   <Query
     query={GET_PERMIT}
     variables={{
-      // permit_numbers: ['19-00773PZ']
       permit_numbers: [props.routeParams.id],
     }}
   >
@@ -60,17 +58,23 @@ const Permit = (props) => (
       const thisPermit = data.permits[0];
       const specialFields = [
         'permit_description',
-        'address',
-        'permit_number',
       ];
 
       return (<div className="container">
-        <h1>{`${thisPermit.permit_description} at ${thisPermit.address}`}</h1>
-        <span>{`Record number ${thisPermit.permit_number}`}</span>
-        {Object.keys(thisPermit)
-          .filter(d => specialFields.indexOf(d === -1))
-          .map(d => (<div key={d}>{`${d}: ${thisPermit[d]}`}</div>))
-        }
+        <h1 className="title__text">{thisPermit.permit_description}</h1>
+        <dl className="dl-horizontal">
+          {Object.keys(thisPermit)
+            .filter(d => specialFields.indexOf(d) === -1)
+            .map(d => (<div className="col-sm-12 col-md-6" key={d}>
+              <dt
+                className="text-left text-capitalize"
+              >
+                {d.split('_').join(' ')}:
+              </dt>
+              <dd className="text-right">{thisPermit[d]}</dd>
+            </div>))
+          }
+        </dl>
       </div>);
     }}
   </Query>

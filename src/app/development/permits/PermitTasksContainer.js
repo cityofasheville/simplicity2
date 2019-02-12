@@ -4,12 +4,7 @@ import { Query } from 'react-apollo';
 import { GET_WORKFLOW_TASKS } from '../volume/granularUtils';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import Workflow from './Workflow';
-
-// TODO: PUT THIS IN UTILS INSTEAD OF COPYING IT
-// MAKE UTIL FILE SHARED WITH ALL DEVELOPMENT DASHBOARDS
-function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
+import { capitalizeFirstLetter } from '../../utils';
 
 const WorkflowContainer = (props) => {
   return (<Query

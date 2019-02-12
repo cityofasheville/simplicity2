@@ -18,7 +18,7 @@ class AccordionPanel extends React.Component {
     const panelHeadingId = `accordion-heading-${this.props.index}`;
     const collapsibleId = `accordion-button-${this.props.index}`;
 
-    return (<div className="accordion-item-set" key={`accordion-item-${this.props.index}`}>
+    return (<div className="accordion-item-set">
       <div className="panel panel-default">
         <div className="panel-heading" role="tab" id={panelHeadingId}>
           <h4 className="panel-title">
@@ -58,8 +58,8 @@ const Accordion = (props) => (
     aria-multiselectable="true"
   >
   {/* https://getbootstrap.com/docs/3.4/javascript/#collapse */}
-  {/* TODO: WHY DOES COLLAPSE TRIGGER RE-RENDER? */}
   {props.data.map((d, i) => (<AccordionPanel
+      key={`accordion-item-${i}`}
       index={i}
       header={d.header}
       body={d.body}

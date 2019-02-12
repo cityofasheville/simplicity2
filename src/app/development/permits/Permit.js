@@ -113,7 +113,7 @@ const Permit = (props) => (
             }
           </dl>
         </div>
-        <div className="row">
+        {thisPermit.y && thisPermit.x && (<div className="row">
           <div className="col-sm-12">
             <div className="map-container" style={{ height: '300px' }}>
               <Map
@@ -122,9 +122,9 @@ const Permit = (props) => (
                 height="100%"
                 width="100%"
               />
+              </div>
             </div>
-          </div>
-        </div>
+          </div>)}
       </div>);
     }}
   </Query>

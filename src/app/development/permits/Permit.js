@@ -68,10 +68,15 @@ const Permit = (props) => (
       const thisPermit = data.permits[0];
       const specialFields = [
         'permit_description',
-        'custom_fields'
+        'custom_fields',
+        'x',
+        'y',
       ];
 
-      console.log(thisPermit)
+      const permitWithCustomFields = Object.assign({}, thisPermit)
+
+      thisPermit.custom_fields.forEach(customField =>
+        permitWithCustomFields[customField.name] = customField.value)
 
       const mapData = [Object.assign(
         {},
@@ -85,7 +90,7 @@ const Permit = (props) => (
         <h1 className="title__text">{thisPermit.permit_description}</h1>
         <div className="row">
           <dl className="dl-horizontal">
-            {Object.keys(thisPermit)
+            {Object.keys(permitWithCustomFields)
               .filter(d => specialFields.indexOf(d) === -1)
               .map(d => (<div className="col-sm-12 col-md-6" key={d}>
                 <dt
@@ -93,7 +98,9 @@ const Permit = (props) => (
                 >
                   {d.split('_').join(' ')}:
                 </dt>
-                <dd className="text-right">{typeof thisPermit[d] !== 'object' ? thisPermit[d] : Object.keys(thisPermit[d]).map(k => `${k}: ${thisPermit[d][k]}`)}</dd>
+                <dd className="text-right">{typeof permitWithCustomFields[d] !== 'object' ?
+                  permitWithCustomFields[d] :
+                  Object.keys(permitWithCustomFields[d]).map(k => `${k}: ${permitWithCustomFields[d][k]}`)}</dd>
               </div>))
             }
           </dl>

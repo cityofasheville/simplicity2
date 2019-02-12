@@ -154,7 +154,7 @@ class MajorDevelopmentDashboard extends React.Component {
               body: 'Something something light refracting',
             },
             {
-              header: 'What time is it?',
+              header: 'What day is it?',
               body: new Date().toLocaleDateString('en-us'),
             },
             {

@@ -57,9 +57,21 @@ const Permit = (props) => (
         console.log('This is not quite right: ', data)
       }
 
-      console.log(data)
+      const thisPermit = data.permits[0];
+      const specialFields = [
+        'permit_description',
+        'address',
+        'permit_number',
+      ];
 
-      return <div>Foo!</div>
+      return (<div className="container">
+        <h1>{`${thisPermit.permit_description} at ${thisPermit.address}`}</h1>
+        <span>{`Record number ${thisPermit.permit_number}`}</span>
+        {Object.keys(thisPermit)
+          .filter(d => specialFields.indexOf(d === -1))
+          .map(d => (<div key={d}>{`${d}: ${thisPermit[d]}`}</div>))
+        }
+      </div>);
     }}
   </Query>
 );

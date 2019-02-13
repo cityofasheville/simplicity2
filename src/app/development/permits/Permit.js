@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import Map from '../../../shared/visualization/Map';
+import { trcProjectTypes } from '../trc/utils';
 
 // Make query based on URL, render sub components depending on query results
 
@@ -152,7 +153,7 @@ const Permit = (props) => (
             <div className="map-container" style={{ height: `${firstGroupFields.length * 4}em` }}>
               <Map
                 data={mapData}
-                center={[thisPermit.y, thisPermit.x]}
+                center={[formattedPermit.y, formattedPermit.x]}
                 height="100%"
                 width="100%"
               />
@@ -170,6 +171,10 @@ const Permit = (props) => (
               formattedPermit={formattedPermit}
             />))}
           </dl>
+          {formattedPermit.permit_group === 'Planning' &&
+            Object.values(trcProjectTypes).map(type => type.permit_subtype).indexOf(formattedPermit.permit_subtype) > -1 &&
+            <p><em>This is a major development.  <a href="/development/major">Learn more</a> about the large-scale development process in Asheville.</em></p>
+          }
         </div>
         <div className="row">
           <h2>Details</h2>

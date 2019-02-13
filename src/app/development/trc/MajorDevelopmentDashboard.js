@@ -8,43 +8,9 @@ import SectionNav from './SectionNav';
 import AnnotatedDagre from './AnnotatedDagre';
 import PermitsTableWrapper from './PermitsTableWrapper';
 import Accordion from '../../../shared/visualization/Accordion';
+import { trcProjectTypes } from './utils';
 
-const projectTypes = {};
-projectTypes['Level I'] = {
-  permit_group: 'Planning',
-  permit_type: 'Development',
-  permit_subtype: 'Level I',
-};
-projectTypes['Major Subdivision'] = {
-  permit_group: 'Planning',
-  permit_type: 'Subdivision',
-  permit_subtype: 'Major',
-};
-projectTypes['Level II'] = {
-  permit_group: 'Planning',
-  permit_type: 'Development',
-  permit_subtype: 'Level II',
-};
-projectTypes['Level III'] = {
-  permit_group: 'Planning',
-  permit_type: 'Development',
-  permit_subtype: 'Level III',
-};
-projectTypes['Conditional Zoning'] = {
-  permit_group: 'Planning',
-  permit_type: 'Development',
-  permit_subtype: 'Conditional Zoning',
-};
-projectTypes['Conditional Use Permit'] = {
-  permit_group: 'Planning',
-  permit_type: 'Development',
-  permit_subtype: 'Conditional Use',
-};
-projectTypes['Historic Resources Commission'] = {
-  permit_group: 'Planning',
-  permit_type: 'HRC',
-  permit_subtype: 'Major Work',
-};
+const projectTypes = trcProjectTypes;
 
 // Assign colors to project types
 const orderedColors = ['#FF3A3A','#749B5F','#2d93ad','#004EA3','#9B6681','#9E4F55','#073d49'];

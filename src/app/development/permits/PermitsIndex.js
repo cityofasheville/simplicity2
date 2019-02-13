@@ -18,7 +18,7 @@ class PermitsIndex extends React.Component {
   }
 
   render() {
-    return (<div>
+    return (<div className="container">
       <h1>All Permits by Date Applied</h1>
       <TimeSlider
         onBrushEnd={newExtent => this.setState({

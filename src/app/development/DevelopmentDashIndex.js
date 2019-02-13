@@ -109,6 +109,18 @@ DevelopmentDashIndex.defaultProps = {
       }
     },
     {
+      name: 'Table of All Permits',
+      linkTo: {
+        pathname: '/permits',
+      },
+    },
+    {
+      name: 'Major Development Dashboard (Under Construction)',
+      linkTo: {
+        pathname: '/development/major'
+      }
+    },
+    {
       name: 'Yearly Volume Overlay',
       linkTo: { pathname: '/development/volume' },
     },

@@ -48,7 +48,12 @@ const PermitTasks = (props) => {
       // Grab just completed ones, order by date completed, make timeline?
       // Needs to allow fork
       // Should also be annotated dagre?
-      console.log(data)
+      const steps = data.permit_tasks
+        // .filter(d => d.is_active === true || d.is_completed === true)
+        .sort((a, b) => {
+          return new Date(a.current_status_date).getTime() - new Date(b.current_status_date).getTime()
+        })
+      console.log(data.permit_tasks, steps)
 
       return (<div className="dashRows">
         <div>

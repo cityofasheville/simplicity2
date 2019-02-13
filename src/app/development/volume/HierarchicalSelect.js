@@ -141,6 +141,7 @@ class HierarchicalSelect extends Component {
   }
 
   setActiveDepth(newDepth) {
+    // todo: why am I using HierarchicalSelect. rather than this?
     const colorfulNodes = HierarchicalSelect.setNodeDisplayOpts(
       this.state.edges,
       newDepth,
@@ -260,6 +261,7 @@ class HierarchicalSelect extends Component {
   }
 
   componentWillMount() {
+    // todo: SETS COLORFUL NODES AS WELL - as a side effect, which is not ideal
     this.setActiveDepth(this.props.activeDepth)
   }
 

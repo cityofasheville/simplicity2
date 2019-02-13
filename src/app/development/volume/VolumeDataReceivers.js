@@ -20,6 +20,7 @@ class VolumeDataReceivers extends React.Component {
     this.state = {
       selectedData: this.props.data,
       selectedNodes: null,
+      // TODO: waits to render child dashboard until receiving selected nodes from hierarchical select-- not ideal
       selectedHierarchyLevel: null,
       // modalData: null,
     };

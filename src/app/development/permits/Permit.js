@@ -66,26 +66,13 @@ const Permit = (props) => (
       }
 
       const thisPermit = data.permits[0];
-      const specialFields = [
-        'permit_description',
-        'custom_fields',
-        'x',
-        'y',
-      ];
-
       const formattedPermit = Object.assign({}, thisPermit)
 
+      // These are all the "misc" info fields that may or may not be filled out for any permit
       thisPermit.custom_fields.forEach(customField =>
         formattedPermit[customField.name] = customField.value)
 
-      formattedPermit.contractor_names = Object.values(thisPermit.contractor_names)
-        .join(', ');
-
-      const dateFormatter = (inputDate) => new Date(inputDate).toLocaleDateString('en-US')
-
-      formattedPermit.applied_date = dateFormatter(thisPermit.applied_date)
-      formattedPermit.status_date = dateFormatter(thisPermit.status_date)
-
+      // The popup is what you see when you click on the pin
       const mapData = [Object.assign(
         {},
         thisPermit,
@@ -93,28 +80,54 @@ const Permit = (props) => (
           popup: `<b>${thisPermit.address}</b>`
         },
       )];
+      // Don't show map if there are no coordinates
+      const showMap = thisPermit.y && thisPermit.x;
+
+      const dateFormatter = (inputDate) => new Date(inputDate).toLocaleDateString('en-US')
+      const fieldFormatters = {
+        applied_date: {
+          valueFormatter: dateFormatter,
+        },
+        status_date: {
+          valueFormatter: dateFormatter,
+        },
+        contractor_names: {
+          valueFormatter: namesArray => Object.values(namesArray).join(', '),
+        },
+        Pinnumber: {
+          keyFormatter: () => 'Pin Number',
+          valueFormatter: (pin) => (
+            <a
+              href={`/property?search=${pin}&id=${pin}&entities=undefined&entity=property`}
+            >
+              {pin}
+            </a>
+          ),
+        }
+      }
+      // These fields are shown in the summary area
+      const firstGroupFields = [
+        'address',
+        'applied_date',
+        'permit_number',
+        'status_current',
+        'status_date',
+        'Pinnumber',
+      ];
+      // These fields are handled in a special way and shouldn't just be iterated over
+      const specialFields = [
+        'permit_description',
+        'custom_fields',
+        'x',
+        'y',
+        'comments',
+        // TODO: SHOULD WE INCLUDE COMMENTS?
+      ].concat(firstGroupFields)
 
       return (<div className="container">
-        <h1 className="title__text">{thisPermit.permit_description}</h1>
         <div className="row">
-          <dl className="dl-horizontal">
-            {Object.keys(formattedPermit)
-              .filter(d => specialFields.indexOf(d) === -1 && +formattedPermit[d] !== 0)
-              .map(d => (<div className="col-sm-12 col-md-6" key={d}>
-                <dt
-                  className="text-left text-capitalize"
-                >
-                  {d.split('_').join(' ')}:
-                </dt>
-                <dd className="text-right">{typeof formattedPermit[d] !== 'object' ?
-                  formattedPermit[d] :
-                  Object.keys(formattedPermit[d]).map(k => `${k}: ${formattedPermit[d][k]}`)}</dd>
-              </div>))
-            }
-          </dl>
-        </div>
-        {thisPermit.y && thisPermit.x && (<div className="row">
-          <div className="col-sm-12">
+          <h1 className="title__text">{formattedPermit.permit_subtype} {formattedPermit.permit_type} Permit</h1>
+          {showMap && (<div className="col-sm-12 col-md-6">
             <div className="map-container" style={{ height: '300px' }}>
               <Map
                 data={mapData}
@@ -122,9 +135,43 @@ const Permit = (props) => (
                 height="100%"
                 width="100%"
               />
-              </div>
             </div>
           </div>)}
+          <div className={`col-sm-12 col-md-${showMap ? 6 : 12}`}>
+            <h2>Summary</h2>
+            <p>{formattedPermit.permit_description}</p>
+          </div>
+          <dl className="dl-horizontal">
+            {firstGroupFields.map(d => (<div className="col-sm-12 col-md-6" key={d}>
+              <dt
+              className="text-left text-capitalize"
+              >
+              {fieldFormatters[d] && fieldFormatters[d]['keyFormatter'] ? fieldFormatters[d]['keyFormatter'](d) : d.split('_').join(' ')}:
+              </dt>
+              <dd className="text-right">{fieldFormatters[d] && fieldFormatters[d]['valueFormatter'] ?
+                fieldFormatters[d]['valueFormatter'](formattedPermit[d]) : formattedPermit[d]}</dd>
+              </div>))
+            }
+          </dl>
+        </div>
+        <div className="row">
+          <h2>Details</h2>
+          <dl className="dl-horizontal">
+            {Object.keys(formattedPermit)
+              .filter(d => specialFields.indexOf(d) === -1 && +formattedPermit[d] !== 0)
+              .map(d => (<div className="col-sm-12 col-md-6" key={d}>
+              <dt
+              className="text-left text-capitalize"
+              >
+              {d.split('_').join(' ')}:
+              </dt>
+              <dd className="text-right">{typeof formattedPermit[d] !== 'object' ?
+              formattedPermit[d] :
+              Object.keys(formattedPermit[d]).map(k => `${k}: ${formattedPermit[d][k]}`)}</dd>
+              </div>))
+            }
+          </dl>
+        </div>
       </div>);
     }}
   </Query>

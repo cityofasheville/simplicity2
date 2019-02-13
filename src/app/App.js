@@ -97,9 +97,7 @@ class Main extends React.Component {
     return (
       <main>
         <div
-          style={{
-            paddingTop: this.props.location.query.hideNavbar ? '0px' : '97px',
-          }}
+          className={this.props.location.query.hideNavbar ? 'hidden-navbar' : ''}
         >
           <LanguageProvider>
             <div id="skip">

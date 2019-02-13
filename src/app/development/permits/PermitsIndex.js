@@ -2,18 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import PermitsTableWrapper from '../trc/PermitsTableWrapper';
 import TimeSlider from '../volume/TimeSlider';
-import { timeDay } from 'd3-time';
+import { timeWeek } from 'd3-time';
 
 
 class PermitsIndex extends React.Component {
 
   constructor() {
     super();
+    this.initialBrushExtent = [
+      timeWeek.floor(new Date()).getTime(),
+      timeWeek.ceil(new Date()).getTime(),
+    ];
     this.state = {
-      timeSpan: [
-        timeDay.floor(new Date()).getTime() - 2678400000,
-        timeDay.ceil(new Date()).getTime(),
-      ],
+      timeSpan: this.initialBrushExtent,
     };
   }
 
@@ -24,6 +25,7 @@ class PermitsIndex extends React.Component {
         onBrushEnd={newExtent => this.setState({
           timeSpan: newExtent,
         })}
+        defaultBrushExtent={this.initialBrushExtent}
       />
       <PermitsTableWrapper
         permit_groups={['Planning', 'Permits', 'Services']}

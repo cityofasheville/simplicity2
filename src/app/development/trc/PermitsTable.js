@@ -2,6 +2,7 @@ import React from 'react';
 import AccessibleReactTable from 'accessible-react-table';
 import Measure from 'react-measure';
 import expandingRows from '../../../shared/react_table_hoc/ExpandingRows';
+import createFilterRenderer from '../../../shared/FilterRenderer';
 
 const dateFormatter = d => new Date(d).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric'});
 
@@ -14,20 +15,15 @@ const tableHeaders = [
   },
   {
     field: 'address',
-    display: 'Project Address',
+    display: 'Address',
   },
   {
     field: 'permit_subtype',
-    display: 'Project Type',
+    display: 'Type',
   },
   {
     field: 'status_current',
-    display: 'Current Status',
-  },
-  {
-    field: 'status_date',
-    display: 'Date Last Updated',
-    formatFunc: dateFormatter,
+    display: 'Status',
   },
   {
     field: 'applicant_name',
@@ -35,7 +31,7 @@ const tableHeaders = [
   },
   {
     field: 'permit_number',
-    display: 'Link',
+    display: 'Record Link',
     formatFunc: d => <a href={`/permits/${d}`}>{d}</a>
   }
 ];
@@ -69,9 +65,18 @@ class ProjectsTable extends React.Component {
                       accessor: d =>
                         headerObj.formatFunc ? headerObj.formatFunc(d[headerObj.field]) : d[headerObj.field],
                       maxWidth: maxColWidth,
+                      Filter: createFilterRenderer(`Search ${headerObj.display}`),
                     }
                   }),
                 }]}
+                filterable
+                defaultFilterMethod={(filter, row) => {
+                  const id = filter.pivotId || filter.id;
+                  return row[id] !== undefined ?
+                    String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1
+                    :
+                    true;
+                }}
                 showPagination
                 defaultPageSize={20}
                 getTdProps={() => ({

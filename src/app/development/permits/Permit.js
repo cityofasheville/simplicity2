@@ -48,6 +48,23 @@ const GET_PERMIT = gql`
   }
 `;
 
+// TODO: RETURN NULL IF THERE ISN'T A VALUE?  OR LEAVE IT BLANK?
+const DtSet = (props) => (
+  <div className="col-sm-12 col-md-6 DtSet">
+    <dt
+      className="text-left text-capitalize"
+    >
+      {props.fieldFormatters[props.datum] && props.fieldFormatters[props.datum]['keyFormatter'] ?
+        props.fieldFormatters[props.datum]['keyFormatter'](props.datum) : props.datum.split('_').join(' ')
+      }:
+    </dt>
+    <dd className="text-right">
+      {props.fieldFormatters[props.datum] && props.fieldFormatters[props.datum]['valueFormatter'] ?
+        props.fieldFormatters[props.datum]['valueFormatter'](props.formattedPermit[props.datum]) : props.formattedPermit[props.datum]}
+    </dd>
+  </div>
+)
+
 const Permit = (props) => (
   <Query
     query={GET_PERMIT}
@@ -128,7 +145,7 @@ const Permit = (props) => (
         <div className="row">
           <h1 className="title__text">{formattedPermit.permit_subtype} {formattedPermit.permit_type} Permit</h1>
           {showMap && (<div className="col-sm-12 col-md-6">
-            <div className="map-container" style={{ height: '300px' }}>
+            <div className="map-container" style={{ height: `${firstGroupFields.length * 4}em` }}>
               <Map
                 data={mapData}
                 center={[thisPermit.y, thisPermit.x]}
@@ -139,19 +156,15 @@ const Permit = (props) => (
           </div>)}
           <div className={`col-sm-12 col-md-${showMap ? 6 : 12}`}>
             <h2>Summary</h2>
-            <p>{formattedPermit.permit_description}</p>
+            <p className="summary-group">{formattedPermit.permit_description}</p>
           </div>
-          <dl className="dl-horizontal">
-            {firstGroupFields.map(d => (<div className="col-sm-12 col-md-6" key={d}>
-              <dt
-              className="text-left text-capitalize"
-              >
-              {fieldFormatters[d] && fieldFormatters[d]['keyFormatter'] ? fieldFormatters[d]['keyFormatter'](d) : d.split('_').join(' ')}:
-              </dt>
-              <dd className="text-right">{fieldFormatters[d] && fieldFormatters[d]['valueFormatter'] ?
-                fieldFormatters[d]['valueFormatter'](formattedPermit[d]) : formattedPermit[d]}</dd>
-              </div>))
-            }
+          <dl className="dl-horizontal summary-group">
+            {firstGroupFields.map(d => (<DtSet
+              key={d}
+              datum={d}
+              fieldFormatters={fieldFormatters}
+              formattedPermit={formattedPermit}
+            />))}
           </dl>
         </div>
         <div className="row">
@@ -159,16 +172,12 @@ const Permit = (props) => (
           <dl className="dl-horizontal">
             {Object.keys(formattedPermit)
               .filter(d => specialFields.indexOf(d) === -1 && +formattedPermit[d] !== 0)
-              .map(d => (<div className="col-sm-12 col-md-6" key={d}>
-              <dt
-              className="text-left text-capitalize"
-              >
-              {d.split('_').join(' ')}:
-              </dt>
-              <dd className="text-right">{typeof formattedPermit[d] !== 'object' ?
-              formattedPermit[d] :
-              Object.keys(formattedPermit[d]).map(k => `${k}: ${formattedPermit[d][k]}`)}</dd>
-              </div>))
+              .map(d => (<DtSet
+                key={d}
+                datum={d}
+                fieldFormatters={fieldFormatters}
+                formattedPermit={formattedPermit}
+              />))
             }
           </dl>
         </div>

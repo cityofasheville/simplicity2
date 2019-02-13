@@ -1,0 +1,15 @@
+.DtSet {
+  padding: 0 5%;
+}
+
+.DtSet:nth-child(2n) {
+  background-color:  #f2f2f2;
+}
+
+.DtSet dt {
+  font-weight: 400;
+}
+
+dl.summary-group {
+  font-size: 1.15em;
+}

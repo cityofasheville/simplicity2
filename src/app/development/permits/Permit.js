@@ -50,7 +50,7 @@ const GET_PERMIT = gql`
 
 // TODO: RETURN NULL IF THERE ISN'T A VALUE?  OR LEAVE IT BLANK?
 const DtSet = (props) => (
-  <div className="col-sm-12 col-md-6 DtSet">
+  <div className="DtSet">
     <dt
       className="text-left text-capitalize"
     >
@@ -58,7 +58,7 @@ const DtSet = (props) => (
         props.fieldFormatters[props.datum]['keyFormatter'](props.datum) : props.datum.split('_').join(' ')
       }:
     </dt>
-    <dd className="text-right">
+    <dd>
       {props.fieldFormatters[props.datum] && props.fieldFormatters[props.datum]['valueFormatter'] ?
         props.fieldFormatters[props.datum]['valueFormatter'](props.formattedPermit[props.datum]) : props.formattedPermit[props.datum]}
     </dd>
@@ -141,6 +141,10 @@ const Permit = (props) => (
         // TODO: SHOULD WE INCLUDE COMMENTS?
       ].concat(firstGroupFields)
 
+      const detailsFields = Object.keys(formattedPermit)
+        .filter(d => specialFields.indexOf(d) === -1 && +formattedPermit[d] !== 0);
+      const halfLengthDetails = Math.ceil(detailsFields.length / 2);
+
       return (<div className="container">
         <div className="row">
           <h1 className="title__text">{formattedPermit.permit_subtype} {formattedPermit.permit_type} Permit</h1>
@@ -158,7 +162,7 @@ const Permit = (props) => (
             <h2>Summary</h2>
             <p className="summary-group">{formattedPermit.permit_description}</p>
           </div>
-          <dl className="dl-horizontal summary-group">
+          <dl className="dl-horizontal summary-group col-sm-12 col-md-6">
             {firstGroupFields.map(d => (<DtSet
               key={d}
               datum={d}
@@ -169,9 +173,18 @@ const Permit = (props) => (
         </div>
         <div className="row">
           <h2>Details</h2>
-          <dl className="dl-horizontal">
-            {Object.keys(formattedPermit)
-              .filter(d => specialFields.indexOf(d) === -1 && +formattedPermit[d] !== 0)
+          <dl className="dl-horizontal col-sm-12 col-md-6 stripey">
+            {detailsFields.slice(0, halfLengthDetails)
+              .map(d => (<DtSet
+                key={d}
+                datum={d}
+                fieldFormatters={fieldFormatters}
+                formattedPermit={formattedPermit}
+              />))
+            }
+          </dl>
+          <dl className="dl-horizontal col-sm-12 col-md-6 stripey">
+            {detailsFields.slice(halfLengthDetails, detailsFields.length)
               .map(d => (<DtSet
                 key={d}
                 datum={d}

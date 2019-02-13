@@ -8,43 +8,9 @@ import SectionNav from './SectionNav';
 import AnnotatedDagre from './AnnotatedDagre';
 import PermitsTableWrapper from './PermitsTableWrapper';
 import Accordion from '../../../shared/visualization/Accordion';
+import { trcProjectTypes } from './utils';
 
-const projectTypes = {};
-projectTypes['Level I'] = {
-  permit_group: 'Planning',
-  permit_type: 'Development',
-  permit_subtype: 'Level I',
-};
-projectTypes['Major Subdivision'] = {
-  permit_group: 'Planning',
-  permit_type: 'Subdivision',
-  permit_subtype: 'Major',
-};
-projectTypes['Level II'] = {
-  permit_group: 'Planning',
-  permit_type: 'Development',
-  permit_subtype: 'Level II',
-};
-projectTypes['Level III'] = {
-  permit_group: 'Planning',
-  permit_type: 'Development',
-  permit_subtype: 'Level III',
-};
-projectTypes['Conditional Zoning'] = {
-  permit_group: 'Planning',
-  permit_type: 'Development',
-  permit_subtype: 'Conditional Zoning',
-};
-projectTypes['Conditional Use Permit'] = {
-  permit_group: 'Planning',
-  permit_type: 'Development',
-  permit_subtype: 'Conditional Use',
-};
-projectTypes['Historic Resources Commission'] = {
-  permit_group: 'Planning',
-  permit_type: 'HRC',
-  permit_subtype: 'Major Work',
-};
+const projectTypes = trcProjectTypes;
 
 // Assign colors to project types
 const orderedColors = ['#FF3A3A','#749B5F','#2d93ad','#004EA3','#9B6681','#9E4F55','#073d49'];
@@ -123,7 +89,7 @@ class MajorDevelopmentDashboard extends React.Component {
         className="col-md-12"
       >
         <h2>Current Projects</h2>
-        <p>The table below contains projects for which a permit application has been submitted in the last year.</p>
+        <p>The table below contains proposed, large-scale, private development projects for which a permit application has been submitted in the last year.  You can also see a <a href="/permits">table of all permit applications</a> or <a href="/">search an address</a> to find nearby development.</p>
         <PermitsTableWrapper
           projectTypes={projectTypes}
           permit_groups={['Planning']}

@@ -10,7 +10,7 @@ const BigNumber = props => (
     variables={props.queryVars}
   >
     {({ loading, error, data }) => {
-      if (loading) return <LoadingAnimation size="small" />
+      if (loading) return (<div className="col-sm-4">Loading...</div>)
       let val = ''
       if (error) {
         val = 'Error'

@@ -6,7 +6,7 @@ import { ResponsiveNetworkFrame } from 'semiotic';
 import { Annotation, ConnectorCurve, Note } from 'react-annotation';
 import SectionNav from './SectionNav';
 import AnnotatedDagre from './AnnotatedDagre';
-import PermitsTableWrapper from './PermitsTableWrapper';
+import PermitsTableWrapper from '../permits/PermitsTableWrapper';
 import Accordion from '../../../shared/visualization/Accordion';
 import { trcProjectTypes } from './utils';
 

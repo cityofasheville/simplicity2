@@ -16,7 +16,7 @@ class GranularVolume extends React.Component {
       timeDay.ceil(new Date()).getTime(),
     ];
     if (isGranularVolumePath) {
-      defaultBrushExtent[0] = defaultBrushExtent[1] - thirtyDays * 6
+      defaultBrushExtent[0] = defaultBrushExtent[1] - thirtyDays * 3
     }
 
     this.state = {

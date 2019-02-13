@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import PermitsTableWrapper from '../trc/PermitsTableWrapper';
+import PermitsTableWrapper from './PermitsTableWrapper';
 import TimeSlider from '../volume/TimeSlider';
 import { timeWeek } from 'd3-time';
 

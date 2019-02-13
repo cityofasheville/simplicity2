@@ -123,7 +123,7 @@ class MajorDevelopmentDashboard extends React.Component {
         className="col-md-12"
       >
         <h2>Current Projects</h2>
-        <p>The table below contains projects for which a permit application has been submitted in the last year.</p>
+        <p>The table below contains proposed, large-scale, private development projects for which a permit application has been submitted in the last year.  You can also see a <a href="/permits">table of all permit applications</a> or <a href="/">search an address</a> to find nearby development.</p>
         <PermitsTableWrapper
           projectTypes={projectTypes}
           permit_groups={['Planning']}

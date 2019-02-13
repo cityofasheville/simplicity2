@@ -8,7 +8,6 @@ import { capitalizeFirstLetter } from '../../utils';
 const GET_TASKS_FOR_PERMIT = gql`
 query getTasksQuery($permit_numbers: [String]) {
   permit_tasks(permit_numbers: $permit_numbers) {
-    process_code
     task
     task_status
     current_status_date
@@ -19,15 +18,12 @@ query getTasksQuery($permit_numbers: [String]) {
     user_id
     user_department
     due_date
-    record_date
     comments
     is_completed
     is_active
     assigned_date
     assigned_user
-    assigned_department
     process_history_sequence_number
-    internal_record_id
   }
 }`
 
@@ -53,11 +49,11 @@ const PermitTasks = (props) => {
         .sort((a, b) => {
           return new Date(a.current_status_date).getTime() - new Date(b.current_status_date).getTime()
         })
-      console.log(data.permit_tasks, steps)
+      console.log(steps)
 
       return (<div className="dashRows">
         <div>
-          Foo!
+          Coming soon!
         </div>
       </div>);
     }}

@@ -163,19 +163,19 @@ const Permit = (props) => (
           <div className={`col-sm-12 col-md-${showMap ? 6 : 12}`}>
             <h2>Summary</h2>
             <p className="summary-group">{formattedPermit.permit_description}</p>
+            <dl className="dl-horizontal summary-group">
+              {firstGroupFields.map(d => (<DtSet
+                key={d}
+                datum={d}
+                fieldFormatters={fieldFormatters}
+                formattedPermit={formattedPermit}
+              />))}
+            </dl>
+            {formattedPermit.permit_group === 'Planning' &&
+              Object.values(trcProjectTypes).map(type => type.permit_subtype).indexOf(formattedPermit.permit_subtype) > -1 &&
+              <p><em>This is a major development.  <a href="/development/major">Learn more</a> about the large-scale development process in Asheville.</em></p>
+            }
           </div>
-          <dl className="dl-horizontal summary-group col-sm-12 col-md-6">
-            {firstGroupFields.map(d => (<DtSet
-              key={d}
-              datum={d}
-              fieldFormatters={fieldFormatters}
-              formattedPermit={formattedPermit}
-            />))}
-          </dl>
-          {formattedPermit.permit_group === 'Planning' &&
-            Object.values(trcProjectTypes).map(type => type.permit_subtype).indexOf(formattedPermit.permit_subtype) > -1 &&
-            <p><em>This is a major development.  <a href="/development/major">Learn more</a> about the large-scale development process in Asheville.</em></p>
-          }
         </div>
         <div className="row">
           <h2>Current Status</h2>

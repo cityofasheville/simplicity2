@@ -10,12 +10,22 @@ function capitalizeFirstLetter(string) {
 }
 
 const PermitDataQuery = (props) => {
+  const module = props.location.search.split('module=')[1];
+  let permitGroups = ['Permits', 'Planning', 'Services'];
+  let capitalizedModule;
+  if (module) {
+    // TODO: WHY DOES THIS FIRE THREE TIMES?
+    capitalizedModule = capitalizeFirstLetter(module);
+    permitGroups = [capitalizedModule]
+  }
+
   return (<Query
     query={GET_PERMITS}
     variables={{
       date_field: props.dateField,
       after: new Date(props.timeSpan[0]),
       before: new Date(props.timeSpan[1]),
+      permit_groups: permitGroups,
     }}
   >
     {({ loading, error, data }) => {
@@ -24,21 +34,12 @@ const PermitDataQuery = (props) => {
         console.log(error);
         return <div>Error :( </div>;
       }
-
-      const module = props.location.search.split('module=')[1];
-      let filteredData = data.permits;
-      let capitalizedModule;
-      if (module) {
-        capitalizedModule = capitalizeFirstLetter(module);
-        filteredData = data.permits.filter(d => d.permit_group === capitalizedModule)
-      }
-
       return (<div className="dashRows">
         {module && <h2>Module: {capitalizedModule}</h2>}
         <div>
           <VolumeDataReceivers
             {...props}
-            data={filteredData}
+            data={data.permits}
             module={module}
           />
         </div>

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import HierarchicalSelect from './HierarchicalSelect';
 import GranularDash from './GranularDash';
 import StatusDash from './StatusDash';
+import PermitsTable from '../permits/PermitsTable';
 import {
   dateDisplayOptsFuncMaker,
   getIncludedDates,
@@ -127,6 +128,7 @@ class VolumeDataReceivers extends React.Component {
           selectedHierarchyTitle={selectedHierarchyTitle}
         />
       }
+      <PermitsTable data={this.state.selectedData} />
     </div>);
   }
 }

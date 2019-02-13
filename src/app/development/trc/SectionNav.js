@@ -60,7 +60,7 @@ class SectionNav extends React.Component {
     }
 
     // https://caniuse.com/#search=pushstate
-    history.pushState({}, '', `${location.pathname}#${closestNavLinkId}`)
+    history.replaceState({}, closestNavLinkId, `${location.pathname}#${closestNavLinkId}`)
     this.setSelectedNavLink(closestNavLinkId)
   }
 
@@ -69,7 +69,7 @@ class SectionNav extends React.Component {
     const anchorToId = event.target.getAttribute('href').replace('#', '');
 
     // Change the URL
-    history.pushState({}, '', `${location.pathname}#${anchorToId}`);
+    history.replaceState({}, anchorToId, `${location.pathname}#${anchorToId}`);
 
     // Scroll to that element
     const selectedSection = document.getElementById(anchorToId);

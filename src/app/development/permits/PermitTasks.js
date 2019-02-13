@@ -1,15 +1,62 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { scaleLinear } from 'd3-scale';
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
+import LoadingAnimation from '../../../shared/LoadingAnimation';
+import { capitalizeFirstLetter } from '../../utils';
 
-
-class PermitTasks extends React.Component {
-  constructor(props) {
-    super(props);
+const GET_TASKS_FOR_PERMIT = gql`
+query getTasksQuery($permit_numbers: [String]) {
+  permit_tasks(permit_numbers: $permit_numbers) {
+    process_code
+    task
+    task_status
+    current_status_date
+    step_number
+    relation_sequence_id
+    parent_task_name
+    user_name
+    user_id
+    user_department
+    due_date
+    record_date
+    comments
+    is_completed
+    is_active
+    assigned_date
+    assigned_user
+    assigned_department
+    process_history_sequence_number
+    internal_record_id
   }
+}`
 
-  render() {
-  }
-}
+const PermitTasks = (props) => {
+  return (<Query
+    query={GET_TASKS_FOR_PERMIT}
+    variables={{
+      permit_numbers: [props.routeParams.id],
+    }}
+  >
+    {({ loading, error, data }) => {
+      if (loading) return <LoadingAnimation />;
+      if (error) {
+        console.log(error);
+        return <div>Error :( </div>;
+      }
+
+      // Grab just completed ones, order by date completed, make timeline?
+      // Needs to allow fork
+      // Should also be annotated dagre?
+      console.log(data)
+
+      return (<div className="dashRows">
+        <div>
+          Foo!
+        </div>
+      </div>);
+    }}
+  </Query>);
+};
 
 export default PermitTasks;

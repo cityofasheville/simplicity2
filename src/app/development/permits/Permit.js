@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
+import PermitTasks from './PermitTasks';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import Map from '../../../shared/visualization/Map';
 import { trcProjectTypes } from '../trc/utils';
@@ -175,6 +176,10 @@ const Permit = (props) => (
             Object.values(trcProjectTypes).map(type => type.permit_subtype).indexOf(formattedPermit.permit_subtype) > -1 &&
             <p><em>This is a major development.  <a href="/development/major">Learn more</a> about the large-scale development process in Asheville.</em></p>
           }
+        </div>
+        <div className="row">
+          <h2>Current Status</h2>
+          <PermitTasks {...props} />
         </div>
         <div className="row">
           <h2>Details</h2>

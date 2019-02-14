@@ -50,7 +50,7 @@ const PermitTasks = (props) => {
       const steps = data.permit_tasks
         // .filter(d => d.is_active === true || d.is_completed === true)
         .sort((a, b) => {
-          return new Date(a.current_status_date).getTime() - new Date(b.current_status_date).getTime()
+          return new Date(b.current_status_date).getTime() - new Date(a.current_status_date).getTime()
         })
 
 
@@ -67,14 +67,14 @@ const PermitTasks = (props) => {
         stepsByDate[stepDate].push(step)
       })
 
-      console.log(stepsByDate)
-
-      return (<div className="row">
-        {uniqueDates.map(date => (<div key={date} className="col-sm-4 col-md-3">
-          <span>{date}</span>
-          {stepsByDate[date].map(step => (<div key={`${date}-${step.task}`}>
-            <span>{step.task}: {step.task_status}</span>
-          </div>))}
+      return (<div className="row detailsFieldset__details-listings">
+        {uniqueDates.map(date => (<div key={date} className="form-group form-group--has-content col-sm-2">
+          <div className="form-group__inner">
+            <div className="form-group__label">{date}</div>
+            {stepsByDate[date].map(step => (<div key={`${date}-${step.task}`}>
+              <div><span>{step.task}:</span><span className="pull-right">{step.task_status}</span></div>
+            </div>))}
+          </div>
         </div>))}
       </div>);
     }}

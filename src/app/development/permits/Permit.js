@@ -178,7 +178,7 @@ const Permit = (props) => (
           </div>
         </div>
         <div className="row">
-          <h2>Current Status</h2>
+          <h2>Recent Updates</h2>
           <PermitTasks {...props} />
         </div>
         <div className="row">

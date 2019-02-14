@@ -27,6 +27,9 @@ query getTasksQuery($permit_numbers: [String]) {
   }
 }`
 
+
+const getDate = d => new Date(d) .toLocaleDateString('en-us')
+
 const PermitTasks = (props) => {
   return (<Query
     query={GET_TASKS_FOR_PERMIT}
@@ -49,12 +52,30 @@ const PermitTasks = (props) => {
         .sort((a, b) => {
           return new Date(a.current_status_date).getTime() - new Date(b.current_status_date).getTime()
         })
-      console.log(steps)
 
-      return (<div className="dashRows">
-        <div>
-          Coming soon!
-        </div>
+
+      const uniqueDates = steps
+        .map(step => getDate(step.current_status_date))
+        .filter((date, index, inputDates) => inputDates.indexOf(date) === index)
+
+      const stepsByDate = {};
+      steps.forEach(step => {
+        const stepDate = getDate(step.current_status_date);
+        if (!stepsByDate[stepDate]) {
+          stepsByDate[stepDate] = [];
+        }
+        stepsByDate[stepDate].push(step)
+      })
+
+      console.log(stepsByDate)
+
+      return (<div className="row">
+        {uniqueDates.map(date => (<div key={date} className="col-sm-4 col-md-3">
+          <span>{date}</span>
+          {stepsByDate[date].map(step => (<div key={`${date}-${step.task}`}>
+            <span>{step.task}: {step.task_status}</span>
+          </div>))}
+        </div>))}
       </div>);
     }}
   </Query>);

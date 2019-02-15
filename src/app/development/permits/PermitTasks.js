@@ -53,29 +53,36 @@ const PermitTasks = (props) => {
           return new Date(b.current_status_date).getTime() - new Date(a.current_status_date).getTime()
         })
 
-
       const uniqueDates = steps
         .map(step => getDate(step.current_status_date))
         .filter((date, index, inputDates) => inputDates.indexOf(date) === index)
 
-      const stepsByDate = {};
-      steps.forEach(step => {
-        const stepDate = getDate(step.current_status_date);
-        if (!stepsByDate[stepDate]) {
-          stepsByDate[stepDate] = [];
-        }
-        stepsByDate[stepDate].push(step)
-      })
-
-      return (<div className="row detailsFieldset__details-listings">
-        {uniqueDates.map(date => (<div key={date} className="form-group form-group--has-content col-sm-2">
-          <div className="form-group__inner">
-            <div className="form-group__label">{date}</div>
-            {stepsByDate[date].map(step => (<div key={`${date}-${step.task}`}>
-              <div><span>{step.task}:</span><span className="pull-right">{step.task_status}</span></div>
-            </div>))}
-          </div>
-        </div>))}
+      return (<div className="row table-responsive" id="PermitTasks">
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Task</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {steps.map((step, i) => {
+              let stepClass = '';
+              if (step.is_active) {
+                stepClass = 'warning';
+              }
+              if (step.is_completed) {
+                stepClass = 'info';
+              }
+              return (<tr className={stepClass} key={`${step.task}-${i}`}>
+                <td>{getDate(step.current_status_date)}</td>
+                <td>{step.task}</td>
+                <td>{step.task_status}</td>
+              </tr>)
+            })}
+          </tbody>
+        </table>
       </div>);
     }}
   </Query>);

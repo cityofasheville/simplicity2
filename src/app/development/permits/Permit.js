@@ -183,7 +183,7 @@ const Permit = (props) => (
         </div>
         <div className="row">
           <h2>Details</h2>
-          <dl className="dl-horizontal col-sm-12 col-md-6 stripey">
+          <dl className="dl-horizontal col-sm-12 col-md-6">
             {detailsFields.slice(0, halfLengthDetails)
               .map(d => (<DtSet
                 key={d}
@@ -193,7 +193,7 @@ const Permit = (props) => (
               />))
             }
           </dl>
-          <dl className="dl-horizontal col-sm-12 col-md-6 stripey">
+          <dl className="dl-horizontal col-sm-12 col-md-6">
             {detailsFields.slice(halfLengthDetails, detailsFields.length)
               .map(d => (<DtSet
                 key={d}

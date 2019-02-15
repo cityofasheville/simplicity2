@@ -44,14 +44,16 @@ const PermitTasks = (props) => {
         return <div>Error :( </div>;
       }
 
-      const steps = data.permit_tasks
-        .sort((a, b) => {
-          return new Date(b.current_status_date).getTime() - new Date(a.current_status_date).getTime()
-        })
+      let steps = data.permit_tasks.slice();
 
       if (steps.length === 0) {
-        return <div>No actions have been taken on this permit application.</div>
+        return (<div>No actions have been taken on this permit application.</div>)
       }
+
+      steps.sort((a, b) => {
+        return new Date(b.current_status_date).getTime() - new Date(a.current_status_date).getTime();
+      });
+
 
       return (<div className="row table-responsive" id="PermitTasks">
         <div className="col-sm-12">

@@ -6,7 +6,6 @@ import createFilterRenderer from '../../../shared/FilterRenderer';
 
 const dateFormatter = d => new Date(d).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric'});
 
-// TODO: ADD APPROPRIATE COLOR BASED ON PROJECT TYPE
 const tableHeaders = [
   {
     field: 'applied_date',
@@ -20,21 +19,24 @@ const tableHeaders = [
   {
     field: 'permit_subtype',
     display: 'Type',
+    show: (colWidth) => colWidth > 70,
   },
   {
     field: 'status_current',
     display: 'Status',
+    show: (colWidth) => colWidth > 90,
   },
   {
     field: 'applicant_name',
     display: 'Applicant',
+    show: (colWidth) => colWidth > 90,
   },
   {
     field: 'permit_number',
     display: 'Record Link',
     formatFunc: d => <a href={`/permits/${d}`}>{d}</a>
   }
-];
+]
 
 const ExpandableAccessibleReactTable = expandingRows(AccessibleReactTable);
 
@@ -44,6 +46,13 @@ class ProjectsTable extends React.Component {
   }
 
   render() {
+    const { location } = this.props
+
+    let filtered = [];
+    if (location.query) {
+      Object.keys(location.query).forEach(key => filtered.push({ id: key, value: location.query[key] }))
+    }
+
     const maxColWidth = document.documentElement.clientWidth / (tableHeaders.length + 2);
     return (<div>
       <div className="row">
@@ -64,12 +73,13 @@ class ProjectsTable extends React.Component {
                       id: headerObj.field,
                       accessor: d =>
                         headerObj.formatFunc ? headerObj.formatFunc(d[headerObj.field]) : d[headerObj.field],
-                      maxWidth: maxColWidth,
                       Filter: createFilterRenderer(`Search ${headerObj.display}`),
+                      show: headerObj.show ? headerObj.show(maxColWidth) : true,
                     }
                   }),
                 }]}
                 filterable
+                sortable
                 defaultFilterMethod={(filter, row) => {
                   const id = filter.pivotId || filter.id;
                   return row[id] !== undefined ?
@@ -77,6 +87,14 @@ class ProjectsTable extends React.Component {
                     :
                     true;
                 }}
+                onFilteredChange={filter => {
+                  let newParams = [];
+                  filter.forEach(filterObj => {
+                    newParams.push(`${filterObj.id}=${filterObj.value}`)
+                  })
+                  history.replaceState({}, '', `${location.pathname}?${newParams.join('&')}`)
+                }}
+                filtered={filtered}
                 showPagination
                 defaultPageSize={20}
                 getTdProps={() => ({

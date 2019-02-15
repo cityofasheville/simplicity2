@@ -31,6 +31,7 @@ class PermitsIndex extends React.Component {
         permit_groups={['Planning', 'Permits', 'Services']}
         after={this.state.timeSpan[0]}
         before={this.state.timeSpan[1]}
+        {...this.props}
       />
     </div>)
   }

@@ -54,7 +54,7 @@ const PermitsTableWrapper = (props) => (
         })
       }
 
-      return (<PermitsTable data={filteredData} />);
+      return (<PermitsTable data={filteredData} {...props}/>);
     }}
   </Query>
 );

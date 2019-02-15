@@ -41,18 +41,20 @@ const tableHeaders = [
 const ExpandableAccessibleReactTable = expandingRows(AccessibleReactTable);
 
 class ProjectsTable extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+
+    const { location } = props
+    const filtered = []
+    if (location && location.query) {
+      Object.keys(location.query).forEach(key => filtered.push({ id: key, value: location.query[key] }))
+    }
+    this.state = {
+      filtered,
+    }
   }
 
   render() {
-    const { location } = this.props
-
-    let filtered = [];
-    if (location.query) {
-      Object.keys(location.query).forEach(key => filtered.push({ id: key, value: location.query[key] }))
-    }
-
     const maxColWidth = document.documentElement.clientWidth / (tableHeaders.length + 2);
     return (<div>
       <div className="row">
@@ -88,13 +90,18 @@ class ProjectsTable extends React.Component {
                     true;
                 }}
                 onFilteredChange={filter => {
-                  let newParams = [];
-                  filter.forEach(filterObj => {
-                    newParams.push(`${filterObj.id}=${filterObj.value}`)
+                  let newParams = '';
+                  if (filter.length > 0) {
+                    newParams = `?${filter
+                      .map(filterObj => `${filterObj.id}=${filterObj.value}`)
+                      .join('&')}`
+                  }
+                  history.replaceState({}, '', `${location.pathname}${newParams}${location.hash}`)
+                  this.setState({
+                    filtered: filter,
                   })
-                  history.replaceState({}, '', `${location.pathname}?${newParams.join('&')}`)
                 }}
-                filtered={filtered}
+                filtered={this.state.filtered}
                 showPagination
                 defaultPageSize={20}
                 getTdProps={() => ({

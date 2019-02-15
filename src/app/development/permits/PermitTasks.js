@@ -44,18 +44,14 @@ const PermitTasks = (props) => {
         return <div>Error :( </div>;
       }
 
-      // Grab just completed ones, order by date completed, make timeline?
-      // Needs to allow fork
-      // Should also be annotated dagre?
       const steps = data.permit_tasks
-        // .filter(d => d.is_active === true || d.is_completed === true)
         .sort((a, b) => {
           return new Date(b.current_status_date).getTime() - new Date(a.current_status_date).getTime()
         })
 
-      const uniqueDates = steps
-        .map(step => getDate(step.current_status_date))
-        .filter((date, index, inputDates) => inputDates.indexOf(date) === index)
+      if (steps.length === 0) {
+        return <div>No actions have been taken on this permit application.</div>
+      }
 
       return (<div className="row table-responsive" id="PermitTasks">
         <table className="table">

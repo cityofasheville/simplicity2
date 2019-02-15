@@ -54,31 +54,33 @@ const PermitTasks = (props) => {
       }
 
       return (<div className="row table-responsive" id="PermitTasks">
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Task</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {steps.map((step, i) => {
-              let stepClass = '';
-              if (step.is_active) {
-                stepClass = 'warning';
-              }
-              if (step.is_completed) {
-                stepClass = 'info';
-              }
-              return (<tr className={stepClass} key={`${step.task}-${i}`}>
-                <td>{getDate(step.current_status_date)}</td>
-                <td>{step.task}</td>
-                <td>{step.task_status}</td>
-              </tr>)
-            })}
-          </tbody>
-        </table>
+        <div className="col-sm-12">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Task</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {steps.map((step, i) => {
+                let stepClass = '';
+                if (step.is_active) {
+                  stepClass = 'warning';
+                }
+                if (step.is_completed) {
+                  stepClass = 'info';
+                }
+                return (<tr className={stepClass} key={`${step.task}-${i}`}>
+                  <td>{getDate(step.current_status_date)}</td>
+                  <td>{step.task}</td>
+                  <td>{step.task_status}</td>
+                </tr>)
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>);
     }}
   </Query>);

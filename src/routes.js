@@ -142,6 +142,7 @@ const Routes = () => (
           <Route path="detail" component={DevelopmentDetail}></Route>
           {/* The rest of these are dashboards */}
           <Route path="dashboards" component={DevelopmentDashIndex}></Route>
+          <Route path="data" component={DevelopmentDashIndex}></Route>
           <Route path="sla-dashboard" component={DevelopmentSLADashboard}></Route>
           <Route path="trc" component={TRCDashboard}></Route>
           <Route path="major" component={MajorDevelopmentDashboard}></Route>

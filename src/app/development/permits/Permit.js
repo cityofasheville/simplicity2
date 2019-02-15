@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
+import PermitTasks from './PermitTasks';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import Map from '../../../shared/visualization/Map';
 import { trcProjectTypes } from '../trc/utils';
@@ -162,23 +163,27 @@ const Permit = (props) => (
           <div className={`col-sm-12 col-md-${showMap ? 6 : 12}`}>
             <h2>Summary</h2>
             <p className="summary-group">{formattedPermit.permit_description}</p>
+            <dl className="dl-horizontal summary-group">
+              {firstGroupFields.map(d => (<DtSet
+                key={d}
+                datum={d}
+                fieldFormatters={fieldFormatters}
+                formattedPermit={formattedPermit}
+              />))}
+            </dl>
+            {formattedPermit.permit_group === 'Planning' &&
+              Object.values(trcProjectTypes).map(type => type.permit_subtype).indexOf(formattedPermit.permit_subtype) > -1 &&
+              <p><em>This is a major development.  <a href="/development/major">Learn more</a> about the large-scale development process in Asheville.</em></p>
+            }
           </div>
-          <dl className="dl-horizontal summary-group col-sm-12 col-md-6">
-            {firstGroupFields.map(d => (<DtSet
-              key={d}
-              datum={d}
-              fieldFormatters={fieldFormatters}
-              formattedPermit={formattedPermit}
-            />))}
-          </dl>
-          {formattedPermit.permit_group === 'Planning' &&
-            Object.values(trcProjectTypes).map(type => type.permit_subtype).indexOf(formattedPermit.permit_subtype) > -1 &&
-            <p><em>This is a major development.  <a href="/development/major">Learn more</a> about the large-scale development process in Asheville.</em></p>
-          }
+        </div>
+        <div className="row">
+          <h2>Recent Updates</h2>
+          <PermitTasks {...props} />
         </div>
         <div className="row">
           <h2>Details</h2>
-          <dl className="dl-horizontal col-sm-12 col-md-6 stripey">
+          <dl className="dl-horizontal col-sm-12 col-md-6">
             {detailsFields.slice(0, halfLengthDetails)
               .map(d => (<DtSet
                 key={d}
@@ -188,7 +193,7 @@ const Permit = (props) => (
               />))
             }
           </dl>
-          <dl className="dl-horizontal col-sm-12 col-md-6 stripey">
+          <dl className="dl-horizontal col-sm-12 col-md-6">
             {detailsFields.slice(halfLengthDetails, detailsFields.length)
               .map(d => (<DtSet
                 key={d}

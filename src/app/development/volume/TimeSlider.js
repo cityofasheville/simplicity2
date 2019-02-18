@@ -77,7 +77,7 @@ class TimeSlider extends Component {
             left: 25,
           }}
           size={[1000, 120]}
-          xAccessor={d => new Date(d)}
+          xAccessor={d => {console.log(d); return d.getTime() }}
           yAccessor={() => 0}
           xExtent={this.props.xSpan}
           axes={[
@@ -89,7 +89,7 @@ class TimeSlider extends Component {
                   style={{ fontSize: '0.70em' }}
                   transform="rotate(-45)"
                 >
-                  {d.toLocaleDateString(
+                  {new Date(d).toLocaleDateString(
                     'en-US',
                     {
                       month: 'short',
@@ -99,7 +99,7 @@ class TimeSlider extends Component {
                 </text>
               ),
               tickValues: ticks,
-              // TODO: MAKE THIS AN INPUT BOX
+              // TODO: MAKE THE LABEL AN INPUT BOX
               label: (<text
                 style={{ textAnchor: 'middle', alignmentBaseline: 'hanging' }}
               >
@@ -113,8 +113,8 @@ class TimeSlider extends Component {
             brush: 'xBrush',
             extent: this.state.brushExtent,
           }}
-          lines={[{ title: 'dummy-line', coordinates: ticks }]}
-          hoverAnnotation
+          // lines={[{ title: 'dummy-line', coordinates: ticks }]}
+          // hoverAnnotation
         />
       </div>
     );

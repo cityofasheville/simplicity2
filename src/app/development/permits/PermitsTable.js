@@ -12,6 +12,12 @@ class PermitsTable extends React.Component {
   constructor(props) {
     super(props);
 
+
+    // TODO: USE WINDOW.LOCATION INSTEAD OF REACT ROUTER LOCATION?
+    console.log('construct', window.history, window.location)
+
+// https://medium.com/@ivantsov/using-react-router-and-history-38c021270829
+
     const { location } = props
     const filtered = []
     if (location && location.query) {
@@ -22,9 +28,30 @@ class PermitsTable extends React.Component {
     this.state = {
       filtered,
     }
+
+    this.onFilteredChange = this.onFilteredChange.bind(this);
+  }
+
+  componentWillMount() {
+
+  }
+
+  onFilteredChange(filter) {
+    let newParams = '';
+    if (filter.length > 0) {
+      newParams = `${filter
+        .map(filterObj => `${filterObj.id}=${filterObj.value}`)
+        .join('&')}`
+    }
+    window.history.pushState({}, '', `${location.pathname}${newParams.length > 0 ? '?' : ''}${newParams}${location.hash}`)
+    this.setState({
+      filtered: filter,
+    })
   }
 
   render() {
+    console.log(location, this.state.filtered, this.props.location)
+
     const maxColWidth = document.documentElement.clientWidth / (this.props.tableHeaders.length + 2);
     return (<div>
       <div className="row">
@@ -65,20 +92,7 @@ class PermitsTable extends React.Component {
                   })
                   return match;
                 }}
-                onFilteredChange={filter => {
-                  let newParams = '';
-
-                  if (filter.length > 0) {
-                    newParams = `${filter
-                      .map(filterObj => `${filterObj.id}=${filterObj.value}`)
-                      .join('&')}`
-                  }
-
-                  history.replaceState({}, '', `${location.pathname}${newParams.length > 0 ? '?' : ''}${newParams}${location.hash}`)
-                  this.setState({
-                    filtered: filter,
-                  })
-                }}
+                onFilteredChange={this.onFilteredChange}
                 filtered={this.state.filtered}
                 showPagination
                 defaultPageSize={20}

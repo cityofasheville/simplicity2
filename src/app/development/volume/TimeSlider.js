@@ -103,7 +103,7 @@ class TimeSlider extends Component {
               label: (<text
                 style={{ textAnchor: 'middle', alignmentBaseline: 'hanging' }}
               >
-                {`From ${new Date(this.state.brushExtent[0]).toLocaleDateString('en-us')} to ${new Date(this.state.brushExtent[1]).toLocaleDateString('en-us')}`}
+                {`${new Date(this.state.brushExtent[0]).toLocaleDateString('en-us')} - ${new Date(this.state.brushExtent[1]).toLocaleDateString('en-us')}`}
               </text>),
             },
           ]}

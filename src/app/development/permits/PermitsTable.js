@@ -84,10 +84,16 @@ class ProjectsTable extends React.Component {
                 sortable
                 defaultFilterMethod={(filter, row) => {
                   const id = filter.pivotId || filter.id;
-                  return row[id] !== undefined ?
-                    String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1
-                    :
-                    true;
+                  // Allows comma separated values, makes it an OR
+                  const values = filter.value.split(',');
+                  let match = false;
+                  values.forEach(val => {
+                    match = match || (row[id] !== undefined ?
+                      String(row[id]).toLowerCase().indexOf(val.toLowerCase()) > -1
+                      :
+                      true);
+                  })
+                  return match;
                 }}
                 onFilteredChange={filter => {
                   let newParams = '';

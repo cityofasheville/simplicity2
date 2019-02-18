@@ -9,9 +9,12 @@ class PermitsIndex extends React.Component {
 
   constructor() {
     super();
+
+    const now = new Date();
+
     this.initialBrushExtent = [
-      timeWeek.floor(new Date()).getTime(),
-      timeWeek.ceil(new Date()).getTime(),
+      timeWeek.offset(now, -1).getTime(),
+      now.getTime(),
     ];
     this.state = {
       timeSpan: this.initialBrushExtent,

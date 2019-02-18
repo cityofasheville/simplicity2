@@ -60,18 +60,18 @@ class TimeSlider extends Component {
         <ResponsiveXYFrame
           responsiveWidth
           margin={{
-            top: 50,
+            top: 25,
             right: 25,
-            bottom: 25,
+            bottom: 90,
             left: 25,
           }}
-          size={[1000, 80]}
+          size={[1000, 120]}
           xAccessor={d => new Date(d)}
           yAccessor={() => 0}
           xExtent={this.props.xSpan}
           axes={[
             {
-              orient: 'top',
+              orient: 'bottom',
               tickFormat: d => (
                 <text
                   textAnchor="middle"
@@ -88,6 +88,8 @@ class TimeSlider extends Component {
                 </text>
               ),
               tickValues: ticks,
+              // TODO: MAKE THIS AN INPUT BOX
+              label: <text style={{ textAnchor: 'middle', alignmentBaseline: 'hanging' }}>{`From ${new Date(this.state.brushExtent[0]).toLocaleDateString('en-us')} to ${new Date(this.state.brushExtent[1]).toLocaleDateString('en-us')}`}</text>,
             },
           ]}
           hoverAnnotation

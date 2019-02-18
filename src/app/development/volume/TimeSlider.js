@@ -113,6 +113,8 @@ class TimeSlider extends Component {
             brush: 'xBrush',
             extent: this.state.brushExtent,
           }}
+          lines={[{ title: 'dummy-line', coordinates: ticks }]}
+          hoverAnnotation
         />
       </div>
     );

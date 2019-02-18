@@ -32,8 +32,8 @@ class PermitsIndex extends React.Component {
       />
       <PermitsTableWrapper
         permit_groups={['Planning', 'Permits', 'Services']}
-        after={this.state.timeSpan[0]}
-        before={this.state.timeSpan[1]}
+        after={new Date(this.state.timeSpan[0])}
+        before={new Date(this.state.timeSpan[1])}
         {...this.props}
       />
     </div>)

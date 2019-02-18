@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ResponsiveXYFrame } from 'semiotic';
-import { timeDay, timeMonday, timeMonth } from 'd3-time';
+import { timeDay, timeMonday, timeWeek, timeMonth, timeYear } from 'd3-time';
 import { whichD3TimeFunction } from './granularUtils';
 
 function spanOfYears(numYears) {
-  const today = new Date();
-  const currMonth = today.getMonth()
-  const currYear = today.getFullYear()
   return [
-    timeMonth.round(new Date(currYear - numYears, currMonth - 1)).getTime(),
-    timeMonth.ceil(today).getTime(),
+    timeYear.offset(new Date(), -1 * numYears).getTime(),
+    new Date().getTime(),
   ];
 }
 
@@ -20,10 +17,12 @@ class TimeSlider extends Component {
     this.state = {
       brushExtent: this.props.defaultBrushExtent,
     };
+    this.determineNewExtent = this.determineNewExtent.bind(this);
+    this.brushDuring = this.brushDuring.bind(this);
     this.brushEnd = this.brushEnd.bind(this);
   }
 
-  brushEnd(e) {
+  determineNewExtent(e) {
     let newExtent;
     if (e) {
       // Snap to something reasonable
@@ -39,6 +38,18 @@ class TimeSlider extends Component {
     } else {
       newExtent = this.state.brushExtent;
     }
+    return newExtent;
+  }
+
+  brushDuring(e) {
+    const newExtent = this.determineNewExtent(e);
+    this.setState({
+      brushExtent: newExtent,
+    });
+  }
+
+  brushEnd(e) {
+    const newExtent = this.determineNewExtent(e);
 
     this.props.onBrushEnd(newExtent);
     this.setState({
@@ -60,7 +71,7 @@ class TimeSlider extends Component {
         <ResponsiveXYFrame
           responsiveWidth
           margin={{
-            top: 25,
+            top: 20,
             right: 25,
             bottom: 90,
             left: 25,
@@ -89,11 +100,15 @@ class TimeSlider extends Component {
               ),
               tickValues: ticks,
               // TODO: MAKE THIS AN INPUT BOX
-              label: <text style={{ textAnchor: 'middle', alignmentBaseline: 'hanging' }}>{`From ${new Date(this.state.brushExtent[0]).toLocaleDateString('en-us')} to ${new Date(this.state.brushExtent[1]).toLocaleDateString('en-us')}`}</text>,
+              label: (<text
+                style={{ textAnchor: 'middle', alignmentBaseline: 'hanging' }}
+              >
+                {`From ${new Date(this.state.brushExtent[0]).toLocaleDateString('en-us')} to ${new Date(this.state.brushExtent[1]).toLocaleDateString('en-us')}`}
+              </text>),
             },
           ]}
-          hoverAnnotation
           interaction={{
+            during: this.brushDuring,
             end: this.brushEnd,
             brush: 'xBrush',
             extent: this.state.brushExtent,
@@ -112,8 +127,8 @@ TimeSlider.propTypes = {
 
 TimeSlider.defaultProps = {
   defaultBrushExtent: [
-    timeDay.floor(new Date()).getTime() - 2678400000,
-    timeDay.ceil(new Date()).getTime(),
+    timeWeek.offset(new Date(), -1).getTime(),
+    new Date().getTime(),
   ], // today and today minus thirty-one days
   onBrushEnd: newExtent => console.log(newExtent),
   xSpan: spanOfYears(2), // today and today minus one year

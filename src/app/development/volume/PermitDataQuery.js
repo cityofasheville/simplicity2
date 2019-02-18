@@ -6,14 +6,14 @@ import LoadingAnimation from '../../../shared/LoadingAnimation';
 import VolumeDataReceivers from './VolumeDataReceivers';
 
 function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 const PermitDataQuery = (props) => {
-  const module = props.location.query ? props.location.query.module : null;
+  const permitGroupParam = props.location.query && props.location.query.permit_group
   let permitGroups = ['Permits', 'Planning', 'Services'];
-  if (module) {
-    permitGroups = module.split(',').map(m => capitalizeFirstLetter(m))
+  if (permitGroupParam) {
+    permitGroups = props.location.query.permit_group.split(',').map(m => capitalizeFirstLetter(m));
   }
 
   return (<Query
@@ -32,13 +32,13 @@ const PermitDataQuery = (props) => {
         return <div>Error :( </div>;
       }
       return (<div className="dashRows">
-        {module && module.length === 1 && <h2>Module: {permitGroups[0]}</h2>}
-        {module && module.length > 1 && <h2>Modules: {permitGroups.join(', ')}</h2>}
+        {permitGroupParam && permitGroups.length === 1 && <h2>Module: {permitGroups[0]}</h2>}
+        {permitGroupParam && permitGroups.length > 1 && <h2>Modules: {permitGroups.join(', ')}</h2>}
         <div>
           <VolumeDataReceivers
             {...props}
             data={data.permits}
-            module={module}
+            permitGroups={permitGroups}
           />
         </div>
       </div>);

@@ -1,53 +1,23 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import AccessibleReactTable from 'accessible-react-table';
 import Measure from 'react-measure';
 import expandingRows from '../../../shared/react_table_hoc/ExpandingRows';
 import createFilterRenderer from '../../../shared/FilterRenderer';
 
-const dateFormatter = d => new Date(d).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric'});
-
-const tableHeaders = [
-  {
-    field: 'applied_date',
-    display: 'Date Applied',
-    formatFunc: dateFormatter,
-  },
-  {
-    field: 'address',
-    display: 'Address',
-  },
-  {
-    field: 'permit_subtype',
-    display: 'Type',
-    show: (colWidth) => colWidth > 70,
-  },
-  {
-    field: 'status_current',
-    display: 'Status',
-    show: (colWidth) => colWidth > 90,
-  },
-  {
-    field: 'applicant_name',
-    display: 'Applicant',
-    show: (colWidth) => colWidth > 90,
-  },
-  {
-    field: 'permit_number',
-    display: 'Record Link',
-    formatFunc: d => <a href={`/permits/${d}`}>{d}</a>
-  }
-]
 
 const ExpandableAccessibleReactTable = expandingRows(AccessibleReactTable);
 
-class ProjectsTable extends React.Component {
+class PermitsTable extends React.Component {
   constructor(props) {
     super(props);
 
     const { location } = props
     const filtered = []
     if (location && location.query) {
-      Object.keys(location.query).forEach(key => filtered.push({ id: key, value: location.query[key] }))
+      Object.keys(location.query).forEach(key => filtered.push(
+        { id: key, value: location.query[key] }
+      ))
     }
     this.state = {
       filtered,
@@ -55,7 +25,7 @@ class ProjectsTable extends React.Component {
   }
 
   render() {
-    const maxColWidth = document.documentElement.clientWidth / (tableHeaders.length + 2);
+    const maxColWidth = document.documentElement.clientWidth / (this.props.tableHeaders.length + 2);
     return (<div>
       <div className="row">
         <div className="col-sm-12">
@@ -69,7 +39,7 @@ class ProjectsTable extends React.Component {
                 data={this.props.data}
                 columns={[{
                   Header: 'Permits',
-                  columns: tableHeaders.map(headerObj => {
+                  columns: this.props.tableHeaders.map(headerObj => {
                     return {
                       Header: headerObj.display,
                       id: headerObj.field,
@@ -97,12 +67,14 @@ class ProjectsTable extends React.Component {
                 }}
                 onFilteredChange={filter => {
                   let newParams = '';
+
                   if (filter.length > 0) {
-                    newParams = `?${filter
+                    newParams = `${filter
                       .map(filterObj => `${filterObj.id}=${filterObj.value}`)
                       .join('&')}`
                   }
-                  history.replaceState({}, '', `${location.pathname}${newParams}${location.hash}`)
+
+                  history.replaceState({}, '', `${location.pathname}${newParams.length > 0 ? '?' : ''}${newParams}${location.hash}`)
                   this.setState({
                     filtered: filter,
                   })
@@ -119,7 +91,6 @@ class ProjectsTable extends React.Component {
                 {(state, makeTable) => (
                   <div
                     ref={measureRef}
-                    alt={'???'}
                     style={{ marginTop: '10px' }}
                   >
                     {makeTable()}
@@ -134,4 +105,46 @@ class ProjectsTable extends React.Component {
   }
 }
 
-export default ProjectsTable;
+PermitsTable.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.object),
+  tableHeaders: PropTypes.arrayOf(PropTypes.object),
+  dateFormatter: PropTypes.func,
+};
+
+PermitsTable.defaultProps = {
+  data: [],
+  dateFormatter: d => new Date(d).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric'}),
+  tableHeaders: [
+    {
+      field: 'applied_date',
+      display: 'Date Applied',
+      formatFunc: d => new Date(d).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric'}),
+    },
+    {
+      field: 'address',
+      display: 'Address',
+    },
+    {
+      field: 'permit_subtype',
+      display: 'Type',
+      show: (colWidth) => colWidth > 70,
+    },
+    {
+      field: 'status_current',
+      display: 'Status',
+      show: (colWidth) => colWidth > 90,
+    },
+    {
+      field: 'applicant_name',
+      display: 'Applicant',
+      show: (colWidth) => colWidth > 90,
+    },
+    {
+      field: 'permit_number',
+      display: 'Record Link',
+      formatFunc: d => <a href={`/permits/${d}`}>{d}</a>
+    }
+  ],
+};
+
+export default PermitsTable;

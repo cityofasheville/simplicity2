@@ -10,8 +10,7 @@ function capitalizeFirstLetter(string) {
 }
 
 const PermitDataQuery = (props) => {
-  console.log('FIX THIS', props.location)
-  const module = props.location.search.split('module=')[1];
+  const module = props.location.query ? props.location.query.module : null;
   let permitGroups = ['Permits', 'Planning', 'Services'];
   let capitalizedModule;
   if (module) {

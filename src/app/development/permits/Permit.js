@@ -22,20 +22,13 @@ const GET_PERMIT = gql`
       applied_date
       status_current
       status_date
-      created_by
-      building_value
       job_value
       total_project_valuation
       total_sq_feet
-      fees
-      paid
-      balance
-      invoiced_fee_total
       address
       x
       y
       contractor_names
-      internal_record_id
       custom_fields {
         type
         name
@@ -144,12 +137,13 @@ const Permit = (props) => (
       ].concat(firstGroupFields)
 
       const detailsFields = Object.keys(formattedPermit)
-        .filter(d => specialFields.indexOf(d) === -1 && +formattedPermit[d] !== 0);
+        .filter(d => specialFields.indexOf(d) === -1 && +formattedPermit[d] !== 0 || true);
+        console.log(detailsFields)
       const halfLengthDetails = Math.ceil(detailsFields.length / 2);
 
       return (<div className="container">
         <div className="row">
-          <h1 className="title__text">{formattedPermit.permit_subtype} {formattedPermit.permit_type} Permit</h1>
+          <h1 className="title__text">{formattedPermit.permit_subtype} {formattedPermit.permit_type} Application</h1>
           {showMap && (<div className="col-sm-12 col-md-6">
             <div className="map-container" style={{ height: `${firstGroupFields.length * 4}em` }}>
               <Map
@@ -180,6 +174,7 @@ const Permit = (props) => (
         <div className="row">
           <h2>Recent Updates</h2>
           <PermitTasks {...props} />
+          <p>To see more details about this permit, go to Accela Citizen Access.</p>
         </div>
         <div className="row">
           <h2>Details</h2>

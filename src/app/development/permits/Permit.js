@@ -28,6 +28,7 @@ const GET_PERMIT = gql`
       address
       x
       y
+      internal_record_id
       contractor_names
       custom_fields {
         type
@@ -121,11 +122,16 @@ const Permit = (props) => (
       const firstGroupFields = [
         'address',
         'applied_date',
-        'permit_number',
+        'permit_number', // TODO: MAKE THIS THE LINK TO ACA
         'status_current',
         'status_date',
         'Pinnumber',
       ];
+
+      const contactInfoFields = [
+
+      ]
+
       // These fields are handled in a special way and shouldn't just be iterated over
       const specialFields = [
         'permit_description',
@@ -137,9 +143,11 @@ const Permit = (props) => (
       ].concat(firstGroupFields)
 
       const detailsFields = Object.keys(formattedPermit)
-        .filter(d => specialFields.indexOf(d) === -1 && +formattedPermit[d] !== 0 || true);
-        console.log(detailsFields)
+        .filter(d => specialFields.indexOf(d) === -1 && +formattedPermit[d] !== 0);
       const halfLengthDetails = Math.ceil(detailsFields.length / 2);
+
+      // Sample ACA link
+      // https://services.ashevillenc.gov/CitizenAccess/Cap/CapDetail.aspx?Module=Planning&TabName=Planning&capID1=19CAP&capID2=00000&capID3=000NZ&agencyCode=ASHEVILLE
 
       return (<div className="container">
         <div className="row">
@@ -174,7 +182,7 @@ const Permit = (props) => (
         <div className="row">
           <h2>Recent Updates</h2>
           <PermitTasks {...props} />
-          <p>To see more details about this permit, go to Accela Citizen Access.</p>
+          <p>To see more details about this permit, look it up in <a href="https://services.ashevillenc.gov/CitizenAccess" target="_blank" rel="noopener noreferrer">Accela Citizen Access</a>.</p>
         </div>
         <div className="row">
           <h2>Details</h2>

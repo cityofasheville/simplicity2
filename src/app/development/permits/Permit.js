@@ -128,6 +128,28 @@ const Permit = (props) => (
         'Pinnumber',
       ];
 
+      /*
+      make address a link to simplicity
+      make permit number a link to ACA
+      show number of units if not 0 - include at top
+      show affordable housing at top - only if number of units is not 0
+      permit permit_description - as is
+      group, type, subtype, cat - show a nice version at the top
+      overall record status - make it "current review status" - do not include status date
+
+      label workflow tasks as timeline instead of recent updates
+      add applied date, initial trc date if it exists
+
+      make contact section - applicant name, contractor names, planner name if available
+
+      include in details section at bottom
+      construction value - from fields
+      total prop size - from fields, add unit of acres
+      subdivision # lots - yes
+      total sq feet - yes, not from fields?
+      zoning district - from fields, link to municode, call it "current zoning district"
+      */
+
       const contactInfoFields = [
 
       ]

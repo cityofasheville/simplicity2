@@ -74,6 +74,7 @@ class PermitsTable extends React.Component {
           >
             {({ measureRef }) => (
               <ExpandableAccessibleReactTable
+                className="-striped"
                 tableId="projects"
                 ariaLabel={"Table of development permits"}
                 data={this.props.data}

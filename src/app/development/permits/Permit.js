@@ -137,11 +137,6 @@ const Permit = (props) => (
       group, type, subtype, cat - show a nice version at the top
       overall record status - make it "current review status" - do not include status date
 
-      label workflow tasks as timeline instead of recent updates
-      add applied date, initial trc date if it exists
-
-      make contact section - applicant name, contractor names, planner name if available
-
       include in details section at bottom
       construction value - from fields
       total prop size - from fields, add unit of acres
@@ -150,8 +145,22 @@ const Permit = (props) => (
       zoning district - from fields, link to municode, call it "current zoning district"
       */
 
-      const contactInfoFields = [
 
+      // label workflow tasks as timeline instead of recent updates
+      // add applied date, initial trc date if it exists
+      const additionalTimelineEvents = [
+        // {
+        //   current_status_date:,
+        //   task:,
+        //   task_status:,
+        // },
+      ]
+
+      // make contact section - applicant name, contractor names, planner name if available
+      const contactInfoFields = [
+        'applicant_name',
+        'contractor_names',
+        // TODO: PLANNER NAME?
       ]
 
       // These fields are handled in a special way and shouldn't just be iterated over
@@ -202,7 +211,7 @@ const Permit = (props) => (
           </div>
         </div>
         <div className="row">
-          <h2>Recent Updates</h2>
+          <h2>Timeline</h2>
           <PermitTasks {...props} />
           <p>To see more details about this permit, look it up in <a href="https://services.ashevillenc.gov/CitizenAccess" target="_blank" rel="noopener noreferrer">Accela Citizen Access</a>.</p>
         </div>

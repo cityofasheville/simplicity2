@@ -22,13 +22,17 @@ class TimeSlider extends Component {
     this.brushEnd = this.brushEnd.bind(this);
   }
 
-  determineNewExtent(e) {
-    let newExtent;
+  determineNewExtent(e, snap = true) {
+    let newExtent = e;
     if (e) {
       // Snap to something reasonable
       const daySpan = timeDay.count(e[0], e[1]);
       const timeFunc = whichD3TimeFunction(e)
-      newExtent = [timeFunc.floor(e[0]), timeFunc.ceil(e[1])];
+
+      if (snap) {
+        newExtent = [timeFunc.floor(e[0]), timeFunc.ceil(e[1])];
+      }
+
       if (+newExtent[1] > +this.props.xSpan[1]) {
         newExtent[1] = this.props.xSpan[1];
       }
@@ -48,8 +52,8 @@ class TimeSlider extends Component {
     });
   }
 
-  brushEnd(e) {
-    const newExtent = this.determineNewExtent(e);
+  brushEnd(e, snap = true) {
+    const newExtent = this.determineNewExtent(e, snap);
 
     this.props.onBrushEnd(newExtent);
     this.setState({
@@ -99,12 +103,26 @@ class TimeSlider extends Component {
                 </text>
               ),
               tickValues: ticks,
-              // TODO: MAKE THE LABEL AN INPUT BOX
-              label: (<text
-                style={{ textAnchor: 'middle', alignmentBaseline: 'hanging' }}
-              >
-                {`${new Date(this.state.brushExtent[0]).toLocaleDateString('en-us')} - ${new Date(this.state.brushExtent[1]).toLocaleDateString('en-us')}`}
-              </text>),
+              // TODO: POSITION IT IN THE CENTER OR ON THE LEFT, let user set date better
+              label: (<foreignObject width="100%" height="100%">
+                <input
+                  style={{ display: 'inline-block' }}
+                  type="date"
+                  id="startdate"
+                  name="date"
+                  value={new Date(this.state.brushExtent[0]).toISOString().split('T')[0]}
+                  onChange={(e) => {this.brushEnd([ new Date(e.target.value), this.state.brushExtent[1] ], false)}}
+                />
+                <span style={{ display: 'inline-block', padding: '0 1em' }}>to</span>
+                <input
+                  style={{ display: 'inline-block' }}
+                  type="date"
+                  id="enddate"
+                  name="date"
+                  value={new Date(this.state.brushExtent[1]).toISOString().split('T')[0]}
+                  onChange={(e) => {this.brushEnd([ this.state.brushExtent[0], new Date(e.target.value) ], false)}}
+                />
+              </foreignObject>),
             },
           ]}
           interaction={{

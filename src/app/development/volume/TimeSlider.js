@@ -84,77 +84,82 @@ class TimeSlider extends React.Component {
         style={{ width: '100%', margin: '2em 0' }}
       >
         <ErrorBoundary>
-        <ResponsiveXYFrame
-          responsiveWidth
-          margin={{
-            top: 20,
-            right: 25,
-            bottom: 50,
-            left: 25,
-          }}
-          size={[1000, 85]}
-          xAccessor={d => {console.log(d); return d.getTime() }}
-          yAccessor={() => 0}
-          xExtent={this.props.xSpan}
-          axes={[
-            {
-              orient: 'bottom',
-              tickFormat: d => (
-                <text
-                  textAnchor="middle"
-                  style={{ fontSize: '0.70em' }}
-                  transform="rotate(-45)"
-                >
-                  {new Date(d).toLocaleDateString(
-                    'en-US',
-                    {
-                      month: 'short',
-                      year: 'numeric',
-                    },
-                  )}
-                </text>
-              ),
-              tickValues: ticks,
-            },
-          ]}
-          interaction={{
-            during: this.brushDuring,
-            end: this.brushEnd,
-            brush: 'xBrush',
-            extent: this.state.brushExtent,
-          }}
-        />
-        <div style={{ textAlign: 'center' }}>
-          <form onSubmit={this.handleSubmit}>
-            <input
-              style={{ display: 'inline-block' }}
-              type="date"
-              id="startdate"
-              name="startdate"
-              value={new Date(this.state.firstInputVal).toISOString().split('T')[0]}
-              onChange={(e) => {
-                this.setState({
-                  firstInputVal: new Date(e.target.value),
-                })
-              }}
-            />
-            <span style={{ display: 'inline-block', padding: '0 1em' }}>to</span>
-            <input
-              style={{ display: 'inline-block' }}
-              type="date"
-              id="enddate"
-              name="startdate"
-              value={new Date(this.state.secondInputVal).toISOString().split('T')[0]}
-              onChange={(e) => {
-                this.setState({
-                  secondInputVal: new Date(e.target.value),
-                })
-              }}
-            />
-            <input type="submit" value="Set Date Range" className="btn"/>
-          </form>
-        </div>
-      </ErrorBoundary>
+          <ResponsiveXYFrame
+            responsiveWidth
+            margin={{
+              top: 20,
+              right: 5,
+              bottom: 50,
+              left: 25,
+            }}
+            size={[1000, 85]}
+            xAccessor={d => {console.log(d); return d.getTime() }}
+            yAccessor={() => 0}
+            xExtent={this.props.xSpan}
+            axes={[
+              {
+                orient: 'bottom',
+                tickFormat: d => (
+                  <text
+                    textAnchor="middle"
+                    style={{ fontSize: '0.70em' }}
+                    transform="rotate(-45)"
+                  >
+                    {new Date(d).toLocaleDateString(
+                      'en-US',
+                      {
+                        month: 'short',
+                        year: 'numeric',
+                      },
+                    )}
+                  </text>
+                ),
+                tickValues: ticks,
+              },
+            ]}
+            interaction={{
+              during: this.brushDuring,
+              end: this.brushEnd,
+              brush: 'xBrush',
+              extent: this.state.brushExtent,
+            }}
+          />
+          <div style={{ textAlign: 'center', width: '100%' }}>
+            <form onSubmit={this.handleSubmit} className="form-inline">
+              <div className="form-group">
+                <label htmlFor="startdate">From:</label>
+                <input
+                  type="date"
+                  id="startdate"
+                  name="startdate"
+                  className="form-control"
+                  value={new Date(this.state.firstInputVal).toISOString().split('T')[0]}
+                  onChange={(e) => {
+                    this.setState({
+                      firstInputVal: new Date(e.target.value),
+                    })
+                  }}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="enddate">To:</label>
+                <input
+                  type="date"
+                  id="enddate"
+                  name="enddate"
+                  className="form-control"
+                  value={new Date(this.state.secondInputVal).toISOString().split('T')[0]}
+                  onChange={(e) => {
+                    this.setState({
+                      secondInputVal: new Date(e.target.value),
+                    })
+                  }}
+                />
+              </div>
+              <input type="submit" value="Set Date Range" className="btn btn-primary btn-sm"/>
+            </form>
+          </div>
+        </ErrorBoundary>
       </div>
     );
   }

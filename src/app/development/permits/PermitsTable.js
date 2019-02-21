@@ -33,6 +33,7 @@ class PermitsTable extends React.Component {
   }
 
   onFilteredChange(filter) {
+    console.log(filter)
     let newParams = '';
     if (filter.length > 0) {
       newParams = `${filter
@@ -46,8 +47,6 @@ class PermitsTable extends React.Component {
   }
 
   render() {
-    console.log(location, this.state.filtered, this.props.location)
-
     const maxColWidth = document.documentElement.clientWidth / (this.props.tableHeaders.length + 2);
     return (<div>
       <div className="row">

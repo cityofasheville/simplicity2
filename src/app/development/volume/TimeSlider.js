@@ -1,8 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { ResponsiveXYFrame } from 'semiotic';
+import ErrorBoundary from '../../ErrorBoundary';
 import { timeDay, timeMonday, timeWeek, timeMonth, timeYear } from 'd3-time';
 import { whichD3TimeFunction } from './granularUtils';
+import { debounce } from '../../../shared/visualization/visUtilities';
 
 function spanOfYears(numYears) {
   return [
@@ -11,15 +13,18 @@ function spanOfYears(numYears) {
   ];
 }
 
-class TimeSlider extends Component {
+class TimeSlider extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       brushExtent: this.props.defaultBrushExtent,
+      firstInputVal: this.props.defaultBrushExtent[0],
+      secondInputVal: this.props.defaultBrushExtent[1],
     };
     this.determineNewExtent = this.determineNewExtent.bind(this);
     this.brushDuring = this.brushDuring.bind(this);
     this.brushEnd = this.brushEnd.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   determineNewExtent(e, snap = true) {
@@ -27,11 +32,9 @@ class TimeSlider extends Component {
     if (e) {
       // Snap to something reasonable
       const daySpan = timeDay.count(e[0], e[1]);
-      const timeFunc = whichD3TimeFunction(e)
+      const timeFunc = snap ? whichD3TimeFunction(e) : timeDay
 
-      if (snap) {
-        newExtent = [timeFunc.floor(e[0]), timeFunc.ceil(e[1])];
-      }
+      newExtent = [timeFunc.floor(e[0]), timeFunc.ceil(e[1])];
 
       if (+newExtent[1] > +this.props.xSpan[1]) {
         newExtent[1] = this.props.xSpan[1];
@@ -49,16 +52,24 @@ class TimeSlider extends Component {
     const newExtent = this.determineNewExtent(e);
     this.setState({
       brushExtent: newExtent,
+      firstInputVal: newExtent[0],
+      secondInputVal: newExtent[1],
     });
   }
 
   brushEnd(e, snap = true) {
     const newExtent = this.determineNewExtent(e, snap);
-
     this.props.onBrushEnd(newExtent);
     this.setState({
       brushExtent: newExtent,
+      firstInputVal: newExtent[0],
+      secondInputVal: newExtent[1],
     });
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    this.brushEnd([ this.state.firstInputVal, this.state.secondInputVal ], false)
   }
 
   render() {
@@ -70,17 +81,18 @@ class TimeSlider extends Component {
     return (
       <div
         className="brushedChart"
-        style={{ width: '100%' }}
+        style={{ width: '100%', margin: '2em 0' }}
       >
+        <ErrorBoundary>
         <ResponsiveXYFrame
           responsiveWidth
           margin={{
             top: 20,
             right: 25,
-            bottom: 90,
+            bottom: 50,
             left: 25,
           }}
-          size={[1000, 120]}
+          size={[1000, 85]}
           xAccessor={d => {console.log(d); return d.getTime() }}
           yAccessor={() => 0}
           xExtent={this.props.xSpan}
@@ -103,26 +115,6 @@ class TimeSlider extends Component {
                 </text>
               ),
               tickValues: ticks,
-              // TODO: POSITION IT IN THE CENTER OR ON THE LEFT, let user set date better
-              label: (<foreignObject width="100%" height="100%">
-                <input
-                  style={{ display: 'inline-block' }}
-                  type="date"
-                  id="startdate"
-                  name="date"
-                  value={new Date(this.state.brushExtent[0]).toISOString().split('T')[0]}
-                  onChange={(e) => {this.brushEnd([ new Date(e.target.value), this.state.brushExtent[1] ], false)}}
-                />
-                <span style={{ display: 'inline-block', padding: '0 1em' }}>to</span>
-                <input
-                  style={{ display: 'inline-block' }}
-                  type="date"
-                  id="enddate"
-                  name="date"
-                  value={new Date(this.state.brushExtent[1]).toISOString().split('T')[0]}
-                  onChange={(e) => {this.brushEnd([ this.state.brushExtent[0], new Date(e.target.value) ], false)}}
-                />
-              </foreignObject>),
             },
           ]}
           interaction={{
@@ -131,9 +123,38 @@ class TimeSlider extends Component {
             brush: 'xBrush',
             extent: this.state.brushExtent,
           }}
-          // lines={[{ title: 'dummy-line', coordinates: ticks }]}
-          // hoverAnnotation
         />
+        <div style={{ textAlign: 'center' }}>
+          <form onSubmit={this.handleSubmit}>
+            <input
+              style={{ display: 'inline-block' }}
+              type="date"
+              id="startdate"
+              name="startdate"
+              value={new Date(this.state.firstInputVal).toISOString().split('T')[0]}
+              onChange={(e) => {
+                this.setState({
+                  firstInputVal: new Date(e.target.value),
+                })
+              }}
+            />
+            <span style={{ display: 'inline-block', padding: '0 1em' }}>to</span>
+            <input
+              style={{ display: 'inline-block' }}
+              type="date"
+              id="enddate"
+              name="startdate"
+              value={new Date(this.state.secondInputVal).toISOString().split('T')[0]}
+              onChange={(e) => {
+                this.setState({
+                  secondInputVal: new Date(e.target.value),
+                })
+              }}
+            />
+            <input type="submit" value="Set Date Range" className="btn"/>
+          </form>
+        </div>
+      </ErrorBoundary>
       </div>
     );
   }

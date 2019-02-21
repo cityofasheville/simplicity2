@@ -6,23 +6,6 @@ import expandingRows from '../../../shared/react_table_hoc/ExpandingRows';
 import createFilterRenderer from '../../../shared/FilterRenderer';
 
 
-function debounce(func, wait, immediate) {
-  // from lodash... should probably just use lodash
-  var timeout;
-  return function() {
-    var context = this, args = arguments;
-    var later = function() {
-      timeout = null;
-      if (!immediate) func.apply(context, args);
-    };
-    var callNow = immediate && !timeout;
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-    if (callNow) func.apply(context, args);
-  };
-};
-
-
 const ExpandableAccessibleReactTable = expandingRows(AccessibleReactTable);
 
 class PermitsTable extends React.Component {

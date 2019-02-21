@@ -124,16 +124,16 @@ class TimeSlider extends React.Component {
               extent: this.state.brushExtent,
             }}
           />
-          <div style={{ textAlign: 'center', width: '100%' }}>
-            <form onSubmit={this.handleSubmit} className="form-inline">
-              <div className="form-group col-sm-5">
-                <label htmlFor="startdate" style={{ display: 'inline-block', padding: '0 1em 0 0' }}>From:</label>
+          <div className="visualization-title">
+            <form onSubmit={this.handleSubmit} style={{ textAlign: 'center' }}>
+              <div className="form-group" style={{ display: 'inline-block', padding: '0 0.75em', whiteSpace: 'nowrap' }}>
+                <label htmlFor="startdate" style={{ display: 'inline-block', padding: '0 1em 0 0' }}>From</label>
                 <input
                   type="date"
                   id="startdate"
                   name="startdate"
-                  className="form-control"
-                  style={{ display: 'inline-block', maxWidth: '70%' }}
+                  className="form-control input-sm"
+                  style={{ display: 'inline-block', width: '10em' }}
                   value={new Date(this.state.firstInputVal).toISOString().split('T')[0]}
                   onChange={(e) => {
                     this.setState({
@@ -142,14 +142,14 @@ class TimeSlider extends React.Component {
                   }}
                 />
               </div>
-              <div className="form-group col-sm-5">
-                <label htmlFor="enddate" style={{ display: 'inline-block', padding: '0 1em 0 0' }}>To:</label>
+              <div className="form-group" style={{ display: 'inline-block', padding: '0 1em', whiteSpace: 'nowrap' }}>
+                <label htmlFor="enddate" style={{ display: 'inline-block', padding: '0 0.75em 0 0' }}>To</label>
                 <input
                   type="date"
                   id="enddate"
                   name="enddate"
-                  className="form-control"
-                  style={{ display: 'inline-block', maxWidth: '70%' }}
+                  className="form-control input-sm"
+                  style={{ display: 'inline-block', width: '10em' }}
                   value={new Date(this.state.secondInputVal).toISOString().split('T')[0]}
                   onChange={(e) => {
                     this.setState({
@@ -158,7 +158,7 @@ class TimeSlider extends React.Component {
                   }}
                 />
               </div>
-              <input type="submit" value="Set Date Range" className="btn btn-primary btn-md col-sm-2"/>
+              <input type="submit" value="Set Dates" className="btn btn-primary btn-sm" style={{ margin: '0 1em' }}/>
             </form>
           </div>
         </ErrorBoundary>

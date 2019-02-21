@@ -126,13 +126,14 @@ class TimeSlider extends React.Component {
           />
           <div style={{ textAlign: 'center', width: '100%' }}>
             <form onSubmit={this.handleSubmit} className="form-inline">
-              <div className="form-group">
-                <label htmlFor="startdate">From:</label>
+              <div className="form-group col-sm-5">
+                <label htmlFor="startdate" style={{ display: 'inline-block', padding: '0 1em 0 0' }}>From:</label>
                 <input
                   type="date"
                   id="startdate"
                   name="startdate"
                   className="form-control"
+                  style={{ display: 'inline-block', maxWidth: '70%' }}
                   value={new Date(this.state.firstInputVal).toISOString().split('T')[0]}
                   onChange={(e) => {
                     this.setState({
@@ -141,13 +142,14 @@ class TimeSlider extends React.Component {
                   }}
                 />
               </div>
-              <div className="form-group">
-                <label htmlFor="enddate">To:</label>
+              <div className="form-group col-sm-5">
+                <label htmlFor="enddate" style={{ display: 'inline-block', padding: '0 1em 0 0' }}>To:</label>
                 <input
                   type="date"
                   id="enddate"
                   name="enddate"
                   className="form-control"
+                  style={{ display: 'inline-block', maxWidth: '70%' }}
                   value={new Date(this.state.secondInputVal).toISOString().split('T')[0]}
                   onChange={(e) => {
                     this.setState({
@@ -156,7 +158,7 @@ class TimeSlider extends React.Component {
                   }}
                 />
               </div>
-              <input type="submit" value="Set Date Range" className="btn btn-primary btn-sm"/>
+              <input type="submit" value="Set Date Range" className="btn btn-primary btn-md col-sm-2"/>
             </form>
           </div>
         </ErrorBoundary>

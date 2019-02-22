@@ -8,8 +8,8 @@ import { debounce } from '../../../shared/visualization/visUtilities';
 
 function spanOfYears(numYears) {
   return [
-    timeYear.offset(new Date(), -1 * numYears).getTime(),
-    new Date().getTime(),
+    timeYear.offset(timeDay.floor(new Date()), -1 * numYears).getTime(),
+    timeDay.floor(new Date()).getTime(),
   ];
 }
 
@@ -27,14 +27,15 @@ class TimeSlider extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  determineNewExtent(e, snap = true) {
+  determineNewExtent(e) {
     let newExtent = e;
     if (e) {
-      // Snap to something reasonable
-      const daySpan = timeDay.count(e[0], e[1]);
-      const timeFunc = snap ? whichD3TimeFunction(e) : timeDay
 
-      newExtent = [timeFunc.floor(e[0]), timeFunc.ceil(e[1])];
+      let timeFunc = timeDay;
+      if (this.props.snap) {
+        timeFunc = whichD3TimeFunction(e);
+        newExtent = [timeFunc.floor(e[0]), timeFunc.ceil(e[1])];
+      }
 
       if (+newExtent[1] > +this.props.xSpan[1]) {
         newExtent[1] = this.props.xSpan[1];
@@ -45,6 +46,7 @@ class TimeSlider extends React.Component {
     } else {
       newExtent = this.state.brushExtent;
     }
+
     return newExtent;
   }
 
@@ -57,25 +59,27 @@ class TimeSlider extends React.Component {
     });
   }
 
-  brushEnd(e, snap = true) {
-    const newExtent = this.determineNewExtent(e, snap);
+  brushEnd(e) {
+    const newExtent = this.determineNewExtent(e);
     this.props.onBrushEnd(newExtent);
     this.setState({
       brushExtent: newExtent,
       firstInputVal: newExtent[0],
       secondInputVal: newExtent[1],
     });
+    console.log(this.state)
   }
 
   handleSubmit(e) {
+    console.log('submit', this.state)
     e.preventDefault();
-    this.brushEnd([ this.state.firstInputVal, this.state.secondInputVal ], false)
+    this.brushEnd([ this.state.firstInputVal, this.state.secondInputVal ])
   }
 
   render() {
     const ticks = timeMonth.range(
-      this.props.xSpan[0],
-      timeMonth.floor(this.props.xSpan[1] + 2678400000),
+      timeMonth.ceil(this.props.xSpan[0]),
+      timeMonth.ceil(this.props.xSpan[1]),
     )
     // TODO: Use hover annotation and fake lines to make tooltip
     return (
@@ -93,7 +97,7 @@ class TimeSlider extends React.Component {
               left: 25,
             }}
             size={[1000, 85]}
-            xAccessor={d => {console.log(d); return d.getTime() }}
+            xAccessor={d => d}
             yAccessor={() => 0}
             xExtent={this.props.xSpan}
             axes={[
@@ -110,6 +114,7 @@ class TimeSlider extends React.Component {
                       {
                         month: 'short',
                         year: 'numeric',
+                        timeZone: 'UTC'
                       },
                     )}
                   </text>
@@ -133,11 +138,12 @@ class TimeSlider extends React.Component {
                   id="startdate"
                   name="startdate"
                   className="form-control input-sm"
-                  style={{ display: 'inline-block', width: '10em' }}
+                  style={{ display: 'inline-block', width: '11em' }}
                   value={new Date(this.state.firstInputVal).toISOString().split('T')[0]}
                   onChange={(e) => {
+                    const date = Date.parse(`${e.target.value} 00:00:01 GMT-0400`);
                     this.setState({
-                      firstInputVal: new Date(e.target.value),
+                      firstInputVal: date,
                     })
                   }}
                 />
@@ -149,11 +155,13 @@ class TimeSlider extends React.Component {
                   id="enddate"
                   name="enddate"
                   className="form-control input-sm"
-                  style={{ display: 'inline-block', width: '10em' }}
+                  style={{ display: 'inline-block', width: '11em' }}
                   value={new Date(this.state.secondInputVal).toISOString().split('T')[0]}
                   onChange={(e) => {
+                    console.log(e.target.value)
+                    const date = Date.parse(`${e.target.value} 23:59:59 GMT-0400`);
                     this.setState({
-                      secondInputVal: new Date(e.target.value),
+                      secondInputVal: date,
                     })
                   }}
                 />
@@ -171,15 +179,17 @@ TimeSlider.propTypes = {
   // defaultBrushExtent: PropTypes.arrayOf(PropTypes.number),
   onBrushEnd: PropTypes.func,
   xSpan: PropTypes.arrayOf(PropTypes.number),
+  snap: PropTypes.bool,
 };
 
 TimeSlider.defaultProps = {
   defaultBrushExtent: [
-    timeWeek.offset(new Date(), -1).getTime(),
-    new Date().getTime(),
+    timeWeek.offset(timeDay.floor(new Date()), -1).getTime(),
+    timeDay.floor(new Date()).getTime(),
   ], // today and today minus thirty-one days
   onBrushEnd: newExtent => console.log(newExtent),
   xSpan: spanOfYears(2), // today and today minus one year
+  snap: false,
 };
 
 export default TimeSlider;

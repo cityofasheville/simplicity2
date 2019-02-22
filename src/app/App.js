@@ -7,6 +7,7 @@ import { updateUser } from '../utilities/auth/graphql/authMutations';
 import { getUser } from '../utilities/auth/graphql/authQueries';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import ErrorBoundary from './ErrorBoundary';
 import CityInfoBar from './CityInfoBar';
 import AuthProviderModal from '../utilities/auth/authProviderModal';
 import { defaultAuthState } from '../utilities/auth/graphql/authDefaultState';
@@ -105,7 +106,9 @@ class Main extends React.Component {
             </div>
             {displayNavbar(this.props.location.query.hideNavbar)}
             <div className="container" id="content">
-              {this.props.children}
+              <ErrorBoundary>
+                {this.props.children}
+              </ErrorBoundary>
             </div>
             {!this.props.location.query.hideNavbar && <Footer />}
             <AuthProviderModal />

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { timeWeek } from 'd3-time';
+import { timeDay, timeWeek } from 'd3-time';
 import PermitsTableWrapper from './PermitsTableWrapper';
 import TimeSlider from '../volume/TimeSlider';
 import ErrorBoundary from '../../ErrorBoundary';
@@ -10,7 +10,7 @@ class PermitsIndex extends React.Component {
 
   constructor() {
     super();
-    const now = new Date();
+    const now = timeDay.floor(new Date());
     this.initialBrushExtent = [
       timeWeek.offset(now, -1).getTime(),
       now.getTime(),

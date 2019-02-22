@@ -14,9 +14,8 @@ class PermitsTable extends React.Component {
 
 
     // TODO: USE WINDOW.LOCATION INSTEAD OF REACT ROUTER LOCATION?
-    console.log('construct', window.history, window.location)
-
-// https://medium.com/@ivantsov/using-react-router-and-history-38c021270829
+    // console.log('construct', window.history, window.location)
+    // https://medium.com/@ivantsov/using-react-router-and-history-38c021270829
 
     const { location } = props
     const filtered = []

@@ -109,30 +109,31 @@ class AnnotatedDagre extends React.Component {
       },
       {
         id: 'Staff Review',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        description: 'Staff from various technical disciplines review plans for compliance with applicable ordinances and documents and create a staff report.',
+        // TODO: ADD WHERE THEY CAN FIND THE STAFF REPORT
       },
       {
         id: 'Level I Decision',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        description: 'When plans for a Level I scale project show that all technical requirements are met, staff approves the plans and issues a permit.',
       },
       {
         id: 'Technical Review Committee',
         description: 'An eight-member body that ensures that the proposed project complies with standards and requirements. Consists of six staff, a representative of the Tree Commission, and a member representing the Buncombe County Metropolitan Sewer District (MSD).',
       },
       {
-        id: 'Major Subdivision Decision',
-        description: 'For major subdivisions that are not in a special zoning area like downtown, the Technical Review Committee either accepts or rejects the proposal.'
+        id: 'Major Subdivision and Level II Decision',
+        description: 'When plans for a Major Subdivision or non-downtown Level II scale project show that all technical requirements are met, staff approves the plans and issues a permit.  For major subdivisions and Level II projects that are not in a special zoning area like downtown, the Technical Review Committee is the body that either accepts or rejects the proposal.'
       },
       {
         id: 'Design Review',
-        description: 'All level II, downtown subdivisions, and special zoning district L3 etc go to desgin review. The decision made in this step is a a non-binding recommendation.'
+        description: 'All downtown level II, downtown subdivisions, and special zoning district Level III go to desgin review. The decision made in this step is a a non-binding recommendation.'
       },
       {
         id: 'Planning and Zoning Commission',
-        description: 'The Commission consists of 7 members, 5 City residents appointed by City Council and 2 residents of the extra-territorial area of the City and appointed by Buncombe County Commissioners. The length of term of office is three years.',
+        description: 'The Commission consists of 7 members, 5 City residents appointed by City Council and 2 residents of the extra-territorial area of the City and appointed by Buncombe County Commissioners.  The commission approves downtown Level II projects and holds public hearings for conditional zoning and conditional use permits and makes a recommendation for action to city council.',
       },
       {
-        id: 'Level II and Downtown Major Subdivision Decision',
+        id: 'Downtown Level II and Downtown Major Subdivision Decision',
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
       },
       {

@@ -74,8 +74,11 @@ class TimeSlider extends React.Component {
     });
   }
 
-  handleSubmit(e) {
-    e.preventDefault();
+  handleSubmit(e = false) {
+    // Can also trigger handle submit manually
+    if (e) {
+      e.preventDefault();
+    }
     this.brushEnd([ this.state.firstInputVal, this.state.secondInputVal ], false)
   }
 
@@ -139,6 +142,9 @@ class TimeSlider extends React.Component {
                   style={{ display: 'inline-block', width: '11em' }}
                   value={moment.utc(this.state.firstInputVal).format('YYYY-MM-DD')}
                   onChange={(e) => {
+                    if (!moment(e.target.value).isValid()) {
+                      return;
+                    }
                     const date = moment.utc(e.target.value).hour(0).minute(0).seconds(1).valueOf();
                     this.setState({
                       firstInputVal: date,
@@ -156,6 +162,9 @@ class TimeSlider extends React.Component {
                   style={{ display: 'inline-block', width: '11em' }}
                   value={moment.utc(this.state.secondInputVal).format('YYYY-MM-DD')}
                   onChange={(e) => {
+                    if (!moment(e.target.value).isValid()) {
+                      return;
+                    }
                     const date = moment.utc(e.target.value).hour(23).minute(59).seconds(59).valueOf();
                     this.setState({
                       secondInputVal: date,

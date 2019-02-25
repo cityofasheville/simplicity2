@@ -1,6 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
+import moment from 'moment';
+import { timeDay, timeMonday, timeWeek, timeMonth, timeYear } from 'd3-time';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import PermitsTable from './PermitsTable';
 
@@ -27,8 +30,8 @@ const PermitsTableWrapper = (props) => (
     query={GET_PROJECTS}
     variables={{
       date_field: 'applied_date',
-      after: props.after || new Date(new Date().setFullYear(new Date().getFullYear() - 1)),
-      before: props.before || new Date(),
+      after: moment.utc(props.after).hour(0).minute(0).seconds(1).format('YYYY-MM-DD hh:mm:ss GMT'),
+      before: moment.utc(props.before).hour(23).minute(59).seconds(59).format('YYYY-MM-DD hh:mm:ss GMT'),
       permit_groups: props.permit_groups,
     }}
   >
@@ -58,5 +61,18 @@ const PermitsTableWrapper = (props) => (
     }}
   </Query>
 );
+
+PermitsTableWrapper.propTypes = {
+  date_field: PropTypes.string,
+  //  TODO: AFTER AND BEFORE AND PROJECTTYPES
+  permit_groups: PropTypes.arrayOf(PropTypes.string),
+};
+
+PermitsTableWrapper.defaultProps = {
+  date_field: 'applied_date',
+  after: moment.utc().subtract(7, 'days').format('YYYY-MM-DD'),
+  before: moment.utc().format('YYYY-MM-DD'),
+  permit_groups: ['Permits', 'Planning', 'Services'],
+};
 
 export default PermitsTableWrapper;

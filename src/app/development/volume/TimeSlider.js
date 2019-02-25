@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ResponsiveXYFrame } from 'semiotic';
 import ErrorBoundary from '../../ErrorBoundary';
+import moment from 'moment';
 import { timeDay, timeMonday, timeWeek, timeMonth, timeYear } from 'd3-time';
 import { whichD3TimeFunction } from './granularUtils';
 import { debounce } from '../../../shared/visualization/visUtilities';
@@ -27,23 +28,27 @@ class TimeSlider extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  determineNewExtent(e) {
+  determineNewExtent(e, snap = false) {
     let newExtent = e;
     if (e) {
+      // If someone just clicked on the timeline there might not be an e
 
-      let timeFunc = timeDay;
-      if (this.props.snap) {
-        timeFunc = whichD3TimeFunction(e);
+      if (snap) {
+        const timeFunc = whichD3TimeFunction(e);
         newExtent = [timeFunc.floor(e[0]), timeFunc.ceil(e[1])];
+        console.log(newExtent)
       }
 
+      // Don't let the new extent be outside of our timeline
       if (+newExtent[1] > +this.props.xSpan[1]) {
         newExtent[1] = this.props.xSpan[1];
       }
       if (+newExtent[0] < +this.props.xSpan[0]) {
         newExtent[0] = this.props.xSpan[0];
       }
+
     } else {
+      // If there isn't an e value
       newExtent = this.state.brushExtent;
     }
 
@@ -59,24 +64,24 @@ class TimeSlider extends React.Component {
     });
   }
 
-  brushEnd(e) {
-    const newExtent = this.determineNewExtent(e);
+  brushEnd(e, snap = true) {
+    const newExtent = this.determineNewExtent(e, snap);
     this.props.onBrushEnd(newExtent);
     this.setState({
       brushExtent: newExtent,
       firstInputVal: newExtent[0],
       secondInputVal: newExtent[1],
     });
-    console.log(this.state)
   }
 
   handleSubmit(e) {
-    console.log('submit', this.state)
     e.preventDefault();
-    this.brushEnd([ this.state.firstInputVal, this.state.secondInputVal ])
+    this.brushEnd([ this.state.firstInputVal, this.state.secondInputVal ], false)
   }
 
   render() {
+    console.log(this.state.brushExtent.map(d => moment.utc(d).format('YYYY MM DD')))
+
     const ticks = timeMonth.range(
       timeMonth.ceil(this.props.xSpan[0]),
       timeMonth.ceil(this.props.xSpan[1]),
@@ -109,14 +114,7 @@ class TimeSlider extends React.Component {
                     style={{ fontSize: '0.70em' }}
                     transform="rotate(-45)"
                   >
-                    {new Date(d).toLocaleDateString(
-                      'en-US',
-                      {
-                        month: 'short',
-                        year: 'numeric',
-                        timeZone: 'UTC'
-                      },
-                    )}
+                    {moment(d).format('MM/YYYY')}
                   </text>
                 ),
                 tickValues: ticks,
@@ -139,9 +137,9 @@ class TimeSlider extends React.Component {
                   name="startdate"
                   className="form-control input-sm"
                   style={{ display: 'inline-block', width: '11em' }}
-                  value={new Date(this.state.firstInputVal).toISOString().split('T')[0]}
+                  value={moment.utc(this.state.firstInputVal).format('YYYY-MM-DD')}
                   onChange={(e) => {
-                    const date = Date.parse(`${e.target.value} 00:00:01 GMT-0400`);
+                    const date = moment.utc(e.target.value).hour(0).minute(0).seconds(1).valueOf();
                     this.setState({
                       firstInputVal: date,
                     })
@@ -156,10 +154,9 @@ class TimeSlider extends React.Component {
                   name="enddate"
                   className="form-control input-sm"
                   style={{ display: 'inline-block', width: '11em' }}
-                  value={new Date(this.state.secondInputVal).toISOString().split('T')[0]}
+                  value={moment.utc(this.state.secondInputVal).format('YYYY-MM-DD')}
                   onChange={(e) => {
-                    console.log(e.target.value)
-                    const date = Date.parse(`${e.target.value} 23:59:59 GMT-0400`);
+                    const date = moment.utc(e.target.value).hour(23).minute(59).seconds(59).valueOf();
                     this.setState({
                       secondInputVal: date,
                     })
@@ -179,7 +176,6 @@ TimeSlider.propTypes = {
   // defaultBrushExtent: PropTypes.arrayOf(PropTypes.number),
   onBrushEnd: PropTypes.func,
   xSpan: PropTypes.arrayOf(PropTypes.number),
-  snap: PropTypes.bool,
 };
 
 TimeSlider.defaultProps = {
@@ -189,7 +185,6 @@ TimeSlider.defaultProps = {
   ], // today and today minus thirty-one days
   onBrushEnd: newExtent => console.log(newExtent),
   xSpan: spanOfYears(2), // today and today minus one year
-  snap: false,
 };
 
 export default TimeSlider;

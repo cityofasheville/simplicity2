@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { timeDay, timeWeek } from 'd3-time';
+import moment from 'moment';
 import PermitsTableWrapper from './PermitsTableWrapper';
 import TimeSlider from '../volume/TimeSlider';
 import ErrorBoundary from '../../ErrorBoundary';
@@ -32,13 +33,13 @@ class PermitsIndex extends React.Component {
         />
         <PermitsTableWrapper
           permit_groups={['Planning', 'Permits', 'Services']}
-          after={new Date(this.state.timeSpan[0])}
-          before={new Date(this.state.timeSpan[1])}
+          after={timeDay.floor(new Date(this.state.timeSpan[0]).getTime())}
+          before={timeDay.ceil(new Date(this.state.timeSpan[1]).getTime())}
           tableHeaders={[
             {
               field: 'applied_date',
               display: 'Date Applied',
-              formatFunc: d => new Date(d).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric'}),
+              formatFunc: d => moment(d).format('MM/DD/YYYY'),
             },
             {
               field: 'address',

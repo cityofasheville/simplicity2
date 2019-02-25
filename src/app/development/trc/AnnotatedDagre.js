@@ -84,27 +84,28 @@ class AnnotatedDagre extends React.Component {
       },
       {
         id: 'Level I',
-        description: 'Projects smaller than 35,000 square feet or with fewer than 20 residential units.',
+        description: 'Projects smaller than 35,000 square feet or with fewer than 20 residential units that trigger zoning compliance requirements.',
       },
       {
         id: 'Major Subdivision',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        description: 'Any project that requires the extension or creation of a new public or private street.  Typically these projects create new residential lots.',
       },
       {
         id: 'Level II',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        description: 'Commercial projects between 35,000 and 99,999 square feet, residential projects between 20 and 49 units, and industrial projects with a floor larger than 100,000 square feet.  Different restrictions apply in the River District or certain expansion projects.',
       },
       {
         id: 'Level III',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        description: 'Commercial projects over 100,000 square feet, residential projects over 50 units, industrial projects in the River District that are over 100,000 square feet, and certain expansion projects.',
       },
       {
         id: 'Conditional Zoning',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        description: 'Any development project seeking to change the zoning of a site and develop it at the same time.',
       },
       {
         id: 'Conditional Use Permit',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        description: 'Anything that is listed as a conditional use in section 7-16-2 of the Unified Development Ordinance.',
+        // TODO: ADD LINK
       },
       {
         id: 'Staff Review',

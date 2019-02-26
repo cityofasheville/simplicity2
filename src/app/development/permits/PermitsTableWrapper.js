@@ -30,12 +30,13 @@ const PermitsTableWrapper = (props) => (
     query={GET_PROJECTS}
     variables={{
       date_field: 'applied_date',
-      after: moment.utc(props.after).hour(0).minute(0).seconds(1).format('YYYY-MM-DD hh:mm:ss GMT'),
-      before: moment.utc(props.before).hour(23).minute(59).seconds(59).format('YYYY-MM-DD hh:mm:ss GMT'),
+      after: moment(props.after).format('YYYY-MM-DD hh:mm:ss GMT'),
+      before: moment(props.before).format('YYYY-MM-DD hh:mm:ss GMT'),
       permit_groups: props.permit_groups,
     }}
   >
     {({ loading, error, data }) => {
+      console.log('permits table wrapper props', props.after, props.before)
       if (loading) return <LoadingAnimation />;
       if (error) {
         console.log(error);

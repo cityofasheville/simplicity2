@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import AccessibleReactTable from 'accessible-react-table';
 import Measure from 'react-measure';
+import moment from 'moment';
 import expandingRows from '../../../shared/react_table_hoc/ExpandingRows';
 import createFilterRenderer from '../../../shared/FilterRenderer';
 
@@ -117,17 +118,15 @@ class PermitsTable extends React.Component {
 PermitsTable.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object),
   tableHeaders: PropTypes.arrayOf(PropTypes.object),
-  dateFormatter: PropTypes.func,
 };
 
 PermitsTable.defaultProps = {
   data: [],
-  dateFormatter: d => new Date(d).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric'}),
   tableHeaders: [
     {
       field: 'applied_date',
       display: 'Date Applied',
-      formatFunc: d => new Date(d).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric'}),
+      formatFunc: d => {console.log(d); return moment.utc(d).format('MMM/DD/YYYY')},
     },
     {
       field: 'address',

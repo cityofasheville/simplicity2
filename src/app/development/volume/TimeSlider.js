@@ -33,11 +33,12 @@ class TimeSlider extends React.Component {
     if (e) {
       // If someone just clicked on the timeline there might not be an e
 
-      if (snap) {
-        const timeFunc = whichD3TimeFunction(e);
-        newExtent = [timeFunc.floor(e[0]), timeFunc.ceil(e[1])];
-        console.log(newExtent)
-      }
+      // if (snap) {
+      //   const timeFunc = whichD3TimeFunction(e);
+      //   console.log(timeDay.floor(new Date()))
+      //   newExtent = [timeFunc.floor(e[0]), timeFunc.ceil(e[1])];
+      //   console.log(newExtent)
+      // }
 
       // Don't let the new extent be outside of our timeline
       if (+newExtent[1] > +this.props.xSpan[1]) {
@@ -117,7 +118,7 @@ class TimeSlider extends React.Component {
                     style={{ fontSize: '0.70em' }}
                     transform="rotate(-45)"
                   >
-                    {moment(d).format('MM/YYYY')}
+                    {moment.utc(d).format('MM/YYYY')}
                   </text>
                 ),
                 tickValues: ticks,
@@ -145,7 +146,7 @@ class TimeSlider extends React.Component {
                     if (!moment(e.target.value).isValid()) {
                       return;
                     }
-                    const date = moment.utc(e.target.value).hour(0).minute(0).seconds(1).valueOf();
+                    const date = moment.utc(e.target.value).hour(0).minute(0).seconds(1).format('YYYY-MM-DD hh:mm:ss UTC');
                     this.setState({
                       firstInputVal: date,
                     })
@@ -165,7 +166,7 @@ class TimeSlider extends React.Component {
                     if (!moment(e.target.value).isValid()) {
                       return;
                     }
-                    const date = moment.utc(e.target.value).hour(23).minute(59).seconds(59).valueOf();
+                    const date = moment.utc(e.target.value).hour(23).minute(59).seconds(59).format('YYYY-MM-DD hh:mm:ss UTC');
                     this.setState({
                       secondInputVal: date,
                     })

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
+import moment from 'moment';
 import { Query } from 'react-apollo';
 import PermitTasks from './PermitTasks';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
@@ -63,7 +64,7 @@ const DtSet = props => (
   </div>
 );
 
-const Permit = (props) => (
+const Permit = props => (
   <Query
     query={GET_PERMIT}
     variables={{
@@ -77,28 +78,29 @@ const Permit = (props) => (
         return <div>Error :( </div>;
       }
       if (data.permits.length > 1) {
-        console.log('This is not quite right: ', data)
+        console.log('This is not quite right: ', data);
       }
 
       const thisPermit = data.permits[0];
-      const formattedPermit = Object.assign({}, thisPermit)
+      const formattedPermit = Object.assign({}, thisPermit);
 
       // These are all the "misc" info fields that may or may not be filled out for any permit
-      thisPermit.custom_fields.forEach(customField =>
-        formattedPermit[customField.name] = customField.value)
+      thisPermit.custom_fields.forEach((customField) => {
+        formattedPermit[customField.name] = customField.value;
+      });
 
       // The popup is what you see when you click on the pin
       const mapData = [Object.assign(
         {},
         thisPermit,
         {
-          popup: `<b>${thisPermit.address}</b>`
+          popup: `<b>${thisPermit.address}</b>`,
         },
       )];
       // Don't show map if there are no coordinates
       const showMap = thisPermit.y && thisPermit.x;
 
-      const dateFormatter = (inputDate) => new Date(inputDate).toLocaleDateString('en-US')
+      const dateFormatter = inputDate => moment(new Date(inputDate)).format('MM/DD/YYYY');
       const fieldFormatters = {
         applied_date: {
           valueFormatter: dateFormatter,

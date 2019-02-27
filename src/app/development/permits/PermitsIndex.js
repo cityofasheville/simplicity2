@@ -35,7 +35,7 @@ class PermitsIndex extends React.Component {
           before={this.state.timeSpan[1]}
         />
       </ErrorBoundary>
-    </div>)
+    </div>);
   }
 }
 

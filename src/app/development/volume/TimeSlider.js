@@ -148,12 +148,12 @@ class TimeSlider extends React.Component {
                   name="startdate"
                   className="form-control input-sm"
                   style={{ display: 'inline-block', width: '11em' }}
-                  value={moment.utc(this.state.firstInputVal).format('YYYY-MM-DD')}
+                  value={moment.utc(new Date(this.state.firstInputVal)).format('YYYY-MM-DD')}
                   onChange={(e) => {
-                    if (!moment(e.target.value).isValid()) {
+                    if (!moment(new Date(e.target.value)).isValid()) {
                       return;
                     }
-                    const date = moment.utc(e.target.value)
+                    const date = moment.utc(new Date(e.target.value))
                       .hour(0).minute(0).seconds(1)
                       .format('YYYY-MM-DD hh:mm:ss UTC');
 
@@ -179,12 +179,12 @@ class TimeSlider extends React.Component {
                   name="enddate"
                   className="form-control input-sm"
                   style={{ display: 'inline-block', width: '11em' }}
-                  value={moment.utc(this.state.secondInputVal).format('YYYY-MM-DD')}
+                  value={moment.utc(new Date(this.state.secondInputVal)).format('YYYY-MM-DD')}
                   onChange={(e) => {
-                    if (!moment(e.target.value).isValid()) {
+                    if (!moment(new Date(e.target.value)).isValid()) {
                       return;
                     }
-                    const date = moment.utc(e.target.value)
+                    const date = moment.utc(new Date(e.target.value))
                       .hour(23).minute(59).seconds(59)
                       .format('YYYY-MM-DD hh:mm:ss UTC');
                     this.setState({

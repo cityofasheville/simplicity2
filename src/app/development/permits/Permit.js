@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import moment from 'moment';
 import { Query } from 'react-apollo';

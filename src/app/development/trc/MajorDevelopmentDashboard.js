@@ -20,7 +20,7 @@ Object.keys(projectTypes).forEach((type, i) => {
 
 
 class MajorDevelopmentDashboard extends React.Component {
-  constructor(){
+  constructor() {
     super();
 
     this.sectionNavLinks = [
@@ -35,21 +35,21 @@ class MajorDevelopmentDashboard extends React.Component {
       },
       {
         linkId: 'data',
-        linkName: 'Current Projects'
+        linkName: 'Current Projects',
       },
-      // {
-      //   linkId: 'calendar',
-      //   linkName: 'Public Events'
-      // },
+      {
+        linkId: 'calendar',
+        linkName: 'Public Meetings',
+      },
       {
         linkId: 'faq',
         linkName: 'Frequently Asked Questions',
       },
-    ].map((d, i) => {
+    ].map((d) => {
       const rObj = Object.assign({}, d);
       rObj.ref = React.createRef();
       return rObj;
-    })
+    });
   }
 
   render() {
@@ -97,14 +97,16 @@ class MajorDevelopmentDashboard extends React.Component {
         />
       </section>
 
-      {/*<section
+      <section
         id="calendar"
         ref={this.sectionNavLinks.find(d => d.linkId === 'calendar').ref}
         className="col-md-12"
       >
-        <h2>Upcoming Public Events</h2>
-        <p>Calendar?  Listed by area?  On a map?  Collapsed into table above?</p>
-      </section>*/}
+        <h2>Upcoming Public Meetings</h2>
+        <p>Developers planning to submit applications for development that must go through the Technical Review Committee must hold a public meeting before submitting the application.</p>
+        <p>Currently, developers are not required to notify the City of Asheville when those meetings take place.  Thus, the first record the city has of a proposed development is when the application is submitted, after the meeting.</p>
+        <p>However, some developers choose to voluntarily notify the city.  After those developers fill out an online form, those meeting dates are automatically added to <a target="_blank" rel="noopener noreferrer" href="https://calendar.google.com/calendar/embed?src=ashevillenc.gov_gk5l650n9mopts9m7sfemhcpd8%40group.calendar.google.com&ctz=America%2FNew_York">this calendar</a>.</p>
+      </section>
 
       <section
         id="faq"

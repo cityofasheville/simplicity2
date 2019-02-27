@@ -45,21 +45,23 @@ const GET_PERMIT = gql`
 `;
 
 // TODO: RETURN NULL IF THERE ISN'T A VALUE?  OR LEAVE IT BLANK?
-const DtSet = (props) => (
+const DtSet = props => (
   <div className="DtSet">
     <dt
       className="text-left text-capitalize"
     >
-      {props.fieldFormatters[props.datum] && props.fieldFormatters[props.datum]['keyFormatter'] ?
-        props.fieldFormatters[props.datum]['keyFormatter'](props.datum) : props.datum.split('_').join(' ')
+      {props.fieldFormatters[props.datum] && props.fieldFormatters[props.datum].keyFormatter ?
+        props.fieldFormatters[props.datum].keyFormatter(props.datum) : props.datum.split('_').join(' ')
       }:
     </dt>
     <dd>
-      {props.fieldFormatters[props.datum] && props.fieldFormatters[props.datum]['valueFormatter'] ?
-        props.fieldFormatters[props.datum]['valueFormatter'](props.formattedPermit[props.datum]) : props.formattedPermit[props.datum]}
+      {props.fieldFormatters[props.datum] && props.fieldFormatters[props.datum].valueFormatter ?
+        props.fieldFormatters[props.datum].valueFormatter(props.formattedPermit[props.datum]) :
+        props.formattedPermit[props.datum]
+      }
     </dd>
   </div>
-)
+);
 
 const Permit = (props) => (
   <Query

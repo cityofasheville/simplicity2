@@ -45,12 +45,10 @@ class TimeSlider extends React.Component {
       if (+newExtent[0] < +this.props.xSpan[0]) {
         newExtent[0] = this.props.xSpan[0];
       }
-
     } else {
       // If there isn't an e value
       newExtent = this.state.brushExtent;
     }
-
     return newExtent;
   }
 
@@ -78,7 +76,10 @@ class TimeSlider extends React.Component {
     if (e) {
       e.preventDefault();
     }
-    this.brushEnd([ this.state.firstInputVal, this.state.secondInputVal ], false)
+    this.brushEnd([
+      this.state.firstInputVal,
+      this.state.secondInputVal,
+    ], false);
   }
 
   render() {
@@ -131,8 +132,16 @@ class TimeSlider extends React.Component {
           />
           <div className="visualization-title">
             <form onSubmit={this.handleSubmit} style={{ textAlign: 'center' }}>
-              <div className="form-group" style={{ display: 'inline-block', padding: '0 0.75em', whiteSpace: 'nowrap' }}>
-                <label htmlFor="startdate" style={{ display: 'inline-block', padding: '0 1em 0 0' }}>From</label>
+              <div
+                className="form-group"
+                style={{ display: 'inline-block', padding: '0 0.75em', whiteSpace: 'nowrap' }}
+              >
+                <label
+                  htmlFor="startdate"
+                  style={{ display: 'inline-block', padding: '0 1em 0 0' }}
+                >
+                  From
+                </label>
                 <input
                   type="date"
                   id="startdate"
@@ -144,15 +153,26 @@ class TimeSlider extends React.Component {
                     if (!moment(e.target.value).isValid()) {
                       return;
                     }
-                    const date = moment.utc(e.target.value).hour(0).minute(0).seconds(1).format('YYYY-MM-DD hh:mm:ss UTC');
+                    const date = moment.utc(e.target.value)
+                      .hour(0).minute(0).seconds(1)
+                      .format('YYYY-MM-DD hh:mm:ss UTC');
+
                     this.setState({
                       firstInputVal: date,
-                    })
+                    });
                   }}
                 />
               </div>
-              <div className="form-group" style={{ display: 'inline-block', padding: '0 1em', whiteSpace: 'nowrap' }}>
-                <label htmlFor="enddate" style={{ display: 'inline-block', padding: '0 0.75em 0 0' }}>To</label>
+              <div
+                className="form-group"
+                style={{ display: 'inline-block', padding: '0 1em', whiteSpace: 'nowrap' }}
+              >
+                <label
+                  htmlFor="enddate"
+                  style={{ display: 'inline-block', padding: '0 0.75em 0 0' }}
+                >
+                  To
+                </label>
                 <input
                   type="date"
                   id="enddate"
@@ -164,14 +184,21 @@ class TimeSlider extends React.Component {
                     if (!moment(e.target.value).isValid()) {
                       return;
                     }
-                    const date = moment.utc(e.target.value).hour(23).minute(59).seconds(59).format('YYYY-MM-DD hh:mm:ss UTC');
+                    const date = moment.utc(e.target.value)
+                      .hour(23).minute(59).seconds(59)
+                      .format('YYYY-MM-DD hh:mm:ss UTC');
                     this.setState({
                       secondInputVal: date,
-                    })
+                    });
                   }}
                 />
               </div>
-              <input type="submit" value="Set Dates" className="btn btn-primary btn-sm" style={{ margin: '0 1em' }}/>
+              <input
+                type="submit"
+                value="Set Dates"
+                className="btn btn-primary btn-sm"
+                style={{ margin: '0 1em' }}
+              />
             </form>
           </div>
         </ErrorBoundary>

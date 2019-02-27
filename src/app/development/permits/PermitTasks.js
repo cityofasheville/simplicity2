@@ -75,7 +75,7 @@ const PermitTasks = props => (<Query
                 <td>{getDate(step.current_status_date)}</td>
                 <td>{step.task}</td>
                 <td>{step.task_status}</td>
-              </tr>)
+              </tr>);
             })}
           </tbody>
         </table>

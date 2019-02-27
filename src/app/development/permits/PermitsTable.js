@@ -15,13 +15,16 @@ class PermitsTable extends React.Component {
     // TODO: USE WINDOW.LOCATION INSTEAD OF REACT ROUTER LOCATION?
     // https://medium.com/@ivantsov/using-react-router-and-history-38c021270829
 
-    const { location } = props;
     const filtered = [];
-    if (location && location.query) {
-      Object.keys(location.query).forEach(key => filtered.push({
-        id: key,
-        value: location.query[key],
-      }));
+    if (window.location.search) {
+      const queryParams = window.location.search.slice(1).split('&');
+      queryParams.forEach((param) => {
+        const keyVal = param.split('=');
+        filtered.push({
+          id: keyVal[0],
+          value: keyVal[1],
+        });
+      });
     }
 
     this.state = {

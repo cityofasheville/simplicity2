@@ -1,14 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { timeDay, timeWeek } from 'd3-time';
-import moment from 'moment';
 import PermitsTableWrapper from './PermitsTableWrapper';
 import TimeSlider from '../volume/TimeSlider';
 import ErrorBoundary from '../../ErrorBoundary';
 
 
 class PermitsIndex extends React.Component {
-
   constructor() {
     super();
     const now = timeDay.floor(new Date());
@@ -33,7 +31,8 @@ class PermitsIndex extends React.Component {
         />
         <PermitsTableWrapper
           // Defaults are fine for now
-          {...this.props}
+          after={this.state.timeSpan[0]}
+          before={this.state.timeSpan[1]}
         />
       </ErrorBoundary>
     </div>)

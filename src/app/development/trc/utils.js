@@ -30,8 +30,3 @@ trcProjectTypes['Conditional Use Permit'] = {
   permit_type: 'Development',
   permit_subtype: 'Conditional Use',
 };
-trcProjectTypes['Historic Resources Commission'] = {
-  permit_group: 'Planning',
-  permit_type: 'HRC',
-  permit_subtype: 'Major Work',
-};

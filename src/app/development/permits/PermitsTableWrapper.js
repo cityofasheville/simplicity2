@@ -1,6 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
+import moment from 'moment';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import PermitsTable from './PermitsTable';
 
@@ -22,13 +24,13 @@ const GET_PROJECTS = gql`
 `;
 
 
-const PermitsTableWrapper = (props) => (
+const PermitsTableWrapper = props => (
   <Query
     query={GET_PROJECTS}
     variables={{
       date_field: 'applied_date',
-      after: props.after || new Date(new Date().setFullYear(new Date().getFullYear() - 1)),
-      before: props.before || new Date(),
+      after: moment(props.after).subtract(1, 'hours').format('YYYY-MM-DD hh:mm:ss GMT'),
+      before: moment(props.before).format('YYYY-MM-DD hh:mm:ss GMT'),
       permit_groups: props.permit_groups,
     }}
   >
@@ -42,21 +44,33 @@ const PermitsTableWrapper = (props) => (
       let filteredData = data.permits;
 
       if (props.projectTypes) {
-        filteredData = data.permits.filter(d => {
+        filteredData = data.permits.filter((d) => {
           let typeOfInterest = false;
-          Object.values(props.projectTypes).forEach(type => {
+          Object.values(props.projectTypes).forEach((type) => {
             // ASSUMING THEY ARE ALL PLANNING
             if (d.permit_type === type.permit_type && d.permit_subtype === type.permit_subtype) {
               typeOfInterest = typeOfInterest || true;
             }
-          })
+          });
           return typeOfInterest;
-        })
+        });
       }
-
-      return (<PermitsTable data={filteredData} />);
+      return (<PermitsTable data={filteredData} {...props} />);
     }}
   </Query>
 );
+
+PermitsTableWrapper.propTypes = {
+  date_field: PropTypes.string,
+  //  TODO: AFTER AND BEFORE AND PROJECTTYPES
+  permit_groups: PropTypes.arrayOf(PropTypes.string),
+};
+
+PermitsTableWrapper.defaultProps = {
+  date_field: 'applied_date',
+  after: moment.utc().subtract(7, 'days').format('YYYY-MM-DD'),
+  before: moment.utc().format('YYYY-MM-DD'),
+  permit_groups: ['Permits', 'Planning', 'Services'],
+};
 
 export default PermitsTableWrapper;

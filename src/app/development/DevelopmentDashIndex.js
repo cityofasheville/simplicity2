@@ -68,42 +68,42 @@ DevelopmentDashIndex.defaultProps = {
       name: 'Permit Module Volume Detail',
       linkTo: {
         pathname: '/development/granular_volume',
-        search: '?module=permits',
+        search: '?permit_group=permits',
       },
     },
     {
       name: 'Planning Module Volume Detail',
       linkTo: {
         pathname: '/development/granular_volume',
-        search: '?module=planning'
+        search: '?permit_group=planning'
       }
     },
     {
       name: 'Service Module Volume Detail',
       linkTo: {
         pathname: '/development/granular_volume',
-        search: '?module=services',
+        search: '?permit_group=services',
       },
     },
     {
       name: 'Permit Module Status Detail',
       linkTo: {
         pathname: '/development/status_volume',
-        search: '?module=permits',
+        search: '?permit_group=permits',
       },
     },
     {
       name: 'Planning Module Status Detail',
       linkTo: {
         pathname: '/development/status_volume',
-        search: '?module=planning'
+        search: '?permit_group=planning'
       }
     },
     {
       name: 'Service Module Status Detail',
       linkTo: {
         pathname: '/development/status_volume',
-        search: '?module=services',
+        search: '?permit_group=services',
       },
     },
     {

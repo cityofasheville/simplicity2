@@ -42,8 +42,7 @@ function selectedActiveDepthNodes(inputNode, activeDepth) {
   }
   return [].concat(...node.values
     .filter(v => v.selected)
-    .map(v => selectedActiveDepthNodes(v, activeDepth))
-  );
+    .map(v => selectedActiveDepthNodes(v, activeDepth)));
 }
 
 function selectedDataFromHierarchy(node) {
@@ -262,7 +261,7 @@ class HierarchicalSelect extends Component {
 
   componentWillMount() {
     // todo: SETS COLORFUL NODES AS WELL - as a side effect, which is not ideal
-    this.setActiveDepth(this.props.activeDepth)
+    this.setActiveDepth(this.props.activeDepth);
   }
 
   htmlAnnotationButton(d, leftMargin) {
@@ -416,7 +415,7 @@ HierarchicalSelect.defaultProps = {
       type: 'custom',
     },
   ],
-  colorScheme: colorScheme,
+  colorScheme,
   data: [],
   hierarchyOrder: [
     'permit_type',

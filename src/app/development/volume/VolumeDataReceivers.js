@@ -85,7 +85,7 @@ class VolumeDataReceivers extends React.Component {
       },
     ]
     let hierarchyOrder = annotations.map(d => d.dataKey);
-    if (this.props.module === 'planning') {
+    if (this.props.permitGroups.length === 1 && this.props.permitGroups.indexOf('Planning') > -1) {
       annotations = annotations.slice(0, -1)
       hierarchyOrder = hierarchyOrder.slice(0, -1)
     }
@@ -129,7 +129,7 @@ class VolumeDataReceivers extends React.Component {
           selectedHierarchyTitle={selectedHierarchyTitle}
         />
       }
-      <PermitsTable data={this.state.selectedData} />
+      <PermitsTable data={this.state.selectedData} {...this.props} />
     </div>);
   }
 }

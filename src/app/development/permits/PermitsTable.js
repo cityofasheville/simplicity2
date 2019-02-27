@@ -126,7 +126,7 @@ PermitsTable.defaultProps = {
     {
       field: 'applied_date',
       display: 'Date Applied',
-      formatFunc: d => {console.log(d); return moment.utc(d).format('MMM/DD/YYYY')},
+      formatFunc: d => moment.utc(new Date(d)).format('MMM DD, YYYY'),
     },
     {
       field: 'address',

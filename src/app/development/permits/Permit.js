@@ -113,15 +113,15 @@ const Permit = props => (
         },
         Pinnumber: {
           keyFormatter: () => 'Pin Number',
-          valueFormatter: (pin) => (
+          valueFormatter: pin => (
             <a
               href={`/property?search=${pin}&id=${pin}&entities=undefined&entity=property`}
             >
               {pin}
             </a>
           ),
-        }
-      }
+        },
+      };
       // These fields are shown in the summary area
       const firstGroupFields = [
         'address',
@@ -152,20 +152,20 @@ const Permit = props => (
 
       // label workflow tasks as timeline instead of recent updates
       // add applied date, initial trc date if it exists
-      const additionalTimelineEvents = [
-        // {
-        //   current_status_date:,
-        //   task:,
-        //   task_status:,
-        // },
-      ]
+      // const additionalTimelineEvents = [
+      //   // {
+      //   //   current_status_date:,
+      //   //   task:,
+      //   //   task_status:,
+      //   // },
+      // ]
 
       // make contact section - applicant name, contractor names, planner name if available
-      const contactInfoFields = [
-        'applicant_name',
-        'contractor_names',
-        // TODO: PLANNER NAME?
-      ]
+      // const contactInfoFields = [
+      //   'applicant_name',
+      //   'contractor_names',
+      //   // TODO: PLANNER NAME?
+      // ]
 
       // These fields are handled in a special way and shouldn't just be iterated over
       const specialFields = [
@@ -184,9 +184,11 @@ const Permit = props => (
       // Sample ACA link
       // https://services.ashevillenc.gov/CitizenAccess/Cap/CapDetail.aspx?Module=Planning&TabName=Planning&capID1=19CAP&capID2=00000&capID3=000NZ&agencyCode=ASHEVILLE
 
+      const h1Title = `${formattedPermit.permit_subtype} ${formattedPermit.permit_type} Application`;
+
       return (<div className="container">
         <div className="row">
-          <h1 className="title__text">{formattedPermit.permit_subtype} {formattedPermit.permit_type} Application</h1>
+          <h1 className="title__text">{h1Title}</h1>
           {showMap && (<div className="col-sm-12 col-md-6">
             <div className="map-container" style={{ height: `${firstGroupFields.length * 4}em` }}>
               <Map
@@ -209,8 +211,11 @@ const Permit = props => (
               />))}
             </dl>
             {formattedPermit.permit_group === 'Planning' &&
-              Object.values(trcProjectTypes).map(type => type.permit_subtype).indexOf(formattedPermit.permit_subtype) > -1 &&
-              <p><em>This is a major development.  <a href="/development/major">Learn more</a> about the large-scale development process in Asheville.</em></p>
+              Object.values(trcProjectTypes)
+                .map(type => type.permit_subtype).indexOf(formattedPermit.permit_subtype) > -1 &&
+              (<p><em>
+                This is a major development.  <a href="/development/major">Learn more</a> about the large-scale development process in Asheville.
+              </em></p>)
             }
           </div>
         </div>

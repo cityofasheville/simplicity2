@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ResponsiveXYFrame } from 'semiotic';
-import ErrorBoundary from '../../ErrorBoundary';
 import moment from 'moment';
-import { timeDay, timeMonday, timeWeek, timeMonth, timeYear } from 'd3-time';
-import { whichD3TimeFunction } from './granularUtils';
-import { debounce } from '../../../shared/visualization/visUtilities';
+import { timeDay, timeWeek, timeMonth, timeYear } from 'd3-time';
+import ErrorBoundary from '../../ErrorBoundary';
 
 function spanOfYears(numYears) {
   return [

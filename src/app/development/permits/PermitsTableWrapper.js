@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import moment from 'moment';
-import { timeDay, timeMonday, timeWeek, timeMonth, timeYear } from 'd3-time';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import PermitsTable from './PermitsTable';
 
@@ -25,18 +24,17 @@ const GET_PROJECTS = gql`
 `;
 
 
-const PermitsTableWrapper = (props) => (
+const PermitsTableWrapper = props => (
   <Query
     query={GET_PROJECTS}
     variables={{
       date_field: 'applied_date',
-      after: moment(props.after).format('YYYY-MM-DD hh:mm:ss GMT'),
+      after: moment(props.after).subtract(1, 'hours').format('YYYY-MM-DD hh:mm:ss GMT'),
       before: moment(props.before).format('YYYY-MM-DD hh:mm:ss GMT'),
       permit_groups: props.permit_groups,
     }}
   >
     {({ loading, error, data }) => {
-      console.log('permits table wrapper props', props.after, props.before)
       if (loading) return <LoadingAnimation />;
       if (error) {
         console.log(error);
@@ -46,19 +44,18 @@ const PermitsTableWrapper = (props) => (
       let filteredData = data.permits;
 
       if (props.projectTypes) {
-        filteredData = data.permits.filter(d => {
+        filteredData = data.permits.filter((d) => {
           let typeOfInterest = false;
-          Object.values(props.projectTypes).forEach(type => {
+          Object.values(props.projectTypes).forEach((type) => {
             // ASSUMING THEY ARE ALL PLANNING
             if (d.permit_type === type.permit_type && d.permit_subtype === type.permit_subtype) {
               typeOfInterest = typeOfInterest || true;
             }
-          })
+          });
           return typeOfInterest;
-        })
+        });
       }
-
-      return (<PermitsTable data={filteredData} {...props}/>);
+      return (<PermitsTable data={filteredData} {...props} />);
     }}
   </Query>
 );

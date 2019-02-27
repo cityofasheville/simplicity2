@@ -12,38 +12,42 @@ const ExpandableAccessibleReactTable = expandingRows(AccessibleReactTable);
 class PermitsTable extends React.Component {
   constructor(props) {
     super(props);
-
-
     // TODO: USE WINDOW.LOCATION INSTEAD OF REACT ROUTER LOCATION?
-    // console.log('construct', window.history, window.location)
     // https://medium.com/@ivantsov/using-react-router-and-history-38c021270829
 
-    const { location } = props
-    const filtered = []
+    const { location } = props;
+    const filtered = [];
     if (location && location.query) {
-      Object.keys(location.query).forEach(key => filtered.push(
-        { id: key, value: location.query[key] }
-      ))
+      Object.keys(location.query).forEach(key => filtered.push({
+        id: key,
+        value: location.query[key],
+      }));
     }
+
     this.state = {
       filtered,
-    }
+    };
 
     this.onFilteredChange = this.onFilteredChange.bind(this);
   }
 
   onFilteredChange(filter) {
-    console.log(filter)
     let newParams = '';
     if (filter.length > 0) {
       newParams = `${filter
         .map(filterObj => `${filterObj.id}=${filterObj.value}`)
-        .join('&')}`
+        .join('&')}`;
     }
-    window.history.pushState({}, '', `${location.pathname}${newParams.length > 0 ? '?' : ''}${newParams}${location.hash}`)
+    window
+      .history
+      .pushState(
+        {},
+        '',
+        `${location.pathname}${newParams.length > 0 ? '?' : ''}${newParams}${location.hash}`
+      );
     this.setState({
       filtered: filter,
-    })
+    });
   }
 
   render() {
@@ -58,20 +62,21 @@ class PermitsTable extends React.Component {
               <ExpandableAccessibleReactTable
                 className="-striped"
                 tableId="projects"
-                ariaLabel={"Table of development permits"}
+                ariaLabel="Table of development permit applications"
                 data={this.props.data}
                 columns={[{
                   Header: 'Permits',
-                  columns: this.props.tableHeaders.map(headerObj => {
-                    return {
-                      Header: headerObj.display,
-                      id: headerObj.field,
-                      accessor: d =>
-                        headerObj.formatFunc ? headerObj.formatFunc(d[headerObj.field]) : d[headerObj.field],
-                      Filter: createFilterRenderer(`Search ${headerObj.display}`),
-                      show: headerObj.show ? headerObj.show(maxColWidth) : true,
-                    }
-                  }),
+                  columns: this.props.tableHeaders.map(headerObj => ({
+                    Header: headerObj.display,
+                    id: headerObj.field,
+                    accessor: (d) => {
+                      return headerObj.formatFunc ?
+                        headerObj.formatFunc(d[headerObj.field]) :
+                        d[headerObj.field];
+                    },
+                    Filter: createFilterRenderer(`Search ${headerObj.display}`),
+                    show: headerObj.show ? headerObj.show(maxColWidth) : true,
+                  })),
                 }]}
                 filterable
                 sortable
@@ -80,12 +85,12 @@ class PermitsTable extends React.Component {
                   // Allows comma separated values, makes it an OR
                   const values = filter.value.split(',');
                   let match = false;
-                  values.forEach(val => {
+                  values.forEach((val) => {
                     match = match || (row[id] !== undefined ?
                       String(row[id]).toLowerCase().indexOf(val.toLowerCase()) > -1
                       :
                       true);
-                  })
+                  });
                   return match;
                 }}
                 onFilteredChange={this.onFilteredChange}
@@ -135,23 +140,23 @@ PermitsTable.defaultProps = {
     {
       field: 'permit_subtype',
       display: 'Type',
-      show: (colWidth) => colWidth > 70,
+      show: colWidth => colWidth > 70,
     },
     {
       field: 'status_current',
       display: 'Status',
-      show: (colWidth) => colWidth > 90,
+      show: colWidth => colWidth > 90,
     },
     {
       field: 'applicant_name',
       display: 'Applicant',
-      show: (colWidth) => colWidth > 90,
+      show: colWidth => colWidth > 90,
     },
     {
       field: 'permit_number',
       display: 'Record Link',
-      formatFunc: d => <a href={`/permits/${d}`}>{d}</a>
-    }
+      formatFunc: d => <a href={`/permits/${d}`}>{d}</a>,
+    },
   ],
 };
 

@@ -83,12 +83,10 @@ class TimeSlider extends React.Component {
   }
 
   render() {
-    console.log(this.state.brushExtent.map(d => moment.utc(d).format('YYYY MM DD')))
-
     const ticks = timeMonth.range(
       timeMonth.ceil(this.props.xSpan[0]),
       timeMonth.ceil(this.props.xSpan[1]),
-    )
+    );
     // TODO: Use hover annotation and fake lines to make tooltip
     return (
       <div
@@ -155,7 +153,7 @@ class TimeSlider extends React.Component {
                     }
                     const date = moment.utc(new Date(e.target.value))
                       .hour(0).minute(0).seconds(1)
-                      .format('YYYY-MM-DD hh:mm:ss UTC');
+                      .valueOf();
 
                     this.setState({
                       firstInputVal: date,
@@ -186,7 +184,8 @@ class TimeSlider extends React.Component {
                     }
                     const date = moment.utc(new Date(e.target.value))
                       .hour(23).minute(59).seconds(59)
-                      .format('YYYY-MM-DD hh:mm:ss UTC');
+                      .valueOf();
+
                     this.setState({
                       secondInputVal: date,
                     });

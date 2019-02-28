@@ -1,22 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import dagre from 'dagre';
-import { curveBundle } from 'd3-shape';
-import { ResponsiveNetworkFrame } from 'semiotic';
-import { Annotation, ConnectorCurve, Note } from 'react-annotation';
 import SectionNav from './SectionNav';
 import AnnotatedDagre from './AnnotatedDagre';
-import PermitsTableWrapper from '../permits/PermitsTableWrapper';
+import TRCDataTable from './TRCDataTable';
 import Accordion from '../../../shared/visualization/Accordion';
 import { trcProjectTypes } from './utils';
 
 const projectTypes = trcProjectTypes;
 
 // Assign colors to project types
-const orderedColors = ['#FF3A3A','#749B5F','#2d93ad','#004EA3','#9B6681','#9E4F55','#073d49'];
+const orderedColors = [
+  '#FF3A3A',
+  '#749B5F',
+  '#2d93ad',
+  '#004EA3',
+  '#9B6681',
+  '#9E4F55',
+  '#073d49',
+];
 Object.keys(projectTypes).forEach((type, i) => {
   projectTypes[type].color = orderedColors[i];
-})
+});
 
 
 class MajorDevelopmentDashboard extends React.Component {
@@ -89,11 +93,8 @@ class MajorDevelopmentDashboard extends React.Component {
         className="col-md-12"
       >
         <h2>Current Projects</h2>
-        <p>The table below contains proposed, large-scale, private development projects for which a permit application has been submitted in the last year.  You can also see a <a href="/permits">table of all permit applications</a> or <a href="/">search an address</a> to find nearby development.</p>
-        <PermitsTableWrapper
-          projectTypes={projectTypes}
-          permit_groups={['Planning']}
-        />
+        <p>The table below contains proposed, large-scale, private development projects for which a permit application has been submitted.  You can also see a <a href="/permits">table of all permit applications</a> or <a href="/">search an address</a> to find nearby development.</p>
+        <TRCDataTable />
       </section>
 
       <section

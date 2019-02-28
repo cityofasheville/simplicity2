@@ -1,6 +1,6 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
-import { timeDay, timeWeek } from 'd3-time';
+import { timeDay, timeMonth } from 'd3-time';
 import PermitsTableWrapper from '../permits/PermitsTableWrapper';
 import TimeSlider from '../volume/TimeSlider';
 import ErrorBoundary from '../../ErrorBoundary';
@@ -12,7 +12,7 @@ class TRCDataTable extends React.Component {
     super();
     const now = timeDay.floor(new Date());
     this.initialBrushExtent = [
-      timeWeek.offset(now, -1).getTime(),
+      timeMonth.offset(now, -1).getTime(),
       now.getTime(),
     ];
     this.state = {

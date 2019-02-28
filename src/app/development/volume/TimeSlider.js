@@ -97,6 +97,78 @@ class TimeSlider extends React.Component {
         style={{ width: '100%', margin: '2em 0' }}
       >
         <ErrorBoundary>
+          <div className="visualization-title">
+            <form onSubmit={this.handleSubmit} style={{ textAlign: 'center' }}>
+              <div
+                className="form-group"
+                style={{ display: 'inline-block', padding: '0 0.75em', whiteSpace: 'nowrap' }}
+              >
+                <label
+                  htmlFor="startdate"
+                  style={{ display: 'inline-block', padding: '0 1em 0 0' }}
+                >
+                  From
+                </label>
+                <input
+                  type="date"
+                  id="startdate"
+                  name="startdate"
+                  className="form-control input-sm visualization-title"
+                  style={{ display: 'inline-block', width: '11em' }}
+                  value={moment.utc(new Date(this.state.firstInputVal)).format('YYYY-MM-DD')}
+                  onChange={(e) => {
+                    if (!moment(new Date(e.target.value)).isValid()) {
+                      return;
+                    }
+                    const date = moment.utc(new Date(e.target.value))
+                      .hour(0).minute(0).seconds(1)
+                      .valueOf();
+
+                    this.setState({
+                      firstInputVal: date,
+                    });
+                  }}
+                />
+              </div>
+              <div
+                className="form-group"
+                style={{ display: 'inline-block', padding: '0 1em', whiteSpace: 'nowrap' }}
+              >
+                <label
+                  htmlFor="enddate"
+                  style={{ display: 'inline-block', padding: '0 0.75em 0 0' }}
+                >
+                  through
+                </label>
+                <input
+                  type="date"
+                  id="enddate"
+                  name="enddate"
+                  className="form-control input-sm visualization-title"
+                  style={{ display: 'inline-block', width: '11em' }}
+                  value={moment.utc(new Date(this.state.secondInputVal)).format('YYYY-MM-DD')}
+                  onChange={(e) => {
+                    if (!moment(new Date(e.target.value)).isValid()) {
+                      return;
+                    }
+                    const date = moment.utc(new Date(e.target.value))
+                      .hour(23).minute(59).seconds(59)
+                      .valueOf();
+
+                    this.setState({
+                      secondInputVal: date,
+                    });
+                  }}
+                />
+              </div>
+              <input
+                type="submit"
+                value="Set Dates"
+                className="btn btn-primary btn-sm"
+                style={{ margin: '0 1em' }}
+              />
+            </form>
+          </div>
           <ResponsiveXYFrame
             responsiveWidth
             margin={{
@@ -131,78 +203,6 @@ class TimeSlider extends React.Component {
               extent: this.state.brushExtent,
             }}
           />
-          <div className="visualization-title">
-            <form onSubmit={this.handleSubmit} style={{ textAlign: 'center' }}>
-              <div
-                className="form-group"
-                style={{ display: 'inline-block', padding: '0 0.75em', whiteSpace: 'nowrap' }}
-              >
-                <label
-                  htmlFor="startdate"
-                  style={{ display: 'inline-block', padding: '0 1em 0 0' }}
-                >
-                  From
-                </label>
-                <input
-                  type="date"
-                  id="startdate"
-                  name="startdate"
-                  className="form-control input-sm"
-                  style={{ display: 'inline-block', width: '11em' }}
-                  value={moment.utc(new Date(this.state.firstInputVal)).format('YYYY-MM-DD')}
-                  onChange={(e) => {
-                    if (!moment(new Date(e.target.value)).isValid()) {
-                      return;
-                    }
-                    const date = moment.utc(new Date(e.target.value))
-                      .hour(0).minute(0).seconds(1)
-                      .valueOf();
-
-                    this.setState({
-                      firstInputVal: date,
-                    });
-                  }}
-                />
-              </div>
-              <div
-                className="form-group"
-                style={{ display: 'inline-block', padding: '0 1em', whiteSpace: 'nowrap' }}
-              >
-                <label
-                  htmlFor="enddate"
-                  style={{ display: 'inline-block', padding: '0 0.75em 0 0' }}
-                >
-                  To
-                </label>
-                <input
-                  type="date"
-                  id="enddate"
-                  name="enddate"
-                  className="form-control input-sm"
-                  style={{ display: 'inline-block', width: '11em' }}
-                  value={moment.utc(new Date(this.state.secondInputVal)).format('YYYY-MM-DD')}
-                  onChange={(e) => {
-                    if (!moment(new Date(e.target.value)).isValid()) {
-                      return;
-                    }
-                    const date = moment.utc(new Date(e.target.value))
-                      .hour(23).minute(59).seconds(59)
-                      .valueOf();
-
-                    this.setState({
-                      secondInputVal: date,
-                    });
-                  }}
-                />
-              </div>
-              <input
-                type="submit"
-                value="Set Dates"
-                className="btn btn-primary btn-sm"
-                style={{ margin: '0 1em' }}
-              />
-            </form>
-          </div>
         </ErrorBoundary>
       </div>
     );

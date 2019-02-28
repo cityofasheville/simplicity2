@@ -20,6 +20,9 @@ class TimeSlider extends React.Component {
       firstInputVal: this.props.defaultBrushExtent[0],
       secondInputVal: this.props.defaultBrushExtent[1],
     };
+
+    this.xSpan = spanOfYears(this.props.xSpan);
+
     this.determineNewExtent = this.determineNewExtent.bind(this);
     this.brushDuring = this.brushDuring.bind(this);
     this.brushEnd = this.brushEnd.bind(this);
@@ -39,11 +42,11 @@ class TimeSlider extends React.Component {
       // }
 
       // Don't let the new extent be outside of our timeline
-      if (+newExtent[1] > +this.props.xSpan[1]) {
-        newExtent[1] = this.props.xSpan[1];
+      if (+newExtent[1] > +this.xSpan[1]) {
+        newExtent[1] = this.xSpan[1];
       }
-      if (+newExtent[0] < +this.props.xSpan[0]) {
-        newExtent[0] = this.props.xSpan[0];
+      if (+newExtent[0] < +this.xSpan[0]) {
+        newExtent[0] = this.xSpan[0];
       }
     } else {
       // If there isn't an e value
@@ -84,8 +87,8 @@ class TimeSlider extends React.Component {
 
   render() {
     const ticks = timeMonth.range(
-      timeMonth.ceil(this.props.xSpan[0]),
-      timeMonth.ceil(this.props.xSpan[1]),
+      timeMonth.ceil(this.xSpan[0]),
+      timeMonth.ceil(this.xSpan[1]),
     );
     // TODO: Use hover annotation and fake lines to make tooltip
     return (
@@ -105,7 +108,7 @@ class TimeSlider extends React.Component {
             size={[1000, 85]}
             xAccessor={d => d}
             yAccessor={() => 0}
-            xExtent={this.props.xSpan}
+            xExtent={this.xSpan}
             axes={[
               {
                 orient: 'bottom',
@@ -218,7 +221,7 @@ TimeSlider.defaultProps = {
     timeDay.floor(new Date()).getTime(),
   ], // today and today minus thirty-one days
   onBrushEnd: newExtent => console.log(newExtent),
-  xSpan: spanOfYears(2), // today and today minus one year
+  xSpan: 2, // in years
 };
 
 export default TimeSlider;

@@ -28,6 +28,7 @@ class TRCDataTable extends React.Component {
             timeSpan: newExtent,
           })}
           defaultBrushExtent={this.initialBrushExtent}
+          xSpan={3}
         />
         <PermitsTableWrapper
           // Defaults are fine for now

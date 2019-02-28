@@ -93,7 +93,6 @@ class MajorDevelopmentDashboard extends React.Component {
         <PermitsTableWrapper
           projectTypes={projectTypes}
           permit_groups={['Planning']}
-          {...this.props}
         />
       </section>
 

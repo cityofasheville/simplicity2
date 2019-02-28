@@ -108,6 +108,9 @@ const Permit = props => (
         status_date: {
           valueFormatter: dateFormatter,
         },
+        status_current: {
+          keyFormatter: () => 'Review Status',
+        },
         contractor_names: {
           valueFormatter: namesArray => Object.values(namesArray).join(', '),
         },
@@ -128,7 +131,6 @@ const Permit = props => (
         'applied_date',
         'permit_number', // TODO: MAKE THIS THE LINK TO ACA
         'status_current',
-        'status_date',
         'Pinnumber',
       ];
 

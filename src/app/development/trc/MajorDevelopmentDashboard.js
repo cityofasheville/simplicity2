@@ -1,9 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import dagre from 'dagre';
-import { curveBundle } from 'd3-shape';
-import { ResponsiveNetworkFrame } from 'semiotic';
-import { Annotation, ConnectorCurve, Note } from 'react-annotation';
 import SectionNav from './SectionNav';
 import AnnotatedDagre from './AnnotatedDagre';
 import TRCDataTable from './TRCDataTable';
@@ -13,10 +9,18 @@ import { trcProjectTypes } from './utils';
 const projectTypes = trcProjectTypes;
 
 // Assign colors to project types
-const orderedColors = ['#FF3A3A','#749B5F','#2d93ad','#004EA3','#9B6681','#9E4F55','#073d49'];
+const orderedColors = [
+  '#FF3A3A',
+  '#749B5F',
+  '#2d93ad',
+  '#004EA3',
+  '#9B6681',
+  '#9E4F55',
+  '#073d49',
+];
 Object.keys(projectTypes).forEach((type, i) => {
   projectTypes[type].color = orderedColors[i];
-})
+});
 
 
 class MajorDevelopmentDashboard extends React.Component {

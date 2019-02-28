@@ -1,22 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { color, hsl } from 'd3-color';
+import { debounce } from '../../../shared/visualization/visUtilities';
 
-function debounce(func, wait, immediate) {
-  // from lodash... should probably just use lodash
-  var timeout;
-  return function() {
-    var context = this, args = arguments;
-    var later = function() {
-      timeout = null;
-      if (!immediate) func.apply(context, args);
-    };
-    var callNow = immediate && !timeout;
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-    if (callNow) func.apply(context, args);
-  };
-};
 
 class SectionNav extends React.Component {
   constructor(props){
@@ -60,7 +46,7 @@ class SectionNav extends React.Component {
     }
 
     // https://caniuse.com/#search=pushstate
-    history.pushState({}, '', `${location.pathname}#${closestNavLinkId}`)
+    history.replaceState({}, closestNavLinkId, `${location.pathname}${location.search}#${closestNavLinkId}`)
     this.setSelectedNavLink(closestNavLinkId)
   }
 
@@ -69,7 +55,7 @@ class SectionNav extends React.Component {
     const anchorToId = event.target.getAttribute('href').replace('#', '');
 
     // Change the URL
-    history.pushState({}, '', `${location.pathname}#${anchorToId}`);
+    history.replaceState({}, anchorToId, `${location.pathname}${location.search}#${anchorToId}`);
 
     // Scroll to that element
     const selectedSection = document.getElementById(anchorToId);

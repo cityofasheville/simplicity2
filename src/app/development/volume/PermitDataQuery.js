@@ -6,16 +6,23 @@ import LoadingAnimation from '../../../shared/LoadingAnimation';
 import VolumeDataReceivers from './VolumeDataReceivers';
 
 function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 const PermitDataQuery = (props) => {
+  const permitGroupParam = props.location.query && props.location.query.permit_group
+  let permitGroups = ['Permits', 'Planning', 'Services'];
+  if (permitGroupParam) {
+    permitGroups = props.location.query.permit_group.split(',').map(m => capitalizeFirstLetter(m));
+  }
+
   return (<Query
     query={GET_PERMITS}
     variables={{
       date_field: props.dateField,
       after: new Date(props.timeSpan[0]),
       before: new Date(props.timeSpan[1]),
+      permit_groups: permitGroups,
     }}
   >
     {({ loading, error, data }) => {
@@ -24,22 +31,14 @@ const PermitDataQuery = (props) => {
         console.log(error);
         return <div>Error :( </div>;
       }
-
-      const module = props.location.search.split('module=')[1];
-      let filteredData = data.permits;
-      let capitalizedModule;
-      if (module) {
-        capitalizedModule = capitalizeFirstLetter(module);
-        filteredData = data.permits.filter(d => d.permit_group === capitalizedModule)
-      }
-
       return (<div className="dashRows">
-        {module && <h2>Module: {capitalizedModule}</h2>}
+        {permitGroupParam && permitGroups.length === 1 && <h2>Module: {permitGroups[0]}</h2>}
+        {permitGroupParam && permitGroups.length > 1 && <h2>Modules: {permitGroups.join(', ')}</h2>}
         <div>
           <VolumeDataReceivers
             {...props}
-            data={filteredData}
-            module={module}
+            data={data.permits}
+            permitGroups={permitGroups}
           />
         </div>
       </div>);

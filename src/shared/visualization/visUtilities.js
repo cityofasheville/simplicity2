@@ -121,3 +121,19 @@ export const budgetBarAnnotationRule = (d, layout = 'vertical') => {
     {d.d.label}
   </Mark>);
 };
+
+export function debounce(func, wait, immediate) {
+  // from lodash... should probably just use lodash
+  var timeout;
+  return function() {
+    var context = this, args = arguments;
+    var later = function() {
+      timeout = null;
+      if (!immediate) func.apply(context, args);
+    };
+    var callNow = immediate && !timeout;
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+    if (callNow) func.apply(context, args);
+  };
+};

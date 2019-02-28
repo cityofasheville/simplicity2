@@ -6,3 +6,7 @@
 .brushedChart rect.handle {
 	fill: darken(#f6fcff, 50%);
 }
+
+input[type="date"]::-webkit-clear-button {
+    display: none;
+}

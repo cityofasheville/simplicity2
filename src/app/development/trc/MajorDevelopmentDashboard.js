@@ -1,59 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import dagre from 'dagre';
-import { curveBundle } from 'd3-shape';
-import { ResponsiveNetworkFrame } from 'semiotic';
-import { Annotation, ConnectorCurve, Note } from 'react-annotation';
 import SectionNav from './SectionNav';
 import AnnotatedDagre from './AnnotatedDagre';
-import ProjectsTableWrapper from './ProjectsTableWrapper';
+import TRCDataTable from './TRCDataTable';
+import Accordion from '../../../shared/visualization/Accordion';
+import { trcProjectTypes } from './utils';
 
-const projectTypes = {};
-projectTypes['Level I'] = {
-  permit_group: 'Planning',
-  permit_type: 'Development',
-  permit_subtype: 'Level I',
-};
-projectTypes['Major Subdivision'] = {
-  permit_group: 'Planning',
-  permit_type: 'Subdivision',
-  permit_subtype: 'Major',
-};
-projectTypes['Level II'] = {
-  permit_group: 'Planning',
-  permit_type: 'Development',
-  permit_subtype: 'Level II',
-};
-projectTypes['Level III'] = {
-  permit_group: 'Planning',
-  permit_type: 'Development',
-  permit_subtype: 'Level III',
-};
-projectTypes['Conditional Zoning'] = {
-  permit_group: 'Planning',
-  permit_type: 'Development',
-  permit_subtype: 'Conditional Zoning',
-};
-projectTypes['Conditional Use Permit'] = {
-  permit_group: 'Planning',
-  permit_type: 'Development',
-  permit_subtype: 'Conditional Use',
-};
-projectTypes['Historic Resources Commission'] = {
-  permit_group: 'Planning',
-  permit_type: 'HRC',
-  permit_subtype: 'Major Work',
-};
+const projectTypes = trcProjectTypes;
 
 // Assign colors to project types
-const orderedColors = ['#FF3A3A','#749B5F','#2d93ad','#004EA3','#9B6681','#9E4F55','#073d49'];
+const orderedColors = [
+  '#FF3A3A',
+  '#749B5F',
+  '#2d93ad',
+  '#004EA3',
+  '#9B6681',
+  '#9E4F55',
+  '#073d49',
+];
 Object.keys(projectTypes).forEach((type, i) => {
   projectTypes[type].color = orderedColors[i];
-})
+});
 
 
 class MajorDevelopmentDashboard extends React.Component {
-  constructor(){
+  constructor() {
     super();
 
     this.sectionNavLinks = [
@@ -68,21 +39,21 @@ class MajorDevelopmentDashboard extends React.Component {
       },
       {
         linkId: 'data',
-        linkName: 'Current Projects'
+        linkName: 'Project Details',
       },
       {
         linkId: 'calendar',
-        linkName: 'Public Events'
+        linkName: 'Public Meetings',
       },
       {
         linkId: 'faq',
         linkName: 'Frequently Asked Questions',
       },
-    ].map((d, i) => {
+    ].map((d) => {
       const rObj = Object.assign({}, d);
       rObj.ref = React.createRef();
       return rObj;
-    })
+    });
   }
 
   render() {
@@ -113,20 +84,7 @@ class MajorDevelopmentDashboard extends React.Component {
         className="col-md-12"
       >
         <h2> Sign up for Notifications </h2>
-        <p>Provide your email or a phone number that can receive text messages to get an update when a new major development application has been submitted.</p>
-        <div id="signup-form">
-          Email: <input type="email" name="email" /><br/>
-          Phone: <input type="tel" name="phone" /><br/>
-          Geographic area: <select>
-            <option value="north">Entire city</option>
-            <option value="north">North Asheville</option>
-            <option value="east">East Asheville</option>
-            <option value="south">South Asheville</option>
-            <option value="west">West Asheville</option>
-          </select><br/>
-          <input type="submit" value="Sign Up" /><br/>
-        </div>
-        <p>You will receive a message asking you to confirm that you wish to receive notifications.</p>
+        <p>The City of Asheville is piloting a new notification system that allows people to sign up for non-emergency alerts based on city data.  You can go to notifications.ashevillenc.gov to sign up for alerts about Level I and larger projects.</p>
       </section>
 
       <section
@@ -134,11 +92,9 @@ class MajorDevelopmentDashboard extends React.Component {
         ref={this.sectionNavLinks.find(d => d.linkId === 'data').ref}
         className="col-md-12"
       >
-        <h2>Current Projects</h2>
-        <p>The table below contains projects for which a permit application has been submitted in the last year.</p>
-        <ProjectsTableWrapper
-          projectTypes={projectTypes}
-        />
+        <h2>Project Details</h2>
+        <p>The table below contains proposed, large-scale, private development projects for which a permit application has been submitted.  You can also see a <a href="/permits">table of all permit applications</a> or <a href="/">search an address</a> to find nearby development.</p>
+        <TRCDataTable />
       </section>
 
       <section
@@ -146,8 +102,10 @@ class MajorDevelopmentDashboard extends React.Component {
         ref={this.sectionNavLinks.find(d => d.linkId === 'calendar').ref}
         className="col-md-12"
       >
-        <h2>Upcoming Public Events</h2>
-        <p>Calendar?  Listed by area?  On a map?  Collapsed into table above?</p>
+        <h2>Upcoming Public Meetings</h2>
+        <p>Developers planning to submit applications for development that must go through the Technical Review Committee must hold a public meeting before submitting the application.</p>
+        <p>Currently, developers are not required to notify the City of Asheville when those meetings take place.  Thus, the first record the city has of a proposed development is when the application is submitted, after the meeting.</p>
+        <p>However, some developers choose to voluntarily notify the city.  After those developers fill out an online form, those meeting dates are automatically added to <a target="_blank" rel="noopener noreferrer" href="https://calendar.google.com/calendar/embed?src=ashevillenc.gov_gk5l650n9mopts9m7sfemhcpd8%40group.calendar.google.com&ctz=America%2FNew_York">this calendar</a>.</p>
       </section>
 
       <section
@@ -156,6 +114,25 @@ class MajorDevelopmentDashboard extends React.Component {
         className="col-md-12"
       >
         <h2>FAQ</h2>
+        {/* https://getbootstrap.com/docs/3.4/javascript/#collapse */}
+        {/* TODO: WHY DOES COLLAPSE TRIGGER RE-RENDER? */}
+        <Accordion
+          data={[
+            {
+              header: 'Why is the sky blue?',
+              body: 'Something something light refracting',
+            },
+            {
+              header: 'What day is it?',
+              body: new Date().toLocaleDateString('en-us'),
+            },
+            {
+              header: 'Why?',
+              body: '42',
+            },
+          ]}
+        />
+
       </section>
     </div>)
   }

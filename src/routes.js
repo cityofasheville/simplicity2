@@ -27,11 +27,13 @@ import DevelopmentSummary from './app/development/DevelopmentSummary';
 import DevelopmentDetail from './app/development/DevelopmentDetail';
 import DevelopmentSLADashboard from './app/development/sla_dashboard/SLADashboard';
 import DevelopmentDashIndex from './app/development/DevelopmentDashIndex';
-import TRCDashboard from './app/development/trc/TRCDashboard';
+import TrcTimeline from './app/development/trc/TrcTimeline';
 import MajorDevelopmentDashboard from './app/development/trc/MajorDevelopmentDashboard';
 import SurveyResults from './app/development/trc/SurveyResults';
 import VolumeDashboard from './app/development/static_volume/VolumeDashboard';
 import PermitVolume from './app/development/volume/PermitVolume';
+import PermitsIndex from './app/development/permits/PermitsIndex';
+import Permit from './app/development/permits/Permit';
 // import WorkflowContainer from './app/development/workflows/WorkflowContainer';
 //
 import ProjectFlowDashboard from './app/internal/bpt_projects/ProjectFlow';
@@ -131,13 +133,18 @@ const Routes = () => (
           <IndexRoute component={PCardCompliance} />
           <Route path="receipts" component={PCardComplianceReceipts} />
         </Route>
+        <Route path="permits">
+          <IndexRoute component={PermitsIndex} />
+          <Route path="/permits/:id" component={Permit}></Route>
+        </Route>
         <Route path="development">
           <IndexRoute component={DevelopmentSummary} />
           <Route path="detail" component={DevelopmentDetail}></Route>
           {/* The rest of these are dashboards */}
           <Route path="dashboards" component={DevelopmentDashIndex}></Route>
+          <Route path="data" component={DevelopmentDashIndex}></Route>
           <Route path="sla-dashboard" component={DevelopmentSLADashboard}></Route>
-          <Route path="trc" component={TRCDashboard}></Route>
+          <Route path="trc" component={TrcTimeline}></Route>
           <Route path="major" component={MajorDevelopmentDashboard}></Route>
           <Route path="trcsurveyresults" component={SurveyResults}></Route>
           <Route path="volume" component={VolumeDashboard}></Route>

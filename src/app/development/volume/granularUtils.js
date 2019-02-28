@@ -216,12 +216,11 @@ export const GET_PERMITS_FOR_COUNTING = gql`
 `;
 
 export const GET_PERMITS = gql`
-  query getPermitsQuery($date_field: String!, $after: String, $before: String) {
-    permits(date_field: $date_field, after: $after, before: $before) {
+  query getPermitsQuery($date_field: String!, $after: String, $before: String, $permit_groups: [String]) {
+    permits(date_field: $date_field, after: $after, before: $before, permit_groups: $permit_groups) {
         applicant_name
         applied_date
         permit_category
-        permit_description
         permit_group
         permit_number
         permit_subtype
@@ -229,20 +228,7 @@ export const GET_PERMITS = gql`
         status_current
         status_date
         created_by
-        building_value
-        job_value
-        total_project_valuation
-        total_sq_feet
-        fees
-        paid
-        balance
-        invoiced_fee_total
         address
-        comments {
-          comment_seq_number
-          comment_date
-          comments
-        }
     }
   }
 `;

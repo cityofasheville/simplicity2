@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
-import LoadingAnimation from '../LoadingAnimation';
-
 
 const BigNumber = props => (
   <Query
@@ -10,7 +8,7 @@ const BigNumber = props => (
     variables={props.queryVars}
   >
     {({ loading, error, data }) => {
-      if (loading) return <LoadingAnimation size="small" />
+      if (loading) return (<div className="col-sm-4">Loading...</div>)
       let val = ''
       if (error) {
         val = 'Error'

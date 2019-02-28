@@ -7,16 +7,15 @@ import TimeSlider from './TimeSlider';
 class GranularVolume extends React.Component {
   constructor(props) {
     super(props);
-    const isGranularVolumePath = this.props.location.pathname.includes('granular_volume');
-    const thirtyDays = 2678400000;
 
+    const now = new Date();
     let defaultBrushExtent = [ // AKA brush extent
-      timeDay.ceil(new Date()).getTime() - thirtyDays,
+      timeMonth.offset(now, -1).getTime(),
       // between today and today minus 31 days
-      timeDay.ceil(new Date()).getTime(),
+      now.getTime(),
     ];
-    if (isGranularVolumePath) {
-      defaultBrushExtent[0] = defaultBrushExtent[1] - thirtyDays * 6
+    if (this.props.location.pathname.includes('granular_volume')) {
+      defaultBrushExtent[0] = timeMonth.offset(now, -3).getTime()
     }
 
     this.state = {

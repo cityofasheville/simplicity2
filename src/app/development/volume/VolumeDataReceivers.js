@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import HierarchicalSelect from './HierarchicalSelect';
 import GranularDash from './GranularDash';
 import StatusDash from './StatusDash';
+import PermitsTable from '../permits/PermitsTable';
 import {
   dateDisplayOptsFuncMaker,
   getIncludedDates,
@@ -19,6 +20,7 @@ class VolumeDataReceivers extends React.Component {
     this.state = {
       selectedData: this.props.data,
       selectedNodes: null,
+      // TODO: waits to render child dashboard until receiving selected nodes from hierarchical select-- not ideal
       selectedHierarchyLevel: null,
       // modalData: null,
     };
@@ -83,7 +85,7 @@ class VolumeDataReceivers extends React.Component {
       },
     ]
     let hierarchyOrder = annotations.map(d => d.dataKey);
-    if (this.props.module === 'planning') {
+    if (this.props.permitGroups.length === 1 && this.props.permitGroups.indexOf('Planning') > -1) {
       annotations = annotations.slice(0, -1)
       hierarchyOrder = hierarchyOrder.slice(0, -1)
     }
@@ -127,6 +129,7 @@ class VolumeDataReceivers extends React.Component {
           selectedHierarchyTitle={selectedHierarchyTitle}
         />
       }
+      <PermitsTable data={this.state.selectedData} {...this.props} />
     </div>);
   }
 }

@@ -39,7 +39,7 @@ class MajorDevelopmentDashboard extends React.Component {
       },
       {
         linkId: 'data',
-        linkName: 'Current Projects',
+        linkName: 'Project Details',
       },
       {
         linkId: 'calendar',
@@ -92,7 +92,7 @@ class MajorDevelopmentDashboard extends React.Component {
         ref={this.sectionNavLinks.find(d => d.linkId === 'data').ref}
         className="col-md-12"
       >
-        <h2>Current Projects</h2>
+        <h2>Project Details</h2>
         <p>The table below contains proposed, large-scale, private development projects for which a permit application has been submitted.  You can also see a <a href="/permits">table of all permit applications</a> or <a href="/">search an address</a> to find nearby development.</p>
         <TRCDataTable />
       </section>

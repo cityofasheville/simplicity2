@@ -27,7 +27,7 @@ import DevelopmentSummary from './app/development/DevelopmentSummary';
 import DevelopmentDetail from './app/development/DevelopmentDetail';
 import DevelopmentSLADashboard from './app/development/sla_dashboard/SLADashboard';
 import DevelopmentDashIndex from './app/development/DevelopmentDashIndex';
-import TRCDashboard from './app/development/trc/TRCDashboard';
+import TrcTimeline from './app/development/trc/TrcTimeline';
 import MajorDevelopmentDashboard from './app/development/trc/MajorDevelopmentDashboard';
 import SurveyResults from './app/development/trc/SurveyResults';
 import VolumeDashboard from './app/development/static_volume/VolumeDashboard';
@@ -144,7 +144,7 @@ const Routes = () => (
           <Route path="dashboards" component={DevelopmentDashIndex}></Route>
           <Route path="data" component={DevelopmentDashIndex}></Route>
           <Route path="sla-dashboard" component={DevelopmentSLADashboard}></Route>
-          <Route path="trc" component={TRCDashboard}></Route>
+          <Route path="trc" component={TrcTimeline}></Route>
           <Route path="major" component={MajorDevelopmentDashboard}></Route>
           <Route path="trcsurveyresults" component={SurveyResults}></Route>
           <Route path="volume" component={VolumeDashboard}></Route>

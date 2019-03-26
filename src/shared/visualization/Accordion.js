@@ -35,7 +35,7 @@ class AccordionPanel extends React.Component {
           <div className="panel-heading" role="tab" id={panelHeadingId}>
             <div className="panel-title">
               {this.props.header}
-              <div className="panel-title-after"></div>
+              <div className={`panel-title-after${this.state.open ? ' open' : ''}`}></div>
             </div>
           </div>
         </a>

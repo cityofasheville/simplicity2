@@ -41,6 +41,6 @@
   pointer-events: none;
 }
 
-.panel.open .panel-title-after:after {
+.panel-title-after.open:after {
   transform: rotate(180deg);
 }

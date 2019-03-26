@@ -36,9 +36,10 @@ p a {
 
 
 // These two together make footer stick to bottom when it's not fixed
+// Usually would be 100vh, but we're doing header in a screwy way
 .app-parent {
   display: flex;
-  min-height: 100vh;
+  min-height: 95vh;
   flex-direction: column;
 }
 #content.container{

@@ -11,7 +11,7 @@ class AccordionPanel extends React.Component {
     super();
     this.state = {
       open: false,
-    }
+    };
   }
 
   render() {
@@ -19,7 +19,7 @@ class AccordionPanel extends React.Component {
     const collapsibleId = `accordion-button-${this.props.index}`;
 
     return (<div className="accordion-item-set">
-      <div className="panel panel-default">
+      <div className="panel">
         <div className="panel-heading" role="tab" id={panelHeadingId}>
           <div className="panel-title">
             <a
@@ -29,7 +29,10 @@ class AccordionPanel extends React.Component {
               href={`#${collapsibleId}`}
               aria-expanded={this.state.open}
               aria-controls={collapsibleId}
-              onClick={e => {e.preventDefault(); this.setState({ open: !this.state.open })}}
+              onClick={(e) => {
+                e.preventDefault();
+                this.setState({ open: !this.state.open });
+              }}
             >
               {this.props.header}
             </a>
@@ -46,24 +49,25 @@ class AccordionPanel extends React.Component {
           </div>
         </div>
       </div>
-    </div>)
+    </div>);
   }
 }
 
-const Accordion = (props) => (
+const Accordion = props => (
   <div
     className="panel-group"
     id="accordion"
     role="tablist"
     aria-multiselectable="true"
   >
-  {/* https://getbootstrap.com/docs/3.4/javascript/#collapse */}
-  {props.data.map((d, i) => (<AccordionPanel
-      key={`accordion-item-${i}`}
-      index={i}
-      header={d.header}
-      body={d.body}
-    />))}
+    {/* https://getbootstrap.com/docs/3.4/javascript/#collapse */}
+    {props.data.map((d, i) => (
+      <AccordionPanel
+        key={`accordion-item-${i}`}
+        index={i}
+        header={d.header}
+        body={d.body}
+      />))}
   </div>
 )
 

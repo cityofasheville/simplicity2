@@ -27,12 +27,18 @@ class MajorDevelopmentDashboard extends React.Component {
   constructor() {
     super();
 
+    this.state = {
+      width: window.innerWidth,
+    };
+
+    this.updateWindowWidth = this.updateWindowWidth.bind(this);
+
     this.sections = [
       {
         linkId: 'about',
         linkName: 'About',
-        // selected: true,
-        header: 'About Large Scale Development',
+        selected: true,
+        header: 'About',
         body: (
           <div>
             <p>When someone wants to build or modify a building on private property in the City of Asheville, they must comply with federal, state, county, and city standards. Which standards apply depends on how large the building is or how much the building will be modified.</p>
@@ -102,10 +108,23 @@ class MajorDevelopmentDashboard extends React.Component {
     });
   }
 
+  componentDidMount() {
+    this.updateWindowWidth();
+    window.addEventListener('resize', this.updateWindowWidth);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateWindowWidth);
+  }
+
+  updateWindowWidth() {
+    this.setState({ width: window.innerWidth });
+  }
+
   render() {
-    if (window.innerWidth < 768) {
+    if (this.state.width < 768) {
       return (
-        <div>
+        <div id="majorDevDash">
           <h1>Major Development in Asheville</h1>
           <Accordion
             data={this.sections}

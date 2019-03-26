@@ -57,12 +57,40 @@ class MajorDevelopmentDashboard extends React.Component {
   }
 
   render() {
-    return (<div id="majorDevDash" style={{ width: 'inherit' }}>
-      <SectionNav
-        links={this.sectionNavLinks}
-      />
-      <div style={{ height: '4em' }}></div>
+    if (window.innerWidth < 768) {
+      return (
+        <div>
+          <h1>Major Development in Asheville</h1>
+          <Accordion
+            data={[
+              {
+                header: 'About Large Scale Development',
+                body: (
+                  <section
+                    id="about"
+                    className="col-md-12"
+                  >
+                    <p>When someone wants to build or modify a building on private property in the City of Asheville, they must comply with federal, state, county, and city standards. Which standards apply depends on how large the building is or how much the building will be modified.</p>
+                    <p>After the developer submits an application, it goes through a decision-making process that includes city staff, city council, developers, and residents.  Who is involved at what step depends on the type of project.</p>
+                    <p>The Unified Development Ordinance defines six types of large scale development in Asheville.</p>
+                    <p>Depending on the type of project, there are three to eight steps.</p>
+                    <AnnotatedDagre
+                      projectTypes={projectTypes}
+                    />
+                  </section>
+                ),
+              },
+            ]}
+          />
+        </div>
+      );
+    }
 
+    return (<div id="majorDevDash" style={{ width: 'inherit' }}>
+      {/*<SectionNav
+        links={this.sectionNavLinks}
+      />*/}
+      <div style={{ height: '4em' }}></div>
       <section
         id="about"
         className="col-md-12"
@@ -129,6 +157,10 @@ class MajorDevelopmentDashboard extends React.Component {
             {
               header: 'Why?',
               body: '42',
+            },
+            {
+              header: 'Can I make a data table?',
+              body: <TRCDataTable />,
             },
           ]}
         />

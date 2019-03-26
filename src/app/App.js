@@ -96,25 +96,23 @@ class Main extends React.Component {
 
   render() {
     return (
-      <main>
-        <div
-          className={this.props.location.query.hideNavbar ? 'hidden-navbar' : ''}
-        >
-          <LanguageProvider>
-            <div id="skip">
-              <a href="#content">Skip to Main Content</a>
-            </div>
-            {displayNavbar(this.props.location.query.hideNavbar)}
-            <div className="container" id="content">
-              <ErrorBoundary>
-                {this.props.children}
-              </ErrorBoundary>
-            </div>
-            {!this.props.location.query.hideNavbar && <Footer />}
-            <AuthProviderModal />
-          </LanguageProvider>
-        </div>
-      </main>
+      <div
+        className={this.props.location.query.hideNavbar ? 'app-parent hidden-navbar' : 'app-parent'}
+      >
+        <LanguageProvider>
+          <div id="skip">
+            <a href="#content">Skip to Main Content</a>
+          </div>
+          {displayNavbar(this.props.location.query.hideNavbar)}
+          <div className="container" id="content">
+            <ErrorBoundary>
+              {this.props.children}
+            </ErrorBoundary>
+          </div>
+          {!this.props.location.query.hideNavbar && <Footer />}
+          <AuthProviderModal />
+        </LanguageProvider>
+      </div>
     );
   }
 }

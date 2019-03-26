@@ -21,7 +21,7 @@ class AccordionPanel extends React.Component {
     return (<div className="accordion-item-set">
       <div className="panel panel-default">
         <div className="panel-heading" role="tab" id={panelHeadingId}>
-          <h4 className="panel-title">
+          <div className="panel-title">
             <a
               role="button"
               data-toggle="collapse"
@@ -33,7 +33,7 @@ class AccordionPanel extends React.Component {
             >
               {this.props.header}
             </a>
-          </h4>
+          </div>
         </div>
         <div
           id={collapsibleId}

@@ -34,9 +34,15 @@ p a {
 	text-decoration: underline;
 }
 
+
+// These two together make footer stick to bottom when it's not fixed
+.app-parent {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
 #content.container{
-	z-index: 0;
-	position: relative;
+  flex: 1;
 }
 
 /*MIXINS*/

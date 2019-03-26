@@ -133,7 +133,7 @@ class MajorDevelopmentDashboard extends React.Component {
       );
     }
 
-    return (<div id="majorDevDash" style={{ width: 'inherit' }}>
+    return (<div id="majorDevDash">
       <SectionNav
         links={this.sections}
       />

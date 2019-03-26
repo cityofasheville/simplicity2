@@ -283,7 +283,7 @@ class AnnotatedDagre extends React.Component {
     const screenWidth = document.documentElement.clientWidth;
     const screenHeight = document.documentElement.clientHeight;
     const sideMargin = screenWidth / 12;
-    const height = 4500;
+    const height = 3000;
     const verticalMargin = Math.max(80, 80 * (700 / screenWidth));
     const fontSize = screenWidth < 750 ? 12 : 14;
 

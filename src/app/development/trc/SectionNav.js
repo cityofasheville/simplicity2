@@ -23,7 +23,7 @@ class SectionNav extends React.Component {
   }
 
   handleScroll(event) {
-    const changePoint = document.documentElement.clientHeight - 250;
+    const changePoint = document.documentElement.clientHeight / 4;
     let closestDistanceToChange = null;
     let closestNavLinkId = null;
 

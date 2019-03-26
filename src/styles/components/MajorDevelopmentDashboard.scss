@@ -1,7 +1,12 @@
+#majorDevDash main {
+  margin-left: 15vw;
+  height: 100%;
+}
+
 #majorDevDash section {
   display: block;
   width: inherit;
-  min-height: 20vh;
+  min-height: 70vh;
   margin: 0 auto;
   padding: 0;
   margin-top: -140px;
@@ -9,25 +14,16 @@
   margin-bottom: 140px;
 }
 
-#majorDevDash p, #majorDevDash p ~ ul {
-  width: 70%;
-  margin-left: 15%;
-}
-
-#majorDevDash h1, #majorDevDash h2 {
-  text-align: center;
-}
-
 .sectionNav {
-  margin: 0 auto;
   left: 0;
-  right: 0;
-  text-align: center;
+  width: 15vw;
+  height: 100%;
   z-index: 99;
   position: fixed;
-  background-color: rgba(255, 255, 255, 0.95);
-  border-bottom: 1px solid gray;
-  padding: 0.25em 1em;
+  background-color: #fff;
+  border-right: 1px solid #f2f2f2;
+  top: 97px;
+  padding: 0;
 }
 
 ul.sectionNav  {
@@ -35,16 +31,24 @@ ul.sectionNav  {
 }
 
 ul.sectionNav li {
-  display: inline-block;;
+  display: flex;
+  border-bottom: 1px solid #f2f2f2;
+  width: 100%;
+  font-size: 0.75em;
 }
 
 .sectionNav a {
-  padding: 0.35em 1.15em 0;
-  letter-spacing: 0.035em;
+  padding: 0.75rem 0.25rem 0.75rem 0.75rem;
+  letter-spacing: 0.035rem;
+  width: 100%;
 }
 
-.sectionNav a.linkItem-selected, .sectionNav a:hover, .sectionNav a:focus {
+.sectionNav a:hover, .sectionNav a:focus {
   text-decoration: underline;
+}
+
+#majorDevDash .linkItem-selected {
+  background-color: #f2f2f2;
 }
 
 #majorDevDash text.annotation-note-label {
@@ -55,19 +59,6 @@ ul.sectionNav li {
   fill: white;
   fill-opacity: 0.9;
   stroke: gray;
-}
-
-#majorDevDash .linkItem-selected {
-  font-weight: bold;
-}
-
-#signup-form {
-  text-align: center;
-  margin: 1em 0;
-}
-
-#signup-form > * {
-  margin: 0.5em 0;
 }
 
 @media(max-width: 767px){

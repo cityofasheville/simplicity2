@@ -8,21 +8,21 @@ import { Annotation, ConnectorCurve, Note } from 'react-annotation';
 function calculateEdges(link) {
   const weight = 2;
   if (link.parallelEdges) {
-    return link.parallelEdges.map(e => {
+    return link.parallelEdges.map((e) => {
       const thisEdge = Object.assign({}, e);
       thisEdge.weight = weight;
       return thisEdge;
-    })
+    });
   }
-  return [{ color: link.color ? link.color : 'gray', weight: weight}];
+  return [{ color: link.color ? link.color : 'gray', weight }];
 }
 
 function getDagreGraph(nodes, links, nodeSize = 8) {
-  const g = new dagre.graphlib.Graph()
-  g.setGraph({ rankdir:  'TB', ranker: 'network-simplex'})
-  g.setDefaultEdgeLabel(() => ({}))
+  const g = new dagre.graphlib.Graph();
+  g.setGraph({ rankdir: 'TB', ranker: 'network-simplex' });
+  g.setDefaultEdgeLabel(() => ({}));
 
-  nodes.forEach(node => {
+  nodes.forEach((node) => {
     g.setNode(
       node.id,
       {
@@ -33,9 +33,9 @@ function getDagreGraph(nodes, links, nodeSize = 8) {
         color: node.color ? node.color : 'gray',
       }
     );
-  })
+  });
 
-  links.forEach(link => {
+  links.forEach((link) => {
     g.setEdge(
       link.source,
       link.target,
@@ -43,7 +43,7 @@ function getDagreGraph(nodes, links, nodeSize = 8) {
         parallelEdges: calculateEdges(link),
       }
     );
-  })
+  });
 
   dagre.layout(g);
 
@@ -52,11 +52,11 @@ function getDagreGraph(nodes, links, nodeSize = 8) {
 
 function getAnnotations(dagreGraph) {
   const nodeValues = Object.values(dagreGraph._nodes);
-  nodeValues.forEach(d => {
-    d.coincidents = nodeValues.filter(val => val.y === d.y)
-    d.indexInCoincidents = d.coincidents.findIndex(c => c.label === d.label)
+  nodeValues.forEach((d) => {
+    d.coincidents = nodeValues.filter(val => val.y === d.y);
+    d.indexInCoincidents = d.coincidents.findIndex(c => c.label === d.label);
   })
-  return nodeValues.map(d => {
+  return nodeValues.map((d) => {
     const rVal = {
       id: d.label,
       coincidents: d.coincidents,
@@ -68,12 +68,12 @@ function getAnnotations(dagreGraph) {
       type: 'node',
     };
     return rVal;
-  })
+  });
 }
 
 
 class AnnotatedDagre extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.projectTypes = props.projectTypes;
     this.nodeSize = 8;
@@ -281,16 +281,27 @@ class AnnotatedDagre extends React.Component {
 
   render() {
     const screenWidth = document.documentElement.clientWidth;
-    const screenHeight = document.documentElement.clientHeight;
     const sideMargin = screenWidth / 12;
-    const height = 4500;
+    const height = screenWidth < 768 ? 4000 : 3000;
     const verticalMargin = Math.max(80, 80 * (700 / screenWidth));
     const fontSize = screenWidth < 750 ? 12 : 14;
 
-    return (<div style={{ width: '100%', height: height, display: 'inline-block', fontSize }}>
+    return (<div
+      style={{
+        width: '100%',
+        height,
+        display: 'inline-block',
+        fontSize
+      }}
+     >
       <ResponsiveNetworkFrame
         size={[320, 1000]}
-        margin={{top: verticalMargin, right: sideMargin, bottom: 0, left: sideMargin }}
+        margin={{
+          top: verticalMargin,
+          right: sideMargin,
+          bottom: 0,
+          left: sideMargin
+        }}
         responsiveWidth
         responsiveHeight
         graph={this.graph}
@@ -309,7 +320,7 @@ class AnnotatedDagre extends React.Component {
           )
           const midpointX = d.networkFrameState.adjustedSize[0] / 2;
 
-          let thisYOffset = - defaultOffsetY;
+          let thisYOffset = -defaultOffsetY;
           let thisXOffset = 0;
           let curveBeta = 0.25;
 

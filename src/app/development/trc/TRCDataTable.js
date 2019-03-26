@@ -21,14 +21,14 @@ class TRCDataTable extends React.Component {
   }
 
   render() {
-    return (<div className="container">
+    return (<div>
       <ErrorBoundary>
         <TimeSlider
           onBrushEnd={newExtent => this.setState({
             timeSpan: newExtent,
           })}
           defaultBrushExtent={this.initialBrushExtent}
-          xSpan={3}
+          xSpan={2}
         />
         <PermitsTableWrapper
           // Defaults are fine for now

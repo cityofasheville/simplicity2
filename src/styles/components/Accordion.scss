@@ -1,5 +1,46 @@
 .panel {
-  background-color: #f2f2f2;
-  border: 1px solid white;
+  border: 1px solid #fff;
   color: inherit;
+}
+
+.panel a {
+  color: inherit;
+}
+
+.panel-heading {
+  background-color: #f2f2f2;
+  border-bottom: 1px solid gray;
+}
+
+.panel-collapse {
+  border: 1px solid #f2f2f2;
+}
+
+.panel-title-after {
+  position: relative;
+  height: 0;
+  width: 0;
+  display: inline;
+  float: right;
+}
+
+.panel-title-after:after {
+  content: '';
+  width: 0;
+  height: 0;
+  border-left: 0.5em solid transparent;
+  border-right: 0.5em solid transparent;
+  border-top: 0.5em solid gray;
+  background-color: none;
+  text-align: right;
+
+  /*Adjust for position however you want*/
+  right: 0.75em;
+  top: 0.5em;
+  position: absolute;
+  pointer-events: none;
+}
+
+.panel.open .panel-title-after:after {
+  transform: rotate(180deg);
 }

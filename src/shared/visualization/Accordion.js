@@ -7,10 +7,10 @@ allow for more than one - make id unique
 */
 
 class AccordionPanel extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      open: false,
+      open: props.initiallyExpanded || false,
     };
   }
 
@@ -19,25 +19,26 @@ class AccordionPanel extends React.Component {
     const collapsibleId = `accordion-button-${this.props.index}`;
 
     return (<div className="accordion-item-set">
-      <div className="panel">
-        <div className="panel-heading" role="tab" id={panelHeadingId}>
-          <div className="panel-title">
-            <a
-              role="button"
-              data-toggle="collapse"
-              data-parent="#accordion"
-              href={`#${collapsibleId}`}
-              aria-expanded={this.state.open}
-              aria-controls={collapsibleId}
-              onClick={(e) => {
-                e.preventDefault();
-                this.setState({ open: !this.state.open });
-              }}
-            >
+      <div className={`panel${this.state.open ? ' open' : ''}`}>
+        <a
+          role="button"
+          data-toggle="collapse"
+          data-parent="#accordion"
+          href={`#${collapsibleId}`}
+          aria-expanded={this.state.open}
+          aria-controls={collapsibleId}
+          onClick={(e) => {
+            e.preventDefault();
+            this.setState({ open: !this.state.open });
+          }}
+        >
+          <div className="panel-heading" role="tab" id={panelHeadingId}>
+            <div className="panel-title">
               {this.props.header}
-            </a>
+              <div className="panel-title-after"></div>
+            </div>
           </div>
-        </div>
+        </a>
         <div
           id={collapsibleId}
           className={`panel-collapse collapse${this.state.open ? ' in' : ''}`}
@@ -67,6 +68,7 @@ const Accordion = props => (
         index={i}
         header={d.header}
         body={d.body}
+        initiallyExpanded={d.selected}
       />))}
   </div>
 )

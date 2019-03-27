@@ -19,13 +19,14 @@ function calculateEdges(link) {
 
 function getDagreGraph(nodes, links, nodeSize = 8) {
   const g = new dagre.graphlib.Graph();
-  g.setGraph({ rankdir: 'TB', ranker: 'network-simplex' });
+  g.setGraph({ rankdir: 'TB', ranker: 'network-simplex', nodesep: 2, ranksep: 15 });
   g.setDefaultEdgeLabel(() => ({}));
 
   nodes.forEach((node) => {
     g.setNode(
       node.id,
       {
+        // Width and height don't seem to matter as long as they aren't 0
         label: node.id,
         width: node.width || nodeSize,
         height: node.height || nodeSize,
@@ -51,7 +52,8 @@ function getDagreGraph(nodes, links, nodeSize = 8) {
 }
 
 function getAnnotations(dagreGraph) {
-  const nodeValues = Object.values(dagreGraph._nodes);
+  const nodeValues = JSON.parse(JSON.stringify(Object.values(dagreGraph._nodes)));
+  // const nodeValues = Object.values(dagreGraph._nodes);
   nodeValues.forEach((d) => {
     d.coincidents = nodeValues.filter(val => val.y === d.y);
     d.indexInCoincidents = d.coincidents.findIndex(c => c.label === d.label);
@@ -274,8 +276,14 @@ class AnnotatedDagre extends React.Component {
           { color: this.projectTypes['Conditional Use Permit'].color, weight: 3 },
         ]
       },
-    ]
+    ];
     this.graph = getDagreGraph(this.nodes, this.links, this.nodeSize);
+
+    console.log(this.graph)
+
+    // TODO: CHECK THIS OUT https://github.com/dagrejs/dagre-d3/issues/74
+    // make parallel nodes stagger y values - double space between them
+    // make nodes separate to take up whole space
     this.annotations = getAnnotations(this.graph);
   }
 
@@ -313,7 +321,7 @@ class AnnotatedDagre extends React.Component {
           const numPerRow = d.d.coincidents.length < 3 ? d.d.coincidents.length : Math.ceil(d.d.coincidents.length / 2);
           // Max number of rows is two
           const midRowIndex = (numPerRow - 1) / 2;
-          const defaultOffsetY = fontSize * 3;
+          const defaultOffsetY = fontSize * 2;
           const wrap = Math.min(
             (screenWidth - sideMargin * 2 - (annotationMargin + annotationMargin * numPerRow)) / numPerRow,
             400
@@ -334,10 +342,6 @@ class AnnotatedDagre extends React.Component {
 
           const xPosition = midpointX + ((d.d.indexInCoincidents % numPerRow) - midRowIndex) * (annotationMargin + wrap);
           thisXOffset = xPosition - d.d.x;
-
-          // const customAnnotation = (<foreignObject width={wrap} x={thisXOffset - wrap / 2} y={thisYOffset}>
-          //   <p>When someone wants to build or modify a building on private property in the City of Asheville, they must comply with federal, state, county, and city standards. Which standards apply depends on how large the building is or how much the building will be modified.</p>
-          // </foreignObject>)
 
           return (<Annotation
             x={d.d.x}
@@ -367,15 +371,16 @@ class AnnotatedDagre extends React.Component {
         }}
         networkType={{
           type: 'dagre',
-          zoom: 'true',
+          // zoom: 'true',
         }}
         edgeStyle={d => ({ stroke: 'white', fill: d.color, strokeWidth: 1 })}
         customNodeIcon={(d) => {
+          console.log(d)
           return (<circle
-            cx={d.d.x}
+            cx={d.d.x - fontSize / 8}
             cy={d.d.y}
-            r={fontSize}
-            style={{ fill: '#d9d9d9', stroke: 'gray' }}
+            r={fontSize * 0.75}
+            style={{ fill: '#f2f2f2', stroke: 'gray' }}
           />)
         }}
       />

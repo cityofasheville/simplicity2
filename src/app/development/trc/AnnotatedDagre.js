@@ -370,10 +370,12 @@ class AnnotatedDagre extends React.Component {
 
   render() {
     // TODO: USE REF TO GET CONTAINER SIZE INSTEAD
+    // use class instead/in addition to color? highlight all links with that class when a node is hovered?
+    // highlight all links and nodes when a link is hovered?
     const visWidth = 900;
-    const height = visWidth < 768 ? 4500 : 3000;
+    const height = visWidth < 768 ? 5000 : 3500;
     const nodePadding = 10;
-    const edgePadding = 10;
+    const edgePadding = 15;
     const edgeStroke = 10;
     const nodeHeight = (height - nodePadding * (this.numLevels + 1)) / (this.numLevels + 1);
 

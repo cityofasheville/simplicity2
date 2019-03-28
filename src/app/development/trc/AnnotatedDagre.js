@@ -346,6 +346,19 @@ class AnnotatedDagre extends React.Component {
 
     // If any node in the past had a high enough coincidents number that it had to be moved, add to y value for remaining
     return (<svg height={height} width={visWidth}>
+      {links.map(d => (
+        <line
+          key={`${d.source}-${d.target}`}
+          x1={d.x1}
+          y1={d.y1}
+          x2={d.x2}
+          y2={d.y2}
+          style={{
+            stroke: d.color || 'gray',
+            strokeWidth: 2,
+          }}
+        />
+      ))}
       {nodes.map(d => (
         <Annotation
           x={d.x}
@@ -359,27 +372,15 @@ class AnnotatedDagre extends React.Component {
           key={`${d.id}-annotation`}
         >
           <Note
-            align={'middle'}
-            orientation={"topBottom"}
+            align="middle"
+            orientation="leftRight"
             bgPadding={8}
             padding={8}
-            titleColor={"gray"}
+            titleColor="gray"
             lineType={null}
             wrap={d.wrap}
           />
         </Annotation>
-      ))}
-      {links.map(d => (
-        <line
-          x1={d.x1}
-          y1={d.y1}
-          x2={d.x2}
-          y2={d.y2}
-          style={{
-            stroke: 'red',
-            strokeWidth: 2,
-          }}
-        />
       ))}
     </svg>);
   }

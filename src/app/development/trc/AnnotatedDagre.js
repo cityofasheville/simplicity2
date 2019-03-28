@@ -302,14 +302,6 @@ class AnnotatedDagre extends React.Component {
         ]
       },
     ];
-  }
-
-  render() {
-    // const visWidth = document.documentElement.clientWidth;
-    // TODO: USE REF TO GET CONTAINER SIZE INSTEAD
-    const visWidth = 800;
-    const height = visWidth < 768 ? 4000 : 3000;
-
     // Find good node height
     const maxPerRow = 3;
     const firstGraph = getDagreGraph(this.nodes, this.links, 100);
@@ -324,38 +316,45 @@ class AnnotatedDagre extends React.Component {
     const uniqueYVals = yVals.filter(
       (value, index, nodeArray) => nodeArray.indexOf(value) === index
     ).length;
+    this.numLevels = multiRow + uniqueYVals;
+  }
 
-    const numLevels = multiRow + uniqueYVals;
-    const nodeHeight = (height - numLevels * 16) / numLevels;
+  render() {
+    // TODO: USE REF TO GET CONTAINER SIZE INSTEAD
+    const visWidth = 800;
+    const height = visWidth < 768 ? 4000 : 3000;
+
+    const nodeHeight = (height - this.numLevels * 16) / this.numLevels;
 
     const graph = getDagreGraph(this.nodes, this.links, nodeHeight);
     const nodes = getNodes(graph, visWidth);
 
-
     // If any node in the past had a high enough coincidents number that it had to be moved, add to y value for remaining
-    return (<svg height={height} width={visWidth}>{nodes.map(d => {
-      return (<Annotation
-        x={d.x}
-        y={d.y}
-        dy={d.yOffset}
-        dx={d.xOffset}
-        color="gray"
-        title={d.label}
-        label={d.description}
-        className="show-bg"
-        key={`${d.label}-annotation`}
-      >
-        <Note
-          align={'middle'}
-          orientation={"topBottom"}
-          bgPadding={8}
-          padding={8}
-          titleColor={"gray"}
-          lineType={null}
-          wrap={d.wrap}
-        />
-      </Annotation>)
-    })}</svg>);
+    return (<svg height={height} width={visWidth}>
+      {nodes.map(d => (
+        <Annotation
+          x={d.x}
+          y={d.y}
+          dy={d.yOffset}
+          dx={d.xOffset}
+          color="gray"
+          title={d.label}
+          label={d.description}
+          className="show-bg"
+          key={`${d.label}-annotation`}
+        >
+          <Note
+            align={'middle'}
+            orientation={"topBottom"}
+            bgPadding={8}
+            padding={8}
+            titleColor={"gray"}
+            lineType={null}
+            wrap={d.wrap}
+          />
+        </Annotation>
+      ))}
+    </svg>);
   }
 
 }

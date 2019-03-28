@@ -17,9 +17,14 @@ function calculateEdges(link) {
   return [{ color: link.color ? link.color : 'gray', weight }];
 }
 
-function getDagreGraph(nodes, links, nodeSize = 8) {
+function getDagreGraph(nodes, links, nodeSize) {
   const g = new dagre.graphlib.Graph();
-  g.setGraph({ rankdir: 'TB', ranker: 'network-simplex', nodesep: 2, ranksep: 15 });
+  g.setGraph({
+    rankdir: 'TB',
+    ranker: 'network-simplex',
+    marginx: 20,
+    marginy: nodeSize,
+  });
   g.setDefaultEdgeLabel(() => ({}));
 
   nodes.forEach((node) => {
@@ -28,8 +33,8 @@ function getDagreGraph(nodes, links, nodeSize = 8) {
       {
         // Width and height don't seem to matter as long as they aren't 0
         label: node.id,
-        width: node.width || nodeSize,
-        height: node.height || nodeSize,
+        width: nodeSize,
+        height: nodeSize,
         description: node.description,
         color: node.color ? node.color : 'gray',
       }
@@ -51,26 +56,28 @@ function getDagreGraph(nodes, links, nodeSize = 8) {
   return g;
 }
 
-function getAnnotations(dagreGraph) {
+function getNodes(dagreGraph) {
   const nodeValues = JSON.parse(JSON.stringify(Object.values(dagreGraph._nodes)));
-  // const nodeValues = Object.values(dagreGraph._nodes);
+  let row = -1;
+  // let yBumpFactor = 0;
   nodeValues.forEach((d) => {
     d.coincidents = nodeValues.filter(val => val.y === d.y);
     d.indexInCoincidents = d.coincidents.findIndex(c => c.label === d.label);
+    d.numPerRow = d.coincidents.length <= 3 ? d.coincidents.length : Math.ceil(d.coincidents.length / 2);
+    // if (
+    //   // Only do once
+    //   d.indexInCoincidents === 0 &&
+    //
+    // ) {
+    //   yBumpFactor++;
+    // }
+
+    if (d.indexInCoincidents % d.numPerRow === 0) {
+      row++;
+    }
+    d.row = row;
   })
-  return nodeValues.map((d) => {
-    const rVal = {
-      id: d.label,
-      coincidents: d.coincidents,
-      indexInCoincidents: d.indexInCoincidents,
-      description: d.description,
-      color: 'black',
-      connector: { end: 'none' },
-      disable: 'subject',
-      type: 'node',
-    };
-    return rVal;
-  });
+  return nodeValues;
 }
 
 
@@ -78,7 +85,6 @@ class AnnotatedDagre extends React.Component {
   constructor(props) {
     super(props);
     this.projectTypes = props.projectTypes;
-    this.nodeSize = 8;
     this.nodes = [
       {
         id: 'Pre-Application and Neighborhood Meeting',
@@ -277,114 +283,88 @@ class AnnotatedDagre extends React.Component {
         ]
       },
     ];
-    this.graph = getDagreGraph(this.nodes, this.links, this.nodeSize);
-
-    console.log(this.graph)
-
-    // TODO: CHECK THIS OUT https://github.com/dagrejs/dagre-d3/issues/74
-    // make parallel nodes stagger y values - double space between them
-    // make nodes separate to take up whole space
-    this.annotations = getAnnotations(this.graph);
   }
 
   render() {
-    const screenWidth = document.documentElement.clientWidth;
-    const sideMargin = screenWidth / 12;
-    const height = screenWidth < 768 ? 4000 : 3000;
-    const verticalMargin = Math.max(80, 80 * (700 / screenWidth));
-    const fontSize = screenWidth < 750 ? 12 : 14;
+    // const visWidth = document.documentElement.clientWidth;
+    // TODO: USE REF TO GET CONTAINER SIZE INSTEAD
+    const visWidth = 800;
+    const midpointX = visWidth / 2;
+    const height = visWidth < 768 ? 4000 : 3000;
+    const fontSize = visWidth < 750 ? 12 : 14;
+    const notePadding = fontSize / 2;
+    const annotationMargin = fontSize + notePadding;
+    const defaultOffsetY = fontSize;
 
-    return (<div
-      style={{
-        width: '100%',
-        height,
-        display: 'inline-block',
-        fontSize
-      }}
-     >
-      <ResponsiveNetworkFrame
-        size={[320, 1000]}
-        margin={{
-          top: verticalMargin,
-          right: sideMargin,
-          bottom: 0,
-          left: sideMargin
-        }}
-        responsiveWidth
-        responsiveHeight
-        graph={this.graph}
-        annotations={this.annotations}
-        svgAnnotationRules={(d) => {
-          // Side padding and padding between
-          const notePadding = fontSize / 2;
-          const annotationMargin = fontSize + notePadding;
-          const numPerRow = d.d.coincidents.length < 3 ? d.d.coincidents.length : Math.ceil(d.d.coincidents.length / 2);
-          // Max number of rows is two
-          const midRowIndex = (numPerRow - 1) / 2;
-          const defaultOffsetY = fontSize * 2;
-          const wrap = Math.min(
-            (screenWidth - sideMargin * 2 - (annotationMargin + annotationMargin * numPerRow)) / numPerRow,
-            400
-          )
-          const midpointX = d.networkFrameState.adjustedSize[0] / 2;
+    const maxPerRow = 3;
 
-          let thisYOffset = -defaultOffsetY;
-          let thisXOffset = 0;
-          let curveBeta = 0.25;
+    const firstGraph = getDagreGraph(this.nodes, this.links, 100);
 
-          // Split into rows
-          if (d.d.coincidents.length > 2) {
-            curveBeta = 0.5
-            if (d.d.indexInCoincidents >= d.d.coincidents.length / 2) {
-              thisYOffset = defaultOffsetY * 2;
-            }
-          }
+    const yVals = JSON.parse(JSON.stringify(Object.values(firstGraph._nodes)))
+      .map(d => d.y);
+    const yValCounts = {};
+    for (let i = 0; i < yVals.length; i++) {
+      let num = yVals[i];
+      yValCounts[num] = yValCounts[num] ? yValCounts[num] + 1 : 1;
+    }
+    const multiRow = Object.values(yValCounts).filter(v => v > maxPerRow).length;
+    const uniqueYVals = yVals.filter(
+      (value, index, nodeArray) => nodeArray.indexOf(value) === index
+    ).length;
 
-          const xPosition = midpointX + ((d.d.indexInCoincidents % numPerRow) - midRowIndex) * (annotationMargin + wrap);
-          thisXOffset = xPosition - d.d.x;
+    const numLevels = multiRow + uniqueYVals;
+    const nodeHeight = (height - numLevels * annotationMargin) / numLevels;
 
-          return (<Annotation
-            x={d.d.x}
-            y={d.d.y}
-            dy={thisYOffset}
-            dx={thisXOffset}
-            color="gray"
-            title={d.d.label}
-            label={d.d.description}
-            className="show-bg"
-            disable="subject"
-            key={`${d.d.label}-annotation`}
-          >
-            <ConnectorCurve
-              curve={curveBundle.beta(curveBeta)}
-            />
-            <Note
-              align={'middle'}
-              orientation={"topBottom"}
-              bgPadding={notePadding}
-              padding={notePadding}
-              titleColor={"gray"}
-              lineType={null}
-              wrap={wrap}
-            />
-          </Annotation>)
-        }}
-        networkType={{
-          type: 'dagre',
-          // zoom: 'true',
-        }}
-        edgeStyle={d => ({ stroke: 'white', fill: d.color, strokeWidth: 1 })}
-        customNodeIcon={(d) => {
-          console.log(d)
-          return (<circle
-            cx={d.d.x - fontSize / 8}
-            cy={d.d.y}
-            r={fontSize * 0.75}
-            style={{ fill: '#f2f2f2', stroke: 'gray' }}
-          />)
-        }}
-      />
-    </div>)
+    // Count how many occurrences of each y value; if ther are more than maxPerRow
+
+    const graph = getDagreGraph(this.nodes, this.links, nodeHeight);
+    const nodes = getNodes(graph, visWidth);
+
+    // If any node in the past had a high enough coincidents number that it had to be moved, add to y value for remaining
+    return (<svg height={height} width={visWidth}>{nodes.map(d => {
+      console.log(d)
+
+      const wrap = Math.min(
+        (visWidth - (annotationMargin + annotationMargin * d.numPerRow)) / d.numPerRow,
+        400
+      )
+
+      let thisYOffset = -defaultOffsetY;
+      let thisXOffset = 0;
+
+      // Split into rows
+      if (d.coincidents.length > 2) {
+        if (d.indexInCoincidents >= d.coincidents.length / 2) {
+          thisYOffset = defaultOffsetY * 2;
+        }
+      }
+
+      const midRowIndex = (d.numPerRow - 1) / 2;
+      const xPosition = midpointX + ((d.indexInCoincidents % d.numPerRow) - midRowIndex) * (annotationMargin + wrap);
+      thisXOffset = xPosition - d.x;
+
+      return (<Annotation
+        x={d.x}
+        y={d.y}
+        dy={thisYOffset}
+        dx={thisXOffset}
+        color="gray"
+        title={d.label}
+        label={d.description}
+        className="show-bg"
+        key={`${d.label}-annotation`}
+      >
+        <Note
+          align={'middle'}
+          orientation={"topBottom"}
+          bgPadding={notePadding}
+          padding={notePadding}
+          titleColor={"gray"}
+          lineType={null}
+          wrap={wrap}
+        />
+      </Annotation>)
+    })}</svg>);
   }
 
 }

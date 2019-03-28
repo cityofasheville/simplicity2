@@ -96,7 +96,7 @@ function getNodes(dagreGraph, visWidth, nodeHeight, nodePadding) {
   });
 }
 
-function getLinks(inputLinks, nodes) {
+function getLinks(inputLinks, nodes, edgePadding, edgeStroke) {
   const linkValues = JSON.parse(JSON.stringify(inputLinks))
     .map(link => {
       const rObj = Object.assign({}, link);
@@ -115,16 +115,37 @@ function getLinks(inputLinks, nodes) {
       return rObj;
     })
 
-  // For each one that has parallelEdges, add it in as its own link?
-  // Then iterate and reassign x values to all using parallelEdges algorithm
+  const withParallelsOnly = linkValues.filter(link => link.parallelEdges);
+  const withoutParallels = linkValues.filter(link => !link.parallelEdges);
 
-  linkValues.forEach(link => {
-    link.x1Coincidents = linkValues.filter(otherLink => otherLink.x1 === link.x1 && otherLink.y1 === link.y1);
-    // total number of links entering and leaving node is how spread out they need to be
-
-    link.x2Coincidents = linkValues.filter(otherLink => otherLink.x2 === link.x2 && otherLink.y2 === link.y2);
+  withParallelsOnly.forEach(link => {
+    link.parallelEdges.forEach((parallel, i) => {
+      const newLinkVal = Object.assign({}, link);
+      newLinkVal.color = parallel.color;
+      withoutParallels.push(newLinkVal);
+    })
   })
-  return linkValues;
+
+  // Then iterate and reassign x values to all using parallelEdges algorithm
+  withoutParallels.forEach(link => {
+    // TODO: also consider it a coincident if its nodes are coincident with one another
+    link.x1Coincidents = withoutParallels.filter(otherLink => otherLink.x1 === link.x1 && otherLink.y1 === link.y1);
+    link.x1CoincidentIndex = link.x1Coincidents.findIndex(coincident =>
+      coincident.source === link.source && coincident.target === link.target && coincident.color === link.color);
+
+    // total number of links entering and leaving node is how spread out they need to be
+    link.x2Coincidents = withoutParallels.filter(otherLink => otherLink.x2 === link.x2 && otherLink.y2 === link.y2);
+    link.x2CoincidentIndex = link.x2Coincidents.findIndex(coincident =>
+      coincident.source === link.source && coincident.target === link.target && coincident.color === link.color);
+  })
+
+  return withoutParallels.map(link => {
+    // TODO: grab parallel edges logic to add more padding for parallel edges?
+    const rObj = Object.assign({}, link);
+    rObj.x1 = link.x1 + link.x1CoincidentIndex * (edgePadding + edgeStroke);
+    rObj.x2 = link.x2 + link.x2CoincidentIndex * (edgePadding + edgeStroke);
+    return rObj;
+  });
 }
 
 
@@ -352,60 +373,59 @@ class AnnotatedDagre extends React.Component {
     const visWidth = 900;
     const height = visWidth < 768 ? 4500 : 3000;
     const nodePadding = 10;
-    const edgePadding = 5;
-    const edgeStroke = 3;
+    const edgePadding = 10;
+    const edgeStroke = 10;
     const nodeHeight = (height - nodePadding * (this.numLevels + 1)) / (this.numLevels + 1);
 
     const graph = getDagreGraph(this.nodes, this.links, nodeHeight, nodePadding);
     const nodes = getNodes(graph, visWidth, nodeHeight, nodePadding);
-    const links = getLinks(this.links, nodes, edgePadding);
-    // TODO: IF IT'S THE SECOND LINK LEAVING THAT NODE, SCOOCH IT OVER
+    const links = getLinks(this.links, nodes, edgePadding, edgeStroke);
 
     console.log(links)
 
     // If any node in the past had a high enough coincidents number that it had to be moved, add to y value for remaining
     return (<svg height={height} width={visWidth}>
-      {links.map(d => d.parallelEdges ?
-        d.parallelEdges.map((edge, i, ogArray) => {
-          const edgeOffset = edgePadding + edgeStroke;
-          const xOffset = edgeOffset * i;
-
-          // If we're moving to the right, then the y values need to be shorter
-          let edgeOffsetSign = -1;
-          if (d.x2 < d.x1) {
-            // If we're moving to the left, then y values need to be longer
-            edgeOffsetSign = 1;
-          }
-
-          const thisYOffset = edgeOffset * edgeOffsetSign * i;
-
-          const thirdYDiff = (d.y2 - d.y1) / 3;
-          return (
-            <path
-              d={`M${d.x1 + xOffset} ${d.y1}
-                L${d.x1 + xOffset} ${d.y1 + thirdYDiff + thisYOffset}
-                L${d.x2 + xOffset} ${d.y1 + (thirdYDiff * 2) + thisYOffset}
-                L${d.x2 + xOffset} ${d.y2}`}
-              style={{
-                stroke: edge.color || 'gray',
-                strokeWidth: edgeStroke,
-                fill: 'none',
-              }}
-              key={`${d.source}-${d.target}-${i}`}
-            />)
-          }) :
+      {links.map((d, i) =>
+        // d.parallelEdges ?
+        // d.parallelEdges.map((edge, i, ogArray) => {
+        //   const edgeOffset = edgePadding + edgeStroke;
+        //   const xOffset = edgeOffset * i;
+        //
+        //   // If we're moving to the right, then the y values need to be shorter
+        //   let edgeOffsetSign = -1;
+        //   if (d.x2 < d.x1) {
+        //     // If we're moving to the left, then y values need to be longer
+        //     edgeOffsetSign = 1;
+        //   }
+        //
+        //   const thisYOffset = edgeOffset * edgeOffsetSign * i;
+        //
+        //   const thirdYDiff = (d.y2 - d.y1) / 3;
+        //   return (
+        //     <path
+        //       d={`M${d.x1 + xOffset} ${d.y1}
+        //         L${d.x1 + xOffset} ${d.y1 + thirdYDiff + thisYOffset}
+        //         L${d.x2 + xOffset} ${d.y1 + (thirdYDiff * 2) + thisYOffset}
+        //         L${d.x2 + xOffset} ${d.y2}`}
+        //       style={{
+        //         stroke: edge.color || 'gray',
+        //         strokeWidth: edgeStroke,
+        //         fill: 'none',
+        //       }}
+        //       key={`${d.source}-${d.target}-${i}`}
+        //     />)
+        //   }) :
         (<path
           d={`M${d.x1} ${d.y1}
             L${d.x1} ${d.y1 + ((d.y2 - d.y1) / 3)}
             L${d.x2} ${d.y1 + ((d.y2 - d.y1) / 3) * 2}
-
             L${d.x2} ${d.y2}`}
           style={{
             stroke: d.color || 'gray',
             strokeWidth: edgeStroke,
             fill: 'none',
           }}
-          key={`${d.source}-${d.target}`}
+          key={`${d.source}-${d.target}-${i}`}
         />)
       )}
       {nodes.map(d => (

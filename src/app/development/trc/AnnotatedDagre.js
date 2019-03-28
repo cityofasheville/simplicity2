@@ -335,7 +335,7 @@ class AnnotatedDagre extends React.Component {
     const visWidth = 900;
     const height = visWidth < 768 ? 4500 : 3000;
     const nodePadding = 10;
-    const nodeHeight = (height - nodePadding * (this.numLevels + 1)) / (this.numLevels);
+    const nodeHeight = (height - nodePadding * (this.numLevels + 1)) / (this.numLevels + 1);
 
     const graph = getDagreGraph(this.nodes, this.links, nodeHeight, nodePadding);
     const nodes = getNodes(graph, visWidth, nodeHeight, nodePadding);
@@ -346,16 +346,18 @@ class AnnotatedDagre extends React.Component {
     // If any node in the past had a high enough coincidents number that it had to be moved, add to y value for remaining
     return (<svg height={height} width={visWidth}>
       {links.map(d => (
-        <line
-          key={`${d.source}-${d.target}`}
-          x1={d.x1}
-          y1={d.y1}
-          x2={d.x2}
-          y2={d.y2}
+        <path
+          d={`M${d.x1} ${d.y1}
+            L${d.x1} ${d.y1 + ((d.y2 - d.y1) / 3)}
+            L${d.x2} ${d.y1 + ((d.y2 - d.y1) / 3) * 2}
+
+            L${d.x2} ${d.y2}`}
           style={{
             stroke: d.color || 'gray',
             strokeWidth: 2,
+            fill: 'none',
           }}
+          key={`${d.source}-${d.target}`}
         />
       ))}
       {nodes.map(d => (

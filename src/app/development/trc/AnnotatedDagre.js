@@ -93,10 +93,10 @@ function getNodes(dagreGraph, visWidth, nodeHeight) {
     d.yOffset = thisYOffset;
 
     const midRowIndex = (d.numPerRow - 1) / 2;
-    const xPosition = midpointX + ((d.indexInCoincidents % d.numPerRow) - midRowIndex) * (annotationMargin + d.wrap);
-    d.xOffset = xPosition - d.x;
-
+    d.x = midpointX + ((d.indexInCoincidents % d.numPerRow) - midRowIndex) * (annotationMargin + d.wrap);
   })
+
+  // Reiterate and update y values
   return nodeValues;
 }
 
@@ -336,7 +336,7 @@ class AnnotatedDagre extends React.Component {
           x={d.x}
           y={d.y}
           dy={d.yOffset}
-          dx={d.xOffset}
+          dx={0}
           color="gray"
           title={d.id}
           label={d.description}

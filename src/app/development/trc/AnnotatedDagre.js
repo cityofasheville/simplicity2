@@ -23,7 +23,7 @@ function getDagreGraph(nodes, links, nodeSize) {
     rankdir: 'TB',
     ranker: 'network-simplex',
     marginx: 20,
-    marginy: nodeSize,
+    marginy: nodeSize / 2,
   });
   g.setDefaultEdgeLabel(() => ({}));
 
@@ -56,21 +56,40 @@ function getDagreGraph(nodes, links, nodeSize) {
   return g;
 }
 
-function getNodes(dagreGraph) {
+function getNodes(dagreGraph, visWidth) {
   const nodeValues = JSON.parse(JSON.stringify(Object.values(dagreGraph._nodes)));
   let row = -1;
-  // let yBumpFactor = 0;
+
+  const midpointX = visWidth / 2;
+  const fontSize = visWidth < 750 ? 12 : 14;
+  const annotationMargin = fontSize + 8;
+  // 8 is node padding value
+  const defaultOffsetY = fontSize;
+
   nodeValues.forEach((d) => {
     d.coincidents = nodeValues.filter(val => val.y === d.y);
     d.indexInCoincidents = d.coincidents.findIndex(c => c.label === d.label);
     d.numPerRow = d.coincidents.length <= 3 ? d.coincidents.length : Math.ceil(d.coincidents.length / 2);
-    // if (
-    //   // Only do once
-    //   d.indexInCoincidents === 0 &&
-    //
-    // ) {
-    //   yBumpFactor++;
-    // }
+
+    d.wrap = Math.min(
+      (visWidth - (annotationMargin + annotationMargin * d.numPerRow)) / d.numPerRow,
+      400
+    )
+
+    let thisYOffset = -defaultOffsetY;
+    let thisXOffset = 0;
+
+    // Split into rows
+    if (d.coincidents.length > 2) {
+      if (d.indexInCoincidents >= d.coincidents.length / 2) {
+        thisYOffset = defaultOffsetY * 2;
+      }
+    }
+    d.yOffset = thisYOffset;
+
+    const midRowIndex = (d.numPerRow - 1) / 2;
+    const xPosition = midpointX + ((d.indexInCoincidents % d.numPerRow) - midRowIndex) * (annotationMargin + d.wrap);
+    d.xOffset = xPosition - d.x;
 
     if (d.indexInCoincidents % d.numPerRow === 0) {
       row++;
@@ -289,17 +308,11 @@ class AnnotatedDagre extends React.Component {
     // const visWidth = document.documentElement.clientWidth;
     // TODO: USE REF TO GET CONTAINER SIZE INSTEAD
     const visWidth = 800;
-    const midpointX = visWidth / 2;
     const height = visWidth < 768 ? 4000 : 3000;
-    const fontSize = visWidth < 750 ? 12 : 14;
-    const notePadding = fontSize / 2;
-    const annotationMargin = fontSize + notePadding;
-    const defaultOffsetY = fontSize;
 
+    // Find good node height
     const maxPerRow = 3;
-
     const firstGraph = getDagreGraph(this.nodes, this.links, 100);
-
     const yVals = JSON.parse(JSON.stringify(Object.values(firstGraph._nodes)))
       .map(d => d.y);
     const yValCounts = {};
@@ -313,41 +326,19 @@ class AnnotatedDagre extends React.Component {
     ).length;
 
     const numLevels = multiRow + uniqueYVals;
-    const nodeHeight = (height - numLevels * annotationMargin) / numLevels;
-
-    // Count how many occurrences of each y value; if ther are more than maxPerRow
+    const nodeHeight = (height - numLevels * 16) / numLevels;
 
     const graph = getDagreGraph(this.nodes, this.links, nodeHeight);
     const nodes = getNodes(graph, visWidth);
 
+
     // If any node in the past had a high enough coincidents number that it had to be moved, add to y value for remaining
     return (<svg height={height} width={visWidth}>{nodes.map(d => {
-      console.log(d)
-
-      const wrap = Math.min(
-        (visWidth - (annotationMargin + annotationMargin * d.numPerRow)) / d.numPerRow,
-        400
-      )
-
-      let thisYOffset = -defaultOffsetY;
-      let thisXOffset = 0;
-
-      // Split into rows
-      if (d.coincidents.length > 2) {
-        if (d.indexInCoincidents >= d.coincidents.length / 2) {
-          thisYOffset = defaultOffsetY * 2;
-        }
-      }
-
-      const midRowIndex = (d.numPerRow - 1) / 2;
-      const xPosition = midpointX + ((d.indexInCoincidents % d.numPerRow) - midRowIndex) * (annotationMargin + wrap);
-      thisXOffset = xPosition - d.x;
-
       return (<Annotation
         x={d.x}
         y={d.y}
-        dy={thisYOffset}
-        dx={thisXOffset}
+        dy={d.yOffset}
+        dx={d.xOffset}
         color="gray"
         title={d.label}
         label={d.description}
@@ -357,11 +348,11 @@ class AnnotatedDagre extends React.Component {
         <Note
           align={'middle'}
           orientation={"topBottom"}
-          bgPadding={notePadding}
-          padding={notePadding}
+          bgPadding={8}
+          padding={8}
           titleColor={"gray"}
           lineType={null}
-          wrap={wrap}
+          wrap={d.wrap}
         />
       </Annotation>)
     })}</svg>);

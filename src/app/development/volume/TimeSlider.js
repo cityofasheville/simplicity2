@@ -212,7 +212,7 @@ class TimeSlider extends React.Component {
 TimeSlider.propTypes = {
   // defaultBrushExtent: PropTypes.arrayOf(PropTypes.number),
   onBrushEnd: PropTypes.func,
-  xSpan: PropTypes.arrayOf(PropTypes.number),
+  xSpan: PropTypes.number,
 };
 
 TimeSlider.defaultProps = {

@@ -114,9 +114,16 @@ function getLinks(inputLinks, nodes) {
       rObj.y2 = endNode.y;
       return rObj;
     })
-  // linkValues.forEach(link => {
-  //   link.
-  // })
+
+  // For each one that has parallelEdges, add it in as its own link?
+  // Then iterate and reassign x values to all using parallelEdges algorithm
+
+  linkValues.forEach(link => {
+    link.x1Coincidents = linkValues.filter(otherLink => otherLink.x1 === link.x1 && otherLink.y1 === link.y1);
+    // total number of links entering and leaving node is how spread out they need to be
+
+    link.x2Coincidents = linkValues.filter(otherLink => otherLink.x2 === link.x2 && otherLink.y2 === link.y2);
+  })
   return linkValues;
 }
 
@@ -258,11 +265,11 @@ class AnnotatedDagre extends React.Component {
         source: 'Staff Review',
         target: 'Technical Review Committee',
         parallelEdges: [
-          { color: this.projectTypes['Major Subdivision'].color, weight: 3 },
-          { color: this.projectTypes['Level II'].color, weight: 3 },
-          { color: this.projectTypes['Level III'].color, weight: 3 },
-          { color: this.projectTypes['Conditional Zoning'].color, weight: 3 },
-          { color: this.projectTypes['Conditional Use Permit'].color, weight: 3 },
+          { color: this.projectTypes['Major Subdivision'].color },
+          { color: this.projectTypes['Level II'].color },
+          { color: this.projectTypes['Level III'].color },
+          { color: this.projectTypes['Conditional Zoning'].color },
+          { color: this.projectTypes['Conditional Use Permit'].color },
         ]
       },
       {
@@ -275,51 +282,51 @@ class AnnotatedDagre extends React.Component {
         target: 'Design Review',
         // All level II, downtown subdivisions, and special district L3 etc go to desgin review?
         parallelEdges: [
-          { color: 'gray', weight: 3 },
-          { color: this.projectTypes['Level II'].color, weight: 3 },
+          { color: 'gray' },
+          { color: this.projectTypes['Level II'].color },
         ]
       },
       {
         source: 'Design Review',
         target: 'Planning and Zoning Commission',
         parallelEdges: [
-          { color: 'gray', weight: 3 },
-          { color: this.projectTypes['Level II'].color, weight: 3 },
+          { color: 'gray' },
+          { color: this.projectTypes['Level II'].color },
         ]
       },
       {
         source: 'Technical Review Committee',
         target: 'Planning and Zoning Commission',
         parallelEdges: [
-          { color: this.projectTypes['Level III'].color, weight: 3 },
-          { color: this.projectTypes['Conditional Zoning'].color, weight: 3 },
-          { color: this.projectTypes['Conditional Use Permit'].color, weight: 3 },
+          { color: this.projectTypes['Level III'].color },
+          { color: this.projectTypes['Conditional Zoning'].color },
+          { color: this.projectTypes['Conditional Use Permit'].color },
         ]
       },
       {
         source: 'Planning and Zoning Commission',
         target: 'Level II and Downtown Major Subdivision Decision',
         parallelEdges: [
-          { color: 'gray', weight: 3 },
-          { color: this.projectTypes['Level II'].color, weight: 3 },
+          { color: 'gray' },
+          { color: this.projectTypes['Level II'].color },
         ]
       },
       {
         source: 'Planning and Zoning Commission',
         target: 'City Council',
         parallelEdges: [
-          { color: this.projectTypes['Level III'].color, weight: 3 },
-          { color: this.projectTypes['Conditional Zoning'].color, weight: 3 },
-          { color: this.projectTypes['Conditional Use Permit'].color, weight: 3 },
+          { color: this.projectTypes['Level III'].color },
+          { color: this.projectTypes['Conditional Zoning'].color },
+          { color: this.projectTypes['Conditional Use Permit'].color },
         ]
       },
       {
         source: 'City Council',
         target: 'City Council Decision',
         parallelEdges: [
-          { color: this.projectTypes['Level III'].color, weight: 3 },
-          { color: this.projectTypes['Conditional Zoning'].color, weight: 3 },
-          { color: this.projectTypes['Conditional Use Permit'].color, weight: 3 },
+          { color: this.projectTypes['Level III'].color },
+          { color: this.projectTypes['Conditional Zoning'].color },
+          { color: this.projectTypes['Conditional Use Permit'].color },
         ]
       },
     ];

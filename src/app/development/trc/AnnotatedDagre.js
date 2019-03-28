@@ -448,7 +448,7 @@ class AnnotatedDagre extends React.Component {
             orientation="leftRight"
             bgPadding={nodePadding}
             padding={nodePadding}
-            titleColor="gray"
+            titleColor={this.projectTypes[d.id] ? this.projectTypes[d.id].color : 'gray'}
             lineType={null}
             wrap={d.wrap}
           />

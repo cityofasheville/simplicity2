@@ -90,13 +90,26 @@ function getNodes(dagreGraph, visWidth, nodeHeight) {
     }
     d.yOffset = thisYOffset;
   })
-
   // Reiterate and update y values
   return nodeValues.map(d => {
     const rVal = Object.assign({}, d);
     rVal.y = d.y + d.yOffset;
     return rVal;
   });
+}
+
+function getLinks(inputLinks, nodes) {
+  const linkValues = JSON.parse(JSON.stringify(inputLinks));
+  return linkValues.map(link => {
+    const rObj = Object.assign({}, link);
+    const startNode = nodes.find(node => node.id === link.source);
+    const endNode = nodes.find(node => node.id === link.target);
+    rObj.x1 = startNode.x;
+    rObj.y1 = startNode.y;
+    rObj.x2 = endNode.x;
+    rObj.y2 = endNode.y;
+    return rObj;
+  })
 }
 
 
@@ -321,12 +334,15 @@ class AnnotatedDagre extends React.Component {
 
   render() {
     // TODO: USE REF TO GET CONTAINER SIZE INSTEAD
-    const visWidth = 800;
-    const height = visWidth < 768 ? 4000 : 3000;
+    const visWidth = 900;
+    const height = visWidth < 768 ? 4500 : 3000;
     // TODO: set padding better-- see getNodes
     const nodeHeight = (height - this.numLevels * 20) / (this.numLevels + 1);
     const graph = getDagreGraph(this.nodes, this.links, nodeHeight);
     const nodes = getNodes(graph, visWidth, nodeHeight);
+    const links = getLinks(this.links, nodes)
+
+    console.log(links)
 
     // If any node in the past had a high enough coincidents number that it had to be moved, add to y value for remaining
     return (<svg height={height} width={visWidth}>
@@ -352,6 +368,18 @@ class AnnotatedDagre extends React.Component {
             wrap={d.wrap}
           />
         </Annotation>
+      ))}
+      {links.map(d => (
+        <line
+          x1={d.x1}
+          y1={d.y1}
+          x2={d.x2}
+          y2={d.y2}
+          style={{
+            stroke: 'red',
+            strokeWidth: 2,
+          }}
+        />
       ))}
     </svg>);
   }

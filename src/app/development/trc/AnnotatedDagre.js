@@ -59,9 +59,10 @@ function getNodes(dagreGraph, visWidth, nodeHeight) {
   const midpointX = visWidth / 2;
   const fontSize = visWidth < 750 ? 12 : 14;
   const annotationMargin = fontSize + 8;
-  // 8 is node padding value
-  let totalYOffsetValue = 0;
+  // TODO: 8 is node padding value; do this better
 
+  let totalYOffsetValue = 0;
+  // totalYOffsetValue has to be added to if there is a multi-row set of nodes
   nodeValues.forEach((d) => {
     d.coincidents = nodeValues.filter(val => val.y === d.y);
     d.indexInCoincidents = d.coincidents.findIndex(c => c.id === d.id);
@@ -70,7 +71,7 @@ function getNodes(dagreGraph, visWidth, nodeHeight) {
       (visWidth - (annotationMargin + annotationMargin * d.numPerRow)) / d.numPerRow,
       400
     )
-    
+
     // Set x value
     const midRowIndex = (d.numPerRow - 1) / 2;
     d.x = midpointX + ((d.indexInCoincidents % d.numPerRow) - midRowIndex) * (annotationMargin + d.wrap);
@@ -322,7 +323,7 @@ class AnnotatedDagre extends React.Component {
     // TODO: USE REF TO GET CONTAINER SIZE INSTEAD
     const visWidth = 800;
     const height = visWidth < 768 ? 4000 : 3000;
-    // TODO: set padding better
+    // TODO: set padding better-- see getNodes
     const nodeHeight = (height - this.numLevels * 20) / (this.numLevels + 1);
     const graph = getDagreGraph(this.nodes, this.links, nodeHeight);
     const nodes = getNodes(graph, visWidth, nodeHeight);

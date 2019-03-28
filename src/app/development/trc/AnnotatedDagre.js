@@ -17,12 +17,12 @@ function calculateEdges(link) {
   return [{ color: link.color ? link.color : 'gray', weight }];
 }
 
-function getDagreGraph(nodes, links, nodeSize) {
+function getDagreGraph(nodes, links, nodeSize, nodePadding) {
   const g = new dagre.graphlib.Graph();
   g.setGraph({
     rankdir: 'TB',
     ranker: 'network-simplex',
-    marginx: 16,
+    marginx: nodePadding,
     marginy: 0,
   });
   g.setDefaultEdgeLabel(() => ({}));
@@ -54,12 +54,10 @@ function getDagreGraph(nodes, links, nodeSize) {
   return g;
 }
 
-function getNodes(dagreGraph, visWidth, nodeHeight) {
+function getNodes(dagreGraph, visWidth, nodeHeight, nodePadding) {
   const nodeValues = JSON.parse(JSON.stringify(Object.values(dagreGraph._nodes)));
   const midpointX = visWidth / 2;
-  const fontSize = visWidth < 750 ? 12 : 14;
-  const annotationMargin = fontSize + 8;
-  // TODO: 8 is node padding value; do this better
+  const annotationMargin = nodePadding * 2;
 
   let totalYOffsetValue = 0;
   // totalYOffsetValue has to be added to if there is a multi-row set of nodes
@@ -317,7 +315,7 @@ class AnnotatedDagre extends React.Component {
     ];
     // Find good node height
     const maxPerRow = 3;
-    const firstGraph = getDagreGraph(this.nodes, this.links, 100);
+    const firstGraph = getDagreGraph(this.nodes, this.links, 100, 0);
     const yVals = JSON.parse(JSON.stringify(Object.values(firstGraph._nodes)))
       .map(d => d.y);
     const yValCounts = {};
@@ -336,10 +334,11 @@ class AnnotatedDagre extends React.Component {
     // TODO: USE REF TO GET CONTAINER SIZE INSTEAD
     const visWidth = 900;
     const height = visWidth < 768 ? 4500 : 3000;
-    // TODO: set padding better-- see getNodes
-    const nodeHeight = (height - this.numLevels * 20) / (this.numLevels + 1);
-    const graph = getDagreGraph(this.nodes, this.links, nodeHeight);
-    const nodes = getNodes(graph, visWidth, nodeHeight);
+    const nodePadding = 10;
+    const nodeHeight = (height - nodePadding * (this.numLevels + 1)) / (this.numLevels);
+
+    const graph = getDagreGraph(this.nodes, this.links, nodeHeight, nodePadding);
+    const nodes = getNodes(graph, visWidth, nodeHeight, nodePadding);
     const links = getLinks(this.links, nodes)
 
     console.log(links)
@@ -361,7 +360,7 @@ class AnnotatedDagre extends React.Component {
       ))}
       {nodes.map(d => (
         <Annotation
-          x={d.x}
+          x={d.x - d.wrap / 2}
           y={d.y}
           dy={0}
           dx={0}
@@ -374,8 +373,8 @@ class AnnotatedDagre extends React.Component {
           <Note
             align="middle"
             orientation="leftRight"
-            bgPadding={8}
-            padding={8}
+            bgPadding={nodePadding}
+            padding={nodePadding}
             titleColor="gray"
             lineType={null}
             wrap={d.wrap}

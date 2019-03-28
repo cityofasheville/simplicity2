@@ -60,44 +60,42 @@ function getNodes(dagreGraph, visWidth, nodeHeight) {
   const fontSize = visWidth < 750 ? 12 : 14;
   const annotationMargin = fontSize + 8;
   // 8 is node padding value
-  const defaultOffsetY = 0;
-
   let totalYOffsetValue = 0;
 
   nodeValues.forEach((d) => {
     d.coincidents = nodeValues.filter(val => val.y === d.y);
     d.indexInCoincidents = d.coincidents.findIndex(c => c.id === d.id);
     d.numPerRow = d.coincidents.length <= 3 ? d.coincidents.length : Math.ceil(d.coincidents.length / 2);
-
     d.wrap = Math.min(
       (visWidth - (annotationMargin + annotationMargin * d.numPerRow)) / d.numPerRow,
       400
     )
+    
+    // Set x value
+    const midRowIndex = (d.numPerRow - 1) / 2;
+    d.x = midpointX + ((d.indexInCoincidents % d.numPerRow) - midRowIndex) * (annotationMargin + d.wrap);
 
+    // Y value must be set in separate iteration because it is used to determine coincidents
     let thisYOffset = totalYOffsetValue;
-    let thisXOffset = 0;
-
     // Split into rows
     if (d.coincidents.length > 2) {
-
       if (d.indexInCoincidents >= d.coincidents.length / 2) {
         thisYOffset = nodeHeight;
-
         if (d.indexInCoincidents % d.numPerRow === 0) {
           // If it's a new row
           totalYOffsetValue += nodeHeight;
         }
       }
     }
-
     d.yOffset = thisYOffset;
-
-    const midRowIndex = (d.numPerRow - 1) / 2;
-    d.x = midpointX + ((d.indexInCoincidents % d.numPerRow) - midRowIndex) * (annotationMargin + d.wrap);
   })
 
   // Reiterate and update y values
-  return nodeValues;
+  return nodeValues.map(d => {
+    const rVal = Object.assign({}, d);
+    rVal.y = d.y + d.yOffset;
+    return rVal;
+  });
 }
 
 
@@ -335,7 +333,7 @@ class AnnotatedDagre extends React.Component {
         <Annotation
           x={d.x}
           y={d.y}
-          dy={d.yOffset}
+          dy={0}
           dx={0}
           color="gray"
           title={d.id}

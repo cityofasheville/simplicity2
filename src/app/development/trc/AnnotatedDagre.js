@@ -62,7 +62,7 @@ function getNodes(dagreGraph, visWidth, nodeHeight, nodePadding) {
   let totalYOffsetValue = 0;
   // totalYOffsetValue has to be added to if there is a multi-row set of nodes
   nodeValues.forEach((d) => {
-    d.coincidents = nodeValues.filter(val => val.y === d.y);
+    d.coincidents = JSON.parse(JSON.stringify(nodeValues.filter(val => val.y === d.y)));
     d.indexInCoincidents = d.coincidents.findIndex(c => c.id === d.id);
     d.numPerRow = d.coincidents.length <= 3 ? d.coincidents.length : Math.ceil(d.coincidents.length / 2);
     d.wrap = Math.min(
@@ -97,17 +97,27 @@ function getNodes(dagreGraph, visWidth, nodeHeight, nodePadding) {
 }
 
 function getLinks(inputLinks, nodes) {
-  const linkValues = JSON.parse(JSON.stringify(inputLinks));
-  return linkValues.map(link => {
-    const rObj = Object.assign({}, link);
-    const startNode = nodes.find(node => node.id === link.source);
-    const endNode = nodes.find(node => node.id === link.target);
-    rObj.x1 = startNode.x;
-    rObj.y1 = startNode.y;
-    rObj.x2 = endNode.x;
-    rObj.y2 = endNode.y;
-    return rObj;
-  })
+  const linkValues = JSON.parse(JSON.stringify(inputLinks))
+    .map(link => {
+      const rObj = Object.assign({}, link);
+      // indexInCoincidents should be multiplier for spacing
+      // middle index in coincidents should be middle of node
+      // total num things leaving node =
+
+      const startNode = nodes.find(node => node.id === link.source);
+      const endNode = nodes.find(node => node.id === link.target);
+      rObj.startNode = startNode;
+      rObj.endNode = endNode;
+      rObj.x1 = startNode.x;
+      rObj.y1 = startNode.y;
+      rObj.x2 = endNode.x;
+      rObj.y2 = endNode.y;
+      return rObj;
+    })
+  // linkValues.forEach(link => {
+  //   link.
+  // })
+  return linkValues;
 }
 
 
@@ -335,18 +345,49 @@ class AnnotatedDagre extends React.Component {
     const visWidth = 900;
     const height = visWidth < 768 ? 4500 : 3000;
     const nodePadding = 10;
+    const edgePadding = 5;
+    const edgeStroke = 3;
     const nodeHeight = (height - nodePadding * (this.numLevels + 1)) / (this.numLevels + 1);
 
     const graph = getDagreGraph(this.nodes, this.links, nodeHeight, nodePadding);
     const nodes = getNodes(graph, visWidth, nodeHeight, nodePadding);
-    const links = getLinks(this.links, nodes)
+    const links = getLinks(this.links, nodes, edgePadding);
+    // TODO: IF IT'S THE SECOND LINK LEAVING THAT NODE, SCOOCH IT OVER
 
     console.log(links)
 
     // If any node in the past had a high enough coincidents number that it had to be moved, add to y value for remaining
     return (<svg height={height} width={visWidth}>
-      {links.map(d => (
-        <path
+      {links.map(d => d.parallelEdges ?
+        d.parallelEdges.map((edge, i, ogArray) => {
+          const edgeOffset = edgePadding + edgeStroke;
+          const xOffset = edgeOffset * i;
+
+          // If we're moving to the right, then the y values need to be shorter
+          let edgeOffsetSign = -1;
+          if (d.x2 < d.x1) {
+            // If we're moving to the left, then y values need to be longer
+            edgeOffsetSign = 1;
+          }
+
+          const thisYOffset = edgeOffset * edgeOffsetSign * i;
+
+          const thirdYDiff = (d.y2 - d.y1) / 3;
+          return (
+            <path
+              d={`M${d.x1 + xOffset} ${d.y1}
+                L${d.x1 + xOffset} ${d.y1 + thirdYDiff + thisYOffset}
+                L${d.x2 + xOffset} ${d.y1 + (thirdYDiff * 2) + thisYOffset}
+                L${d.x2 + xOffset} ${d.y2}`}
+              style={{
+                stroke: edge.color || 'gray',
+                strokeWidth: edgeStroke,
+                fill: 'none',
+              }}
+              key={`${d.source}-${d.target}-${i}`}
+            />)
+          }) :
+        (<path
           d={`M${d.x1} ${d.y1}
             L${d.x1} ${d.y1 + ((d.y2 - d.y1) / 3)}
             L${d.x2} ${d.y1 + ((d.y2 - d.y1) / 3) * 2}
@@ -354,12 +395,12 @@ class AnnotatedDagre extends React.Component {
             L${d.x2} ${d.y2}`}
           style={{
             stroke: d.color || 'gray',
-            strokeWidth: 2,
+            strokeWidth: edgeStroke,
             fill: 'none',
           }}
           key={`${d.source}-${d.target}`}
-        />
-      ))}
+        />)
+      )}
       {nodes.map(d => (
         <Annotation
           x={d.x - d.wrap / 2}

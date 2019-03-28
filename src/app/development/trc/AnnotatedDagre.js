@@ -22,8 +22,8 @@ function getDagreGraph(nodes, links, nodeSize) {
   g.setGraph({
     rankdir: 'TB',
     ranker: 'network-simplex',
-    marginx: 20,
-    marginy: nodeSize / 2,
+    marginx: 16,
+    marginy: 0,
   });
   g.setDefaultEdgeLabel(() => ({}));
 
@@ -31,12 +31,10 @@ function getDagreGraph(nodes, links, nodeSize) {
     g.setNode(
       node.id,
       {
-        // Width and height don't seem to matter as long as they aren't 0
-        label: node.id,
+        id: node.id,
         width: nodeSize,
         height: nodeSize,
         description: node.description,
-        color: node.color ? node.color : 'gray',
       }
     );
   });
@@ -56,19 +54,19 @@ function getDagreGraph(nodes, links, nodeSize) {
   return g;
 }
 
-function getNodes(dagreGraph, visWidth) {
+function getNodes(dagreGraph, visWidth, nodeHeight) {
   const nodeValues = JSON.parse(JSON.stringify(Object.values(dagreGraph._nodes)));
-  let row = -1;
-
   const midpointX = visWidth / 2;
   const fontSize = visWidth < 750 ? 12 : 14;
   const annotationMargin = fontSize + 8;
   // 8 is node padding value
-  const defaultOffsetY = fontSize;
+  const defaultOffsetY = 0;
+
+  let totalYOffsetValue = 0;
 
   nodeValues.forEach((d) => {
     d.coincidents = nodeValues.filter(val => val.y === d.y);
-    d.indexInCoincidents = d.coincidents.findIndex(c => c.label === d.label);
+    d.indexInCoincidents = d.coincidents.findIndex(c => c.id === d.id);
     d.numPerRow = d.coincidents.length <= 3 ? d.coincidents.length : Math.ceil(d.coincidents.length / 2);
 
     d.wrap = Math.min(
@@ -76,25 +74,28 @@ function getNodes(dagreGraph, visWidth) {
       400
     )
 
-    let thisYOffset = -defaultOffsetY;
+    let thisYOffset = totalYOffsetValue;
     let thisXOffset = 0;
 
     // Split into rows
     if (d.coincidents.length > 2) {
+
       if (d.indexInCoincidents >= d.coincidents.length / 2) {
-        thisYOffset = defaultOffsetY * 2;
+        thisYOffset = nodeHeight;
+
+        if (d.indexInCoincidents % d.numPerRow === 0) {
+          // If it's a new row
+          totalYOffsetValue += nodeHeight;
+        }
       }
     }
+
     d.yOffset = thisYOffset;
 
     const midRowIndex = (d.numPerRow - 1) / 2;
     const xPosition = midpointX + ((d.indexInCoincidents % d.numPerRow) - midRowIndex) * (annotationMargin + d.wrap);
     d.xOffset = xPosition - d.x;
 
-    if (d.indexInCoincidents % d.numPerRow === 0) {
-      row++;
-    }
-    d.row = row;
   })
   return nodeValues;
 }
@@ -323,11 +324,10 @@ class AnnotatedDagre extends React.Component {
     // TODO: USE REF TO GET CONTAINER SIZE INSTEAD
     const visWidth = 800;
     const height = visWidth < 768 ? 4000 : 3000;
-
-    const nodeHeight = (height - this.numLevels * 16) / this.numLevels;
-
+    // TODO: set padding better
+    const nodeHeight = (height - this.numLevels * 20) / (this.numLevels + 1);
     const graph = getDagreGraph(this.nodes, this.links, nodeHeight);
-    const nodes = getNodes(graph, visWidth);
+    const nodes = getNodes(graph, visWidth, nodeHeight);
 
     // If any node in the past had a high enough coincidents number that it had to be moved, add to y value for remaining
     return (<svg height={height} width={visWidth}>
@@ -338,10 +338,10 @@ class AnnotatedDagre extends React.Component {
           dy={d.yOffset}
           dx={d.xOffset}
           color="gray"
-          title={d.label}
+          title={d.id}
           label={d.description}
           className="show-bg"
-          key={`${d.label}-annotation`}
+          key={`${d.id}-annotation`}
         >
           <Note
             align={'middle'}

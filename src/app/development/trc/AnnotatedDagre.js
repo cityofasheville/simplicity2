@@ -79,10 +79,10 @@ function getNodes(dagreGraph, visWidth, nodeHeight, nodePadding) {
     // Split into rows
     if (d.coincidents.length > 2) {
       if (d.indexInCoincidents >= d.coincidents.length / 2) {
-        thisYOffset = nodeHeight;
+        thisYOffset = nodeHeight / 2;
         if (d.indexInCoincidents % d.numPerRow === 0) {
           // If it's a new row
-          totalYOffsetValue += nodeHeight;
+          totalYOffsetValue += nodeHeight / 2;
         }
       }
     }
@@ -143,8 +143,8 @@ function getLinks(inputLinks, nodes, edgePadding, edgeStroke) {
     // TODO: grab parallel edges logic to add more padding for parallel edges?
     const rObj = Object.assign({}, link);
     const paddingAndStroke = edgePadding + edgeStroke;
-    rObj.x1 = link.x1 + link.x1CoincidentIndex * paddingAndStroke - (link.x1Coincidents.length * paddingAndStroke) / 2;
-    rObj.x2 = link.x2 + link.x2CoincidentIndex * paddingAndStroke - (link.x2Coincidents.length * paddingAndStroke) / 2;;
+    rObj.x1 = link.x1 + link.x1CoincidentIndex * paddingAndStroke - ((link.x1Coincidents.length - 1) * paddingAndStroke) / 2;
+    rObj.x2 = link.x2 + link.x2CoincidentIndex * paddingAndStroke - ((link.x2Coincidents.length - 1) * paddingAndStroke) / 2;;
     return rObj;
   });
 }

@@ -12,7 +12,6 @@ class MajorDevelopmentDashboard extends React.Component {
     this.state = {
       width: window.innerWidth,
     };
-
     this.updateWindowWidth = this.updateWindowWidth.bind(this);
 
     this.sections = [

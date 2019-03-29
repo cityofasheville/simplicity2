@@ -403,13 +403,27 @@ class AnnotatedDagre extends React.Component {
       (value, index, nodeArray) => nodeArray.indexOf(value) === index
     ).length;
     this.numLevels = multiRow + uniqueYVals;
+
+    this.state = {
+      dimensions: null,
+    };
   }
 
-  render() {
+  componentDidMount() {
+    this.setState({
+      dimensions: {
+        width: this.container.offsetWidth,
+        height: this.container.offsetHeight,
+      },
+    });
+  }
+
+  renderContent() {
     // TODO: USE REF TO GET CONTAINER SIZE INSTEAD
     // use class instead/in addition to color? highlight all links with that class when a node is hovered?
     // highlight all links and nodes when a link is hovered?
-    const visWidth = 900;
+    const { dimensions } = this.state;
+    const visWidth = dimensions.width;
     const height = visWidth < 768 ? 4000 : 3500;
     const nodePadding = 10;
     const edgePadding = 10;
@@ -521,6 +535,16 @@ class AnnotatedDagre extends React.Component {
         </g>
       </svg>
     </div>);
+  }
+
+  render() {
+    const { dimensions } = this.state;
+
+    return (
+      <div ref={el => (this.container = el)} style={{ height: '100%', width: '100%' }}>
+        {dimensions && this.renderContent()}
+      </div>
+    );
   }
 
 }

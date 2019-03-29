@@ -395,13 +395,31 @@ class AnnotatedDagre extends React.Component {
               style={{
                 width: '25%',
                 display: 'inline-block',
-                border: `1px solid ${this.projectTypeColors[type.id] ? this.projectTypeColors[type.id].color : 'gray'}`,
+                border: `5px solid ${this.projectTypeColors[type.id] ? this.projectTypeColors[type.id].color : 'gray'}`,
                 backgroundColor: 'white',
                 padding: '1em',
                 borderRadius: '6px',
                 margin: '1em',
+                top: '0px',
               }}
             >
+              <div style={{ textAlign: 'center' }}>
+                <svg height={50} width={50}>
+                  <circle r={25} cx={25} cy={25} style={{ fill: this.projectTypeColors[type.id] ? this.projectTypeColors[type.id].color : 'gray' }}/>
+                  <text
+                    x="25"
+                    y="25"
+                    style={{
+                      stroke: 'white',
+                      strokeWidth: 2,
+                      textAnchor: 'middle',
+                      alignmentBaseline: 'middle',
+                      letterSpacing: '0.15em'
+                    }}>
+                      {type.short}
+                    </text>
+                </svg>
+              </div>
               <div
                 style={{
                   width: '100%',
@@ -412,10 +430,6 @@ class AnnotatedDagre extends React.Component {
               >
                 {type.id}
               </div>
-              <svg height={40} width={40}>
-                <circle r={20} cx={20} cy={20} style={{ fill: this.projectTypeColors[type.id] ? this.projectTypeColors[type.id].color : 'gray' }}/>
-                <text x="20" y="20" style={{ stroke: 'white', strokeWidth: 2 }}>{type.short}</text>
-              </svg>
               <div>{type.description}</div>
             </div>
           )

@@ -192,19 +192,14 @@ class AnnotatedDagre extends React.Component {
       },
       {
         id: 'Level I Decision',
-        description: 'When plans for a Level I scale project show that all technical requirements are met, staff approves the plans and issues a permit.',
+        description: 'When plans for a Level I scale project show that all technical requirements are met, staff must approve the plans and issue a permit.',
         typeIds: [
           'Level I',
-          // 'Level II',
-          // 'Major Subdivision',
-          // 'Level III',
-          // 'Conditional Zoning',
-          // 'Conditional Use Permit',
         ],
       },
       {
         id: 'Technical Review Committee',
-        description: 'An eight-member body that ensures that the proposed project complies with standards and requirements. Consists of six staff, a representative of the Tree Commission, and a member representing the Buncombe County Metropolitan Sewer District (MSD).',
+        description: 'An eight-member body that ensures that the proposed project complies with standards and requirements.  The committee consists of six staff, a representative of the Tree Commission and a member representing the Buncombe County Metropolitan Sewerage District (MSD).',
         typeIds: [
           // 'Level I',
           'Level II',
@@ -215,11 +210,11 @@ class AnnotatedDagre extends React.Component {
         ],
       },
       {
-        id: 'Major Subdivision Decision',
-        description: 'When plans for a Major Subdivision or non-downtown Level II scale project show that all technical requirements are met, staff approves the plans and issues a permit.  For major subdivisions and Level II projects that are not in a special zoning area like downtown, the Technical Review Committee is the body that either accepts or rejects the proposal.',
+        id: 'Major Subdivision and Level II Decision (Not Downtown)',
+        description: 'When plans for a Major Subdivision or Level II review that is not located downtown show that all technical requirements are met, staff must approve the plans and issue a permit.  For Major Subdivisions and Leve lII projects that are not in a special Zoning district such as the Downtown area, the Technical Review Committee (TRC) must approve compliant plans or reject deficient plans.',
         typeIds: [
           // 'Level I',
-          // 'Level II',
+          'Level II',
           'Major Subdivision',
           // 'Level III',
           // 'Conditional Zoning',
@@ -228,7 +223,7 @@ class AnnotatedDagre extends React.Component {
       },
       {
         id: 'Design Review',
-        description: 'All downtown level II, downtown subdivisions, and special zoning district Level III go to desgin review. The decision made in this step is a a non-binding recommendation.',
+        description: 'Projects located Downtown or in the River District must be reviewed for architectural design elements by a special design review sub-committee of either the Asheville Downtown Commission or the Asheville Area Riverfront Redevelopment Commission prior to approval.',
         typeIds: [
           // 'Level I',
           'Level II',
@@ -240,7 +235,7 @@ class AnnotatedDagre extends React.Component {
       },
       {
         id: 'Planning and Zoning Commission',
-        description: 'The Commission consists of 7 members, 5 City residents appointed by City Council and 2 residents of the extra-territorial area of the City and appointed by Buncombe County Commissioners.  The commission approves downtown Level II projects and holds public hearings for conditional zoning and conditional use permits and makes a recommendation for action to city council.',
+        description: 'Conditional Zoning, Level III, Conditional Use Permits and Level II projects within the Downtown area are reviewed by the Planning & Zoning Commission.  For  Conditional Zoning, Use and Level III projects, the Planning & Zoning Commission holds a public hearing and makes a recommendation for action to City Council.  For downtown Level II projects, the Planning & Zoning Commission verifies technical compliance with the requirements of applicable ordinances and documents and takes final action.',
         typeIds: [
           // 'Level I',
           'Level II',
@@ -264,7 +259,7 @@ class AnnotatedDagre extends React.Component {
       },
       {
         id: 'City Council',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        description: 'Conditional Zoning, Level III, Conditional Use Permits are reviewed during a public hearing before City Council.  These projects arrive at the City Council meeting with a recommendation for action that has been sent by the Planning & Zoning Commission.',
         typeIds: [
           // 'Level I',
           // 'Level II',
@@ -276,7 +271,7 @@ class AnnotatedDagre extends React.Component {
       },
       {
         id: 'City Council Decision',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        description: 'City Council hears evidence and testimony and takes final action on the application by vote.',
         typeIds: [
           // 'Level I',
           // 'Level II',
@@ -340,7 +335,7 @@ class AnnotatedDagre extends React.Component {
       },
       {
         source: 'Technical Review Committee',
-        target: 'Major Subdivision Decision',
+        target: 'Major Subdivision and Level II Decision (Not Downtown)',
         id: 'Major Subdivision',
       },
       {

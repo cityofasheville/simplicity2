@@ -67,7 +67,7 @@ export const trcProjectTypes = {};
     permit_type: 'Development',
     permit_subtype: 'Level II',
     short: 'II',
-    description: 'Commercial projects between 35,000 and 99,999 square feet, residential projects between 20 and 49 units, and industrial projects with a floor larger than 100,000 square feet.  Different restrictions apply in the River District or certain expansion projects.',
+    description: 'In most zoning districts, commercial projects between 35,000 and 99,9999 square feet, residential projects between 20 and 49 dwelling units and industrial projects with a floor area greater than 100,000 square feet.  Different restrictions apply in the River Zoning District or Downtown.',
     color: '#2d93ad',
   };
   trcProjectTypes['Level III'] = {
@@ -75,7 +75,7 @@ export const trcProjectTypes = {};
     permit_type: 'Development',
     permit_subtype: 'Level III',
     short: 'III',
-    description: 'Commercial projects over 100,000 square feet, residential projects over 50 units, industrial projects in the River District that are over 100,000 square feet, and certain expansion projects.',
+    description: 'Commercial projects over 100,000 square feet, residential projects over 50 dwelling units and industrial projects in the River zoning district that are over 100,000 square feet.  Different requirements apply for Downtown projects.',
     color: '#004EA3',
   };
   trcProjectTypes['Conditional Zoning'] = {
@@ -83,7 +83,7 @@ export const trcProjectTypes = {};
     permit_type: 'Development',
     permit_subtype: 'Conditional Zoning',
     short: 'CZ',
-    description: 'Any development project seeking to change the zoning of a site and develop it at the same time.',
+    description: 'Any development project that seeks to change the zoning of a site and develop the site simultaneously.',
     color: '#9B6681',
   };
   trcProjectTypes['Conditional Use Permit'] = {
@@ -91,7 +91,7 @@ export const trcProjectTypes = {};
     permit_type: 'Development',
     permit_subtype: 'Conditional Use',
     short: 'CUP',
-    description: 'Anything that is listed as a conditional use in section 7-16-2 of the Unified Development Ordinance.',
+    description: 'Anything that is listed as a conditional use in Section 7-16-2 of the Unified Development Ordinance.',
     color: '#073d49',
   };
 }

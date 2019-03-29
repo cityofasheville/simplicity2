@@ -341,7 +341,7 @@ class AnnotatedDagre extends React.Component {
           const projectType = this.projectTypes[type];
           return (
             <div
-              key={`card-${projectType.id}`}
+              key={`card-${type}`}
               style={{
                 width: '25%',
                 flexGrow: 1,
@@ -352,7 +352,7 @@ class AnnotatedDagre extends React.Component {
                 margin: '1em',
                 top: '0px',
               }}
-              className={projectType.id}
+              className={type}
             >
               <div style={{ textAlign: 'center' }}>
                 <svg height={50} width={50}>
@@ -379,7 +379,7 @@ class AnnotatedDagre extends React.Component {
                   padding: '0.5em 0'
                 }}
               >
-                {projectType.id}
+                {type}
               </div>
               <div>{projectType.description}</div>
             </div>

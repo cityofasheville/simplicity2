@@ -2,17 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import dagre from 'dagre';
 
-function calculateEdges(link) {
-  const weight = 2;
-  if (link.parallelEdges) {
-    return link.parallelEdges.map((e) => {
-      const thisEdge = Object.assign({}, e);
-      thisEdge.weight = weight;
-      return thisEdge;
-    });
-  }
-  return [{ color: link.color ? link.color : 'gray', weight }];
-}
 
 function getDagreGraph(nodes, links, nodeSize, nodePadding) {
   const g = new dagre.graphlib.Graph();
@@ -41,7 +30,7 @@ function getDagreGraph(nodes, links, nodeSize, nodePadding) {
       link.source,
       link.target,
       {
-        parallelEdges: calculateEdges(link),
+        parallelEdges: link.parallelEdges,
       }
     );
   });
@@ -123,7 +112,7 @@ function getLinks(inputLinks, nodes, edgePadding, edgeStroke) {
   withParallelsOnly.forEach(link => {
     link.parallelEdges.forEach((parallel, i) => {
       const newLinkVal = Object.assign({}, link);
-      newLinkVal.color = parallel.color;
+      newLinkVal.id = parallel.id;
       withoutParallels.push(newLinkVal);
     })
   })
@@ -133,12 +122,12 @@ function getLinks(inputLinks, nodes, edgePadding, edgeStroke) {
     // TODO: also consider it a coincident if its nodes are coincident with one another
     link.x1Coincidents = withoutParallels.filter(otherLink => otherLink.x1 === link.x1 && otherLink.y1 === link.y1);
     link.x1CoincidentIndex = link.x1Coincidents.findIndex(coincident =>
-      coincident.source === link.source && coincident.target === link.target && coincident.color === link.color);
+      coincident.source === link.source && coincident.target === link.target && coincident.id === link.id);
 
     // total number of links entering and leaving node is how spread out they need to be
     link.x2Coincidents = withoutParallels.filter(otherLink => otherLink.x2 === link.x2 && otherLink.y2 === link.y2);
     link.x2CoincidentIndex = link.x2Coincidents.findIndex(coincident =>
-      coincident.source === link.source && coincident.target === link.target && coincident.color === link.color);
+      coincident.source === link.source && coincident.target === link.target && coincident.id === link.id);
   })
 
   return withoutParallels.map(link => {
@@ -155,8 +144,6 @@ function getLinks(inputLinks, nodes, edgePadding, edgeStroke) {
 class AnnotatedDagre extends React.Component {
   constructor(props) {
     super(props);
-    // TODO - assign colors in types here?
-    // TODO: use ids instead of colors; assign classes to edges too
     this.projectTypes = props.projectTypes;
     this.nodes = [
       {
@@ -214,72 +201,71 @@ class AnnotatedDagre extends React.Component {
         source: 'Neighborhood Meeting',
         target: 'Permit Application',
         parallelEdges: [
-          { color: this.projectTypes['Major Subdivision'].color },
-          { color: this.projectTypes['Level II'].color },
-          { color: this.projectTypes['Level III'].color },
-          { color: this.projectTypes['Conditional Zoning'].color },
-          { color: this.projectTypes['Conditional Use Permit'].color },
+          { id: 'Major Subdivision' },
+          { id: 'Level II' },
+          { id: 'Level III' },
+          { id: 'Conditional Zoning'},
+          { id: 'Conditional Use Permit' },
         ]
       },
       {
         source: 'Pre-Application Meeting',
         target: 'Permit Application',
         parallelEdges: [
-          { color: this.projectTypes['Major Subdivision'].color },
-          { color: this.projectTypes['Level II'].color },
-          { color: this.projectTypes['Level III'].color },
-          { color: this.projectTypes['Conditional Zoning'].color },
-          { color: this.projectTypes['Conditional Use Permit'].color },
+          { id: 'Major Subdivision' },
+          { id: 'Level II' },
+          { id: 'Level III' },
+          { id: 'Conditional Zoning'},
+          { id: 'Conditional Use Permit' },
         ]
       },
       {
         source: 'Permit Application',
         target: 'Staff Review',
         parallelEdges: [
-          { color: this.projectTypes['Level I'].color },
-          { color: this.projectTypes['Major Subdivision'].color },
-          { color: this.projectTypes['Level II'].color },
-          { color: this.projectTypes['Level III'].color },
-          { color: this.projectTypes['Conditional Zoning'].color },
-          { color: this.projectTypes['Conditional Use Permit'].color },
+          { id: 'Level I' },
+          { id: 'Major Subdivision' },
+          { id: 'Level II' },
+          { id: 'Level III' },
+          { id: 'Conditional Zoning'},
+          { id: 'Conditional Use Permit' },
         ]
       },
       {
         source: 'Staff Review',
         target: 'Level I Decision',
-        color: this.projectTypes['Level I'].color,
+        id: 'Level I',
       },
       {
         source: 'Staff Review',
         target: 'Technical Review Committee',
         parallelEdges: [
-          { color: this.projectTypes['Major Subdivision'].color },
-          { color: this.projectTypes['Level II'].color },
-          { color: this.projectTypes['Level III'].color },
-          { color: this.projectTypes['Conditional Zoning'].color },
-          { color: this.projectTypes['Conditional Use Permit'].color },
+          { id: 'Major Subdivision' },
+          { id: 'Level II' },
+          { id: 'Level III' },
+          { id: 'Conditional Zoning'},
+          { id: 'Conditional Use Permit' },
         ]
       },
       {
         source: 'Technical Review Committee',
         target: 'Major Subdivision Decision',
-        color: this.projectTypes['Major Subdivision'].color,
+        id: 'Major Subdivision',
       },
       {
         source: 'Design Review',
         target: 'Planning and Zoning Commission',
         parallelEdges: [
-          // { color: 'gray' },
-          { color: this.projectTypes['Level II'].color },
+          { id: 'Level II' },
         ]
       },
       {
         source: 'Technical Review Committee',
         target: 'Planning and Zoning Commission',
         parallelEdges: [
-          { color: this.projectTypes['Level III'].color },
-          { color: this.projectTypes['Conditional Zoning'].color },
-          { color: this.projectTypes['Conditional Use Permit'].color },
+          { id: 'Level III' },
+          { id: 'Conditional Zoning'},
+          { id: 'Conditional Use Permit' },
         ]
       },
       {
@@ -287,34 +273,32 @@ class AnnotatedDagre extends React.Component {
         target: 'Design Review',
         // All level II, downtown subdivisions, and special district L3 etc go to desgin review?
         parallelEdges: [
-          // { color: 'gray' },
-          { color: this.projectTypes['Level II'].color },
+          { id: 'Level II' },
         ]
       },
       {
         source: 'Planning and Zoning Commission',
         target: 'Level II and Downtown Major Subdivision Decision',
         parallelEdges: [
-          // { color: 'gray' },
-          { color: this.projectTypes['Level II'].color },
+          { id: 'Level II' },
         ]
       },
       {
         source: 'Planning and Zoning Commission',
         target: 'City Council',
         parallelEdges: [
-          { color: this.projectTypes['Level III'].color },
-          { color: this.projectTypes['Conditional Zoning'].color },
-          { color: this.projectTypes['Conditional Use Permit'].color },
+          { id: 'Level III' },
+          { id: 'Conditional Zoning'},
+          { id: 'Conditional Use Permit' },
         ]
       },
       {
         source: 'City Council',
         target: 'City Council Decision',
         parallelEdges: [
-          { color: this.projectTypes['Level III'].color },
-          { color: this.projectTypes['Conditional Zoning'].color },
-          { color: this.projectTypes['Conditional Use Permit'].color },
+          { id: 'Level III' },
+          { id: 'Conditional Zoning'},
+          { id: 'Conditional Use Permit' },
         ]
       },
     ];
@@ -357,6 +341,7 @@ class AnnotatedDagre extends React.Component {
           const projectType = this.projectTypes[type];
           return (
             <div
+              key={`card-${projectType.id}`}
               style={{
                 width: '25%',
                 flexGrow: 1,
@@ -367,6 +352,7 @@ class AnnotatedDagre extends React.Component {
                 margin: '1em',
                 top: '0px',
               }}
+              className={projectType.id}
             >
               <div style={{ textAlign: 'center' }}>
                 <svg height={50} width={50}>
@@ -401,49 +387,54 @@ class AnnotatedDagre extends React.Component {
         })}
       </div>
       <svg height={height} width={visWidth}>
-        {links.map((d, i) => {
-          // TODO: go get elbow logic from old commit
-          return (<path
-            d={`M${d.x1} ${d.y1}
-              L${d.x1} ${d.y1 + ((d.y2 - d.y1) / 3)}
-              L${d.x2} ${d.y1 + ((d.y2 - d.y1) / 3) * 2}
-              L${d.x2} ${d.y2}`}
-            style={{
-              stroke: d.color || 'gray',
-              strokeWidth: edgeStroke,
-              fill: 'none',
-            }}
-            key={`${d.source}-${d.target}-${i}`}
-          />)
-        })}
-        {nodes.map(d => (
-          <foreignObject
-            x={d.x - d.width / 2}
-            y={d.y - d.height / 4}
-            width={d.width}
-            height={d.height}
-            key={d.id}
-          >
-            <div
+        <g>
+          {links.map((d, i) => {
+            // TODO: go get elbow logic from old commit
+            return (<path
+              d={`M${d.x1} ${d.y1}
+                L${d.x1} ${d.y1 + ((d.y2 - d.y1) / 3)}
+                L${d.x2} ${d.y1 + ((d.y2 - d.y1) / 3) * 2}
+                L${d.x2} ${d.y2}`}
               style={{
-                border: `2px solid ${this.projectTypes[d.id] ? this.projectTypes[d.id].color : '#e6e6e6'}`,
-                backgroundColor: 'white',
-                padding: '1em',
-                borderRadius: '6px',
+                stroke: this.projectTypes[d.id].color,
+                strokeWidth: edgeStroke,
+                fill: 'none',
               }}
+              key={`${d.source}-${d.target}-${i}`}
+              className={d.id}
+            />)
+          })}
+        </g>
+        <g>
+          {nodes.map(d => (
+            <foreignObject
+              x={d.x - d.width / 2}
+              y={d.y - d.height / 4}
+              width={d.width}
+              height={d.height}
+              key={`node-${d.id}`}
             >
               <div
                 style={{
-                  width: '100%',
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                  padding: '0.5em 0'
+                  border: `2px solid ${this.projectTypes[d.id] ? this.projectTypes[d.id].color : '#e6e6e6'}`,
+                  backgroundColor: 'white',
+                  padding: '1em',
+                  borderRadius: '6px',
                 }}
-              >{d.id}</div>
-              <span>{d.description}</span>
-            </div>
-          </foreignObject>
-        ))}
+              >
+                <div
+                  style={{
+                    width: '100%',
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    padding: '0.5em 0'
+                  }}
+                >{d.id}</div>
+                <span>{d.description}</span>
+              </div>
+            </foreignObject>
+          ))}
+        </g>
       </svg>
     </div>);
   }

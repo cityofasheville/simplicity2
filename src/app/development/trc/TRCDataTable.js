@@ -33,12 +33,14 @@ class TRCDataTable extends React.Component {
           type.permit_subtype === d.permit_subtype
         )
         return (<div>
-          {trcType.permit_subtype}
-          <TypePuck
-            color={trcType.color}
-            text={trcType.short}
-            size={30}
-          />
+          <span style={{ marginRight: '1em' }}>{trcType.permit_subtype}</span>
+          <div style={{ verticalAlign: 'middle', display: 'inline-block' }}>
+            <TypePuck
+              color={trcType.color}
+              text={trcType.short}
+              size={30}
+            />
+          </div>
         </div>);
       }
       return rObj;

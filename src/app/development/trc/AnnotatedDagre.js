@@ -541,6 +541,7 @@ class AnnotatedDagre extends React.Component {
                 <div style={{ textAlign: 'center' }}>
                   {d.typeIds.map(id =>
                     <TypePuck
+                      key={`${d.id}-puck-${id}`}
                       color={this.projectTypes[id].color}
                       text={this.projectTypes[id].short}
                     />

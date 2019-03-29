@@ -4,7 +4,7 @@ import { timeDay, timeMonth } from 'd3-time';
 import PermitsTableWrapper from '../permits/PermitsTableWrapper';
 import TimeSlider from '../volume/TimeSlider';
 import ErrorBoundary from '../../ErrorBoundary';
-import { trcProjectTypes } from './utils';
+import { trcProjectTypes } from '../utils';
 
 
 class TRCDataTable extends React.Component {
@@ -35,7 +35,7 @@ class TRCDataTable extends React.Component {
           after={this.state.timeSpan[0]}
           before={this.state.timeSpan[1]}
           projectTypes={trcProjectTypes}
-          permit_groups={['Planning']}
+          // permit_groups={['Planning']}
         />
       </ErrorBoundary>
     </div>);

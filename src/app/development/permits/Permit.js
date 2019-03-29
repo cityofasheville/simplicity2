@@ -6,7 +6,8 @@ import { Query } from 'react-apollo';
 import PermitTasks from './PermitTasks';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import Map from '../../../shared/visualization/Map';
-import { trcProjectTypes } from '../trc/utils';
+import TypePuck from '../trc/TypePuck';
+import { trcProjectTypes } from '../utils';
 
 // Make query based on URL, render sub components depending on query results
 
@@ -187,6 +188,13 @@ const Permit = props => (
       // https://services.ashevillenc.gov/CitizenAccess/Cap/CapDetail.aspx?Module=Planning&TabName=Planning&capID1=19CAP&capID2=00000&capID3=000NZ&agencyCode=ASHEVILLE
 
       const h1Title = `${formattedPermit.permit_subtype} ${formattedPermit.permit_type} Application`;
+      let trcType = undefined;
+      if (formattedPermit.permit_group === 'Planning') {
+        trcType = Object.values(trcProjectTypes).find(type =>
+          type.permit_type === formattedPermit.permit_type &&
+          type.permit_subtype === formattedPermit.permit_subtype
+        )
+      }
 
       return (<div className="container">
         <div className="row">
@@ -212,12 +220,18 @@ const Permit = props => (
                 formattedPermit={formattedPermit}
               />))}
             </dl>
-            {formattedPermit.permit_group === 'Planning' &&
-              Object.values(trcProjectTypes)
-                .map(type => type.permit_subtype).indexOf(formattedPermit.permit_subtype) > -1 &&
-              (<p><em>
-                This is a major development.  <a href="/development/major">Learn more</a> about the large-scale development process in Asheville.
-              </em></p>)
+            {trcType !== undefined &&
+              (<div style={{ display: 'flex' }}>
+                <a style={{ marginRight: '1em' }} href="/development/major">
+                  <TypePuck
+                    color={trcType.color}
+                    text={trcType.short}
+                  />
+                </a>
+                <p><em>
+                  This is a major development.  <a href="/development/major">Learn more</a> about the large-scale development process in Asheville.
+                </em></p>
+              </div>)
             }
           </div>
         </div>

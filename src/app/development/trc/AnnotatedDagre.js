@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import dagre from 'dagre';
+import TypePuck from './TypePuck';
+import { trcProjectTypes } from '../utils';
 
 
 function getDagreGraph(nodes, links, nodeSize, nodePadding) {
@@ -60,11 +62,6 @@ function getNodes(dagreGraph, visWidth, nodeHeight, nodePadding) {
     // Set x value
     const midRowIndex = (d.numPerRow - 1) / 2;
     d.x = midpointX + ((d.indexInCoincidents % d.numPerRow) - midRowIndex) * (annotationMargin + d.wrap);
-    // if (d.indexInCoincidents >= d.numPerRow) {
-    //   d.x += 10;
-    // } else {
-    //   d.x -=10;
-    // }
 
     // Y value must be set in separate iteration because it is used to determine coincidents
     let thisYOffset = totalYOffsetValue;
@@ -141,34 +138,9 @@ function getLinks(inputLinks, nodes, edgePadding, edgeStroke) {
   });
 }
 
-const TypePuck = ({ color, text }) => (
-  <svg height={50} width={50}>
-    <circle
-      r={25}
-      cx={25}
-      cy={25}
-      style={{ fill: color, stroke: 'white', strokeWidth: '2px' }}
-    />
-    <text
-      x="25"
-      y="25"
-      style={{
-        stroke: 'white',
-        strokeWidth: 2,
-        textAnchor: 'middle',
-        alignmentBaseline: 'middle',
-        letterSpacing: '0.15em'
-      }}>
-        {text}
-      </text>
-  </svg>
-)
-
-
 class AnnotatedDagre extends React.Component {
-  constructor(props) {
-    super(props);
-    this.projectTypes = props.projectTypes;
+  constructor() {
+    super();
     this.nodes = [
       {
         id: 'Neighborhood Meeting',
@@ -443,7 +415,7 @@ class AnnotatedDagre extends React.Component {
     // use class instead/in addition to color? highlight all links with that class when a node is hovered?
     // highlight all links and nodes when a link is hovered?
     const visWidth = 900;
-    const height = visWidth < 768 ? 3500 : 3000;
+    const height = visWidth < 768 ? 4000 : 3500;
     const nodePadding = 10;
     const edgePadding = 10;
     const edgeStroke = 5;
@@ -456,8 +428,8 @@ class AnnotatedDagre extends React.Component {
     // If any node in the past had a high enough coincidents number that it had to be moved, add to y value for remaining
     return (<div style={{ width: '100%' }}>
       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'stretch', flexWrap: 'wrap' }}>
-        {Object.keys(this.projectTypes).map(type => {
-          const projectType = this.projectTypes[type];
+        {Object.keys(trcProjectTypes).map(type => {
+          const projectType = trcProjectTypes[type];
           return (
             <div
               key={`card-${type}`}
@@ -504,7 +476,7 @@ class AnnotatedDagre extends React.Component {
                 L${d.x2} ${d.y1 + ((d.y2 - d.y1) / 3) * 2}
                 L${d.x2} ${d.y2}`}
               style={{
-                stroke: this.projectTypes[d.id].color,
+                stroke: trcProjectTypes[d.id].color,
                 strokeWidth: edgeStroke,
                 fill: 'none',
               }}
@@ -524,7 +496,7 @@ class AnnotatedDagre extends React.Component {
             >
               <div
                 style={{
-                  border: `2px solid ${this.projectTypes[d.id] ? this.projectTypes[d.id].color : '#e6e6e6'}`,
+                  border: `2px solid ${trcProjectTypes[d.id] ? trcProjectTypes[d.id].color : '#e6e6e6'}`,
                   backgroundColor: 'white',
                   padding: '1em',
                   borderRadius: '6px',
@@ -542,8 +514,8 @@ class AnnotatedDagre extends React.Component {
                   {d.typeIds.map(id =>
                     <TypePuck
                       key={`${d.id}-puck-${id}`}
-                      color={this.projectTypes[id].color}
-                      text={this.projectTypes[id].short}
+                      color={trcProjectTypes[id].color}
+                      text={trcProjectTypes[id].short}
                     />
                   )}
                 </div>

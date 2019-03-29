@@ -385,13 +385,14 @@ class AnnotatedDagre extends React.Component {
 
     // If any node in the past had a high enough coincidents number that it had to be moved, add to y value for remaining
     return (<div style={{ width: '100%' }}>
-      <div style={{ width: '100%' }}>
+      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'stretch', flexWrap: 'wrap' }}>
         {this.projectTypeDetails.map(type => {
           return (
             <div
               style={{
-                width: '25%',
-                display: 'inline-block',
+                // minWidth: '25%',
+                // display: 'inline-block',
+                flexBasis: 0,
                 border: `5px solid ${this.projectTypeColors[type.id] ? this.projectTypeColors[type.id].color : 'gray'}`,
                 backgroundColor: 'white',
                 padding: '1em',

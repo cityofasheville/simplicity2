@@ -371,7 +371,7 @@ class AnnotatedDagre extends React.Component {
     // use class instead/in addition to color? highlight all links with that class when a node is hovered?
     // highlight all links and nodes when a link is hovered?
     const visWidth = 900;
-    const height = visWidth < 768 ? 4000 : 3500;
+    const height = visWidth < 768 ? 3500 : 3000;
     const nodePadding = 10;
     const edgePadding = 10;
     const edgeStroke = 5;
@@ -432,6 +432,7 @@ class AnnotatedDagre extends React.Component {
       </div>
       <svg height={height} width={visWidth}>
         {links.map((d, i) => {
+          // TODO: go get elbow logic from old commit
           return (<path
             d={`M${d.x1} ${d.y1}
               L${d.x1} ${d.y1 + ((d.y2 - d.y1) / 3)}

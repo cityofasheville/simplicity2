@@ -372,9 +372,9 @@ class AnnotatedDagre extends React.Component {
     // highlight all links and nodes when a link is hovered?
     const visWidth = 900;
     const height = visWidth < 768 ? 4000 : 3500;
-    const nodePadding = 20;
-    const edgePadding = 15;
-    const edgeStroke = 10;
+    const nodePadding = 10;
+    const edgePadding = 10;
+    const edgeStroke = 5;
     const nodeHeight = (height - nodePadding * (this.numLevels + 1)) / (this.numLevels + 1);
 
     const graph = getDagreGraph(this.nodes, this.links, nodeHeight, nodePadding);
@@ -455,7 +455,7 @@ class AnnotatedDagre extends React.Component {
           >
             <div
               style={{
-                border: `1px solid ${this.projectTypeColors[d.id] ? this.projectTypeColors[d.id].color : 'gray'}`,
+                border: `1px solid ${this.projectTypeColors[d.id] ? this.projectTypeColors[d.id].color : '#e6e6e6'}`,
                 backgroundColor: 'white',
                 padding: '1em',
                 borderRadius: '6px',

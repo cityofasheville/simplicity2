@@ -73,16 +73,21 @@ function getNodes(dagreGraph, visWidth, nodeHeight, nodePadding) {
     // Set x value
     const midRowIndex = (d.numPerRow - 1) / 2;
     d.x = midpointX + ((d.indexInCoincidents % d.numPerRow) - midRowIndex) * (annotationMargin + d.wrap);
+    if (d.indexInCoincidents >= d.numPerRow) {
+      d.x += 10;
+    } else {
+      d.x -=10;
+    }
 
     // Y value must be set in separate iteration because it is used to determine coincidents
     let thisYOffset = totalYOffsetValue;
     // Split into rows
     if (d.coincidents.length > 2) {
       if (d.indexInCoincidents >= d.coincidents.length / 2) {
-        thisYOffset = nodeHeight / 2;
+        thisYOffset = nodeHeight;
         if (d.indexInCoincidents % d.numPerRow === 0) {
           // If it's a new row
-          totalYOffsetValue += nodeHeight / 2;
+          totalYOffsetValue += nodeHeight;
         }
       }
     }
@@ -304,7 +309,7 @@ class AnnotatedDagre extends React.Component {
         target: 'Design Review',
         // All level II, downtown subdivisions, and special district L3 etc go to desgin review?
         parallelEdges: [
-          { color: 'gray' },
+          // { color: 'gray' },
           { color: this.projectTypes['Level II'].color },
         ]
       },
@@ -312,7 +317,7 @@ class AnnotatedDagre extends React.Component {
         source: 'Design Review',
         target: 'Planning and Zoning Commission',
         parallelEdges: [
-          { color: 'gray' },
+          // { color: 'gray' },
           { color: this.projectTypes['Level II'].color },
         ]
       },
@@ -329,7 +334,7 @@ class AnnotatedDagre extends React.Component {
         source: 'Planning and Zoning Commission',
         target: 'Level II and Downtown Major Subdivision Decision',
         parallelEdges: [
-          { color: 'gray' },
+          // { color: 'gray' },
           { color: this.projectTypes['Level II'].color },
         ]
       },
@@ -374,8 +379,8 @@ class AnnotatedDagre extends React.Component {
     // use class instead/in addition to color? highlight all links with that class when a node is hovered?
     // highlight all links and nodes when a link is hovered?
     const visWidth = 900;
-    const height = visWidth < 768 ? 5000 : 3500;
-    const nodePadding = 10;
+    const height = visWidth < 768 ? 4000 : 3500;
+    const nodePadding = 20;
     const edgePadding = 15;
     const edgeStroke = 10;
     const nodeHeight = (height - nodePadding * (this.numLevels + 1)) / (this.numLevels + 1);
@@ -418,7 +423,9 @@ class AnnotatedDagre extends React.Component {
         //       key={`${d.source}-${d.target}-${i}`}
         //     />)
         //   }) :
-        (<path
+        {
+
+        return (<path
           d={`M${d.x1} ${d.y1}
             L${d.x1} ${d.y1 + ((d.y2 - d.y1) / 3)}
             L${d.x2} ${d.y1 + ((d.y2 - d.y1) / 3) * 2}
@@ -430,7 +437,7 @@ class AnnotatedDagre extends React.Component {
           }}
           key={`${d.source}-${d.target}-${i}`}
         />)
-      )}
+      })}
       {nodes.map(d => (
         <Annotation
           x={d.x - d.wrap / 2}
@@ -442,6 +449,7 @@ class AnnotatedDagre extends React.Component {
           label={d.description}
           className="show-bg"
           key={`${d.id}-annotation`}
+          style={{ fontSize: '2em' }}
         >
           <Note
             align="middle"

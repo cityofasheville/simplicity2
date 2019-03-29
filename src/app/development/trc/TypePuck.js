@@ -1,22 +1,23 @@
 import React from 'react';
 
-const TypePuck = ({ color, text }) => (
-  <svg height={50} width={50}>
+const TypePuck = ({ color, text, size = 50 }) => (
+  <svg height={size} width={size}>
     <circle
-      r={25}
-      cx={25}
-      cy={25}
+      r={size / 2}
+      cx={size / 2}
+      cy={size / 2}
       style={{ fill: color, stroke: 'white', strokeWidth: '2px' }}
     />
     <text
-      x="25"
-      y="25"
+      x={size / 2}
+      y={size / 2}
       style={{
         stroke: 'white',
-        strokeWidth: 2,
+        strokeWidth: 1,
         textAnchor: 'middle',
         alignmentBaseline: 'middle',
-        letterSpacing: '0.15em'
+        letterSpacing: '0.15em',
+        fontSize: 16 * (size / 50),
       }}>
         {text}
       </text>

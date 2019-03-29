@@ -4,7 +4,8 @@ import { timeDay, timeMonth } from 'd3-time';
 import PermitsTableWrapper from '../permits/PermitsTableWrapper';
 import TimeSlider from '../volume/TimeSlider';
 import ErrorBoundary from '../../ErrorBoundary';
-import { trcProjectTypes } from '../utils';
+import TypePuck from './TypePuck';
+import { trcProjectTypes, defaultTableHeaders } from '../utils';
 
 
 class TRCDataTable extends React.Component {
@@ -21,6 +22,28 @@ class TRCDataTable extends React.Component {
   }
 
   render() {
+    const tableHeaders = defaultTableHeaders.map(d => {
+      if (d.field !== 'permit_subtype') {
+        return d;
+      }
+      const rObj = Object.assign({}, d);
+      rObj.formatFunc = d => {
+        let trcType = Object.values(trcProjectTypes).find(type =>
+          type.permit_type === d.permit_type &&
+          type.permit_subtype === d.permit_subtype
+        )
+        return (<div>
+          {trcType.permit_subtype}
+          <TypePuck
+            color={trcType.color}
+            text={trcType.short}
+            size={30}
+          />
+        </div>);
+      }
+      return rObj;
+    })
+
     return (<div>
       <ErrorBoundary>
         <TimeSlider
@@ -35,7 +58,7 @@ class TRCDataTable extends React.Component {
           after={this.state.timeSpan[0]}
           before={this.state.timeSpan[1]}
           projectTypes={trcProjectTypes}
-          // permit_groups={['Planning']}
+          tableHeaders={tableHeaders}
         />
       </ErrorBoundary>
     </div>);

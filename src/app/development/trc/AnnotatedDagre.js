@@ -156,39 +156,8 @@ class AnnotatedDagre extends React.Component {
   constructor(props) {
     super(props);
     // TODO - assign colors in types here?
-    this.projectTypeColors = props.projectTypes;
-    this.projectTypeDetails = [
-      {
-        id: 'Level I',
-        short: 'I',
-        description: 'Projects smaller than 35,000 square feet or with fewer than 20 residential units that trigger zoning compliance requirements.',
-      },
-      {
-        id: 'Major Subdivision',
-        short: 'MS',
-        description: 'Any project that requires the extension or creation of a new public or private street.  Typically these projects create new residential lots.',
-      },
-      {
-        id: 'Level II',
-        short: 'II',
-        description: 'Commercial projects between 35,000 and 99,999 square feet, residential projects between 20 and 49 units, and industrial projects with a floor larger than 100,000 square feet.  Different restrictions apply in the River District or certain expansion projects.',
-      },
-      {
-        id: 'Level III',
-        short: 'III',
-        description: 'Commercial projects over 100,000 square feet, residential projects over 50 units, industrial projects in the River District that are over 100,000 square feet, and certain expansion projects.',
-      },
-      {
-        id: 'Conditional Zoning',
-        short: 'CZ',
-        description: 'Any development project seeking to change the zoning of a site and develop it at the same time.',
-      },
-      {
-        id: 'Conditional Use Permit',
-        short: 'CUP',
-        description: 'Anything that is listed as a conditional use in section 7-16-2 of the Unified Development Ordinance.',
-      },
-    ]
+    // TODO: use ids instead of colors; assign classes to edges too
+    this.projectTypes = props.projectTypes;
     this.nodes = [
       {
         id: 'Neighborhood Meeting',
@@ -245,56 +214,73 @@ class AnnotatedDagre extends React.Component {
         source: 'Neighborhood Meeting',
         target: 'Permit Application',
         parallelEdges: [
-          { color: this.projectTypeColors['Major Subdivision'].color },
-          { color: this.projectTypeColors['Level II'].color },
-          { color: this.projectTypeColors['Level III'].color },
-          { color: this.projectTypeColors['Conditional Zoning'].color },
-          { color: this.projectTypeColors['Conditional Use Permit'].color },
+          { color: this.projectTypes['Major Subdivision'].color },
+          { color: this.projectTypes['Level II'].color },
+          { color: this.projectTypes['Level III'].color },
+          { color: this.projectTypes['Conditional Zoning'].color },
+          { color: this.projectTypes['Conditional Use Permit'].color },
         ]
       },
       {
         source: 'Pre-Application Meeting',
         target: 'Permit Application',
         parallelEdges: [
-          { color: this.projectTypeColors['Major Subdivision'].color },
-          { color: this.projectTypeColors['Level II'].color },
-          { color: this.projectTypeColors['Level III'].color },
-          { color: this.projectTypeColors['Conditional Zoning'].color },
-          { color: this.projectTypeColors['Conditional Use Permit'].color },
+          { color: this.projectTypes['Major Subdivision'].color },
+          { color: this.projectTypes['Level II'].color },
+          { color: this.projectTypes['Level III'].color },
+          { color: this.projectTypes['Conditional Zoning'].color },
+          { color: this.projectTypes['Conditional Use Permit'].color },
         ]
       },
       {
         source: 'Permit Application',
         target: 'Staff Review',
         parallelEdges: [
-          { color: this.projectTypeColors['Level I'].color },
-          { color: this.projectTypeColors['Major Subdivision'].color },
-          { color: this.projectTypeColors['Level II'].color },
-          { color: this.projectTypeColors['Level III'].color },
-          { color: this.projectTypeColors['Conditional Zoning'].color },
-          { color: this.projectTypeColors['Conditional Use Permit'].color },
+          { color: this.projectTypes['Level I'].color },
+          { color: this.projectTypes['Major Subdivision'].color },
+          { color: this.projectTypes['Level II'].color },
+          { color: this.projectTypes['Level III'].color },
+          { color: this.projectTypes['Conditional Zoning'].color },
+          { color: this.projectTypes['Conditional Use Permit'].color },
         ]
       },
       {
         source: 'Staff Review',
         target: 'Level I Decision',
-        color: this.projectTypeColors['Level I'].color,
+        color: this.projectTypes['Level I'].color,
       },
       {
         source: 'Staff Review',
         target: 'Technical Review Committee',
         parallelEdges: [
-          { color: this.projectTypeColors['Major Subdivision'].color },
-          { color: this.projectTypeColors['Level II'].color },
-          { color: this.projectTypeColors['Level III'].color },
-          { color: this.projectTypeColors['Conditional Zoning'].color },
-          { color: this.projectTypeColors['Conditional Use Permit'].color },
+          { color: this.projectTypes['Major Subdivision'].color },
+          { color: this.projectTypes['Level II'].color },
+          { color: this.projectTypes['Level III'].color },
+          { color: this.projectTypes['Conditional Zoning'].color },
+          { color: this.projectTypes['Conditional Use Permit'].color },
         ]
       },
       {
         source: 'Technical Review Committee',
         target: 'Major Subdivision Decision',
-        color: this.projectTypeColors['Major Subdivision'].color,
+        color: this.projectTypes['Major Subdivision'].color,
+      },
+      {
+        source: 'Design Review',
+        target: 'Planning and Zoning Commission',
+        parallelEdges: [
+          // { color: 'gray' },
+          { color: this.projectTypes['Level II'].color },
+        ]
+      },
+      {
+        source: 'Technical Review Committee',
+        target: 'Planning and Zoning Commission',
+        parallelEdges: [
+          { color: this.projectTypes['Level III'].color },
+          { color: this.projectTypes['Conditional Zoning'].color },
+          { color: this.projectTypes['Conditional Use Permit'].color },
+        ]
       },
       {
         source: 'Technical Review Committee',
@@ -302,24 +288,7 @@ class AnnotatedDagre extends React.Component {
         // All level II, downtown subdivisions, and special district L3 etc go to desgin review?
         parallelEdges: [
           // { color: 'gray' },
-          { color: this.projectTypeColors['Level II'].color },
-        ]
-      },
-      {
-        source: 'Design Review',
-        target: 'Planning and Zoning Commission',
-        parallelEdges: [
-          // { color: 'gray' },
-          { color: this.projectTypeColors['Level II'].color },
-        ]
-      },
-      {
-        source: 'Technical Review Committee',
-        target: 'Planning and Zoning Commission',
-        parallelEdges: [
-          { color: this.projectTypeColors['Level III'].color },
-          { color: this.projectTypeColors['Conditional Zoning'].color },
-          { color: this.projectTypeColors['Conditional Use Permit'].color },
+          { color: this.projectTypes['Level II'].color },
         ]
       },
       {
@@ -327,25 +296,25 @@ class AnnotatedDagre extends React.Component {
         target: 'Level II and Downtown Major Subdivision Decision',
         parallelEdges: [
           // { color: 'gray' },
-          { color: this.projectTypeColors['Level II'].color },
+          { color: this.projectTypes['Level II'].color },
         ]
       },
       {
         source: 'Planning and Zoning Commission',
         target: 'City Council',
         parallelEdges: [
-          { color: this.projectTypeColors['Level III'].color },
-          { color: this.projectTypeColors['Conditional Zoning'].color },
-          { color: this.projectTypeColors['Conditional Use Permit'].color },
+          { color: this.projectTypes['Level III'].color },
+          { color: this.projectTypes['Conditional Zoning'].color },
+          { color: this.projectTypes['Conditional Use Permit'].color },
         ]
       },
       {
         source: 'City Council',
         target: 'City Council Decision',
         parallelEdges: [
-          { color: this.projectTypeColors['Level III'].color },
-          { color: this.projectTypeColors['Conditional Zoning'].color },
-          { color: this.projectTypeColors['Conditional Use Permit'].color },
+          { color: this.projectTypes['Level III'].color },
+          { color: this.projectTypes['Conditional Zoning'].color },
+          { color: this.projectTypes['Conditional Use Permit'].color },
         ]
       },
     ];
@@ -384,13 +353,14 @@ class AnnotatedDagre extends React.Component {
     // If any node in the past had a high enough coincidents number that it had to be moved, add to y value for remaining
     return (<div style={{ width: '100%' }}>
       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'stretch', flexWrap: 'wrap' }}>
-        {this.projectTypeDetails.map(type => {
+        {Object.keys(this.projectTypes).map(type => {
+          const projectType = this.projectTypes[type];
           return (
             <div
               style={{
                 width: '25%',
                 flexGrow: 1,
-                border: `5px solid ${this.projectTypeColors[type.id] ? this.projectTypeColors[type.id].color : 'gray'}`,
+                border: `5px solid ${projectType.color}`,
                 backgroundColor: 'white',
                 padding: '1em',
                 borderRadius: '6px',
@@ -400,7 +370,7 @@ class AnnotatedDagre extends React.Component {
             >
               <div style={{ textAlign: 'center' }}>
                 <svg height={50} width={50}>
-                  <circle r={25} cx={25} cy={25} style={{ fill: this.projectTypeColors[type.id] ? this.projectTypeColors[type.id].color : 'gray' }}/>
+                  <circle r={25} cx={25} cy={25} style={{ fill: projectType.color }}/>
                   <text
                     x="25"
                     y="25"
@@ -411,7 +381,7 @@ class AnnotatedDagre extends React.Component {
                       alignmentBaseline: 'middle',
                       letterSpacing: '0.15em'
                     }}>
-                      {type.short}
+                      {projectType.short}
                     </text>
                 </svg>
               </div>
@@ -423,9 +393,9 @@ class AnnotatedDagre extends React.Component {
                   padding: '0.5em 0'
                 }}
               >
-                {type.id}
+                {projectType.id}
               </div>
-              <div>{type.description}</div>
+              <div>{projectType.description}</div>
             </div>
           )
         })}
@@ -448,15 +418,15 @@ class AnnotatedDagre extends React.Component {
         })}
         {nodes.map(d => (
           <foreignObject
-            x={d.x - d.wrap / 2}
-            y={d.y}
+            x={d.x - d.width / 2}
+            y={d.y - d.height / 4}
             width={d.width}
             height={d.height}
             key={d.id}
           >
             <div
               style={{
-                border: `1px solid ${this.projectTypeColors[d.id] ? this.projectTypeColors[d.id].color : '#e6e6e6'}`,
+                border: `2px solid ${this.projectTypes[d.id] ? this.projectTypes[d.id].color : '#e6e6e6'}`,
                 backgroundColor: 'white',
                 padding: '1em',
                 borderRadius: '6px',

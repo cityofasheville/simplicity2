@@ -21,6 +21,7 @@ function getDagreGraph(nodes, links, nodeSize, nodePadding) {
         width: nodeSize,
         height: nodeSize,
         description: node.description,
+        typeIds: node.typeIds,
       }
     );
   });
@@ -140,6 +141,24 @@ function getLinks(inputLinks, nodes, edgePadding, edgeStroke) {
   });
 }
 
+const TypePuck = ({ color, text }) => (
+  <svg height={50} width={50}>
+    <circle r={25} cx={25} cy={25} style={{ fill: color }}/>
+    <text
+      x="25"
+      y="25"
+      style={{
+        stroke: 'white',
+        strokeWidth: 2,
+        textAnchor: 'middle',
+        alignmentBaseline: 'middle',
+        letterSpacing: '0.15em'
+      }}>
+        {text}
+      </text>
+  </svg>
+)
+
 
 class AnnotatedDagre extends React.Component {
   constructor(props) {
@@ -148,52 +167,147 @@ class AnnotatedDagre extends React.Component {
     this.nodes = [
       {
         id: 'Neighborhood Meeting',
-        description: 'The developer must arrange a neighborhood meeting and invite property owners within 200 feet of the proposed development. The meeting must be no more than four months but at least ten days before application submission. At least ten days prior to the meeting, property must be posted and notice of the meeting mailed.'
+        description: 'The developer must arrange a neighborhood meeting and invite property owners within 200 feet of the proposed development. The meeting must be no more than four months but at least ten days before application submission. At least ten days prior to the meeting, property must be posted and notice of the meeting mailed.',
+        typeIds: [
+          // 'Level I',
+          'Level II',
+          'Major Subdivision',
+          'Level III',
+          'Conditional Zoning',
+          'Conditional Use Permit',
+        ],
       },
       {
         id: 'Pre-Application Meeting',
-        description: 'The developer must meet with city staff at a pre-application meeting.'
+        description: 'The developer must meet with city staff at a pre-application meeting.',
+        typeIds: [
+          // 'Level I',
+          'Level II',
+          'Major Subdivision',
+          'Level III',
+          'Conditional Zoning',
+          'Conditional Use Permit',
+        ],
       },
       {
         id: 'Permit Application',
         description: 'Developer submits permit application.',
+        typeIds: [
+          'Level I',
+          'Level II',
+          'Major Subdivision',
+          'Level III',
+          'Conditional Zoning',
+          'Conditional Use Permit',
+        ],
       },
       {
         id: 'Staff Review',
         description: 'Staff from various technical disciplines review plans for compliance with applicable ordinances and documents and create a staff report.',
-        // TODO: ADD WHERE THEY CAN FIND THE STAFF REPORT
+        typeIds: [
+          'Level I',
+          'Level II',
+          'Major Subdivision',
+          'Level III',
+          'Conditional Zoning',
+          'Conditional Use Permit',
+        ],
       },
       {
         id: 'Level I Decision',
         description: 'When plans for a Level I scale project show that all technical requirements are met, staff approves the plans and issues a permit.',
+        typeIds: [
+          'Level I',
+          // 'Level II',
+          // 'Major Subdivision',
+          // 'Level III',
+          // 'Conditional Zoning',
+          // 'Conditional Use Permit',
+        ],
       },
       {
         id: 'Technical Review Committee',
         description: 'An eight-member body that ensures that the proposed project complies with standards and requirements. Consists of six staff, a representative of the Tree Commission, and a member representing the Buncombe County Metropolitan Sewer District (MSD).',
+        typeIds: [
+          // 'Level I',
+          'Level II',
+          'Major Subdivision',
+          'Level III',
+          'Conditional Zoning',
+          'Conditional Use Permit',
+        ],
       },
       {
         id: 'Major Subdivision Decision',
-        description: 'When plans for a Major Subdivision or non-downtown Level II scale project show that all technical requirements are met, staff approves the plans and issues a permit.  For major subdivisions and Level II projects that are not in a special zoning area like downtown, the Technical Review Committee is the body that either accepts or rejects the proposal.'
+        description: 'When plans for a Major Subdivision or non-downtown Level II scale project show that all technical requirements are met, staff approves the plans and issues a permit.  For major subdivisions and Level II projects that are not in a special zoning area like downtown, the Technical Review Committee is the body that either accepts or rejects the proposal.',
+        typeIds: [
+          // 'Level I',
+          // 'Level II',
+          'Major Subdivision',
+          // 'Level III',
+          // 'Conditional Zoning',
+          // 'Conditional Use Permit',
+        ],
       },
       {
         id: 'Design Review',
-        description: 'All downtown level II, downtown subdivisions, and special zoning district Level III go to desgin review. The decision made in this step is a a non-binding recommendation.'
+        description: 'All downtown level II, downtown subdivisions, and special zoning district Level III go to desgin review. The decision made in this step is a a non-binding recommendation.',
+        typeIds: [
+          // 'Level I',
+          'Level II',
+          // 'Major Subdivision',
+          'Level III',
+          // 'Conditional Zoning',
+          // 'Conditional Use Permit',
+        ],
       },
       {
         id: 'Planning and Zoning Commission',
         description: 'The Commission consists of 7 members, 5 City residents appointed by City Council and 2 residents of the extra-territorial area of the City and appointed by Buncombe County Commissioners.  The commission approves downtown Level II projects and holds public hearings for conditional zoning and conditional use permits and makes a recommendation for action to city council.',
+        typeIds: [
+          // 'Level I',
+          'Level II',
+          // 'Major Subdivision',
+          'Level III',
+          'Conditional Zoning',
+          'Conditional Use Permit',
+        ],
       },
       {
         id: 'Level II and Downtown Major Subdivision Decision',
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        typeIds: [
+          // 'Level I',
+          'Level II',
+          'Major Subdivision',
+          // 'Level III',
+          // 'Conditional Zoning',
+          // 'Conditional Use Permit',
+        ],
       },
       {
         id: 'City Council',
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        typeIds: [
+          // 'Level I',
+          // 'Level II',
+          // 'Major Subdivision',
+          'Level III',
+          'Conditional Zoning',
+          'Conditional Use Permit',
+        ],
       },
       {
         id: 'City Council Decision',
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        typeIds: [
+          // 'Level I',
+          // 'Level II',
+          // 'Major Subdivision',
+          'Level III',
+          'Conditional Zoning',
+          'Conditional Use Permit',
+        ],
       },
     ]
     this.links = [
@@ -355,21 +469,10 @@ class AnnotatedDagre extends React.Component {
               className={type}
             >
               <div style={{ textAlign: 'center' }}>
-                <svg height={50} width={50}>
-                  <circle r={25} cx={25} cy={25} style={{ fill: projectType.color }}/>
-                  <text
-                    x="25"
-                    y="25"
-                    style={{
-                      stroke: 'white',
-                      strokeWidth: 2,
-                      textAnchor: 'middle',
-                      alignmentBaseline: 'middle',
-                      letterSpacing: '0.15em'
-                    }}>
-                      {projectType.short}
-                    </text>
-                </svg>
+                <TypePuck
+                  color={projectType.color}
+                  text={projectType.short}
+                />
               </div>
               <div
                 style={{
@@ -430,6 +533,12 @@ class AnnotatedDagre extends React.Component {
                     padding: '0.5em 0'
                   }}
                 >{d.id}</div>
+                {d.typeIds.map(id =>
+                  <TypePuck
+                    color={this.projectTypes[id].color}
+                    text={this.projectTypes[id].short}
+                  />
+                )}
                 <span>{d.description}</span>
               </div>
             </foreignObject>

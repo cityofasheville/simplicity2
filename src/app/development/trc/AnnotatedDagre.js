@@ -381,8 +381,6 @@ class AnnotatedDagre extends React.Component {
     const nodes = getNodes(graph, visWidth, nodeHeight, nodePadding);
     const links = getLinks(this.links, nodes, edgePadding, edgeStroke);
 
-    console.log(links)
-
     // If any node in the past had a high enough coincidents number that it had to be moved, add to y value for remaining
     return (<div style={{ width: '100%' }}>
       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'stretch', flexWrap: 'wrap' }}>
@@ -390,9 +388,8 @@ class AnnotatedDagre extends React.Component {
           return (
             <div
               style={{
-                // minWidth: '25%',
-                // display: 'inline-block',
-                flexBasis: 0,
+                width: '25%',
+                flexGrow: 1,
                 border: `5px solid ${this.projectTypeColors[type.id] ? this.projectTypeColors[type.id].color : 'gray'}`,
                 backgroundColor: 'white',
                 padding: '1em',

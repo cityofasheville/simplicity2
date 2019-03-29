@@ -67,17 +67,17 @@ function getNodes(dagreGraph, visWidth, nodeHeight, nodePadding) {
     d.numPerRow = d.coincidents.length <= 3 ? d.coincidents.length : Math.ceil(d.coincidents.length / 2);
     d.wrap = Math.min(
       (visWidth - (annotationMargin + annotationMargin * d.numPerRow)) / d.numPerRow,
-      400
+      300
     )
 
     // Set x value
     const midRowIndex = (d.numPerRow - 1) / 2;
     d.x = midpointX + ((d.indexInCoincidents % d.numPerRow) - midRowIndex) * (annotationMargin + d.wrap);
-    if (d.indexInCoincidents >= d.numPerRow) {
-      d.x += 10;
-    } else {
-      d.x -=10;
-    }
+    // if (d.indexInCoincidents >= d.numPerRow) {
+    //   d.x += 10;
+    // } else {
+    //   d.x -=10;
+    // }
 
     // Y value must be set in separate iteration because it is used to determine coincidents
     let thisYOffset = totalYOffsetValue;
@@ -161,8 +161,12 @@ class AnnotatedDagre extends React.Component {
     this.projectTypes = props.projectTypes;
     this.nodes = [
       {
-        id: 'Pre-Application and Neighborhood Meeting',
-        description: 'The developer must arrange a neighborhood meeting and invite property owners within 200 feet of the proposed development. The meeting must be no more than four months but at least ten days before application submission. At least ten days prior to the meeting, property must be posted and notice of the meeting mailed.  The developer must also meet with city staff at a pre-application meeting.'
+        id: 'Neighborhood Meeting',
+        description: 'The developer must arrange a neighborhood meeting and invite property owners within 200 feet of the proposed development. The meeting must be no more than four months but at least ten days before application submission. At least ten days prior to the meeting, property must be posted and notice of the meeting mailed.'
+      },
+      {
+        id: 'Pre-Application Meeting',
+        description: 'The developer must meet with city staff at a pre-application meeting.'
       },
       {
         id: 'Level I',
@@ -229,27 +233,52 @@ class AnnotatedDagre extends React.Component {
     ]
     this.links = [
       {
-        source: 'Pre-Application and Neighborhood Meeting',
+        source: 'Neighborhood Meeting',
         target: 'Major Subdivision',
         color: this.projectTypes['Major Subdivision'].color,
       },
       {
-        source: 'Pre-Application and Neighborhood Meeting',
+        source: 'Neighborhood Meeting',
         target: 'Level II',
         color: this.projectTypes['Level II'].color,
       },
       {
-        source: 'Pre-Application and Neighborhood Meeting',
+        source: 'Neighborhood Meeting',
         target: 'Level III',
         color: this.projectTypes['Level III'].color,
       },
       {
-        source: 'Pre-Application and Neighborhood Meeting',
+        source: 'Neighborhood Meeting',
         target: 'Conditional Zoning',
         color: this.projectTypes['Conditional Zoning'].color,
       },
       {
-        source: 'Pre-Application and Neighborhood Meeting',
+        source: 'Neighborhood Meeting',
+        target: 'Conditional Use Permit',
+        color: this.projectTypes['Conditional Use Permit'].color,
+      },
+      {
+        source: 'Pre-Application Meeting',
+        target: 'Major Subdivision',
+        color: this.projectTypes['Major Subdivision'].color,
+      },
+      {
+        source: 'Pre-Application Meeting',
+        target: 'Level II',
+        color: this.projectTypes['Level II'].color,
+      },
+      {
+        source: 'Pre-Application Meeting',
+        target: 'Level III',
+        color: this.projectTypes['Level III'].color,
+      },
+      {
+        source: 'Pre-Application Meeting',
+        target: 'Conditional Zoning',
+        color: this.projectTypes['Conditional Zoning'].color,
+      },
+      {
+        source: 'Pre-Application Meeting',
         target: 'Conditional Use Permit',
         color: this.projectTypes['Conditional Use Permit'].color,
       },
@@ -454,8 +483,8 @@ class AnnotatedDagre extends React.Component {
           <Note
             align="middle"
             orientation="leftRight"
-            bgPadding={nodePadding}
-            padding={nodePadding}
+            bgPadding={nodePadding / 2}
+            padding={nodePadding / 2}
             titleColor={this.projectTypes[d.id] ? this.projectTypes[d.id].color : 'gray'}
             lineType={null}
             wrap={d.wrap}

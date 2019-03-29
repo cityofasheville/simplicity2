@@ -1,9 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import dagre from 'dagre';
-import { curveBundle } from 'd3-shape';
-import { ResponsiveNetworkFrame } from 'semiotic';
-import { Annotation, ConnectorCurve, Note } from 'react-annotation';
 
 function calculateEdges(link) {
   const weight = 2;
@@ -387,8 +384,8 @@ class AnnotatedDagre extends React.Component {
     console.log(links)
 
     // If any node in the past had a high enough coincidents number that it had to be moved, add to y value for remaining
-    return (<div>
-      <div>
+    return (<div style={{ width: '100%' }}>
+      <div style={{ width: '100%' }}>
         {this.projectTypeDetails.map(type => {
           return (
             <div

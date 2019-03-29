@@ -54,7 +54,7 @@ function getNodes(dagreGraph, visWidth, nodeHeight, nodePadding) {
     d.numPerRow = d.coincidents.length <= 3 ? d.coincidents.length : Math.ceil(d.coincidents.length / 2);
     d.wrap = Math.min(
       (visWidth - (annotationMargin + annotationMargin * d.numPerRow)) / d.numPerRow,
-      400
+      450
     )
 
     // Set x value
@@ -143,7 +143,12 @@ function getLinks(inputLinks, nodes, edgePadding, edgeStroke) {
 
 const TypePuck = ({ color, text }) => (
   <svg height={50} width={50}>
-    <circle r={25} cx={25} cy={25} style={{ fill: color }}/>
+    <circle
+      r={25}
+      cx={25}
+      cy={25}
+      style={{ fill: color, stroke: 'white', strokeWidth: '2px' }}
+    />
     <text
       x="25"
       y="25"
@@ -533,12 +538,14 @@ class AnnotatedDagre extends React.Component {
                     padding: '0.5em 0'
                   }}
                 >{d.id}</div>
-                {d.typeIds.map(id =>
-                  <TypePuck
-                    color={this.projectTypes[id].color}
-                    text={this.projectTypes[id].short}
-                  />
-                )}
+                <div style={{ textAlign: 'center' }}>
+                  {d.typeIds.map(id =>
+                    <TypePuck
+                      color={this.projectTypes[id].color}
+                      text={this.projectTypes[id].short}
+                    />
+                  )}
+                </div>
                 <span>{d.description}</span>
               </div>
             </foreignObject>

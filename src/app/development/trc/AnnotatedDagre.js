@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import dagre from 'dagre';
 import TypePuck from './TypePuck';
+import PermitTypeCards from './PermitTypeCards';
 import { trcProjectTypes } from '../utils';
 
 
@@ -409,13 +410,22 @@ class AnnotatedDagre extends React.Component {
     };
   }
 
-  componentDidMount() {
+  updateDimensions() {
     this.setState({
       dimensions: {
         width: this.container.offsetWidth,
         height: this.container.offsetHeight,
       },
     });
+  }
+
+  componentDidMount() {
+    this.updateDimensions();
+    window.addEventListener('resize', this.updateWindowWidth);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateWindowWidth);
   }
 
   renderContent() {
@@ -436,45 +446,7 @@ class AnnotatedDagre extends React.Component {
 
     // If any node in the past had a high enough coincidents number that it had to be moved, add to y value for remaining
     return (<div style={{ width: '100%' }}>
-      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'stretch', flexWrap: 'wrap' }}>
-        {Object.keys(trcProjectTypes).map(type => {
-          const projectType = trcProjectTypes[type];
-          return (
-            <div
-              key={`card-${type}`}
-              style={{
-                width: '25%',
-                flexGrow: 1,
-                border: `5px solid ${projectType.color}`,
-                backgroundColor: 'white',
-                padding: '1em',
-                borderRadius: '6px',
-                margin: '1em',
-                top: '0px',
-              }}
-              className={type}
-            >
-              <div style={{ textAlign: 'center' }}>
-                <TypePuck
-                  color={projectType.color}
-                  text={projectType.short}
-                />
-              </div>
-              <div
-                style={{
-                  width: '100%',
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                  padding: '0.5em 0'
-                }}
-              >
-                {type}
-              </div>
-              <div>{projectType.description}</div>
-            </div>
-          )
-        })}
-      </div>
+      <PermitTypeCards />
       <svg height={height} width={visWidth}>
         <g>
           {links.map((d, i) => {

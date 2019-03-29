@@ -387,49 +387,85 @@ class AnnotatedDagre extends React.Component {
     console.log(links)
 
     // If any node in the past had a high enough coincidents number that it had to be moved, add to y value for remaining
-    return (<svg height={height} width={visWidth}>
-      {links.map((d, i) => {
-        return (<path
-          d={`M${d.x1} ${d.y1}
-            L${d.x1} ${d.y1 + ((d.y2 - d.y1) / 3)}
-            L${d.x2} ${d.y1 + ((d.y2 - d.y1) / 3) * 2}
-            L${d.x2} ${d.y2}`}
-          style={{
-            stroke: d.color || 'gray',
-            strokeWidth: edgeStroke,
-            fill: 'none',
-          }}
-          key={`${d.source}-${d.target}-${i}`}
-        />)
-      })}
-      {nodes.map(d => (
-        <foreignObject
-          x={d.x - d.wrap / 2}
-          y={d.y}
-          width={d.width}
-          height={d.height}
-        >
-          <div
+    return (<div>
+      <div>
+        {this.projectTypeDetails.map(type => {
+          return (
+            <div
+              style={{
+                width: '25%',
+                display: 'inline-block',
+                border: `1px solid ${this.projectTypeColors[type.id] ? this.projectTypeColors[type.id].color : 'gray'}`,
+                backgroundColor: 'white',
+                padding: '1em',
+                borderRadius: '6px',
+                margin: '1em',
+              }}
+            >
+              <div
+                style={{
+                  width: '100%',
+                  fontWeight: 'bold',
+                  textAlign: 'center',
+                  padding: '0.5em 0'
+                }}
+              >
+                {type.id}
+              </div>
+              <svg height={40} width={40}>
+                <circle r={20} cx={20} cy={20} style={{ fill: this.projectTypeColors[type.id] ? this.projectTypeColors[type.id].color : 'gray' }}/>
+                <text x="20" y="20" style={{ stroke: 'white', strokeWidth: 2 }}>{type.short}</text>
+              </svg>
+              <div>{type.description}</div>
+            </div>
+          )
+        })}
+      </div>
+      <svg height={height} width={visWidth}>
+        {links.map((d, i) => {
+          return (<path
+            d={`M${d.x1} ${d.y1}
+              L${d.x1} ${d.y1 + ((d.y2 - d.y1) / 3)}
+              L${d.x2} ${d.y1 + ((d.y2 - d.y1) / 3) * 2}
+              L${d.x2} ${d.y2}`}
             style={{
-              border: `1px solid ${this.projectTypeColors[d.id] ? this.projectTypeColors[d.id].color : 'gray'}`,
-              backgroundColor: 'white',
-              padding: '1em',
-              borderRadius: '6px',
+              stroke: d.color || 'gray',
+              strokeWidth: edgeStroke,
+              fill: 'none',
             }}
+            key={`${d.source}-${d.target}-${i}`}
+          />)
+        })}
+        {nodes.map(d => (
+          <foreignObject
+            x={d.x - d.wrap / 2}
+            y={d.y}
+            width={d.width}
+            height={d.height}
+            key={d.id}
           >
             <div
               style={{
-                width: '100%',
-                fontWeight: 'bold',
-                textAlign: 'center',
-                padding: '0.5em 0'
+                border: `1px solid ${this.projectTypeColors[d.id] ? this.projectTypeColors[d.id].color : 'gray'}`,
+                backgroundColor: 'white',
+                padding: '1em',
+                borderRadius: '6px',
               }}
-            >{d.id}</div>
-            <span>{d.description}</span>
-          </div>
-        </foreignObject>
-      ))}
-    </svg>);
+            >
+              <div
+                style={{
+                  width: '100%',
+                  fontWeight: 'bold',
+                  textAlign: 'center',
+                  padding: '0.5em 0'
+                }}
+              >{d.id}</div>
+              <span>{d.description}</span>
+            </div>
+          </foreignObject>
+        ))}
+      </svg>
+    </div>);
   }
 
 }

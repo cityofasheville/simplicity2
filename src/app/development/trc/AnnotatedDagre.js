@@ -404,6 +404,8 @@ class AnnotatedDagre extends React.Component {
     ).length;
     this.numLevels = multiRow + uniqueYVals;
 
+    this.updateDimensions = this.updateDimensions.bind(this);
+
     this.state = {
       dimensions: null,
     };
@@ -420,31 +422,31 @@ class AnnotatedDagre extends React.Component {
 
   componentDidMount() {
     this.updateDimensions();
-    window.addEventListener('resize', this.updateWindowWidth);
+    window.addEventListener('resize', this.updateDimensions);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.updateWindowWidth);
+    window.removeEventListener('resize', this.updateDimensions);
   }
 
   renderContent() {
-    // TODO: USE REF TO GET CONTAINER SIZE INSTEAD
     // use class instead/in addition to color? highlight all links with that class when a node is hovered?
     // highlight all links and nodes when a link is hovered?
     const { dimensions } = this.state;
     const visWidth = dimensions.width;
-    const height = visWidth < 768 ? 4000 : 3500;
+    const height = visWidth < 768 ? 4500 : 3500;
     const nodePadding = 10;
-    const edgePadding = 10;
-    const edgeStroke = 5;
+    const edgePadding = 6;
+    const edgeStroke = 3;
     const nodeHeight = (height - nodePadding * (this.numLevels + 1)) / (this.numLevels + 1);
+    const puckSize = visWidth < 500 ? 30 : 50;
 
     const graph = getDagreGraph(this.nodes, this.links, nodeHeight, nodePadding);
     const nodes = getNodes(graph, visWidth, nodeHeight, nodePadding);
     const links = getLinks(this.links, nodes, edgePadding, edgeStroke);
 
     // If any node in the past had a high enough coincidents number that it had to be moved, add to y value for remaining
-    return (<div style={{ width: '100%' }}>
+    return (<div style={{ width: '100%', fontSize: visWidth < 500 ? '0.75rem' : '1em' }}>
       <svg height={height} width={visWidth}>
         <g>
           {links.map((d, i) => {
@@ -467,11 +469,12 @@ class AnnotatedDagre extends React.Component {
         <g>
           {nodes.map(d => (
             <foreignObject
-              x={d.x - d.width / 2}
-              y={d.y - d.height / 4}
-              width={d.width}
+              x={d.x - d.wrap / 2}
+              y={d.y - 10}
+              width={d.wrap}
               height={d.height}
               key={`node-${d.id}`}
+              style={{ overflow: 'visible' }}
             >
               <div
                 style={{
@@ -494,6 +497,7 @@ class AnnotatedDagre extends React.Component {
                     <TypePuck
                       key={`${d.id}-puck-${id}`}
                       typeObject={trcProjectTypes[id]}
+                      size={puckSize}
                     />
                   )}
                 </div>

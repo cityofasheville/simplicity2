@@ -9,7 +9,7 @@ const PermitTypeCards = () => (
         style={{
           width: window.innerWidth > 760 ? '25%': '40%',
           flexGrow: 1,
-          margin: '1em',
+          margin: '0.25em',
           top: '0px',
         }}
         className={type}

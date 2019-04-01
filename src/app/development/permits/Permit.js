@@ -20,7 +20,7 @@ const GET_PERMIT = gql`
       permit_type
       permit_subtype
       permit_category
-      applicant_name
+      application_name
       applied_date
       status_current
       status_date
@@ -165,7 +165,7 @@ const Permit = props => (
 
       // make contact section - applicant name, contractor names, planner name if available
       // const contactInfoFields = [
-      //   'applicant_name',
+      //   'application_name',
       //   'contractor_names',
       //   // TODO: PLANNER NAME?
       // ]

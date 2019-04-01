@@ -83,16 +83,9 @@ class SectionNav extends React.Component {
   render() {
     return (<ul className="sectionNav" >
       {this.state.links.map(linkItem => {
-        const textColor = hsl('gray');
-        if (!linkItem.selected) {
-          textColor.opacity = 0.9;
-        }
         return (<li key={linkItem.linkId}><a
           href={`#${linkItem.linkId}`}
           className={`linkItem-${linkItem.selected ? 'selected' : 'not-selected'}`}
-          style={{
-            color: textColor,
-          }}
           onClick={this.handleAnchorClick}
         >
           {linkItem.linkName}

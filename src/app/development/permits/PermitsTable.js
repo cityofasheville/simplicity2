@@ -10,6 +10,18 @@ import { defaultTableHeaders } from '../utils';
 const ExpandableAccessibleReactTable = expandingRows(AccessibleReactTable);
 
 
+function extractTextFromReactComponents(component) {
+  if (typeof component === 'string') {
+    return component;
+  } else if (!component.props || !component.props.children) {
+    return '';
+  } else {
+    return '' + React.Children.toArray(component.props.children)
+      .map(child => extractTextFromReactComponents(child)).join(' ');
+  }
+}
+
+
 class PermitsTable extends React.Component {
   constructor(props) {
     super(props);
@@ -86,9 +98,12 @@ class PermitsTable extends React.Component {
                   // Allows comma separated values, makes it an OR
                   const values = filter.value.split(',');
                   let match = false;
+                  // Iterate until you get children that are text and then use those?
+                  const compareText = extractTextFromReactComponents(row[id]);
+
                   values.forEach((val) => {
-                    match = match || (row[id] !== undefined ?
-                      String(row[id]).toLowerCase().indexOf(val.toLowerCase()) > -1
+                    match = match || (compareText !== undefined ?
+                      String(compareText).toLowerCase().indexOf(val.toLowerCase()) > -1
                       :
                       true);
                   });

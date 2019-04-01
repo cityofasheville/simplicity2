@@ -34,7 +34,7 @@ class TRCDataTable extends React.Component {
         )
         return (<div>
           <span style={{ marginRight: '1em' }}>{trcType.permit_subtype}</span>
-          <div style={{ verticalAlign: 'middle', display: 'inline-block' }}>
+          <div style={{ verticalAlign: 'middle', display: 'inline-block', float: 'right' }}>
             <TypePuck
               typeObject={trcType}
               size={30}
@@ -44,6 +44,21 @@ class TRCDataTable extends React.Component {
       }
       return rObj;
     })
+
+    // const tableHeaders = [{
+    //   field: 'permit_type',
+    //   formatFunc: d => {
+    //     let trcType = Object.values(trcProjectTypes).find(type =>
+    //       type.permit_type === d.permit_type &&
+    //       type.permit_subtype === d.permit_subtype
+    //     )
+    //     return (
+    //       <TypePuck
+    //         typeObject={trcType}
+    //         size={30}
+    //       />);
+    //   },
+    // }].concat(defaultTableHeaders);
 
     return (<div>
       <ErrorBoundary>
@@ -55,7 +70,6 @@ class TRCDataTable extends React.Component {
           xSpan={2}
         />
         <PermitsTableWrapper
-          // Defaults are fine for now
           after={this.state.timeSpan[0]}
           before={this.state.timeSpan[1]}
           projectTypes={trcProjectTypes}

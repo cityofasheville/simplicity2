@@ -9,8 +9,8 @@ class TypePuck extends React.Component {
 
     this.state = {
       tooltipOpen: false,
-      tooltipClientX: 0,
-      tooltipClientY: 0,
+      tooltipX: 0,
+      tooltipY: 0,
     }
 
     this.onHover = this.onHover.bind(this);
@@ -18,10 +18,19 @@ class TypePuck extends React.Component {
   }
 
   onHover(e) {
+    let tooltipX = e.pageX + 30;
+    let tooltipY = e.pageY + 30;
+    if ((window.innerWidth - e.pageX - 300) <= 0) {
+      tooltipX -= 360;
+    }
+    if ((window.innerHeight - e.pageY - 300) <= 0) {
+      tooltipY -= 200;
+    }
+
     this.setState({
       tooltipOpen: true,
-      tooltipClientX: e.pageX,
-      tooltipClientY: e.pageY,
+      tooltipX,
+      tooltipY,
     })
   }
 
@@ -72,10 +81,10 @@ class TypePuck extends React.Component {
               className="puck-tooltip"
               style={{
                 position: 'absolute',
-                top: this.state.tooltipClientY + 10,
-                left: this.state.tooltipClientX + 10,
+                top: this.state.tooltipY,
+                left: this.state.tooltipX,
                 zIndex: 99,
-                maxWidth: '25vw',
+                maxWidth: '300px',
               }}
             >
               <PermitTypeCard type={this.props.typeObject.id} />

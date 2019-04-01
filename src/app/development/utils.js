@@ -97,7 +97,7 @@ export const trcProjectTypes = {};
     permit_type: 'Development',
     permit_subtype: 'Conditional Use',
     short: 'CUP',
-    description: 'Anything that is listed as a conditional use in Section 7-16-2 of the Unified Development Ordinance.',
+    description: <div>Anything that is listed as a conditional use in <a href="https:/library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTXVIUSRISUSPRECOUS_S7-16-2COUS" target="_blank" rel="noopener noreferrer">Section 7-16-2 of the Unified Development Ordinance.</a></div>,
     color: '#073d49',
   };
 }

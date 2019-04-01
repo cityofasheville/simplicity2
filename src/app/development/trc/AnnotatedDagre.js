@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import dagre from 'dagre';
 import TypePuck from './TypePuck';
@@ -44,7 +45,7 @@ function getDagreGraph(nodes, links, nodeSize, nodePadding) {
 }
 
 function getNodes(dagreGraph, visWidth, nodeHeight, nodePadding) {
-  const nodeValues = JSON.parse(JSON.stringify(Object.values(dagreGraph._nodes)));
+  const nodeValues = [].concat(Object.values(dagreGraph._nodes));
   const midpointX = visWidth / 2;
   const annotationMargin = nodePadding * 2;
 
@@ -223,7 +224,7 @@ class AnnotatedDagre extends React.Component {
       },
       {
         id: 'Design Review',
-        description: 'Projects located Downtown or in the River District must be reviewed for architectural design elements by a special design review sub-committee of either the Asheville Downtown Commission or the Asheville Area Riverfront Redevelopment Commission prior to approval.',
+        description: <div>Projects located Downtown or in the River District must be reviewed for architectural design elements by a special design review sub-committee of either the <a href="https://library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTIIIDEKIADADBO_S7-3-8ASDOCO" target="_blank" rel="noopener noreferrer">Asheville Downtown Commission</a> or the <a href="https://library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTIIIDEKIADADBO_S7-3-10ASARRIRECO" target="_blank" rel="noopener noreferrer">Asheville Area Riverfront Redevelopment Commission</a> prior to approval.</div>,
         typeIds: [
           // 'Level I',
           'Level II',
@@ -478,7 +479,7 @@ class AnnotatedDagre extends React.Component {
             >
               <div
                 style={{
-                  border: `2px solid ${trcProjectTypes[d.id] ? trcProjectTypes[d.id].color : '#e6e6e6'}`,
+                  border: '2px solid #e6e6e6',
                   backgroundColor: 'white',
                   padding: '1em',
                   borderRadius: '6px',
@@ -491,7 +492,9 @@ class AnnotatedDagre extends React.Component {
                     textAlign: 'center',
                     padding: '0.5em 0'
                   }}
-                >{d.id}</div>
+                >
+                  {d.id}
+                </div>
                 <div style={{ textAlign: 'center' }}>
                   {d.typeIds.map(id =>
                     <TypePuck
@@ -501,7 +504,7 @@ class AnnotatedDagre extends React.Component {
                     />
                   )}
                 </div>
-                <span>{d.description}</span>
+                {d.description}
               </div>
             </foreignObject>
           ))}

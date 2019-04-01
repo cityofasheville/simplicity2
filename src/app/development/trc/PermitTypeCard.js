@@ -7,20 +7,17 @@ const PermitTypeCard = ({ type }) => {
   return (
     <div
       style={{
-        width: window.innerWidth > 760 ? '25%': '40%',
-        flexGrow: 1,
         border: `5px solid ${projectType.color}`,
         backgroundColor: 'white',
         padding: '1em',
         borderRadius: '6px',
-        margin: '1em',
-        top: '0px',
+        height: '100%',
       }}
-      className={type}
     >
       <div style={{ textAlign: 'center' }}>
         <TypePuck
           typeObject={projectType}
+          hover={false}
         />
       </div>
       <div

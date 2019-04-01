@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import dagre from 'dagre';
+import TypePuck from './TypePuck';
+import { trcProjectTypes } from '../utils';
 
 
 function getDagreGraph(nodes, links, nodeSize, nodePadding) {
@@ -60,11 +62,6 @@ function getNodes(dagreGraph, visWidth, nodeHeight, nodePadding) {
     // Set x value
     const midRowIndex = (d.numPerRow - 1) / 2;
     d.x = midpointX + ((d.indexInCoincidents % d.numPerRow) - midRowIndex) * (annotationMargin + d.wrap);
-    // if (d.indexInCoincidents >= d.numPerRow) {
-    //   d.x += 10;
-    // } else {
-    //   d.x -=10;
-    // }
 
     // Y value must be set in separate iteration because it is used to determine coincidents
     let thisYOffset = totalYOffsetValue;
@@ -141,34 +138,9 @@ function getLinks(inputLinks, nodes, edgePadding, edgeStroke) {
   });
 }
 
-const TypePuck = ({ color, text }) => (
-  <svg height={50} width={50}>
-    <circle
-      r={25}
-      cx={25}
-      cy={25}
-      style={{ fill: color, stroke: 'white', strokeWidth: '2px' }}
-    />
-    <text
-      x="25"
-      y="25"
-      style={{
-        stroke: 'white',
-        strokeWidth: 2,
-        textAnchor: 'middle',
-        alignmentBaseline: 'middle',
-        letterSpacing: '0.15em'
-      }}>
-        {text}
-      </text>
-  </svg>
-)
-
-
 class AnnotatedDagre extends React.Component {
-  constructor(props) {
-    super(props);
-    this.projectTypes = props.projectTypes;
+  constructor() {
+    super();
     this.nodes = [
       {
         id: 'Neighborhood Meeting',
@@ -220,19 +192,14 @@ class AnnotatedDagre extends React.Component {
       },
       {
         id: 'Level I Decision',
-        description: 'When plans for a Level I scale project show that all technical requirements are met, staff approves the plans and issues a permit.',
+        description: 'When plans for a Level I scale project show that all technical requirements are met, staff must approve the plans and issue a permit.',
         typeIds: [
           'Level I',
-          // 'Level II',
-          // 'Major Subdivision',
-          // 'Level III',
-          // 'Conditional Zoning',
-          // 'Conditional Use Permit',
         ],
       },
       {
         id: 'Technical Review Committee',
-        description: 'An eight-member body that ensures that the proposed project complies with standards and requirements. Consists of six staff, a representative of the Tree Commission, and a member representing the Buncombe County Metropolitan Sewer District (MSD).',
+        description: 'An eight-member body that ensures that the proposed project complies with standards and requirements.  The committee consists of six staff, a representative of the Tree Commission and a member representing the Buncombe County Metropolitan Sewerage District (MSD).',
         typeIds: [
           // 'Level I',
           'Level II',
@@ -243,11 +210,11 @@ class AnnotatedDagre extends React.Component {
         ],
       },
       {
-        id: 'Major Subdivision Decision',
-        description: 'When plans for a Major Subdivision or non-downtown Level II scale project show that all technical requirements are met, staff approves the plans and issues a permit.  For major subdivisions and Level II projects that are not in a special zoning area like downtown, the Technical Review Committee is the body that either accepts or rejects the proposal.',
+        id: 'Major Subdivision and Level II Decision (Not Downtown)',
+        description: 'When plans for a Major Subdivision or Level II review that is not located downtown show that all technical requirements are met, staff must approve the plans and issue a permit.  For Major Subdivisions and Leve lII projects that are not in a special Zoning district such as the Downtown area, the Technical Review Committee (TRC) must approve compliant plans or reject deficient plans.',
         typeIds: [
           // 'Level I',
-          // 'Level II',
+          'Level II',
           'Major Subdivision',
           // 'Level III',
           // 'Conditional Zoning',
@@ -256,7 +223,7 @@ class AnnotatedDagre extends React.Component {
       },
       {
         id: 'Design Review',
-        description: 'All downtown level II, downtown subdivisions, and special zoning district Level III go to desgin review. The decision made in this step is a a non-binding recommendation.',
+        description: 'Projects located Downtown or in the River District must be reviewed for architectural design elements by a special design review sub-committee of either the Asheville Downtown Commission or the Asheville Area Riverfront Redevelopment Commission prior to approval.',
         typeIds: [
           // 'Level I',
           'Level II',
@@ -268,7 +235,7 @@ class AnnotatedDagre extends React.Component {
       },
       {
         id: 'Planning and Zoning Commission',
-        description: 'The Commission consists of 7 members, 5 City residents appointed by City Council and 2 residents of the extra-territorial area of the City and appointed by Buncombe County Commissioners.  The commission approves downtown Level II projects and holds public hearings for conditional zoning and conditional use permits and makes a recommendation for action to city council.',
+        description: 'Conditional Zoning, Level III, Conditional Use Permits and Level II projects within the Downtown area are reviewed by the Planning & Zoning Commission.  For  Conditional Zoning, Use and Level III projects, the Planning & Zoning Commission holds a public hearing and makes a recommendation for action to City Council.  For downtown Level II projects, the Planning & Zoning Commission verifies technical compliance with the requirements of applicable ordinances and documents and takes final action.',
         typeIds: [
           // 'Level I',
           'Level II',
@@ -292,7 +259,7 @@ class AnnotatedDagre extends React.Component {
       },
       {
         id: 'City Council',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        description: 'Conditional Zoning, Level III, Conditional Use Permits are reviewed during a public hearing before City Council.  These projects arrive at the City Council meeting with a recommendation for action that has been sent by the Planning & Zoning Commission.',
         typeIds: [
           // 'Level I',
           // 'Level II',
@@ -304,7 +271,7 @@ class AnnotatedDagre extends React.Component {
       },
       {
         id: 'City Council Decision',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        description: 'City Council hears evidence and testimony and takes final action on the application by vote.',
         typeIds: [
           // 'Level I',
           // 'Level II',
@@ -368,7 +335,7 @@ class AnnotatedDagre extends React.Component {
       },
       {
         source: 'Technical Review Committee',
-        target: 'Major Subdivision Decision',
+        target: 'Major Subdivision and Level II Decision (Not Downtown)',
         id: 'Major Subdivision',
       },
       {
@@ -436,64 +403,50 @@ class AnnotatedDagre extends React.Component {
       (value, index, nodeArray) => nodeArray.indexOf(value) === index
     ).length;
     this.numLevels = multiRow + uniqueYVals;
+
+    this.updateDimensions = this.updateDimensions.bind(this);
+
+    this.state = {
+      dimensions: null,
+    };
   }
 
-  render() {
-    // TODO: USE REF TO GET CONTAINER SIZE INSTEAD
+  updateDimensions() {
+    this.setState({
+      dimensions: {
+        width: this.container.offsetWidth,
+        height: this.container.offsetHeight,
+      },
+    });
+  }
+
+  componentDidMount() {
+    this.updateDimensions();
+    window.addEventListener('resize', this.updateDimensions);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateDimensions);
+  }
+
+  renderContent() {
     // use class instead/in addition to color? highlight all links with that class when a node is hovered?
     // highlight all links and nodes when a link is hovered?
-    const visWidth = 900;
-    const height = visWidth < 768 ? 3500 : 3000;
+    const { dimensions } = this.state;
+    const visWidth = dimensions.width;
+    const height = visWidth < 768 ? 4500 : 3500;
     const nodePadding = 10;
-    const edgePadding = 10;
-    const edgeStroke = 5;
+    const edgePadding = 6;
+    const edgeStroke = 3;
     const nodeHeight = (height - nodePadding * (this.numLevels + 1)) / (this.numLevels + 1);
+    const puckSize = visWidth < 500 ? 30 : 50;
 
     const graph = getDagreGraph(this.nodes, this.links, nodeHeight, nodePadding);
     const nodes = getNodes(graph, visWidth, nodeHeight, nodePadding);
     const links = getLinks(this.links, nodes, edgePadding, edgeStroke);
 
     // If any node in the past had a high enough coincidents number that it had to be moved, add to y value for remaining
-    return (<div style={{ width: '100%' }}>
-      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'stretch', flexWrap: 'wrap' }}>
-        {Object.keys(this.projectTypes).map(type => {
-          const projectType = this.projectTypes[type];
-          return (
-            <div
-              key={`card-${type}`}
-              style={{
-                width: '25%',
-                flexGrow: 1,
-                border: `5px solid ${projectType.color}`,
-                backgroundColor: 'white',
-                padding: '1em',
-                borderRadius: '6px',
-                margin: '1em',
-                top: '0px',
-              }}
-              className={type}
-            >
-              <div style={{ textAlign: 'center' }}>
-                <TypePuck
-                  color={projectType.color}
-                  text={projectType.short}
-                />
-              </div>
-              <div
-                style={{
-                  width: '100%',
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                  padding: '0.5em 0'
-                }}
-              >
-                {type}
-              </div>
-              <div>{projectType.description}</div>
-            </div>
-          )
-        })}
-      </div>
+    return (<div style={{ width: '100%', fontSize: visWidth < 500 ? '0.75rem' : '1em' }}>
       <svg height={height} width={visWidth}>
         <g>
           {links.map((d, i) => {
@@ -504,7 +457,7 @@ class AnnotatedDagre extends React.Component {
                 L${d.x2} ${d.y1 + ((d.y2 - d.y1) / 3) * 2}
                 L${d.x2} ${d.y2}`}
               style={{
-                stroke: this.projectTypes[d.id].color,
+                stroke: trcProjectTypes[d.id].color,
                 strokeWidth: edgeStroke,
                 fill: 'none',
               }}
@@ -516,15 +469,16 @@ class AnnotatedDagre extends React.Component {
         <g>
           {nodes.map(d => (
             <foreignObject
-              x={d.x - d.width / 2}
-              y={d.y - d.height / 4}
-              width={d.width}
+              x={d.x - d.wrap / 2}
+              y={d.y - 10}
+              width={d.wrap}
               height={d.height}
               key={`node-${d.id}`}
+              style={{ overflow: 'visible' }}
             >
               <div
                 style={{
-                  border: `2px solid ${this.projectTypes[d.id] ? this.projectTypes[d.id].color : '#e6e6e6'}`,
+                  border: `2px solid ${trcProjectTypes[d.id] ? trcProjectTypes[d.id].color : '#e6e6e6'}`,
                   backgroundColor: 'white',
                   padding: '1em',
                   borderRadius: '6px',
@@ -542,8 +496,8 @@ class AnnotatedDagre extends React.Component {
                   {d.typeIds.map(id =>
                     <TypePuck
                       key={`${d.id}-puck-${id}`}
-                      color={this.projectTypes[id].color}
-                      text={this.projectTypes[id].short}
+                      typeObject={trcProjectTypes[id]}
+                      size={puckSize}
                     />
                   )}
                 </div>
@@ -554,6 +508,16 @@ class AnnotatedDagre extends React.Component {
         </g>
       </svg>
     </div>);
+  }
+
+  render() {
+    const { dimensions } = this.state;
+
+    return (
+      <div ref={el => (this.container = el)} style={{ height: '100%', width: '100%' }}>
+        {dimensions && this.renderContent()}
+      </div>
+    );
   }
 
 }

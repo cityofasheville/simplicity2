@@ -36,8 +36,7 @@ class TRCDataTable extends React.Component {
           <span style={{ marginRight: '1em' }}>{trcType.permit_subtype}</span>
           <div style={{ verticalAlign: 'middle', display: 'inline-block' }}>
             <TypePuck
-              color={trcType.color}
-              text={trcType.short}
+              typeObject={trcType}
               size={30}
             />
           </div>

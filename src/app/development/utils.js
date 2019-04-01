@@ -47,6 +47,7 @@ export const trcProjectTypes = {};
     //   '#073d49',
     // ];
   trcProjectTypes['Level I'] = {
+    id: 'Level I',
     permit_group: 'Planning',
     permit_type: 'Development',
     permit_subtype: 'Level I',
@@ -55,6 +56,7 @@ export const trcProjectTypes = {};
     color: '#FF3A3A',
   };
   trcProjectTypes['Major Subdivision'] = {
+    id: 'Major Subdivision',
     permit_group: 'Planning',
     permit_type: 'Subdivision',
     permit_subtype: 'Major',
@@ -63,6 +65,7 @@ export const trcProjectTypes = {};
     color: '#749B5F',
   };
   trcProjectTypes['Level II'] = {
+    id: 'Level II',
     permit_group: 'Planning',
     permit_type: 'Development',
     permit_subtype: 'Level II',
@@ -71,6 +74,7 @@ export const trcProjectTypes = {};
     color: '#2d93ad',
   };
   trcProjectTypes['Level III'] = {
+    id: 'Level III',
     permit_group: 'Planning',
     permit_type: 'Development',
     permit_subtype: 'Level III',
@@ -79,6 +83,7 @@ export const trcProjectTypes = {};
     color: '#004EA3',
   };
   trcProjectTypes['Conditional Zoning'] = {
+    id: 'Conditional Zoning',
     permit_group: 'Planning',
     permit_type: 'Development',
     permit_subtype: 'Conditional Zoning',
@@ -87,6 +92,7 @@ export const trcProjectTypes = {};
     color: '#9B6681',
   };
   trcProjectTypes['Conditional Use Permit'] = {
+    id: 'Conditional Use Permit',
     permit_group: 'Planning',
     permit_type: 'Development',
     permit_subtype: 'Conditional Use',

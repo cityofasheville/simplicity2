@@ -224,8 +224,7 @@ const Permit = props => (
               (<div style={{ display: 'flex' }}>
                 <a style={{ marginRight: '1em' }} href="/development/major">
                   <TypePuck
-                    color={trcType.color}
-                    text={trcType.short}
+                    typeObject={trcType}
                   />
                 </a>
                 <p><em>

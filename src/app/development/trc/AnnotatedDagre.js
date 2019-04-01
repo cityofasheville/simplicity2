@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import dagre from 'dagre';
 import TypePuck from './TypePuck';
-import PermitTypeCards from './PermitTypeCards';
 import { trcProjectTypes } from '../utils';
 
 
@@ -446,7 +445,6 @@ class AnnotatedDagre extends React.Component {
 
     // If any node in the past had a high enough coincidents number that it had to be moved, add to y value for remaining
     return (<div style={{ width: '100%' }}>
-      <PermitTypeCards />
       <svg height={height} width={visWidth}>
         <g>
           {links.map((d, i) => {
@@ -495,8 +493,7 @@ class AnnotatedDagre extends React.Component {
                   {d.typeIds.map(id =>
                     <TypePuck
                       key={`${d.id}-puck-${id}`}
-                      color={trcProjectTypes[id].color}
-                      text={trcProjectTypes[id].short}
+                      typeObject={trcProjectTypes[id]}
                     />
                   )}
                 </div>

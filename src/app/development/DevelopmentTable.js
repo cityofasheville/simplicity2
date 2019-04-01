@@ -56,8 +56,8 @@ class DevelopmentTable extends React.Component {
 
     const dataColumns = [
       {
-        Header: 'Name',
-        accessor: 'applicant_name',
+        Header: 'Project',
+        accessor: 'application_name',
         minWidth: 250,
         innerFocus: true,
         Cell: row => (

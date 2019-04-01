@@ -9,7 +9,7 @@ import PermitsTable from './PermitsTable';
 const GET_PROJECTS = gql`
   query getPermitsQuery($date_field: String!, $after: String, $before: String, $permit_groups: [String]) {
     permits(date_field: $date_field, after: $after, before: $before, permit_groups: $permit_groups) {
-      applicant_name
+      application_name
       applied_date
       permit_category
       permit_group

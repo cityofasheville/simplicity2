@@ -103,12 +103,22 @@ const DevelopmentByAddress = (props) => {
     return <Error message={props.data.error.message} />; // eslint-disable-line react/prop-types
   }
 
-  const mapData = props.data.permits_by_address.map(item => (Object.assign({}, item, { popup: `<div><b>${item.permit_type}</b><p>${moment.utc(item.applied_date).format('M/DD/YYYY')}</p><p><b>Applicant</b>:<div>${item.applicant_name}</div></p><p><b>Contractor(s):</b> ${item.contractor_names.map((contractor, index) => `<div>${contractor}: ${item.contractor_license_numbers[index]}</div>`).join('')}</p></div>`, options: { icon: L.icon({
-    iconUrl: getMarker(item.permit_type),
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [2, -22],
-  }) } })
+  const mapData = props.data.permits_by_address.map(item => (
+    Object.assign(
+      {},
+      item,
+      {
+        popup: `<div><b>${item.permit_type}</b><p>${moment.utc(item.applied_date).format('M/DD/YYYY')}</p><p><b>Project</b>:<div>${item.application_name}</div></p><p><b>Contractor(s):</b> ${item.contractor_names.map((contractor, index) => `<div>${contractor}: ${item.contractor_license_numbers[index]}</div>`).join('')}</p></div>`,
+        options: {
+          icon: L.icon({
+            iconUrl: getMarker(item.permit_type),
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [2, -22],
+          })
+        }
+      }
+    )
   ));
 
   const getNewUrlParams = view => (
@@ -186,7 +196,7 @@ const getPermitsQuery = gql`
       permit_type
       permit_subtype
       permit_description
-      applicant_name
+      application_name
       applied_date
       status_date
       civic_address_id

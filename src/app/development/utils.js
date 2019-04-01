@@ -23,8 +23,8 @@ export const defaultTableHeaders = [
     show: colWidth => colWidth > 90,
   },
   {
-    field: 'applicant_name',
-    display: 'Applicant',
+    field: 'application_name',
+    display: 'Project',
     show: colWidth => colWidth > 90,
   },
   {

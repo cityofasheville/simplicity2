@@ -3,7 +3,16 @@ import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import L from 'leaflet';
-import { Map as LeafletMap, Marker, TileLayer, Popup, Circle, Polyline, Polygon, LayersControl } from 'react-leaflet';
+import {
+  Map as LeafletMap,
+  Marker,
+  TileLayer,
+  Popup,
+  Circle,
+  Polyline,
+  Polygon,
+  LayersControl,
+} from 'react-leaflet';
 import { GoogleLayer } from 'react-leaflet-google';
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 import MapLegendControl from './MapLegendControl';
@@ -43,13 +52,14 @@ const markerClusterOptions = {
   maxClusterRadius: 20,
 };
 
-const getBounds = (center, within) => {
-  const degToAdd = parseInt(within, 10) / 500000;
-  return [
-    [center[0] - degToAdd, center[1] - degToAdd],
-    [center[0] + degToAdd, center[1] + degToAdd]
-  ];
-};
+// We can just pass undefined instead
+// const getBounds = (center, within) => {
+//   const degToAdd = parseInt(within, 10) / 500000;
+//   return [
+//     [center[0] - degToAdd, center[1] - degToAdd],
+//     [center[0] + degToAdd, center[1] + degToAdd]
+//   ];
+// };
 
 const Map = (props) => {
   const markers = [];
@@ -71,7 +81,13 @@ const Map = (props) => {
 
   return (
     <div style={{ height: props.height, width: props.width }}>
-      <LeafletMap className="markercluster-map" center={shouldZoomToNonCenter ? zoomTo : props.center} zoom={props.zoom} maxZoom={18} bounds={props.bounds === null ? getBounds(shouldZoomToNonCenter ? zoomTo : props.center, shouldZoomToNonCenter ? 660 : props.within) : props.bounds}>
+      <LeafletMap
+        className="markercluster-map"
+        center={shouldZoomToNonCenter ? zoomTo : props.center}
+        zoom={props.zoom}
+        maxZoom={18}
+        bounds={props.bounds === null ? undefined : props.bounds}
+      >
         <LayersControl position="topright">
           <BaseLayer checked name="OpenStreetMap">
             <TileLayer
@@ -173,13 +189,21 @@ const Map = (props) => {
           props.legend &&
           <MapLegendControl>
             <div className="legendIcon"><Icon path={IM_LIST2} size={24} color="#828282" /></div>
-            <div className="legend" style={{ maxHeight: parseInt(props.height.split('px')[0], 10) / 2 }}>
-              <div className="closeLegend" style={{ fontWeight: 'bold', fontSize: '14px', color: '#979797' }}
-              onClick={(e) => { 
-                if (e.target.parentNode.style.display === 'block') {
-                  e.target.parentNode.style.display = 'none';
-                }
-              }}>X</div>
+            <div
+              className="legend"
+              style={{ maxHeight: parseInt(props.height.split('px')[0], 10) / 2 }}
+            >
+              <div
+                className="closeLegend"
+                style={{ fontWeight: 'bold', fontSize: '14px', color: '#979797' }}
+                onClick={(e) => {
+                  if (e.target.parentNode.style.display === 'block') {
+                    e.target.parentNode.style.display = 'none';
+                  }
+                }}
+              >
+                X
+              </div>
               {props.legend}
             </div>
           </MapLegendControl>
@@ -213,26 +237,26 @@ Map.propTypes = {
 };
 
 Map.defaultProps = {
+  bounds: null,
   center: [35.5951, -82.5515],
   centerLabel: null,
-  name: '',
-  width: '100%',
+  data: [],
   height: '600px',
   drawCircle: false,
   drawStreet: false,
   drawPolygon: false,
   drawMaintenance: false,
+  maintenanceData: null,
+  municipalities: ['Asheville Corporate Limits'],
+  name: '',
+  polygonData: null,
   radius: 83,
   showCenter: false,
-  zoom: 16,
-  within: 1320,
-  bounds: null,
   streetData: null,
-  polygonData: null,
-  maintenanceData: null,
-  data: [],
+  width: '100%',
+  within: 1320,
   zoomToPoint: null,
-  municipalities: ['Asheville Corporate Limits'],
+  zoom: 16,
 };
 
 export default Map;

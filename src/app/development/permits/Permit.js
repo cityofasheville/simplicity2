@@ -205,7 +205,7 @@ const Permit = props => (
                 center={[formattedPermit.y, formattedPermit.x]}
                 height="100%"
                 width="100%"
-                zoom={12}
+                zoom={14}
               />
             </div>
           </div>)}

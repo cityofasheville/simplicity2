@@ -3,7 +3,6 @@ import React from 'react';
 import gql from 'graphql-tag';
 import moment from 'moment';
 import { Query } from 'react-apollo';
-import PermitTasks from './PermitTasks';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import Map from '../../../shared/visualization/Map';
 import TypePuck from '../trc/TypePuck';
@@ -206,6 +205,7 @@ const Permit = props => (
                 center={[formattedPermit.y, formattedPermit.x]}
                 height="100%"
                 width="100%"
+                zoom={14}
               />
             </div>
           </div>)}
@@ -234,11 +234,11 @@ const Permit = props => (
             }
           </div>
         </div>
-        <div className="row">
+        {/*<div className="row">
           <h2>Timeline</h2>
           <PermitTasks {...props} />
           <p>To see more details about this permit, look it up in <a href="https://services.ashevillenc.gov/CitizenAccess" target="_blank" rel="noopener noreferrer">Accela Citizen Access</a>.</p>
-        </div>
+        </div>*/}
         <div className="row">
           <h2>Details</h2>
           <dl className="dl-horizontal col-sm-12 col-md-6">

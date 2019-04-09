@@ -6,12 +6,12 @@ import TypePuck from './TypePuck';
 import { trcProjectTypes } from '../utils';
 
 
-function getDagreGraph(nodes, links, nodeSize, nodePadding) {
+function getDagreGraph(nodes, links, nodeSize) {
   const g = new dagre.graphlib.Graph();
   g.setGraph({
     rankdir: 'TB',
     ranker: 'network-simplex',
-    marginx: nodePadding,
+    marginx: 0,
     marginy: 0,
   });
   g.setDefaultEdgeLabel(() => ({}));
@@ -47,7 +47,7 @@ function getDagreGraph(nodes, links, nodeSize, nodePadding) {
 function getNodes(dagreGraph, visWidth, nodeHeight, nodePadding) {
   const nodeValues = [].concat(Object.values(dagreGraph._nodes));
   const midpointX = visWidth / 2;
-  const annotationMargin = nodePadding * 2;
+  const annotationMargin = nodePadding;
 
   let totalYOffsetValue = 0;
   // totalYOffsetValue has to be added to if there is a multi-row set of nodes
@@ -391,7 +391,7 @@ class AnnotatedDagre extends React.Component {
     ];
     // Find good node height
     const maxPerRow = 3;
-    const firstGraph = getDagreGraph(this.nodes, this.links, 100, 0);
+    const firstGraph = getDagreGraph(this.nodes, this.links, 100);
     const yVals = JSON.parse(JSON.stringify(Object.values(firstGraph._nodes)))
       .map(d => d.y);
     const yValCounts = {};
@@ -435,14 +435,15 @@ class AnnotatedDagre extends React.Component {
     // highlight all links and nodes when a link is hovered?
     const { dimensions } = this.state;
     const visWidth = dimensions.width;
-    const height = visWidth < 768 ? 4500 : 3500;
-    const nodePadding = 10;
+    const height = visWidth < 768 ? 4500 : 4000;
+    const nodePadding = 5;
     const edgePadding = 6;
     const edgeStroke = 3;
-    const nodeHeight = (height - nodePadding * (this.numLevels + 1)) / (this.numLevels + 1);
-    const puckSize = visWidth < 500 ? 30 : 50;
+    const nodeHeight = (height - nodePadding * (this.numLevels +  4)) / this.numLevels;
+    const puckSize = visWidth < 500 ? 20 : 50;
+    const yOffset = nodeHeight / 2;
 
-    const graph = getDagreGraph(this.nodes, this.links, nodeHeight, nodePadding);
+    const graph = getDagreGraph(this.nodes, this.links, nodeHeight);
     const nodes = getNodes(graph, visWidth, nodeHeight, nodePadding);
     const links = getLinks(this.links, nodes, edgePadding, edgeStroke);
 
@@ -453,10 +454,10 @@ class AnnotatedDagre extends React.Component {
           {links.map((d, i) => {
             // TODO: go get elbow logic from old commit
             return (<path
-              d={`M${d.x1} ${d.y1}
-                L${d.x1} ${d.y1 + ((d.y2 - d.y1) / 3)}
-                L${d.x2} ${d.y1 + ((d.y2 - d.y1) / 3) * 2}
-                L${d.x2} ${d.y2}`}
+              d={`M${d.x1} ${d.y1 - yOffset}
+                L${d.x1} ${d.y1 + ((d.y2 - d.y1) / 3) - yOffset}
+                L${d.x2} ${d.y1 + ((d.y2 - d.y1) / 3) * 2 - yOffset}
+                L${d.x2} ${d.y2 - yOffset}`}
               style={{
                 stroke: trcProjectTypes[d.id].color,
                 strokeWidth: edgeStroke,
@@ -471,7 +472,7 @@ class AnnotatedDagre extends React.Component {
           {nodes.map(d => (
             <foreignObject
               x={d.x - d.wrap / 2}
-              y={d.y - 10}
+              y={d.y - yOffset}
               width={d.wrap}
               height={d.height}
               key={`node-${d.id}`}

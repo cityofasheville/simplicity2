@@ -435,11 +435,11 @@ class AnnotatedDagre extends React.Component {
     // highlight all links and nodes when a link is hovered?
     const { dimensions } = this.state;
     const visWidth = dimensions.width;
-    const height = visWidth < 768 ? 4500 : 3500;
+    const height = visWidth < 768 ? 4500 : 4000;
     const nodePadding = 5;
     const edgePadding = 6;
     const edgeStroke = 3;
-    const nodeHeight = height / this.numLevels;
+    const nodeHeight = (height - nodePadding * (this.numLevels +  4)) / this.numLevels;
     const puckSize = visWidth < 500 ? 20 : 50;
     const yOffset = nodeHeight / 2;
 

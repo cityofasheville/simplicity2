@@ -3,10 +3,10 @@ import React from 'react';
 import gql from 'graphql-tag';
 import moment from 'moment';
 import { Query } from 'react-apollo';
-import PermitTasks from './PermitTasks';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import Map from '../../../shared/visualization/Map';
-import { trcProjectTypes } from '../trc/utils';
+import TypePuck from '../trc/TypePuck';
+import { trcProjectTypes } from '../utils';
 
 // Make query based on URL, render sub components depending on query results
 
@@ -19,7 +19,7 @@ const GET_PERMIT = gql`
       permit_type
       permit_subtype
       permit_category
-      applicant_name
+      application_name
       applied_date
       status_current
       status_date
@@ -164,7 +164,7 @@ const Permit = props => (
 
       // make contact section - applicant name, contractor names, planner name if available
       // const contactInfoFields = [
-      //   'applicant_name',
+      //   'application_name',
       //   'contractor_names',
       //   // TODO: PLANNER NAME?
       // ]
@@ -187,6 +187,13 @@ const Permit = props => (
       // https://services.ashevillenc.gov/CitizenAccess/Cap/CapDetail.aspx?Module=Planning&TabName=Planning&capID1=19CAP&capID2=00000&capID3=000NZ&agencyCode=ASHEVILLE
 
       const h1Title = `${formattedPermit.permit_subtype} ${formattedPermit.permit_type} Application`;
+      let trcType = undefined;
+      if (formattedPermit.permit_group === 'Planning') {
+        trcType = Object.values(trcProjectTypes).find(type =>
+          type.permit_type === formattedPermit.permit_type &&
+          type.permit_subtype === formattedPermit.permit_subtype
+        )
+      }
 
       return (<div className="container">
         <div className="row">
@@ -198,6 +205,7 @@ const Permit = props => (
                 center={[formattedPermit.y, formattedPermit.x]}
                 height="100%"
                 width="100%"
+                zoom={14}
               />
             </div>
           </div>)}
@@ -212,20 +220,25 @@ const Permit = props => (
                 formattedPermit={formattedPermit}
               />))}
             </dl>
-            {formattedPermit.permit_group === 'Planning' &&
-              Object.values(trcProjectTypes)
-                .map(type => type.permit_subtype).indexOf(formattedPermit.permit_subtype) > -1 &&
-              (<p><em>
-                This is a major development.  <a href="/development/major">Learn more</a> about the large-scale development process in Asheville.
-              </em></p>)
+            {trcType !== undefined &&
+              (<div style={{ display: 'flex' }}>
+                <a style={{ marginRight: '1em' }} href="/development/major">
+                  <TypePuck
+                    typeObject={trcType}
+                  />
+                </a>
+                <p><em>
+                  This is a major development.  <a href="/development/major">Learn more</a> about the large-scale development process in Asheville.
+                </em></p>
+              </div>)
             }
           </div>
         </div>
-        <div className="row">
+        {/*<div className="row">
           <h2>Timeline</h2>
           <PermitTasks {...props} />
           <p>To see more details about this permit, look it up in <a href="https://services.ashevillenc.gov/CitizenAccess" target="_blank" rel="noopener noreferrer">Accela Citizen Access</a>.</p>
-        </div>
+        </div>*/}
         <div className="row">
           <h2>Details</h2>
           <dl className="dl-horizontal col-sm-12 col-md-6">

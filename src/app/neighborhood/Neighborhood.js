@@ -21,11 +21,34 @@ const Neighborhood = (props) => {
     return <Error message={props.data.error.message} />; // eslint-disable-line react/prop-types
   }
 
+  const detailsURLBase = [
+    '?entity=',
+    props.location.query.entity,
+    '&id=',
+    props.location.query.id,
+    '&entities=',
+    props.location.query.entities,
+    '&label=',
+    props.location.query.label,
+    '&search=',
+    props.location.query.search,
+    '&hideNavbar=',
+    props.location.query.hideNavbar
+  ].join('')
+
   return (
     <div>
       <PageHeader h1={props.location.query.label} dataType="Neighborhood" h2="About this neighborhood" icon={<Icon path={IM_USERS} size={50} />}>
         <ButtonGroup alignment="">
-          <LinkButton pathname="/search" query={{ entities: props.location.query.entities, search: props.location.query.search, hideNavbar: props.location.query.hideNavbar }}>Back to search</LinkButton>
+          <LinkButton
+            pathname="/search"
+            query={{
+              entities: props.location.query.entities,
+              search: props.location.query.search, hideNavbar: props.location.query.hideNavbar,
+            }}
+          >
+            Back to search
+          </LinkButton>
         </ButtonGroup>
       </PageHeader>
       <div className="row small-padding">
@@ -39,8 +62,20 @@ const Neighborhood = (props) => {
               />
             </div>
             <div className="detailsFieldset__details-listings">
-              <DetailsIconLinkFormGroup label="Address & Owner Mailing Lists" icon={<Icon path={IM_ENVELOP3} size={24} />} href={['address/addressList', '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&entities=', props.location.query.entities, '&label=', props.location.query.label, '&search=', props.location.query.search, '&hideNavbar=', props.location.query.hideNavbar].join('')} title="Address & Owner Mailing Lists" inWindow />
-              <DetailsIconLinkFormGroup label="Properties" icon={<Icon path={IM_HOME2} size={24} />} href={['property/properties', '?entity=', props.location.query.entity, '&id=', props.location.query.id, '&entities=', props.location.query.entities, '&label=', props.location.query.label, '&search=', props.location.query.search, '&hideNavbar=', props.location.query.hideNavbar].join('')} title="Properties" inWindow />
+              <DetailsIconLinkFormGroup
+                label="Address & Owner Mailing Lists"
+                icon={<Icon path={IM_ENVELOP3} size={24} />}
+                href={`address/addressList${detailsURLBase}`}
+                title="Address & Owner Mailing Lists"
+                inWindow
+              />
+              <DetailsIconLinkFormGroup
+                label="Properties"
+                icon={<Icon path={IM_HOME2} size={24} />}
+                href={`property/properties${detailsURLBase}`}
+                title="Properties"
+                inWindow
+              />
             </div>
           </fieldset>
         </div>
@@ -48,7 +83,14 @@ const Neighborhood = (props) => {
           <div className="row small-padding">
             {['CRIME', 'DEVELOPMENT'].map((topic, i) => (
               <div className="col-xs-6" key={['topic', i].join('_')}>
-                <TopicCard topic={topic} entity="neighborhood" id={props.location.query.id} label={props.location.query.label} entities={props.location.query.entities} search={props.location.query.search} />
+                <TopicCard
+                  topic={topic}
+                  entity="neighborhood"
+                  id={props.location.query.id}
+                  label={props.location.query.label}
+                  entities={props.location.query.entities}
+                  search={props.location.query.search}
+                />
               </div>
             ))}
           </div>
@@ -76,7 +118,7 @@ const getNeighborhoodQuery = gql`
           }
         }
       }
-    } 
+    }
   }
 `;
 

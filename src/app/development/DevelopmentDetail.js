@@ -40,7 +40,7 @@ const DevelopmentDetail = (props) => {
       {props.standalone &&
         <div className="row">
           <div className="col-sm-12">
-            <h1><button className="btn btn-primary pull-right">Back</button>{props.data.applicant_name}</h1>
+            <h1><button className="btn btn-primary pull-right">Back</button>{props.data.application_name}</h1>
             <h2>{props.data.address}</h2>
             <h3>About this permit</h3>
           </div>
@@ -138,7 +138,7 @@ const permitDataShape = {
   permit_number: PropTypes.string,
   permit_type: PropTypes.string,
   permit_group: PropTypes.string,
-  applicant_name: PropTypes.string,
+  application_name: PropTypes.string,
   applied_date: PropTypes.date,
   permit_subtype: PropTypes.string,
   status_date: PropTypes.date,

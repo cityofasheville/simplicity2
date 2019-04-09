@@ -5,16 +5,26 @@ import Measure from 'react-measure';
 import moment from 'moment';
 import expandingRows from '../../../shared/react_table_hoc/ExpandingRows';
 import createFilterRenderer from '../../../shared/FilterRenderer';
-
+import { defaultTableHeaders } from '../utils';
 
 const ExpandableAccessibleReactTable = expandingRows(AccessibleReactTable);
+
+
+function extractTextFromReactComponents(component) {
+  if (typeof component === 'string') {
+    return component;
+  } else if (!component.props || !component.props.children) {
+    return '';
+  } else {
+    return '' + React.Children.toArray(component.props.children)
+      .map(child => extractTextFromReactComponents(child)).join(' ');
+  }
+}
+
 
 class PermitsTable extends React.Component {
   constructor(props) {
     super(props);
-    // TODO: USE WINDOW.LOCATION INSTEAD OF REACT ROUTER LOCATION?
-    // https://medium.com/@ivantsov/using-react-router-and-history-38c021270829
-
     const filtered = [];
     if (window.location.search) {
       const queryParams = window.location.search.slice(1).split('&');
@@ -74,7 +84,7 @@ class PermitsTable extends React.Component {
                     id: headerObj.field,
                     accessor: (d) => {
                       return headerObj.formatFunc ?
-                        headerObj.formatFunc(d[headerObj.field]) :
+                        headerObj.formatFunc(d) :
                         d[headerObj.field];
                     },
                     Filter: createFilterRenderer(`Search ${headerObj.display}`),
@@ -88,9 +98,12 @@ class PermitsTable extends React.Component {
                   // Allows comma separated values, makes it an OR
                   const values = filter.value.split(',');
                   let match = false;
+                  // Iterate until you get children that are text and then use those?
+                  const compareText = extractTextFromReactComponents(row[id]);
+
                   values.forEach((val) => {
-                    match = match || (row[id] !== undefined ?
-                      String(row[id]).toLowerCase().indexOf(val.toLowerCase()) > -1
+                    match = match || (compareText !== undefined ?
+                      String(compareText).toLowerCase().indexOf(val.toLowerCase()) > -1
                       :
                       true);
                   });
@@ -130,37 +143,7 @@ PermitsTable.propTypes = {
 
 PermitsTable.defaultProps = {
   data: [],
-  tableHeaders: [
-    {
-      field: 'applied_date',
-      display: 'Date Applied',
-      formatFunc: d => moment.utc(new Date(d)).format('MMM DD, YYYY'),
-    },
-    {
-      field: 'address',
-      display: 'Address',
-    },
-    {
-      field: 'permit_subtype',
-      display: 'Type',
-      show: colWidth => colWidth > 70,
-    },
-    {
-      field: 'status_current',
-      display: 'Status',
-      show: colWidth => colWidth > 90,
-    },
-    {
-      field: 'applicant_name',
-      display: 'Applicant',
-      show: colWidth => colWidth > 90,
-    },
-    {
-      field: 'permit_number',
-      display: 'Record Link',
-      formatFunc: d => <a href={`/permits/${d}`}>{d}</a>,
-    },
-  ],
+  tableHeaders: defaultTableHeaders,
 };
 
 export default PermitsTable;

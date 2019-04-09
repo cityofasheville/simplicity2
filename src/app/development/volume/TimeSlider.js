@@ -35,10 +35,9 @@ class TimeSlider extends React.Component {
       // If someone just clicked on the timeline there might not be an e
 
       // if (snap) {
-      //   const timeFunc = whichD3TimeFunction(e);
-      //   console.log(timeDay.floor(new Date()))
+      //   // const timeFunc = whichD3TimeFunction(e);
+      //   const timeFunc = timeDay;
       //   newExtent = [timeFunc.floor(e[0]), timeFunc.ceil(e[1])];
-      //   console.log(newExtent)
       // }
 
       // Don't let the new extent be outside of our timeline
@@ -56,7 +55,7 @@ class TimeSlider extends React.Component {
   }
 
   brushDuring(e) {
-    const newExtent = this.determineNewExtent(e);
+    const newExtent = this.determineNewExtent(e, false);
     this.setState({
       brushExtent: newExtent,
       firstInputVal: newExtent[0],
@@ -101,11 +100,11 @@ class TimeSlider extends React.Component {
             <form onSubmit={this.handleSubmit} style={{ textAlign: 'center' }}>
               <div
                 className="form-group"
-                style={{ display: 'inline-block', padding: '0 0.75em', whiteSpace: 'nowrap' }}
+                style={{ display: 'inline-block', padding: '0 0.25em 0 0', whiteSpace: 'nowrap' }}
               >
                 <label
                   htmlFor="startdate"
-                  style={{ display: 'inline-block', padding: '0 1em 0 0' }}
+                  style={{ display: 'inline-block', padding: '0 0.25em 0 0' }}
                 >
                   From
                 </label>
@@ -132,11 +131,11 @@ class TimeSlider extends React.Component {
               </div>
               <div
                 className="form-group"
-                style={{ display: 'inline-block', padding: '0 1em', whiteSpace: 'nowrap' }}
+                style={{ display: 'inline-block', padding: '0 0.25em 0 0', whiteSpace: 'nowrap' }}
               >
                 <label
                   htmlFor="enddate"
-                  style={{ display: 'inline-block', padding: '0 0.75em 0 0' }}
+                  style={{ display: 'inline-block', padding: '0 0.25em 0 0' }}
                 >
                   through
                 </label>
@@ -169,6 +168,7 @@ class TimeSlider extends React.Component {
               />
             </form>
           </div>
+          {document.documentElement.clientWidth > 400 &&
           <ResponsiveXYFrame
             responsiveWidth
             margin={{
@@ -202,7 +202,7 @@ class TimeSlider extends React.Component {
               brush: 'xBrush',
               extent: this.state.brushExtent,
             }}
-          />
+          />}
         </ErrorBoundary>
       </div>
     );
@@ -212,7 +212,7 @@ class TimeSlider extends React.Component {
 TimeSlider.propTypes = {
   // defaultBrushExtent: PropTypes.arrayOf(PropTypes.number),
   onBrushEnd: PropTypes.func,
-  xSpan: PropTypes.arrayOf(PropTypes.number),
+  xSpan: PropTypes.number,
 };
 
 TimeSlider.defaultProps = {
@@ -221,7 +221,7 @@ TimeSlider.defaultProps = {
     timeDay.floor(new Date()).getTime(),
   ], // today and today minus thirty-one days
   onBrushEnd: newExtent => console.log(newExtent),
-  xSpan: 2, // in years
+  xSpan: 1, // in years
 };
 
 export default TimeSlider;

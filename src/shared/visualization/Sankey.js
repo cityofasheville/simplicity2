@@ -36,7 +36,7 @@ class Sankey extends React.Component {
     >
       <ResponsiveNetworkFrame
         responsiveWidth
-        annotations={graph.nodes}
+        annotations={graph.nodes.filter(n => n.name)}
         edges={graph.links}
         hoverAnnotation
         margin={{
@@ -50,7 +50,6 @@ class Sankey extends React.Component {
         nodes={graph.nodes}
         sourceAccessor="source"
         targetAccessor="target"
-        zoomToFit
         customHoverBehavior={(d) => {
           d && d.name ? this.setState({ hover: d.name }) : this.setState({ hover: null });
         }}
@@ -63,18 +62,20 @@ class Sankey extends React.Component {
           const style = {
             position: 'absolute',
             opacity: '1',
-            color: 'black',
             fontWeight: 'normal',
             textAnchor: 'left',
           };
 
-          const hoverInSourceLinks = d.edges.find(edge => edge.source.name === this.state.hover && edge.target.name === d.d.name);
-          const hoverInDestLinks = d.edges.find(edge => edge.target.name === this.state.hover && edge.source.name === d.d.name);
+          const hoverInSourceLinks = d.edges.find(edge => edge.source.name && edge.source.name === this.state.hover && edge.target.name === d.d.name);
+          const hoverInDestLinks = d.edges.find(edge => edge.target.name && edge.target.name === this.state.hover && edge.source.name === d.d.name);
 
           if (this.state.hover === d.d.name) {
-            style.fontWeight = 'bolder';
+            if (d.d.type !== 'frame-hover') {
+              return;
+            }
+            style.fontWeight = 'bold';
             label = `${d.d.name} Total: ${this.props.valueFormatter(d.d.value)}`;
-          } else if (hoverInSourceLinks) {
+          } else if (hoverInSourceLinks !== undefined && hoverInSourceLinks.value) {
             style.fontWeight = 'bolder';
             label = `${d.d.name}: ${this.props.valueFormatter(hoverInSourceLinks.value)}`;
             return (<text
@@ -86,7 +87,7 @@ class Sankey extends React.Component {
             >
               &#8594; {label}
             </text>);
-          } else if (hoverInDestLinks) {
+          } else if (hoverInDestLinks !== undefined && hoverInDestLinks.value) {
             style.fontWeight = 'bolder';
             label = `${d.d.name}: ${this.props.valueFormatter(hoverInDestLinks.value)}`;
             return (<text

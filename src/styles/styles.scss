@@ -3,7 +3,7 @@
 
 
 /*VARIABLES*/
-$desktop-min: 1025px;
+$desktop-min: 1024px;
 $desktop-max: 1200px;
 $mobile-min: 481px;
 $mobile-max: 767px;
@@ -34,9 +34,16 @@ p a {
 	text-decoration: underline;
 }
 
+
+// These two together make footer stick to bottom when it's not fixed
+// Usually would be 100vh, but we're doing header in a screwy way
+.app-parent {
+  display: flex;
+  min-height: 95vh;
+  flex-direction: column;
+}
 #content.container{
-	z-index: 0;
-	position: relative;
+  flex: 1;
 }
 
 /*MIXINS*/
@@ -841,6 +848,15 @@ footer.footer{
 			padding: 1rem 0;
 		}
 	}
+
+	.clear-footer{
+		display: none;
+	}
+	footer.footer{
+		position: relative;
+		padding: .5rem 0;
+		font-size: .85rem;
+	}
 }
 
 @media(max-width: $tablet-max){
@@ -852,19 +868,27 @@ footer.footer{
 			}
 		}
 	}
-    .template-header__title{
-        /*flex: 1 0 60%;*/
-    }
-    .template-header__actions{
-        /*flex: 1 0 40%;*/
-        margin: .5rem 0;
-    }
-    .btn-group{
-        button{
-            font-size: .75rem;
-            padding: .5rem;
-        }
-    }
+  .template-header__title{
+      /*flex: 1 0 60%;*/
+  }
+  .template-header__actions{
+      /*flex: 1 0 40%;*/
+      margin: .5rem 0;
+  }
+  .btn-group{
+      button{
+          font-size: .75rem;
+          padding: .5rem;
+      }
+  }
+  .clear-footer{
+  	display: none;
+  }
+  footer.footer{
+  	position: relative;
+  	padding: .5rem 0;
+  	font-size: .85rem;
+  }
 }
 
 @media(max-width: $mobile-max)and(min-width: $mobile-min){
@@ -906,14 +930,14 @@ footer.footer{
 	.data-filters{
 		margin-top: 1rem;
 	}
-	.clear-footer{
-		display: none;
-	}
-	footer.footer{
-		position: relative;
-		padding: .5rem 0;
-		font-size: .85rem;
-	}
+	// .clear-footer{
+	// 	display: none;
+	// }
+	// footer.footer{
+	// 	position: relative;
+	// 	padding: .5rem 0;
+	// 	font-size: .85rem;
+	// }
 	.old-version-link{
 		text-align: center;
 		a{

@@ -100,8 +100,6 @@ class PermitsTable extends React.Component {
                   let match = false;
                   // Iterate until you get children that are text and then use those?
                   const compareText = extractTextFromReactComponents(row[id]);
-
-
                   values.forEach((val) => {
                     match = match || (compareText !== undefined ?
                       String(compareText).toLowerCase().indexOf(val.toLowerCase()) > -1

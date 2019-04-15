@@ -149,6 +149,7 @@ const Map = (props) => {
               <Polygon
                 key={['polygon', index].join('_')}
                 positions={poly.polygons}
+                weight={1.5}
               >
                 {poly.popup &&
                   <Popup>

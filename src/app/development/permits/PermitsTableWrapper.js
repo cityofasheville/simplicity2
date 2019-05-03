@@ -58,13 +58,13 @@ const PermitsTableWrapper = props => (
       }
       return (<React.Fragment>
         <div className="col-sm-12">
-          <div className="map-container" style={{ height: '300px', width: '100%' }}>
+          <div className="map-container" style={{ height: '350px', width: '100%' }}>
             <PermitsMap
               permitData={filteredData.filter(d => d.x && d.y).map(d => Object.assign(
                 {},
-                thisPermit,
+                d,
                 {
-                  popup: `<b>${thisPermit.address}</b>`,
+                  popup: `<b>${d.address}</b>`,
                 },
               ))}
               zoom={13}

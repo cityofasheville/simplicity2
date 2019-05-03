@@ -58,7 +58,10 @@ const createLegend = (permitData) => {
   return (
     <div style={{ width: '160px' }}>
       {permitTypes.map(type => (
-        <div key={`legendItem-${type}`} style={{ width: '160px', marginBottom: '5px' }}><img src={getMarker(type)} style={{ display: 'inline-block', width: '25px', verticalAlign: 'top' }}></img><span style={{ marginLeft: '5px', display: 'inline-block', width: '130px' }}>{type}</span></div>
+        <div key={`legendItem-${type}`} style={{ width: '160px', marginBottom: '5px' }}>
+          <img src={getMarker(type)} style={{ display: 'inline-block', width: '25px', verticalAlign: 'top' }}></img>
+          <span style={{ marginLeft: '5px', display: 'inline-block', width: '130px' }}>{type}</span>
+        </div>
       ))}
     </div>
   );
@@ -137,9 +140,25 @@ const DevelopmentByNeighborhood = (props) => {
             <EmailDownload downloadData={props.data.permits_by_neighborhood} fileName="permits_by_neighborhood.csv" />
           </div>
           <ButtonGroup alignment="right">
-            <Button onClick={() => refreshLocation(getNewUrlParams('map'), props.location)} active={props.location.query.view === 'map'} positionInGroup="left">Map view</Button>
-            <Button onClick={() => refreshLocation(getNewUrlParams('list'), props.location)} active={props.location.query.view === 'list'} positionInGroup="middle">List view</Button>
-            <Button onClick={() => refreshLocation(getNewUrlParams('summary'), props.location)} positionInGroup="right" active={props.location.query.view === 'summary'}>Chart</Button>
+            <Button
+              onClick={() => refreshLocation(getNewUrlParams('map'), props.location)} active={props.location.query.view === 'map'}
+              positionInGroup="left"
+            >
+              Map view
+            </Button>
+            <Button
+              onClick={() => refreshLocation(getNewUrlParams('list'), props.location)} active={props.location.query.view === 'list'}
+              positionInGroup="middle"
+            >
+              List view
+            </Button>
+            <Button
+              onClick={() => refreshLocation(getNewUrlParams('summary'), props.location)}
+              positionInGroup="right"
+              active={props.location.query.view === 'summary'}
+            >
+              Chart
+            </Button>
           </ButtonGroup>
         </div>
       </div>

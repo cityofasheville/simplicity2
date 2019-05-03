@@ -30,8 +30,17 @@ const GET_NEIGHBORHOODS = gql`
   }
 `;
 
-const PermitMap = ({ permitData, centerCoords, zoom }) => (
-  <Query
+const PermitMap = ({ permitData, centerCoords, zoom, showNeighborhoods = false }) => {
+  if (!showNeighborhoods) {
+    return (<Map
+      data={permitData}
+      center={centerCoords}
+      height="100%"
+      width="100%"
+      zoom={14}
+    />);
+  }
+  return (<Query
     query={GET_NEIGHBORHOODS}
   >
     {({ loading, error, data }) => {
@@ -51,7 +60,7 @@ const PermitMap = ({ permitData, centerCoords, zoom }) => (
       />);
       }
     }
-  </Query>
-);
+  </Query>);
+};
 
 export default PermitMap;

@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import moment from 'moment';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
+import PermitsMap from './PermitsMap';
 import PermitsTable from './PermitsTable';
 
 const GET_PROJECTS = gql`
@@ -55,7 +56,24 @@ const PermitsTableWrapper = props => (
           return typeOfInterest;
         });
       }
-      return (<PermitsTable data={filteredData} {...props} />);
+      return (<React.Fragment>
+        <div className="col-sm-12">
+          <div className="map-container" style={{ height: '300px', width: '100%' }}>
+            <PermitsMap
+              permitData={filteredData.filter(d => d.x && d.y).map(d => Object.assign(
+                {},
+                thisPermit,
+                {
+                  popup: `<b>${thisPermit.address}</b>`,
+                },
+              ))}
+              zoom={13}
+              centerCoords={[35.5951, -82.5515]}
+            />
+          </div>
+        </div>
+        <PermitsTable data={filteredData} {...props} />
+      </React.Fragment>);
     }}
   </Query>
 );

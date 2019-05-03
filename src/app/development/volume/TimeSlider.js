@@ -96,7 +96,7 @@ class TimeSlider extends React.Component {
         style={{ width: '100%', margin: '2em 0' }}
       >
         <ErrorBoundary>
-          <div className="visualization-title">
+          <div>
             <form onSubmit={this.handleSubmit} style={{ textAlign: 'center' }}>
               <div
                 className="form-group"
@@ -173,11 +173,11 @@ class TimeSlider extends React.Component {
             responsiveWidth
             margin={{
               top: 20,
-              right: 5,
+              right: 10,
               bottom: 50,
               left: 25,
             }}
-            size={[1000, 85]}
+            size={[1000, 75]}
             xAccessor={d => d}
             yAccessor={() => 0}
             xExtent={this.xSpan}
@@ -190,7 +190,7 @@ class TimeSlider extends React.Component {
                     style={{ fontSize: '0.70em' }}
                     transform="rotate(-45)"
                   >
-                    {moment.utc(d).format('MM/YYYY')}
+                    {moment.utc(d).format('MMM YY')}
                   </text>
                 ),
                 tickValues: ticks,

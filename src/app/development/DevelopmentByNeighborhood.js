@@ -185,7 +185,11 @@ const DevelopmentByNeighborhood = (props) => {
               drawPolygon
               legend={createLegend(props.data.permits_by_neighborhood)}
               polygonData={combinePolygonsFromNeighborhoodList([props.data.neighborhoods[0]])}
-              bounds={(props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== '') ? null : getBoundsFromPolygonData([props.data.neighborhoods[0].polygon])}
+              bounds={
+                (props.location.query.zoomToPoint !== undefined & props.location.query.zoomToPoint !== '') ?
+                null :
+                getBoundsFromPolygonData([props.data.neighborhoods[0].polygon])
+              }
               within={parseInt(props.location.query.within, 10)}
               zoomToPoint={(props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== '') ? props.location.query.zoomToPoint : null}
             />

@@ -252,7 +252,12 @@ const Permit = props => (
         )
       }
 
-      console.log(formattedPermit)
+      /* TODO:
+        apply format functions
+        add little information icons where there are values for details
+        move type puck into type of permit review?
+        are we using fieldset and label and label for correctly on simplicity address page?  if so apply here, if not correct that and css
+      */
 
       return (<div className="container">
         <div className="row">

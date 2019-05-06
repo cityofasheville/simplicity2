@@ -132,7 +132,7 @@ export const combinePolygonsFromPropertyList = (propertyList) => {
 export const combinePolygonsFromNeighborhoodList = (neighborhoodList) => {
   const polygons = [];
   for (let key of Object.keys(neighborhoodList)) {
-    const polygonData = {};
+    const polygonData = Object.assign({}, neighborhoodList[key]);
     polygonData.polygons = [];
     polygonData.polygons = convertPolygonsToLatLngArrays([neighborhoodList[key].polygon]);
     polygons.push(polygonData);

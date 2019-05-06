@@ -32,7 +32,7 @@ class PermitsTable extends React.Component {
         const keyVal = param.split('=');
         filtered.push({
           id: keyVal[0],
-          value: keyVal[1],
+          value: decodeURI(keyVal[1]),
         });
       });
     }
@@ -100,7 +100,6 @@ class PermitsTable extends React.Component {
                   let match = false;
                   // Iterate until you get children that are text and then use those?
                   const compareText = extractTextFromReactComponents(row[id]);
-
                   values.forEach((val) => {
                     match = match || (compareText !== undefined ?
                       String(compareText).toLowerCase().indexOf(val.toLowerCase()) > -1

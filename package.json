@@ -96,7 +96,7 @@
     "react-csv": "^1.0.10",
     "react-dom": "^16.3.2",
     "react-ga": "^2.2.0",
-    "react-leaflet": "^1.7.4",
+    "react-leaflet": "^1.9.1",
     "react-leaflet-google": "^3.2.1",
     "react-leaflet-markercluster": "^1.1.7",
     "react-measure": "^2.0.2",

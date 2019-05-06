@@ -2,6 +2,10 @@
   height: 100%;
 }
 
+.leaflet-container * {
+  z-index: 0;
+}
+
 .legend {
   display: none;
   position: absolute;

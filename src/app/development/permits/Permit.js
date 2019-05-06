@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import moment from 'moment';
 import { Query } from 'react-apollo';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
-import Map from '../../../shared/visualization/Map';
+import PermitsMap from './PermitsMap';
 import TypePuck from '../trc/TypePuck';
 import { trcProjectTypes } from '../utils';
 
@@ -14,11 +14,11 @@ const GET_PERMIT = gql`
   query getPermitsQuery($permit_numbers: [String]) {
     permits(permit_numbers: $permit_numbers) {
       permit_number
-      permit_description
       permit_group
       permit_type
       permit_subtype
       permit_category
+      permit_description
       application_name
       applied_date
       status_current
@@ -26,6 +26,7 @@ const GET_PERMIT = gql`
       job_value
       total_project_valuation
       total_sq_feet
+      civic_address_id
       address
       x
       y
@@ -200,11 +201,9 @@ const Permit = props => (
           <h1 className="title__text">{h1Title}</h1>
           {showMap && (<div className="col-sm-12 col-md-6">
             <div className="map-container" style={{ height: `${firstGroupFields.length * 4}em` }}>
-              <Map
-                data={mapData}
-                center={[formattedPermit.y, formattedPermit.x]}
-                height="100%"
-                width="100%"
+              <PermitsMap
+                permitData={mapData}
+                centerCoords={[formattedPermit.y, formattedPermit.x]}
                 zoom={14}
               />
             </div>

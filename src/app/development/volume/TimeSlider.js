@@ -96,10 +96,10 @@ class TimeSlider extends React.Component {
         style={{ width: '100%', margin: '2em 0' }}
       >
         <ErrorBoundary>
-          <div className="visualization-title">
+          <div>
             <form onSubmit={this.handleSubmit} style={{ textAlign: 'center' }}>
               <div
-                className="form-group"
+                className=""
                 style={{ display: 'inline-block', padding: '0 0.25em 0 0', whiteSpace: 'nowrap' }}
               >
                 <label
@@ -112,7 +112,7 @@ class TimeSlider extends React.Component {
                   type="date"
                   id="startdate"
                   name="startdate"
-                  className="form-control input-sm visualization-title"
+                  className="form-control input-sm"
                   style={{ display: 'inline-block', width: '11em' }}
                   value={moment.utc(new Date(this.state.firstInputVal)).format('YYYY-MM-DD')}
                   onChange={(e) => {
@@ -130,7 +130,7 @@ class TimeSlider extends React.Component {
                 />
               </div>
               <div
-                className="form-group"
+                className=""
                 style={{ display: 'inline-block', padding: '0 0.25em 0 0', whiteSpace: 'nowrap' }}
               >
                 <label
@@ -143,7 +143,7 @@ class TimeSlider extends React.Component {
                   type="date"
                   id="enddate"
                   name="enddate"
-                  className="form-control input-sm visualization-title"
+                  className="form-control input-sm"
                   style={{ display: 'inline-block', width: '11em' }}
                   value={moment.utc(new Date(this.state.secondInputVal)).format('YYYY-MM-DD')}
                   onChange={(e) => {
@@ -164,7 +164,7 @@ class TimeSlider extends React.Component {
                 type="submit"
                 value="Set Dates"
                 className="btn btn-primary btn-sm"
-                style={{ margin: '0 1em' }}
+                style={{ margin: '0 1em', lineHeight: 'inherit' }}
               />
             </form>
           </div>
@@ -173,11 +173,11 @@ class TimeSlider extends React.Component {
             responsiveWidth
             margin={{
               top: 20,
-              right: 5,
+              right: 10,
               bottom: 50,
               left: 25,
             }}
-            size={[1000, 85]}
+            size={[1000, 75]}
             xAccessor={d => d}
             yAccessor={() => 0}
             xExtent={this.xSpan}
@@ -190,7 +190,7 @@ class TimeSlider extends React.Component {
                     style={{ fontSize: '0.70em' }}
                     transform="rotate(-45)"
                   >
-                    {moment.utc(d).format('MM/YYYY')}
+                    {moment.utc(d).format('MMM YY')}
                   </text>
                 ),
                 tickValues: ticks,

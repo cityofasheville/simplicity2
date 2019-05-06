@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import moment from 'moment';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
+import PermitsMap from './PermitsMap';
 import PermitsTable from './PermitsTable';
 
 const GET_PROJECTS = gql`
@@ -18,7 +19,10 @@ const GET_PROJECTS = gql`
       permit_type
       status_current
       status_date
+      civic_address_id
       address
+      x
+      y
     }
   }
 `;
@@ -55,7 +59,35 @@ const PermitsTableWrapper = props => (
           return typeOfInterest;
         });
       }
-      return (<PermitsTable data={filteredData} {...props} />);
+      console.log(filteredData)
+      return (<React.Fragment>
+        <div className="col-sm-12">
+          <div className="map-container" style={{ height: '350px', width: '100%' }}>
+            <PermitsMap
+              permitData={filteredData.filter(d => d.x && d.y).map(d => Object.assign(
+                {},
+                d,
+                {
+                  popup: `<a href="/permits/${d.permit_number}">${d.application_name}</a><br/>${d.address}`,
+                  // TODO: if trc type, get puck?
+                  // options: {
+                  //   icon: (<TypePuck
+                  //     typeObject={Object.values(trcProjectTypes).find(type =>
+                  //         type.permit_type === d.permit_type &&
+                  //         type.permit_subtype === d.permit_subtype
+                  //       )}
+                  //     size={30}
+                  //   />)
+                  // }
+                },
+              ))}
+              zoom={12}
+              centerCoords={[35.5951, -82.5515]}
+            />
+          </div>
+        </div>
+        <PermitsTable data={filteredData} {...props} />
+      </React.Fragment>);
     }}
   </Query>
 );

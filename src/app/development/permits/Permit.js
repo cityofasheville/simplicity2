@@ -164,16 +164,20 @@ const environmentDetails = [
 ];
 
 // TODO: RETURN NULL IF THERE ISN'T A VALUE?  OR LEAVE IT BLANK?
-const DtSet = props => (
-  <div className="DtSet">
-    <dt
-      className="text-left text-capitalize"
-    >
-      {props.label}:
-    </dt>
-    <dd>
-      {props.value}
-    </dd>
+const PermitDataSubset = props => (
+  <div className="detailsFieldset__details-listings">
+    {props.detailsSet.map(d => (props.formattedPermit[d['Accela Label'].toLowerCase().split(' ').join('_')] &&
+      <div className="form-group form-group--has-content" key={d['Accela Label']}>
+        <div className="form-group__inner">
+          <div className="form-group__label">
+            {d['Display Label']}
+          </div>
+          <div className="form-group__value">
+            {props.formattedPermit[d['Accela Label'].toLowerCase().split(' ').join('_')]}
+          </div>
+        </div>
+      </div>
+    ))}
   </div>
 );
 
@@ -198,7 +202,7 @@ const Permit = props => (
       const formattedPermit = Object.assign({}, thisPermit);
       // These are all the "misc" info fields that may or may not be filled out for any permit
       thisPermit.custom_fields.forEach((customField) => {
-        formattedPermit[customField.name] = customField.value;
+        formattedPermit[customField.name.toLowerCase().split(' ').join('_')] = customField.value;
       });
 
       // The popup is what you see when you click on the pin
@@ -248,6 +252,8 @@ const Permit = props => (
         )
       }
 
+      console.log(formattedPermit)
+
       return (<div className="container">
         <div className="row">
           <h1 className="title__text">{h1Title}</h1>
@@ -262,13 +268,7 @@ const Permit = props => (
           </div>)}
           <div className={`col-sm-12 col-md-${showMap ? 6 : 12}`}>
             <h2>Overview</h2>
-            <dl className="dl-horizontal summary-group">
-              {projectDetails.map(d => (<DtSet
-                key={d['Display Label']}
-                label={d['Display Label']}
-                value={formattedPermit[d['Accela Label'].toLowerCase().split(' ').join('_')]}
-              />))}
-            </dl>
+            <PermitDataSubset detailsSet={projectDetails} formattedPermit={formattedPermit} />
             {trcType !== undefined &&
               (<div style={{ display: 'flex' }}>
                 <a style={{ marginRight: '1em' }} href="/development/major">
@@ -288,22 +288,14 @@ const Permit = props => (
           <PermitTasks {...props} />
           <p>To see more details about this permit, look it up in <a href="https://services.ashevillenc.gov/CitizenAccess" target="_blank" rel="noopener noreferrer">Accela Citizen Access</a>.</p>
         </div>*/}
-        <div className="row">
-          <h2>Details</h2>
-          <dl className="dl-horizontal col-sm-12 col-md-6">
-            {zoningDetails.map(d => (<DtSet
-              key={d['Display Label']}
-              label={d['Display Label']}
-              value={formattedPermit[d['Accela Label'].toLowerCase().split(' ').join('_')]}
-            />))}
-          </dl>
-          <dl className="dl-horizontal col-sm-12 col-md-6">
-            {environmentDetails.map(d => (<DtSet
-              key={d['Display Label']}
-              label={d['Display Label']}
-              value={formattedPermit[d['Accela Label'].toLowerCase().split(' ').join('_')]}
-            />))}
-          </dl>
+        <div className="col-sm-12 col-md-6">
+          <h2>Zoning Details</h2>
+          <PermitDataSubset detailsSet={zoningDetails} formattedPermit={formattedPermit} />
+        </div>
+
+        <div className="col-sm-12 col-md-6">
+          <h2>Environmental Details</h2>
+          <PermitDataSubset detailsSet={environmentDetails} formattedPermit={formattedPermit} />
         </div>
       </div>);
     }}

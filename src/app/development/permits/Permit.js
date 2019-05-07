@@ -46,22 +46,138 @@ const GET_PERMIT = gql`
   }
 `;
 
+const projectDetails = [
+  {
+    "Accela Label": "Permit Subtype",
+    "Display Label": "Type of permit review",
+    "Description": "Level of project review",
+    "Examples": ""
+  },
+  {
+    "Accela Label": "Application Name",
+    "Display Label": "Project name",
+    "Description": "Name of project",
+    "Examples": ""
+  },
+  {
+    "Accela Label": "Plans Folder Location",
+    "Display Label": "Plan sets and documents in review",
+    "Description": "Google Drive folder link to view documents",
+    "Examples": ""
+  },
+  {
+    "Accela Label": "Subdivision Number",
+    "Display Label": "Number of lots to be created",
+    "Description": "Number of subdivision lots to be created",
+    "Examples": ""
+  },
+  {
+    "Accela Label": "Total Property Size",
+    "Display Label": "Total property acreage",
+    "Description": "",
+    "Examples": ""
+  },
+  {
+    "Accela Label": "Affordable Housing",
+    "Display Label": "Affordable Housing proposed",
+    "Description": "",
+    "Examples": ""
+  },
+];
+
+const zoningDetails = [
+  {
+    "Accela Label": "Zoning District",
+    "Display Label": "Zoning district",
+    "Description": "",
+    "Examples": ""
+  },
+  {
+    "Accela Label": "Corner Side",
+    "Display Label": "Side or corner setback",
+    "Description": "Minimum distance required between the side or corner property line and structures",
+    "Examples": ""
+  },
+  {
+    "Accela Label": "Front",
+    "Display Label": "Front setback",
+    "Description": "Minimum distance required between the front property line and structures",
+    "Examples": ""
+  },
+  {
+    "Accela Label": "Rear",
+    "Display Label": "Rear Setback",
+    "Description": "Minimum distance between the front property line and structures",
+    "Examples": ""
+  },
+  {
+    "Accela Label": "DTDR Overlay",
+    "Display Label": "Central Business District",
+    "Description": "",
+    "Examples": ""
+  },
+  {
+    "Accela Label": "HRC Overlay",
+    "Display Label": "Historic district",
+    "Description": "",
+    "Examples": ""
+  },
+  {
+    "Accela Label": "River District",
+    "Display Label": "River District",
+    "Description": "",
+    "Examples": ""
+  },
+];
+
+const environmentDetails = [
+  {
+    "Accela Label": "Aquatic Buffer",
+    "Display Label": "Buffer to a natural water source on this property",
+    "Description": "",
+    "Examples": ""
+  },
+  {
+    "Accela Label": "Flood Plain",
+    "Display Label": "Located in the flood plain",
+    "Description": "",
+    "Examples": ""
+  },
+  {
+    "Accela Label": "Percent Slope",
+    "Display Label": "Average slope of the property",
+    "Description": "",
+    "Examples": ""
+  },
+  {
+    "Accela Label": "Max Elevation",
+    "Display Label": "Maximum elevation of the property",
+    "Description": "",
+    "Examples": ""
+  },
+  {
+    "Accela Label": "Seeking LEED Certification",
+    "Display Label": "Seeking LEED Certification",
+    "Description": "",
+    "Examples": ""
+  }
+];
+
 // TODO: RETURN NULL IF THERE ISN'T A VALUE?  OR LEAVE IT BLANK?
-const DtSet = props => (
-  <div className="DtSet">
-    <dt
-      className="text-left text-capitalize"
-    >
-      {props.fieldFormatters[props.datum] && props.fieldFormatters[props.datum].keyFormatter ?
-        props.fieldFormatters[props.datum].keyFormatter(props.datum) : props.datum.split('_').join(' ')
-      }:
-    </dt>
-    <dd>
-      {props.fieldFormatters[props.datum] && props.fieldFormatters[props.datum].valueFormatter ?
-        props.fieldFormatters[props.datum].valueFormatter(props.formattedPermit[props.datum]) :
-        props.formattedPermit[props.datum]
-      }
-    </dd>
+const PermitDataSubset = props => (
+  <div className="detailsFieldset__details-listings">
+    {props.detailsSet.map(d => (props.formattedPermit[d['Accela Label'].toLowerCase().split(' ').join('_')] &&
+      <div className="form-group form-group--has-content" key={d['Accela Label']}>
+        <div className="form-group__inner">
+          <div className="form-group__label">
+            {d['Display Label']}
+          </div>
+          <div className="form-group__value">
+            {props.formattedPermit[d['Accela Label'].toLowerCase().split(' ').join('_')]}
+          </div>
+        </div>
+      </div>
+    ))}
   </div>
 );
 
@@ -84,14 +200,14 @@ const Permit = props => (
 
       const thisPermit = data.permits[0];
       const formattedPermit = Object.assign({}, thisPermit);
-
       // These are all the "misc" info fields that may or may not be filled out for any permit
       thisPermit.custom_fields.forEach((customField) => {
-        formattedPermit[customField.name] = customField.value;
+        formattedPermit[customField.name.toLowerCase().split(' ').join('_')] = customField.value;
       });
 
       // The popup is what you see when you click on the pin
       const mapData = [Object.assign(
+        // TODO: USE TYPEPUCK
         {},
         thisPermit,
         {
@@ -126,68 +242,8 @@ const Permit = props => (
           ),
         },
       };
-      // These fields are shown in the summary area
-      const firstGroupFields = [
-        'address',
-        'applied_date',
-        'permit_number', // TODO: MAKE THIS THE LINK TO ACA
-        'status_current',
-        'Pinnumber',
-      ];
 
-      /*
-      make address a link to simplicity
-      make permit number a link to ACA
-      show number of units if not 0 - include at top
-      show affordable housing at top - only if number of units is not 0
-      permit permit_description - as is
-      group, type, subtype, cat - show a nice version at the top
-      overall record status - make it "current review status" - do not include status date
-
-      include in details section at bottom
-      construction value - from fields
-      total prop size - from fields, add unit of acres
-      subdivision # lots - yes
-      total sq feet - yes, not from fields?
-      zoning district - from fields, link to municode, call it "current zoning district"
-      */
-
-
-      // label workflow tasks as timeline instead of recent updates
-      // add applied date, initial trc date if it exists
-      // const additionalTimelineEvents = [
-      //   // {
-      //   //   current_status_date:,
-      //   //   task:,
-      //   //   task_status:,
-      //   // },
-      // ]
-
-      // make contact section - applicant name, contractor names, planner name if available
-      // const contactInfoFields = [
-      //   'application_name',
-      //   'contractor_names',
-      //   // TODO: PLANNER NAME?
-      // ]
-
-      // These fields are handled in a special way and shouldn't just be iterated over
-      const specialFields = [
-        'permit_description',
-        'custom_fields',
-        'x',
-        'y',
-        'comments',
-        // TODO: SHOULD WE INCLUDE COMMENTS?
-      ].concat(firstGroupFields)
-
-      const detailsFields = Object.keys(formattedPermit)
-        .filter(d => specialFields.indexOf(d) === -1 && +formattedPermit[d] !== 0);
-      const halfLengthDetails = Math.ceil(detailsFields.length / 2);
-
-      // Sample ACA link
-      // https://services.ashevillenc.gov/CitizenAccess/Cap/CapDetail.aspx?Module=Planning&TabName=Planning&capID1=19CAP&capID2=00000&capID3=000NZ&agencyCode=ASHEVILLE
-
-      const h1Title = `${formattedPermit.permit_subtype} ${formattedPermit.permit_type} Application`;
+      const h1Title = formattedPermit.application_name;
       let trcType = undefined;
       if (formattedPermit.permit_group === 'Planning') {
         trcType = Object.values(trcProjectTypes).find(type =>
@@ -196,11 +252,18 @@ const Permit = props => (
         )
       }
 
+      /* TODO:
+        apply format functions
+        add little information icons where there are values for details
+        move type puck into type of permit review?
+        are we using fieldset and label and label for correctly on simplicity address page?  if so apply here, if not correct that and css
+      */
+
       return (<div className="container">
         <div className="row">
           <h1 className="title__text">{h1Title}</h1>
           {showMap && (<div className="col-sm-12 col-md-6">
-            <div className="map-container" style={{ height: `${firstGroupFields.length * 4}em` }}>
+            <div className="map-container" style={{ height: `${projectDetails.length * 4}em` }}>
               <PermitsMap
                 permitData={mapData}
                 centerCoords={[formattedPermit.y, formattedPermit.x]}
@@ -209,16 +272,8 @@ const Permit = props => (
             </div>
           </div>)}
           <div className={`col-sm-12 col-md-${showMap ? 6 : 12}`}>
-            <h2>Summary</h2>
-            <p className="summary-group">{formattedPermit.permit_description}</p>
-            <dl className="dl-horizontal summary-group">
-              {firstGroupFields.map(d => (<DtSet
-                key={d}
-                datum={d}
-                fieldFormatters={fieldFormatters}
-                formattedPermit={formattedPermit}
-              />))}
-            </dl>
+            <h2>Overview</h2>
+            <PermitDataSubset detailsSet={projectDetails} formattedPermit={formattedPermit} />
             {trcType !== undefined &&
               (<div style={{ display: 'flex' }}>
                 <a style={{ marginRight: '1em' }} href="/development/major">
@@ -238,28 +293,14 @@ const Permit = props => (
           <PermitTasks {...props} />
           <p>To see more details about this permit, look it up in <a href="https://services.ashevillenc.gov/CitizenAccess" target="_blank" rel="noopener noreferrer">Accela Citizen Access</a>.</p>
         </div>*/}
-        <div className="row">
-          <h2>Details</h2>
-          <dl className="dl-horizontal col-sm-12 col-md-6">
-            {detailsFields.slice(0, halfLengthDetails)
-              .map(d => (<DtSet
-                key={d}
-                datum={d}
-                fieldFormatters={fieldFormatters}
-                formattedPermit={formattedPermit}
-              />))
-            }
-          </dl>
-          <dl className="dl-horizontal col-sm-12 col-md-6">
-            {detailsFields.slice(halfLengthDetails, detailsFields.length)
-              .map(d => (<DtSet
-                key={d}
-                datum={d}
-                fieldFormatters={fieldFormatters}
-                formattedPermit={formattedPermit}
-              />))
-            }
-          </dl>
+        <div className="col-sm-12 col-md-6">
+          <h2>Zoning Details</h2>
+          <PermitDataSubset detailsSet={zoningDetails} formattedPermit={formattedPermit} />
+        </div>
+
+        <div className="col-sm-12 col-md-6">
+          <h2>Environmental Details</h2>
+          <PermitDataSubset detailsSet={environmentDetails} formattedPermit={formattedPermit} />
         </div>
       </div>);
     }}

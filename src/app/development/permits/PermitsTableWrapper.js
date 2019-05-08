@@ -13,6 +13,7 @@ const GET_PROJECTS = gql`
       application_name
       applied_date
       permit_category
+      permit_description
       permit_group
       permit_number
       permit_subtype
@@ -59,7 +60,6 @@ const PermitsTableWrapper = props => (
           return typeOfInterest;
         });
       }
-      console.log(filteredData)
       return (<div className="col-sm-12">
         <div>
           <div className="map-container" style={{ height: '350px', width: '100%' }}>
@@ -68,7 +68,7 @@ const PermitsTableWrapper = props => (
                 {},
                 d,
                 {
-                  popup: `<a href="/permits/${d.permit_number}">${d.application_name}</a><br/>${d.address}`,
+                  popup: `<a href="/permits/${d.permit_number}">${d.application_name}</a><br/>${d.address}<br/>${d.permit_description}`,
                   // TODO: if trc type, get puck?
                   // options: {
                   //   icon: (<TypePuck

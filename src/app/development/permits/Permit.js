@@ -243,7 +243,6 @@ const Permit = props => (
       // Don't show map if there are no coordinates
       const showMap = thisPermit.y && thisPermit.x;
 
-      const h1Title = formattedPermit.application_name;
       let trcType = undefined;
       if (formattedPermit.permit_group === 'Planning') {
         trcType = Object.values(trcProjectTypes).find(type =>
@@ -253,7 +252,6 @@ const Permit = props => (
       }
 
       /* TODO:
-        apply format functions
         add little information icons where there are values for details
         move type puck into type of permit review?
         are we using fieldset and label and label for correctly on simplicity address page?  if so apply here, if not correct that and css
@@ -261,9 +259,9 @@ const Permit = props => (
 
       return (<div className="container">
         <div className="row">
-          <h1 className="title__text">{h1Title}</h1>
+          <h1 className="title__text">{formattedPermit.application_name}</h1>
           {showMap && (<div className="col-sm-12 col-md-6">
-            <div className="map-container" style={{ height: `${projectDetails.length * 7}em` }}>
+            <div className="map-container" style={{ height: `75vh` }}>
               <PermitsMap
                 permitData={mapData}
                 centerCoords={[formattedPermit.y, formattedPermit.x]}
@@ -272,7 +270,6 @@ const Permit = props => (
             </div>
           </div>)}
           <div className={`col-sm-12 col-md-${showMap ? 6 : 12}`}>
-            <h2>Overview</h2>
             <div className="detailsFieldset__details-listings">
               <p>{formattedPermit.permit_description}</p>
             </div>

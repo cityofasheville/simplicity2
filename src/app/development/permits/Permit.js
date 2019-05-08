@@ -7,6 +7,7 @@ import LoadingAnimation from '../../../shared/LoadingAnimation';
 import PermitsMap from './PermitsMap';
 import TypePuck from '../trc/TypePuck';
 import { trcProjectTypes } from '../utils';
+import { zoningLinks } from '../../address/zoning';
 
 // Make query based on URL, render sub components depending on query results
 
@@ -24,23 +25,15 @@ const GET_PERMIT = gql`
       status_current
       status_date
       job_value
-      total_project_valuation
       total_sq_feet
       civic_address_id
       address
       x
       y
-      internal_record_id
-      contractor_names
       custom_fields {
         type
         name
         value
-      }
-      comments {
-        comment_seq_number
-        comment_date
-        comments
       }
     }
   }
@@ -163,21 +156,54 @@ const environmentDetails = [
   }
 ];
 
+const dateFormatter = inputDate => moment(new Date(inputDate)).format('MM/DD/YYYY');
+const fieldFormatters = {
+  applied_date: dateFormatter,
+  status_date: dateFormatter,
+  plans_folder_location: d => (<a href={d} target="_blank" rel="noopener noreferrer">Documents folder</a>),
+  zoning_district: d => d.split(',').map(zone => (
+    <a
+      href={zoningLinks[zone]}
+      target="_blank"
+      rel="noopener noreferrer"
+      key={zone}
+    >
+      {zone}
+    </a>
+  )),
+  // Pinnumber: {
+  //   keyFormatter: () => 'Pin Number',
+  //   valueFormatter: pin => (
+  //     <a
+  //       href={`/property?search=${pin}&id=${pin}&entities=undefined&entity=property`}
+  //     >
+  //       {pin}
+  //     </a>
+  //   ),
+  // },
+};
+
 // TODO: RETURN NULL IF THERE ISN'T A VALUE?  OR LEAVE IT BLANK?
 const PermitDataSubset = props => (
   <div className="detailsFieldset__details-listings">
-    {props.detailsSet.map(d => (props.formattedPermit[d['Accela Label'].toLowerCase().split(' ').join('_')] &&
-      <div className="form-group form-group--has-content" key={d['Accela Label']}>
+    {props.detailsSet.map(d => {
+      const snakeCaseAccelaLabel = d['Accela Label'].toLowerCase().split(' ').join('_');
+      const val =  props.formattedPermit[snakeCaseAccelaLabel];
+      if (!val) {
+        return;
+      }
+      const formattedDisplayVal = fieldFormatters[snakeCaseAccelaLabel] ? fieldFormatters[snakeCaseAccelaLabel](val) : val;
+      return (<div className="form-group form-group--has-content" key={d['Accela Label']}>
         <div className="form-group__inner">
           <div className="form-group__label">
             {d['Display Label']}
           </div>
           <div className="form-group__value">
-            {props.formattedPermit[d['Accela Label'].toLowerCase().split(' ').join('_')]}
+            {formattedDisplayVal}
           </div>
         </div>
-      </div>
-    ))}
+      </div>)
+    })}
   </div>
 );
 
@@ -199,7 +225,7 @@ const Permit = props => (
       }
 
       const thisPermit = data.permits[0];
-      const formattedPermit = Object.assign({}, thisPermit);
+      let formattedPermit = Object.assign({}, thisPermit);
       // These are all the "misc" info fields that may or may not be filled out for any permit
       thisPermit.custom_fields.forEach((customField) => {
         formattedPermit[customField.name.toLowerCase().split(' ').join('_')] = customField.value;
@@ -217,33 +243,6 @@ const Permit = props => (
       // Don't show map if there are no coordinates
       const showMap = thisPermit.y && thisPermit.x;
 
-      const dateFormatter = inputDate => moment(new Date(inputDate)).format('MM/DD/YYYY');
-      const fieldFormatters = {
-        applied_date: {
-          valueFormatter: dateFormatter,
-        },
-        status_date: {
-          valueFormatter: dateFormatter,
-        },
-        status_current: {
-          keyFormatter: () => 'Review Status',
-        },
-        contractor_names: {
-          valueFormatter: namesArray => Object.values(namesArray).join(', '),
-        },
-        Pinnumber: {
-          keyFormatter: () => 'Pin Number',
-          valueFormatter: pin => (
-            <a
-              href={`/property?search=${pin}&id=${pin}&entities=undefined&entity=property`}
-            >
-              {pin}
-            </a>
-          ),
-        },
-      };
-
-      const h1Title = formattedPermit.application_name;
       let trcType = undefined;
       if (formattedPermit.permit_group === 'Planning') {
         trcType = Object.values(trcProjectTypes).find(type =>
@@ -253,7 +252,6 @@ const Permit = props => (
       }
 
       /* TODO:
-        apply format functions
         add little information icons where there are values for details
         move type puck into type of permit review?
         are we using fieldset and label and label for correctly on simplicity address page?  if so apply here, if not correct that and css
@@ -261,9 +259,9 @@ const Permit = props => (
 
       return (<div className="container">
         <div className="row">
-          <h1 className="title__text">{h1Title}</h1>
+          <h1 className="title__text">{formattedPermit.application_name}</h1>
           {showMap && (<div className="col-sm-12 col-md-6">
-            <div className="map-container" style={{ height: `${projectDetails.length * 4}em` }}>
+            <div className="map-container" style={{ height: `75vh` }}>
               <PermitsMap
                 permitData={mapData}
                 centerCoords={[formattedPermit.y, formattedPermit.x]}
@@ -272,7 +270,9 @@ const Permit = props => (
             </div>
           </div>)}
           <div className={`col-sm-12 col-md-${showMap ? 6 : 12}`}>
-            <h2>Overview</h2>
+            <div className="detailsFieldset__details-listings">
+              <p>{formattedPermit.permit_description}</p>
+            </div>
             <PermitDataSubset detailsSet={projectDetails} formattedPermit={formattedPermit} />
             {trcType !== undefined &&
               (<div style={{ display: 'flex' }}>

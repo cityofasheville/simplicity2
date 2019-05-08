@@ -60,6 +60,10 @@ ul.sectionNav li {
   stroke: gray;
 }
 
+.cssload-loader {
+  margin: 0 auto;
+}
+
 @media(max-width: 767px){
   #majorDevDash p, #majorDevDash p ~ ul {
     width: 90%;

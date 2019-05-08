@@ -60,8 +60,8 @@ const PermitsTableWrapper = props => (
         });
       }
       console.log(filteredData)
-      return (<React.Fragment>
-        <div className="col-sm-12">
+      return (<div className="col-sm-12">
+        <div>
           <div className="map-container" style={{ height: '350px', width: '100%' }}>
             <PermitsMap
               permitData={filteredData.filter(d => d.x && d.y).map(d => Object.assign(
@@ -87,7 +87,7 @@ const PermitsTableWrapper = props => (
           </div>
         </div>
         <PermitsTable data={filteredData} {...props} />
-      </React.Fragment>);
+      </div>);
     }}
   </Query>
 );

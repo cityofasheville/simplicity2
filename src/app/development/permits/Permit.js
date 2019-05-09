@@ -48,7 +48,7 @@ const projectDetails = [
   },
   {
     "Accela Label": "Plans Folder Location",
-    "Display Label": "Plan sets and documents in review",
+    "Display Label": "Site plans and documents",
     "Description": "Google Drive folder link to view documents",
     "Examples": ""
   },
@@ -59,14 +59,20 @@ const projectDetails = [
     "Examples": ""
   },
   {
-    "Accela Label": "Total Property Size",
+    "Accela Label": "Total property size",
     "Display Label": "Total property acreage",
     "Description": "",
     "Examples": ""
   },
   {
     "Accela Label": "Affordable Housing",
-    "Display Label": "Affordable Housing proposed",
+    "Display Label": "Affordable housing proposed",
+    "Description": "",
+    "Examples": ""
+  },
+  {
+    "Accela Label": "Number of Units",
+    "Display Label": "Number of residential units",
     "Description": "",
     "Examples": ""
   },
@@ -99,7 +105,7 @@ const zoningDetails = [
   },
   {
     "Accela Label": "DTDR Overlay",
-    "Display Label": "Central Business District",
+    "Display Label": "Central business district",
     "Description": "",
     "Examples": ""
   },
@@ -111,7 +117,13 @@ const zoningDetails = [
   },
   {
     "Accela Label": "River District",
-    "Display Label": "River District",
+    "Display Label": "River district",
+    "Description": "",
+    "Examples": ""
+  },
+  {
+    "Accela Label": "Landmark",
+    "Display Label": "Historic landmark",
     "Description": "",
     "Examples": ""
   },
@@ -165,8 +177,9 @@ const fieldFormatters = {
       {zone}
     </a>
   )),
-  percent_slope: d => `${d}%`,
-  max_elevation: d => `${d} feet`,
+  percent_slope: d => `${Math.round(+d)}%`,
+  max_elevation: d => `${Math.round(+d)} feet`,
+  total_property_size: d => `${d} acres`,
 };
 
 // TODO: RETURN NULL IF THERE ISN'T A VALUE?  OR LEAVE IT BLANK?

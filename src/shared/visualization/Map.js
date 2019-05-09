@@ -48,9 +48,24 @@ const mapKey = 'AIzaSyAO8R1pXvBhpRoTFJ4d81MA8D8QBD0mPe0'; // restrict your refer
 const { BaseLayer } = LayersControl;
 const satellite = 'SATELLITE';
 
+function markerClusterKeyDown(e) {
+  if (e.originalEvent.key ===  'Enter') {
+    e.originalEvent.target.click();
+  }
+}
+
+const createClusterCustomIcon = function (cluster) {
+  return L.divIcon({
+    html: `<div><span aria-label="${cluster.getChildCount()} projects">${cluster.getChildCount()}</span></div>`,
+    className: 'marker-cluster-custom marker-cluster marker-cluster-small',
+    iconSize: L.point(40, 40, true),
+  });
+}
 const markerClusterOptions = {
   maxClusterRadius: 20,
+  iconCreateFunction: createClusterCustomIcon,
 };
+
 
 // We can just pass undefined instead
 // const getBounds = (center, within) => {
@@ -87,6 +102,8 @@ const Map = (props) => {
         zoom={props.zoom}
         maxZoom={18}
         bounds={props.bounds === null ? undefined : props.bounds}
+        // Might need to update keyboard event in the next version
+        onKeyPress={markerClusterKeyDown}
       >
         <LayersControl position="topright">
           <BaseLayer checked name="OpenStreetMap">

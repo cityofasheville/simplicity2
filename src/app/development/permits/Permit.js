@@ -47,12 +47,6 @@ const projectDetails = [
     "Examples": ""
   },
   {
-    "Accela Label": "Application Name",
-    "Display Label": "Project name",
-    "Description": "Name of project",
-    "Examples": ""
-  },
-  {
     "Accela Label": "Plans Folder Location",
     "Display Label": "Plan sets and documents in review",
     "Description": "Google Drive folder link to view documents",
@@ -171,16 +165,8 @@ const fieldFormatters = {
       {zone}
     </a>
   )),
-  // Pinnumber: {
-  //   keyFormatter: () => 'Pin Number',
-  //   valueFormatter: pin => (
-  //     <a
-  //       href={`/property?search=${pin}&id=${pin}&entities=undefined&entity=property`}
-  //     >
-  //       {pin}
-  //     </a>
-  //   ),
-  // },
+  percent_slope: d => `${d}%`,
+  max_elevation: d => `${d} feet`,
 };
 
 // TODO: RETURN NULL IF THERE ISN'T A VALUE?  OR LEAVE IT BLANK?
@@ -195,7 +181,7 @@ const PermitDataSubset = props => (
       const formattedDisplayVal = fieldFormatters[snakeCaseAccelaLabel] ? fieldFormatters[snakeCaseAccelaLabel](val) : val;
       return (<div className="form-group form-group--has-content" key={d['Accela Label']}>
         <div className="form-group__inner">
-          <div className="form-group__label">
+          <div className="form-group__label" style={{ fontWeight: 'bold' }}>
             {d['Display Label']}
           </div>
           <div className="form-group__value">

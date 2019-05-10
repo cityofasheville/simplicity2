@@ -185,6 +185,18 @@ const fieldFormatters = {
   hrc_overlay: d => d === 'No' ? null : d,
   river_district: d => d === 'No' ? null : d,
   landmark: d => d === 'No' ? null : d,
+  aquatic_buffer: d => d === 'No' ? null : d,
+  flood_plain: (d) => {
+    if (d[0] === 'X') {
+      return null;
+    } else if (d === 'AE (100 Year Flood)') {
+      return 'Floodplain located on this property';
+    } else if (d === 'Floodway') {
+      return 'Floodway and floodplain located on this property';
+    }
+    return d;
+  },
+  seeking_leed_certification: d => d === 'No' ? null : d,
 };
 
 // TODO: RETURN NULL IF THERE ISN'T A VALUE?  OR LEAVE IT BLANK?

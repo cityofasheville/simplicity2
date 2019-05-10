@@ -156,14 +156,14 @@ const fieldFormatters = {
   applied_date: dateFormatter,
   status_date: dateFormatter,
   plans_folder_location: d => (<a href={d} target="_blank" rel="noopener noreferrer">Documents folder</a>),
-  zoning_district: d => d.split(',').map(zone => (
+  zoning_district: d => d.split(/[\s,]+/).filter(z => z.length > 0).map((zone, i) => (
     <a
       href={zoningLinks[zone]}
       target="_blank"
       rel="noopener noreferrer"
       key={zone}
     >
-      {zone}
+      {`${i > 0 ? ', ' : ''}${zone}`}
     </a>
   )),
   percent_slope: d => `${Math.round(+d)}%`,

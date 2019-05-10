@@ -47,14 +47,8 @@ const projectDetails = [
     "Examples": ""
   },
   {
-    "Accela Label": "Application Name",
-    "Display Label": "Project name",
-    "Description": "Name of project",
-    "Examples": ""
-  },
-  {
     "Accela Label": "Plans Folder Location",
-    "Display Label": "Plan sets and documents in review",
+    "Display Label": "Site plans and documents",
     "Description": "Google Drive folder link to view documents",
     "Examples": ""
   },
@@ -65,14 +59,20 @@ const projectDetails = [
     "Examples": ""
   },
   {
-    "Accela Label": "Total Property Size",
-    "Display Label": "Total property acreage",
+    "Accela Label": "Total property size",
+    "Display Label": "Total property size",
     "Description": "",
     "Examples": ""
   },
   {
     "Accela Label": "Affordable Housing",
-    "Display Label": "Affordable Housing proposed",
+    "Display Label": "Affordable housing proposed",
+    "Description": "",
+    "Examples": ""
+  },
+  {
+    "Accela Label": "Number of Units",
+    "Display Label": "Number of residential units",
     "Description": "",
     "Examples": ""
   },
@@ -86,26 +86,15 @@ const zoningDetails = [
     "Examples": ""
   },
   {
-    "Accela Label": "Corner Side",
-    "Display Label": "Side or corner setback",
+    // This is constructed below, not pulled from Accela directly
+    "Accela Label": "setbacks",
+    "Display Label": "Setbacks",
     "Description": "Minimum distance required between the side or corner property line and structures",
     "Examples": ""
   },
   {
-    "Accela Label": "Front",
-    "Display Label": "Front setback",
-    "Description": "Minimum distance required between the front property line and structures",
-    "Examples": ""
-  },
-  {
-    "Accela Label": "Rear",
-    "Display Label": "Rear Setback",
-    "Description": "Minimum distance between the front property line and structures",
-    "Examples": ""
-  },
-  {
     "Accela Label": "DTDR Overlay",
-    "Display Label": "Central Business District",
+    "Display Label": "Central business district",
     "Description": "",
     "Examples": ""
   },
@@ -117,7 +106,13 @@ const zoningDetails = [
   },
   {
     "Accela Label": "River District",
-    "Display Label": "River District",
+    "Display Label": "River district",
+    "Description": "",
+    "Examples": ""
+  },
+  {
+    "Accela Label": "Landmark",
+    "Display Label": "Historic landmark",
     "Description": "",
     "Examples": ""
   },
@@ -126,7 +121,7 @@ const zoningDetails = [
 const environmentDetails = [
   {
     "Accela Label": "Aquatic Buffer",
-    "Display Label": "Buffer to a natural water source on this property",
+    "Display Label": "Aquatic buffer located on this property",
     "Description": "",
     "Examples": ""
   },
@@ -171,16 +166,26 @@ const fieldFormatters = {
       {zone}
     </a>
   )),
-  // Pinnumber: {
-  //   keyFormatter: () => 'Pin Number',
-  //   valueFormatter: pin => (
-  //     <a
-  //       href={`/property?search=${pin}&id=${pin}&entities=undefined&entity=property`}
-  //     >
-  //       {pin}
-  //     </a>
-  //   ),
-  // },
+  percent_slope: d => `${Math.round(+d)}%`,
+  max_elevation: d => `${Math.round(+d)} feet`,
+  total_property_size: d => `${d} acres`,
+  permit_subtype: (d, permit) => permit.trcType ? permit.trcType.id : d,
+  dtdr_overlay: d => d === 'No' ? null : d,
+  hrc_overlay: d => d === 'No' ? null : d,
+  river_district: d => d === 'No' ? null : d,
+  landmark: d => d === 'No' ? null : d,
+  aquatic_buffer: d => d === 'No' ? null : d,
+  flood_plain: (d) => {
+    if (d[0] === 'X') {
+      return null;
+    } else if (d === 'AE (100 Year Flood)') {
+      return 'Floodplain located on this property';
+    } else if (d === 'Floodway') {
+      return 'Floodway and floodplain located on this property';
+    }
+    return d;
+  },
+  seeking_leed_certification: d => d === 'No' ? null : d,
 };
 
 // TODO: RETURN NULL IF THERE ISN'T A VALUE?  OR LEAVE IT BLANK?
@@ -192,10 +197,14 @@ const PermitDataSubset = props => (
       if (!val) {
         return;
       }
-      const formattedDisplayVal = fieldFormatters[snakeCaseAccelaLabel] ? fieldFormatters[snakeCaseAccelaLabel](val) : val;
+      const formattedDisplayVal = fieldFormatters[snakeCaseAccelaLabel] ?   fieldFormatters[snakeCaseAccelaLabel](val, props.formattedPermit) : val;
+      if (!formattedDisplayVal) {
+        // Format functions return null if it should not show
+        return;
+      }
       return (<div className="form-group form-group--has-content" key={d['Accela Label']}>
         <div className="form-group__inner">
-          <div className="form-group__label">
+          <div className="form-group__label" style={{ fontWeight: 'bold' }}>
             {d['Display Label']}
           </div>
           <div className="form-group__value">
@@ -225,15 +234,23 @@ const Permit = props => (
       }
 
       const thisPermit = data.permits[0];
-      let formattedPermit = Object.assign({}, thisPermit);
+      let trcType = undefined;
+      if (thisPermit.permit_group === 'Planning') {
+        trcType = Object.values(trcProjectTypes).find(type =>
+          type.permit_type === thisPermit.permit_type &&
+          type.permit_subtype === thisPermit.permit_subtype
+        )
+      }
+      let formattedPermit = Object.assign({}, thisPermit, { trcType: trcType });
       // These are all the "misc" info fields that may or may not be filled out for any permit
       thisPermit.custom_fields.forEach((customField) => {
         formattedPermit[customField.name.toLowerCase().split(' ').join('_')] = customField.value;
       });
 
+      formattedPermit.setbacks = `Front: ${formattedPermit.front} feet, Side: ${formattedPermit.corner_side} feet, Rear: ${formattedPermit.rear} feet`;
+
       // The popup is what you see when you click on the pin
       const mapData = [Object.assign(
-        // TODO: USE TYPEPUCK
         {},
         thisPermit,
         {
@@ -243,18 +260,12 @@ const Permit = props => (
       // Don't show map if there are no coordinates
       const showMap = thisPermit.y && thisPermit.x;
 
-      let trcType = undefined;
-      if (formattedPermit.permit_group === 'Planning') {
-        trcType = Object.values(trcProjectTypes).find(type =>
-          type.permit_type === formattedPermit.permit_type &&
-          type.permit_subtype === formattedPermit.permit_subtype
-        )
-      }
+
+      console.log(formattedPermit)
 
       /* TODO:
+        return false for formatters if it should not display
         add little information icons where there are values for details
-        move type puck into type of permit review?
-        are we using fieldset and label and label for correctly on simplicity address page?  if so apply here, if not correct that and css
       */
 
       return (<div className="container">

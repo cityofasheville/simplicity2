@@ -60,7 +60,7 @@ const projectDetails = [
   },
   {
     "Accela Label": "Total property size",
-    "Display Label": "Total property acreage",
+    "Display Label": "Total property size",
     "Description": "",
     "Examples": ""
   },
@@ -180,6 +180,11 @@ const fieldFormatters = {
   percent_slope: d => `${Math.round(+d)}%`,
   max_elevation: d => `${Math.round(+d)} feet`,
   total_property_size: d => `${d} acres`,
+  permit_subtype: (d, permit) => permit.trcType ? permit.trcType.id : d,
+  dtdr_overlay: d => d === 'No' ? null : d,
+  hrc_overlay: d => d === 'No' ? null : d,
+  river_district: d => d === 'No' ? null : d,
+  landmark: d => d === 'No' ? null : d,
 };
 
 // TODO: RETURN NULL IF THERE ISN'T A VALUE?  OR LEAVE IT BLANK?
@@ -191,7 +196,11 @@ const PermitDataSubset = props => (
       if (!val) {
         return;
       }
-      const formattedDisplayVal = fieldFormatters[snakeCaseAccelaLabel] ? fieldFormatters[snakeCaseAccelaLabel](val) : val;
+      const formattedDisplayVal = fieldFormatters[snakeCaseAccelaLabel] ?   fieldFormatters[snakeCaseAccelaLabel](val, props.formattedPermit) : val;
+      if (!formattedDisplayVal) {
+        // Format functions return null if it should not show
+        return;
+      }
       return (<div className="form-group form-group--has-content" key={d['Accela Label']}>
         <div className="form-group__inner">
           <div className="form-group__label" style={{ fontWeight: 'bold' }}>
@@ -224,7 +233,14 @@ const Permit = props => (
       }
 
       const thisPermit = data.permits[0];
-      let formattedPermit = Object.assign({}, thisPermit);
+      let trcType = undefined;
+      if (thisPermit.permit_group === 'Planning') {
+        trcType = Object.values(trcProjectTypes).find(type =>
+          type.permit_type === thisPermit.permit_type &&
+          type.permit_subtype === thisPermit.permit_subtype
+        )
+      }
+      let formattedPermit = Object.assign({}, thisPermit, { trcType: trcType });
       // These are all the "misc" info fields that may or may not be filled out for any permit
       thisPermit.custom_fields.forEach((customField) => {
         formattedPermit[customField.name.toLowerCase().split(' ').join('_')] = customField.value;
@@ -232,7 +248,6 @@ const Permit = props => (
 
       // The popup is what you see when you click on the pin
       const mapData = [Object.assign(
-        // TODO: USE TYPEPUCK
         {},
         thisPermit,
         {
@@ -242,18 +257,12 @@ const Permit = props => (
       // Don't show map if there are no coordinates
       const showMap = thisPermit.y && thisPermit.x;
 
-      let trcType = undefined;
-      if (formattedPermit.permit_group === 'Planning') {
-        trcType = Object.values(trcProjectTypes).find(type =>
-          type.permit_type === formattedPermit.permit_type &&
-          type.permit_subtype === formattedPermit.permit_subtype
-        )
-      }
+
+      console.log(formattedPermit)
 
       /* TODO:
+        return false for formatters if it should not display
         add little information icons where there are values for details
-        move type puck into type of permit review?
-        are we using fieldset and label and label for correctly on simplicity address page?  if so apply here, if not correct that and css
       */
 
       return (<div className="container">

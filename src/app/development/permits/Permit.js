@@ -158,7 +158,7 @@ const fieldFormatters = {
   plans_folder_location: d => (<a href={d} target="_blank" rel="noopener noreferrer">Documents folder</a>),
   zoning_district: d => d.split(/[\s,]+/).filter(z => z.length > 0).map((zone, i) => (
     <a
-      href={zoningLinks[zone]}
+      href={zoningLinks[zone] || undefined}
       target="_blank"
       rel="noopener noreferrer"
       key={zone}

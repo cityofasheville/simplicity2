@@ -186,6 +186,7 @@ const fieldFormatters = {
     return d;
   },
   seeking_leed_certification: d => d === 'No' ? null : d,
+  setbacks: d => d.length > 0 ? d.join(', ') : null,
 };
 
 // TODO: RETURN NULL IF THERE ISN'T A VALUE?  OR LEAVE IT BLANK?
@@ -247,7 +248,16 @@ const Permit = props => (
         formattedPermit[customField.name.toLowerCase().split(' ').join('_')] = customField.value;
       });
 
-      formattedPermit.setbacks = `Front: ${formattedPermit.front} feet, Side: ${formattedPermit.corner_side} feet, Rear: ${formattedPermit.rear} feet`;
+      formattedPermit.setbacks = [];
+      if (formattedPermit.front) {
+        formattedPermit.setbacks.push(`front: ${formattedPermit.front} feet`);
+      }
+      if (formattedPermit.corner_side) {
+        formattedPermit.setbacks.push(`side or corner: ${formattedPermit.corner_side} feet`);
+      }
+      if (formattedPermit.rear) {
+        formattedPermit.setbacks.push(`rear: ${formattedPermit.rear} feet`);
+      }
 
       // The popup is what you see when you click on the pin
       const mapData = [Object.assign(
@@ -259,14 +269,6 @@ const Permit = props => (
       )];
       // Don't show map if there are no coordinates
       const showMap = thisPermit.y && thisPermit.x;
-
-
-      console.log(formattedPermit)
-
-      /* TODO:
-        return false for formatters if it should not display
-        add little information icons where there are values for details
-      */
 
       return (<div className="container">
         <div className="row">

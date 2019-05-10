@@ -86,21 +86,10 @@ const zoningDetails = [
     "Examples": ""
   },
   {
-    "Accela Label": "Corner Side",
-    "Display Label": "Side or corner setback",
+    // This is constructed below, not pulled from Accela directly
+    "Accela Label": "setbacks",
+    "Display Label": "Setbacks",
     "Description": "Minimum distance required between the side or corner property line and structures",
-    "Examples": ""
-  },
-  {
-    "Accela Label": "Front",
-    "Display Label": "Front setback",
-    "Description": "Minimum distance required between the front property line and structures",
-    "Examples": ""
-  },
-  {
-    "Accela Label": "Rear",
-    "Display Label": "Rear Setback",
-    "Description": "Minimum distance between the front property line and structures",
     "Examples": ""
   },
   {
@@ -132,7 +121,7 @@ const zoningDetails = [
 const environmentDetails = [
   {
     "Accela Label": "Aquatic Buffer",
-    "Display Label": "Buffer to a natural water source on this property",
+    "Display Label": "Aquatic buffer located on this property",
     "Description": "",
     "Examples": ""
   },
@@ -257,6 +246,8 @@ const Permit = props => (
       thisPermit.custom_fields.forEach((customField) => {
         formattedPermit[customField.name.toLowerCase().split(' ').join('_')] = customField.value;
       });
+
+      formattedPermit.setbacks = `Front: ${formattedPermit.front} feet, Side: ${formattedPermit.corner_side} feet, Rear: ${formattedPermit.rear} feet`;
 
       // The popup is what you see when you click on the pin
       const mapData = [Object.assign(

@@ -4,8 +4,10 @@ import gql from 'graphql-tag';
 import moment from 'moment';
 import { Query } from 'react-apollo';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
+import Icon from '../../../shared/Icon';
 import PermitsMap from './PermitsMap';
 import TypePuck from '../trc/TypePuck';
+import { IM_FOLDER, IM_HOME2 } from '../../../shared/iconConstants';
 import { trcProjectTypes } from '../utils';
 import { zoningLinks } from '../../address/zoning';
 
@@ -48,7 +50,7 @@ const projectDetails = [
   },
   {
     "Accela Label": "Plans Folder Location",
-    "Display Label": "Site plans and documents",
+    "Display Label": <span><Icon path={IM_FOLDER} viewBox="0 0 1792 1792"/> Site plans and documents</span>,
     "Description": "Google Drive folder link to view documents",
     "Examples": ""
   },
@@ -72,7 +74,7 @@ const projectDetails = [
   },
   {
     "Accela Label": "Number of Units",
-    "Display Label": "Number of residential units",
+    "Display Label": <span><Icon path={IM_HOME2}/>  Number of residential units</span>,
     "Description": "",
     "Examples": ""
   },
@@ -187,6 +189,7 @@ const fieldFormatters = {
   },
   seeking_leed_certification: d => d === 'No' ? null : d,
   setbacks: d => d.length > 0 ? d.join(', ') : null,
+  affordable_housing: d => d === 'No' ? null : d,
 };
 
 // TODO: RETURN NULL IF THERE ISN'T A VALUE?  OR LEAVE IT BLANK?

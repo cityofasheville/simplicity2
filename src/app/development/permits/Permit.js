@@ -42,10 +42,9 @@ const GET_PERMIT = gql`
 //   status_date: dateFormatter,
 // };
 
-// TODO: RETURN NULL IF THERE ISN'T A VALUE?  OR LEAVE IT BLANK?
 const PermitDataSubset = props => (
-  <div className="detailsFieldset__details-listings">
-    {permitFieldFormats.filter(field => field.displayGroup === props.detailsSet).map(d => {
+  <div>
+    {permitFieldFormats.filter(field => field.displayGroup === props.detailsSet).sort((a, b) => !a.displayLabel ? -1 : 0).map(d => {
       const snakeCaseAccelaLabel = d.accelaLabel.toLowerCase().split(' ').join('_');
       const val =  props.formattedPermit[snakeCaseAccelaLabel];
       if (!val) {
@@ -57,18 +56,22 @@ const PermitDataSubset = props => (
         return;
       }
       if (!d.displayLabel) {
-        return <div className="form-group form-group--has-content" key={d.accelaLabel}>{formattedDisplayVal}</div>;
+        return <div className="permit-form-group bool" key={d.accelaLabel}>{formattedDisplayVal}</div>;
       }
-      return (<div className="form-group form-group--has-content" key={d.accelaLabel}>
-        <div className="form-group__inner">
-          <div className="form-group__label" style={{ fontWeight: 'bold' }}>
-            {d.displayLabel}
-          </div>
-          <div className="form-group__value">
-            {formattedDisplayVal}
-          </div>
-        </div>
-      </div>)
+      return (<div className="permit-form-group">
+        <span className="display-label">{d.displayLabel}:</span>
+        <span className="formatted-val">{formattedDisplayVal}</span>
+      </div>);
+      // return (<div className="form-group form-group--has-content" key={d.accelaLabel}>
+      //   <div className="form-group__inner">
+      //     <div className="form-group__label" style={{ fontWeight: 'bold' }}>
+      //       {d.displayLabel}
+      //     </div>
+      //     <div className="form-group__value">
+      //       {formattedDisplayVal}
+      //     </div>
+      //   </div>
+      // </div>)
     })}
   </div>
 );
@@ -138,13 +141,11 @@ const Permit = props => (
               />
             </div>
           </div>)}
-          <div className={`col-sm-12 col-md-${showMap ? 6 : 12}`}>
-            <div className="detailsFieldset__details-listings">
-              <p>{formattedPermit.permit_description}</p>
-            </div>
+          <div className={`col-sm-12 col-md-${showMap ? 6 : 12} permit-details-card`}>
+            <p id="permit-description">{formattedPermit.permit_description}</p>
             <PermitDataSubset detailsSet={'project details'} formattedPermit={formattedPermit} />
             {trcType !== undefined &&
-              (<div style={{ display: 'flex' }}>
+              (<div style={{ display: 'flex', marginTop: '1rem' }}>
                 <a style={{ marginRight: '1em' }} href="/development/major">
                   <TypePuck
                     typeObject={trcType}
@@ -160,14 +161,13 @@ const Permit = props => (
         {/*<div className="row">
           <h2>Timeline</h2>
           <PermitTasks {...props} />
-          <p>To see more details about this permit, look it up in <a href="https://services.ashevillenc.gov/CitizenAccess" target="_blank" rel="noopener noreferrer">Accela Citizen Access</a>.</p>
         </div>*/}
-        <div className="col-sm-12 col-md-6">
+        <div className="col-sm-12 col-md-6 permit-details-card">
           <h2>Zoning Details</h2>
           <PermitDataSubset detailsSet={'zoning details'} formattedPermit={formattedPermit} />
         </div>
 
-        <div className="col-sm-12 col-md-6">
+        <div className="col-sm-12 col-md-6 permit-details-card">
           <h2>Environmental Details</h2>
           <PermitDataSubset detailsSet={'environment details'} formattedPermit={formattedPermit} />
         </div>

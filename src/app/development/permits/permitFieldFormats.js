@@ -1,8 +1,8 @@
 import React from 'react';
 import moment from 'moment';
 import { getZoningLink } from '../../address/zoning';
-import { IM_FOLDER, IM_HOME2 } from '../../../shared/iconConstants';
-// TODO: IMPORT ICONS AND ASSIGN THEM
+import Icon from '../../../shared/Icon';
+import { IM_WATER, IM_TINT } from '../../../shared/iconConstants';
 
 const dateFormatter = inputDate => moment(new Date(inputDate)).format('MM/DD/YYYY');
 
@@ -11,22 +11,21 @@ export const permitFieldFormats = [
     accelaLabel: 'Aquatic Buffer',
     displayGroup: 'environment details',
     displayLabel: null,
-    formatFunc: d => d === 'No' ? null : 'Aquatic buffer located on this property',
+    formatFunc: d => d === 'No' ? null : <span><Icon path={IM_WATER} viewBox="0 0 576 512"/>Aquatic buffer located on this property</span>,
   },
   {
     accelaLabel: 'Flood Plain',
     displayGroup: 'environment details',
     displayLabel: null,
     formatFunc: (d) => {
+      let text = 'Floodplain located on this property';
       if (d[0] === 'X') {
         return null;
-      } else if (d === 'AE (100 Year Flood)') {
-        return 'Floodplain located on this property';
       } else if (d === 'Floodway') {
-        return 'Floodway and floodplain located on this property';
+        text = 'Floodway and floodplain located on this property';
       }
       // If it isn't no
-      return 'Floodplain located on this property';
+      return <span><Icon path={IM_TINT} viewBox="0 0 352 512"/>{text}</span>;
     },
   },
   {

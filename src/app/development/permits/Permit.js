@@ -3,7 +3,6 @@ import React from 'react';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
-import Icon from '../../../shared/Icon';
 import PermitsMap from './PermitsMap';
 import TypePuck from '../trc/TypePuck';
 import { trcProjectTypes } from '../utils';

@@ -26,7 +26,7 @@ const PermitDataSection = ({ detailsSet, formattedPermit }) => (
         }
         return (
           <div className="permit-form-group" key={d.accelaLabel}>
-            <div className="display-label">{d.displayLabel}:</div>
+            <div className="display-label">{d.displayLabel}</div>
             <div className="formatted-val">{formattedDisplayVal}</div>
           </div>
         );

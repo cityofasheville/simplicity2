@@ -1,5 +1,4 @@
 import React from 'react';
-// import moment from 'moment';
 import { getZoningLink } from '../../address/zoning';
 import Icon from '../../../shared/Icon';
 import {
@@ -12,8 +11,6 @@ import {
   IM_MONUMENT,
   IM_FISH,
 } from '../../../shared/iconConstants';
-
-// const dateFormatter = inputDate => moment(new Date(inputDate)).format('MM/DD/YYYY');
 
 export const permitFieldFormats = [
   {
@@ -68,6 +65,15 @@ export const permitFieldFormats = [
     ),
   },
   {
+    accelaLabel: 'Address',
+    displayGroup: 'project details',
+    displayLabel: 'Address',
+    formatFunc: (d, permit) => (permit.civic_address_id ?
+      (<a href={`/address?id=${permit.civic_address_id}`}>{d}</a>) :
+      d
+    ),
+  },
+  {
     accelaLabel: 'Permit Subtype',
     displayGroup: 'project details',
     displayLabel: 'Type of permit review',
@@ -84,13 +90,13 @@ export const permitFieldFormats = [
     accelaLabel: 'Subdivision Number',
     displayGroup: 'project details',
     displayLabel: 'Number of lots to be created',
-    formatFunc: d => `${d} lots`,
+    formatFunc: d => (+d > 0 ? `${d} lots` : null),
   },
   {
     accelaLabel: 'Total Property Size',
     displayGroup: 'project details',
     displayLabel: 'Total property size',
-    formatFunc: d => `${d} acres`,
+    formatFunc: d => (+d > 0 ? `${d} acres` : null),
   },
   {
     accelaLabel: 'Affordable Housing',
@@ -106,7 +112,7 @@ export const permitFieldFormats = [
     accelaLabel: 'Number of Units',
     displayGroup: 'project details',
     displayLabel: 'Number of residential units',
-    formatFunc: d => `${d} units`,
+    formatFunc: d => (+d > 0 ? `${d} units` : null),
   },
   {
     accelaLabel: 'Permit Number',

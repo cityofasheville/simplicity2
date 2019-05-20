@@ -1,6 +1,101 @@
 import React from 'react';
 import moment from 'moment';
 
+export const statusTranslation = [
+  {
+    accelaSpeak: "Application Submitted",
+    statusText: "The applicant has submitted an application to the City, but we haven't started reviewing it yet.",
+  },
+  {
+    accelaSpeak: "Application Received",
+    statusText: "The applicant has submitted an application to the City, but we haven't started reviewing it yet.",
+  },
+  {
+    accelaSpeak: "CC Issued",
+    statusText: "",
+  },
+  {
+    accelaSpeak: "City Council Review",
+    statusText: "The Planning & Zoning Commission has completed review of the project and the next step is a public hearing before City Council.",
+  },
+  {
+    accelaSpeak: "Closed",
+    statusText: "",
+  },
+  {
+    accelaSpeak: "CO Issued",
+    statusText: "This project is complete and has been approved for occupancy.",
+  },
+  {
+    accelaSpeak: "Expired",
+    statusText: "This project was approved, but too much time has passed since that approval and the approval has now expired.",
+  },
+  {
+    accelaSpeak: "Finaled",
+    statusText: "This project is complete and has been approved for occupancy.",
+  },
+  {
+    accelaSpeak: "Issued",
+    statusText: "This project has been approved and the City has issued permits to begin construction.",
+  },
+  {
+    accelaSpeak: "Master Plan Approved",
+    statusText: "City Council has approved this project. The next step is for the developer to submit detailed applications for development permits.",
+  },
+  {
+    accelaSpeak: "Partial Issued",
+    statusText: "Some permits have been issued by the City for this project.",
+  },
+  {
+    accelaSpeak: "Pending Applicant Action",
+    statusText: "The City has asked the applicant for more information and is waiting for the applicant to submit.",
+  },
+  {
+    accelaSpeak: "Plan Check",
+    statusText: "City Staff is reviewing this plan for compliance with local, state, and/or federal standards.",
+  },
+  {
+    accelaSpeak: "Pre-Application Complete",
+    statusText: "",
+  },
+  {
+    accelaSpeak: "Pre-Application Received",
+    statusText: "",
+  },
+  {
+    accelaSpeak: "Reissued",
+    statusText: "This project has been approved and the City has issued permits to begin construction.",
+  },
+  {
+    accelaSpeak: "Revision in Review",
+    statusText: "The applicant has submitted new plans and City staff is reviewing those plans.",
+  },
+  {
+    accelaSpeak: "Revoked",
+    statusText: "",
+  },
+  {
+    accelaSpeak: "TCC Issued",
+    statusText: "This project has been approved for occupancy.",
+  },
+  {
+    accelaSpeak: "TCO Issued",
+    statusText: "This project has been approved for occupancy.",
+  },
+  {
+    accelaSpeak: "TRC Review",
+    statusText: "City Staff is reviewing this plan for compliance with local, state, and/or federal standards.",
+  },
+  {
+    accelaSpeak: "Under Review",
+    statusText: "City Staff is reviewing this plan for compliance with local, state, and/or federal standards.",
+  },
+  {
+    accelaSpeak: "Withdrawn",
+    statusText: "The applicant has asked the City to stop reviewing this project.",
+  }
+]
+
 export const defaultTableHeaders = [
   {
     field: 'applied_date',

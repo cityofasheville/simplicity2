@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
+import moment from 'moment';
 import { Query } from 'react-apollo';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import PermitsMap from './PermitsMap';
 import PermitDataSection from './PermitDataSection';
 import TypePuck from '../trc/TypePuck';
-import { trcProjectTypes } from '../utils';
+import { trcProjectTypes, statusTranslation } from '../utils';
 
 const GET_PERMIT = gql`
   query getPermitsQuery($permit_numbers: [String]) {
@@ -36,10 +37,7 @@ const GET_PERMIT = gql`
   }
 `;
 
-// const fieldFormatters = {
-//   applied_date: dateFormatter,
-//   status_date: dateFormatter,
-// };
+const dateFormatter = inputDate => moment(new Date(inputDate)).format('MMMM DD, YYYY');
 
 const Permit = props => (
   <Query
@@ -72,13 +70,13 @@ const Permit = props => (
       });
 
       formattedPermit.setbacks = [];
-      if (formattedPermit.front) {
+      if (formattedPermit.front && formattedPermit.front > 0) {
         formattedPermit.setbacks.push(`front: ${formattedPermit.front} feet`);
       }
-      if (formattedPermit.corner_side) {
+      if (formattedPermit.corner_side && formattedPermit.corner_side > 0) {
         formattedPermit.setbacks.push(`side or corner: ${formattedPermit.corner_side} feet`);
       }
-      if (formattedPermit.rear) {
+      if (formattedPermit.rear && formattedPermit.rear > 0) {
         formattedPermit.setbacks.push(`rear: ${formattedPermit.rear} feet`);
       }
 
@@ -93,9 +91,14 @@ const Permit = props => (
       // Don't show map if there are no coordinates
       const showMap = thisPermit.y && thisPermit.x;
 
+      const currentStatusItem = statusTranslation.find(item =>
+        item.accelaSpeak === formattedPermit.status_current);
+
       return (
         <div className="container">
           <h1 className="title__text">{formattedPermit.application_name}</h1>
+          <p className="permit-description">{formattedPermit.permit_description}</p>
+          <p className="permit-description">{`This application was submitted on ${dateFormatter(formattedPermit.applied_date)}.  ${currentStatusItem ? currentStatusItem.statusText : ''}`}</p>
           <div className="row permit-map-row">
             {showMap && (
               <div className="col-sm-12 col-md-6 permit-map-container">
@@ -107,7 +110,6 @@ const Permit = props => (
               </div>
             )}
             <div className={`col-sm-12 col-md-${showMap ? 6 : 12} permit-details-card`}>
-              <p id="permit-description">{formattedPermit.permit_description}</p>
               <PermitDataSection detailsSet="project details" formattedPermit={formattedPermit} />
               {trcType !== undefined && (
                 <div style={{ display: 'flex', marginTop: '1rem' }}>

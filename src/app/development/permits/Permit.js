@@ -9,7 +9,7 @@ import PermitsMap from './PermitsMap';
 import TypePuck from '../trc/TypePuck';
 import { IM_FOLDER, IM_HOME2 } from '../../../shared/iconConstants';
 import { trcProjectTypes } from '../utils';
-import { zoningLinks } from '../../address/zoning';
+import { getZoningLink } from '../../address/zoning';
 
 // Make query based on URL, render sub components depending on query results
 
@@ -158,9 +158,9 @@ const fieldFormatters = {
   applied_date: dateFormatter,
   status_date: dateFormatter,
   plans_folder_location: d => (<a href={d} target="_blank" rel="noopener noreferrer">Documents folder</a>),
-  zoning_district: d => d.split(/[\s,]+/).filter(z => z.length > 0).map((zone, i) => (
+  zoning_district: d => d.split(',').filter(z => z.length > 0).map((zone, i) => (
     <a
-      href={zoningLinks[zone] || undefined}
+      href={getZoningLink(zone) || undefined}
       target="_blank"
       rel="noopener noreferrer"
       key={zone}

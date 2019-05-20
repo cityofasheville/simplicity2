@@ -8,7 +8,6 @@ import TypePuck from '../trc/TypePuck';
 import { trcProjectTypes } from '../utils';
 import { permitFieldFormats } from './permitFieldFormats';
 
-// Make query based on URL, render sub components depending on query results
 
 const GET_PERMIT = gql`
   query getPermitsQuery($permit_numbers: [String]) {
@@ -58,7 +57,7 @@ const PermitDataSubset = props => (
         return;
       }
       if (!d.displayLabel) {
-        return formattedDisplayVal;
+        return <div className="form-group form-group--has-content" key={d.accelaLabel}>{formattedDisplayVal}</div>;
       }
       return (<div className="form-group form-group--has-content" key={d.accelaLabel}>
         <div className="form-group__inner">

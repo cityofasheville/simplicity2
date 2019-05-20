@@ -1,34 +1,3 @@
-.DtSet {
-  padding: 0 1em;
-  line-height: 1.125em;
-}
-
-.DtSet dt {
-  font-weight: 400;
-  white-space: normal;
-}
-
-dl.summary-group {
-  font-size: 1.15em;
-}
-
-#PermitTasks th {
-  font-weight: 400;
-}
-
-#PermitTasks table tr.warning {
-  color: #222;
-  background-color: #fef5e7;
-}
-
-#PermitTasks table tr.info {
-  color: #222;
-  background-color: #e9f4fb;
-}
-
-#PermitTasks table tr.warning td,
-#PermitTasks table tr.info td,
-#PermitTasks table tr.warning th,
-#PermitTasks table tr.info th, {
-  background-color: inherit;
+.permit-icon-boolean svg {
+  margin-right: 0.5em;
 }

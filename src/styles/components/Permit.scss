@@ -1,34 +1,40 @@
-.DtSet {
-  padding: 0 1em;
-  line-height: 1.125em;
+#permit-description {
+  font-size: 1.25rem;
 }
 
-.DtSet dt {
-  font-weight: 400;
-  white-space: normal;
+.permit-form-group {
+  width: 100%;
+  padding: 1em;
+  background-color: #f2f2f2;
+  border-radius: 2px;
+  margin: 2px 1rem 2px 0;
+  display: flex;
+  justify-content: space-between;
 }
 
-dl.summary-group {
-  font-size: 1.15em;
+.permit-form-group .display-label, .permit-form-group.bool {
+  font-weight: 500;
 }
 
-#PermitTasks th {
-  font-weight: 400;
+.permit-icon-boolean svg {
+  margin-right: 0.5em;
 }
 
-#PermitTasks table tr.warning {
-  color: #222;
-  background-color: #fef5e7;
+@media(max-width: 767px) {
+  .permit-map-container {
+    height: 300px;
+  }
+  .permit-form-group {
+    display: block;
+  }
+  .permit-form-group .display-label, .permit-form-group .formatted-val {
+    width: 100%;
+  }
 }
 
-#PermitTasks table tr.info {
-  color: #222;
-  background-color: #e9f4fb;
-}
-
-#PermitTasks table tr.warning td,
-#PermitTasks table tr.info td,
-#PermitTasks table tr.warning th,
-#PermitTasks table tr.info th, {
-  background-color: inherit;
+@media(min-width: 767px) {
+  .permit-map-row {
+    display: flex;
+    align-items: stretch;
+  }
 }

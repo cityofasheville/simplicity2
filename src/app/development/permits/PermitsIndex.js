@@ -20,22 +20,24 @@ class PermitsIndex extends React.Component {
   }
 
   render() {
-    return (<div className="container">
-      <h1>All Permit Applications by Date Applied</h1>
-      <ErrorBoundary>
-        <TimeSlider
-          onBrushEnd={newExtent => this.setState({
-            timeSpan: newExtent,
-          })}
-          defaultBrushExtent={this.initialBrushExtent}
-        />
-        <PermitsTableWrapper
-          // Defaults are fine for now
-          after={this.state.timeSpan[0]}
-          before={this.state.timeSpan[1]}
-        />
-      </ErrorBoundary>
-    </div>);
+    return (
+      <div className="container">
+        <h1>All Permit Applications by Date Applied</h1>
+        <ErrorBoundary>
+          <TimeSlider
+            onBrushEnd={newExtent => this.setState({
+              timeSpan: newExtent,
+            })}
+            defaultBrushExtent={this.initialBrushExtent}
+          />
+          <PermitsTableWrapper
+            // Defaults are fine for now
+            after={this.state.timeSpan[0]}
+            before={this.state.timeSpan[1]}
+          />
+        </ErrorBoundary>
+      </div>
+    );
   }
 }
 

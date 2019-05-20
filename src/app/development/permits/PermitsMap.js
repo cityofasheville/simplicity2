@@ -30,7 +30,12 @@ const GET_NEIGHBORHOODS = gql`
   }
 `;
 
-const PermitMap = ({ permitData, centerCoords, zoom, showNeighborhoods = false }) => {
+const PermitMap = ({
+  permitData,
+  centerCoords,
+  zoom,
+  showNeighborhoods = false,
+}) => {
   if (!showNeighborhoods) {
     return (<Map
       data={permitData}
@@ -40,27 +45,28 @@ const PermitMap = ({ permitData, centerCoords, zoom, showNeighborhoods = false }
       zoom={14}
     />);
   }
-  return (<Query
-    query={GET_NEIGHBORHOODS}
-  >
-    {({ loading, error, data }) => {
-      if (loading) return <LoadingAnimation />;
-      if (error || data.neighborhoods.length === 0) {
-        console.log(error);
-        return <div>Error :( </div>;
-      }
-      return (<Map
-        data={permitData}
-        center={centerCoords}
-        height="100%"
-        width="100%"
-        zoom={14}
-        drawPolygon
-        polygonData={combinePolygonsFromNeighborhoodList(data.neighborhoods)}
-      />);
-      }
-    }
-  </Query>);
+  return (
+    <Query
+      query={GET_NEIGHBORHOODS}
+    >
+      {({ loading, error, data }) => {
+        if (loading) return <LoadingAnimation />;
+        if (error || data.neighborhoods.length === 0) {
+          console.log(error);
+          return <div>Error :( </div>;
+        }
+        return (<Map
+          data={permitData}
+          center={centerCoords}
+          height="100%"
+          width="100%"
+          zoom={14}
+          drawPolygon
+          polygonData={combinePolygonsFromNeighborhoodList(data.neighborhoods)}
+        />);
+      }}
+    </Query>
+  );
 };
 
 export default PermitMap;

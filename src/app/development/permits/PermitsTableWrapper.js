@@ -8,8 +8,18 @@ import PermitsMap from './PermitsMap';
 import PermitsTable from './PermitsTable';
 
 const GET_PROJECTS = gql`
-  query getPermitsQuery($date_field: String!, $after: String, $before: String, $permit_groups: [String]) {
-    permits(date_field: $date_field, after: $after, before: $before, permit_groups: $permit_groups) {
+  query getPermitsQuery(
+    $date_field: String!,
+    $after: String,
+    $before: String,
+    $permit_groups: [String]
+  ) {
+    permits(
+      date_field: $date_field,
+      after: $after,
+      before: $before,
+      permit_groups: $permit_groups
+    ) {
       application_name
       applied_date
       permit_category
@@ -68,17 +78,10 @@ const PermitsTableWrapper = props => (
                 {},
                 d,
                 {
-                  popup: `<a href="/permits/${d.permit_number}">${d.application_name}</a><br/>${d.address}<br/>${d.permit_description}`,
-                  // TODO: if trc type, get puck?
-                  // options: {
-                  //   icon: (<TypePuck
-                  //     typeObject={Object.values(trcProjectTypes).find(type =>
-                  //         type.permit_type === d.permit_type &&
-                  //         type.permit_subtype === d.permit_subtype
-                  //       )}
-                  //     size={30}
-                  //   />)
-                  // }
+                  popup: `<a href="/permits/${d.permit_number}">
+                    ${d.application_name}</a><br/>
+                    ${d.address}<br/>
+                    ${d.permit_description}`,
                 },
               ))}
               zoom={12}

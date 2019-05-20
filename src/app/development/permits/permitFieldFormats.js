@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { getZoningLink } from '../../address/zoning';
 import Icon from '../../../shared/Icon';
-import { IM_WATER, IM_TINT } from '../../../shared/iconConstants';
+import { IM_WATER, IM_TINT, IM_RECYCLE, IM_HOME2, IM_CITY } from '../../../shared/iconConstants';
 
 const dateFormatter = inputDate => moment(new Date(inputDate)).format('MM/DD/YYYY');
 
@@ -44,7 +44,7 @@ export const permitFieldFormats = [
     accelaLabel: 'Seeking LEED Certification',
     displayGroup: 'environment details',
     displayLabel: null,
-    formatFunc: d => d === 'No' ? null : 'Seeking LEED certification',
+    formatFunc: d => d === 'No' ? null : <span><Icon path={IM_RECYCLE} viewBox="0 0 512 512"/>Seeking LEED certification</span>,
   },
   {
     accelaLabel: 'Permit Subtype',
@@ -75,7 +75,7 @@ export const permitFieldFormats = [
     accelaLabel: 'Affordable Housing',
     displayGroup: 'project details',
     displayLabel: null,
-    formatFunc: d => d === 'No' ? null : 'Affordable housing proposed',
+    formatFunc: d => d === 'No' && false ? null : <span><Icon path={IM_HOME2}/>Affordable housing proposed</span>,
   },
   {
     accelaLabel: 'Number of Units',
@@ -115,7 +115,7 @@ export const permitFieldFormats = [
     accelaLabel: 'DTDR Overlay',
     displayGroup: 'zoning details',
     displayLabel: null,
-    formatFunc: d => d === 'No' ? null : 'Central business district',
+    formatFunc: d => d === 'No' ? null : <span><Icon path={IM_CITY}/>Central business district</span>,
   },
   {
     accelaLabel: 'HRC Overlay',

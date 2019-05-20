@@ -10,6 +10,7 @@ import {
   IM_CITY,
   IM_LANDMARK,
   IM_MONUMENT,
+  IM_FISH,
 } from '../../../shared/iconConstants';
 
 const dateFormatter = inputDate => moment(new Date(inputDate)).format('MM/DD/YYYY');
@@ -135,7 +136,7 @@ export const permitFieldFormats = [
     accelaLabel: 'River District',
     displayGroup: 'zoning details',
     displayLabel: null,
-    formatFunc: d => d === 'No' ? null : 'River district',
+    formatFunc: d => d === 'No' ? null : <span><Icon path={IM_FISH} viewBox="0 0 576 512"/>River district</span>,
   },
   {
     accelaLabel: 'Landmark',

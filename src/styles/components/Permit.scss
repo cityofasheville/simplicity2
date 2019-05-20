@@ -8,18 +8,33 @@
   background-color: #f2f2f2;
   border-radius: 2px;
   margin: 2px 1rem 2px 0;
+  display: flex;
+  justify-content: space-between;
 }
 
-.permit-details-card .display-label, .permit-form-group.bool {
+.permit-form-group .display-label, .permit-form-group.bool {
   font-weight: 500;
 }
 
-.permit-details-card .formatted-val {
-  float: right;
-  margin-left: 1.5rem;
-}
-
-
 .permit-icon-boolean svg {
   margin-right: 0.5em;
+}
+
+@media(max-width: 767px) {
+  .permit-map-container {
+    height: 300px;
+  }
+  .permit-form-group {
+    display: block;
+  }
+  .permit-form-group .display-label, .permit-form-group .formatted-val {
+    width: 100%;
+  }
+}
+
+@media(min-width: 767px) {
+  .permit-map-row {
+    display: flex;
+    align-items: stretch;
+  }
 }

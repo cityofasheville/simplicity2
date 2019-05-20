@@ -95,17 +95,15 @@ const Permit = props => (
 
       return (
         <div className="container">
-          <div className="row">
-            <h1 className="title__text">{formattedPermit.application_name}</h1>
+          <h1 className="title__text">{formattedPermit.application_name}</h1>
+          <div className="row permit-map-row">
             {showMap && (
-              <div className="col-sm-12 col-md-6">
-                <div className="map-container" style={{ height: '75vh' }}>
-                  <PermitsMap
-                    permitData={mapData}
-                    centerCoords={[formattedPermit.y, formattedPermit.x]}
-                    zoom={14}
-                  />
-                </div>
+              <div className="col-sm-12 col-md-6 permit-map-container">
+                <PermitsMap
+                  permitData={mapData}
+                  centerCoords={[formattedPermit.y, formattedPermit.x]}
+                  zoom={14}
+                />
               </div>
             )}
             <div className={`col-sm-12 col-md-${showMap ? 6 : 12} permit-details-card`}>
@@ -127,13 +125,15 @@ const Permit = props => (
               )}
             </div>
           </div>
-          <div className="col-sm-12 col-md-6 permit-details-card">
-            <h2>Zoning Details</h2>
-            <PermitDataSection detailsSet="zoning details" formattedPermit={formattedPermit} />
-          </div>
-          <div className="col-sm-12 col-md-6 permit-details-card">
-            <h2>Environmental Details</h2>
-            <PermitDataSection detailsSet="environment details" formattedPermit={formattedPermit} />
+          <div className="row">
+            <div className="col-sm-12 col-md-6 permit-details-card">
+              <h2>Zoning Details</h2>
+              <PermitDataSection detailsSet="zoning details" formattedPermit={formattedPermit} />
+            </div>
+            <div className="col-sm-12 col-md-6 permit-details-card">
+              <h2>Environmental Details</h2>
+              <PermitDataSection detailsSet="environment details" formattedPermit={formattedPermit} />
+            </div>
           </div>
         </div>
       );

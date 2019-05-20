@@ -1,5 +1,5 @@
 import React from 'react';
-import moment from 'moment';
+// import moment from 'moment';
 import { getZoningLink } from '../../address/zoning';
 import Icon from '../../../shared/Icon';
 import {
@@ -13,14 +13,18 @@ import {
   IM_FISH,
 } from '../../../shared/iconConstants';
 
-const dateFormatter = inputDate => moment(new Date(inputDate)).format('MM/DD/YYYY');
+// const dateFormatter = inputDate => moment(new Date(inputDate)).format('MM/DD/YYYY');
 
 export const permitFieldFormats = [
   {
     accelaLabel: 'Aquatic Buffer',
     displayGroup: 'environment details',
     displayLabel: null,
-    formatFunc: d => d === 'No' ? null : <span className="permit-icon-boolean"><Icon path={IM_WATER} viewBox="0 0 576 512"/>Aquatic buffer located on this property</span>,
+    formatFunc: d => (d === 'No' ? null : (
+      <span className="permit-icon-boolean">
+        <Icon path={IM_WATER} viewBox="0 0 576 512" />Aquatic buffer located on this property
+      </span>)
+    ),
   },
   {
     accelaLabel: 'Flood Plain',
@@ -34,7 +38,11 @@ export const permitFieldFormats = [
         text = 'Floodway and floodplain located on this property';
       }
       // If it isn't no
-      return <span className="permit-icon-boolean"><Icon path={IM_TINT} viewBox="0 0 352 512"/>{text}</span>;
+      return (
+        <span className="permit-icon-boolean">
+          <Icon path={IM_TINT} viewBox="0 0 352 512" />{text}
+        </span>
+      );
     },
   },
   {
@@ -53,19 +61,23 @@ export const permitFieldFormats = [
     accelaLabel: 'Seeking LEED Certification',
     displayGroup: 'environment details',
     displayLabel: null,
-    formatFunc: d => d === 'No' ? null : <span className="permit-icon-boolean"><Icon path={IM_RECYCLE} viewBox="0 0 512 512"/>Seeking LEED certification</span>,
+    formatFunc: d => (d === 'No' ? null : (
+      <span className="permit-icon-boolean">
+        <Icon path={IM_RECYCLE} viewBox="0 0 512 512" />Seeking LEED certification
+      </span>)
+    ),
   },
   {
     accelaLabel: 'Permit Subtype',
     displayGroup: 'project details',
     displayLabel: 'Type of permit review',
-    formatFunc: (d, permit) => permit.trcType ? permit.trcType.id : d,
+    formatFunc: (d, permit) => (permit.trcType ? permit.trcType.id : d),
   },
   {
     accelaLabel: 'Plans Folder Location',
     displayGroup: 'project details',
     displayLabel: 'Site plans and documents',
-    formatFunc: d => (<a href={d} target='_blank' rel='noopener noreferrer'>Documents folder</a>),
+    formatFunc: d => (<a href={d} target="_blank" rel="noopener noreferrer">Documents folder</a>),
     description: 'Google Drive folder link to view documents',
   },
   {
@@ -84,7 +96,11 @@ export const permitFieldFormats = [
     accelaLabel: 'Affordable Housing',
     displayGroup: 'project details',
     displayLabel: null,
-    formatFunc: d => d === 'No' ? null : <span className="permit-icon-boolean"><Icon path={IM_HOME2}/>Affordable housing proposed</span>,
+    formatFunc: d => (d === 'No' ? null : (
+      <span className="permit-icon-boolean">
+        <Icon path={IM_HOME2} />Affordable housing proposed
+      </span>
+    )),
   },
   {
     accelaLabel: 'Number of Units',
@@ -104,8 +120,8 @@ export const permitFieldFormats = [
     formatFunc: d => d.split(',').filter(z => z.length > 0).map((zone, i) => (
       <a
         href={getZoningLink(zone) || undefined}
-        target='_blank'
-        rel='noopener noreferrer'
+        target="_blank"
+        rel="noopener noreferrer"
         key={zone}
       >
         {`${i > 0 ? ', ' : ''}${zone}`}
@@ -117,31 +133,47 @@ export const permitFieldFormats = [
     accelaLabel: 'Setbacks',
     displayGroup: 'zoning details',
     displayLabel: 'Setbacks',
-    formatFunc: d => d.length > 0 ? d.join(', ') : null,
+    formatFunc: d => (d.length > 0 ? d.join(', ') : null),
     description: 'Minimum distance required between the front, rear, side, or corner property line and structures',
   },
   {
     accelaLabel: 'DTDR Overlay',
     displayGroup: 'zoning details',
     displayLabel: null,
-    formatFunc: d => d === 'No' ? null : <span className="permit-icon-boolean"><Icon path={IM_CITY}/>Central business district</span>,
+    formatFunc: d => (d === 'No' ? null : (
+      <span className="permit-icon-boolean">
+        <Icon path={IM_CITY} />Central business district
+      </span>
+    )),
   },
   {
     accelaLabel: 'HRC Overlay',
     displayGroup: 'zoning details',
     displayLabel: null,
-    formatFunc: d => d === 'No' ? null : <span className="permit-icon-boolean"><Icon path={IM_LANDMARK} viewBox="0 0 512 512"/>Historic district</span>,
+    formatFunc: d => (d === 'No' ? null : (
+      <span className="permit-icon-boolean">
+        <Icon path={IM_LANDMARK} viewBox="0 0 512 512" />Historic district
+      </span>
+    )),
   },
   {
     accelaLabel: 'River District',
     displayGroup: 'zoning details',
     displayLabel: null,
-    formatFunc: d => d === 'No' ? null : <span className="permit-icon-boolean"><Icon path={IM_FISH} viewBox="0 0 576 512"/>River district</span>,
+    formatFunc: d => (d === 'No' ? null : (
+      <span className="permit-icon-boolean">
+        <Icon path={IM_FISH} viewBox="0 0 576 512" />River district
+      </span>
+    )),
   },
   {
     accelaLabel: 'Landmark',
     displayGroup: 'zoning details',
     displayLabel: null,
-    formatFunc: d => d === 'No' ? null : <span className="permit-icon-boolean"><Icon path={IM_MONUMENT} viewBox="0 0 384 512"/>Historic landmark</span>,
-  }
+    formatFunc: d => (d === 'No' ? null : (
+      <span className="permit-icon-boolean">
+        <Icon path={IM_MONUMENT} viewBox="0 0 384 512" />Historic landmark
+      </span>
+    )),
+  },
 ];

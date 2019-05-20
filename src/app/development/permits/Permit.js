@@ -1,13 +1,12 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import PermitsMap from './PermitsMap';
+import PermitDataSection from './PermitDataSection';
 import TypePuck from '../trc/TypePuck';
 import { trcProjectTypes } from '../utils';
-import { permitFieldFormats } from './permitFieldFormats';
-
 
 const GET_PERMIT = gql`
   query getPermitsQuery($permit_numbers: [String]) {
@@ -41,39 +40,6 @@ const GET_PERMIT = gql`
 //   applied_date: dateFormatter,
 //   status_date: dateFormatter,
 // };
-
-const PermitDataSubset = props => (
-  <div>
-    {permitFieldFormats.filter(field => field.displayGroup === props.detailsSet)
-      .sort(a => (!a.displayLabel ? -1 : 0))
-      .map((d) => {
-        const snakeCaseAccelaLabel = d.accelaLabel.toLowerCase().split(' ').join('_');
-        const val =  props.formattedPermit[snakeCaseAccelaLabel];
-        if (!val) {
-          return null;
-        }
-        const formattedDisplayVal = d.formatFunc ? d.formatFunc(val, props.formattedPermit) : val;
-        if (!formattedDisplayVal) {
-          // Format functions return null if it should not show
-          return null;
-        }
-        if (!d.displayLabel) {
-          return (
-            <div className="permit-form-group bool" key={d.accelaLabel}>
-              {formattedDisplayVal}
-            </div>
-          );
-        }
-        return (
-          <div className="permit-form-group">
-            <span className="display-label">{d.displayLabel}:</span>
-            <span className="formatted-val">{formattedDisplayVal}</span>
-          </div>
-        );
-      })
-    }
-  </div>
-);
 
 const Permit = props => (
   <Query
@@ -144,7 +110,7 @@ const Permit = props => (
             )}
             <div className={`col-sm-12 col-md-${showMap ? 6 : 12} permit-details-card`}>
               <p id="permit-description">{formattedPermit.permit_description}</p>
-              <PermitDataSubset detailsSet="project details" formattedPermit={formattedPermit} />
+              <PermitDataSection detailsSet="project details" formattedPermit={formattedPermit} />
               {trcType !== undefined && (
                 <div style={{ display: 'flex', marginTop: '1rem' }}>
                   <a style={{ marginRight: '1em' }} href="/development/major">
@@ -163,16 +129,28 @@ const Permit = props => (
           </div>
           <div className="col-sm-12 col-md-6 permit-details-card">
             <h2>Zoning Details</h2>
-            <PermitDataSubset detailsSet="zoning details" formattedPermit={formattedPermit} />
+            <PermitDataSection detailsSet="zoning details" formattedPermit={formattedPermit} />
           </div>
           <div className="col-sm-12 col-md-6 permit-details-card">
             <h2>Environmental Details</h2>
-            <PermitDataSubset detailsSet="environment details" formattedPermit={formattedPermit} />
+            <PermitDataSection detailsSet="environment details" formattedPermit={formattedPermit} />
           </div>
         </div>
       );
     }}
   </Query>
 );
+
+Permit.propTypes = {
+  routeParams: PropTypes.shape({
+    id: PropTypes.string,
+  }),
+};
+
+Permit.defaultProps = {
+  routeParams: {
+    id: '',
+  },
+};
 
 export default Permit;

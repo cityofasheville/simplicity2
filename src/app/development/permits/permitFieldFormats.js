@@ -2,7 +2,15 @@ import React from 'react';
 import moment from 'moment';
 import { getZoningLink } from '../../address/zoning';
 import Icon from '../../../shared/Icon';
-import { IM_WATER, IM_TINT, IM_RECYCLE, IM_HOME2, IM_CITY } from '../../../shared/iconConstants';
+import {
+  IM_WATER,
+  IM_TINT,
+  IM_RECYCLE,
+  IM_HOME2,
+  IM_CITY,
+  IM_LANDMARK,
+  IM_MONUMENT,
+} from '../../../shared/iconConstants';
 
 const dateFormatter = inputDate => moment(new Date(inputDate)).format('MM/DD/YYYY');
 
@@ -75,7 +83,7 @@ export const permitFieldFormats = [
     accelaLabel: 'Affordable Housing',
     displayGroup: 'project details',
     displayLabel: null,
-    formatFunc: d => d === 'No' && false ? null : <span><Icon path={IM_HOME2}/>Affordable housing proposed</span>,
+    formatFunc: d => d === 'No' ? null : <span><Icon path={IM_HOME2}/>Affordable housing proposed</span>,
   },
   {
     accelaLabel: 'Number of Units',
@@ -121,7 +129,7 @@ export const permitFieldFormats = [
     accelaLabel: 'HRC Overlay',
     displayGroup: 'zoning details',
     displayLabel: null,
-    formatFunc: d => d === 'No' ? null : 'Historic district',
+    formatFunc: d => d === 'No' ? null : <span><Icon path={IM_LANDMARK} viewBox="0 0 512 512"/>Historic district</span>,
   },
   {
     accelaLabel: 'River District',
@@ -133,6 +141,6 @@ export const permitFieldFormats = [
     accelaLabel: 'Landmark',
     displayGroup: 'zoning details',
     displayLabel: null,
-    formatFunc: d => d === 'No' ? null : 'Historic landmark',
+    formatFunc: d => d === 'No' ? null : <span><Icon path={IM_MONUMENT} viewBox="0 0 384 512"/>Historic landmark</span>,
   }
 ];

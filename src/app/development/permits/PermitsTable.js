@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import AccessibleReactTable from 'accessible-react-table';
 import Measure from 'react-measure';
-import moment from 'moment';
 import expandingRows from '../../../shared/react_table_hoc/ExpandingRows';
 import createFilterRenderer from '../../../shared/FilterRenderer';
 import { defaultTableHeaders } from '../utils';

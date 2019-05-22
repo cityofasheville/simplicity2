@@ -6,22 +6,20 @@ import PermitTypeCard from './PermitTypeCard';
 class TypePuck extends React.Component {
   constructor() {
     super();
-
     this.state = {
       tooltipOpen: false,
       tooltipX: 0,
       tooltipY: 0,
     }
     this.maxWidth = 300;
-
     this.onHover = this.onHover.bind(this);
   }
 
   onHover(e) {
-    if (e.type === 'keydown' && e.key !== 'Enter') {
+    if (e.type === 'keyup' && e.key !== 'Enter') {
       return;
     }
-    if (e.type === 'keydown' && e.key === 'Enter' && this.state.tooltipOpen) {
+    if (e.type === 'keyup' && e.key === 'Enter' && this.state.tooltipOpen) {
       this.setState({ tooltipOpen: false });
       return;
     }
@@ -55,9 +53,11 @@ class TypePuck extends React.Component {
           this.onHover : null
         }
         onMouseLeave={this.props.hover ? () => this.setState({ tooltipOpen: false }) : null}
-        onKeyDown={this.props.hover ? this.onHover : null}
+        onKeyUp={this.props.hover ? this.onHover : null}
         onBlur={this.props.hover ? () => this.setState({ tooltipOpen: false }) : null}
         tabIndex="0"
+        role="button"
+        aria-label={`About ${this.props.typeObject.id} permits`}
       >
         <svg
           height={this.props.size}
@@ -94,6 +94,7 @@ class TypePuck extends React.Component {
           ReactDOM.createPortal(
             (<div
               className="puck-tooltip"
+              role="status"
               style={{
                 position: 'absolute',
                 top: this.state.tooltipY,

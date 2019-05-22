@@ -12,19 +12,29 @@ class TypePuck extends React.Component {
       tooltipX: 0,
       tooltipY: 0,
     }
+    this.maxWidth = 300;
 
     this.onHover = this.onHover.bind(this);
 
   }
 
   onHover(e) {
-    let tooltipX = e.pageX + 30;
-    let tooltipY = e.pageY + 30;
-    if ((window.innerWidth - e.pageX - 300) <= 0) {
-      tooltipX -= 360;
+    if (e.type === 'keydown' && e.key !== 'Enter') {
+      return;
     }
-    if ((window.innerHeight - e.pageY - 300) <= 0) {
-      tooltipY -= 200;
+    const bbox = e.target.getBoundingClientRect();
+    let tooltipX = bbox.x + 30;
+    let tooltipY = bbox.y + 30 + window.scrollY;
+
+    if (window.innerWidth < 700) {
+      tooltipX = bbox.x - this.maxWidth / 2;
+    } else {
+      if ((window.innerWidth - bbox.x - 300) <= 0) {
+        tooltipX -= 360;
+      }
+      if ((window.innerHeight - bbox.y - 300) <= 0) {
+        tooltipY -= 200;
+      }
     }
 
     this.setState({
@@ -41,8 +51,10 @@ class TypePuck extends React.Component {
         onMouseEnter={this.props.hover ?
           this.onHover : null
         }
-        onFocus={this.props.hover ? this.onHover : null}
-        onMouseLeave={this.props.hover ? e => this.setState({ tooltipOpen: false }) : null}
+        onMouseLeave={this.props.hover ? () => this.setState({ tooltipOpen: false }) : null}
+        onKeyDown={this.props.hover ? this.onHover : null}
+        onBlur={this.props.hover ? () => this.setState({ tooltipOpen: false }) : null}
+        tabIndex="0"
       >
         <svg
           height={this.props.size}
@@ -84,7 +96,7 @@ class TypePuck extends React.Component {
                 top: this.state.tooltipY,
                 left: this.state.tooltipX,
                 zIndex: 99,
-                maxWidth: '300px',
+                maxWidth: `${this.maxWidth}px`,
               }}
             >
               <PermitTypeCard type={this.props.typeObject.id} />

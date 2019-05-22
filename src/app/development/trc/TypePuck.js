@@ -15,11 +15,14 @@ class TypePuck extends React.Component {
     this.maxWidth = 300;
 
     this.onHover = this.onHover.bind(this);
-
   }
 
   onHover(e) {
     if (e.type === 'keydown' && e.key !== 'Enter') {
+      return;
+    }
+    if (e.type === 'keydown' && e.key === 'Enter' && this.state.tooltipOpen) {
+      this.setState({ tooltipOpen: false });
       return;
     }
     const bbox = e.target.getBoundingClientRect();

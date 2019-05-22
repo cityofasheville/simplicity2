@@ -8,5 +8,39 @@
 }
 
 input[type="date"]::-webkit-clear-button {
-    display: none;
+  display: none;
+}
+
+.timepicker-dropdown {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.timepicker-dropdown .timepicker-input-item {
+  align-content: stretch;
+  margin: 0.25rem;
+  white-space: nowrap;
+  flex-grow: 1;
+}
+
+.timepicker-dropdown div.timepicker-input-item {
+  display: flex;
+}
+
+
+.timepicker-dropdown .timepicker-input-item label {
+  margin: 0 0.25rem;
+}
+
+@media(max-width: 767px){
+  .timepicker-dropdown {
+    text-align: left;
+  }
+  .timepicker-dropdown .timepicker-input-item {
+    width: 100%;
+  }
+}
+
+@media(min-width: 767px){
+
 }

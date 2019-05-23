@@ -56,8 +56,8 @@ class TypePuck extends React.Component {
         onMouseLeave={this.props.hover ? () => this.setState({ tooltipOpen: false }) : null}
         onKeyUp={this.props.hover ? this.onHover : null}
         onBlur={this.props.hover ? () => this.setState({ tooltipOpen: false }) : null}
-        tabIndex="0"
-        role="button"
+        tabIndex={this.props.hover ? '0' : '-1'}
+        role={this.props.hover ? 'button' : undefined}
         aria-label={`About ${this.props.typeObject.id} permits`}
       >
         <svg

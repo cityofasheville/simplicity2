@@ -46,6 +46,7 @@ class TypePuck extends React.Component {
   }
 
   render() {
+    // TODO: use group to make this less annoying to screen readers?
     return (
       <div
         style={{ display: 'inline-block' }}
@@ -80,6 +81,7 @@ class TypePuck extends React.Component {
             y={this.props.size / 2}
             style={{
               stroke: 'white',
+              fill: 'white',
               strokeWidth: this.state.tooltipOpen ? 2 : 1,
               textAnchor: 'middle',
               alignmentBaseline: 'middle',

@@ -132,7 +132,7 @@ class MajorDevelopmentDashboard extends React.Component {
       <main>
         <h1>Large Scale Development in Asheville</h1>
         {this.sections.map(section => (
-          <section id={section.linkId} ref={section.ref} key={section.linkId}>
+          <section id={section.linkId} ref={section.ref} key={section.linkId} style={{ overflow: 'auto' }}>
             <h2>{section.header}</h2>
             {section.body}
           </section>

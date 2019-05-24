@@ -198,6 +198,13 @@ a.inText{
 	}
 }
 
+.cssload-loader {
+  // So that it's centered
+  position: unset;
+  margin: 0 auto;
+
+}
+
 /*TABLES*/
 .rt-td{
 	&, span{

@@ -97,14 +97,13 @@ class TimeSlider extends React.Component {
       >
         <ErrorBoundary>
           <div>
-            <form onSubmit={this.handleSubmit} style={{ textAlign: 'center' }}>
+            <form onSubmit={this.handleSubmit} className="timepicker-dropdown">
               <div
-                className=""
-                style={{ display: 'inline-block', padding: '0 0.25em 0 0', whiteSpace: 'nowrap' }}
+                className="timepicker-input-item"
               >
                 <label
                   htmlFor="startdate"
-                  style={{ display: 'inline-block', padding: '0 0.25em 0 0' }}
+                  // style={{ display: 'inline-block', padding: '0 0.25em 0 0' }}
                 >
                   From
                 </label>
@@ -113,7 +112,7 @@ class TimeSlider extends React.Component {
                   id="startdate"
                   name="startdate"
                   className="form-control input-sm"
-                  style={{ display: 'inline-block', width: '11em' }}
+                  // style={{ display: 'inline-block', width: '11em' }}
                   value={moment.utc(new Date(this.state.firstInputVal)).format('YYYY-MM-DD')}
                   onChange={(e) => {
                     if (!moment(new Date(e.target.value)).isValid()) {
@@ -130,12 +129,10 @@ class TimeSlider extends React.Component {
                 />
               </div>
               <div
-                className=""
-                style={{ display: 'inline-block', padding: '0 0.25em 0 0', whiteSpace: 'nowrap' }}
+                className="timepicker-input-item"
               >
                 <label
                   htmlFor="enddate"
-                  style={{ display: 'inline-block', padding: '0 0.25em 0 0' }}
                 >
                   through
                 </label>
@@ -144,7 +141,6 @@ class TimeSlider extends React.Component {
                   id="enddate"
                   name="enddate"
                   className="form-control input-sm"
-                  style={{ display: 'inline-block', width: '11em' }}
                   value={moment.utc(new Date(this.state.secondInputVal)).format('YYYY-MM-DD')}
                   onChange={(e) => {
                     if (!moment(new Date(e.target.value)).isValid()) {
@@ -163,8 +159,7 @@ class TimeSlider extends React.Component {
               <input
                 type="submit"
                 value="Set Dates"
-                className="btn btn-primary btn-sm"
-                style={{ margin: '0 1em', lineHeight: 'inherit' }}
+                className="btn btn-primary btn-sm timepicker-input-item"
               />
             </form>
           </div>

@@ -81,17 +81,21 @@ class SectionNav extends React.Component {
   }
 
   render() {
-    return (<ul className="sectionNav" >
-      {this.state.links.map(linkItem => {
-        return (<li key={linkItem.linkId}><a
-          href={`#${linkItem.linkId}`}
-          className={`linkItem-${linkItem.selected ? 'selected' : 'not-selected'}`}
-          onClick={this.handleAnchorClick}
-        >
-          {linkItem.linkName}
-        </a></li>)
-      })}
-    </ul>);
+    return (
+      <nav>
+        <ul className="sectionNav" >
+          {this.state.links.map(linkItem => {
+            return (<li key={linkItem.linkId}><a
+              href={`#${linkItem.linkId}`}
+              className={`linkItem-${linkItem.selected ? 'selected' : 'not-selected'}`}
+              onClick={this.handleAnchorClick}
+            >
+              {linkItem.linkName}
+            </a></li>)
+          })}
+        </ul>
+      </nav>
+    );
   }
 
 }

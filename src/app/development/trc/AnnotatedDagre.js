@@ -451,12 +451,22 @@ class AnnotatedDagre extends React.Component {
     return (<div style={{ width: '100%', fontSize: visWidth < 500 ? '0.75rem' : '1em' }}>
       <svg height={height} width={visWidth}>
         <g>
-          {links.map((d, i) => {
-            // TODO: go get elbow logic from old commit
+          {links.map((d, i, linksArray) => {
+            const elbowOffset = edgeStroke;
+            let verticalOffset = 0;
+            if (d.x2 < d.x1) {
+              verticalOffset = i * elbowOffset;
+            } else if (d.x2 > d.x1) {
+              verticalOffset = (linksArray.length - i) * elbowOffset;
+            }
+            // if the link is more than more than 0 then it needs to be adjusted
+            // if x2 < x1 make it shorter -- * links.length - i
+            // if x2 > x2 make it longer
+            // should go slightly further down -- i * edgeStroke + edgePadding ?
             return (<path
               d={`M${d.x1} ${d.y1 - yOffset}
-                L${d.x1} ${d.y1 + ((d.y2 - d.y1) / 3) - yOffset}
-                L${d.x2} ${d.y1 + ((d.y2 - d.y1) / 3) * 2 - yOffset}
+                L${d.x1} ${d.y1 + ((d.y2 - d.y1) / 3) - yOffset + verticalOffset}
+                L${d.x2} ${d.y1 + ((d.y2 - d.y1) / 3) * 2 - yOffset + verticalOffset}
                 L${d.x2} ${d.y2 - yOffset}`}
               style={{
                 stroke: trcProjectTypes[d.id].color,

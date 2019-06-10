@@ -17,31 +17,25 @@ class MajorDevelopmentDashboard extends React.Component {
 
     this.sections = [
       {
-        linkId: 'about',
-        linkName: 'About',
+        linkId: 'types',
+        linkName: 'Project Types',
         selected: true,
-        header: 'Get notifications, attend meetings, and have your voice heard',
+        header: 'Types of large-scale development',
         body: (
           <div>
-            <p>There is a lot of private land development happening in Asheville.  This tool can help you:</p>
-            <ul>
-              <li>
-                Understand the process
-              </li>
-              <li>
-                Be notified when someone applies for a permit to build something near you
-              </li>
-              <li>
-                Find public meetings so that your voice can be heard
-              </li>
-            </ul>
             <p>The Unified Development Ordinance defines the following types of large scale development in Asheville.</p>
             <PermitTypeCards/>
-            <br/>
-            <p>After the developer submits an application, it goes through a decision-making process that includes city staff, city council, developers, and residents.  Who is involved at what step depends on the type of project.</p>
-            <AnnotatedDagre />
           </div>
         ),
+      },
+      {
+        linkId: 'process',
+        linkName: 'Process',
+        header: 'The development process',
+        body: (<div>
+          <p>After the developer submits an application, it goes through a decision-making process that includes city staff, city council, developers, and residents.  Who is involved at what step depends on the type of project.</p>
+          <AnnotatedDagre />
+        </div>),
       },
       {
         linkId: 'notifications',
@@ -131,6 +125,21 @@ class MajorDevelopmentDashboard extends React.Component {
       />
       <main>
         <h1>Large Scale Development in Asheville</h1>
+        <h1><small>Get notifications, attend meetings, and have your voice heard.</small></h1>
+        <p>There is a lot of private land development happening in Asheville.  This tool can help you:</p>
+        <ul>
+          <li>
+            Understand the process
+          </li>
+          <li>
+            Be notified when someone applies for a permit to build something near you
+          </li>
+          <li>
+            Find public meetings so that your voice can be heard
+          </li>
+        </ul>
+        <br/>
+        <br/>
         {this.sections.map(section => (
           <section id={section.linkId} ref={section.ref} key={section.linkId} style={{ overflow: 'auto' }}>
             <h2>{section.header}</h2>

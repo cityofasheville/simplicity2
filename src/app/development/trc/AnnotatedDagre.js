@@ -150,7 +150,7 @@ class AnnotatedDagre extends React.Component {
           // 'Level I',
           'Level II',
           'Major Subdivision',
-          'Level III',
+          // 'Level III',
           'Conditional Zoning',
           'Conditional Use Permit',
         ],
@@ -162,7 +162,7 @@ class AnnotatedDagre extends React.Component {
           // 'Level I',
           'Level II',
           'Major Subdivision',
-          'Level III',
+          // 'Level III',
           'Conditional Zoning',
           'Conditional Use Permit',
         ],
@@ -174,7 +174,7 @@ class AnnotatedDagre extends React.Component {
           'Level I',
           'Level II',
           'Major Subdivision',
-          'Level III',
+          // 'Level III',
           'Conditional Zoning',
           'Conditional Use Permit',
         ],
@@ -186,7 +186,7 @@ class AnnotatedDagre extends React.Component {
           'Level I',
           'Level II',
           'Major Subdivision',
-          'Level III',
+          // 'Level III',
           'Conditional Zoning',
           'Conditional Use Permit',
         ],
@@ -205,7 +205,7 @@ class AnnotatedDagre extends React.Component {
           // 'Level I',
           'Level II',
           'Major Subdivision',
-          'Level III',
+          // 'Level III',
           'Conditional Zoning',
           'Conditional Use Permit',
         ],
@@ -229,7 +229,7 @@ class AnnotatedDagre extends React.Component {
           // 'Level I',
           'Level II',
           // 'Major Subdivision',
-          'Level III',
+          // 'Level III',
           // 'Conditional Zoning',
           // 'Conditional Use Permit',
         ],
@@ -241,7 +241,7 @@ class AnnotatedDagre extends React.Component {
           // 'Level I',
           'Level II',
           // 'Major Subdivision',
-          'Level III',
+          // 'Level III',
           'Conditional Zoning',
           'Conditional Use Permit',
         ],
@@ -265,7 +265,7 @@ class AnnotatedDagre extends React.Component {
           // 'Level I',
           // 'Level II',
           // 'Major Subdivision',
-          'Level III',
+          // 'Level III',
           'Conditional Zoning',
           'Conditional Use Permit',
         ],
@@ -277,7 +277,7 @@ class AnnotatedDagre extends React.Component {
           // 'Level I',
           // 'Level II',
           // 'Major Subdivision',
-          'Level III',
+          // 'Level III',
           'Conditional Zoning',
           'Conditional Use Permit',
         ],
@@ -290,7 +290,7 @@ class AnnotatedDagre extends React.Component {
         parallelEdges: [
           { id: 'Major Subdivision' },
           { id: 'Level II' },
-          { id: 'Level III' },
+          // { id: 'Level III' },
           { id: 'Conditional Zoning'},
           { id: 'Conditional Use Permit' },
         ]
@@ -301,7 +301,7 @@ class AnnotatedDagre extends React.Component {
         parallelEdges: [
           { id: 'Major Subdivision' },
           { id: 'Level II' },
-          { id: 'Level III' },
+          // { id: 'Level III' },
           { id: 'Conditional Zoning'},
           { id: 'Conditional Use Permit' },
         ]
@@ -313,7 +313,7 @@ class AnnotatedDagre extends React.Component {
           { id: 'Level I' },
           { id: 'Major Subdivision' },
           { id: 'Level II' },
-          { id: 'Level III' },
+          // { id: 'Level III' },
           { id: 'Conditional Zoning'},
           { id: 'Conditional Use Permit' },
         ]
@@ -329,7 +329,7 @@ class AnnotatedDagre extends React.Component {
         parallelEdges: [
           { id: 'Major Subdivision' },
           { id: 'Level II' },
-          { id: 'Level III' },
+          // { id: 'Level III' },
           { id: 'Conditional Zoning'},
           { id: 'Conditional Use Permit' },
         ]
@@ -350,7 +350,7 @@ class AnnotatedDagre extends React.Component {
         source: 'Technical Review Committee',
         target: 'Planning and Zoning Commission',
         parallelEdges: [
-          { id: 'Level III' },
+          // { id: 'Level III' },
           { id: 'Conditional Zoning'},
           { id: 'Conditional Use Permit' },
         ]
@@ -374,7 +374,7 @@ class AnnotatedDagre extends React.Component {
         source: 'Planning and Zoning Commission',
         target: 'City Council',
         parallelEdges: [
-          { id: 'Level III' },
+          // { id: 'Level III' },
           { id: 'Conditional Zoning'},
           { id: 'Conditional Use Permit' },
         ]
@@ -383,7 +383,7 @@ class AnnotatedDagre extends React.Component {
         source: 'City Council',
         target: 'City Council Decision',
         parallelEdges: [
-          { id: 'Level III' },
+          // { id: 'Level III' },
           { id: 'Conditional Zoning'},
           { id: 'Conditional Use Permit' },
         ]

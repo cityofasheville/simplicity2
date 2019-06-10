@@ -117,7 +117,7 @@ class TypePuck extends React.Component {
 
 TypePuck.defaultProps = {
   size: 50,
-  hover: true,
+  hover: false,
 }
 
 export default TypePuck;

@@ -35,7 +35,7 @@ class MajorDevelopmentDashboard extends React.Component {
                 Find public meetings so that your voice can be heard
               </li>
             </ul>
-            <p>The Unified Development Ordinance defines six types of large scale development in Asheville.</p>
+            <p>The Unified Development Ordinance defines the following types of large scale development in Asheville.</p>
             <PermitTypeCards/>
             <br/>
             <p>After the developer submits an application, it goes through a decision-making process that includes city staff, city council, developers, and residents.  Who is involved at what step depends on the type of project.</p>

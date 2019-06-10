@@ -55,10 +55,11 @@ function getNodes(dagreGraph, visWidth, nodeHeight, nodePadding) {
     d.coincidents = JSON.parse(JSON.stringify(nodeValues.filter(val => val.y === d.y)));
     d.indexInCoincidents = d.coincidents.findIndex(c => c.id === d.id);
     d.numPerRow = d.coincidents.length <= 3 ? d.coincidents.length : Math.ceil(d.coincidents.length / 2);
-    d.wrap = Math.min(
-      (visWidth - (annotationMargin + annotationMargin * d.numPerRow)) / d.numPerRow,
-      450
-    )
+    // d.wrap = Math.min(
+    //   (visWidth - (annotationMargin + annotationMargin * d.numPerRow)) / d.numPerRow,
+    //   450
+    // )
+    d.wrap = (visWidth - (annotationMargin + annotationMargin * d.numPerRow)) / d.numPerRow;
 
     // Set x value
     const midRowIndex = (d.numPerRow - 1) / 2;
@@ -143,21 +144,30 @@ class AnnotatedDagre extends React.Component {
   constructor() {
     super();
     this.nodes = [
+      // {
+      //   id: 'Neighborhood Meeting',
+      //   description: 'The developer must arrange a neighborhood meeting and invite property owners within 200 feet of the proposed development. The meeting must be no more than four months but at least ten days before application submission. At least ten days prior to the meeting, property must be posted and notice of the meeting mailed.',
+      //   typeIds: [
+      //     // 'Level I',
+      //     'Level II',
+      //     'Major Subdivision',
+      //     // 'Level III',
+      //     'Conditional Zoning',
+      //     'Conditional Use Permit',
+      //   ],
+      // },
       {
-        id: 'Neighborhood Meeting',
-        description: 'The developer must arrange a neighborhood meeting and invite property owners within 200 feet of the proposed development. The meeting must be no more than four months but at least ten days before application submission. At least ten days prior to the meeting, property must be posted and notice of the meeting mailed.',
-        typeIds: [
-          // 'Level I',
-          'Level II',
-          'Major Subdivision',
-          // 'Level III',
-          'Conditional Zoning',
-          'Conditional Use Permit',
-        ],
-      },
-      {
-        id: 'Pre-Application Meeting',
-        description: 'The developer must meet with city staff at a pre-application meeting.',
+        id: 'Pre-Application',
+        description: (<div>
+          <div style={{ width: '50%', display: 'inline-block', verticalAlign: 'top', padding: '0.5rem' }}>
+            <div style={{ fontSize: '1.25rem', padding: '0 0 0.5rem 0' }}>Pre-Application Meeting</div>
+            The developer must meet with city staff at a pre-application meeting.
+          </div>
+          <div style={{ width: '50%', display: 'inline-block', verticalAlign: 'top', padding: '0.5rem' }}>
+            <div style={{ fontSize: '1.25rem', padding: '0 0 0.5rem 0' }}>Neighborhood Meeting</div>
+            The developer must arrange a neighborhood meeting and invite property owners within 200 feet of the proposed development. The meeting must be no more than four months but at least ten days before application submission. At least ten days prior to the meeting, property must be posted and notice of the meeting mailed.
+          </div>
+        </div>),
         typeIds: [
           // 'Level I',
           'Level II',
@@ -284,19 +294,19 @@ class AnnotatedDagre extends React.Component {
       },
     ]
     this.links = [
+      // {
+      //   source: 'Neighborhood Meeting',
+      //   target: 'Permit Application',
+      //   parallelEdges: [
+      //     { id: 'Major Subdivision' },
+      //     { id: 'Level II' },
+      //     // { id: 'Level III' },
+      //     { id: 'Conditional Zoning'},
+      //     { id: 'Conditional Use Permit' },
+      //   ]
+      // },
       {
-        source: 'Neighborhood Meeting',
-        target: 'Permit Application',
-        parallelEdges: [
-          { id: 'Major Subdivision' },
-          { id: 'Level II' },
-          // { id: 'Level III' },
-          { id: 'Conditional Zoning'},
-          { id: 'Conditional Use Permit' },
-        ]
-      },
-      {
-        source: 'Pre-Application Meeting',
+        source: 'Pre-Application',
         target: 'Permit Application',
         parallelEdges: [
           { id: 'Major Subdivision' },
@@ -459,10 +469,6 @@ class AnnotatedDagre extends React.Component {
             } else if (d.x2 > d.x1) {
               verticalOffset = (linksArray.length - i) * elbowOffset;
             }
-            // if the link is more than more than 0 then it needs to be adjusted
-            // if x2 < x1 make it shorter -- * links.length - i
-            // if x2 > x2 make it longer
-            // should go slightly further down -- i * edgeStroke + edgePadding ?
             return (<path
               d={`M${d.x1} ${d.y1 - yOffset}
                 L${d.x1} ${d.y1 + ((d.y2 - d.y1) / 3) - yOffset + verticalOffset}

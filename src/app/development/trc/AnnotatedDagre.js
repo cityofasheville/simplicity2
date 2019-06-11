@@ -49,10 +49,14 @@ function getNodes(dagreGraph, visWidth, nodeHeight, nodePadding) {
     d.coincidents = JSON.parse(JSON.stringify(nodeValues.filter(val => val.y === d.y)));
     d.indexInCoincidents = d.coincidents.findIndex(c => c.id === d.id);
     d.numPerRow = d.coincidents.length <= 3 ? d.coincidents.length : Math.ceil(d.coincidents.length / 2);
+
+    // Could set max width for nodes
     // d.wrap = Math.min(
     //   (visWidth - (annotationMargin + annotationMargin * d.numPerRow)) / d.numPerRow,
     //   450
     // )
+
+    // For now just make it 100%
     d.wrap = (visWidth - (annotationMargin + annotationMargin * d.numPerRow)) / d.numPerRow;
 
     // Set x value
@@ -134,6 +138,15 @@ function getLinks(inputLinks, nodes, edgePadding, edgeStroke) {
   });
 }
 
+const displayNode = node => (
+    <div key={node.id} style={{ verticalAlign: 'top', padding: '0.5rem' }}>
+      <div style={{ fontSize: '1.25rem', padding: '0 0 0.5rem 0' }}>{node.id}</div>
+      <ul>{Object.keys(node.steps).map(stepKey => (
+        <li key={`${stepKey}-${node.id}`}>{`${stepKey}: ${node.steps[stepKey]}`}</li>
+      ))}</ul>
+  </div>
+);
+
 class AnnotatedDagre extends React.Component {
   constructor() {
     super();
@@ -150,16 +163,6 @@ class AnnotatedDagre extends React.Component {
             steps: { who: ['Developer', 'Neighbors'] },
           },
         ],
-        description: (<div>
-          <div style={{ width: '50%', display: 'inline-block', verticalAlign: 'top', padding: '0.5rem' }}>
-            <div style={{ fontSize: '1.25rem', padding: '0 0 0.5rem 0' }}>Pre-Application Meeting</div>
-            The developer must meet with city staff at a pre-application meeting.
-          </div>
-          <div style={{ width: '50%', display: 'inline-block', verticalAlign: 'top', padding: '0.5rem' }}>
-            <div style={{ fontSize: '1.25rem', padding: '0 0 0.5rem 0' }}>Neighborhood Meeting</div>
-            The developer must arrange a neighborhood meeting and invite property owners within 200 feet of the proposed development. The meeting must be no more than four months but at least ten days before application submission. At least ten days prior to the meeting, property must be posted and notice of the meeting mailed.
-          </div>
-        </div>),
         typeIds: [
           // 'Level I',
           'Level II',
@@ -208,6 +211,12 @@ class AnnotatedDagre extends React.Component {
       {
         id: 'Level I Decision',
         description: 'When plans for a Level I scale project show that all technical requirements are met, staff must approve the plans and issue a permit.',
+        steps: {
+          what: '',
+          when: '',
+          who: '',
+          where: '',
+        },
         typeIds: [
           'Level I',
         ],
@@ -215,6 +224,12 @@ class AnnotatedDagre extends React.Component {
       {
         id: 'Technical Review Committee',
         description: 'An eight-member body that ensures that the proposed project complies with standards and requirements.  The committee consists of six staff, a representative of the Tree Commission and a member representing the Buncombe County Metropolitan Sewerage District (MSD).',
+        steps: {
+          what: '',
+          when: '',
+          who: '',
+          where: '',
+        },
         typeIds: [
           // 'Level I',
           'Level II',
@@ -227,6 +242,12 @@ class AnnotatedDagre extends React.Component {
       {
         id: 'Major Subdivision and Level II Decision (Not Downtown)',
         description: 'When plans for a Major Subdivision or Level II review that is not located downtown show that all technical requirements are met, staff must approve the plans and issue a permit.  For Major Subdivisions and Leve lII projects that are not in a special Zoning district such as the Downtown area, the Technical Review Committee (TRC) must approve compliant plans or reject deficient plans.',
+        steps: {
+          what: '',
+          when: '',
+          who: '',
+          where: '',
+        },
         typeIds: [
           // 'Level I',
           'Level II',
@@ -239,6 +260,12 @@ class AnnotatedDagre extends React.Component {
       {
         id: 'Design Review',
         description: <div>Projects located Downtown or in the River District must be reviewed for architectural design elements by a special design review sub-committee of either the <a href="https://library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTIIIDEKIADADBO_S7-3-8ASDOCO" target="_blank" rel="noopener noreferrer">Asheville Downtown Commission</a> or the <a href="https://library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTIIIDEKIADADBO_S7-3-10ASARRIRECO" target="_blank" rel="noopener noreferrer">Asheville Area Riverfront Redevelopment Commission</a> prior to approval.</div>,
+        steps: {
+          what: '',
+          when: '',
+          who: '',
+          where: '',
+        },
         typeIds: [
           // 'Level I',
           'Level II',
@@ -251,6 +278,12 @@ class AnnotatedDagre extends React.Component {
       {
         id: 'Planning and Zoning Commission',
         description: 'Conditional Zoning, Level III, Conditional Use Permits and Level II projects within the Downtown area are reviewed by the Planning & Zoning Commission.  For  Conditional Zoning, Use and Level III projects, the Planning & Zoning Commission holds a public hearing and makes a recommendation for action to City Council.  For downtown Level II projects, the Planning & Zoning Commission verifies technical compliance with the requirements of applicable ordinances and documents and takes final action.',
+        steps: {
+          what: '',
+          when: '',
+          who: '',
+          where: '',
+        },
         typeIds: [
           // 'Level I',
           'Level II',
@@ -263,6 +296,12 @@ class AnnotatedDagre extends React.Component {
       {
         id: 'Level II and Downtown Major Subdivision Decision',
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        steps: {
+          what: '',
+          when: '',
+          who: '',
+          where: '',
+        },
         typeIds: [
           // 'Level I',
           'Level II',
@@ -275,6 +314,12 @@ class AnnotatedDagre extends React.Component {
       {
         id: 'City Council',
         description: 'Conditional Zoning, Level III, Conditional Use Permits are reviewed during a public hearing before City Council.  These projects arrive at the City Council meeting with a recommendation for action that has been sent by the Planning & Zoning Commission.',
+        steps: {
+          what: '',
+          when: '',
+          who: '',
+          where: '',
+        },
         typeIds: [
           // 'Level I',
           // 'Level II',
@@ -287,6 +332,12 @@ class AnnotatedDagre extends React.Component {
       {
         id: 'City Council Decision',
         description: 'City Council hears evidence and testimony and takes final action on the application by vote.',
+        steps: {
+          what: '',
+          when: '',
+          who: '',
+          where: '',
+        },
         typeIds: [
           // 'Level I',
           // 'Level II',
@@ -527,16 +578,10 @@ class AnnotatedDagre extends React.Component {
                   </div>
                 </div>
 
-                {d.subNodes && (<div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-                  {d.subNodes.map(sub => (
-                    <div key={sub.id} style={{ verticalAlign: 'top', padding: '0.5rem' }}>
-                      <div style={{ fontSize: '1.25rem', padding: '0 0 0.5rem 0' }}>{sub.id}</div>
-                      <ul>{Object.keys(sub.steps).map(stepKey => (
-                        <li key={`${stepKey}-${sub.id}`}>{`${stepKey}: ${sub.steps[stepKey]}`}</li>
-                      ))}</ul>
-                  </div>))}
+                {d.subNodes && (<div style={{ display: 'flex', justifyContent: 'space-around' }}>
+                  {d.subNodes.map(sub => displayNode(sub))}
                 </div>)}
-
+                {!d.subNodes && displayNode(d)}
               </div>
             </foreignObject>
           ))}

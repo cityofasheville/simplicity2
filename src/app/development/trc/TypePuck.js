@@ -79,12 +79,12 @@ class TypePuck extends React.Component {
           <text
             x={this.props.size / 2}
             y={this.props.size / 2}
+            dy={this.props.size / 8}
             style={{
               stroke: 'white',
               fill: 'white',
-              strokeWidth: this.state.tooltipOpen ? 2 : 1,
+              strokeWidth: this.state.tooltipOpen ? 2 : 1.5,
               textAnchor: 'middle',
-              alignmentBaseline: 'middle',
               letterSpacing: '0.15em',
               fontSize: 16 * (this.props.size / 50),
             }}
@@ -102,7 +102,6 @@ class TypePuck extends React.Component {
                 top: this.state.tooltipY,
                 left: this.state.tooltipX,
                 zIndex: 99,
-                maxWidth: `${this.maxWidth}px`,
               }}
             >
               <div

@@ -171,8 +171,9 @@ const decisionIconStyle = {
   display: 'inline-block',
   borderRadius: '0.5em',
 }
+
 const decisionIconHeader = (
-  <div>
+  <div style={{ margin: '0 auto' }}>
     <div>
       <div style={Object.assign({ backgroundColor: '#008A00' }, decisionIconStyle)}>&#10004;</div>
       <span>Approved</span>
@@ -187,6 +188,21 @@ const decisionIconHeader = (
     </div>
   </div>
 );
+
+const whoIcons = {
+  dev: {
+    label: 'Developer',
+    // https://fontawesome.com/icons/drafting-compass?style=solid
+  },
+  staff: {
+    label: 'City Staff'
+    // use city hall icon
+  },
+  neighbors: {
+    label: 'Neighbors'
+    // https://fontawesome.com/icons/user-friends?style=solid
+  }
+}
 
 class AnnotatedDagre extends React.Component {
   constructor() {
@@ -215,10 +231,8 @@ class AnnotatedDagre extends React.Component {
           },
         ],
         typeIds: [
-          // 'Level I',
           'Level II',
           'Major Subdivision',
-          // 'Level III',
           'Conditional Zoning',
           'Conditional Use Permit',
         ],
@@ -228,14 +242,13 @@ class AnnotatedDagre extends React.Component {
         steps: {
           what: 'Submission of required plans and documents and payment of application fees.',
           when: 'After the preliminary steps are completed.  Applications that do not indicate that a neighborhood meeting has been held are rejected.',
-          who: 'The developer proposing to build',
+          who: ['Developer'],
           where: 'The City of Asheville Development Services Department',
         },
         typeIds: [
           'Level I',
           'Level II',
           'Major Subdivision',
-          // 'Level III',
           'Conditional Zoning',
           'Conditional Use Permit',
         ],
@@ -245,16 +258,11 @@ class AnnotatedDagre extends React.Component {
         steps: {
           what: 'A staff member reviews plans for compliance with applicable ordinances and documents and creates a report.',
           when: '',
-          who: '',
+          who: ['City Staff'],
           where: '',
         },
         typeIds: [
           'Level I',
-          // 'Level II',
-          // 'Major Subdivision',
-          // 'Level III',
-          // 'Conditional Zoning',
-          // 'Conditional Use Permit',
         ],
       },
       {
@@ -269,7 +277,7 @@ class AnnotatedDagre extends React.Component {
         steps: {
           what: 'An eight-member body that ensures that the proposed project complies with standards and requirements.  The committee consists of six staff, a representative of the Tree Commission and a member representing the Buncombe County Metropolitan Sewerage District (MSD).',
           when: '',
-          who: '',
+          who: ['Developer', 'City Staff'],
           where: '',
         },
         typeIds: [
@@ -285,12 +293,8 @@ class AnnotatedDagre extends React.Component {
         id: 'Major Subdivision and Level II Decision (Not Downtown)',
         description: <div>{decisionIconHeader}</div>,
         typeIds: [
-          // 'Level I',
           'Level II',
           'Major Subdivision',
-          // 'Level III',
-          // 'Conditional Zoning',
-          // 'Conditional Use Permit',
         ],
       },
       {
@@ -299,8 +303,8 @@ class AnnotatedDagre extends React.Component {
         steps: {
           what: '',
           when: '',
-          who: '',
           where: '',
+          who: ['Developer', 'City Staff', 'Neighbors'],
         },
         typeIds: [
           // 'Level I',
@@ -332,12 +336,8 @@ class AnnotatedDagre extends React.Component {
         id: 'Level II and Downtown Major Subdivision Decision',
         description: <div>{decisionIconHeader}</div>,
         typeIds: [
-          // 'Level I',
           'Level II',
           'Major Subdivision',
-          // 'Level III',
-          // 'Conditional Zoning',
-          // 'Conditional Use Permit',
         ],
       },
       {
@@ -346,14 +346,10 @@ class AnnotatedDagre extends React.Component {
         steps: {
           what: '',
           when: '',
-          who: '',
           where: '',
+          who: ['Developer', 'City Staff', 'Neighbors'],
         },
         typeIds: [
-          // 'Level I',
-          // 'Level II',
-          // 'Major Subdivision',
-          // 'Level III',
           'Conditional Zoning',
           'Conditional Use Permit',
         ],
@@ -362,10 +358,6 @@ class AnnotatedDagre extends React.Component {
         id: 'City Council Decision',
         description: <div>{decisionIconHeader}</div>,
         typeIds: [
-          // 'Level I',
-          // 'Level II',
-          // 'Major Subdivision',
-          // 'Level III',
           'Conditional Zoning',
           'Conditional Use Permit',
         ],

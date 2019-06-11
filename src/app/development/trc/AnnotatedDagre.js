@@ -139,7 +139,7 @@ function getLinks(inputLinks, nodes, edgePadding, edgeStroke) {
 }
 
 const displaySubNode = node => (
-    <div key={node.id} style={{ verticalAlign: 'top', padding: '0.5rem' }}>
+    <div key={node.id} style={{ verticalAlign: 'top', padding: '0.5rem', flex: 1 }}>
       <div style={{ fontSize: '1.25rem', padding: '0 0 0.5rem 0' }}>{node.id}</div>
       {nodeSteps(node.steps, node.id)}
   </div>
@@ -147,8 +147,17 @@ const displaySubNode = node => (
 
 const nodeSteps = (steps, nodeId) => (
   <ul style={{ listStyleType: 'none' }}>{Object.keys(steps).map(stepKey => (
-    <li key={`${stepKey}-${nodeId}`} style={{ display: 'flex' }}>
-      <span style={{ textTransform: 'capitalize', padding: '0 2rem 0 0', fontWeight: 500 }}>{stepKey}</span>
+    <li key={`${stepKey}-${nodeId}`} style={{ display: 'flex', padding: '0.15rem 0' }}>
+      <span
+        style={{
+          textTransform: 'capitalize',
+          padding: '0 2rem 0 0',
+          fontWeight: 400,
+          minWidth: '5rem',
+        }}
+      >
+        {stepKey}
+      </span>
       <span>{steps[stepKey]}</span>
     </li>
   ))}</ul>
@@ -163,11 +172,21 @@ class AnnotatedDagre extends React.Component {
         subNodes: [
           {
             id: 'Pre-Application Meeting',
-            steps: { who: ['Developer', 'City Staff'] },
+            steps: {
+              what: 'Developers and city staff meet to review plans, discuss process and schedule, identify applicable regulations.',
+              who: ['Developer', 'City Staff'],
+              when: 'Required before application submission',
+              where: '161 South Charlotte Street',
+            },
           },
           {
             id: 'Neighborhood Meeting',
-            steps: { who: ['Developer', 'Neighbors'] },
+            steps: {
+              what: 'Developers must notify all property owners within 200 feet of the proposed development site.  Neighbors meet with developers to collaborate on neighborhood needs and opportunities.',
+              who: ['Developer', 'Neighbors'],
+              when: '10 days before application submission',
+              where: '???',
+            },
           },
         ],
         typeIds: [

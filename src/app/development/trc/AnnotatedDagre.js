@@ -19,13 +19,7 @@ function getDagreGraph(nodes, links, nodeSize) {
   nodes.forEach((node) => {
     g.setNode(
       node.id,
-      {
-        id: node.id,
-        width: nodeSize,
-        height: nodeSize,
-        description: node.description,
-        typeIds: node.typeIds,
-      }
+      Object.assign({ width: nodeSize, height: nodeSize }, node),
     );
   });
 
@@ -55,10 +49,15 @@ function getNodes(dagreGraph, visWidth, nodeHeight, nodePadding) {
     d.coincidents = JSON.parse(JSON.stringify(nodeValues.filter(val => val.y === d.y)));
     d.indexInCoincidents = d.coincidents.findIndex(c => c.id === d.id);
     d.numPerRow = d.coincidents.length <= 3 ? d.coincidents.length : Math.ceil(d.coincidents.length / 2);
-    d.wrap = Math.min(
-      (visWidth - (annotationMargin + annotationMargin * d.numPerRow)) / d.numPerRow,
-      450
-    )
+
+    // Could set max width for nodes
+    // d.wrap = Math.min(
+    //   (visWidth - (annotationMargin + annotationMargin * d.numPerRow)) / d.numPerRow,
+    //   450
+    // )
+
+    // For now just make it 100%
+    d.wrap = (visWidth - (annotationMargin + annotationMargin * d.numPerRow)) / d.numPerRow;
 
     // Set x value
     const midRowIndex = (d.numPerRow - 1) / 2;
@@ -67,15 +66,15 @@ function getNodes(dagreGraph, visWidth, nodeHeight, nodePadding) {
     // Y value must be set in separate iteration because it is used to determine coincidents
     let thisYOffset = totalYOffsetValue;
     // Split into rows
-    if (d.coincidents.length > 2) {
-      if (d.indexInCoincidents >= d.coincidents.length / 2) {
-        thisYOffset = nodeHeight;
-        if (d.indexInCoincidents % d.numPerRow === 0) {
-          // If it's a new row
-          totalYOffsetValue += nodeHeight;
-        }
-      }
-    }
+    // if (d.coincidents.length > 2) {
+    //   if (d.indexInCoincidents >= d.coincidents.length / 2) {
+    //     thisYOffset = nodeHeight;
+    //     if (d.indexInCoincidents % d.numPerRow === 0) {
+    //       // If it's a new row
+    //       totalYOffsetValue += nodeHeight;
+    //     }
+    //   }
+    // }
     d.yOffset = thisYOffset;
   })
   // Reiterate and update y values
@@ -139,25 +138,57 @@ function getLinks(inputLinks, nodes, edgePadding, edgeStroke) {
   });
 }
 
+const displaySubNode = (node, lastNode = false) => (
+    <div key={node.id} style={{ verticalAlign: 'top', padding: `0.5rem ${lastNode ? 0 : '1rem'} 0 0`, flex: 1 }}>
+      <div style={{ fontSize: '1.25rem', padding: '0 0 1rem 0' }}>{node.id}</div>
+      {nodeSteps(node.steps, node.id)}
+  </div>
+);
+
+const nodeSteps = (steps, nodeId) => (
+  <ul style={{ listStyleType: 'none', padding: '0' }}>{Object.keys(steps).map(stepKey => (
+    <li key={`${stepKey}-${nodeId}`} style={{ display: 'flex', padding: '0.15rem 0' }}>
+      <span
+        style={{
+          textTransform: 'capitalize',
+          padding: '0 2rem 0 0',
+          fontWeight: 400,
+          minWidth: '5rem',
+        }}
+      >
+        {stepKey}
+      </span>
+      <span>{steps[stepKey]}</span>
+    </li>
+  ))}</ul>
+)
+
 class AnnotatedDagre extends React.Component {
   constructor() {
     super();
     this.nodes = [
       {
-        id: 'Neighborhood Meeting',
-        description: 'The developer must arrange a neighborhood meeting and invite property owners within 200 feet of the proposed development. The meeting must be no more than four months but at least ten days before application submission. At least ten days prior to the meeting, property must be posted and notice of the meeting mailed.',
-        typeIds: [
-          // 'Level I',
-          'Level II',
-          'Major Subdivision',
-          // 'Level III',
-          'Conditional Zoning',
-          'Conditional Use Permit',
+        id: 'Pre-Application',
+        subNodes: [
+          {
+            id: 'Pre-Application Meeting',
+            steps: {
+              what: 'Developers and city staff meet to review plans, discuss process and schedule, identify applicable regulations.',
+              who: ['Developer', 'City Staff'],
+              when: 'Required before application submission',
+              where: '161 South Charlotte Street',
+            },
+          },
+          {
+            id: 'Neighborhood Meeting',
+            steps: {
+              what: 'Developers must notify all property owners within 200 feet of the proposed development site.  Neighbors meet with developers to collaborate on neighborhood needs and opportunities.',
+              who: ['Developer', 'Neighbors'],
+              when: '10 days before application submission',
+              where: '???',
+            },
+          },
         ],
-      },
-      {
-        id: 'Pre-Application Meeting',
-        description: 'The developer must meet with city staff at a pre-application meeting.',
         typeIds: [
           // 'Level I',
           'Level II',
@@ -169,6 +200,12 @@ class AnnotatedDagre extends React.Component {
       },
       {
         id: 'Permit Application',
+        steps: {
+          what: 'Submission of required plans and documents and payment of application fees.',
+          when: 'After the preliminary steps are completed.  Applications that do not indicate that a neighborhood meeting has been held are rejected.',
+          who: 'The developer proposing to build',
+          where: 'The City of Asheville Development Services Department',
+        },
         description: 'Developer submits permit application.',
         typeIds: [
           'Level I',
@@ -181,19 +218,30 @@ class AnnotatedDagre extends React.Component {
       },
       {
         id: 'Staff Review',
-        description: 'Staff from various technical disciplines review plans for compliance with applicable ordinances and documents and create a staff report.',
+        steps: {
+          what: 'A staff member reviews plans for compliance with applicable ordinances and documents and creates a report.',
+          when: '',
+          who: '',
+          where: '',
+        },
         typeIds: [
           'Level I',
-          'Level II',
-          'Major Subdivision',
+          // 'Level II',
+          // 'Major Subdivision',
           // 'Level III',
-          'Conditional Zoning',
-          'Conditional Use Permit',
+          // 'Conditional Zoning',
+          // 'Conditional Use Permit',
         ],
       },
       {
         id: 'Level I Decision',
         description: 'When plans for a Level I scale project show that all technical requirements are met, staff must approve the plans and issue a permit.',
+        steps: {
+          what: '',
+          when: '',
+          who: '',
+          where: '',
+        },
         typeIds: [
           'Level I',
         ],
@@ -201,6 +249,12 @@ class AnnotatedDagre extends React.Component {
       {
         id: 'Technical Review Committee',
         description: 'An eight-member body that ensures that the proposed project complies with standards and requirements.  The committee consists of six staff, a representative of the Tree Commission and a member representing the Buncombe County Metropolitan Sewerage District (MSD).',
+        steps: {
+          what: '',
+          when: '',
+          who: '',
+          where: '',
+        },
         typeIds: [
           // 'Level I',
           'Level II',
@@ -213,6 +267,12 @@ class AnnotatedDagre extends React.Component {
       {
         id: 'Major Subdivision and Level II Decision (Not Downtown)',
         description: 'When plans for a Major Subdivision or Level II review that is not located downtown show that all technical requirements are met, staff must approve the plans and issue a permit.  For Major Subdivisions and Leve lII projects that are not in a special Zoning district such as the Downtown area, the Technical Review Committee (TRC) must approve compliant plans or reject deficient plans.',
+        steps: {
+          what: '',
+          when: '',
+          who: '',
+          where: '',
+        },
         typeIds: [
           // 'Level I',
           'Level II',
@@ -225,6 +285,12 @@ class AnnotatedDagre extends React.Component {
       {
         id: 'Design Review',
         description: <div>Projects located Downtown or in the River District must be reviewed for architectural design elements by a special design review sub-committee of either the <a href="https://library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTIIIDEKIADADBO_S7-3-8ASDOCO" target="_blank" rel="noopener noreferrer">Asheville Downtown Commission</a> or the <a href="https://library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTIIIDEKIADADBO_S7-3-10ASARRIRECO" target="_blank" rel="noopener noreferrer">Asheville Area Riverfront Redevelopment Commission</a> prior to approval.</div>,
+        steps: {
+          what: '',
+          when: '',
+          who: '',
+          where: '',
+        },
         typeIds: [
           // 'Level I',
           'Level II',
@@ -237,6 +303,12 @@ class AnnotatedDagre extends React.Component {
       {
         id: 'Planning and Zoning Commission',
         description: 'Conditional Zoning, Level III, Conditional Use Permits and Level II projects within the Downtown area are reviewed by the Planning & Zoning Commission.  For  Conditional Zoning, Use and Level III projects, the Planning & Zoning Commission holds a public hearing and makes a recommendation for action to City Council.  For downtown Level II projects, the Planning & Zoning Commission verifies technical compliance with the requirements of applicable ordinances and documents and takes final action.',
+        steps: {
+          what: '',
+          when: '',
+          who: '',
+          where: '',
+        },
         typeIds: [
           // 'Level I',
           'Level II',
@@ -249,6 +321,12 @@ class AnnotatedDagre extends React.Component {
       {
         id: 'Level II and Downtown Major Subdivision Decision',
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        steps: {
+          what: '',
+          when: '',
+          who: '',
+          where: '',
+        },
         typeIds: [
           // 'Level I',
           'Level II',
@@ -261,6 +339,12 @@ class AnnotatedDagre extends React.Component {
       {
         id: 'City Council',
         description: 'Conditional Zoning, Level III, Conditional Use Permits are reviewed during a public hearing before City Council.  These projects arrive at the City Council meeting with a recommendation for action that has been sent by the Planning & Zoning Commission.',
+        steps: {
+          what: '',
+          when: '',
+          who: '',
+          where: '',
+        },
         typeIds: [
           // 'Level I',
           // 'Level II',
@@ -273,6 +357,12 @@ class AnnotatedDagre extends React.Component {
       {
         id: 'City Council Decision',
         description: 'City Council hears evidence and testimony and takes final action on the application by vote.',
+        steps: {
+          what: '',
+          when: '',
+          who: '',
+          where: '',
+        },
         typeIds: [
           // 'Level I',
           // 'Level II',
@@ -285,23 +375,11 @@ class AnnotatedDagre extends React.Component {
     ]
     this.links = [
       {
-        source: 'Neighborhood Meeting',
+        source: 'Pre-Application',
         target: 'Permit Application',
         parallelEdges: [
           { id: 'Major Subdivision' },
           { id: 'Level II' },
-          // { id: 'Level III' },
-          { id: 'Conditional Zoning'},
-          { id: 'Conditional Use Permit' },
-        ]
-      },
-      {
-        source: 'Pre-Application Meeting',
-        target: 'Permit Application',
-        parallelEdges: [
-          { id: 'Major Subdivision' },
-          { id: 'Level II' },
-          // { id: 'Level III' },
           { id: 'Conditional Zoning'},
           { id: 'Conditional Use Permit' },
         ]
@@ -311,9 +389,19 @@ class AnnotatedDagre extends React.Component {
         target: 'Staff Review',
         parallelEdges: [
           { id: 'Level I' },
+          // { id: 'Major Subdivision' },
+          // { id: 'Level II' },
+          // { id: 'Conditional Zoning'},
+          // { id: 'Conditional Use Permit' },
+        ]
+      },
+      {
+        source: 'Permit Application',
+        target: 'Technical Review Committee',
+        parallelEdges: [
+          // { id: 'Level I' },
           { id: 'Major Subdivision' },
           { id: 'Level II' },
-          // { id: 'Level III' },
           { id: 'Conditional Zoning'},
           { id: 'Conditional Use Permit' },
         ]
@@ -323,21 +411,26 @@ class AnnotatedDagre extends React.Component {
         target: 'Level I Decision',
         id: 'Level I',
       },
-      {
-        source: 'Staff Review',
-        target: 'Technical Review Committee',
-        parallelEdges: [
-          { id: 'Major Subdivision' },
-          { id: 'Level II' },
-          // { id: 'Level III' },
-          { id: 'Conditional Zoning'},
-          { id: 'Conditional Use Permit' },
-        ]
-      },
+      // {
+      //   source: 'Staff Review',
+      //   target: 'Technical Review Committee',
+      //   parallelEdges: [
+      //     { id: 'Major Subdivision' },
+      //     { id: 'Level II' },
+      //     // { id: 'Level III' },
+      //     { id: 'Conditional Zoning'},
+      //     { id: 'Conditional Use Permit' },
+      //   ]
+      // },
       {
         source: 'Technical Review Committee',
         target: 'Major Subdivision and Level II Decision (Not Downtown)',
-        id: 'Major Subdivision',
+        parallelEdges: [
+          { id: 'Major Subdivision' },
+          { id: 'Level II' },
+          // { id: 'Conditional Zoning'},
+          // { id: 'Conditional Use Permit' },
+        ]
       },
       {
         source: 'Design Review',
@@ -348,19 +441,18 @@ class AnnotatedDagre extends React.Component {
       },
       {
         source: 'Technical Review Committee',
-        target: 'Planning and Zoning Commission',
-        parallelEdges: [
-          // { id: 'Level III' },
-          { id: 'Conditional Zoning'},
-          { id: 'Conditional Use Permit' },
-        ]
-      },
-      {
-        source: 'Technical Review Committee',
         target: 'Design Review',
         // All level II, downtown subdivisions, and special district L3 etc go to desgin review?
         parallelEdges: [
           { id: 'Level II' },
+        ]
+      },
+      {
+        source: 'Technical Review Committee',
+        target: 'Planning and Zoning Commission',
+        parallelEdges: [
+          { id: 'Conditional Zoning'},
+          { id: 'Conditional Use Permit' },
         ]
       },
       {
@@ -374,7 +466,6 @@ class AnnotatedDagre extends React.Component {
         source: 'Planning and Zoning Commission',
         target: 'City Council',
         parallelEdges: [
-          // { id: 'Level III' },
           { id: 'Conditional Zoning'},
           { id: 'Conditional Use Permit' },
         ]
@@ -383,7 +474,6 @@ class AnnotatedDagre extends React.Component {
         source: 'City Council',
         target: 'City Council Decision',
         parallelEdges: [
-          // { id: 'Level III' },
           { id: 'Conditional Zoning'},
           { id: 'Conditional Use Permit' },
         ]
@@ -437,10 +527,10 @@ class AnnotatedDagre extends React.Component {
     const visWidth = dimensions.width;
     const height = visWidth < 768 ? 4500 : 4000;
     const nodePadding = 5;
-    const edgeStroke = visWidth < 768 ? 3 : 4;
-    const edgePadding = edgeStroke;
+    const edgeStroke = visWidth < 768 ? 4 : 5;
+    const edgePadding = edgeStroke * 2;
     const nodeHeight = (height - nodePadding * (this.numLevels +  4)) / this.numLevels;
-    const puckSize = visWidth < 500 ? 20 : 50;
+    const puckSize = visWidth < 500 ? 16 : 30;
     const yOffset = nodeHeight / 2;
 
     const graph = getDagreGraph(this.nodes, this.links, nodeHeight);
@@ -451,13 +541,29 @@ class AnnotatedDagre extends React.Component {
     return (<div style={{ width: '100%', fontSize: visWidth < 500 ? '0.75rem' : '1em' }}>
       <svg height={height} width={visWidth}>
         <g>
-          {links.map((d, i) => {
-            // TODO: go get elbow logic from old commit
+          {links.map((d, i, linksArray) => {
+            const elbowOffset = edgeStroke;
+            let verticalOffset = 0;
+            if (d.x2 < d.x1) {
+              verticalOffset = i * elbowOffset;
+            } else if (d.x2 > d.x1) {
+              verticalOffset = (linksArray.length - i) * elbowOffset;
+            }
+            const halfWay = d.x1 + (d.x2 - d.x1) / 2;
+            const linkYOffset = yOffset - 10;
+
+            const pathData = `M${d.x1} ${d.y1 - linkYOffset}
+              Q ${d.x1} ${d.y1 + ((d.y2 - d.y1) / 4) - linkYOffset + verticalOffset},
+              ${halfWay} ${d.y1 + ((d.y2 - d.y1) / 2) - linkYOffset + verticalOffset}
+              T ${d.x2} ${d.y2 - linkYOffset}
+            `;
+
             return (<path
-              d={`M${d.x1} ${d.y1 - yOffset}
-                L${d.x1} ${d.y1 + ((d.y2 - d.y1) / 3) - yOffset}
-                L${d.x2} ${d.y1 + ((d.y2 - d.y1) / 3) * 2 - yOffset}
-                L${d.x2} ${d.y2 - yOffset}`}
+              // d={`M${d.x1} ${d.y1 - yOffset}
+              //   L${d.x1} ${d.y1 + ((d.y2 - d.y1) / 3) - yOffset + verticalOffset}
+              //   L${d.x2} ${d.y1 + ((d.y2 - d.y1) / 3) * 2 - yOffset + verticalOffset}
+              //   L${d.x2} ${d.y2 - yOffset}`}
+              d={pathData}
               style={{
                 stroke: trcProjectTypes[d.id].color,
                 strokeWidth: edgeStroke,
@@ -480,32 +586,36 @@ class AnnotatedDagre extends React.Component {
             >
               <div
                 style={{
-                  border: '2px solid #e6e6e6',
+                  border: `${edgeStroke}px solid #e6e6e6`,
                   backgroundColor: 'white',
-                  padding: '1em',
+                  padding: '1rem 1.5rem',
                   borderRadius: '6px',
                 }}
               >
-                <div
-                  style={{
-                    width: '100%',
-                    fontWeight: 'bold',
-                    textAlign: 'center',
-                    padding: '0.5em 0'
-                  }}
-                >
-                  {d.id}
+                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 0 0.25rem' }}>
+                  <div
+                    style={{
+                      fontWeight: 400,
+                      textAlign: 'left',
+                      fontSize: '1.5rem',
+                    }}
+                  >
+                    {d.id}
+                  </div>
+                  <div>
+                    {d.typeIds.map(id =>
+                      <TypePuck
+                        key={`${d.id}-puck-${id}`}
+                        typeObject={trcProjectTypes[id]}
+                        size={puckSize}
+                      />
+                    )}
+                  </div>
                 </div>
-                <div style={{ textAlign: 'center' }}>
-                  {d.typeIds.map(id =>
-                    <TypePuck
-                      key={`${d.id}-puck-${id}`}
-                      typeObject={trcProjectTypes[id]}
-                      size={puckSize}
-                    />
-                  )}
-                </div>
-                {d.description}
+                {!d.subNodes && nodeSteps(d.steps, d.id)}
+                {d.subNodes && (<div style={{ display: 'flex', justifyContent: 'space-around' }}>
+                  {d.subNodes.map((sub, subIndex, subNodeArray) => displaySubNode(sub, subIndex === subNodeArray.length - 1))}
+                </div>)}
               </div>
             </foreignObject>
           ))}

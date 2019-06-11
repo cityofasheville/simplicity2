@@ -3,13 +3,13 @@ import PermitTypeCard from './PermitTypeCard'
 import { trcProjectTypes } from '../utils';
 
 const PermitTypeCards = () => {
-  let cardWidth = '90%';
+  let cardWidth = '40%';
   // if (window.innerWidth < 760) {
   //   cardWidth = '40%';
   // }
-  // if (window.innerWidth < 500) {
-  //   cardWidth = '90%';
-  // }
+  if (window.innerWidth < 500) {
+    cardWidth = '90%';
+  }
   return (
     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'stretch', flexWrap: 'wrap' }}>
     {Object.keys(trcProjectTypes).map(type => (

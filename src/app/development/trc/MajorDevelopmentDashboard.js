@@ -21,12 +21,7 @@ class MajorDevelopmentDashboard extends React.Component {
         linkName: 'Project Types',
         selected: true,
         header: 'Types of large-scale development',
-        body: (
-          <div>
-            <p>The Unified Development Ordinance defines the following types of large scale development in Asheville.</p>
-            <PermitTypeCards/>
-          </div>
-        ),
+        body: <PermitTypeCards/>,
       },
       {
         linkId: 'process',

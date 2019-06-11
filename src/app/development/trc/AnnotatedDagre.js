@@ -144,20 +144,18 @@ class AnnotatedDagre extends React.Component {
   constructor() {
     super();
     this.nodes = [
-      // {
-      //   id: 'Neighborhood Meeting',
-      //   description: 'The developer must arrange a neighborhood meeting and invite property owners within 200 feet of the proposed development. The meeting must be no more than four months but at least ten days before application submission. At least ten days prior to the meeting, property must be posted and notice of the meeting mailed.',
-      //   typeIds: [
-      //     // 'Level I',
-      //     'Level II',
-      //     'Major Subdivision',
-      //     // 'Level III',
-      //     'Conditional Zoning',
-      //     'Conditional Use Permit',
-      //   ],
-      // },
       {
         id: 'Pre-Application',
+        subNodes: [
+          {
+            id: 'Pre-Application Meeting',
+            steps: { who: ['Developer', 'City Staff'] },
+          },
+          {
+            id: 'Neighborhood Meeting',
+            steps: { who: ['Developer', 'Neighbors'] },
+          },
+        ],
         description: (<div>
           <div style={{ width: '50%', display: 'inline-block', verticalAlign: 'top', padding: '0.5rem' }}>
             <div style={{ fontSize: '1.25rem', padding: '0 0 0.5rem 0' }}>Pre-Application Meeting</div>
@@ -179,6 +177,12 @@ class AnnotatedDagre extends React.Component {
       },
       {
         id: 'Permit Application',
+        steps: {
+          what: 'Submission of required plans and documents and payment of application fees.',
+          when: 'After the preliminary steps are completed.  Applications that do not indicate that a neighborhood meeting has been held are rejected.',
+          who: 'The developer proposing to build',
+          where: 'The City of Asheville Development Services Department',
+        },
         description: 'Developer submits permit application.',
         typeIds: [
           'Level I',
@@ -192,6 +196,12 @@ class AnnotatedDagre extends React.Component {
       {
         id: 'Staff Review',
         description: 'Staff from various technical disciplines review plans for compliance with applicable ordinances and documents and create a staff report.',
+        steps: {
+          what: '',
+          when: '',
+          who: '',
+          where: '',
+        },
         typeIds: [
           'Level I',
           'Level II',
@@ -450,7 +460,7 @@ class AnnotatedDagre extends React.Component {
     const edgeStroke = visWidth < 768 ? 3 : 4;
     const edgePadding = edgeStroke;
     const nodeHeight = (height - nodePadding * (this.numLevels +  4)) / this.numLevels;
-    const puckSize = visWidth < 500 ? 20 : 50;
+    const puckSize = visWidth < 500 ? 16 : 30;
     const yOffset = nodeHeight / 2;
 
     const graph = getDagreGraph(this.nodes, this.links, nodeHeight);
@@ -498,28 +508,30 @@ class AnnotatedDagre extends React.Component {
                 style={{
                   border: '2px solid #e6e6e6',
                   backgroundColor: 'white',
-                  padding: '1em',
+                  padding: '1rem',
                   borderRadius: '6px',
                 }}
               >
-                <div
-                  style={{
-                    width: '100%',
-                    fontWeight: 'bold',
-                    textAlign: 'center',
-                    padding: '0.5em 0'
-                  }}
-                >
-                  {d.id}
-                </div>
-                <div style={{ textAlign: 'center' }}>
-                  {d.typeIds.map(id =>
-                    <TypePuck
-                      key={`${d.id}-puck-${id}`}
-                      typeObject={trcProjectTypes[id]}
-                      size={puckSize}
-                    />
-                  )}
+                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 0 0.25rem' }}>
+                  <div
+                    style={{
+                      // width: '100%',
+                      fontWeight: 400,
+                      textAlign: 'left',
+                      fontSize: '1.5rem',
+                    }}
+                  >
+                    {d.id}
+                  </div>
+                  <div>
+                    {d.typeIds.map(id =>
+                      <TypePuck
+                        key={`${d.id}-puck-${id}`}
+                        typeObject={trcProjectTypes[id]}
+                        size={puckSize}
+                      />
+                    )}
+                  </div>
                 </div>
                 {d.description}
               </div>

@@ -11,7 +11,7 @@ class TypePuck extends React.Component {
       tooltipX: 0,
       tooltipY: 0,
     }
-    this.maxWidth = 300;
+    this.maxWidth = 100;
     this.onHover = this.onHover.bind(this);
   }
 
@@ -31,10 +31,10 @@ class TypePuck extends React.Component {
       tooltipX = bbox.x - this.maxWidth / 2;
     } else {
       if ((window.innerWidth - bbox.x - 300) <= 0) {
-        tooltipX -= 360;
+        tooltipX -= this.maxWidth;
       }
       if ((window.innerHeight - bbox.y - 300) <= 0) {
-        tooltipY -= 200;
+        tooltipY -= 30;
       }
     }
 
@@ -105,7 +105,18 @@ class TypePuck extends React.Component {
                 maxWidth: `${this.maxWidth}px`,
               }}
             >
-              <PermitTypeCard type={this.props.typeObject.id} />
+              <div
+                style={{
+                  border: `3px solid ${this.props.typeObject.color}`,
+                  backgroundColor: 'white',
+                  padding: '0.5em',
+                  borderRadius: '6px',
+                  height: '100%',
+                  fontWeight: 500,
+                }}
+              >
+                {this.props.typeObject.id}
+              </div>
             </div>),
             document.body
           )
@@ -117,7 +128,7 @@ class TypePuck extends React.Component {
 
 TypePuck.defaultProps = {
   size: 50,
-  hover: false,
+  hover: true,
 }
 
 export default TypePuck;

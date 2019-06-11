@@ -138,9 +138,9 @@ function getLinks(inputLinks, nodes, edgePadding, edgeStroke) {
   });
 }
 
-const displaySubNode = node => (
-    <div key={node.id} style={{ verticalAlign: 'top', padding: '0.5rem 0', flex: 1 }}>
-      <div style={{ fontSize: '1.25rem', padding: '0 0 0.5rem 0' }}>{node.id}</div>
+const displaySubNode = (node, lastNode = false) => (
+    <div key={node.id} style={{ verticalAlign: 'top', padding: `0.5rem ${lastNode ? 0 : '1rem'} 0 0`, flex: 1 }}>
+      <div style={{ fontSize: '1.25rem', padding: '0 0 1rem 0' }}>{node.id}</div>
       {nodeSteps(node.steps, node.id)}
   </div>
 );
@@ -374,24 +374,12 @@ class AnnotatedDagre extends React.Component {
       },
     ]
     this.links = [
-      // {
-      //   source: 'Neighborhood Meeting',
-      //   target: 'Permit Application',
-      //   parallelEdges: [
-      //     { id: 'Major Subdivision' },
-      //     { id: 'Level II' },
-      //     // { id: 'Level III' },
-      //     { id: 'Conditional Zoning'},
-      //     { id: 'Conditional Use Permit' },
-      //   ]
-      // },
       {
         source: 'Pre-Application',
         target: 'Permit Application',
         parallelEdges: [
           { id: 'Major Subdivision' },
           { id: 'Level II' },
-          // { id: 'Level III' },
           { id: 'Conditional Zoning'},
           { id: 'Conditional Use Permit' },
         ]
@@ -403,7 +391,6 @@ class AnnotatedDagre extends React.Component {
           { id: 'Level I' },
           // { id: 'Major Subdivision' },
           // { id: 'Level II' },
-          // { id: 'Level III' },
           // { id: 'Conditional Zoning'},
           // { id: 'Conditional Use Permit' },
         ]
@@ -415,7 +402,6 @@ class AnnotatedDagre extends React.Component {
           // { id: 'Level I' },
           { id: 'Major Subdivision' },
           { id: 'Level II' },
-          // { id: 'Level III' },
           { id: 'Conditional Zoning'},
           { id: 'Conditional Use Permit' },
         ]
@@ -465,7 +451,6 @@ class AnnotatedDagre extends React.Component {
         source: 'Technical Review Committee',
         target: 'Planning and Zoning Commission',
         parallelEdges: [
-          // { id: 'Level III' },
           { id: 'Conditional Zoning'},
           { id: 'Conditional Use Permit' },
         ]
@@ -481,7 +466,6 @@ class AnnotatedDagre extends React.Component {
         source: 'Planning and Zoning Commission',
         target: 'City Council',
         parallelEdges: [
-          // { id: 'Level III' },
           { id: 'Conditional Zoning'},
           { id: 'Conditional Use Permit' },
         ]
@@ -490,7 +474,6 @@ class AnnotatedDagre extends React.Component {
         source: 'City Council',
         target: 'City Council Decision',
         parallelEdges: [
-          // { id: 'Level III' },
           { id: 'Conditional Zoning'},
           { id: 'Conditional Use Permit' },
         ]
@@ -631,7 +614,7 @@ class AnnotatedDagre extends React.Component {
                 </div>
                 {!d.subNodes && nodeSteps(d.steps, d.id)}
                 {d.subNodes && (<div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                  {d.subNodes.map(sub => displaySubNode(sub))}
+                  {d.subNodes.map((sub, subIndex, subNodeArray) => displaySubNode(sub, subIndex === subNodeArray.length - 1))}
                 </div>)}
               </div>
             </foreignObject>

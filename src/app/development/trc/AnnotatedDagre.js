@@ -139,14 +139,14 @@ function getLinks(inputLinks, nodes, edgePadding, edgeStroke) {
 }
 
 const displaySubNode = node => (
-    <div key={node.id} style={{ verticalAlign: 'top', padding: '0.5rem', flex: 1 }}>
+    <div key={node.id} style={{ verticalAlign: 'top', padding: '0.5rem 0', flex: 1 }}>
       <div style={{ fontSize: '1.25rem', padding: '0 0 0.5rem 0' }}>{node.id}</div>
       {nodeSteps(node.steps, node.id)}
   </div>
 );
 
 const nodeSteps = (steps, nodeId) => (
-  <ul style={{ listStyleType: 'none' }}>{Object.keys(steps).map(stepKey => (
+  <ul style={{ listStyleType: 'none', padding: '0' }}>{Object.keys(steps).map(stepKey => (
     <li key={`${stepKey}-${nodeId}`} style={{ display: 'flex', padding: '0.15rem 0' }}>
       <span
         style={{

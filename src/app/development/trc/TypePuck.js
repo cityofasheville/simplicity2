@@ -49,7 +49,7 @@ class TypePuck extends React.Component {
     // TODO: use group to make this less annoying to screen readers?
     return (
       <div
-        style={{ display: 'inline-block' }}
+        style={{ display: 'inline-block', cursor: 'text' }}
         onMouseEnter={this.props.hover ?
           this.onHover : null
         }

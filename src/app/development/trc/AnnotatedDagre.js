@@ -146,8 +146,11 @@ const displaySubNode = node => (
 );
 
 const nodeSteps = (steps, nodeId) => (
-  <ul>{Object.keys(steps).map(stepKey => (
-    <li key={`${stepKey}-${nodeId}`}>{`${stepKey}: ${steps[stepKey]}`}</li>
+  <ul style={{ listStyleType: 'none' }}>{Object.keys(steps).map(stepKey => (
+    <li key={`${stepKey}-${nodeId}`} style={{ display: 'flex' }}>
+      <span style={{ textTransform: 'capitalize', padding: '0 2rem 0 0', fontWeight: 500 }}>{stepKey}</span>
+      <span>{steps[stepKey]}</span>
+    </li>
   ))}</ul>
 )
 

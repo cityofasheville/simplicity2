@@ -61,27 +61,27 @@ class MajorDevelopmentDashboard extends React.Component {
           </div>
         )
       },
-      {
-        linkId: 'faq',
-        linkName: 'Frequently Asked Questions',
-        header: 'Frequently Asked Questions',
-        body: <Accordion
-          data={[
-            {
-              header: 'Why is the sky blue?',
-              body: 'Something something light refracting',
-            },
-            {
-              header: 'What day is it?',
-              body: new Date().toLocaleDateString('en-us'),
-            },
-            {
-              header: 'Why?',
-              body: '42',
-            },
-          ]}
-        />,
-      },
+      // {
+      //   linkId: 'faq',
+      //   linkName: 'Frequently Asked Questions',
+      //   header: 'Frequently Asked Questions',
+      //   body: <Accordion
+      //     data={[
+      //       {
+      //         header: 'Why is the sky blue?',
+      //         body: 'Something something light refracting',
+      //       },
+      //       {
+      //         header: 'What day is it?',
+      //         body: new Date().toLocaleDateString('en-us'),
+      //       },
+      //       {
+      //         header: 'Why?',
+      //         body: '42',
+      //       },
+      //     ]}
+      //   />,
+      // },
     ].map((d) => {
       const rObj = Object.assign({}, d);
       rObj.ref = React.createRef();

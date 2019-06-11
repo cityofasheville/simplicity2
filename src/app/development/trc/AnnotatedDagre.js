@@ -66,15 +66,15 @@ function getNodes(dagreGraph, visWidth, nodeHeight, nodePadding) {
     // Y value must be set in separate iteration because it is used to determine coincidents
     let thisYOffset = totalYOffsetValue;
     // Split into rows
-    if (d.coincidents.length > 2) {
-      if (d.indexInCoincidents >= d.coincidents.length / 2) {
-        thisYOffset = nodeHeight;
-        if (d.indexInCoincidents % d.numPerRow === 0) {
-          // If it's a new row
-          totalYOffsetValue += nodeHeight;
-        }
-      }
-    }
+    // if (d.coincidents.length > 2) {
+    //   if (d.indexInCoincidents >= d.coincidents.length / 2) {
+    //     thisYOffset = nodeHeight;
+    //     if (d.indexInCoincidents % d.numPerRow === 0) {
+    //       // If it's a new row
+    //       totalYOffsetValue += nodeHeight;
+    //     }
+    //   }
+    // }
     d.yOffset = thisYOffset;
   })
   // Reiterate and update y values
@@ -218,20 +218,19 @@ class AnnotatedDagre extends React.Component {
       },
       {
         id: 'Staff Review',
-        description: 'Staff from various technical disciplines review plans for compliance with applicable ordinances and documents and create a staff report.',
         steps: {
-          what: '',
+          what: 'A staff member reviews plans for compliance with applicable ordinances and documents and creates a report.',
           when: '',
           who: '',
           where: '',
         },
         typeIds: [
           'Level I',
-          'Level II',
-          'Major Subdivision',
+          // 'Level II',
+          // 'Major Subdivision',
           // 'Level III',
-          'Conditional Zoning',
-          'Conditional Use Permit',
+          // 'Conditional Zoning',
+          // 'Conditional Use Permit',
         ],
       },
       {
@@ -402,6 +401,18 @@ class AnnotatedDagre extends React.Component {
         target: 'Staff Review',
         parallelEdges: [
           { id: 'Level I' },
+          // { id: 'Major Subdivision' },
+          // { id: 'Level II' },
+          // { id: 'Level III' },
+          // { id: 'Conditional Zoning'},
+          // { id: 'Conditional Use Permit' },
+        ]
+      },
+      {
+        source: 'Permit Application',
+        target: 'Technical Review Committee',
+        parallelEdges: [
+          // { id: 'Level I' },
           { id: 'Major Subdivision' },
           { id: 'Level II' },
           // { id: 'Level III' },
@@ -414,21 +425,26 @@ class AnnotatedDagre extends React.Component {
         target: 'Level I Decision',
         id: 'Level I',
       },
-      {
-        source: 'Staff Review',
-        target: 'Technical Review Committee',
-        parallelEdges: [
-          { id: 'Major Subdivision' },
-          { id: 'Level II' },
-          // { id: 'Level III' },
-          { id: 'Conditional Zoning'},
-          { id: 'Conditional Use Permit' },
-        ]
-      },
+      // {
+      //   source: 'Staff Review',
+      //   target: 'Technical Review Committee',
+      //   parallelEdges: [
+      //     { id: 'Major Subdivision' },
+      //     { id: 'Level II' },
+      //     // { id: 'Level III' },
+      //     { id: 'Conditional Zoning'},
+      //     { id: 'Conditional Use Permit' },
+      //   ]
+      // },
       {
         source: 'Technical Review Committee',
         target: 'Major Subdivision and Level II Decision (Not Downtown)',
-        id: 'Major Subdivision',
+        parallelEdges: [
+          { id: 'Major Subdivision' },
+          { id: 'Level II' },
+          // { id: 'Conditional Zoning'},
+          // { id: 'Conditional Use Permit' },
+        ]
       },
       {
         source: 'Design Review',
@@ -439,19 +455,19 @@ class AnnotatedDagre extends React.Component {
       },
       {
         source: 'Technical Review Committee',
+        target: 'Design Review',
+        // All level II, downtown subdivisions, and special district L3 etc go to desgin review?
+        parallelEdges: [
+          { id: 'Level II' },
+        ]
+      },
+      {
+        source: 'Technical Review Committee',
         target: 'Planning and Zoning Commission',
         parallelEdges: [
           // { id: 'Level III' },
           { id: 'Conditional Zoning'},
           { id: 'Conditional Use Permit' },
-        ]
-      },
-      {
-        source: 'Technical Review Committee',
-        target: 'Design Review',
-        // All level II, downtown subdivisions, and special district L3 etc go to desgin review?
-        parallelEdges: [
-          { id: 'Level II' },
         ]
       },
       {
@@ -529,7 +545,7 @@ class AnnotatedDagre extends React.Component {
     const height = visWidth < 768 ? 4500 : 4000;
     const nodePadding = 5;
     const edgeStroke = visWidth < 768 ? 3 : 4;
-    const edgePadding = edgeStroke;
+    const edgePadding = edgeStroke * 2;
     const nodeHeight = (height - nodePadding * (this.numLevels +  4)) / this.numLevels;
     const puckSize = visWidth < 500 ? 16 : 30;
     const yOffset = nodeHeight / 2;

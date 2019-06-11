@@ -586,7 +586,7 @@ class AnnotatedDagre extends React.Component {
             >
               <div
                 style={{
-                  border: '2px solid #e6e6e6',
+                  border: `${edgeStroke}px solid #e6e6e6`,
                   backgroundColor: 'white',
                   padding: '1rem 1.5rem',
                   borderRadius: '6px',

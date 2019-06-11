@@ -544,7 +544,7 @@ class AnnotatedDagre extends React.Component {
     const visWidth = dimensions.width;
     const height = visWidth < 768 ? 4500 : 4000;
     const nodePadding = 5;
-    const edgeStroke = visWidth < 768 ? 3 : 4;
+    const edgeStroke = visWidth < 768 ? 4 : 5;
     const edgePadding = edgeStroke * 2;
     const nodeHeight = (height - nodePadding * (this.numLevels +  4)) / this.numLevels;
     const puckSize = visWidth < 500 ? 16 : 30;
@@ -566,11 +566,21 @@ class AnnotatedDagre extends React.Component {
             } else if (d.x2 > d.x1) {
               verticalOffset = (linksArray.length - i) * elbowOffset;
             }
+            const halfWay = d.x1 + (d.x2 - d.x1) / 2;
+            const linkYOffset = yOffset - 10;
+
+            const pathData = `M${d.x1} ${d.y1 - linkYOffset}
+              Q ${d.x1} ${d.y1 + ((d.y2 - d.y1) / 4) - linkYOffset + verticalOffset},
+              ${halfWay} ${d.y1 + ((d.y2 - d.y1) / 2) - linkYOffset + verticalOffset}
+              T ${d.x2} ${d.y2 - linkYOffset}
+            `;
+
             return (<path
-              d={`M${d.x1} ${d.y1 - yOffset}
-                L${d.x1} ${d.y1 + ((d.y2 - d.y1) / 3) - yOffset + verticalOffset}
-                L${d.x2} ${d.y1 + ((d.y2 - d.y1) / 3) * 2 - yOffset + verticalOffset}
-                L${d.x2} ${d.y2 - yOffset}`}
+              // d={`M${d.x1} ${d.y1 - yOffset}
+              //   L${d.x1} ${d.y1 + ((d.y2 - d.y1) / 3) - yOffset + verticalOffset}
+              //   L${d.x2} ${d.y1 + ((d.y2 - d.y1) / 3) * 2 - yOffset + verticalOffset}
+              //   L${d.x2} ${d.y2 - yOffset}`}
+              d={pathData}
               style={{
                 stroke: trcProjectTypes[d.id].color,
                 strokeWidth: edgeStroke,

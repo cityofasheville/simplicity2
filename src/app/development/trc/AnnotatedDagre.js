@@ -502,7 +502,7 @@ class AnnotatedDagre extends React.Component {
                 style={{
                   border: '2px solid #e6e6e6',
                   backgroundColor: 'white',
-                  padding: '1rem',
+                  padding: '1rem 1.5rem',
                   borderRadius: '6px',
                 }}
               >
@@ -526,11 +526,17 @@ class AnnotatedDagre extends React.Component {
                     )}
                   </div>
                 </div>
-                {d.subNodes && d.subNodes.map(sub => (
-                  <div key={sub.id} style={{ verticalAlign: 'top', padding: '0.5rem', display: 'flex' }}>
-                    <div style={{ fontSize: '1.25rem', padding: '0 0 0.5rem 0' }}>{sub.id}</div>
-                    <div>The developer must meet with city staff at a pre-application meeting.</div>
-                </div>))}
+
+                {d.subNodes && (<div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
+                  {d.subNodes.map(sub => (
+                    <div key={sub.id} style={{ verticalAlign: 'top', padding: '0.5rem' }}>
+                      <div style={{ fontSize: '1.25rem', padding: '0 0 0.5rem 0' }}>{sub.id}</div>
+                      <ul>{Object.keys(sub.steps).map(stepKey => (
+                        <li key={`${stepKey}-${sub.id}`}>{`${stepKey}: ${sub.steps[stepKey]}`}</li>
+                      ))}</ul>
+                  </div>))}
+                </div>)}
+
               </div>
             </foreignObject>
           ))}

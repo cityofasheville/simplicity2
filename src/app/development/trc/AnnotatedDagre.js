@@ -182,7 +182,7 @@ const decisionIconHeader = (
       <span>Denied</span>
     </div>
     <div>
-      <div style={Object.assign({ backgroundColor: '#3F71C3', fontWeight: 700 }, decisionIconStyle)}>?</div>
+      <div style={Object.assign({ backgroundColor: '#3F71C3', fontWeight: 600 }, decisionIconStyle)}>&#8635;</div>
       <span>Revise</span>
     </div>
   </div>

@@ -163,6 +163,31 @@ const nodeSteps = (steps, nodeId) => (
   ))}</ul>
 )
 
+const decisionIconStyle = {
+  margin: '0.25rem 1rem 0.25rem 0',
+  width: '2em',
+  color: 'white',
+  textAlign: 'center',
+  display: 'inline-block',
+  borderRadius: '0.5em',
+}
+const decisionIconHeader = (
+  <div>
+    <div>
+      <div style={Object.assign({ backgroundColor: '#008A00' }, decisionIconStyle)}>&#10004;</div>
+      <span>Approved</span>
+    </div>
+    <div>
+      <div style={Object.assign({ backgroundColor: '#CE3800' }, decisionIconStyle)}>&#10008;</div>
+      <span>Denied</span>
+    </div>
+    <div>
+      <div style={Object.assign({ backgroundColor: '#3F71C3', fontWeight: 700 }, decisionIconStyle)}>?</div>
+      <span>Revise</span>
+    </div>
+  </div>
+);
+
 class AnnotatedDagre extends React.Component {
   constructor() {
     super();
@@ -206,7 +231,6 @@ class AnnotatedDagre extends React.Component {
           who: 'The developer proposing to build',
           where: 'The City of Asheville Development Services Department',
         },
-        description: 'Developer submits permit application.',
         typeIds: [
           'Level I',
           'Level II',
@@ -235,22 +259,15 @@ class AnnotatedDagre extends React.Component {
       },
       {
         id: 'Level I Decision',
-        description: 'When plans for a Level I scale project show that all technical requirements are met, staff must approve the plans and issue a permit.',
-        steps: {
-          what: '',
-          when: '',
-          who: '',
-          where: '',
-        },
+        description: <div>{decisionIconHeader}</div>,
         typeIds: [
           'Level I',
         ],
       },
       {
         id: 'Technical Review Committee',
-        description: 'An eight-member body that ensures that the proposed project complies with standards and requirements.  The committee consists of six staff, a representative of the Tree Commission and a member representing the Buncombe County Metropolitan Sewerage District (MSD).',
         steps: {
-          what: '',
+          what: 'An eight-member body that ensures that the proposed project complies with standards and requirements.  The committee consists of six staff, a representative of the Tree Commission and a member representing the Buncombe County Metropolitan Sewerage District (MSD).',
           when: '',
           who: '',
           where: '',
@@ -266,13 +283,7 @@ class AnnotatedDagre extends React.Component {
       },
       {
         id: 'Major Subdivision and Level II Decision (Not Downtown)',
-        description: 'When plans for a Major Subdivision or Level II review that is not located downtown show that all technical requirements are met, staff must approve the plans and issue a permit.  For Major Subdivisions and Leve lII projects that are not in a special Zoning district such as the Downtown area, the Technical Review Committee (TRC) must approve compliant plans or reject deficient plans.',
-        steps: {
-          what: '',
-          when: '',
-          who: '',
-          where: '',
-        },
+        description: <div>{decisionIconHeader}</div>,
         typeIds: [
           // 'Level I',
           'Level II',
@@ -302,9 +313,8 @@ class AnnotatedDagre extends React.Component {
       },
       {
         id: 'Planning and Zoning Commission',
-        description: 'Conditional Zoning, Level III, Conditional Use Permits and Level II projects within the Downtown area are reviewed by the Planning & Zoning Commission.  For  Conditional Zoning, Use and Level III projects, the Planning & Zoning Commission holds a public hearing and makes a recommendation for action to City Council.  For downtown Level II projects, the Planning & Zoning Commission verifies technical compliance with the requirements of applicable ordinances and documents and takes final action.',
         steps: {
-          what: '',
+          what: 'Conditional Zoning, Level III, Conditional Use Permits and Level II projects within the Downtown area are reviewed by the Planning & Zoning Commission.  For  Conditional Zoning, Use and Level III projects, the Planning & Zoning Commission holds a public hearing and makes a recommendation for action to City Council.  For downtown Level II projects, the Planning & Zoning Commission verifies technical compliance with the requirements of applicable ordinances and documents and takes final action.',
           when: '',
           who: '',
           where: '',
@@ -320,13 +330,7 @@ class AnnotatedDagre extends React.Component {
       },
       {
         id: 'Level II and Downtown Major Subdivision Decision',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-        steps: {
-          what: '',
-          when: '',
-          who: '',
-          where: '',
-        },
+        description: <div>{decisionIconHeader}</div>,
         typeIds: [
           // 'Level I',
           'Level II',
@@ -356,13 +360,7 @@ class AnnotatedDagre extends React.Component {
       },
       {
         id: 'City Council Decision',
-        description: 'City Council hears evidence and testimony and takes final action on the application by vote.',
-        steps: {
-          what: '',
-          when: '',
-          who: '',
-          where: '',
-        },
+        description: <div>{decisionIconHeader}</div>,
         typeIds: [
           // 'Level I',
           // 'Level II',
@@ -612,7 +610,8 @@ class AnnotatedDagre extends React.Component {
                     )}
                   </div>
                 </div>
-                {!d.subNodes && nodeSteps(d.steps, d.id)}
+                {!d.subNodes && d.steps && nodeSteps(d.steps, d.id)}
+                {!d.subNodes && !d.steps && d.description}
                 {d.subNodes && (<div style={{ display: 'flex', justifyContent: 'space-around' }}>
                   {d.subNodes.map((sub, subIndex, subNodeArray) => displaySubNode(sub, subIndex === subNodeArray.length - 1))}
                 </div>)}

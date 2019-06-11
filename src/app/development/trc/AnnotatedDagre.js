@@ -19,13 +19,7 @@ function getDagreGraph(nodes, links, nodeSize) {
   nodes.forEach((node) => {
     g.setNode(
       node.id,
-      {
-        id: node.id,
-        width: nodeSize,
-        height: nodeSize,
-        description: node.description,
-        typeIds: node.typeIds,
-      }
+      Object.assign({ width: nodeSize, height: nodeSize }, node),
     );
   });
 
@@ -515,7 +509,6 @@ class AnnotatedDagre extends React.Component {
                 <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 0 0.25rem' }}>
                   <div
                     style={{
-                      // width: '100%',
                       fontWeight: 400,
                       textAlign: 'left',
                       fontSize: '1.5rem',
@@ -533,7 +526,11 @@ class AnnotatedDagre extends React.Component {
                     )}
                   </div>
                 </div>
-                {d.description}
+                {d.subNodes && d.subNodes.map(sub => (
+                  <div key={sub.id} style={{ verticalAlign: 'top', padding: '0.5rem', display: 'flex' }}>
+                    <div style={{ fontSize: '1.25rem', padding: '0 0 0.5rem 0' }}>{sub.id}</div>
+                    <div>The developer must meet with city staff at a pre-application meeting.</div>
+                </div>))}
               </div>
             </foreignObject>
           ))}

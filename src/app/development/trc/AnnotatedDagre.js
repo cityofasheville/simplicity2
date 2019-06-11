@@ -138,14 +138,18 @@ function getLinks(inputLinks, nodes, edgePadding, edgeStroke) {
   });
 }
 
-const displayNode = node => (
+const displaySubNode = node => (
     <div key={node.id} style={{ verticalAlign: 'top', padding: '0.5rem' }}>
       <div style={{ fontSize: '1.25rem', padding: '0 0 0.5rem 0' }}>{node.id}</div>
-      <ul>{Object.keys(node.steps).map(stepKey => (
-        <li key={`${stepKey}-${node.id}`}>{`${stepKey}: ${node.steps[stepKey]}`}</li>
-      ))}</ul>
+      {nodeSteps(node.steps, node.id)}
   </div>
 );
+
+const nodeSteps = (steps, nodeId) => (
+  <ul>{Object.keys(steps).map(stepKey => (
+    <li key={`${stepKey}-${nodeId}`}>{`${stepKey}: ${steps[stepKey]}`}</li>
+  ))}</ul>
+)
 
 class AnnotatedDagre extends React.Component {
   constructor() {
@@ -577,11 +581,10 @@ class AnnotatedDagre extends React.Component {
                     )}
                   </div>
                 </div>
-
+                {!d.subNodes && nodeSteps(d.steps, d.id)}
                 {d.subNodes && (<div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                  {d.subNodes.map(sub => displayNode(sub))}
+                  {d.subNodes.map(sub => displaySubNode(sub))}
                 </div>)}
-                {!d.subNodes && displayNode(d)}
               </div>
             </foreignObject>
           ))}

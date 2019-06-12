@@ -221,7 +221,6 @@ const whoIcons = {
   dev: {
     label: 'Developer',
     icon: (<Icon path={DRAFTING_COMPASS} viewBox="0 0 512 512" />),
-    // https://fontawesome.com/icons/drafting-compass?style=solid
   },
   staff: {
     label: 'City Staff',
@@ -230,7 +229,6 @@ const whoIcons = {
   neighbors: {
     label: 'Neighbors',
     icon: (<Icon path={USER_FRIENDS} viewBox="0 0 640 512" size={19} />),
-    // https://fontawesome.com/icons/user-friends?style=solid
   },
 };
 
@@ -311,10 +309,8 @@ class AnnotatedDagre extends React.Component {
           where: '',
         },
         typeIds: [
-          // 'Level I',
           'Level II',
           'Major Subdivision',
-          // 'Level III',
           'Conditional Zoning',
           'Conditional Use Permit',
         ],
@@ -337,12 +333,7 @@ class AnnotatedDagre extends React.Component {
           who: ['dev', 'staff', 'neighbors'],
         },
         typeIds: [
-          // 'Level I',
           'Level II',
-          // 'Major Subdivision',
-          // 'Level III',
-          // 'Conditional Zoning',
-          // 'Conditional Use Permit',
         ],
       },
       {
@@ -354,10 +345,7 @@ class AnnotatedDagre extends React.Component {
           where: '',
         },
         typeIds: [
-          // 'Level I',
           'Level II',
-          // 'Major Subdivision',
-          // 'Level III',
           'Conditional Zoning',
           'Conditional Use Permit',
         ],

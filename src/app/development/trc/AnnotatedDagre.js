@@ -176,11 +176,11 @@ const nodeSteps = (steps, nodeId) => (
 
 const decisionIconStyle = {
   margin: '0.25rem 1rem 0.25rem 0',
-  width: '2em',
+  width: '1.25em',
   color: 'white',
   textAlign: 'center',
   display: 'inline-block',
-  borderRadius: '0.5em',
+  borderRadius: '25%',
 }
 
 const decisionIconHeader = (

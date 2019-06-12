@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import dagre from 'dagre';
 import TypePuck from './TypePuck';
 import { trcProjectTypes } from '../utils';
-
+import CityLogoSvg from '../../../shared/CityLogoSvg';
 
 function getDagreGraph(nodes, links, nodeSize) {
   const g = new dagre.graphlib.Graph();
@@ -195,8 +195,8 @@ const whoIcons = {
     // https://fontawesome.com/icons/drafting-compass?style=solid
   },
   staff: {
-    label: 'City Staff'
-    // use city hall icon
+    label: 'City Staff',
+    icon: (<CityLogoSvg/>),
   },
   neighbors: {
     label: 'Neighbors'

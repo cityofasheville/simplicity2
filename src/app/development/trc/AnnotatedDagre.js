@@ -163,7 +163,12 @@ const nodeSteps = (steps, nodeId) => (
       >
         {stepKey}
       </span>
-      {stepKey === 'who' && steps.who && steps.who.map(actor => whoIcons[actor].icon)}
+      {stepKey === 'who' && steps.who && <div>{steps.who.map(actor => (
+        <div key={`${actor}-${nodeId}`}>
+          <div style={{ padding: '0 0.5rem 0 0', width: '2rem', display: 'inline-block' }}>{whoIcons[actor].icon}</div>
+          <span>{whoIcons[actor].label}</span>
+        </div>
+      ))}</div>}
       {stepKey !== 'who' && <span>{steps[stepKey]}</span>}
     </li>
   ))}</ul>
@@ -203,11 +208,11 @@ const whoIcons = {
   },
   staff: {
     label: 'City Staff',
-    icon: (<CityLogoSvg/>),
+    icon: (<CityLogoSvg color="black" height={16} />),
   },
   neighbors: {
     label: 'Neighbors',
-    icon: (<Icon path={USER_FRIENDS} viewBox="0 0 640 512" />),
+    icon: (<Icon path={USER_FRIENDS} viewBox="0 0 640 512" size={19} />),
     // https://fontawesome.com/icons/user-friends?style=solid
   }
 }

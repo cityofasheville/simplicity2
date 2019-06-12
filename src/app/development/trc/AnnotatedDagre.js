@@ -72,8 +72,6 @@ class AnnotatedDagre extends React.Component {
     const nodes = getNodes(graph, visWidth, nodeHeight, nodePadding);
     const links = getLinks(dagreLinks, nodes, edgePadding, edgeStroke);
 
-    console.log(nodes)
-
     // If any node in the past had a high enough coincidents number that it had to be moved, add to y value for remaining
     return (<div style={{ width: '100%', fontSize: visWidth < 500 ? '0.75rem' : '1em' }}>
       <svg height={height} width={visWidth}>

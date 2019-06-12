@@ -8,6 +8,241 @@ import {
 } from '../../../shared/iconConstants';
 
 
+export const dagreNodes = [
+  {
+    id: 'Pre-Application',
+    subNodes: [
+      {
+        id: 'Pre-Application Meeting',
+        steps: {
+          what: 'Developers and city staff meet to review plans, discuss process and schedule, identify applicable regulations.',
+          who: ['dev', 'staff'],
+          when: 'Required before application submission',
+          where: '161 South Charlotte Street',
+        },
+      },
+      {
+        id: 'Neighborhood Meeting',
+        steps: {
+          what: 'Developers must notify all property owners within 200 feet of the proposed development site.  Neighbors meet with developers to collaborate on neighborhood needs and opportunities.',
+          who: ['dev', 'neighbors'],
+          when: '10 days before application submission',
+          where: '???',
+        },
+      },
+    ],
+    typeIds: [
+      'Level II',
+      'Major Subdivision',
+      'Conditional Zoning',
+      'Conditional Use Permit',
+    ],
+  },
+  {
+    id: 'Permit Application',
+    steps: {
+      what: 'Submission of required plans and documents and payment of application fees.',
+      when: 'After the preliminary steps are completed.  Applications that do not indicate that a neighborhood meeting has been held are rejected.',
+      who: ['dev'],
+      where: 'The City of Asheville Development Services Department',
+    },
+    typeIds: [
+      'Level I',
+      'Level II',
+      'Major Subdivision',
+      'Conditional Zoning',
+      'Conditional Use Permit',
+    ],
+  },
+  {
+    id: 'Staff Review',
+    steps: {
+      what: 'A staff member reviews plans for compliance with applicable ordinances and documents and creates a report.',
+      when: '',
+      who: ['staff'],
+      where: '',
+    },
+    typeIds: [
+      'Level I',
+    ],
+  },
+  {
+    id: 'Level I Decision',
+    description: <div>{decisionIconHeader}</div>,
+    typeIds: [
+      'Level I',
+    ],
+  },
+  {
+    id: 'Technical Review Committee',
+    steps: {
+      what: 'An eight-member body that ensures that the proposed project complies with standards and requirements.  The committee consists of six staff, a representative of the Tree Commission and a member representing the Buncombe County Metropolitan Sewerage District (MSD).',
+      when: '',
+      who: ['dev', 'staff'],
+      where: '',
+    },
+    typeIds: [
+      'Level II',
+      'Major Subdivision',
+      'Conditional Zoning',
+      'Conditional Use Permit',
+    ],
+  },
+  {
+    id: 'Major Subdivision and Level II Decision (Not Downtown)',
+    description: <div>{decisionIconHeader}</div>,
+    typeIds: [
+      'Level II',
+      'Major Subdivision',
+    ],
+  },
+  {
+    id: 'Design Review',
+    description: <div>Projects located Downtown or in the River District must be reviewed for architectural design elements by a special design review sub-committee of either the <a href="https://library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTIIIDEKIADADBO_S7-3-8ASDOCO" target="_blank" rel="noopener noreferrer">Asheville Downtown Commission</a> or the <a href="https://library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTIIIDEKIADADBO_S7-3-10ASARRIRECO" target="_blank" rel="noopener noreferrer">Asheville Area Riverfront Redevelopment Commission</a> prior to approval.</div>,
+    steps: {
+      what: '',
+      when: '',
+      where: '',
+      who: ['dev', 'staff', 'neighbors'],
+    },
+    typeIds: [
+      'Level II',
+    ],
+  },
+  {
+    id: 'Planning and Zoning Commission',
+    steps: {
+      what: 'Conditional Zoning, Level III, Conditional Use Permits and Level II projects within the Downtown area are reviewed by the Planning & Zoning Commission.  For  Conditional Zoning, Use and Level III projects, the Planning & Zoning Commission holds a public hearing and makes a recommendation for action to City Council.  For downtown Level II projects, the Planning & Zoning Commission verifies technical compliance with the requirements of applicable ordinances and documents and takes final action.',
+      when: '',
+      who: '',
+      where: '',
+    },
+    typeIds: [
+      'Level II',
+      'Conditional Zoning',
+      'Conditional Use Permit',
+    ],
+  },
+  {
+    id: 'Level II and Downtown Major Subdivision Decision',
+    description: <div>{decisionIconHeader}</div>,
+    typeIds: [
+      'Level II',
+      'Major Subdivision',
+    ],
+  },
+  {
+    id: 'City Council',
+    description: 'Conditional Zoning, Level III, Conditional Use Permits are reviewed during a public hearing before City Council.  These projects arrive at the City Council meeting with a recommendation for action that has been sent by the Planning & Zoning Commission.',
+    steps: {
+      what: '',
+      when: '',
+      where: '',
+      who: ['dev', 'staff', 'neighbors'],
+    },
+    typeIds: [
+      'Conditional Zoning',
+      'Conditional Use Permit',
+    ],
+  },
+  {
+    id: 'City Council Decision',
+    description: <div>{decisionIconHeader}</div>,
+    typeIds: [
+      'Conditional Zoning',
+      'Conditional Use Permit',
+    ],
+  },
+];
+
+export const dagreLinks = [
+  {
+    source: 'Pre-Application',
+    target: 'Permit Application',
+    parallelEdges: [
+      { id: 'Major Subdivision' },
+      { id: 'Level II' },
+      { id: 'Conditional Zoning' },
+      { id: 'Conditional Use Permit' },
+    ],
+  },
+  {
+    source: 'Permit Application',
+    target: 'Staff Review',
+    parallelEdges: [
+      { id: 'Level I' },
+    ],
+  },
+  {
+    source: 'Permit Application',
+    target: 'Technical Review Committee',
+    parallelEdges: [
+      { id: 'Major Subdivision' },
+      { id: 'Level II' },
+      { id: 'Conditional Zoning' },
+      { id: 'Conditional Use Permit' },
+    ],
+  },
+  {
+    source: 'Staff Review',
+    target: 'Level I Decision',
+    id: 'Level I',
+  },
+  {
+    source: 'Technical Review Committee',
+    target: 'Major Subdivision and Level II Decision (Not Downtown)',
+    parallelEdges: [
+      { id: 'Major Subdivision' },
+      { id: 'Level II' },
+    ],
+  },
+  {
+    source: 'Design Review',
+    target: 'Planning and Zoning Commission',
+    parallelEdges: [
+      { id: 'Level II' },
+    ],
+  },
+  {
+    source: 'Technical Review Committee',
+    target: 'Design Review',
+    parallelEdges: [
+      { id: 'Level II' },
+    ],
+  },
+  {
+    source: 'Technical Review Committee',
+    target: 'Planning and Zoning Commission',
+    parallelEdges: [
+      { id: 'Conditional Zoning' },
+      { id: 'Conditional Use Permit' },
+    ],
+  },
+  {
+    source: 'Planning and Zoning Commission',
+    target: 'Level II and Downtown Major Subdivision Decision',
+    parallelEdges: [
+      { id: 'Level II' },
+    ],
+  },
+  {
+    source: 'Planning and Zoning Commission',
+    target: 'City Council',
+    parallelEdges: [
+      { id: 'Conditional Zoning' },
+      { id: 'Conditional Use Permit' },
+    ],
+  },
+  {
+    source: 'City Council',
+    target: 'City Council Decision',
+    parallelEdges: [
+      { id: 'Conditional Zoning' },
+      { id: 'Conditional Use Permit' },
+    ],
+  },
+];
+
 export function getDagreGraph(nodes, links, nodeSize) {
   const g = new dagre.graphlib.Graph();
   g.setGraph({
@@ -38,7 +273,7 @@ export function getDagreGraph(nodes, links, nodeSize) {
   dagre.layout(g);
 
   return g;
-};
+}
 
 export function getNodes(dagreGraph, visWidth, nodeHeight, nodePadding) {
   const nodeValues = [].concat(Object.values(dagreGraph._nodes));
@@ -78,9 +313,9 @@ export function getNodes(dagreGraph, visWidth, nodeHeight, nodePadding) {
     //   }
     // }
     d.yOffset = thisYOffset;
-  })
+  });
   // Reiterate and update y values
-  return nodeValues.map(d => {
+  return nodeValues.map((d) => {
     const rVal = Object.assign({}, d);
     rVal.y = d.y + d.yOffset;
     return rVal;

@@ -7,6 +7,50 @@ import {
   USER_FRIENDS,
 } from '../../../shared/iconConstants';
 
+export const whoIcons = {
+  dev: {
+    label: 'Developer',
+    icon: (<Icon path={DRAFTING_COMPASS} viewBox="0 0 512 512" />),
+  },
+  staff: {
+    label: 'City Staff',
+    icon: (<CityLogoSvg color="black" height={16} />),
+  },
+  neighbors: {
+    label: 'Neighbors',
+    icon: (<Icon path={USER_FRIENDS} viewBox="0 0 640 512" size={19} />),
+  },
+};
+
+export const decisionIconStyle = {
+  margin: '0.25rem 1rem 0.25rem 0',
+  width: '1.25em',
+  color: 'white',
+  textAlign: 'center',
+  display: 'inline-block',
+  borderRadius: '25%',
+};
+
+export const decisionIconHeader = (
+  <div style={{ margin: '0 auto' }}>
+    <div>
+      <div style={Object.assign({ backgroundColor: '#008A00' }, decisionIconStyle)}>&#10004;</div>
+      <span>Approved</span>
+    </div>
+    <div>
+      <div style={Object.assign({ backgroundColor: '#CE3800' }, decisionIconStyle)}>&#10008;</div>
+      <span>Denied</span>
+    </div>
+    <div>
+      <div
+        style={Object.assign({ backgroundColor: '#3F71C3', fontWeight: 600 }, decisionIconStyle)}
+      >
+        &#8635;
+      </div>
+      <span>Revise</span>
+    </div>
+  </div>
+);
 
 export const dagreNodes = [
   {
@@ -418,49 +462,4 @@ export const nodeSteps = (steps, nodeId) => (
     </li>
   ))}
   </ul>
-);
-
-export const whoIcons = {
-  dev: {
-    label: 'Developer',
-    icon: (<Icon path={DRAFTING_COMPASS} viewBox="0 0 512 512" />),
-  },
-  staff: {
-    label: 'City Staff',
-    icon: (<CityLogoSvg color="black" height={16} />),
-  },
-  neighbors: {
-    label: 'Neighbors',
-    icon: (<Icon path={USER_FRIENDS} viewBox="0 0 640 512" size={19} />),
-  },
-};
-
-export const decisionIconStyle = {
-  margin: '0.25rem 1rem 0.25rem 0',
-  width: '1.25em',
-  color: 'white',
-  textAlign: 'center',
-  display: 'inline-block',
-  borderRadius: '25%',
-};
-
-export const decisionIconHeader = (
-  <div style={{ margin: '0 auto' }}>
-    <div>
-      <div style={Object.assign({ backgroundColor: '#008A00' }, decisionIconStyle)}>&#10004;</div>
-      <span>Approved</span>
-    </div>
-    <div>
-      <div style={Object.assign({ backgroundColor: '#CE3800' }, decisionIconStyle)}>&#10008;</div>
-      <span>Denied</span>
-    </div>
-    <div>
-      <div
-        style={Object.assign({ backgroundColor: '#3F71C3', fontWeight: 600 }, decisionIconStyle)}
-      >
-        &#8635;
-      </div>
-      <span>Revise</span>
-    </div>
-  </div>
 );

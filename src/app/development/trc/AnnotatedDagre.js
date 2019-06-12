@@ -530,8 +530,8 @@ class AnnotatedDagre extends React.Component {
     const visWidth = dimensions.width;
     const height = visWidth < 768 ? 4500 : 4000;
     const nodePadding = 5;
-    const edgeStroke = visWidth < 768 ? 4 : 5;
-    const edgePadding = edgeStroke * 2;
+    const edgeStroke = visWidth < 768 ? 2 : 3;
+    const edgePadding = edgeStroke * 4;
     const nodeHeight = (height - nodePadding * (this.numLevels +  4)) / this.numLevels;
     const puckSize = visWidth < 500 ? 16 : 30;
     const yOffset = nodeHeight / 2;
@@ -543,6 +543,13 @@ class AnnotatedDagre extends React.Component {
     // If any node in the past had a high enough coincidents number that it had to be moved, add to y value for remaining
     return (<div style={{ width: '100%', fontSize: visWidth < 500 ? '0.75rem' : '1em' }}>
       <svg height={height} width={visWidth}>
+        <defs>
+          {Object.values(trcProjectTypes).map(type => (
+            <marker id={`marker-${type.short}`} markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+              <path d="M0,0 L0,6 L9,3 z" fill={type.color} />
+            </marker>
+          ))}
+        </defs>
         <g>
           {links.map((d, i, linksArray) => {
             const elbowOffset = edgeStroke;
@@ -553,7 +560,7 @@ class AnnotatedDagre extends React.Component {
               verticalOffset = (linksArray.length - i) * elbowOffset;
             }
             const halfWay = d.x1 + (d.x2 - d.x1) / 2;
-            const linkYOffset = yOffset - 10;
+            const linkYOffset = yOffset - 1;
 
             const pathData = `M${d.x1} ${d.y1 - linkYOffset}
               Q ${d.x1} ${d.y1 + ((d.y2 - d.y1) / 4) - linkYOffset + verticalOffset},
@@ -562,10 +569,6 @@ class AnnotatedDagre extends React.Component {
             `;
 
             return (<path
-              // d={`M${d.x1} ${d.y1 - yOffset}
-              //   L${d.x1} ${d.y1 + ((d.y2 - d.y1) / 3) - yOffset + verticalOffset}
-              //   L${d.x2} ${d.y1 + ((d.y2 - d.y1) / 3) * 2 - yOffset + verticalOffset}
-              //   L${d.x2} ${d.y2 - yOffset}`}
               d={pathData}
               style={{
                 stroke: trcProjectTypes[d.id].color,
@@ -574,6 +577,7 @@ class AnnotatedDagre extends React.Component {
               }}
               key={`${d.source}-${d.target}-${i}`}
               className={d.id}
+              marker-end={`url(#marker-${trcProjectTypes[d.id].short})`}
             />)
           })}
         </g>

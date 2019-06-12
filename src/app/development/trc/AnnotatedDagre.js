@@ -3,8 +3,13 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import dagre from 'dagre';
 import TypePuck from './TypePuck';
-import { trcProjectTypes } from '../utils';
 import CityLogoSvg from '../../../shared/CityLogoSvg';
+import Icon from '../../../shared/Icon';
+import { trcProjectTypes } from '../utils';
+import {
+  DRAFTING_COMPASS,
+  USER_FRIENDS,
+} from '../../../shared/iconConstants';
 
 function getDagreGraph(nodes, links, nodeSize) {
   const g = new dagre.graphlib.Graph();
@@ -158,7 +163,8 @@ const nodeSteps = (steps, nodeId) => (
       >
         {stepKey}
       </span>
-      <span>{steps[stepKey]}</span>
+      {stepKey === 'who' && steps.who && steps.who.map(actor => whoIcons[actor].icon)}
+      {stepKey !== 'who' && <span>{steps[stepKey]}</span>}
     </li>
   ))}</ul>
 )
@@ -192,6 +198,7 @@ const decisionIconHeader = (
 const whoIcons = {
   dev: {
     label: 'Developer',
+    icon: (<Icon path={DRAFTING_COMPASS} viewBox="0 0 512 512" />),
     // https://fontawesome.com/icons/drafting-compass?style=solid
   },
   staff: {
@@ -199,7 +206,8 @@ const whoIcons = {
     icon: (<CityLogoSvg/>),
   },
   neighbors: {
-    label: 'Neighbors'
+    label: 'Neighbors',
+    icon: (<Icon path={USER_FRIENDS} viewBox="0 0 640 512" />),
     // https://fontawesome.com/icons/user-friends?style=solid
   }
 }
@@ -215,7 +223,7 @@ class AnnotatedDagre extends React.Component {
             id: 'Pre-Application Meeting',
             steps: {
               what: 'Developers and city staff meet to review plans, discuss process and schedule, identify applicable regulations.',
-              who: ['Developer', 'City Staff'],
+              who: ['dev', 'staff'],
               when: 'Required before application submission',
               where: '161 South Charlotte Street',
             },
@@ -224,7 +232,7 @@ class AnnotatedDagre extends React.Component {
             id: 'Neighborhood Meeting',
             steps: {
               what: 'Developers must notify all property owners within 200 feet of the proposed development site.  Neighbors meet with developers to collaborate on neighborhood needs and opportunities.',
-              who: ['Developer', 'Neighbors'],
+              who: ['dev', 'neighbors'],
               when: '10 days before application submission',
               where: '???',
             },
@@ -242,7 +250,7 @@ class AnnotatedDagre extends React.Component {
         steps: {
           what: 'Submission of required plans and documents and payment of application fees.',
           when: 'After the preliminary steps are completed.  Applications that do not indicate that a neighborhood meeting has been held are rejected.',
-          who: ['Developer'],
+          who: ['dev'],
           where: 'The City of Asheville Development Services Department',
         },
         typeIds: [
@@ -258,7 +266,7 @@ class AnnotatedDagre extends React.Component {
         steps: {
           what: 'A staff member reviews plans for compliance with applicable ordinances and documents and creates a report.',
           when: '',
-          who: ['City Staff'],
+          who: ['staff'],
           where: '',
         },
         typeIds: [
@@ -277,7 +285,7 @@ class AnnotatedDagre extends React.Component {
         steps: {
           what: 'An eight-member body that ensures that the proposed project complies with standards and requirements.  The committee consists of six staff, a representative of the Tree Commission and a member representing the Buncombe County Metropolitan Sewerage District (MSD).',
           when: '',
-          who: ['Developer', 'City Staff'],
+          who: ['dev', 'staff'],
           where: '',
         },
         typeIds: [
@@ -304,7 +312,7 @@ class AnnotatedDagre extends React.Component {
           what: '',
           when: '',
           where: '',
-          who: ['Developer', 'City Staff', 'Neighbors'],
+          who: ['dev', 'staff', 'neighbors'],
         },
         typeIds: [
           // 'Level I',
@@ -347,7 +355,7 @@ class AnnotatedDagre extends React.Component {
           what: '',
           when: '',
           where: '',
-          who: ['Developer', 'City Staff', 'Neighbors'],
+          who: ['dev', 'staff', 'neighbors'],
         },
         typeIds: [
           'Conditional Zoning',

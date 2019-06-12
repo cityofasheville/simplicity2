@@ -1,6 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import dagre from 'dagre';
 import TypePuck from './TypePuck';
 import CityLogoSvg from '../../../shared/CityLogoSvg';
@@ -92,7 +91,7 @@ function getNodes(dagreGraph, visWidth, nodeHeight, nodePadding) {
 
 function getLinks(inputLinks, nodes, edgePadding, edgeStroke) {
   const linkValues = JSON.parse(JSON.stringify(inputLinks))
-    .map(link => {
+    .map((link) => {
       const rObj = Object.assign({}, link);
       // indexInCoincidents should be multiplier for spacing
       // middle index in coincidents should be middle of node
@@ -107,21 +106,21 @@ function getLinks(inputLinks, nodes, edgePadding, edgeStroke) {
       rObj.x2 = endNode.x;
       rObj.y2 = endNode.y;
       return rObj;
-    })
+    });
 
   const withParallelsOnly = linkValues.filter(link => link.parallelEdges);
   const withoutParallels = linkValues.filter(link => !link.parallelEdges);
 
-  withParallelsOnly.forEach(link => {
-    link.parallelEdges.forEach((parallel, i) => {
+  withParallelsOnly.forEach((link) => {
+    link.parallelEdges.forEach((parallel) => {
       const newLinkVal = Object.assign({}, link);
       newLinkVal.id = parallel.id;
       withoutParallels.push(newLinkVal);
-    })
-  })
+    });
+  });
 
   // Then iterate and reassign x values to all using parallelEdges algorithm
-  withoutParallels.forEach(link => {
+  withoutParallels.forEach((link) => {
     // TODO: also consider it a coincident if its nodes are coincident with one another
     link.x1Coincidents = withoutParallels.filter(otherLink => otherLink.x1 === link.x1 && otherLink.y1 === link.y1);
     link.x1CoincidentIndex = link.x1Coincidents.findIndex(coincident =>
@@ -130,10 +129,12 @@ function getLinks(inputLinks, nodes, edgePadding, edgeStroke) {
     // total number of links entering and leaving node is how spread out they need to be
     link.x2Coincidents = withoutParallels.filter(otherLink => otherLink.x2 === link.x2 && otherLink.y2 === link.y2);
     link.x2CoincidentIndex = link.x2Coincidents.findIndex(coincident =>
-      coincident.source === link.source && coincident.target === link.target && coincident.id === link.id);
-  })
+      coincident.source === link.source &&
+        coincident.target === link.target &&
+        coincident.id === link.id);
+  });
 
-  return withoutParallels.map(link => {
+  return withoutParallels.map((link) => {
     // TODO: grab parallel edges logic to add more padding for parallel edges?
     const rObj = Object.assign({}, link);
     const paddingAndStroke = edgePadding + edgeStroke;
@@ -144,9 +145,12 @@ function getLinks(inputLinks, nodes, edgePadding, edgeStroke) {
 }
 
 const displaySubNode = (node, lastNode = false) => (
-    <div key={node.id} style={{ verticalAlign: 'top', padding: `0.5rem ${lastNode ? 0 : '1rem'} 0 0`, flex: 1 }}>
-      <div style={{ fontSize: '1.25rem', padding: '0 0 1rem 0' }}>{node.id}</div>
-      {nodeSteps(node.steps, node.id)}
+  <div
+    key={node.id}
+    style={{ verticalAlign: 'top', padding: `0.5rem ${lastNode ? 0 : '1rem'} 0 0`, flex: 1 }}
+  >
+    <div style={{ fontSize: '1.25rem', padding: '0 0 1rem 0' }}>{node.id}</div>
+    {nodeSteps(node.steps, node.id)}
   </div>
 );
 
@@ -163,16 +167,25 @@ const nodeSteps = (steps, nodeId) => (
       >
         {stepKey}
       </span>
-      {stepKey === 'who' && steps.who && <div>{steps.who.map(actor => (
-        <div key={`${actor}-${nodeId}`}>
-          <div style={{ padding: '0 0.5rem 0 0', width: '2rem', display: 'inline-block' }}>{whoIcons[actor].icon}</div>
-          <span>{whoIcons[actor].label}</span>
+      {stepKey === 'who' && steps.who &&
+        <div>
+          {steps.who.map(actor => (
+            <div key={`${actor}-${nodeId}`}>
+              <div
+                style={{ padding: '0 0.5rem 0 0', width: '2rem', display: 'inline-block' }}
+              >
+                {whoIcons[actor].icon}
+              </div>
+              <span>{whoIcons[actor].label}</span>
+            </div>
+          ))}
         </div>
-      ))}</div>}
+      }
       {stepKey !== 'who' && <span>{steps[stepKey]}</span>}
     </li>
-  ))}</ul>
-)
+  ))}
+  </ul>
+);
 
 const decisionIconStyle = {
   margin: '0.25rem 1rem 0.25rem 0',
@@ -181,7 +194,7 @@ const decisionIconStyle = {
   textAlign: 'center',
   display: 'inline-block',
   borderRadius: '25%',
-}
+};
 
 const decisionIconHeader = (
   <div style={{ margin: '0 auto' }}>
@@ -194,7 +207,11 @@ const decisionIconHeader = (
       <span>Denied</span>
     </div>
     <div>
-      <div style={Object.assign({ backgroundColor: '#3F71C3', fontWeight: 600 }, decisionIconStyle)}>&#8635;</div>
+      <div
+        style={Object.assign({ backgroundColor: '#3F71C3', fontWeight: 600 }, decisionIconStyle)}
+      >
+        &#8635;
+      </div>
       <span>Revise</span>
     </div>
   </div>
@@ -214,8 +231,8 @@ const whoIcons = {
     label: 'Neighbors',
     icon: (<Icon path={USER_FRIENDS} viewBox="0 0 640 512" size={19} />),
     // https://fontawesome.com/icons/user-friends?style=solid
-  }
-}
+  },
+};
 
 class AnnotatedDagre extends React.Component {
   constructor() {
@@ -375,7 +392,7 @@ class AnnotatedDagre extends React.Component {
           'Conditional Use Permit',
         ],
       },
-    ]
+    ];
     this.links = [
       {
         source: 'Pre-Application',
@@ -383,20 +400,16 @@ class AnnotatedDagre extends React.Component {
         parallelEdges: [
           { id: 'Major Subdivision' },
           { id: 'Level II' },
-          { id: 'Conditional Zoning'},
+          { id: 'Conditional Zoning' },
           { id: 'Conditional Use Permit' },
-        ]
+        ],
       },
       {
         source: 'Permit Application',
         target: 'Staff Review',
         parallelEdges: [
           { id: 'Level I' },
-          // { id: 'Major Subdivision' },
-          // { id: 'Level II' },
-          // { id: 'Conditional Zoning'},
-          // { id: 'Conditional Use Permit' },
-        ]
+        ],
       },
       {
         source: 'Permit Application',
@@ -405,81 +418,67 @@ class AnnotatedDagre extends React.Component {
           // { id: 'Level I' },
           { id: 'Major Subdivision' },
           { id: 'Level II' },
-          { id: 'Conditional Zoning'},
+          { id: 'Conditional Zoning' },
           { id: 'Conditional Use Permit' },
-        ]
+        ],
       },
       {
         source: 'Staff Review',
         target: 'Level I Decision',
         id: 'Level I',
       },
-      // {
-      //   source: 'Staff Review',
-      //   target: 'Technical Review Committee',
-      //   parallelEdges: [
-      //     { id: 'Major Subdivision' },
-      //     { id: 'Level II' },
-      //     // { id: 'Level III' },
-      //     { id: 'Conditional Zoning'},
-      //     { id: 'Conditional Use Permit' },
-      //   ]
-      // },
       {
         source: 'Technical Review Committee',
         target: 'Major Subdivision and Level II Decision (Not Downtown)',
         parallelEdges: [
           { id: 'Major Subdivision' },
           { id: 'Level II' },
-          // { id: 'Conditional Zoning'},
-          // { id: 'Conditional Use Permit' },
-        ]
+        ],
       },
       {
         source: 'Design Review',
         target: 'Planning and Zoning Commission',
         parallelEdges: [
           { id: 'Level II' },
-        ]
+        ],
       },
       {
         source: 'Technical Review Committee',
         target: 'Design Review',
-        // All level II, downtown subdivisions, and special district L3 etc go to desgin review?
         parallelEdges: [
           { id: 'Level II' },
-        ]
+        ],
       },
       {
         source: 'Technical Review Committee',
         target: 'Planning and Zoning Commission',
         parallelEdges: [
-          { id: 'Conditional Zoning'},
+          { id: 'Conditional Zoning' },
           { id: 'Conditional Use Permit' },
-        ]
+        ],
       },
       {
         source: 'Planning and Zoning Commission',
         target: 'Level II and Downtown Major Subdivision Decision',
         parallelEdges: [
           { id: 'Level II' },
-        ]
+        ],
       },
       {
         source: 'Planning and Zoning Commission',
         target: 'City Council',
         parallelEdges: [
-          { id: 'Conditional Zoning'},
+          { id: 'Conditional Zoning' },
           { id: 'Conditional Use Permit' },
-        ]
+        ],
       },
       {
         source: 'City Council',
         target: 'City Council Decision',
         parallelEdges: [
-          { id: 'Conditional Zoning'},
+          { id: 'Conditional Zoning' },
           { id: 'Conditional Use Permit' },
-        ]
+        ],
       },
     ];
     // Find good node height
@@ -489,13 +488,12 @@ class AnnotatedDagre extends React.Component {
       .map(d => d.y);
     const yValCounts = {};
     for (let i = 0; i < yVals.length; i++) {
-      let num = yVals[i];
+      const num = yVals[i];
       yValCounts[num] = yValCounts[num] ? yValCounts[num] + 1 : 1;
     }
     const multiRow = Object.values(yValCounts).filter(v => v > maxPerRow).length;
-    const uniqueYVals = yVals.filter(
-      (value, index, nodeArray) => nodeArray.indexOf(value) === index
-    ).length;
+    const uniqueYVals = yVals.filter((value, index, nodeArray) =>
+      nodeArray.indexOf(value) === index).length;
     this.numLevels = multiRow + uniqueYVals;
 
     this.updateDimensions = this.updateDimensions.bind(this);
@@ -524,8 +522,6 @@ class AnnotatedDagre extends React.Component {
   }
 
   renderContent() {
-    // use class instead/in addition to color? highlight all links with that class when a node is hovered?
-    // highlight all links and nodes when a link is hovered?
     const { dimensions } = this.state;
     const visWidth = dimensions.width;
     const height = visWidth < 768 ? 4500 : 4000;
@@ -585,7 +581,7 @@ class AnnotatedDagre extends React.Component {
         <g>
           {nodes.map(d => (
             <foreignObject
-              x={d.x - d.wrap / 2}
+              x={d.x - (d.wrap / 2)}
               y={d.y - yOffset}
               width={d.wrap}
               height={d.height}
@@ -600,7 +596,13 @@ class AnnotatedDagre extends React.Component {
                   borderRadius: '6px',
                 }}
               >
-                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 0 0.25rem' }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    padding: '0 0 0.25rem',
+                  }}
+                >
                   <div
                     style={{
                       fontWeight: 400,
@@ -612,18 +614,19 @@ class AnnotatedDagre extends React.Component {
                   </div>
                   <div>
                     {d.typeIds.map(id =>
-                      <TypePuck
+                      (<TypePuck
                         key={`${d.id}-puck-${id}`}
                         typeObject={trcProjectTypes[id]}
                         size={puckSize}
-                      />
+                      />)
                     )}
                   </div>
                 </div>
                 {!d.subNodes && d.steps && nodeSteps(d.steps, d.id)}
                 {!d.subNodes && !d.steps && d.description}
                 {d.subNodes && (<div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                  {d.subNodes.map((sub, subIndex, subNodeArray) => displaySubNode(sub, subIndex === subNodeArray.length - 1))}
+                  {d.subNodes.map((sub, subIndex, subNodeArray) =>
+                    displaySubNode(sub, subIndex === subNodeArray.length - 1))}
                 </div>)}
               </div>
             </foreignObject>
@@ -637,12 +640,11 @@ class AnnotatedDagre extends React.Component {
     const { dimensions } = this.state;
 
     return (
-      <div ref={el => (this.container = el)} style={{ height: '100%', width: '100%' }}>
+      <div ref={(el) => { this.container = el; }} style={{ height: '100%', width: '100%' }}>
         {dimensions && this.renderContent()}
       </div>
     );
   }
-
 }
 
 export default AnnotatedDagre;

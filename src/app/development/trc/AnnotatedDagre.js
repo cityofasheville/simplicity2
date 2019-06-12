@@ -530,9 +530,9 @@ class AnnotatedDagre extends React.Component {
     const visWidth = dimensions.width;
     const height = visWidth < 768 ? 4500 : 4000;
     const nodePadding = 5;
-    const edgeStroke = visWidth < 768 ? 2 : 3;
-    const arrowWidth = edgeStroke * 2;
-    const edgePadding = arrowWidth * 2;
+    const edgeStroke = visWidth < 768 ? 3 : 4;
+    const arrowWidth = edgeStroke * 1.5;
+    const edgePadding = arrowWidth * 4;
     const nodeHeight = (height - nodePadding * (this.numLevels +  4)) / this.numLevels;
     const puckSize = visWidth < 500 ? 16 : 30;
     const yOffset = nodeHeight / 2;
@@ -546,8 +546,8 @@ class AnnotatedDagre extends React.Component {
       <svg height={height} width={visWidth}>
         <defs>
           {Object.values(trcProjectTypes).map(type => (
-            <marker id={`marker-${type.short}`} markerWidth={arrowWidth} markerHeight={arrowWidth} refX={arrowWidth} refY={arrowWidth / 2} orient="auto" markerUnits="strokeWidth">
-              <path d={`M0,0 L0,${arrowWidth} L${arrowWidth},${arrowWidth / 2} z`} fill={type.color} />
+            <marker id={`marker-${type.short}`} markerWidth={arrowWidth} markerHeight={arrowWidth} refX={arrowWidth * 2 / 3} refY={arrowWidth / 2} orient="auto" markerUnits="strokeWidth">
+              <path d={`M0,0 L0,${arrowWidth} L${arrowWidth * 2 / 3},${arrowWidth / 2} z`} fill={type.color} />
             </marker>
           ))}
         </defs>

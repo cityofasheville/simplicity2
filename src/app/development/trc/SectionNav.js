@@ -25,9 +25,9 @@ class SectionNav extends React.Component {
   handleScroll(event) {
     const changePoint = document.documentElement.clientHeight / 4;
     let closestDistanceToChange = null;
-    let closestNavLinkId = null;
+    let closestNavLinkId = '';
 
-    this.state.links.forEach(navLink => {
+    this.state.links.forEach((navLink) => {
       const thisRef = navLink.ref.current.getBoundingClientRect();
 
       if (thisRef.top < changePoint && (!closestDistanceToChange || thisRef.top > closestDistanceToChange)) {
@@ -84,15 +84,15 @@ class SectionNav extends React.Component {
     return (
       <nav>
         <ul className="sectionNav" >
-          {this.state.links.map(linkItem => {
-            return (<li key={linkItem.linkId}><a
+          {this.state.links.map(linkItem => (<li key={linkItem.linkId}>
+            <a
               href={`#${linkItem.linkId}`}
               className={`linkItem-${linkItem.selected ? 'selected' : 'not-selected'}`}
               onClick={this.handleAnchorClick}
             >
               {linkItem.linkName}
-            </a></li>)
-          })}
+            </a>
+          </li>))}
         </ul>
       </nav>
     );

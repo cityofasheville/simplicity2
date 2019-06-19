@@ -92,7 +92,9 @@ const PermitsTableWrapper = props => (
             />
           </div>
         </div>
-        <PermitsTable data={filteredData} {...props} id="permitsDataTable" />
+        <div id="permitsDataTable">
+          <PermitsTable data={filteredData} {...props} />
+        </div>
       </div>);
     }}
   </Query>

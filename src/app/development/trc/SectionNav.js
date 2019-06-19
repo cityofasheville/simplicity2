@@ -1,17 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { color, hsl } from 'd3-color';
 import { debounce } from '../../../shared/visualization/visUtilities';
 
 
 class SectionNav extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       links: props.links,
-    }
-    this.handleScroll = debounce(this.handleScroll.bind(this), 200)
-    this.handleAnchorClick = this.handleAnchorClick.bind(this)
+    };
+    this.handleScroll = debounce(this.handleScroll.bind(this), 200);
+    this.handleAnchorClick = this.handleAnchorClick.bind(this);
   }
 
   componentDidMount() {
@@ -22,7 +21,7 @@ class SectionNav extends React.Component {
     window.removeEventListener('scroll', this.handleScroll);
   }
 
-  handleScroll(event) {
+  handleScroll() {
     const changePoint = document.documentElement.clientHeight / 4;
     let closestDistanceToChange = null;
     let closestNavLinkId = '';
@@ -39,7 +38,7 @@ class SectionNav extends React.Component {
         closestNavLinkId = navLink.linkId;
         closestDistanceToChange = thisRef.top;
       }
-    })
+    });
 
     if (closestNavLinkId === location.hash.replace('#', '')) {
       return;
@@ -58,22 +57,20 @@ class SectionNav extends React.Component {
     history.replaceState({}, anchorToId, `${location.pathname}${location.search}#${anchorToId}`);
 
     // Scroll to that element
-    const selectedSection = document.getElementById(anchorToId);
     document.getElementById(anchorToId).scrollIntoView();
-
-    this.setSelectedNavLink(anchorToId)
+    this.setSelectedNavLink(anchorToId);
   }
 
   setSelectedNavLink(selectedLinkId) {
-    const newSectionNavLinks = this.state.links.map(navLink => {
-      const rObj = Object.assign({}, navLink)
+    const newSectionNavLinks = this.state.links.map((navLink) => {
+      const rObj = Object.assign({}, navLink);
       if (navLink.linkId !== selectedLinkId) {
         rObj.selected = false;
         return rObj;
       }
       rObj.selected = true;
       return rObj;
-    })
+    });
 
     this.setState({
       links: newSectionNavLinks,
@@ -97,7 +94,6 @@ class SectionNav extends React.Component {
       </nav>
     );
   }
-
 }
 
 export default SectionNav;

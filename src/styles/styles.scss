@@ -50,6 +50,19 @@ p a {
   flex: 1;
 }
 
+.skip-nav-link {
+  opacity: 0;
+  position: absolute;
+  z-index: 9999;
+}
+
+.skip-nav-link:focus {
+  opacity: 1;
+  background-color: white;
+  padding: 0.25rem;
+  border: 1px solid gray;
+}
+
 /*MIXINS*/
 
 /*************************************************************************************/

@@ -133,7 +133,7 @@ const Permit = props => (
         <div className="container">
           <h1 className="title__text">{formattedPermit.application_name}</h1>
           <p className="permit-description">{formattedPermit.permit_description}</p>
-          <p className="permit-description">{`This application was submitted on ${dateFormatter(formattedPermit.applied_date)}.  ${currentStatusItem ? currentStatusItem.statusText : ''}`}</p>
+          <p className="permit-description">{`City staff accepted this application on ${dateFormatter(formattedPermit.applied_date)}.  ${currentStatusItem ? currentStatusItem.statusText : ''}`}</p>
           <div className="row permit-map-row">
             {showMap && (
               <div className="col-sm-12 col-md-6 permit-map-container">

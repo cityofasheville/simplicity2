@@ -117,7 +117,7 @@ export const permitFieldFormats = [
   {
     accelaLabel: 'Permit Number',
     displayGroup: 'project details',
-    displayLabel: 'Record ID',
+    displayLabel: 'Application Number',
   },
   {
     accelaLabel: 'Zoning District',

@@ -32,22 +32,24 @@ export const decisionIconStyle = {
 };
 
 export const decisionIconHeader = (
-  <div style={{ margin: '0 auto' }}>
+  <div style={{ display: 'flex', justifyContent: 'center' }}>
     <div>
-      <div style={Object.assign({ backgroundColor: '#008A00' }, decisionIconStyle)}>&#10004;</div>
-      <span>Approved</span>
-    </div>
-    <div>
-      <div style={Object.assign({ backgroundColor: '#CE3800' }, decisionIconStyle)}>&#10008;</div>
-      <span>Denied</span>
-    </div>
-    <div>
-      <div
-        style={Object.assign({ backgroundColor: '#3F71C3', fontWeight: 600 }, decisionIconStyle)}
-      >
-        &#8635;
+      <div>
+        <div style={Object.assign({ backgroundColor: '#008A00' }, decisionIconStyle)}>&#10004;</div>
+        <span>Approved</span>
       </div>
-      <span>Revise</span>
+      <div>
+        <div style={Object.assign({ backgroundColor: '#CE3800' }, decisionIconStyle)}>&#10008;</div>
+        <span>Denied</span>
+      </div>
+      <div>
+        <div
+          style={Object.assign({ backgroundColor: '#3F71C3', fontWeight: 600 }, decisionIconStyle)}
+        >
+          &#8635;
+        </div>
+        <span>Revise</span>
+      </div>
     </div>
   </div>
 );

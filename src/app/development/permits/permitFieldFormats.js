@@ -1,5 +1,6 @@
 import React from 'react';
 import { getZoningLink } from '../../address/zoning';
+import TypePuck from '../trc/TypePuck';
 import Icon from '../../../shared/Icon';
 import {
   IM_WATER,
@@ -11,6 +12,7 @@ import {
   IM_MONUMENT,
   IM_FISH,
 } from '../../../shared/iconConstants';
+import { trcProjectTypes } from '../utils';
 
 export const permitFieldFormats = [
   {
@@ -77,7 +79,23 @@ export const permitFieldFormats = [
     accelaLabel: 'Permit Subtype',
     displayGroup: 'project details',
     displayLabel: 'Type of permit review',
-    formatFunc: (d, permit) => (permit.trcType ? permit.trcType.id : d),
+    formatFunc: (d, permit) => {
+      if (!permit.trcType) {
+        return d;
+      }
+      return (
+        <div>
+          <TypePuck
+            typeObject={permit.trcType}
+            size={30}
+            hover={false}
+          />
+          <span style={{ padding: '0 0 0 1rem' }}>
+            {permit.trcType.id}
+          </span>
+        </div>
+      );
+    },
   },
   {
     accelaLabel: 'Plans Folder Location',
@@ -117,7 +135,18 @@ export const permitFieldFormats = [
   {
     accelaLabel: 'Permit Number',
     displayGroup: 'project details',
-    displayLabel: 'Record ID',
+    displayLabel: 'Application Number',
+    formatFunc: (d, permit) => {
+      const splitCap = permit.internal_record_id.split('-');
+      return (
+        <a
+          href={`https://services.ashevillenc.gov/CitizenAccess/Cap/CapDetail.aspx?Module=Planning&TabName=Planning&capID1=${splitCap[0]}&capID2=${splitCap[1]}&capID3=${splitCap[2]}&agencyCode=ASHEVILLE`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {d}
+        </a>
+    )},
   },
   {
     accelaLabel: 'Zoning District',

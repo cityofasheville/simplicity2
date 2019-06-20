@@ -100,9 +100,7 @@ class Main extends React.Component {
         className={this.props.location.query.hideNavbar ? 'app-parent hidden-navbar' : 'app-parent'}
       >
         <LanguageProvider>
-          <div id="skip">
-            <a href="#content">Skip to Main Content</a>
-          </div>
+          <a href="#content" className="skip-nav-link">Skip to Main Content</a>
           {displayNavbar(this.props.location.query.hideNavbar)}
           <div className="container" id="content">
             <ErrorBoundary>

@@ -73,6 +73,13 @@ const PermitsTableWrapper = props => (
       return (<div className="col-sm-12">
         <div>
           <div className="map-container" style={{ height: '350px', width: '100%' }}>
+            <a
+              href="#permitsDataTable"
+              className="skip-nav-link"
+              onClick={() => { document.getElementById('permitsDataTable').focus(); }}
+            >
+              This map contains information which is also represented in the table below.  Press enter to skip to the table or tab to continue to the map.
+            </a>
             <PermitsMap
               permitData={filteredData.filter(d => d.x && d.y).map(d => Object.assign(
                 {},
@@ -89,7 +96,9 @@ const PermitsTableWrapper = props => (
             />
           </div>
         </div>
-        <PermitsTable data={filteredData} {...props} />
+        <div id="permitsDataTable">
+          <PermitsTable data={filteredData} {...props} />
+        </div>
       </div>);
     }}
   </Query>

@@ -44,7 +44,7 @@ class MajorDevelopmentDashboard extends React.Component {
         header: 'Development Details',
         body: (
           <div>
-            <p>The table below contains proposed, large-scale, private development projects for which a permit application has been submitted.  You can also see a <a href="/permits">table of all permit applications</a> or <a href="/">search an address</a> to find nearby development.</p>
+            <p>The map and table below contain proposed, large-scale, private development projects for which a permit application has been submitted.  You can also see a <a href="/permits">table of all permit applications</a> or <a href="/">search an address</a> to find nearby development.</p>
             <TRCDataTable />
           </div>
         ),

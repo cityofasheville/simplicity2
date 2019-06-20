@@ -30,6 +30,10 @@ h4{
 	color: #666;
 }
 
+.h1 .small, .h1 small, .h2 .small, .h2 small, .h3 .small, .h3 small, .h4 .small, .h4 small, .h5 .small, .h5 small, .h6 .small, .h6 small, h1 .small, h1 small, h2 .small, h2 small, h3 .small, h3 small, h4 .small, h4 small, h5 .small, h5 small, h6 .small, h6 small {
+  color: #6C787F;
+}
+
 p a {
 	text-decoration: underline;
 }
@@ -44,6 +48,19 @@ p a {
 }
 #content.container{
   flex: 1;
+}
+
+.skip-nav-link {
+  opacity: 0;
+  position: absolute;
+  z-index: 9999;
+}
+
+.skip-nav-link:focus {
+  opacity: 1;
+  background-color: white;
+  padding: 0.25rem;
+  border: 1px solid gray;
 }
 
 /*MIXINS*/

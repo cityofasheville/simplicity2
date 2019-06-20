@@ -130,8 +130,6 @@ const Permit = props => (
           }
         });
 
-console.log(formattedPermit)
-
       return (
         <div className="container">
           <h1 className="title__text">{formattedPermit.application_name}</h1>
@@ -151,11 +149,6 @@ console.log(formattedPermit)
               {byDetailArea['project details'].map(d => d)}
               {trcType !== undefined && (
                 <div style={{ display: 'flex', marginTop: '1rem' }}>
-                  <a style={{ marginRight: '1em' }} href="/development/major">
-                    <TypePuck
-                      typeObject={trcType}
-                    />
-                  </a>
                   <p>
                     <em>
                       This is a major development.  <a href="/development/major">Learn more</a> about the large-scale development process in Asheville.

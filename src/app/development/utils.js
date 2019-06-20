@@ -52,7 +52,7 @@ export const statusTranslation = [
   },
   {
     accelaSpeak: "Plan Check",
-    statusText: "City Staff is reviewing this plan for compliance with local, state, and/or federal standards.",
+    statusText: "City staff is reviewing this plan for compliance with local, state, and/or federal standards.",
   },
   {
     accelaSpeak: "Pre-Application Complete",
@@ -84,11 +84,11 @@ export const statusTranslation = [
   },
   {
     accelaSpeak: "TRC Review",
-    statusText: "City Staff is reviewing this plan for compliance with local, state, and/or federal standards.",
+    statusText: "City staff is reviewing this plan for compliance with local, state, and/or federal standards.",
   },
   {
     accelaSpeak: "Under Review",
-    statusText: "City Staff is reviewing this plan for compliance with local, state, and/or federal standards.",
+    statusText: "City staff is reviewing this plan for compliance with local, state, and/or federal standards.",
   },
   {
     accelaSpeak: "Withdrawn",

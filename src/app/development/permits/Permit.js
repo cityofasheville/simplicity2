@@ -5,8 +5,8 @@ import moment from 'moment';
 import { Query } from 'react-apollo';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import PermitsMap from './PermitsMap';
-import PermitDataSection from './PermitDataSection';
 import TypePuck from '../trc/TypePuck';
+import { permitFieldFormats } from './permitFieldFormats';
 import { trcProjectTypes, statusTranslation } from '../utils';
 
 const GET_PERMIT = gql`
@@ -94,6 +94,41 @@ const Permit = props => (
       const currentStatusItem = statusTranslation.find(item =>
         item.accelaSpeak === formattedPermit.status_current);
 
+      const byDetailArea = {};
+      const fieldsForDisplay = permitFieldFormats
+        // If there is no display label, bring it to the top
+        .sort(a => (!a.displayLabel ? -1 : 0))
+        .forEach((d) => {
+          const snakeCaseAccelaLabel = d.accelaLabel.toLowerCase().split(' ').join('_');
+          const val = formattedPermit[snakeCaseAccelaLabel];
+          if (!val) {
+            return;
+          }
+          const formattedDisplayVal = d.formatFunc ? d.formatFunc(val, formattedPermit) : val;
+          if (!formattedDisplayVal) {
+            // Format functions return null if it should not show
+            return;
+          }
+
+          if (!byDetailArea[d.displayGroup]) {
+            byDetailArea[d.displayGroup] = [];
+          }
+          if (!d.displayLabel) {
+            byDetailArea[d.displayGroup].push(
+              <div className="permit-form-group bool" key={d.accelaLabel}>
+                {formattedDisplayVal}
+              </div>
+            );
+          } else {
+            byDetailArea[d.displayGroup].push(
+              <div className="permit-form-group" key={d.accelaLabel}>
+                <div className="display-label">{d.displayLabel}</div>
+                <div className="formatted-val">{formattedDisplayVal}</div>
+              </div>
+            );
+          }
+        });
+
       return (
         <div className="container">
           <h1 className="title__text">{formattedPermit.application_name}</h1>
@@ -110,7 +145,7 @@ const Permit = props => (
               </div>
             )}
             <div className={`col-sm-12 col-md-${showMap ? 6 : 12} permit-details-card`}>
-              <PermitDataSection detailsSet="project details" formattedPermit={formattedPermit} />
+              {byDetailArea['project details'].map(d => d)}
               {trcType !== undefined && (
                 <div style={{ display: 'flex', marginTop: '1rem' }}>
                   <a style={{ marginRight: '1em' }} href="/development/major">
@@ -128,14 +163,18 @@ const Permit = props => (
             </div>
           </div>
           <div className="row">
-            <div className="col-sm-12 col-md-6 permit-details-card">
-              <h2>Zoning Details</h2>
-              <PermitDataSection detailsSet="zoning details" formattedPermit={formattedPermit} />
-            </div>
-            <div className="col-sm-12 col-md-6 permit-details-card">
-              <h2>Environmental Details</h2>
-              <PermitDataSection detailsSet="environment details" formattedPermit={formattedPermit} />
-            </div>
+            {byDetailArea['zoning details'] !== undefined &&
+              <div className="col-sm-12 col-md-6 permit-details-card">
+                <h2>Zoning Details</h2>
+                {byDetailArea['zoning details'].map(d => d)}
+              </div>
+            }
+            {byDetailArea['environment details'] !== undefined &&
+              <div className="col-sm-12 col-md-6 permit-details-card">
+                <h2>Environmental Details</h2>
+                {byDetailArea['environment details'].map(d => d)}
+              </div>
+            }
           </div>
         </div>
       );

@@ -13,6 +13,7 @@ const GET_PERMIT = gql`
   query getPermitsQuery($permit_numbers: [String]) {
     permits(permit_numbers: $permit_numbers) {
       permit_number
+      internal_record_id
       permit_group
       permit_type
       permit_subtype
@@ -128,6 +129,8 @@ const Permit = props => (
             );
           }
         });
+
+console.log(formattedPermit)
 
       return (
         <div className="container">

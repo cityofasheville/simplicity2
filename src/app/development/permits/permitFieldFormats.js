@@ -118,6 +118,17 @@ export const permitFieldFormats = [
     accelaLabel: 'Permit Number',
     displayGroup: 'project details',
     displayLabel: 'Application Number',
+    formatFunc: (d, permit) => {
+      const splitCap = permit.internal_record_id.split('-');
+      return (
+        <a
+          href={`https://services.ashevillenc.gov/CitizenAccess/Cap/CapDetail.aspx?Module=Planning&TabName=Planning&capID1=${splitCap[0]}&capID2=${splitCap[1]}&capID3=${splitCap[2]}&agencyCode=ASHEVILLE`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {d}
+        </a>
+    )},
   },
   {
     accelaLabel: 'Zoning District',

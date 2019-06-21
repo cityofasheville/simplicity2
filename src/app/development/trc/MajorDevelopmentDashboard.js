@@ -36,7 +36,7 @@ class MajorDevelopmentDashboard extends React.Component {
         linkId: 'notifications',
         linkName: 'Get Notifications',
         header: 'Sign up for Notifications',
-        body: <p>The City of Asheville is piloting a new notification system that allows people to sign up for non-emergency alerts based on city data.  You can go to notifications.ashevillenc.gov to sign up for alerts about Level I and larger projects.</p>,
+        body: <p>The City of Asheville will be piloting a new notification system that allows people to sign up for non-emergency alerts based on city data.  Stay tuned for the launch of this tool!</p>,
       },
       {
         linkId: 'data',
@@ -61,27 +61,27 @@ class MajorDevelopmentDashboard extends React.Component {
           </div>
         )
       },
-      // {
-      //   linkId: 'faq',
-      //   linkName: 'Frequently Asked Questions',
-      //   header: 'Frequently Asked Questions',
-      //   body: <Accordion
-      //     data={[
-      //       {
-      //         header: 'Why is the sky blue?',
-      //         body: 'Something something light refracting',
-      //       },
-      //       {
-      //         header: 'What day is it?',
-      //         body: new Date().toLocaleDateString('en-us'),
-      //       },
-      //       {
-      //         header: 'Why?',
-      //         body: '42',
-      //       },
-      //     ]}
-      //   />,
-      // },
+      {
+        linkId: 'faq',
+        linkName: 'Frequently Asked Questions',
+        header: 'Frequently Asked Questions',
+        body: <Accordion
+          data={[
+            {
+              header: 'Where is the Development Services Department?',
+              body: '161 South Charlotte Street, down the hill from City Hall.',
+            },
+            {
+              header: 'Where is City Hall?',
+              body: '70 Court Plaza, off of College Street.',
+            },
+            {
+              header: 'Who builds these projects?',
+              body: 'Small business owners, land owners, developers, and other private investors submit applications for permission to develop property in the city.  Once approved, they work with private contractors.',
+            },
+          ]}
+        />,
+      },
     ].map((d) => {
       const rObj = Object.assign({}, d);
       rObj.ref = React.createRef();

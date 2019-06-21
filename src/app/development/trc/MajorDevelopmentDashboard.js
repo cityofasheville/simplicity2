@@ -68,6 +68,10 @@ class MajorDevelopmentDashboard extends React.Component {
         body: <Accordion
           data={[
             {
+              header: 'How current is this data?',
+              body: 'Data in SimpliCity is updated nightly.',
+            },
+            {
               header: 'Where is the Development Services Department?',
               body: '161 South Charlotte Street, down the hill from City Hall.',
             },
@@ -79,6 +83,22 @@ class MajorDevelopmentDashboard extends React.Component {
               header: 'Who builds these projects?',
               body: 'Small business owners, land owners, developers, and other private investors submit applications for permission to develop property in the city.  Once approved, they work with private contractors.',
             },
+            {
+              header: 'Who should I talk to if I have questions about one of these projects?',
+              body: 'Give our Planner of the Day a call at 828-259-5450 or email them at pod@ashevillenc.gov.  They will direct you to the city planner who is reviewing the application.',
+            },
+            {
+              header: 'How can I tell if a project includes affordable housing?',
+              body: 'If the developer has indicated that they are planning to include affordable housing, it will be indicated on the project page with an icon.  Throughout the process, a developer could alter their plans, and this may not be reflected on the project page immediately.',
+            },
+            {
+              header: 'How can I join one of the commissions that reviews projects?',
+              body: <React.Fragment>Visit <a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/" target="_blank" rel="noopener noreferrer">the Boards and Commissions web page</a> to view current vacancies and learn about application steps.</React.Fragment>,
+            },
+            // {
+            //   header: 'How much control does the City have over the look and feel of a project?',
+            //   body: 'Some review levels or zoning districts allow the City to review architectural design and some do not.  For instance, projects downtown, in historic districts, or in the river design area are subject to certain architectural requirements.  Conditional zoning projects allow Council the authority and flexibility to mandate some design elements.  Most projects outside of these cases do not allow for much flexibility in regulating architectural design.',
+            // },
           ]}
         />,
       },

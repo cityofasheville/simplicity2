@@ -21,7 +21,7 @@ class MajorDevelopmentDashboard extends React.Component {
         linkName: 'Project Types',
         selected: true,
         header: 'Types of large-scale development',
-        body: <PermitTypeCards/>,
+        body: <React.Fragment><p>The types of large-scale development are defined by <a href="https://library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTVDEREPR_S7-5-9SIPLREDEPREXTHPAZOCEBUDILODODEREOVDICBDD" target="_blank" rel="noopener noreferrer">the City of Asheville's Unified Development Ordinance.</a>  Projects located downtown are <a href="https://library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTVDEREPR_S7-5-9.1DEAPPRPAZOCEBUDILODODEREOVDICBDD" target="_blank" rel="noopener noreferrer">defined slightly differently in the ordinance.</a></p><PermitTypeCards/></React.Fragment>,
       },
       {
         linkId: 'process',
@@ -119,18 +119,18 @@ class MajorDevelopmentDashboard extends React.Component {
         links={this.sections}
       />
       <main>
-        <h1>Large Scale Development in Asheville</h1>
+        <h1>Large-Scale Development in Asheville</h1>
         <h1><small>Get notifications, attend meetings, and have your voice heard.</small></h1>
         <p>There is a lot of private land development happening in Asheville.  This tool can help you:</p>
         <ul>
           <li>
-            Understand the process
+            Understand the development process from the first permit application to breaking ground
           </li>
           <li>
-            Be notified when someone applies for a permit to build something near you
+            Understand your role in the process and how your voice can be heard
           </li>
           <li>
-            Find public meetings so that your voice can be heard
+            Coming soon: be notified when someone applies for a permit to build something near you
           </li>
         </ul>
         <br/>

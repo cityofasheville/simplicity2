@@ -168,7 +168,6 @@ export const trcProjectTypes = {};
         <li>A new pharmacy</li>
         <li>A 15-unit apartment building</li>
       </ul>),
-      ordinanceLink: <a href="#" target="_blank" rel="noopener noreferrer">Put link here</a>,
     },
     color: '#FF3A3A',
   };
@@ -190,7 +189,6 @@ export const trcProjectTypes = {};
         <li>???</li>
         <li>???</li>
       </ul>),
-      ordinanceLink: <a href="#" target="_blank" rel="noopener noreferrer">Put link here</a>,
     },
     color: '#749B5F',
   };
@@ -213,7 +211,6 @@ export const trcProjectTypes = {};
         <li>A big box specialty retailer</li>
         <li>A medium-sized apartment complex</li>
       </ul>),
-      ordinanceLink: <a href="#" target="_blank" rel="noopener noreferrer">Put link here</a>,
     },
     color: '#2d93ad',
   };
@@ -238,7 +235,6 @@ export const trcProjectTypes = {};
         <li>A large office building</li>
         <li>A large department store</li>
       </ul>),
-      ordinanceLink: <a href="#" target="_blank" rel="noopener noreferrer">Put link here</a>,
     },
     color: '#9B6681',
   };
@@ -259,7 +255,6 @@ export const trcProjectTypes = {};
         <li>Government buildings</li>
         <li>Group homes</li>
       </ul>),
-      ordinanceLink: <a href="#" target="_blank" rel="noopener noreferrer">Put link here</a>,
     },
     color: '#073d49',
   };

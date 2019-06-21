@@ -161,14 +161,13 @@ export const trcProjectTypes = {};
         <li>Not located downtown and contains 3 to 19 residential units or 500 to 34,999 square feet of commercial space</li>
         <li>Located downtown and is 500 to 19,999 square feet</li>
       </ul>),
-      recentAppsLink: <a href="/development/major?permit_subtype=level%20I%20#data">Recently submitted Level I projects</a>,
       participationOpp: 'There are no public participation opportunities for Level I projects.',
       examples: (<ul>
         <li>A new restaurant</li>
         <li>A new pharmacy</li>
         <li>A 15-unit apartment building</li>
       </ul>),
-      ordinanceLink: <a href="#" target="_blank" rel="noopener noreferrer">Put link here</a>,
+      recentAppsLink: <a href="/development/major?permit_subtype=level%20I%20#data">Recently submitted Level I projects</a>,
     },
     color: '#FF3A3A',
   };
@@ -184,13 +183,11 @@ export const trcProjectTypes = {};
         <li>Creation or extension of a road</li>
         <li>Usually creates new residential lots</li>
       </ul>),
-      recentAppsLink: <a href="/development/major?permit_subtype=Major%20Subdivision#data">Recently submitted Major Subdivision projects</a>,
-      participationOpp: '???',
+      participationOpp: (<ul><li>Neighborhood meeting</li></ul>),
       examples: (<ul>
-        <li>???</li>
-        <li>???</li>
+        <li>A new neighborhood with a new road created</li>
       </ul>),
-      ordinanceLink: <a href="#" target="_blank" rel="noopener noreferrer">Put link here</a>,
+      recentAppsLink: <a href="/development/major?permit_subtype=Major%20Subdivision#data">Recently submitted Major Subdivision projects</a>,
     },
     color: '#749B5F',
   };
@@ -204,16 +201,22 @@ export const trcProjectTypes = {};
     descriptors: {
       whyLevel: (<ul>
         <li>Not located downtown and contains 20 to 49 residential units or is 35,000 to 99,999 square feet</li>
-        <li>Located downtown and contains 20 to 49 residential units</li>
+        <li>Located downtown and is 20,000 to 99,999 square feet</li>
       </ul>),
-      recentAppsLink: <a href="/development/major?permit_subtype=level%20II%20#data">Recently submitted Level II projects</a>,
-      participationOpp: '???',
+      participationOpp: (<ul>
+        <li>Downtown:
+          <ul><li>Neighborhood meeting</li><li>Design review</li><li>Planning and Zoning Commission</li></ul>
+        </li>
+        <li>Not downtown:
+          <ul><li>Neighborhood meeting</li><li>Design review (if on the river)</li></ul>
+        </li>
+        </ul>),
       examples: (<ul>
         <li>A new grocery store</li>
         <li>A big box specialty retailer</li>
         <li>A medium-sized apartment complex</li>
       </ul>),
-      ordinanceLink: <a href="#" target="_blank" rel="noopener noreferrer">Put link here</a>,
+      recentAppsLink: <a href="/development/major?permit_subtype=level%20II%20#data">Recently submitted Level II projects</a>,
     },
     color: '#2d93ad',
   };
@@ -228,17 +231,16 @@ export const trcProjectTypes = {};
       whyLevel: (<ul>
         <li>Requires a change in zoning</li>
         <li>50 or more residential units</li>
-        <li>99,999 square feet or more</li>
+        <li>99,999 square feet or larger</li>
         <li>Includes all projects previously designated as Level III</li>
       </ul>),
-      recentAppsLink: <a href="/development/major?permit_subtype=Conditional%20Zoning#data">Recently submitted Conditional Zoning projects</a>,
-      participationOpp: '???',
+      participationOpp: (<ul><li>Neighborhood meeting</li><li>Design review (if downtown or on the river)</li><li>Planning and Zoning Commission</li><li>City Council hearing</li></ul>),
       examples: (<ul>
         <li>A large apartment complex</li>
         <li>A large office building</li>
         <li>A large department store</li>
       </ul>),
-      ordinanceLink: <a href="#" target="_blank" rel="noopener noreferrer">Put link here</a>,
+      recentAppsLink: <a href="/development/major?permit_subtype=Conditional%20Zoning#data">Recently submitted Conditional Zoning projects</a>,
     },
     color: '#9B6681',
   };
@@ -251,15 +253,14 @@ export const trcProjectTypes = {};
     description: <div>Anything that is listed as a conditional use in <a href="https:/library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTXVIUSRISUSPRECOUS_S7-16-2COUS" target="_blank" rel="noopener noreferrer">Section 7-16-2 of the Unified Development Ordinance.</a></div>,
     descriptors: {
       whyLevel: "A highly specialized permit process for land uses with potential public impacts that require individual consideration of their location, design, configuration and operation.  These uses are defined by the code",
-      recentAppsLink: <a href="/development/major?permit_subtype=level%20II%20#data">Recently submitted Level II projects</a>,
-      participationOpp: '???',
+      participationOpp: (<ul><li>Neighborhood meeting</li><li>Design review (if downtown or on the river)</li><li>Planning and Zoning Commission</li><li>City Council hearing</li></ul>),
       examples: (<ul>
         <li>Cell phone towers</li>
         <li>Jails</li>
         <li>Government buildings</li>
         <li>Group homes</li>
       </ul>),
-      ordinanceLink: <a href="#" target="_blank" rel="noopener noreferrer">Put link here</a>,
+      recentAppsLink: <a href="/development/major?permit_subtype=level%20II%20#data">Recently submitted Conditional Use projects</a>,
     },
     color: '#073d49',
   };

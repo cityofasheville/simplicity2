@@ -56,24 +56,24 @@ export const decisionIconHeader = (
 
 export const dagreNodes = [
   {
-    id: 'Pre-Application',
+    id: 'Before the application is submitted',
     subNodes: [
       {
-        id: 'Pre-Application Meeting',
+        id: 'Pre-application meeting',
         steps: {
-          what: 'Developers and city staff meet to review plans, discuss process and schedule, identify applicable regulations.',
+          what: 'Developers and city staff meet to look at initial sketches, discuss process and schedule, and identify applicable regulations.',
           who: ['dev', 'staff'],
           when: 'Required before application submission',
-          where: '161 South Charlotte Street',
+          where: 'Development Services Department',
         },
       },
       {
-        id: 'Neighborhood Meeting',
+        id: 'Neighborhood meeting',
         steps: {
           what: 'Developers must notify all property owners within 200 feet of the proposed development site.  Neighbors meet with developers to collaborate on neighborhood needs and opportunities.',
           who: ['dev', 'neighbors'],
-          when: '10 days before application submission',
-          where: '???',
+          when: 'Ten days before application submission',
+          where: 'Somewhere near the proposed development site, specified in the notice',
         },
       },
     ],
@@ -88,9 +88,9 @@ export const dagreNodes = [
     id: 'Permit Application',
     steps: {
       what: 'Submission of required plans and documents and payment of application fees.',
-      when: 'After the preliminary steps are completed.  Applications that do not indicate that a neighborhood meeting has been held are rejected.',
+      when: 'After all required preliminary steps are completed.',
       who: ['dev'],
-      where: 'The City of Asheville Development Services Department',
+      where: 'Development Services Department',
     },
     typeIds: [
       'Level I',
@@ -104,9 +104,9 @@ export const dagreNodes = [
     id: 'Staff Review',
     steps: {
       what: 'A staff member reviews plans for compliance with applicable ordinances and documents and creates a report.',
-      when: '',
+      when: 'Within ten days of application submittal',
       who: ['staff'],
-      where: '',
+      where: 'Development Services Department',
     },
     typeIds: [
       'Level I',
@@ -122,10 +122,10 @@ export const dagreNodes = [
   {
     id: 'Technical Review Committee',
     steps: {
-      what: 'An eight-member body that ensures that the proposed project complies with standards and requirements.  The committee consists of six staff, a representative of the Tree Commission and a member representing the Buncombe County Metropolitan Sewerage District (MSD).',
-      when: '',
+      what: 'An eight-member body that ensures that the proposed project complies with standards and requirements.',
+      when: 'First and third Monday of each month',
       who: ['dev', 'staff'],
-      where: '',
+      where: 'Development Services Department',
     },
     typeIds: [
       'Level II',
@@ -144,11 +144,10 @@ export const dagreNodes = [
   },
   {
     id: 'Design Review',
-    description: <div>Projects located Downtown or in the River District must be reviewed for architectural design elements by a special design review sub-committee of either the <a href="https://library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTIIIDEKIADADBO_S7-3-8ASDOCO" target="_blank" rel="noopener noreferrer">Asheville Downtown Commission</a> or the <a href="https://library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTIIIDEKIADADBO_S7-3-10ASARRIRECO" target="_blank" rel="noopener noreferrer">Asheville Area Riverfront Redevelopment Commission</a> prior to approval.</div>,
     steps: {
-      what: '',
-      when: '',
-      where: '',
+      what: <div>Projects located Downtown or in the River District must be reviewed for architectural design elements by a special design review sub-committee of either the <a href="https://library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTIIIDEKIADADBO_S7-3-8ASDOCO" target="_blank" rel="noopener noreferrer">Asheville Downtown Commission</a> or the <a href="https://library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTIIIDEKIADADBO_S7-3-10ASARRIRECO" target="_blank" rel="noopener noreferrer">Asheville Area Riverfront Redevelopment Commission</a> prior to approval.</div>,
+      when: (<ul><li>Downtown Commission: second Friday of each month</li><li>Riverfront Commission: second Thursday of each month</li></ul>),
+      where: (<ul><li>Downtown Commission: City Hall</li><li>Riverfront Commission: Explore Asheville offices</li></ul>),
       who: ['dev', 'staff', 'neighbors'],
     },
     typeIds: [
@@ -158,10 +157,12 @@ export const dagreNodes = [
   {
     id: 'Planning and Zoning Commission',
     steps: {
-      what: 'Conditional Zoning, Level III, Conditional Use Permits and Level II projects within the Downtown area are reviewed by the Planning & Zoning Commission.  For  Conditional Zoning, Use and Level III projects, the Planning & Zoning Commission holds a public hearing and makes a recommendation for action to City Council.  For downtown Level II projects, the Planning & Zoning Commission verifies technical compliance with the requirements of applicable ordinances and documents and takes final action.',
-      when: '',
-      who: '',
-      where: '',
+      what: 'For  Conditional Zoning, Use and Level III projects, the Planning & Zoning Commission holds a public hearing and makes a recommendation for action to City Council.  For downtown Level II projects, the Planning & Zoning Commission verifies technical compliance with the requirements of applicable ordinances and documents and takes final action.',
+      when: (<React.Fragment>Per <a href="#">published schedule</a></React.Fragment>),
+// TODO: ADD LINK
+      who: ['dev', 'staff', 'neighbors'],
+// TODO: ADD ICON ETC FOR CITY OFFICIALS
+      where: 'City Hall',
     },
     typeIds: [
       'Level II',
@@ -179,13 +180,13 @@ export const dagreNodes = [
   },
   {
     id: 'City Council',
-    description: 'Conditional Zoning, Level III, Conditional Use Permits are reviewed during a public hearing before City Council.  These projects arrive at the City Council meeting with a recommendation for action that has been sent by the Planning & Zoning Commission.',
     steps: {
-      what: '',
-      when: '',
-      where: '',
+      what: 'Applications are reviewed during a public hearing before City Council.  These projects arrive at the City Council meeting with a recommendation for action that has been sent by the Planning and Zoning Commission.',
+      when: 'The second and fourth Tuesday of each month',
       who: ['dev', 'staff', 'neighbors'],
+      where: 'City Hall',
     },
+// TODO: ADD ICON/WHO FOR CITY OFFICIALS
     typeIds: [
       'Conditional Zoning',
       'Conditional Use Permit',
@@ -203,7 +204,7 @@ export const dagreNodes = [
 
 export const dagreLinks = [
   {
-    source: 'Pre-Application',
+    source: 'Before the application is submitted',
     target: 'Permit Application',
     parallelEdges: [
       { id: 'Major Subdivision' },

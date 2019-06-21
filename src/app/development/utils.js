@@ -184,10 +184,9 @@ export const trcProjectTypes = {};
         <li>Usually creates new residential lots</li>
       </ul>),
       recentAppsLink: <a href="/development/major?permit_subtype=Major%20Subdivision#data">Recently submitted Major Subdivision projects</a>,
-      participationOpp: '???',
+      participationOpp: (<ul><li>Neighborhood meeting</li></ul>),
       examples: (<ul>
-        <li>???</li>
-        <li>???</li>
+        <li>A new neighborhood with a new road created</li>
       </ul>),
     },
     color: '#749B5F',
@@ -202,10 +201,17 @@ export const trcProjectTypes = {};
     descriptors: {
       whyLevel: (<ul>
         <li>Not located downtown and contains 20 to 49 residential units or is 35,000 to 99,999 square feet</li>
-        <li>Located downtown and contains 20 to 49 residential units</li>
+        <li>Located downtown and is 20,000 to 99,999 square feet</li>
       </ul>),
       recentAppsLink: <a href="/development/major?permit_subtype=level%20II%20#data">Recently submitted Level II projects</a>,
-      participationOpp: '???',
+      participationOpp: (<ul>
+        <li>Downtown:
+          <ul><li>Neighborhood meeting</li><li>Design review</li><li>Planning and Zoning Commission</li></ul>
+        </li>
+        <li>Not downtown:
+          <ul><li>Neighborhood meeting</li></ul>
+        </li>
+        </ul>),
       examples: (<ul>
         <li>A new grocery store</li>
         <li>A big box specialty retailer</li>

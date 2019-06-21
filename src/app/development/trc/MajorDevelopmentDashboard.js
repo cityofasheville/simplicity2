@@ -35,13 +35,13 @@ class MajorDevelopmentDashboard extends React.Component {
       {
         linkId: 'notifications',
         linkName: 'Get Notifications',
-        header: 'Sign up for Notifications',
+        header: 'Sign up for notifications',
         body: <p>The City of Asheville will be piloting a new notification system that allows people to sign up for non-emergency alerts based on city data.  Stay tuned for the launch of this tool!</p>,
       },
       {
         linkId: 'data',
         linkName: 'Project Details',
-        header: 'Development Details',
+        header: 'Development details',
         body: (
           <div>
             <p>The map and table below contain proposed, large-scale, private development projects for which a permit application has been submitted.  You can also see a <a href="/permits">table of all permit applications</a> or <a href="/">search an address</a> to find nearby development.</p>
@@ -51,8 +51,8 @@ class MajorDevelopmentDashboard extends React.Component {
       },
       {
         linkId: 'calendar',
-        linkName: 'Public Meetings',
-        header: 'Upcoming Public Meetings',
+        linkName: 'Neighborhood Meetings',
+        header: 'Upcoming neighborhood meetings',
         body: (
           <div>
             <p>Developers planning to submit applications for development that must go through the Technical Review Committee must hold a public meeting before submitting the application.</p>
@@ -64,7 +64,7 @@ class MajorDevelopmentDashboard extends React.Component {
       {
         linkId: 'faq',
         linkName: 'Frequently Asked Questions',
-        header: 'Frequently Asked Questions',
+        header: 'Frequently asked questions',
         body: <Accordion
           data={[
             {

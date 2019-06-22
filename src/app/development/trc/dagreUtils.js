@@ -88,8 +88,8 @@ export const dagreNodes = [
     id: 'Permit Application',
     steps: {
       what: 'Submission of required plans and documents and payment of application fees.',
-      when: 'After all required preliminary steps are completed.',
       who: ['dev'],
+      when: 'After all required preliminary steps are completed.',
       where: 'Development Services Department',
     },
     typeIds: [
@@ -104,8 +104,8 @@ export const dagreNodes = [
     id: 'Staff Review',
     steps: {
       what: 'A staff member reviews plans for compliance with applicable ordinances and documents and creates a report.',
-      when: 'Within ten days of application submittal',
       who: ['staff'],
+      when: 'Within ten days of application submittal',
       where: 'Development Services Department',
     },
     typeIds: [
@@ -123,8 +123,8 @@ export const dagreNodes = [
     id: 'Technical Review Committee',
     steps: {
       what: 'An eight-member body that ensures that the proposed project complies with standards and requirements.',
-      when: 'First and third Monday of each month',
       who: ['dev', 'staff'],
+      when: 'First and third Monday of each month',
       where: 'Development Services Department',
     },
     typeIds: [
@@ -146,9 +146,9 @@ export const dagreNodes = [
     id: 'Design Review',
     steps: {
       what: <div>Projects located Downtown or in the River District must be reviewed for architectural design elements by a special design review sub-committee of either the <a href="https://library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTIIIDEKIADADBO_S7-3-8ASDOCO" target="_blank" rel="noopener noreferrer">Asheville Downtown Commission</a> or the <a href="https://library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTIIIDEKIADADBO_S7-3-10ASARRIRECO" target="_blank" rel="noopener noreferrer">Asheville Area Riverfront Redevelopment Commission</a> prior to approval.</div>,
+      who: ['dev', 'staff', 'neighbors'],
       when: (<ul><li>Downtown Commission: second Friday of each month</li><li>Riverfront Commission: second Thursday of each month</li></ul>),
       where: (<ul><li>Downtown Commission: City Hall</li><li>Riverfront Commission: Explore Asheville offices</li></ul>),
-      who: ['dev', 'staff', 'neighbors'],
     },
     typeIds: [
       'Level II',
@@ -182,8 +182,8 @@ export const dagreNodes = [
     id: 'City Council',
     steps: {
       what: 'Applications are reviewed during a public hearing before City Council.  These projects arrive at the City Council meeting with a recommendation for action that has been sent by the Planning and Zoning Commission.',
-      when: 'The second and fourth Tuesday of each month',
       who: ['dev', 'staff', 'neighbors'],
+      when: 'The second and fourth Tuesday of each month',
       where: 'City Hall',
     },
 // TODO: ADD ICON/WHO FOR CITY OFFICIALS
@@ -436,17 +436,16 @@ export const displaySubNode = (node, lastNode = false) => (
 
 export const nodeSteps = (steps, nodeId) => (
   <ul style={{ listStyleType: 'none', padding: '0' }}>{Object.keys(steps).map(stepKey => (
-    <li key={`${stepKey}-${nodeId}`} style={{ display: 'flex', padding: '0.15rem 0' }}>
-      <span
+    <li key={`${stepKey}-${nodeId}`} style={{ padding: '0.5rem 0' }}>
+      <div
         style={{
           textTransform: 'capitalize',
-          padding: '0 2rem 0 0',
           fontWeight: 400,
-          minWidth: '5rem',
+          width: '100%',
         }}
       >
-        {stepKey}
-      </span>
+        {stepKey}?
+      </div>
       {stepKey === 'who' && steps.who &&
         <div>
           {steps.who.map(actor => (
@@ -461,7 +460,7 @@ export const nodeSteps = (steps, nodeId) => (
           ))}
         </div>
       }
-      {stepKey !== 'who' && <span>{steps[stepKey]}</span>}
+      {stepKey !== 'who' && <div>{steps[stepKey]}</div>}
     </li>
   ))}
   </ul>

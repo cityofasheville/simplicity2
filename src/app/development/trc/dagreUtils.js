@@ -85,7 +85,7 @@ export const dagreNodes = [
     ],
   },
   {
-    id: 'Permit Application',
+    id: 'Permit application',
     steps: {
       what: 'Submission of required plans and documents and payment of application fees.',
       who: ['dev'],
@@ -101,7 +101,7 @@ export const dagreNodes = [
     ],
   },
   {
-    id: 'Staff Review',
+    id: 'Staff review',
     steps: {
       what: 'A staff member reviews plans for compliance with applicable ordinances and documents and creates a report.',
       who: ['staff'],
@@ -113,7 +113,7 @@ export const dagreNodes = [
     ],
   },
   {
-    id: 'Level I Decision',
+    id: 'Level I decision',
     description: <div>{decisionIconHeader}</div>,
     typeIds: [
       'Level I',
@@ -135,7 +135,7 @@ export const dagreNodes = [
     ],
   },
   {
-    id: 'Major Subdivision and Level II Decision (Not Downtown)',
+    id: 'Major Subdivision and Level II decision (not downtown)',
     description: <div>{decisionIconHeader}</div>,
     typeIds: [
       'Level II',
@@ -143,7 +143,7 @@ export const dagreNodes = [
     ],
   },
   {
-    id: 'Design Review',
+    id: 'Design review',
     steps: {
       what: <div>Projects located Downtown or in the River District must be reviewed for architectural design elements by a special design review sub-committee of either the <a href="https://library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTIIIDEKIADADBO_S7-3-8ASDOCO" target="_blank" rel="noopener noreferrer">Asheville Downtown Commission</a> or the <a href="https://library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTIIIDEKIADADBO_S7-3-10ASARRIRECO" target="_blank" rel="noopener noreferrer">Asheville Area Riverfront Redevelopment Commission</a> prior to approval.</div>,
       who: ['dev', 'staff', 'neighbors'],
@@ -171,7 +171,7 @@ export const dagreNodes = [
     ],
   },
   {
-    id: 'Level II and Downtown Major Subdivision Decision',
+    id: 'Level II and downtown Major Subdivision decision',
     description: <div>{decisionIconHeader}</div>,
     typeIds: [
       'Level II',
@@ -193,7 +193,7 @@ export const dagreNodes = [
     ],
   },
   {
-    id: 'City Council Decision',
+    id: 'City Council decision',
     description: <div>{decisionIconHeader}</div>,
     typeIds: [
       'Conditional Zoning',
@@ -205,7 +205,7 @@ export const dagreNodes = [
 export const dagreLinks = [
   {
     source: 'Before the application is submitted',
-    target: 'Permit Application',
+    target: 'Permit application',
     parallelEdges: [
       { id: 'Major Subdivision' },
       { id: 'Level II' },
@@ -214,14 +214,14 @@ export const dagreLinks = [
     ],
   },
   {
-    source: 'Permit Application',
-    target: 'Staff Review',
+    source: 'Permit application',
+    target: 'Staff review',
     parallelEdges: [
       { id: 'Level I' },
     ],
   },
   {
-    source: 'Permit Application',
+    source: 'Permit application',
     target: 'Technical Review Committee',
     parallelEdges: [
       { id: 'Major Subdivision' },
@@ -231,20 +231,20 @@ export const dagreLinks = [
     ],
   },
   {
-    source: 'Staff Review',
-    target: 'Level I Decision',
+    source: 'Staff review',
+    target: 'Level I decision',
     id: 'Level I',
   },
   {
     source: 'Technical Review Committee',
-    target: 'Major Subdivision and Level II Decision (Not Downtown)',
+    target: 'Major Subdivision and Level II decision (not downtown)',
     parallelEdges: [
       { id: 'Major Subdivision' },
       { id: 'Level II' },
     ],
   },
   {
-    source: 'Design Review',
+    source: 'Design review',
     target: 'Planning and Zoning Commission',
     parallelEdges: [
       { id: 'Level II' },
@@ -252,7 +252,7 @@ export const dagreLinks = [
   },
   {
     source: 'Technical Review Committee',
-    target: 'Design Review',
+    target: 'Design review',
     parallelEdges: [
       { id: 'Level II' },
     ],
@@ -267,7 +267,7 @@ export const dagreLinks = [
   },
   {
     source: 'Planning and Zoning Commission',
-    target: 'Level II and Downtown Major Subdivision Decision',
+    target: 'Level II and downtown Major Subdivision decision',
     parallelEdges: [
       { id: 'Level II' },
     ],
@@ -282,7 +282,7 @@ export const dagreLinks = [
   },
   {
     source: 'City Council',
-    target: 'City Council Decision',
+    target: 'City Council decision',
     parallelEdges: [
       { id: 'Conditional Zoning' },
       { id: 'Conditional Use Permit' },

@@ -124,14 +124,6 @@ DevelopmentDashIndex.defaultProps = {
         pathname: '/development/major'
       }
     },
-    {
-      name: 'Yearly Volume Overlay',
-      linkTo: { pathname: '/development/volume' },
-    },
-    {
-      name: 'TRC Timeline',
-      linkTo: { pathname: '/development/trc' },
-    },
   ],
 };
 

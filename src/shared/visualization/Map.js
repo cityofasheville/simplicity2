@@ -96,6 +96,8 @@ const Map = (props) => {
 
   return (
     <div style={{ height: props.height, width: props.width }}>
+      <link type="text/css" rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
+      <link rel="stylesheet" href="https://unpkg.com/react-leaflet-markercluster/dist/styles.min.css" />
       <LeafletMap
         className="markercluster-map"
         center={shouldZoomToNonCenter ? zoomTo : props.center}

@@ -27,10 +27,9 @@ import DevelopmentSummary from './app/development/DevelopmentSummary';
 import DevelopmentDetail from './app/development/DevelopmentDetail';
 import DevelopmentSLADashboard from './app/development/sla_dashboard/SLADashboard';
 import DevelopmentDashIndex from './app/development/DevelopmentDashIndex';
-import TrcTimeline from './app/development/trc/TrcTimeline';
+// import TrcTimeline from './app/development/trc/TrcTimeline';
 import MajorDevelopmentDashboard from './app/development/trc/MajorDevelopmentDashboard';
-import SurveyResults from './app/development/trc/SurveyResults';
-import VolumeDashboard from './app/development/static_volume/VolumeDashboard';
+// import SurveyResults from './app/development/trc/SurveyResults';
 import PermitVolume from './app/development/volume/PermitVolume';
 import PermitsIndex from './app/development/permits/PermitsIndex';
 import Permit from './app/development/permits/Permit';
@@ -144,13 +143,9 @@ const Routes = () => (
           <Route path="dashboards" component={DevelopmentDashIndex}></Route>
           <Route path="data" component={DevelopmentDashIndex}></Route>
           <Route path="sla-dashboard" component={DevelopmentSLADashboard}></Route>
-          <Route path="trc" component={TrcTimeline}></Route>
           <Route path="major" component={MajorDevelopmentDashboard}></Route>
-          <Route path="trcsurveyresults" component={SurveyResults}></Route>
-          <Route path="volume" component={VolumeDashboard}></Route>
           <Route path="granular_volume" component={PermitVolume}></Route>
           <Route path="status_volume" component={PermitVolume}></Route>
-          {/*<Route path="tasks" component={WorkflowContainer}></Route>*/}
         </Route>
         <Route path="homelessness">
           <IndexRoute component={HomelessnessSummary} />

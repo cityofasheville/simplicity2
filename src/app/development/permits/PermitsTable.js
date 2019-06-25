@@ -2,12 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import AccessibleReactTable from 'accessible-react-table';
 import Measure from 'react-measure';
-import expandingRows from '../../../shared/react_table_hoc/ExpandingRows';
 import createFilterRenderer from '../../../shared/FilterRenderer';
 import { defaultTableHeaders } from '../utils';
-
-const ExpandableAccessibleReactTable = expandingRows(AccessibleReactTable);
-
 
 function extractTextFromReactComponents(component) {
   if (typeof component === 'string') {
@@ -19,7 +15,6 @@ function extractTextFromReactComponents(component) {
       .map(child => extractTextFromReactComponents(child)).join(' ');
   }
 }
-
 
 class PermitsTable extends React.Component {
   constructor(props) {
@@ -71,7 +66,7 @@ class PermitsTable extends React.Component {
             client
           >
             {({ measureRef }) => (
-              <ExpandableAccessibleReactTable
+              <AccessibleReactTable
                 className="-striped"
                 tableId="projects"
                 ariaLabel="Table of development permit applications"
@@ -125,7 +120,7 @@ class PermitsTable extends React.Component {
                     {makeTable()}
                   </div>
                 )}
-              </ExpandableAccessibleReactTable>
+              </AccessibleReactTable>
             )}
           </Measure>
         </div>

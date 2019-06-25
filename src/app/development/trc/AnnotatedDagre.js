@@ -65,7 +65,7 @@ class AnnotatedDagre extends React.Component {
     const arrowWidth = edgeStroke * 1.5;
     const edgePadding = arrowWidth * 4;
     const nodeHeight = (height - (nodePadding * (this.numLevels + 4))) / this.numLevels;
-    const puckSize = visWidth < 500 ? 12 : 20;
+    const puckSize = visWidth < 500 ? 14 : 25;
     const yOffset = nodeHeight / 2;
 
     const graph = getDagreGraph(dagreNodes, dagreLinks, nodeHeight);

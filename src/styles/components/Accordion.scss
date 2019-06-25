@@ -20,6 +20,10 @@
   border: 1px solid #f2f2f2;
 }
 
+.panel-title {
+  padding: 0 1rem 0 0;
+}
+
 .panel-title-after {
   position: relative;
   height: 0;
@@ -43,9 +47,26 @@
   top: 0.5em;
   position: absolute;
   pointer-events: none;
-  margin-right: -1rem;
+  margin-right: -2rem;
 }
 
 .panel-title-after.open:after {
   transform: rotate(180deg);
+}
+
+// For nested accordions
+.accordion-root .accordion-root {
+  margin: 0 0.5rem;
+
+  .accordion-item-set {
+    border-bottom: 1px solid #f2f2f2;
+  }
+
+  .panel-heading {
+    background-color: transparent;
+  }
+
+  .panel-collapse {
+    border: none;
+  }
 }

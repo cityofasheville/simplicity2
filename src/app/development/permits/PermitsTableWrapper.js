@@ -96,7 +96,7 @@ const PermitsTableWrapper = props => (
             />
           </div>
         </div>
-        <div id="permitsDataTable">
+        <div id="permitsDataTable" style={{ overflowX: 'scroll' }}>
           <PermitsTable data={filteredData} {...props} />
         </div>
       </div>);

@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import TypePuck from './trc/TypePuck';
 
 export const statusTranslation = [
   {
@@ -109,18 +110,29 @@ export const defaultTableHeaders = [
   {
     field: 'permit_subtype',
     display: 'Type',
-    show: colWidth => colWidth > 70,
-    // formatFunc: d => d.permit_subtype,
+    formatFunc: d => {
+      const trcType = getTRCTypeFromPermit(d);
+      if (!trcType) {
+        return d.permit_subtype;
+      }
+      return (<div>
+        <span style={{ marginRight: '1em' }}>{trcType.id}</span>
+        <div style={{ verticalAlign: 'middle', display: 'inline-block', float: 'right' }}>
+          <TypePuck
+            typeObject={trcType}
+            size={30}
+          />
+        </div>
+      </div>);
+    },
   },
   {
     field: 'status_current',
     display: 'Status',
-    show: colWidth => colWidth > 90,
   },
   {
     field: 'application_name',
     display: 'Project',
-    show: colWidth => colWidth > 90,
   },
   {
     field: 'permit_number',
@@ -130,11 +142,10 @@ export const defaultTableHeaders = [
 ];
 
 export const descriptorTitles = {
-  whyLevel: 'What makes this project fit in this category?',
-  recentAppsLink: 'See recently submitted projects of this type',
+  whyLevel: 'What makes a project fit in this category?',
+  recentAppsLink: '',
   participationOpp: 'Opportunities for public participation',
-  examples: 'Examples of this type of project',
-  ordinanceLink: 'Link to the ordinance that defines this type of development',
+  examples: 'Examples',
 };
 
 // Assign colors to project types
@@ -155,7 +166,6 @@ export const trcProjectTypes = {};
     permit_type: 'Development',
     permit_subtype: 'Level I',
     short: 'I',
-    description: 'Projects smaller than 35,000 square feet or with fewer than 20 residential units that trigger zoning compliance requirements.',
     descriptors: {
       whyLevel: (<ul>
         <li>Not located downtown and contains 3 to 19 residential units or 500 to 34,999 square feet of commercial space</li>
@@ -177,7 +187,6 @@ export const trcProjectTypes = {};
     permit_type: 'Subdivision',
     permit_subtype: 'Major',
     short: 'MS',
-    description: 'Any project that requires the extension or creation of a new public or private street.  Typically these projects create new residential lots.',
     descriptors: {
       whyLevel: (<ul>
         <li>Creation or extension of a road</li>
@@ -197,7 +206,6 @@ export const trcProjectTypes = {};
     permit_type: 'Development',
     permit_subtype: 'Level II',
     short: 'II',
-    description: 'In most zoning districts, commercial projects between 35,000 and 99,9999 square feet, residential projects between 20 and 49 dwelling units and industrial projects with a floor area greater than 100,000 square feet.  Different restrictions apply in the River Zoning District or Downtown.',
     descriptors: {
       whyLevel: (<ul>
         <li>Not located downtown and contains 20 to 49 residential units or is 35,000 to 99,999 square feet</li>
@@ -250,9 +258,8 @@ export const trcProjectTypes = {};
     permit_type: 'Development',
     permit_subtype: 'Conditional Use',
     short: 'CUP',
-    description: <div>Anything that is listed as a conditional use in <a href="https:/library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTXVIUSRISUSPRECOUS_S7-16-2COUS" target="_blank" rel="noopener noreferrer">Section 7-16-2 of the Unified Development Ordinance.</a></div>,
     descriptors: {
-      whyLevel: "A highly specialized permit process for land uses with potential public impacts that require individual consideration of their location, design, configuration and operation.  These uses are defined by the code",
+      whyLevel: <React.Fragment>This is highly specialized permit process for land uses with potential public impacts that require individual consideration of their location, design, configuration and operation.  These uses are defined by <a href="https:/library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTXVIUSRISUSPRECOUS_S7-16-2COUS" target="_blank" rel="noopener noreferrer">Section 7-16-2 of the Unified Development Ordinance</a>.</React.Fragment>,
       participationOpp: (<ul><li>Neighborhood meeting</li><li>Design review (if downtown or on the river)</li><li>Planning and Zoning Commission</li><li>City Council hearing</li></ul>),
       examples: (<ul>
         <li>Cell phone towers</li>
@@ -264,4 +271,13 @@ export const trcProjectTypes = {};
     },
     color: '#073d49',
   };
+}
+
+export const getTRCTypeFromPermit = (permit) => {
+  if (permit.permit_group === 'Planning') {
+    return Object.values(trcProjectTypes).find(type =>
+      type.permit_type === permit.permit_type &&
+      type.permit_subtype === permit.permit_subtype);
+  }
+  return null;
 }

@@ -46,7 +46,7 @@ class AccordionPanel extends React.Component {
           aria-labelledby={panelHeadingId}
         >
           <div className="accordion-panel-body">
-            {this.props.body}
+            {this.state.open && this.props.body}
           </div>
         </div>
       </div>

@@ -130,11 +130,10 @@ export const defaultTableHeaders = [
 ];
 
 export const descriptorTitles = {
-  whyLevel: 'What makes this project fit in this category?',
-  recentAppsLink: 'See recently submitted projects of this type',
+  whyLevel: 'What makes a project fit in this category?',
+  recentAppsLink: '',
   participationOpp: 'Opportunities for public participation',
-  examples: 'Examples of this type of project',
-  ordinanceLink: 'Link to the ordinance that defines this type of development',
+  examples: 'Examples',
 };
 
 // Assign colors to project types
@@ -250,9 +249,8 @@ export const trcProjectTypes = {};
     permit_type: 'Development',
     permit_subtype: 'Conditional Use',
     short: 'CUP',
-    description: <div>Anything that is listed as a conditional use in <a href="https:/library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTXVIUSRISUSPRECOUS_S7-16-2COUS" target="_blank" rel="noopener noreferrer">Section 7-16-2 of the Unified Development Ordinance.</a></div>,
     descriptors: {
-      whyLevel: "A highly specialized permit process for land uses with potential public impacts that require individual consideration of their location, design, configuration and operation.  These uses are defined by the code",
+      whyLevel: <React.Fragment>This is highly specialized permit process for land uses with potential public impacts that require individual consideration of their location, design, configuration and operation.  These uses are defined by <a href="https:/library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTXVIUSRISUSPRECOUS_S7-16-2COUS" target="_blank" rel="noopener noreferrer">Section 7-16-2 of the Unified Development Ordinance</a>.</React.Fragment>,
       participationOpp: (<ul><li>Neighborhood meeting</li><li>Design review (if downtown or on the river)</li><li>Planning and Zoning Commission</li><li>City Council hearing</li></ul>),
       examples: (<ul>
         <li>Cell phone towers</li>

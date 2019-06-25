@@ -60,12 +60,12 @@ class AnnotatedDagre extends React.Component {
     const { dimensions } = this.state;
     const visWidth = dimensions.width;
     const height = visWidth < 768 ? 5500 : 5000;
-    const nodePadding = 0;
+    const nodePadding = 5;
     const edgeStroke = visWidth < 768 ? 3 : 4;
     const arrowWidth = edgeStroke * 1.5;
     const edgePadding = arrowWidth * 4;
     const nodeHeight = (height - (nodePadding * (this.numLevels + 4))) / this.numLevels;
-    const puckSize = visWidth < 500 ? 16 : 30;
+    const puckSize = visWidth < 500 ? 12 : 20;
     const yOffset = nodeHeight / 2;
 
     const graph = getDagreGraph(dagreNodes, dagreLinks, nodeHeight);
@@ -139,7 +139,7 @@ class AnnotatedDagre extends React.Component {
                 style={{
                   border: `${edgeStroke}px solid #e6e6e6`,
                   backgroundColor: 'white',
-                  padding: '1rem 1.5rem',
+                  padding: '0.5rem 0.75rem',
                   borderRadius: '6px',
                 }}
               >
@@ -154,7 +154,7 @@ class AnnotatedDagre extends React.Component {
                     style={{
                       fontWeight: 400,
                       textAlign: 'left',
-                      fontSize: '1.5rem',
+                      fontSize: '1.15rem',
                     }}
                   >
                     {d.id}
@@ -171,7 +171,7 @@ class AnnotatedDagre extends React.Component {
                 </div>
                 {!d.subNodes && d.steps && nodeSteps(d.steps, d.id)}
                 {!d.subNodes && !d.steps && d.description}
-                {d.subNodes && (<div style={{ display: 'flex', justifyContent: 'space-around' }}>
+                {d.subNodes && (<div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
                   {d.subNodes.map((sub, subIndex, subNodeArray) =>
                     displaySubNode(sub, subIndex === subNodeArray.length - 1))}
                 </div>)}

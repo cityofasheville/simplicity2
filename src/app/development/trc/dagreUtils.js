@@ -54,6 +54,7 @@ export const decisionIconHeader = (
   </div>
 );
 
+const decisionNodeMaxWidth = 275;
 export const dagreNodes = [
   {
     id: 'Before the application is submitted',
@@ -118,6 +119,7 @@ export const dagreNodes = [
     typeIds: [
       'Level I',
     ],
+    maxWidth: decisionNodeMaxWidth,
   },
   {
     id: 'Technical Review Committee',
@@ -141,6 +143,7 @@ export const dagreNodes = [
       'Level II',
       'Major Subdivision',
     ],
+    maxWidth: decisionNodeMaxWidth,
   },
   {
     id: 'Design review',
@@ -158,7 +161,7 @@ export const dagreNodes = [
     id: 'Planning and Zoning Commission',
     steps: {
       what: 'For  Conditional Zoning, Conditional Use, and Level III projects, the Planning and Zoning Commission holds a public hearing and makes a recommendation for action to City Council.  For downtown Level II projects, the Planning and Zoning Commission verifies technical compliance with the requirements of applicable ordinances and documents and takes final action.',
-      when: (<React.Fragment>Per <a href="#">published schedule</a></React.Fragment>),
+      when: (<React.Fragment>Per <a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/planning-and-zoning-commission/">published schedule</a></React.Fragment>),
 // TODO: ADD LINK
       who: ['dev', 'staff', 'neighbors'],
 // TODO: ADD ICON ETC FOR CITY OFFICIALS
@@ -177,6 +180,7 @@ export const dagreNodes = [
       'Level II',
       'Major Subdivision',
     ],
+    maxWidth: decisionNodeMaxWidth,
   },
   {
     id: 'City Council',
@@ -199,6 +203,7 @@ export const dagreNodes = [
       'Conditional Zoning',
       'Conditional Use Permit',
     ],
+    maxWidth: decisionNodeMaxWidth,
   },
 ];
 
@@ -335,13 +340,10 @@ export function getNodes(dagreGraph, visWidth, nodeHeight, nodePadding) {
     d.indexInCoincidents = d.coincidents.findIndex(c => c.id === d.id);
     d.numPerRow = d.coincidents.length <= 3 ? d.coincidents.length : Math.ceil(d.coincidents.length / 2);
 
-    // Could set max width for nodes
-    // d.wrap = Math.min(
-    //   (visWidth - (annotationMargin + annotationMargin * d.numPerRow)) / d.numPerRow,
-    //   450
-    // )
-    // For now just make it 100%
     d.wrap = (visWidth - (annotationMargin + annotationMargin * d.numPerRow)) / d.numPerRow;
+    if (d.maxWidth) {
+      d.wrap = Math.min(d.wrap, d.maxWidth)
+    }
 
     // Set x value
     const midRowIndex = (d.numPerRow - 1) / 2;
@@ -427,16 +429,21 @@ export function getLinks(inputLinks, nodes, edgePadding, edgeStroke) {
 export const displaySubNode = (node, lastNode = false) => (
   <div
     key={node.id}
-    style={{ verticalAlign: 'top', padding: `0.5rem ${lastNode ? 0 : '1rem'} 0 0`, flex: 1 }}
+    style={{
+      verticalAlign: 'top',
+      padding: `0.5rem 0.25rem`,
+      flex: 1,
+      minWidth: '150px'
+    }}
   >
-    <div style={{ fontSize: '1.25rem', padding: '0 0 1rem 0' }}>{node.id}</div>
+    <div style={{ fontSize: '1.25em', padding: '0 0 0.15em 0' }}>{node.id}</div>
     {nodeSteps(node.steps, node.id)}
   </div>
 );
 
 export const nodeSteps = (steps, nodeId) => (
-  <ul style={{ listStyleType: 'none', padding: '0' }}>{Object.keys(steps).map(stepKey => (
-    <li key={`${stepKey}-${nodeId}`} style={{ padding: '0.5rem 0' }}>
+  <ul style={{ listStyleType: 'none', padding: '0 1rem' }}>{Object.keys(steps).map(stepKey => (
+    <li key={`${stepKey}-${nodeId}`} style={{ padding: '0.25rem 0' }}>
       <div
         style={{
           textTransform: 'capitalize',
@@ -447,7 +454,7 @@ export const nodeSteps = (steps, nodeId) => (
         {stepKey}?
       </div>
       {stepKey === 'who' && steps.who &&
-        <div>
+        <div style={{ padding: '0 1rem' }}>
           {steps.who.map(actor => (
             <div key={`${actor}-${nodeId}`}>
               <div
@@ -460,7 +467,7 @@ export const nodeSteps = (steps, nodeId) => (
           ))}
         </div>
       }
-      {stepKey !== 'who' && <div>{steps[stepKey]}</div>}
+      {stepKey !== 'who' && <div style={{ padding: '0 1rem' }}>{steps[stepKey]}</div>}
     </li>
   ))}
   </ul>

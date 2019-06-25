@@ -130,7 +130,7 @@ export const defaultTableHeaders = [
 ];
 
 export const descriptorTitles = {
-  whyLevel: 'What makes this project fit in this cateogry?',
+  whyLevel: 'What makes this project fit in this category?',
   recentAppsLink: 'See recently submitted projects of this type',
   participationOpp: 'Opportunities for public participation',
   examples: 'Examples of this type of project',

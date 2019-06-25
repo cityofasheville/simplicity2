@@ -129,6 +129,8 @@ class MajorDevelopmentDashboard extends React.Component {
           <h1>Major Development in Asheville</h1>
           <Accordion
             data={this.sections}
+            id="top-level"
+            classes="top-level-accordion"
           />
         </div>
       );

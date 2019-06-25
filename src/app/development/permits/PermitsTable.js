@@ -57,7 +57,6 @@ class PermitsTable extends React.Component {
   }
 
   render() {
-    const maxColWidth = document.documentElement.clientWidth / (this.props.tableHeaders.length + 2);
     return (
       <div className="row">
         <div className="col-sm-12">
@@ -77,7 +76,7 @@ class PermitsTable extends React.Component {
                     d[headerObj.field];
                 },
                 Filter: createFilterRenderer(`Search ${headerObj.display}`),
-                show: headerObj.show ? headerObj.show(maxColWidth) : true,
+                show: true,
               })),
             }]}
             filterable

@@ -23,7 +23,7 @@ class AccordionPanel extends React.Component {
         <a
           role="button"
           data-toggle="collapse"
-          data-parent="#accordion"
+          data-parent={`#${this.props.parentId}`}
           href={`#${collapsibleId}`}
           aria-expanded={this.state.open}
           aria-controls={collapsibleId}
@@ -56,8 +56,8 @@ class AccordionPanel extends React.Component {
 
 const Accordion = props => (
   <div
-    className="panel-group"
-    id="accordion"
+    className={`panel-group ${props.classes}`}
+    id={props.id}
     role="tablist"
     aria-multiselectable="true"
   >
@@ -69,6 +69,7 @@ const Accordion = props => (
         header={d.header}
         body={d.body}
         initiallyExpanded={d.selected}
+        parentId={props.id}
       />))}
   </div>
 )

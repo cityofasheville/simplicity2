@@ -123,7 +123,7 @@ class MajorDevelopmentDashboard extends React.Component {
   }
 
   render() {
-    if (this.state.width < 768) {
+    if (this.state.width < 800) {
       return (
         <div id="majorDevDash">
           <h1>Major Development in Asheville</h1>

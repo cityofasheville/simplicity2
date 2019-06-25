@@ -323,6 +323,7 @@ export function getDagreGraph(nodes, links, nodeSize) {
 }
 
 export function getNodes(dagreGraph, visWidth, nodeHeight, nodePadding) {
+  // Copy nodes so as not to have weird side effects
   const nodeValues = [].concat(Object.values(dagreGraph._nodes));
   const midpointX = visWidth / 2;
   const annotationMargin = nodePadding;
@@ -339,7 +340,6 @@ export function getNodes(dagreGraph, visWidth, nodeHeight, nodePadding) {
     //   (visWidth - (annotationMargin + annotationMargin * d.numPerRow)) / d.numPerRow,
     //   450
     // )
-
     // For now just make it 100%
     d.wrap = (visWidth - (annotationMargin + annotationMargin * d.numPerRow)) / d.numPerRow;
 
@@ -352,7 +352,7 @@ export function getNodes(dagreGraph, visWidth, nodeHeight, nodePadding) {
     // Split into rows
     // if (d.coincidents.length > 2) {
     //   if (d.indexInCoincidents >= d.coincidents.length / 2) {
-    //     thisYOffset = nodeHeight;
+    //     thisYOffset += nodeHeight;
     //     if (d.indexInCoincidents % d.numPerRow === 0) {
     //       // If it's a new row
     //       totalYOffsetValue += nodeHeight;

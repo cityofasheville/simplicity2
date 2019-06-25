@@ -149,6 +149,11 @@ export const permitFieldFormats = [
     )},
   },
   {
+    accelaLabel: 'Contact',
+    displayGroup: 'project details',
+    displayLabel: 'Contact',
+  },
+  {
     accelaLabel: 'Zoning District',
     displayGroup: 'zoning details',
     displayLabel: 'Zoning district',

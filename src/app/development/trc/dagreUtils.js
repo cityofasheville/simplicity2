@@ -158,7 +158,7 @@ export const dagreNodes = [
     id: 'Planning and Zoning Commission',
     steps: {
       what: 'For  Conditional Zoning, Conditional Use, and Level III projects, the Planning and Zoning Commission holds a public hearing and makes a recommendation for action to City Council.  For downtown Level II projects, the Planning and Zoning Commission verifies technical compliance with the requirements of applicable ordinances and documents and takes final action.',
-      when: (<React.Fragment>Per <a href="#">published schedule</a></React.Fragment>),
+      when: (<React.Fragment>Per <a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/planning-and-zoning-commission/">published schedule</a></React.Fragment>),
 // TODO: ADD LINK
       who: ['dev', 'staff', 'neighbors'],
 // TODO: ADD ICON ETC FOR CITY OFFICIALS

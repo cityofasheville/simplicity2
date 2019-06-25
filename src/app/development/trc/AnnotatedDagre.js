@@ -65,7 +65,7 @@ class AnnotatedDagre extends React.Component {
     const arrowWidth = edgeStroke * 1.5;
     const edgePadding = arrowWidth * 4;
     const nodeHeight = (height - (nodePadding * (this.numLevels + 4))) / this.numLevels;
-    const puckSize = visWidth < 500 ? 16 : 30;
+    const puckSize = visWidth < 500 ? 12 : 20;
     const yOffset = nodeHeight / 2;
 
     const graph = getDagreGraph(dagreNodes, dagreLinks, nodeHeight);
@@ -139,7 +139,7 @@ class AnnotatedDagre extends React.Component {
                 style={{
                   border: `${edgeStroke}px solid #e6e6e6`,
                   backgroundColor: 'white',
-                  padding: '1rem 1.5rem',
+                  padding: '0.5rem 0.75rem',
                   borderRadius: '6px',
                 }}
               >
@@ -148,13 +148,14 @@ class AnnotatedDagre extends React.Component {
                     display: 'flex',
                     justifyContent: 'space-between',
                     padding: '0 0 0.25rem',
+borderBottom: '1px solid #e6e6e6',
                   }}
                 >
                   <div
                     style={{
                       fontWeight: 400,
                       textAlign: 'left',
-                      fontSize: '1.5rem',
+                      fontSize: '1.15rem',
                     }}
                   >
                     {d.id}

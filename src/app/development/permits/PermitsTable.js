@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import AccessibleReactTable from 'accessible-react-table';
-import Measure from 'react-measure';
 import createFilterRenderer from '../../../shared/FilterRenderer';
 import { defaultTableHeaders } from '../utils';
 
@@ -59,73 +58,66 @@ class PermitsTable extends React.Component {
 
   render() {
     const maxColWidth = document.documentElement.clientWidth / (this.props.tableHeaders.length + 2);
-    return (<div>
+    return (
       <div className="row">
         <div className="col-sm-12">
-          <Measure
-            client
+          <AccessibleReactTable
+            className="-striped"
+            tableId="projects"
+            ariaLabel="Table of development permit applications"
+            data={this.props.data}
+            columns={[{
+              Header: 'Permits',
+              columns: this.props.tableHeaders.map(headerObj => ({
+                Header: headerObj.display,
+                id: headerObj.field,
+                accessor: (d) => {
+                  return headerObj.formatFunc ?
+                    headerObj.formatFunc(d) :
+                    d[headerObj.field];
+                },
+                Filter: createFilterRenderer(`Search ${headerObj.display}`),
+                show: headerObj.show ? headerObj.show(maxColWidth) : true,
+              })),
+            }]}
+            filterable
+            sortable
+            defaultFilterMethod={(filter, row) => {
+              const id = filter.pivotId || filter.id;
+              // Allows comma separated values, makes it an OR
+              const values = filter.value.split(',');
+              let match = false;
+              // Iterate until you get children that are text and then use those?
+              const compareText = extractTextFromReactComponents(row[id]);
+              values.forEach((val) => {
+                match = match || (compareText !== undefined ?
+                  String(compareText).toLowerCase().indexOf(val.toLowerCase()) > -1
+                  :
+                  true);
+              });
+              return match;
+            }}
+            onFilteredChange={this.onFilteredChange}
+            filtered={this.state.filtered}
+            showPagination
+            defaultPageSize={20}
+            getTdProps={() => ({
+              style: {
+                whiteSpace: 'normal',
+              },
+            })}
           >
-            {({ measureRef }) => (
-              <AccessibleReactTable
-                className="-striped"
-                tableId="projects"
-                ariaLabel="Table of development permit applications"
-                data={this.props.data}
-                columns={[{
-                  Header: 'Permits',
-                  columns: this.props.tableHeaders.map(headerObj => ({
-                    Header: headerObj.display,
-                    id: headerObj.field,
-                    accessor: (d) => {
-                      return headerObj.formatFunc ?
-                        headerObj.formatFunc(d) :
-                        d[headerObj.field];
-                    },
-                    Filter: createFilterRenderer(`Search ${headerObj.display}`),
-                    show: headerObj.show ? headerObj.show(maxColWidth) : true,
-                  })),
-                }]}
-                filterable
-                sortable
-                defaultFilterMethod={(filter, row) => {
-                  const id = filter.pivotId || filter.id;
-                  // Allows comma separated values, makes it an OR
-                  const values = filter.value.split(',');
-                  let match = false;
-                  // Iterate until you get children that are text and then use those?
-                  const compareText = extractTextFromReactComponents(row[id]);
-                  values.forEach((val) => {
-                    match = match || (compareText !== undefined ?
-                      String(compareText).toLowerCase().indexOf(val.toLowerCase()) > -1
-                      :
-                      true);
-                  });
-                  return match;
-                }}
-                onFilteredChange={this.onFilteredChange}
-                filtered={this.state.filtered}
-                showPagination
-                defaultPageSize={20}
-                getTdProps={() => ({
-                  style: {
-                    whiteSpace: 'normal',
-                  },
-                })}
+            {(state, makeTable) => (
+              <div
+                style={{ marginTop: '10px' }}
               >
-                {(state, makeTable) => (
-                  <div
-                    ref={measureRef}
-                    style={{ marginTop: '10px' }}
-                  >
-                    {makeTable()}
-                  </div>
-                )}
-              </AccessibleReactTable>
+                {makeTable()}
+              </div>
             )}
-          </Measure>
+          </AccessibleReactTable>
         </div>
       </div>
-    </div>);
+    );
   }
 }
 

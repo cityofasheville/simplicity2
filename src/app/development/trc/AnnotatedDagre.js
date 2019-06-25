@@ -172,7 +172,7 @@ class AnnotatedDagre extends React.Component {
                 </div>
                 {!d.subNodes && d.steps && nodeSteps(d.steps, d.id)}
                 {!d.subNodes && !d.steps && d.description}
-                {d.subNodes && (<div style={{ display: 'flex', justifyContent: 'space-around' }}>
+                {d.subNodes && (<div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
                   {d.subNodes.map((sub, subIndex, subNodeArray) =>
                     displaySubNode(sub, subIndex === subNodeArray.length - 1))}
                 </div>)}

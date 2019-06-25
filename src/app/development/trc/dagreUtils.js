@@ -427,16 +427,21 @@ export function getLinks(inputLinks, nodes, edgePadding, edgeStroke) {
 export const displaySubNode = (node, lastNode = false) => (
   <div
     key={node.id}
-    style={{ verticalAlign: 'top', padding: `0.5rem ${lastNode ? 0 : '1rem'} 0 0`, flex: 1 }}
+    style={{
+      verticalAlign: 'top',
+      padding: `0.5rem 0.25rem`,
+      flex: 1,
+      minWidth: '150px'
+    }}
   >
-    <div style={{ fontSize: '1.25rem', padding: '0 0 1rem 0' }}>{node.id}</div>
+    <div style={{ fontSize: '1.25em', padding: '0 0 0.15em 0' }}>{node.id}</div>
     {nodeSteps(node.steps, node.id)}
   </div>
 );
 
 export const nodeSteps = (steps, nodeId) => (
-  <ul style={{ listStyleType: 'none', padding: '0' }}>{Object.keys(steps).map(stepKey => (
-    <li key={`${stepKey}-${nodeId}`} style={{ padding: '0.5rem 0' }}>
+  <ul style={{ listStyleType: 'none', padding: '0 1rem' }}>{Object.keys(steps).map(stepKey => (
+    <li key={`${stepKey}-${nodeId}`} style={{ padding: '0.25rem 0' }}>
       <div
         style={{
           textTransform: 'capitalize',
@@ -447,7 +452,7 @@ export const nodeSteps = (steps, nodeId) => (
         {stepKey}?
       </div>
       {stepKey === 'who' && steps.who &&
-        <div>
+        <div style={{ padding: '0 1rem' }}>
           {steps.who.map(actor => (
             <div key={`${actor}-${nodeId}`}>
               <div
@@ -460,7 +465,7 @@ export const nodeSteps = (steps, nodeId) => (
           ))}
         </div>
       }
-      {stepKey !== 'who' && <div>{steps[stepKey]}</div>}
+      {stepKey !== 'who' && <div style={{ padding: '0 1rem' }}>{steps[stepKey]}</div>}
     </li>
   ))}
   </ul>

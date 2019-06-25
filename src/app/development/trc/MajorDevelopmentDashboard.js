@@ -44,7 +44,7 @@ class MajorDevelopmentDashboard extends React.Component {
         header: 'Development details',
         body: (
           <div>
-            <p>The map and table below contain proposed, large-scale, private development projects for which a permit application has been submitted.  You can also see a <a href="/permits">table of all permit applications</a> or <a href="/">search an address</a> to find nearby development.</p>
+            <p>The map and table below contain proposed, large-scale, private development projects for which a permit application has been submitted.  You can also see a <a href="/permits">table of all permit applications</a> or <a href="/">search an address</a> to find nearby development.  Visit <a href="https://www.google.com/maps/d/u/0/viewer?mid=1gTdFgMITqbYX7cm3L227CiClMzg&ll=35.54416648021354%2C-82.55690042880553&z=10" target="_blank" rel="noopener noreferrer">the old TRC projects map</a> to see projects that were started more than two years ago.</p>
             <TRCDataTable />
           </div>
         ),

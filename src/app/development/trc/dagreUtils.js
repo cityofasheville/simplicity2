@@ -54,6 +54,7 @@ export const decisionIconHeader = (
   </div>
 );
 
+const decisionNodeMaxWidth = 275;
 export const dagreNodes = [
   {
     id: 'Before the application is submitted',
@@ -118,6 +119,7 @@ export const dagreNodes = [
     typeIds: [
       'Level I',
     ],
+    maxWidth: decisionNodeMaxWidth,
   },
   {
     id: 'Technical Review Committee',
@@ -141,6 +143,7 @@ export const dagreNodes = [
       'Level II',
       'Major Subdivision',
     ],
+    maxWidth: decisionNodeMaxWidth,
   },
   {
     id: 'Design review',
@@ -177,6 +180,7 @@ export const dagreNodes = [
       'Level II',
       'Major Subdivision',
     ],
+    maxWidth: decisionNodeMaxWidth,
   },
   {
     id: 'City Council',
@@ -199,6 +203,7 @@ export const dagreNodes = [
       'Conditional Zoning',
       'Conditional Use Permit',
     ],
+    maxWidth: decisionNodeMaxWidth,
   },
 ];
 
@@ -335,13 +340,10 @@ export function getNodes(dagreGraph, visWidth, nodeHeight, nodePadding) {
     d.indexInCoincidents = d.coincidents.findIndex(c => c.id === d.id);
     d.numPerRow = d.coincidents.length <= 3 ? d.coincidents.length : Math.ceil(d.coincidents.length / 2);
 
-    // Could set max width for nodes
-    // d.wrap = Math.min(
-    //   (visWidth - (annotationMargin + annotationMargin * d.numPerRow)) / d.numPerRow,
-    //   450
-    // )
-    // For now just make it 100%
     d.wrap = (visWidth - (annotationMargin + annotationMargin * d.numPerRow)) / d.numPerRow;
+    if (d.maxWidth) {
+      d.wrap = Math.min(d.wrap, d.maxWidth)
+    }
 
     // Set x value
     const midRowIndex = (d.numPerRow - 1) / 2;

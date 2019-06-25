@@ -60,7 +60,7 @@ class AnnotatedDagre extends React.Component {
     const { dimensions } = this.state;
     const visWidth = dimensions.width;
     const height = visWidth < 768 ? 5500 : 5000;
-    const nodePadding = 0;
+    const nodePadding = 5;
     const edgeStroke = visWidth < 768 ? 3 : 4;
     const arrowWidth = edgeStroke * 1.5;
     const edgePadding = arrowWidth * 4;
@@ -148,7 +148,6 @@ class AnnotatedDagre extends React.Component {
                     display: 'flex',
                     justifyContent: 'space-between',
                     padding: '0 0 0.25rem',
-                    // borderBottom: '1px solid #e6e6e6',
                   }}
                 >
                   <div

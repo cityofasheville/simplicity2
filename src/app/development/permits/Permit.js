@@ -7,7 +7,7 @@ import LoadingAnimation from '../../../shared/LoadingAnimation';
 import PermitsMap from './PermitsMap';
 import TypePuck from '../trc/TypePuck';
 import { permitFieldFormats } from './permitFieldFormats';
-import { trcProjectTypes, statusTranslation } from '../utils';
+import { trcProjectTypes, statusTranslation, getTRCTypeFromPermit } from '../utils';
 
 const GET_PERMIT = gql`
   query getPermitsQuery($permit_numbers: [String]) {
@@ -58,12 +58,7 @@ const Permit = props => (
       }
 
       const thisPermit = data.permits[0];
-      let trcType;
-      if (thisPermit.permit_group === 'Planning') {
-        trcType = Object.values(trcProjectTypes).find(type =>
-          type.permit_type === thisPermit.permit_type &&
-          type.permit_subtype === thisPermit.permit_subtype);
-      }
+      const trcType = getTRCTypeFromPermit(thisPermit);
       const formattedPermit = Object.assign({}, thisPermit, { trcType });
       // These are all the "misc" info fields that may or may not be filled out for any permit
       thisPermit.custom_fields.forEach((customField) => {

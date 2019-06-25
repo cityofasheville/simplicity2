@@ -148,7 +148,7 @@ class AnnotatedDagre extends React.Component {
                     display: 'flex',
                     justifyContent: 'space-between',
                     padding: '0 0 0.25rem',
-borderBottom: '1px solid #e6e6e6',
+                    // borderBottom: '1px solid #e6e6e6',
                   }}
                 >
                   <div

@@ -32,9 +32,9 @@
   content: '';
   width: 0;
   height: 0;
-  border-left: 0.5em solid transparent;
-  border-right: 0.5em solid transparent;
-  border-top: 0.5em solid gray;
+  border-left: 0.4em solid transparent;
+  border-right: 0.4em solid transparent;
+  border-top: 0.4em solid gray;
   background-color: none;
   text-align: right;
 
@@ -43,6 +43,7 @@
   top: 0.5em;
   position: absolute;
   pointer-events: none;
+  margin-right: -1rem;
 }
 
 .panel-title-after.open:after {

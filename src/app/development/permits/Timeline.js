@@ -41,7 +41,7 @@ class Timeline extends React.Component {
       datesToUse = this.props.formattedPermit.orderedDates
         .concat([{
           accelaLabel: 'dummy',
-          dateInput: '',
+          dateInput: null,
           displayLabel: '',
         }]);
     }
@@ -76,7 +76,7 @@ class Timeline extends React.Component {
                 strokeWidth="3px"
               />
             }
-            <foreignObject
+            {d.dateInput && <foreignObject
               x={thisX - (eachWidth / 2)}
               y={padding * 2 + pointRadius}
               width={eachWidth}
@@ -87,7 +87,7 @@ class Timeline extends React.Component {
                 <div>{this.props.dateFormatter(d.dateInput)}</div>
                 <div>{d.displayLabel}</div>
               </div>
-            </foreignObject>
+            </foreignObject>}
           </g>)
         })}
       </svg>

@@ -73,11 +73,11 @@ class MajorDevelopmentDashboard extends React.Component {
             },
             {
               header: 'Where is the Development Services Department?',
-              body: '161 South Charlotte Street, down the hill from City Hall.',
+              body: (<React.Fragment><a href="https://goo.gl/maps/sKweCmhK4iiEuz7t6" target="_blank" rel="noopener noreferrer">161 South Charlotte Street</a>, down the hill from City Hall.</React.Fragment>),
             },
             {
               header: 'Where is City Hall?',
-              body: '70 Court Plaza, off of College Street.',
+              body: (<React.Fragment><a href="https://goo.gl/maps/FWoy1aRrV1ktdF8T7" target="_blank" rel="noopener noreferrer">70 Court Plaza</a>, off of College Street.</React.Fragment>),
             },
             {
               header: 'Who builds these projects?',

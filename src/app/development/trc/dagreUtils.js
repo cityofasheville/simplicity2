@@ -8,6 +8,10 @@ import {
   GAVEL,
 } from '../../../shared/iconConstants';
 
+
+// export const classFromTRCType = type =>
+//   type.split(' ').join('-').toLowerCase();
+
 export const whoIcons = {
   dev: {
     label: 'Developer',

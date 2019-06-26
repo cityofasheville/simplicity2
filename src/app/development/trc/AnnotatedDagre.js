@@ -2,6 +2,7 @@ import React from 'react';
 // import PropTypes from 'prop-types';
 import TypePuck from './TypePuck';
 import { trcProjectTypes } from '../utils';
+import ArrowDefs from './ArrowDefs';
 import {
   getDagreGraph,
   getNodes,
@@ -77,25 +78,7 @@ class AnnotatedDagre extends React.Component {
     // If any node in the past had a high enough coincidents number that it had to be moved, add to y value for remaining
     return (<div style={{ width: '100%', fontSize: dimensions.width < 500 ? '0.75rem' : '1em' }}>
       <svg height={height} width={dimensions.width}>
-        <defs>
-          {Object.values(trcProjectTypes).map(type => (
-            <marker
-              key={`marker-${type.short}`}
-              id={`marker-${type.short}`}
-              markerWidth={arrowWidth}
-              markerHeight={arrowWidth}
-              refX={arrowWidth * (2 / 3)}
-              refY={arrowWidth / 2}
-              orient="auto"
-              markerUnits="strokeWidth"
-            >
-              <path
-                d={`M0,0 L0,${arrowWidth} L${arrowWidth * (2 / 3)},${arrowWidth / 2} z`}
-                fill={type.color}
-              />
-            </marker>
-          ))}
-        </defs>
+        <ArrowDefs arrowWidth={arrowWidth} />
         <g>
           {links.map((d, i, linksArray) => {
             const elbowOffset = edgeStroke;

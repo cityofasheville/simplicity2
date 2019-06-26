@@ -13,6 +13,10 @@ export const orderedDates = [
     displayLabel: 'Neighborhood meeting',
   },
   {
+    accelaLabel: 'applied_date',
+    displayLabel: 'Application accepted by staff',
+  },
+  {
     accelaLabel: 'Initial TRC Date 1',
     displayLabel: 'Technical review committee meeting',
   },

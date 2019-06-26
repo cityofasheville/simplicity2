@@ -86,7 +86,7 @@ class Timeline extends React.Component {
               style={{ overflow: 'visible' }}
             >
               <div style={{ textAlign: 'center', padding: '1rem' }}>
-                <div>{d.dateInput}</div>
+                <div>{this.props.dateFormatter(d.dateInput)}</div>
                 <div>{d.displayLabel}</div>
               </div>
             </foreignObject>

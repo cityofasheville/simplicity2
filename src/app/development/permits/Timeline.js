@@ -9,24 +9,22 @@ class Timeline extends React.Component {
     this.state = {
       dimensions: null,
     };
-    this.container = null;
+    this.updateDimensions = this.updateDimensions.bind(this);
   }
 
   updateDimensions() {
-    if (!this.container) {
-      return;
-    }
+    const container = document.getElementById('permit-timeline-container').getBoundingClientRect();
     this.setState({
       dimensions: {
-        width: this.container.offsetWidth,
-        height: this.container.offsetHeight,
+        width: container.width,
+        height: container.height,
       },
     });
   }
 
   componentDidMount() {
-    this.updateDimensions();
     window.addEventListener('resize', this.updateDimensions);
+    this.updateDimensions();
   }
 
   componentWillUnmount() {
@@ -43,7 +41,7 @@ class Timeline extends React.Component {
       datesToUse = this.props.formattedPermit.orderedDates
         .concat([{
           accelaLabel: 'dummy',
-          dateInput: '',
+          dateInput: null,
           displayLabel: '',
         }]);
     }
@@ -78,7 +76,7 @@ class Timeline extends React.Component {
                 strokeWidth="3px"
               />
             }
-            <foreignObject
+            {d.dateInput && <foreignObject
               x={thisX - (eachWidth / 2)}
               y={padding * 2 + pointRadius}
               width={eachWidth}
@@ -86,10 +84,10 @@ class Timeline extends React.Component {
               style={{ overflow: 'visible' }}
             >
               <div style={{ textAlign: 'center', padding: '1rem' }}>
-                <div>{d.dateInput}</div>
+                <div>{this.props.dateFormatter(d.dateInput)}</div>
                 <div>{d.displayLabel}</div>
               </div>
-            </foreignObject>
+            </foreignObject>}
           </g>)
         })}
       </svg>
@@ -99,7 +97,7 @@ class Timeline extends React.Component {
   render() {
     const { dimensions } = this.state;
     return (
-      <div ref={(el) => { this.container = el; }} style={{ height: '150px', width: '100%' }}>
+      <div id="permit-timeline-container" style={{ height: '150px', width: '100%' }}>
         {dimensions && this.renderContent()}
       </div>
     );

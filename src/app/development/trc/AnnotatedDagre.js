@@ -32,17 +32,17 @@ class AnnotatedDagre extends React.Component {
     this.numLevels = multiRow + uniqueYVals;
 
     this.updateDimensions = this.updateDimensions.bind(this);
-
     this.state = {
       dimensions: null,
     };
   }
 
   updateDimensions() {
+    const container = document.getElementById('dagre-container').getBoundingClientRect();
     this.setState({
       dimensions: {
-        width: this.container.offsetWidth,
-        height: this.container.offsetHeight,
+        width: container.width,
+        height: container.height,
       },
     });
   }
@@ -189,7 +189,7 @@ class AnnotatedDagre extends React.Component {
     const { dimensions } = this.state;
 
     return (
-      <div ref={(el) => { this.container = el; }} style={{ height: '100%', width: '100%' }}>
+      <div id="dagre-container" style={{ height: '100%', width: '100%' }}>
         {dimensions && this.renderContent()}
       </div>
     );

@@ -24,27 +24,28 @@ export const whoIcons = {
 
 export const decisionIconStyle = {
   margin: '0.25rem 1rem 0.25rem 0',
-  width: '1.25em',
+  width: '1.5rem',
   color: 'white',
   textAlign: 'center',
   display: 'inline-block',
-  borderRadius: '25%',
+  borderRadius: '1rem',
+  backgroundColor: 'black'
 };
 
 export const decisionIconHeader = (
   <div style={{ display: 'flex', justifyContent: 'center' }}>
     <div>
       <div>
-        <div style={Object.assign({ backgroundColor: '#008A00' }, decisionIconStyle)}>&#10004;</div>
+        <div style={decisionIconStyle}>&#10004;</div>
         <span>Approved</span>
       </div>
       <div>
-        <div style={Object.assign({ backgroundColor: '#CE3800' }, decisionIconStyle)}>&#10008;</div>
+        <div style={decisionIconStyle}>&#10008;</div>
         <span>Denied</span>
       </div>
       <div>
         <div
-          style={Object.assign({ backgroundColor: '#3F71C3', fontWeight: 600 }, decisionIconStyle)}
+          style={Object.assign({ fontWeight: 600 }, decisionIconStyle)}
         >
           &#8635;
         </div>

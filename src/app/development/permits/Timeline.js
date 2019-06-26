@@ -95,7 +95,7 @@ class Timeline extends React.Component {
   render() {
     const { dimensions } = this.state;
     return (
-      <div ref={(el) => { this.container = el; }} style={{ height: '100px', width: '100%' }}>
+      <div ref={(el) => { this.container = el; }} style={{ height: '150px', width: '100%' }}>
         {dimensions && this.renderContent()}
       </div>
     );

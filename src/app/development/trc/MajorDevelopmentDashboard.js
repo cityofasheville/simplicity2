@@ -146,7 +146,7 @@ class MajorDevelopmentDashboard extends React.Component {
       />
       <main>
         <h1>Large-Scale Development in Asheville</h1>
-        <h1><small>Get notifications, attend meetings, and have your voice heard.</small></h1>
+        {/*<h1><small>Get notifications, attend meetings, and have your voice heard.</small></h1>*/}
         <p>There is a lot of private land development happening in Asheville.  This tool can help you:</p>
         <ul>
           <li>

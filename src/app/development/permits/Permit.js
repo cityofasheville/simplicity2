@@ -8,7 +8,7 @@ import PermitsMap from './PermitsMap';
 import TypePuck from '../trc/TypePuck';
 import Timeline from './Timeline';
 import { permitFieldFormats } from './permitFieldFormats';
-import { trcProjectTypes, statusTranslation, getTRCTypeFromPermit } from '../utils';
+import { trcProjectTypes, statusTranslation, getTRCTypeFromPermit, orderedDates } from '../utils';
 
 const GET_PERMIT = gql`
   query getPermitsQuery($permit_numbers: [String]) {
@@ -77,6 +77,18 @@ const Permit = props => (
         formattedPermit.setbacks.push(`rear: ${formattedPermit.rear} feet`);
       }
 
+      formattedPermit.orderedDates = orderedDates
+        .filter(dateObject => formattedPermit[dateObject.accelaLabel])
+        .map(dateObject =>
+          Object.assign(
+            {},
+            dateObject,
+            {
+              dateInput: formattedPermit[dateObject.accelaLabel],
+            }
+          )
+        );
+
       // The popup is what you see when you click on the pin
       const mapData = [Object.assign(
         {},
@@ -130,7 +142,8 @@ const Permit = props => (
           <h1 className="title__text">{formattedPermit.application_name}</h1>
           <p className="permit-description">{formattedPermit.permit_description}</p>
           <p className="permit-description">{`City staff accepted this application on ${dateFormatter(formattedPermit.applied_date)}.  ${currentStatusItem ? currentStatusItem.statusText : ''}`}</p>
-          {formattedPermit.trcType && <Timeline formattedPermit={formattedPermit}/>}
+          {formattedPermit.trcType && formattedPermit.orderedDates.length > 0 &&
+            <Timeline formattedPermit={formattedPermit}/>}
           <div className="row permit-map-row">
             {showMap && (
               <div className="col-sm-12 col-md-6 permit-map-container">

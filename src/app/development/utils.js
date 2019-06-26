@@ -2,6 +2,62 @@ import React from 'react';
 import moment from 'moment';
 import TypePuck from './trc/TypePuck';
 
+// For TRC projects only
+export const orderedDates = [
+  {
+    accelaLabel: 'Pre-App Date',
+    displayLabel: 'Pre-application meeting'
+  },
+  {
+    accelaLabel: 'Neighborhood Meeting Date',
+    displayLabel: 'Neighborhood meeting',
+  },
+  {
+    accelaLabel: 'Initial TRC Date 1',
+    displayLabel: 'Technical review committee meeting',
+  },
+  {
+    accelaLabel: 'Initial TRC Date 2',
+    displayLabel: 'Technical review committee meeting (revised materials)',
+  },
+  {
+    accelaLabel: 'Initial TRC Date 3',
+    displayLabel: 'Technical review committee meeting (revised materials)',
+  },
+  {
+    accelaLabel: 'DTC Date 1',
+    displayLabel: 'Downtown Commission meeting',
+  },
+  {
+    accelaLabel: 'DTC Date 2',
+    displayLabel: 'Downtown Commission meeting (revised materials)',
+  },
+  {
+    accelaLabel: 'PZC Date 1',
+    displayLabel: 'Planning and Zoning commission meeting',
+  },
+  {
+    accelaLabel: 'PZC Date 2',
+    displayLabel: 'Planning and Zoning commission meeting (revised materials)',
+  },
+  {
+    accelaLabel: 'Final TRC Date 1',
+    displayLabel: 'Technical review committee meeting (revised materials)',
+  },
+  {
+    accelaLabel: 'Final TRC Date 2',
+    displayLabel: 'Technical review committee meeting (revised materials)',
+  },
+  {
+    accelaLabel: 'City Council Date 1',
+    displayLabel: 'City Council meeting',
+  },
+  {
+    accelaLabel: 'City Council Date 2',
+    displayLabel: 'City Council meeting (revised materials)',
+  },
+];
+
 export const statusTranslation = [
   {
     accelaSpeak: "Application Submitted",

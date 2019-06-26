@@ -35,6 +35,7 @@ class AnnotatedDagre extends React.Component {
     this.updateDimensions = this.updateDimensions.bind(this);
     this.state = {
       dimensions: null,
+      openNode: 'Permit application',
     };
   }
 
@@ -59,23 +60,19 @@ class AnnotatedDagre extends React.Component {
 
   renderContent() {
     const { dimensions } = this.state;
-    const height = dimensions.width < 768 ? 5500 : 5000;
+    const height = dimensions.width < 768 ? 2200 : 5000;
     const nodePadding = 5;
     const edgeStroke = dimensions.width < 768 ? 3 : 4;
     const arrowWidth = edgeStroke * 1.5;
     const edgePadding = arrowWidth * 4;
     const nodeHeight = (height - (nodePadding * (this.numLevels + 4))) / this.numLevels;
-    const puckSize = dimensions.width < 500 ? 14 : 25;
+    const puckSize = dimensions.width < 500 ? 20 : 25;
     const yOffset = nodeHeight / 2;
 
     const graph = getDagreGraph(dagreNodes, dagreLinks, nodeHeight);
     const nodes = getNodes(graph, dimensions.width, nodeHeight, nodePadding);
     const links = getLinks(dagreLinks, nodes, edgePadding, edgeStroke);
 
-
-    // Render diagram to fake dom, then update node sizes based on that?
-
-    // If any node in the past had a high enough coincidents number that it had to be moved, add to y value for remaining
     return (<div style={{ width: '100%', fontSize: dimensions.width < 500 ? '0.75rem' : '1em' }}>
       <svg height={height} width={dimensions.width}>
         <ArrowDefs arrowWidth={arrowWidth} />
@@ -155,7 +152,36 @@ class AnnotatedDagre extends React.Component {
                   </div>
                 </div>
 
-                {d.content}
+                {dimensions.width >= 768 && d.content}
+
+                {dimensions.width < 768 && this.props.openNode === d.id &&
+                  ReactDOM.createPortal(
+                    (<div
+                      className="modal"
+                      role="status"
+                      style={{
+                        position: 'absolute',
+                        top: 10,
+                        left: 10,
+                        zIndex: 99,
+                      }}
+                    >
+                      <div
+                        style={{
+                          border: `3px solid black`,
+                          backgroundColor: 'white',
+                          padding: '0.5em',
+                          borderRadius: '6px',
+                          height: '100%',
+                          fontWeight: 500,
+                        }}
+                      >
+                        {d.content}
+                      </div>
+                    </div>),
+                    document.body
+                  )
+                }
 
               </div>
             </foreignObject>

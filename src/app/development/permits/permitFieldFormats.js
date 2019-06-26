@@ -14,6 +14,7 @@ import {
 } from '../../../shared/iconConstants';
 import { trcProjectTypes } from '../utils';
 
+
 export const permitFieldFormats = [
   {
     accelaLabel: 'Aquatic Buffer',
@@ -101,7 +102,7 @@ export const permitFieldFormats = [
     accelaLabel: 'Plans Folder Location',
     displayGroup: 'project details',
     displayLabel: 'Site plans and documents',
-    formatFunc: d => (<a href={d} target="_blank" rel="noopener noreferrer">Documents folder</a>),
+    formatFunc: d => (<a href={d} target="_blank" rel="noopener noreferrer">documents folder</a>),
     description: 'Google Drive folder link to view documents',
   },
   {

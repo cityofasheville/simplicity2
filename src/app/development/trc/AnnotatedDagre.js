@@ -58,26 +58,25 @@ class AnnotatedDagre extends React.Component {
 
   renderContent() {
     const { dimensions } = this.state;
-    const visWidth = dimensions.width;
-    const height = visWidth < 768 ? 5500 : 5000;
+    const height = dimensions.width < 768 ? 5500 : 5000;
     const nodePadding = 5;
-    const edgeStroke = visWidth < 768 ? 3 : 4;
+    const edgeStroke = dimensions.width < 768 ? 3 : 4;
     const arrowWidth = edgeStroke * 1.5;
     const edgePadding = arrowWidth * 4;
     const nodeHeight = (height - (nodePadding * (this.numLevels + 4))) / this.numLevels;
-    const puckSize = visWidth < 500 ? 14 : 25;
+    const puckSize = dimensions.width < 500 ? 14 : 25;
     const yOffset = nodeHeight / 2;
 
     const graph = getDagreGraph(dagreNodes, dagreLinks, nodeHeight);
-    const nodes = getNodes(graph, visWidth, nodeHeight, nodePadding);
+    const nodes = getNodes(graph, dimensions.width, nodeHeight, nodePadding);
     const links = getLinks(dagreLinks, nodes, edgePadding, edgeStroke);
 
 
     // Render diagram to fake dom, then update node sizes based on that?
 
     // If any node in the past had a high enough coincidents number that it had to be moved, add to y value for remaining
-    return (<div style={{ width: '100%', fontSize: visWidth < 500 ? '0.75rem' : '1em' }}>
-      <svg height={height} width={visWidth}>
+    return (<div style={{ width: '100%', fontSize: dimensions.width < 500 ? '0.75rem' : '1em' }}>
+      <svg height={height} width={dimensions.width}>
         <defs>
           {Object.values(trcProjectTypes).map(type => (
             <marker

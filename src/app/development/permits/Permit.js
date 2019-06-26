@@ -6,6 +6,7 @@ import { Query } from 'react-apollo';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import PermitsMap from './PermitsMap';
 import TypePuck from '../trc/TypePuck';
+import Timeline from './Timeline';
 import { permitFieldFormats } from './permitFieldFormats';
 import { trcProjectTypes, statusTranslation, getTRCTypeFromPermit } from '../utils';
 
@@ -62,7 +63,7 @@ const Permit = props => (
       const formattedPermit = Object.assign({ contact: trcType ? 'pod@ashevillenc.gov' : null }, thisPermit, { trcType });
       // These are all the "misc" info fields that may or may not be filled out for any permit
       thisPermit.custom_fields.forEach((customField) => {
-        formattedPermit[customField.name.toLowerCase().split(' ').join('_')] = customField.value;
+        formattedPermit[customField.name] = customField.value;
       });
 
       formattedPermit.setbacks = [];
@@ -95,8 +96,7 @@ const Permit = props => (
         // If there is no display label, bring it to the top
         .sort(a => (!a.displayLabel ? -1 : 0))
         .forEach((d) => {
-          const snakeCaseAccelaLabel = d.accelaLabel.toLowerCase().split(' ').join('_');
-          const val = formattedPermit[snakeCaseAccelaLabel];
+          const val = formattedPermit[d.accelaLabel];
           if (!val) {
             return;
           }
@@ -130,6 +130,7 @@ const Permit = props => (
           <h1 className="title__text">{formattedPermit.application_name}</h1>
           <p className="permit-description">{formattedPermit.permit_description}</p>
           <p className="permit-description">{`City staff accepted this application on ${dateFormatter(formattedPermit.applied_date)}.  ${currentStatusItem ? currentStatusItem.statusText : ''}`}</p>
+          {formattedPermit.trcType && <Timeline formattedPermit={formattedPermit}/>}
           <div className="row permit-map-row">
             {showMap && (
               <div className="col-sm-12 col-md-6 permit-map-container">

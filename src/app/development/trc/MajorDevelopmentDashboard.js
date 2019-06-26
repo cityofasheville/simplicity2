@@ -28,7 +28,7 @@ class MajorDevelopmentDashboard extends React.Component {
         linkName: 'Process',
         header: 'The development process',
         body: (<div>
-          <p>After the developer submits an application, it goes through a decision-making process that includes city staff, city council, developers, and residents.  Who is involved at what step depends on the type of project.</p>
+          <p>After the developer submits an application, it goes through a decision-making process that includes city staff, elected and appointed city officials, developers, and residents.  Who is involved at what step depends on the type of project.</p>
           <AnnotatedDagre />
         </div>),
       },
@@ -73,11 +73,11 @@ class MajorDevelopmentDashboard extends React.Component {
             },
             {
               header: 'Where is the Development Services Department?',
-              body: '161 South Charlotte Street, down the hill from City Hall.',
+              body: (<React.Fragment><a href="https://goo.gl/maps/sKweCmhK4iiEuz7t6" target="_blank" rel="noopener noreferrer">161 South Charlotte Street</a>, down the hill from City Hall.</React.Fragment>),
             },
             {
               header: 'Where is City Hall?',
-              body: '70 Court Plaza, off of College Street.',
+              body: (<React.Fragment><a href="https://goo.gl/maps/FWoy1aRrV1ktdF8T7" target="_blank" rel="noopener noreferrer">70 Court Plaza</a>, off of College Street.</React.Fragment>),
             },
             {
               header: 'Who builds these projects?',
@@ -146,7 +146,7 @@ class MajorDevelopmentDashboard extends React.Component {
       />
       <main>
         <h1>Large-Scale Development in Asheville</h1>
-        <h1><small>Get notifications, attend meetings, and have your voice heard.</small></h1>
+        {/*<h1><small>Get notifications, attend meetings, and have your voice heard.</small></h1>*/}
         <p>There is a lot of private land development happening in Asheville.  This tool can help you:</p>
         <ul>
           <li>

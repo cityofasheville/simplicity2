@@ -16,6 +16,14 @@
   padding: 1rem;
 }
 
+.accordion-panel-body a {
+  text-decoration: underline;
+}
+
+.accordion-panel-body a:focus, .accordion-panel-body a:hover {
+  color: #4077a5;
+}
+
 .panel-collapse {
   border: 1px solid #f2f2f2;
 }

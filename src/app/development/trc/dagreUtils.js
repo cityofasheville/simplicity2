@@ -5,7 +5,12 @@ import Icon from '../../../shared/Icon';
 import {
   DRAFTING_COMPASS,
   USER_FRIENDS,
+  GAVEL,
 } from '../../../shared/iconConstants';
+
+
+// export const classFromTRCType = type =>
+//   type.split(' ').join('-').toLowerCase();
 
 export const whoIcons = {
   dev: {
@@ -16,6 +21,10 @@ export const whoIcons = {
     label: 'City Staff',
     icon: (<CityLogoSvg color="black" height={16} />),
   },
+  council: {
+    label: 'City Officials',
+    icon: (<Icon path={GAVEL} viewBox="0 0 512 512" />),
+  },
   neighbors: {
     label: 'Neighbors',
     icon: (<Icon path={USER_FRIENDS} viewBox="0 0 640 512" size={19} />),
@@ -23,13 +32,11 @@ export const whoIcons = {
 };
 
 export const decisionIconStyle = {
-  margin: '0.25rem 1rem 0.25rem 0',
+  margin: '0 1rem 0 0',
   width: '1.5rem',
-  color: 'white',
+  color: 'black',
   textAlign: 'center',
   display: 'inline-block',
-  borderRadius: '1rem',
-  backgroundColor: 'black'
 };
 
 export const decisionIconHeader = (
@@ -66,7 +73,7 @@ export const dagreNodes = [
           what: 'Developers and city staff meet to look at initial sketches, discuss process and schedule, and identify applicable regulations.',
           who: ['dev', 'staff'],
           when: 'Required before application submission',
-          where: 'Development Services Department',
+          where: <a href="https://goo.gl/maps/FYcn1ATUY7Ux8q6G9" target="_blank" rel="noopener noreferrer">Development Services Department</a>,
         },
       },
       {
@@ -92,7 +99,7 @@ export const dagreNodes = [
       what: 'Submission of required plans and documents and payment of application fees.',
       who: ['dev'],
       when: 'After all required preliminary steps are completed.',
-      where: 'Development Services Department',
+      where: <a href="https://goo.gl/maps/FYcn1ATUY7Ux8q6G9" target="_blank" rel="noopener noreferrer">Development Services Department</a>,
     },
     typeIds: [
       'Level I',
@@ -108,7 +115,7 @@ export const dagreNodes = [
       what: 'A staff member reviews plans for compliance with applicable ordinances and documents and creates a report.',
       who: ['staff'],
       when: 'Within ten days of application submittal',
-      where: 'Development Services Department',
+      where: <a href="https://goo.gl/maps/FYcn1ATUY7Ux8q6G9" target="_blank" rel="noopener noreferrer">Development Services Department</a>,
     },
     typeIds: [
       'Level I',
@@ -125,10 +132,10 @@ export const dagreNodes = [
   {
     id: 'Technical Review Committee',
     steps: {
-      what: 'An eight-member body that ensures that the proposed project complies with standards and requirements.',
+      what: <React.Fragment>An eight-member body that ensures that the proposed project complies with standards and requirements.  Meeting agendas are available on <a href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/technical-review-committee/" target="_blank" rel="noopener noreferrer">the city website</a>.</React.Fragment>,
       who: ['dev', 'staff'],
       when: 'First and third Monday of each month',
-      where: 'Development Services Department',
+      where: <a href="https://goo.gl/maps/FYcn1ATUY7Ux8q6G9" target="_blank" rel="noopener noreferrer">Development Services Department</a>,
     },
     typeIds: [
       'Level II',
@@ -151,8 +158,14 @@ export const dagreNodes = [
     steps: {
       what: <div>Projects located Downtown or in the River District must be reviewed for architectural design elements by a special design review sub-committee of either the <a href="https://library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTIIIDEKIADADBO_S7-3-8ASDOCO" target="_blank" rel="noopener noreferrer">Asheville Downtown Commission</a> or the <a href="https://library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTIIIDEKIADADBO_S7-3-10ASARRIRECO" target="_blank" rel="noopener noreferrer">Asheville Area Riverfront Redevelopment Commission</a> prior to approval.</div>,
       who: ['dev', 'staff', 'neighbors'],
-      when: (<ul><li>Downtown Commission: second Friday of each month</li><li>Riverfront Commission: second Thursday of each month</li></ul>),
-      where: (<ul><li>Downtown Commission: City Hall</li><li>Riverfront Commission: Explore Asheville offices</li></ul>),
+      when: (<ul>
+        <li>Downtown Commission: second Friday of each month</li>
+        <li>Riverfront Commission: second Thursday of each month</li>
+      </ul>),
+      where: (<ul>
+        <li>Downtown Commission: <a href="https://goo.gl/maps/7GkCkb1pPjRaXbAc7" target="_blank" rel="noopener noreferrer">City Hall</a></li>
+        <li>Riverfront Commission: <a href="https://goo.gl/maps/Wbamfs7tbhSmQ1Uz7" target="_blank" rel="noopener noreferrer">Explore Asheville offices</a></li>
+      </ul>),
     },
     typeIds: [
       'Level II',
@@ -171,11 +184,10 @@ export const dagreNodes = [
     id: 'Planning and Zoning Commission',
     steps: {
       what: 'For  Conditional Zoning, Conditional Use, and Level III projects, the Planning and Zoning Commission holds a public hearing and makes a recommendation for action to City Council.  For downtown Level II projects, the Planning and Zoning Commission verifies technical compliance with the requirements of applicable ordinances and documents and takes final action.',
+      who: ['dev', 'staff', 'neighbors', 'council'],
+      // TODO: ADD ICON ETC FOR CITY OFFICIALS
       when: (<React.Fragment>Per <a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/planning-and-zoning-commission/">published schedule</a></React.Fragment>),
-// TODO: ADD LINK
-      who: ['dev', 'staff', 'neighbors'],
-// TODO: ADD ICON ETC FOR CITY OFFICIALS
-      where: 'City Hall',
+      where: <a href="https://goo.gl/maps/7GkCkb1pPjRaXbAc7" target="_blank" rel="noopener noreferrer">City Hall</a>,
     },
     typeIds: [
       'Level II',
@@ -195,11 +207,10 @@ export const dagreNodes = [
     id: 'City Council',
     steps: {
       what: 'Applications are reviewed during a public hearing before City Council.  These projects arrive at the City Council meeting with a recommendation for action that has been sent by the Planning and Zoning Commission.',
-      who: ['dev', 'staff', 'neighbors'],
+      who: ['dev', 'staff', 'neighbors', 'council'],
       when: 'The second and fourth Tuesday of each month',
-      where: 'City Hall',
+      where: <a href="https://goo.gl/maps/7GkCkb1pPjRaXbAc7" target="_blank" rel="noopener noreferrer">City Hall</a>,
     },
-// TODO: ADD ICON/WHO FOR CITY OFFICIALS
     typeIds: [
       'Conditional Zoning',
       'Conditional Use Permit',

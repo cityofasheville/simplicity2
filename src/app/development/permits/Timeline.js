@@ -9,9 +9,13 @@ class Timeline extends React.Component {
     this.state = {
       dimensions: null,
     };
+    this.container = null;
   }
 
   updateDimensions() {
+    if (!this.container) {
+      return;
+    }
     this.setState({
       dimensions: {
         width: this.container.offsetWidth,

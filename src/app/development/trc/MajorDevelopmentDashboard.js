@@ -44,7 +44,7 @@ class MajorDevelopmentDashboard extends React.Component {
         header: 'Development details',
         body: (
           <div>
-            <p>The map and table below contain proposed, large-scale, private development projects for which a permit application has been submitted.  You can also see a <a href="/permits">table of all permit applications</a> or <a href="/">search an address</a> to find nearby development.</p>
+            <p>The map and table below contain proposed, large-scale, private development projects for which a permit application has been submitted.  You can also see a <a href="/permits">table of all permit applications</a> or <a href="/">search an address</a> to find nearby development.  Visit <a href="https://www.google.com/maps/d/u/0/viewer?mid=1gTdFgMITqbYX7cm3L227CiClMzg&ll=35.54416648021354%2C-82.55690042880553&z=10" target="_blank" rel="noopener noreferrer">the old TRC projects map</a> to see projects that were started more than two years ago.</p>
             <TRCDataTable />
           </div>
         ),
@@ -94,6 +94,10 @@ class MajorDevelopmentDashboard extends React.Component {
             {
               header: 'How can I join one of the commissions that reviews projects?',
               body: <React.Fragment>Visit <a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/" target="_blank" rel="noopener noreferrer">the Boards and Commissions web page</a> to view current vacancies and learn about application steps.</React.Fragment>,
+            },
+            {
+              header: 'I still have a question!',
+              body: <React.Fragment>If your question was not answered here, please <a href="https://forms.gle/CkkihZfs37opZfXM8" target="_blank" rel="noopener noreferrer">let us know what it was</a> so that we can improve this page.  If you have a question to which you need a response, please email pod@ashevillenc.gov instead.</React.Fragment>,
             },
             // {
             //   header: 'How much control does the City have over the look and feel of a project?',

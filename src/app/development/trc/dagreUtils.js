@@ -24,27 +24,28 @@ export const whoIcons = {
 
 export const decisionIconStyle = {
   margin: '0.25rem 1rem 0.25rem 0',
-  width: '1.25em',
+  width: '1.5rem',
   color: 'white',
   textAlign: 'center',
   display: 'inline-block',
-  borderRadius: '25%',
+  borderRadius: '1rem',
+  backgroundColor: 'black'
 };
 
 export const decisionIconHeader = (
   <div style={{ display: 'flex', justifyContent: 'center' }}>
     <div>
       <div>
-        <div style={Object.assign({ backgroundColor: '#008A00' }, decisionIconStyle)}>&#10004;</div>
+        <div style={decisionIconStyle}>&#10004;</div>
         <span>Approved</span>
       </div>
       <div>
-        <div style={Object.assign({ backgroundColor: '#CE3800' }, decisionIconStyle)}>&#10008;</div>
+        <div style={decisionIconStyle}>&#10008;</div>
         <span>Denied</span>
       </div>
       <div>
         <div
-          style={Object.assign({ backgroundColor: '#3F71C3', fontWeight: 600 }, decisionIconStyle)}
+          style={Object.assign({ fontWeight: 600 }, decisionIconStyle)}
         >
           &#8635;
         </div>
@@ -54,7 +55,7 @@ export const decisionIconHeader = (
   </div>
 );
 
-const decisionNodeMaxWidth = 300;
+const decisionNodeMaxWidth = 400;
 export const dagreNodes = [
   {
     id: 'Before the application is submitted',
@@ -159,6 +160,14 @@ export const dagreNodes = [
     ],
   },
   {
+    id: 'Major Subdivision decision (downtown)',
+    description: <div>{decisionIconHeader}</div>,
+    typeIds: [
+      'Major Subdivision',
+    ],
+    maxWidth: decisionNodeMaxWidth,
+  },
+  {
     id: 'Planning and Zoning Commission',
     steps: {
       what: 'For  Conditional Zoning, Conditional Use, and Level III projects, the Planning and Zoning Commission holds a public hearing and makes a recommendation for action to City Council.  For downtown Level II projects, the Planning and Zoning Commission verifies technical compliance with the requirements of applicable ordinances and documents and takes final action.',
@@ -175,11 +184,10 @@ export const dagreNodes = [
     ],
   },
   {
-    id: 'Level II and Major Subdivision decision (downtown)',
+    id: 'Level II decision (downtown)',
     description: <div>{decisionIconHeader}</div>,
     typeIds: [
       'Level II',
-      'Major Subdivision',
     ],
     maxWidth: decisionNodeMaxWidth,
   },
@@ -258,7 +266,7 @@ export const dagreLinks = [
   },
   {
     source: 'Design review',
-    target: 'Level II and Major Subdivision decision (downtown)',
+    target: 'Major Subdivision decision (downtown)',
     parallelEdges: [
       { id: 'Major Subdivision' },
     ],
@@ -281,7 +289,7 @@ export const dagreLinks = [
   },
   {
     source: 'Planning and Zoning Commission',
-    target: 'Level II and Major Subdivision decision (downtown)',
+    target: 'Level II decision (downtown)',
     parallelEdges: [
       { id: 'Level II' },
     ],

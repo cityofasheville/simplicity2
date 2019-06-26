@@ -59,7 +59,7 @@ const Permit = props => (
 
       const thisPermit = data.permits[0];
       const trcType = getTRCTypeFromPermit(thisPermit);
-      const formattedPermit = Object.assign({}, thisPermit, { trcType });
+      const formattedPermit = Object.assign({ contact: trcType ? 'pod@ashevillenc.gov' : null }, thisPermit, { trcType });
       // These are all the "misc" info fields that may or may not be filled out for any permit
       thisPermit.custom_fields.forEach((customField) => {
         formattedPermit[customField.name.toLowerCase().split(' ').join('_')] = customField.value;

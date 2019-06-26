@@ -86,7 +86,9 @@ class Timeline extends React.Component {
 
   renderContent() {
     const { dimensions } = this.state;
-    const padding = 25;
+    const padding = dimensions.height / 10;
+    const pointRadius = 20;
+    const midpointX = dimensions.width / 2;
 
     const theseDates = orderedDates
       .filter(dateObject => this.props.formattedPermit[dateObject.accelaLabel])
@@ -103,18 +105,46 @@ class Timeline extends React.Component {
         )
       )//.sort((a, b) => a.dateValue - b.dateValue);
     // TODO: SORT THEM AUTOMATICALLY OR NO?
-
-    const showLabels = dimensions.width > theseDates.length * 100;
+    const eachWidth = (dimensions.width - (padding + padding * theseDates.length)) / theseDates.length;
+    const midRowIndex = (theseDates.length - 1) / 2;
     const getX = (dateObj, i) =>
-        padding + ((dimensions.width - padding * 2) / theseDates.length) * i;
+      midpointX + ((i % theseDates.length) - midRowIndex) * (padding + eachWidth);
+
+    const showLabels = eachWidth > 80;
 
     return (
       <svg height={dimensions.height} width={dimensions.width}>
-        {theseDates.map((d, i, datesArray) => (
-          <g key={d.accelaLabel}>
-            <circle cx={getX(d, i)} cy={dimensions.height / 2} r="16" fill={this.props.formattedPermit.trcType.color}/>
-          </g>
-        ))}
+        {theseDates.map((d, i, datesArray) => {
+          const thisX = getX(d, i);
+          const circleY = padding + pointRadius;
+          return (<g key={d.accelaLabel}>
+            <circle
+              cx={thisX}
+              cy={circleY}
+              r="16"
+              fill={this.props.formattedPermit.trcType.color}
+            />
+            {i > 0 &&
+              <path
+                d={`M${getX(datesArray[i - 1], i - 1)} ${circleY} L${thisX} ${circleY} z`}
+                stroke={this.props.formattedPermit.trcType.color}
+                strokeWidth="3px"
+              />
+            }
+            <foreignObject
+              x={thisX - (eachWidth / 2)}
+              y={padding * 2 + pointRadius}
+              width={eachWidth}
+              height={dimensions.height - (padding * 3 + pointRadius)}
+              style={{ overflow: 'visible' }}
+            >
+              <div style={{ textAlign: 'center', padding: '1rem' }}>
+                <div>{d.dateInput}</div>
+                <div>{d.displayLabel}</div>
+              </div>
+            </foreignObject>
+          </g>)
+        })}
       </svg>
     );
   }

@@ -123,7 +123,7 @@ export const dagreNodes = [
   },
   {
     id: 'Level I decision',
-    description: <div>{decisionIconHeader}</div>,
+    decisionNode: true,
     typeIds: [
       'Level I',
     ],
@@ -146,7 +146,7 @@ export const dagreNodes = [
   },
   {
     id: 'Major Subdivision and Level II decision (not downtown)',
-    description: <div>{decisionIconHeader}</div>,
+    decisionNode: true,
     typeIds: [
       'Level II',
       'Major Subdivision',
@@ -174,7 +174,7 @@ export const dagreNodes = [
   },
   {
     id: 'Major Subdivision decision (downtown)',
-    description: <div>{decisionIconHeader}</div>,
+    decisionNode: true,
     typeIds: [
       'Major Subdivision',
     ],
@@ -197,7 +197,7 @@ export const dagreNodes = [
   },
   {
     id: 'Level II decision (downtown)',
-    description: <div>{decisionIconHeader}</div>,
+    decisionNode: true,
     typeIds: [
       'Level II',
     ],
@@ -218,7 +218,7 @@ export const dagreNodes = [
   },
   {
     id: 'City Council decision',
-    description: <div>{decisionIconHeader}</div>,
+    decisionNode: true,
     typeIds: [
       'Conditional Zoning',
       'Conditional Use Permit',
@@ -361,10 +361,11 @@ export function getNodes(dagreGraph, visWidth, nodeHeight, nodePadding) {
   const midpointX = visWidth / 2;
   const annotationMargin = nodePadding;
 
-  let totalYOffsetValue = 0;
+  // let totalYOffsetValue = 0;
   // totalYOffsetValue has to be added to if there is a multi-row set of nodes
   nodeValues.forEach((d) => {
-    d.coincidents = JSON.parse(JSON.stringify(nodeValues.filter(val => val.y === d.y)));
+    d.coincidents = nodeValues.filter(val => val.y === d.y);
+
     d.indexInCoincidents = d.coincidents.findIndex(c => c.id === d.id);
     d.numPerRow = d.coincidents.length <= 3 ? d.coincidents.length : Math.ceil(d.coincidents.length / 2);
 
@@ -377,8 +378,19 @@ export function getNodes(dagreGraph, visWidth, nodeHeight, nodePadding) {
     const midRowIndex = (d.numPerRow - 1) / 2;
     d.x = midpointX + ((d.indexInCoincidents % d.numPerRow) - midRowIndex) * (annotationMargin + d.wrap);
 
+
+    if (d.subNodes) {
+      d.content = (<div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
+        {d.subNodes.map((sub, subIndex, subNodeArray) =>
+          displaySubNode(sub, subIndex === subNodeArray.length - 1))}
+      </div>)
+    } else if (d.decisionNode) {
+      d.content = <div>{decisionIconHeader}</div>;
+    } else if (!d.subNodes && d.steps) {
+      d.content = nodeSteps(d.steps, d.id);
+    }
     // Y value must be set in separate iteration because it is used to determine coincidents
-    let thisYOffset = totalYOffsetValue;
+    // let thisYOffset = totalYOffsetValue;
     // Split into rows
     // if (d.coincidents.length > 2) {
     //   if (d.indexInCoincidents >= d.coincidents.length / 2) {
@@ -389,14 +401,17 @@ export function getNodes(dagreGraph, visWidth, nodeHeight, nodePadding) {
     //     }
     //   }
     // }
-    d.yOffset = thisYOffset;
+    // d.yOffset = thisYOffset;
   });
+
   // Reiterate and update y values
-  return nodeValues.map((d) => {
-    const rVal = Object.assign({}, d);
-    rVal.y = d.y + d.yOffset;
-    return rVal;
-  });
+  return nodeValues;
+
+  // .map((d) => {
+  //   const rVal = Object.assign({}, d);
+  //   rVal.y = d.y + d.yOffset;
+  //   return rVal;
+  // });
 }
 
 export function getLinks(inputLinks, nodes, edgePadding, edgeStroke) {

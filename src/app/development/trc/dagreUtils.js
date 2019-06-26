@@ -55,7 +55,7 @@ export const decisionIconHeader = (
   </div>
 );
 
-const decisionNodeMaxWidth = 300;
+const decisionNodeMaxWidth = 400;
 export const dagreNodes = [
   {
     id: 'Before the application is submitted',
@@ -160,6 +160,14 @@ export const dagreNodes = [
     ],
   },
   {
+    id: 'Major Subdivision decision (downtown)',
+    description: <div>{decisionIconHeader}</div>,
+    typeIds: [
+      'Major Subdivision',
+    ],
+    maxWidth: decisionNodeMaxWidth,
+  },
+  {
     id: 'Planning and Zoning Commission',
     steps: {
       what: 'For  Conditional Zoning, Conditional Use, and Level III projects, the Planning and Zoning Commission holds a public hearing and makes a recommendation for action to City Council.  For downtown Level II projects, the Planning and Zoning Commission verifies technical compliance with the requirements of applicable ordinances and documents and takes final action.',
@@ -176,11 +184,10 @@ export const dagreNodes = [
     ],
   },
   {
-    id: 'Level II and Major Subdivision decision (downtown)',
+    id: 'Level II decision (downtown)',
     description: <div>{decisionIconHeader}</div>,
     typeIds: [
       'Level II',
-      'Major Subdivision',
     ],
     maxWidth: decisionNodeMaxWidth,
   },
@@ -259,7 +266,7 @@ export const dagreLinks = [
   },
   {
     source: 'Design review',
-    target: 'Level II and Major Subdivision decision (downtown)',
+    target: 'Major Subdivision decision (downtown)',
     parallelEdges: [
       { id: 'Major Subdivision' },
     ],
@@ -282,7 +289,7 @@ export const dagreLinks = [
   },
   {
     source: 'Planning and Zoning Commission',
-    target: 'Level II and Major Subdivision decision (downtown)',
+    target: 'Level II decision (downtown)',
     parallelEdges: [
       { id: 'Level II' },
     ],

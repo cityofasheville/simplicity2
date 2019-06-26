@@ -155,7 +155,8 @@ const Permit = props => (
               </div>
             )}
             <div className={`col-sm-12 col-md-${showMap ? 6 : 12} permit-details-card`}>
-              {byDetailArea['project details'].map(d => d)}
+              {byDetailArea['project details'] !== undefined &&
+                byDetailArea['project details'].map(d => d)}
               {trcType !== undefined && (
                 <div style={{ display: 'flex', marginTop: '1rem' }}>
                   <p>

@@ -23,8 +23,7 @@ export const whoIcons = {
 };
 
 export const decisionIconStyle = {
-  fontSize: '1.5rem',
-  margin: '0.25rem 1rem 0 0',
+  margin: '0 1rem 0 0',
   width: '1.5rem',
   color: 'black',
   textAlign: 'center',

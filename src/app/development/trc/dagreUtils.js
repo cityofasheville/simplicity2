@@ -5,6 +5,7 @@ import Icon from '../../../shared/Icon';
 import {
   DRAFTING_COMPASS,
   USER_FRIENDS,
+  GAVEL,
 } from '../../../shared/iconConstants';
 
 export const whoIcons = {
@@ -15,6 +16,10 @@ export const whoIcons = {
   staff: {
     label: 'City Staff',
     icon: (<CityLogoSvg color="black" height={16} />),
+  },
+  council: {
+    label: 'City Officials',
+    icon: (<Icon path={GAVEL} viewBox="0 0 512 512" />),
   },
   neighbors: {
     label: 'Neighbors',
@@ -169,8 +174,8 @@ export const dagreNodes = [
     id: 'Planning and Zoning Commission',
     steps: {
       what: 'For  Conditional Zoning, Conditional Use, and Level III projects, the Planning and Zoning Commission holds a public hearing and makes a recommendation for action to City Council.  For downtown Level II projects, the Planning and Zoning Commission verifies technical compliance with the requirements of applicable ordinances and documents and takes final action.',
-      who: ['dev', 'staff', 'neighbors'],
-    // TODO: ADD ICON ETC FOR CITY OFFICIALS
+      who: ['dev', 'staff', 'neighbors', 'council'],
+      // TODO: ADD ICON ETC FOR CITY OFFICIALS
       when: (<React.Fragment>Per <a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/planning-and-zoning-commission/">published schedule</a></React.Fragment>),
       where: 'City Hall',
     },
@@ -192,11 +197,11 @@ export const dagreNodes = [
     id: 'City Council',
     steps: {
       what: 'Applications are reviewed during a public hearing before City Council.  These projects arrive at the City Council meeting with a recommendation for action that has been sent by the Planning and Zoning Commission.',
-      who: ['dev', 'staff', 'neighbors'],
+      who: ['dev', 'staff', 'neighbors', 'council'],
       when: 'The second and fourth Tuesday of each month',
       where: 'City Hall',
     },
-// TODO: ADD ICON/WHO FOR CITY OFFICIALS
+    // TODO: ADD ICON/WHO FOR CITY OFFICIALS
     typeIds: [
       'Conditional Zoning',
       'Conditional Use Permit',

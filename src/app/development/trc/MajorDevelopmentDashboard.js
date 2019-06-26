@@ -28,7 +28,7 @@ class MajorDevelopmentDashboard extends React.Component {
         linkName: 'Process',
         header: 'The development process',
         body: (<div>
-          <p>After the developer submits an application, it goes through a decision-making process that includes city staff, city council, developers, and residents.  Who is involved at what step depends on the type of project.</p>
+          <p>After the developer submits an application, it goes through a decision-making process that includes city staff, elected and appointed city officials, developers, and residents.  Who is involved at what step depends on the type of project.</p>
           <AnnotatedDagre />
         </div>),
       },

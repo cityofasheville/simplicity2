@@ -23,13 +23,12 @@ export const whoIcons = {
 };
 
 export const decisionIconStyle = {
-  margin: '0.25rem 1rem 0.25rem 0',
+  fontSize: '1.5rem',
+  margin: '0.25rem 1rem 0 0',
   width: '1.5rem',
-  color: 'white',
+  color: 'black',
   textAlign: 'center',
   display: 'inline-block',
-  borderRadius: '1rem',
-  backgroundColor: 'black'
 };
 
 export const decisionIconHeader = (
@@ -171,10 +170,9 @@ export const dagreNodes = [
     id: 'Planning and Zoning Commission',
     steps: {
       what: 'For  Conditional Zoning, Conditional Use, and Level III projects, the Planning and Zoning Commission holds a public hearing and makes a recommendation for action to City Council.  For downtown Level II projects, the Planning and Zoning Commission verifies technical compliance with the requirements of applicable ordinances and documents and takes final action.',
-      when: (<React.Fragment>Per <a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/planning-and-zoning-commission/">published schedule</a></React.Fragment>),
-// TODO: ADD LINK
       who: ['dev', 'staff', 'neighbors'],
-// TODO: ADD ICON ETC FOR CITY OFFICIALS
+    // TODO: ADD ICON ETC FOR CITY OFFICIALS
+      when: (<React.Fragment>Per <a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/planning-and-zoning-commission/">published schedule</a></React.Fragment>),
       where: 'City Hall',
     },
     typeIds: [

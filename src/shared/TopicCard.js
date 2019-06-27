@@ -22,7 +22,7 @@ const getTopicIcon = (topic) => {
     case 'BUDGET':
       return (<Icon path={IM_COIN_DOLLAR} size={75} />)
     case 'HOMELESSNESS':
-      return (<Icon path={IM_BED} size={75} />)      
+      return (<Icon path={IM_BED} size={75} />)
     case 'CAPITAL_PROJECTS':
       return (<Icon path={IM_CITY} size={75} />)
     default:
@@ -57,21 +57,22 @@ const translateTopic = (topic, language) => {
   }
 };
 
-const TopicCard = props => (
-  <Link
+const TopicCard = props => {
+  const query = {};
+  const queryPossiblies = ['view', 'entity', 'id', 'label', 'entities', 'x', 'y', 'search'];
+  queryPossiblies.forEach(possibility => {
+    if (props[possibility]) {
+      console.log(props[possibility])
+      query[possibility] = props[possibility];
+    }
+  })
+
+  return (<Link
     className="topic-card"
     to={{
-      pathname: props.topic,
-      query: {
-        entity: props.entity,
-        view: 'map',
-        id: props.id,
-        label: props.label,
-        entities: props.entities,
-        x: props.x,
-        y: props.y,
-        search: props.search }
-      }}
+      pathname: props.path || props.topic,
+      query,
+    }}
   >
     <div className={styles.topicCard}>
       <div className="text-primary text-center">{getTopicIcon(props.topic)}</div>
@@ -80,7 +81,7 @@ const TopicCard = props => (
       </div>
     </div>
   </Link>
-);
+)};
 
 TopicCard.propTypes = {
   topic: PropTypes.string,
@@ -94,14 +95,15 @@ TopicCard.propTypes = {
 };
 
 TopicCard.defaultProps = {
-  topic: 'CRIME',
-  entity: 'city',
-  search: '',
-  id: '',
-  label: '',
-  entities: 'address,property,neighborhood,street,owner',
-  x: '',
-  y: '',
+  view: 'map',
+  // topic: 'CRIME',
+  // entity: 'city',
+  // search: null,
+  // id: null,
+  // label: null,
+  // entities: 'address,property,neighborhood,street,owner',
+  // x: null,
+  // y: null,
 };
 
 export default withLanguage(TopicCard);

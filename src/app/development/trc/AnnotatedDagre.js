@@ -16,7 +16,7 @@ import {
 } from './dagreUtils';
 
 
-const LargeNodeContents = ({ node, yOffset, edgeStroke }) => {
+const LargeNodeContents = ({ node, yOffset, edgeStroke, modalCloseFunc = null }) => {
   let content;
   if (node.subNodes) {
     content = (<div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
@@ -65,6 +65,20 @@ const LargeNodeContents = ({ node, yOffset, edgeStroke }) => {
         </div>
       </div>
       {content}
+      {modalCloseFunc &&
+        <button
+          style={{
+            borderRadius: '6px',
+            textDecoration: 'underline',
+            backgroundColor: 'transparent',
+            border: '1px solid transparent',
+            width: '100%',
+          }}
+          onClick={modalCloseFunc}
+        >
+          Close
+        </button>
+      }
     </div>
 )}
 
@@ -154,7 +168,7 @@ const SmallNode = ({ node, yOffset, edgeStroke, clickAction }) => {
             backgroundColor: 'transparent',
             border: '1px solid transparent',
           }}
-          onClick={() => clickAction(node)}
+          onClick={(e) => clickAction(e, node)}
         >
           ...more details
         </button>
@@ -184,9 +198,11 @@ class AnnotatedDagre extends React.Component {
 
     this.updateDimensions = this.updateDimensions.bind(this);
     this.showModal = this.showModal.bind(this);
+    this.hideModal = this.hideModal.bind(this);
     this.state = {
       dimensions: null,
       modalNode: null,
+      modalY: 0,
     };
   }
 
@@ -209,9 +225,11 @@ class AnnotatedDagre extends React.Component {
     window.removeEventListener('resize', this.updateDimensions);
   }
 
-  showModal(node) {
-    console.log(node)
-    this.setState({ modalNode: node });
+  showModal(e, node) {
+    this.setState({
+      modalNode: node ,
+      modalY: e.target.getBoundingClientRect().y + window.scrollY,
+    });
   }
 
   hideModal() {
@@ -233,82 +251,91 @@ class AnnotatedDagre extends React.Component {
     const nodes = getNodes(graph, dimensions.width, nodeHeight, nodePadding);
     const links = getLinks(dagreLinks, nodes, edgePadding, edgeStroke);
 
-    return (<div style={{ width: '100%', fontSize: dimensions.width < 500 ? '0.75rem' : '1em' }}>
-      <svg height={height} width={dimensions.width}>
-        <ArrowDefs arrowWidth={arrowWidth} />
-        <g>
-          {links.map((d, i, linksArray) => {
-            const elbowOffset = edgeStroke;
-            let verticalOffset = 0;
-            if (d.x2 < d.x1) {
-              verticalOffset = i * elbowOffset;
-            } else if (d.x2 > d.x1) {
-              verticalOffset = (linksArray.length - i) * elbowOffset;
-            }
-            const halfWay = d.x1 + ((d.x2 - d.x1) / 2);
-            const linkYOffset = yOffset - 1;
+    return (
+      <div
+        style={{
+          width: '100%',
+          fontSize: dimensions.width < 500 ? '0.75rem' : '1em',
+          opacity: this.state.modalNode ? '0.5' : '1',
+        }}
+      >
+        <svg height={height} width={dimensions.width}>
+          <ArrowDefs arrowWidth={arrowWidth} />
+          <g>
+            {links.map((d, i, linksArray) => {
+              const elbowOffset = edgeStroke;
+              let verticalOffset = 0;
+              if (d.x2 < d.x1) {
+                verticalOffset = i * elbowOffset;
+              } else if (d.x2 > d.x1) {
+                verticalOffset = (linksArray.length - i) * elbowOffset;
+              }
+              const halfWay = d.x1 + ((d.x2 - d.x1) / 2);
+              const linkYOffset = yOffset - 1;
 
-            const pathData = `M${d.x1} ${d.y1 - linkYOffset}
-              Q ${d.x1} ${d.y1 + ((d.y2 - d.y1) / 4) - linkYOffset + verticalOffset},
-              ${halfWay} ${d.y1 + ((d.y2 - d.y1) / 2) - linkYOffset + verticalOffset}
-              T ${d.x2} ${d.y2 - linkYOffset}
-            `;
+              const pathData = `M${d.x1} ${d.y1 - linkYOffset}
+                Q ${d.x1} ${d.y1 + ((d.y2 - d.y1) / 4) - linkYOffset + verticalOffset},
+                ${halfWay} ${d.y1 + ((d.y2 - d.y1) / 2) - linkYOffset + verticalOffset}
+                T ${d.x2} ${d.y2 - linkYOffset}
+              `;
 
-            return (<path
-              d={pathData}
+              return (<path
+                d={pathData}
+                style={{
+                  stroke: trcProjectTypes[d.id].color,
+                  strokeWidth: edgeStroke,
+                  fill: 'none',
+                }}
+                key={`${d.source}-${d.target}-${i}`}
+                className={d.id}
+                markerEnd={`url(#marker-${trcProjectTypes[d.id].short})`}
+              />)
+            })}
+          </g>
+          <g>
+            {nodes.map(d => dimensions.width > 767 ? (
+              <LargeNode
+                node={d}
+                yOffset={yOffset}
+                edgeStroke={edgeStroke}
+                key={d.id}
+              />
+            ) : (
+              <SmallNode
+                node={d}
+                yOffset={yOffset}
+                edgeStroke={edgeStroke}
+                key={d.id}
+                clickAction={this.showModal}
+              />
+            )
+            )}
+          </g>
+        </svg>
+        {this.state.modalNode &&
+          ReactDOM.createPortal(
+            (<div
+              role="status"
               style={{
-                stroke: trcProjectTypes[d.id].color,
-                strokeWidth: edgeStroke,
-                fill: 'none',
+                position: 'absolute',
+                top: this.state.modalY,
+                left: '5vw',
+                zIndex: 99,
+                width: '90vw'
               }}
-              key={`${d.source}-${d.target}-${i}`}
-              className={d.id}
-              markerEnd={`url(#marker-${trcProjectTypes[d.id].short})`}
-            />)
-          })}
-        </g>
-        <g>
-          {nodes.map(d => dimensions.width > 767 ? (
-            <LargeNode
-              node={d}
-              yOffset={yOffset}
-              edgeStroke={edgeStroke}
-              key={d.id}
-            />
-          ) : (
-            <SmallNode
-              node={d}
-              yOffset={yOffset}
-              edgeStroke={edgeStroke}
-              key={d.id}
-              clickAction={this.showModal}
-            />
+            >
+              <LargeNodeContents
+                node={this.state.modalNode}
+                yOffset={yOffset}
+                edgeStroke={edgeStroke}
+                modalCloseFunc={this.hideModal}
+              />
+            </div>),
+            document.body
           )
-          )}
-        </g>
-      </svg>
-      {this.state.modalNode &&
-        ReactDOM.createPortal(
-          (<div
-            role="status"
-            style={{
-              position: 'absolute',
-              top: '5vw',
-              left: '5vw',
-              zIndex: 99,
-              width: '90vw'
-            }}
-          >
-            <LargeNodeContents
-              node={this.state.modalNode}
-              yOffset={yOffset}
-              edgeStroke={edgeStroke}
-            />
-          </div>),
-          document.body
-        )
-      }
-    </div>);
+        }
+      </div>
+    );
   }
 
   render() {

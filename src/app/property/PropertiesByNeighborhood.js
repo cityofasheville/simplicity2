@@ -62,7 +62,7 @@ const PropertiesByNeighborhood = (props) => {
     <div>
       <div className="row">
         <div className="col-sm-12">
-          <EmailDownload downloadData={props.data.properties_by_neighborhood} fileName="properties_by_neighborhodd.csv" />
+          <EmailDownload downloadData={props.data.properties_by_neighborhood} fileName="properties_by_neighborhood.csv" />
         </div>
         <div id="listView" className="col-sm-12" hidden={props.location.query.view !== 'list'}>
           {props.data.properties_by_neighborhood.length < 1 ?

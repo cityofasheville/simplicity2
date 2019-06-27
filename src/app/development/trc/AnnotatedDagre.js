@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 // import PropTypes from 'prop-types';
 import TypePuck from './TypePuck';
 import { trcProjectTypes } from '../utils';
@@ -15,7 +16,7 @@ import {
 } from './dagreUtils';
 
 
-const LargeNode = ({ node, yOffset, edgeStroke }) => {
+const LargeNodeContents = ({ node, yOffset, edgeStroke }) => {
   let content;
   if (node.subNodes) {
     content = (<div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
@@ -28,14 +29,7 @@ const LargeNode = ({ node, yOffset, edgeStroke }) => {
     content = nodeSteps(node.steps, node.id);
   }
 
-  return (<foreignObject
-    x={node.x - (node.wrap / 2)}
-    y={node.y - yOffset}
-    width={node.wrap}
-    height={node.height}
-    key={`node-${node.id}`}
-    style={{ overflow: 'visible' }}
-  >
+  return (
     <div
       style={{
         border: `${edgeStroke}px solid #e6e6e6`,
@@ -72,10 +66,34 @@ const LargeNode = ({ node, yOffset, edgeStroke }) => {
       </div>
       {content}
     </div>
+)}
+
+const LargeNode = ({ node, yOffset, edgeStroke }) => {
+  let content;
+  if (node.subNodes) {
+    content = (<div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
+      {node.subNodes.map((sub, subIndex, subNodeArray) =>
+        displaySubNode(sub, subIndex === subNodeArray.length - 1))}
+    </div>)
+  } else if (node.decisionNode) {
+    content = <div>{decisionIconHeader}</div>;
+  } else if (!node.subNodes && node.steps) {
+    content = nodeSteps(node.steps, node.id);
+  }
+
+  return (<foreignObject
+    x={node.x - (node.wrap / 2)}
+    y={node.y - yOffset}
+    width={node.wrap}
+    height={node.height}
+    key={`node-${node.id}`}
+    style={{ overflow: 'visible' }}
+  >
+    <LargeNodeContents node={node} yOffset={yOffset} edgeStroke={edgeStroke} />
   </foreignObject>
 )};
 
-const SmallNode = ({ node, yOffset, edgeStroke }) => {
+const SmallNode = ({ node, yOffset, edgeStroke, clickAction }) => {
   let content;
   if (node.subNodes) {
     content = (<div>
@@ -136,6 +154,7 @@ const SmallNode = ({ node, yOffset, edgeStroke }) => {
             backgroundColor: 'transparent',
             border: '1px solid transparent',
           }}
+          onClick={() => clickAction(node)}
         >
           ...more details
         </button>
@@ -144,34 +163,6 @@ const SmallNode = ({ node, yOffset, edgeStroke }) => {
   </foreignObject>
 )}
 
-// {dimensions.width < 768 && this.props.openNode === d.id &&
-//   ReactDOM.createPortal(
-//     (<div
-//       className="modal"
-//       role="status"
-//       style={{
-//         position: 'absolute',
-//         top: 10,
-//         left: 10,
-//         zIndex: 99,
-//       }}
-//     >
-//       <div
-//         style={{
-//           border: `3px solid black`,
-//           backgroundColor: 'white',
-//           padding: '0.5em',
-//           borderRadius: '6px',
-//           height: '100%',
-//           fontWeight: 500,
-//         }}
-//       >
-//         {d.content}
-//       </div>
-//     </div>),
-//     document.body
-//   )
-// }
 
 class AnnotatedDagre extends React.Component {
   constructor() {
@@ -192,9 +183,10 @@ class AnnotatedDagre extends React.Component {
     this.numLevels = multiRow + uniqueYVals;
 
     this.updateDimensions = this.updateDimensions.bind(this);
+    this.showModal = this.showModal.bind(this);
     this.state = {
       dimensions: null,
-      openNode: 'Permit application',
+      modalNode: null,
     };
   }
 
@@ -215,6 +207,15 @@ class AnnotatedDagre extends React.Component {
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.updateDimensions);
+  }
+
+  showModal(node) {
+    console.log(node)
+    this.setState({ modalNode: node });
+  }
+
+  hideModal() {
+    this.setState({ modalNode: null });
   }
 
   renderContent() {
@@ -280,11 +281,33 @@ class AnnotatedDagre extends React.Component {
               yOffset={yOffset}
               edgeStroke={edgeStroke}
               key={d.id}
+              clickAction={this.showModal}
             />
           )
           )}
         </g>
       </svg>
+      {this.state.modalNode &&
+        ReactDOM.createPortal(
+          (<div
+            role="status"
+            style={{
+              position: 'absolute',
+              top: '5vw',
+              left: '5vw',
+              zIndex: 99,
+              width: '90vw'
+            }}
+          >
+            <LargeNodeContents
+              node={this.state.modalNode}
+              yOffset={yOffset}
+              edgeStroke={edgeStroke}
+            />
+          </div>),
+          document.body
+        )
+      }
     </div>);
   }
 

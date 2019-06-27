@@ -95,7 +95,7 @@ class PermitTimeline extends React.Component {
   render() {
     const { dimensions } = this.state;
     return (
-      <div id="permit-timeline-container" style={{ height: '125px', width: '100%', overflowX: 'auto', overflowY: 'hidden' }}>
+      <div id="permit-timeline-container">
         {dimensions && this.renderContent()}
       </div>
     );

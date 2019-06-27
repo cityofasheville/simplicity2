@@ -11,6 +11,7 @@
   overflow-y: hidden;
 }
 
+
 #permit-timeline-container::-webkit-scrollbar {
   height: 4px;
 }
@@ -23,4 +24,10 @@
 /* Handle */
 #permit-timeline-container::-webkit-scrollbar-thumb {
   background: #e6e6e6;
+}
+
+@media(min-width: 767px){
+  #permit-timeline-container {
+    height: 100px;
+  }
 }

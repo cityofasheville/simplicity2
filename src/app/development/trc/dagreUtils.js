@@ -32,8 +32,8 @@ export const whoIcons = {
 };
 
 export const decisionIconStyle = {
-  margin: '0 1rem 0 0',
-  width: '1.5rem',
+  margin: '0 0.25rem 0 0',
+  width: '1rem',
   color: 'black',
   textAlign: 'center',
   display: 'inline-block',
@@ -123,7 +123,7 @@ export const dagreNodes = [
   },
   {
     id: 'Level I decision',
-    description: <div>{decisionIconHeader}</div>,
+    decisionNode: true,
     typeIds: [
       'Level I',
     ],
@@ -146,7 +146,7 @@ export const dagreNodes = [
   },
   {
     id: 'Major Subdivision and Level II decision (not downtown)',
-    description: <div>{decisionIconHeader}</div>,
+    decisionNode: true,
     typeIds: [
       'Level II',
       'Major Subdivision',
@@ -158,11 +158,11 @@ export const dagreNodes = [
     steps: {
       what: <div>Projects located Downtown or in the River District must be reviewed for architectural design elements by a special design review sub-committee of either the <a href="https://library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTIIIDEKIADADBO_S7-3-8ASDOCO" target="_blank" rel="noopener noreferrer">Asheville Downtown Commission</a> or the <a href="https://library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTIIIDEKIADADBO_S7-3-10ASARRIRECO" target="_blank" rel="noopener noreferrer">Asheville Area Riverfront Redevelopment Commission</a> prior to approval.</div>,
       who: ['dev', 'staff', 'neighbors'],
-      when: (<ul>
+      when: (<ul style={{ padding: 0 }}>
         <li>Downtown Commission: second Friday of each month</li>
         <li>Riverfront Commission: second Thursday of each month</li>
       </ul>),
-      where: (<ul>
+      where: (<ul style={{ padding: 0 }}>
         <li>Downtown Commission: <a href="https://goo.gl/maps/7GkCkb1pPjRaXbAc7" target="_blank" rel="noopener noreferrer">City Hall</a></li>
         <li>Riverfront Commission: <a href="https://goo.gl/maps/Wbamfs7tbhSmQ1Uz7" target="_blank" rel="noopener noreferrer">Explore Asheville offices</a></li>
       </ul>),
@@ -174,7 +174,7 @@ export const dagreNodes = [
   },
   {
     id: 'Major Subdivision decision (downtown)',
-    description: <div>{decisionIconHeader}</div>,
+    decisionNode: true,
     typeIds: [
       'Major Subdivision',
     ],
@@ -197,7 +197,7 @@ export const dagreNodes = [
   },
   {
     id: 'Level II decision (downtown)',
-    description: <div>{decisionIconHeader}</div>,
+    decisionNode: true,
     typeIds: [
       'Level II',
     ],
@@ -218,7 +218,7 @@ export const dagreNodes = [
   },
   {
     id: 'City Council decision',
-    description: <div>{decisionIconHeader}</div>,
+    decisionNode: true,
     typeIds: [
       'Conditional Zoning',
       'Conditional Use Permit',
@@ -361,10 +361,11 @@ export function getNodes(dagreGraph, visWidth, nodeHeight, nodePadding) {
   const midpointX = visWidth / 2;
   const annotationMargin = nodePadding;
 
-  let totalYOffsetValue = 0;
+  // let totalYOffsetValue = 0;
   // totalYOffsetValue has to be added to if there is a multi-row set of nodes
   nodeValues.forEach((d) => {
-    d.coincidents = JSON.parse(JSON.stringify(nodeValues.filter(val => val.y === d.y)));
+    d.coincidents = nodeValues.filter(val => val.y === d.y);
+
     d.indexInCoincidents = d.coincidents.findIndex(c => c.id === d.id);
     d.numPerRow = d.coincidents.length <= 3 ? d.coincidents.length : Math.ceil(d.coincidents.length / 2);
 
@@ -378,7 +379,7 @@ export function getNodes(dagreGraph, visWidth, nodeHeight, nodePadding) {
     d.x = midpointX + ((d.indexInCoincidents % d.numPerRow) - midRowIndex) * (annotationMargin + d.wrap);
 
     // Y value must be set in separate iteration because it is used to determine coincidents
-    let thisYOffset = totalYOffsetValue;
+    // let thisYOffset = totalYOffsetValue;
     // Split into rows
     // if (d.coincidents.length > 2) {
     //   if (d.indexInCoincidents >= d.coincidents.length / 2) {
@@ -389,14 +390,17 @@ export function getNodes(dagreGraph, visWidth, nodeHeight, nodePadding) {
     //     }
     //   }
     // }
-    d.yOffset = thisYOffset;
+    // d.yOffset = thisYOffset;
   });
+
   // Reiterate and update y values
-  return nodeValues.map((d) => {
-    const rVal = Object.assign({}, d);
-    rVal.y = d.y + d.yOffset;
-    return rVal;
-  });
+  return nodeValues;
+
+  // .map((d) => {
+  //   const rVal = Object.assign({}, d);
+  //   rVal.y = d.y + d.yOffset;
+  //   return rVal;
+  // });
 }
 
 export function getLinks(inputLinks, nodes, edgePadding, edgeStroke) {
@@ -470,7 +474,7 @@ export const displaySubNode = (node, lastNode = false) => (
 );
 
 export const nodeSteps = (steps, nodeId) => (
-  <ul style={{ listStyleType: 'none', padding: '0 1rem' }}>{Object.keys(steps).map(stepKey => (
+  <ul style={{ listStyleType: 'none', padding: '0' }}>{Object.keys(steps).map(stepKey => (
     <li key={`${stepKey}-${nodeId}`} style={{ padding: '0.25rem 0' }}>
       <div
         style={{

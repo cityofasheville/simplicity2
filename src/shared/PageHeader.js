@@ -18,15 +18,15 @@ const PageHeader = props => (
             {props.dataType !== null &&
             <span className="title__type">
               {props.dataType}
-            </span> 
-            }             
-          </span>                  
-        </h1>        
-      </div>      
+            </span>
+            }
+          </span>
+        </h1>
+      </div>
       <div className="template-header__actions">
         {props.children}
       </div>
-      {props.externalLink && props.dataLinkPath &&
+      {(props.externalLink || props.dataLinkPath) &&
         <div className="template-header__subnav">
           {props.externalLink &&
             <div>

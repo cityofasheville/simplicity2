@@ -22,7 +22,7 @@ const getTopicIcon = (topic) => {
     case 'BUDGET':
       return (<Icon path={IM_COIN_DOLLAR} size={75} />)
     case 'HOMELESSNESS':
-      return (<Icon path={IM_BED} size={75} />)      
+      return (<Icon path={IM_BED} size={75} />)
     case 'CAPITAL_PROJECTS':
       return (<Icon path={IM_CITY} size={75} />)
     default:
@@ -61,17 +61,18 @@ const TopicCard = props => (
   <Link
     className="topic-card"
     to={{
-      pathname: props.topic,
-      query: {
-        entity: props.entity,
-        view: 'map',
-        id: props.id,
-        label: props.label,
-        entities: props.entities,
-        x: props.x,
-        y: props.y,
-        search: props.search }
-      }}
+      pathname: props.path,
+      // query: {
+      //   entity: props.entity,
+      //   view: 'map',
+      //   id: props.id,
+      //   label: props.label,
+      //   entities: props.entities,
+      //   x: props.x,
+      //   y: props.y,
+      //   search: props.search,
+      // }
+    }}
   >
     <div className={styles.topicCard}>
       <div className="text-primary text-center">{getTopicIcon(props.topic)}</div>

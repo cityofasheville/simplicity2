@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 
-class Timeline extends React.Component {
+class PermitTimeline extends React.Component {
   constructor() {
     super();
 
@@ -33,9 +33,8 @@ class Timeline extends React.Component {
 
   renderContent() {
     const { dimensions } = this.state;
-    const padding = dimensions.height / 10;
-    const pointRadius = 10;
-    const midpointX = dimensions.width / 2;
+    const padding = 10;
+    const pointRadius = 5;
     let datesToUse = this.props.formattedPermit.orderedDates;
     if (datesToUse.length === 1) {
       datesToUse = this.props.formattedPermit.orderedDates
@@ -45,16 +44,15 @@ class Timeline extends React.Component {
           displayLabel: '',
         }]);
     }
-
-    const eachWidth = (dimensions.width - (padding + padding * datesToUse.length)) / datesToUse.length;
+    const timelineWidth = Math.max(datesToUse.length * 125, dimensions.width - 5);
+    const midpointX = timelineWidth / 2;
+    const eachWidth = (timelineWidth - (padding + padding * datesToUse.length)) / datesToUse.length;
     const midRowIndex = (datesToUse.length - 1) / 2;
     const getX = (dateObj, i) =>
       midpointX + ((i % datesToUse.length) - midRowIndex) * (padding + eachWidth);
 
-    const showLabels = eachWidth > 80;
-
     return (
-      <svg height={dimensions.height} width={dimensions.width}>
+      <svg height={dimensions.height} width={timelineWidth}>
         {datesToUse.map((d, i, datesArray) => {
           const thisX = getX(d, i);
           const circleY = padding + pointRadius;
@@ -83,7 +81,7 @@ class Timeline extends React.Component {
               height={dimensions.height - (padding * 3 + pointRadius)}
               style={{ overflow: 'visible' }}
             >
-              <div style={{ textAlign: 'center', padding: '1rem' }}>
+              <div style={{ textAlign: 'center', padding: '0.5rem', fontSize: '0.75rem' }}>
                 <div>{this.props.dateFormatter(d.dateInput)}</div>
                 <div>{d.displayLabel}</div>
               </div>
@@ -97,11 +95,11 @@ class Timeline extends React.Component {
   render() {
     const { dimensions } = this.state;
     return (
-      <div id="permit-timeline-container" style={{ height: '150px', width: '100%' }}>
+      <div id="permit-timeline-container" style={{ height: '125px', width: '100%', overflowX: 'auto', overflowY: 'hidden' }}>
         {dimensions && this.renderContent()}
       </div>
     );
   }
 }
 
-export default Timeline;
+export default PermitTimeline;

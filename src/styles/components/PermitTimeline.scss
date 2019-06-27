@@ -1,0 +1,25 @@
+/* width */
+
+#permit-timeline-container {
+  margin: 1rem 0;
+  padding: 0 0 1rem;
+  border: 1px solid #e6e6e6;
+  border-radius: 6px;
+}
+
+#permit-timeline-container::-webkit-scrollbar {
+  height: 4px;
+  transform:rotateX(180deg);
+  -ms-transform:rotateX(180deg); /* IE 9 */
+  -webkit-transform:rotateX(180deg); /* Safari and Chrome */
+}
+
+/* Track */
+#permit-timeline-container::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 2px #e6e6e6;
+}
+
+/* Handle */
+#permit-timeline-container::-webkit-scrollbar-thumb {
+  background: #e6e6e6;
+}

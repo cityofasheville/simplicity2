@@ -216,7 +216,7 @@ TimeSlider.defaultProps = {
     timeDay.floor(new Date()).getTime(),
   ], // today and today minus thirty-one days
   onBrushEnd: newExtent => console.log(newExtent),
-  xSpan: 1, // in years
+  xSpan: 2, // in years
 };
 
 export default TimeSlider;

@@ -14,6 +14,165 @@ import {
   decisionIconHeader,
 } from './dagreUtils';
 
+
+const LargeNode = ({ node, yOffset, edgeStroke }) => {
+  let content;
+  if (node.subNodes) {
+    content = (<div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
+      {node.subNodes.map((sub, subIndex, subNodeArray) =>
+        displaySubNode(sub, subIndex === subNodeArray.length - 1))}
+    </div>)
+  } else if (node.decisionNode) {
+    content = <div>{decisionIconHeader}</div>;
+  } else if (!node.subNodes && node.steps) {
+    content = nodeSteps(node.steps, node.id);
+  }
+
+  return (<foreignObject
+    x={node.x - (node.wrap / 2)}
+    y={node.y - yOffset}
+    width={node.wrap}
+    height={node.height}
+    key={`node-${node.id}`}
+    style={{ overflow: 'visible' }}
+  >
+    <div
+      style={{
+        border: `${edgeStroke}px solid #e6e6e6`,
+        backgroundColor: 'white',
+        padding: '0.5rem 0.75rem',
+        borderRadius: '6px',
+      }}
+    >
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          padding: '0 0 0.25rem',
+        }}
+      >
+        <div
+          style={{
+            fontWeight: 400,
+            textAlign: 'left',
+            fontSize: '1.15rem',
+          }}
+        >
+          {node.id}
+        </div>
+        <div>
+          {node.typeIds.map(id =>
+            (<TypePuck
+              key={`${node.id}-puck-${id}`}
+              typeObject={trcProjectTypes[id]}
+              size={25}
+            />)
+          )}
+        </div>
+      </div>
+      {content}
+    </div>
+  </foreignObject>
+)};
+
+const SmallNode = ({ node, yOffset, edgeStroke }) => {
+  let content;
+  if (node.subNodes) {
+    content = (<div>
+      {node.subNodes.map((sub, subIndex, subNodeArray) =>
+        <div style={{ padding: subIndex > 0 ? '1rem 0 0' : 0 }} key={sub.id}>{sub.id}: {sub.steps.what}</div>)}
+    </div>)
+  } else if (node.decisionNode) {
+    content = <div>{decisionIconHeader}</div>;
+  } else if (!node.subNodes && node.steps) {
+    content = node.steps.what;
+  }
+
+  return (<foreignObject
+    x={node.x - (node.wrap / 2)}
+    y={node.y - yOffset}
+    width={node.wrap}
+    height={node.height}
+    key={`node-${node.id}`}
+    style={{ overflow: 'visible' }}
+  >
+    <div
+      style={{
+        border: `${edgeStroke}px solid #e6e6e6`,
+        backgroundColor: 'white',
+        padding: '0.15rem',
+        borderRadius: '6px',
+      }}
+    >
+      <div style={{ textAlign: 'center' }}>
+        {node.typeIds.map(id =>
+          (<TypePuck
+            key={`${node.id}-puck-${id}`}
+            typeObject={trcProjectTypes[id]}
+            size={20}
+          />)
+        )}
+      </div>
+      <div
+        style={{
+          fontWeight: 400,
+          textAlign: 'center',
+          padding: '0 0 0.25rem',
+        }}
+      >
+        {node.id}
+      </div>
+      <div style={{
+        maxHeight: '100px',
+        overflow: 'hidden',
+      }}>
+        {content}
+      </div>
+      {!node.decisionNode && <div style={{ textAlign: 'center' }}>
+        <button
+          style={{
+            borderRadius: '6px',
+            textDecoration: 'underline',
+            backgroundColor: 'transparent',
+            border: '1px solid transparent',
+          }}
+        >
+          ...more details
+        </button>
+      </div>}
+    </div>
+  </foreignObject>
+)}
+
+// {dimensions.width < 768 && this.props.openNode === d.id &&
+//   ReactDOM.createPortal(
+//     (<div
+//       className="modal"
+//       role="status"
+//       style={{
+//         position: 'absolute',
+//         top: 10,
+//         left: 10,
+//         zIndex: 99,
+//       }}
+//     >
+//       <div
+//         style={{
+//           border: `3px solid black`,
+//           backgroundColor: 'white',
+//           padding: '0.5em',
+//           borderRadius: '6px',
+//           height: '100%',
+//           fontWeight: 500,
+//         }}
+//       >
+//         {d.content}
+//       </div>
+//     </div>),
+//     document.body
+//   )
+// }
+
 class AnnotatedDagre extends React.Component {
   constructor() {
     super();
@@ -60,7 +219,7 @@ class AnnotatedDagre extends React.Component {
 
   renderContent() {
     const { dimensions } = this.state;
-    const height = dimensions.width < 768 ? 2200 : 5000;
+    const height = dimensions.width < 768 ? 3000 : 5000;
     const nodePadding = 5;
     const edgeStroke = dimensions.width < 768 ? 3 : 4;
     const arrowWidth = edgeStroke * 1.5;
@@ -108,84 +267,22 @@ class AnnotatedDagre extends React.Component {
           })}
         </g>
         <g>
-          {nodes.map(d => (
-            <foreignObject
-              x={d.x - (d.wrap / 2)}
-              y={d.y - yOffset}
-              width={d.wrap}
-              height={d.height}
-              key={`node-${d.id}`}
-              style={{ overflow: 'visible' }}
-            >
-              <div
-                style={{
-                  border: `${edgeStroke}px solid #e6e6e6`,
-                  backgroundColor: 'white',
-                  padding: '0.5rem 0.75rem',
-                  borderRadius: '6px',
-                }}
-              >
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    padding: '0 0 0.25rem',
-                  }}
-                >
-                  <div
-                    style={{
-                      fontWeight: 400,
-                      textAlign: 'left',
-                      fontSize: '1.15rem',
-                    }}
-                  >
-                    {d.id}
-                  </div>
-                  <div>
-                    {d.typeIds.map(id =>
-                      (<TypePuck
-                        key={`${d.id}-puck-${id}`}
-                        typeObject={trcProjectTypes[id]}
-                        size={puckSize}
-                      />)
-                    )}
-                  </div>
-                </div>
-
-                {dimensions.width >= 768 && d.content}
-
-                {dimensions.width < 768 && this.props.openNode === d.id &&
-                  ReactDOM.createPortal(
-                    (<div
-                      className="modal"
-                      role="status"
-                      style={{
-                        position: 'absolute',
-                        top: 10,
-                        left: 10,
-                        zIndex: 99,
-                      }}
-                    >
-                      <div
-                        style={{
-                          border: `3px solid black`,
-                          backgroundColor: 'white',
-                          padding: '0.5em',
-                          borderRadius: '6px',
-                          height: '100%',
-                          fontWeight: 500,
-                        }}
-                      >
-                        {d.content}
-                      </div>
-                    </div>),
-                    document.body
-                  )
-                }
-
-              </div>
-            </foreignObject>
-          ))}
+          {nodes.map(d => dimensions.width > 767 ? (
+            <LargeNode
+              node={d}
+              yOffset={yOffset}
+              edgeStroke={edgeStroke}
+              key={d.id}
+            />
+          ) : (
+            <SmallNode
+              node={d}
+              yOffset={yOffset}
+              edgeStroke={edgeStroke}
+              key={d.id}
+            />
+          )
+          )}
         </g>
       </svg>
     </div>);

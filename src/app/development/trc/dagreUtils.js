@@ -32,8 +32,8 @@ export const whoIcons = {
 };
 
 export const decisionIconStyle = {
-  margin: '0 1rem 0 0',
-  width: '1.5rem',
+  margin: '0 0.25rem 0 0',
+  width: '1rem',
   color: 'black',
   textAlign: 'center',
   display: 'inline-block',
@@ -378,17 +378,6 @@ export function getNodes(dagreGraph, visWidth, nodeHeight, nodePadding) {
     const midRowIndex = (d.numPerRow - 1) / 2;
     d.x = midpointX + ((d.indexInCoincidents % d.numPerRow) - midRowIndex) * (annotationMargin + d.wrap);
 
-
-    if (d.subNodes) {
-      d.content = (<div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
-        {d.subNodes.map((sub, subIndex, subNodeArray) =>
-          displaySubNode(sub, subIndex === subNodeArray.length - 1))}
-      </div>)
-    } else if (d.decisionNode) {
-      d.content = <div>{decisionIconHeader}</div>;
-    } else if (!d.subNodes && d.steps) {
-      d.content = nodeSteps(d.steps, d.id);
-    }
     // Y value must be set in separate iteration because it is used to determine coincidents
     // let thisYOffset = totalYOffsetValue;
     // Split into rows

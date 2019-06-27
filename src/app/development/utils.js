@@ -294,7 +294,6 @@ export const trcProjectTypes = {};
     permit_type: 'Development',
     permit_subtype: 'Conditional Zoning',
     short: 'CZ',
-    description: 'Any development project that seeks to change the zoning of a site and develop the site simultaneously.',
     descriptors: {
       whyLevel: (<ul>
         <li>Requires a change in zoning</li>
@@ -327,7 +326,7 @@ export const trcProjectTypes = {};
         <li>Government buildings</li>
         <li>Group homes</li>
       </ul>),
-      recentAppsLink: <a href="/development/major?permit_subtype=level%20II%20#data">Recently submitted Conditional Use projects</a>,
+      recentAppsLink: <a href="/development/major?permit_subtype=conditional%20use%20#data">Recently submitted Conditional Use projects</a>,
     },
     color: '#073d49',
   };

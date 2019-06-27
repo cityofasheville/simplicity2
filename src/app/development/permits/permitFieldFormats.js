@@ -68,7 +68,7 @@ export const permitFieldFormats = [
     ),
   },
   {
-    accelaLabel: 'Address',
+    accelaLabel: 'address',
     displayGroup: 'project details',
     displayLabel: 'Address',
     formatFunc: (d, permit) => (permit.civic_address_id ?
@@ -77,7 +77,7 @@ export const permitFieldFormats = [
     ),
   },
   {
-    accelaLabel: 'Permit Subtype',
+    accelaLabel: 'permit_subtype',
     displayGroup: 'project details',
     displayLabel: 'Type of permit review',
     formatFunc: (d, permit) => {
@@ -106,7 +106,7 @@ export const permitFieldFormats = [
     description: 'Google Drive folder link to view documents',
   },
   {
-    accelaLabel: 'Subdivision Number',
+    accelaLabel: 'Subdivision Number of Lots',
     displayGroup: 'project details',
     displayLabel: 'Number of lots to be created',
     formatFunc: d => (+d > 0 ? `${d} lots` : null),
@@ -134,7 +134,7 @@ export const permitFieldFormats = [
     formatFunc: d => (+d > 0 ? `${d} units` : null),
   },
   {
-    accelaLabel: 'Permit Number',
+    accelaLabel: 'permit_number',
     displayGroup: 'project details',
     displayLabel: 'Application Number',
     formatFunc: (d, permit) => {
@@ -150,7 +150,7 @@ export const permitFieldFormats = [
     )},
   },
   {
-    accelaLabel: 'Contact',
+    accelaLabel: 'contact',
     displayGroup: 'project details',
     displayLabel: 'Contact',
   },
@@ -171,7 +171,7 @@ export const permitFieldFormats = [
   },
   {
     // This is a combined field from corner, side, and rear-- see formatted permit transoformations in render func
-    accelaLabel: 'Setbacks',
+    accelaLabel: 'setbacks',
     displayGroup: 'zoning details',
     displayLabel: 'Setbacks',
     formatFunc: d => (d.length > 0 ? d.join(', ') : null),

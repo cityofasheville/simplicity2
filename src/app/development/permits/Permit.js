@@ -61,6 +61,7 @@ const Permit = props => (
       const thisPermit = data.permits[0];
       const trcType = getTRCTypeFromPermit(thisPermit);
       const formattedPermit = Object.assign({ contact: trcType ? 'pod@ashevillenc.gov' : null }, thisPermit, { trcType });
+
       // These are all the "misc" info fields that may or may not be filled out for any permit
       thisPermit.custom_fields.forEach((customField) => {
         formattedPermit[customField.name] = customField.value;
@@ -92,13 +93,13 @@ const Permit = props => (
       // The popup is what you see when you click on the pin
       const mapData = [Object.assign(
         {},
-        thisPermit,
+        formattedPermit,
         {
-          popup: `<b>${thisPermit.address}</b>`,
+          popup: `<b>${formattedPermit.address}</b>`,
         },
       )];
       // Don't show map if there are no coordinates
-      const showMap = thisPermit.y && thisPermit.x;
+      const showMap = formattedPermit.y && formattedPermit.x;
 
       const currentStatusItem = statusTranslation.find(item =>
         item.accelaSpeak === formattedPermit.status_current);
@@ -117,7 +118,6 @@ const Permit = props => (
             // Format functions return null if it should not show
             return;
           }
-
           if (!byDetailArea[d.displayGroup]) {
             byDetailArea[d.displayGroup] = [];
           }

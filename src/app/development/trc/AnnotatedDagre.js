@@ -163,10 +163,10 @@ const SmallNode = ({ node, yOffset, edgeStroke, clickAction }) => {
       {!node.decisionNode && <div style={{ textAlign: 'center' }}>
         <button
           style={{
-            borderRadius: '6px',
             textDecoration: 'underline',
-            backgroundColor: 'transparent',
+            backgroundColor: '#f2f2f2',
             border: '1px solid transparent',
+            width: '100%',
           }}
           onClick={(e) => clickAction(e, node)}
         >

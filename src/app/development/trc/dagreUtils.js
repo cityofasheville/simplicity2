@@ -158,11 +158,11 @@ export const dagreNodes = [
     steps: {
       what: <div>Projects located Downtown or in the River District must be reviewed for architectural design elements by a special design review sub-committee of either the <a href="https://library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTIIIDEKIADADBO_S7-3-8ASDOCO" target="_blank" rel="noopener noreferrer">Asheville Downtown Commission</a> or the <a href="https://library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTIIIDEKIADADBO_S7-3-10ASARRIRECO" target="_blank" rel="noopener noreferrer">Asheville Area Riverfront Redevelopment Commission</a> prior to approval.</div>,
       who: ['dev', 'staff', 'neighbors'],
-      when: (<ul>
+      when: (<ul style={{ padding: 0 }}>
         <li>Downtown Commission: second Friday of each month</li>
         <li>Riverfront Commission: second Thursday of each month</li>
       </ul>),
-      where: (<ul>
+      where: (<ul style={{ padding: 0 }}>
         <li>Downtown Commission: <a href="https://goo.gl/maps/7GkCkb1pPjRaXbAc7" target="_blank" rel="noopener noreferrer">City Hall</a></li>
         <li>Riverfront Commission: <a href="https://goo.gl/maps/Wbamfs7tbhSmQ1Uz7" target="_blank" rel="noopener noreferrer">Explore Asheville offices</a></li>
       </ul>),
@@ -474,7 +474,7 @@ export const displaySubNode = (node, lastNode = false) => (
 );
 
 export const nodeSteps = (steps, nodeId) => (
-  <ul style={{ listStyleType: 'none', padding: '0 1rem' }}>{Object.keys(steps).map(stepKey => (
+  <ul style={{ listStyleType: 'none', padding: '0' }}>{Object.keys(steps).map(stepKey => (
     <li key={`${stepKey}-${nodeId}`} style={{ padding: '0.25rem 0' }}>
       <div
         style={{

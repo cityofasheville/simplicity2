@@ -34,7 +34,7 @@ const LargeNodeContents = ({ node, yOffset, edgeStroke, modalCloseFunc = null })
       style={{
         border: `${edgeStroke}px solid #e6e6e6`,
         backgroundColor: 'white',
-        padding: '0.5rem 0.75rem',
+        padding: '0.5rem 0.5rem',
         borderRadius: '6px',
       }}
     >

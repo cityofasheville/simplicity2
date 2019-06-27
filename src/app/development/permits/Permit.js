@@ -6,7 +6,7 @@ import { Query } from 'react-apollo';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import PermitsMap from './PermitsMap';
 import TypePuck from '../trc/TypePuck';
-import Timeline from './Timeline';
+import PermitTimeline from './PermitTimeline';
 import { permitFieldFormats } from './permitFieldFormats';
 import { trcProjectTypes, statusTranslation, getTRCTypeFromPermit, orderedDates } from '../utils';
 
@@ -143,7 +143,7 @@ const Permit = props => (
           <p className="permit-description">{formattedPermit.permit_description}</p>
           <p className="permit-description">{`City staff accepted this application on ${dateFormatter(formattedPermit.applied_date)}.  ${currentStatusItem ? currentStatusItem.statusText : ''}`}</p>
           {formattedPermit.trcType && formattedPermit.orderedDates.length > 0 &&
-            <Timeline formattedPermit={formattedPermit} dateFormatter={dateFormatter} />}
+            <PermitTimeline formattedPermit={formattedPermit} dateFormatter={dateFormatter} />}
           <div className="row permit-map-row">
             {showMap && (
               <div className="col-sm-12 col-md-6 permit-map-container">

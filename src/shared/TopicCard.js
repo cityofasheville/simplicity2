@@ -57,21 +57,21 @@ const translateTopic = (topic, language) => {
   }
 };
 
-const TopicCard = props => (
-  <Link
+const TopicCard = props => {
+  const query = {};
+  const queryPossiblies = ['view', 'entity', 'id', 'label', 'entities', 'x', 'y', 'search'];
+  queryPossiblies.forEach(possibility => {
+    if (props[possibility]) {
+      console.log(props[possibility])
+      query[possibility] = props[possibility];
+    }
+  })
+
+  return (<Link
     className="topic-card"
     to={{
-      pathname: props.path,
-      // query: {
-      //   entity: props.entity,
-      //   view: 'map',
-      //   id: props.id,
-      //   label: props.label,
-      //   entities: props.entities,
-      //   x: props.x,
-      //   y: props.y,
-      //   search: props.search,
-      // }
+      pathname: props.path || props.topic,
+      query,
     }}
   >
     <div className={styles.topicCard}>
@@ -81,7 +81,7 @@ const TopicCard = props => (
       </div>
     </div>
   </Link>
-);
+)};
 
 TopicCard.propTypes = {
   topic: PropTypes.string,
@@ -95,14 +95,15 @@ TopicCard.propTypes = {
 };
 
 TopicCard.defaultProps = {
-  topic: 'CRIME',
-  entity: 'city',
-  search: '',
-  id: '',
-  label: '',
-  entities: 'address,property,neighborhood,street,owner',
-  x: '',
-  y: '',
+  view: 'map',
+  // topic: 'CRIME',
+  // entity: 'city',
+  // search: null,
+  // id: null,
+  // label: null,
+  // entities: 'address,property,neighborhood,street,owner',
+  // x: null,
+  // y: null,
 };
 
 export default withLanguage(TopicCard);

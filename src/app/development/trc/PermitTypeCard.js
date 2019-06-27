@@ -1,6 +1,6 @@
 import React from 'react';
 import TypePuck from './TypePuck';
-import { trcProjectTypes } from '../utils';
+import { trcProjectTypes, descriptorTitles } from '../utils';
 
 const PermitTypeCard = ({ type }) => {
   const projectType = trcProjectTypes[type];
@@ -18,19 +18,16 @@ const PermitTypeCard = ({ type }) => {
         <TypePuck
           typeObject={projectType}
           hover={false}
+          size={40}
         />
+        <span style={{ fontSize: '2rem', verticalAlign: 'top', padding: '0 0 0 1rem' }}>{type}</span>
       </div>
-      <div
-        style={{
-          width: '100%',
-          fontWeight: 'bold',
-          textAlign: 'center',
-          padding: '0.5em 0'
-        }}
-      >
-        {type}
-      </div>
-      <div>{projectType.description}</div>
+      <div>{Object.keys(projectType.descriptors).map(key =>
+        <div key={`descriptors-${type}-${key}`} style={{ padding: '0 0 0.5rem' }}>
+          <div style={{ fontWeight: '400' }}>{descriptorTitles[key]}</div>
+          {projectType.descriptors[key]}
+        </div>
+      )}</div>
     </div>
   )
 }

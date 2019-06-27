@@ -3,10 +3,10 @@ import PermitTypeCard from './PermitTypeCard'
 import { trcProjectTypes } from '../utils';
 
 const PermitTypeCards = () => {
-  let cardWidth = '25%';
-  if (window.innerWidth < 760) {
-    cardWidth = '40%';
-  }
+  let cardWidth = '40%';
+  // if (window.innerWidth < 760) {
+  //   cardWidth = '40%';
+  // }
   if (window.innerWidth < 500) {
     cardWidth = '90%';
   }

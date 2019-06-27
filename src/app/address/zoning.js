@@ -1,3 +1,14 @@
+export function getZoningLink(zoningAbbreviation) {
+  if (zoningLinks[zoningAbbreviation]) {
+    return zoningLinks[zoningAbbreviation]
+  } else if (zoningAbbreviation.indexOf('RAD') === 0) {
+    return 'https://library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTVIIIGEUSEXDI_S7-8-29RIARFODI'
+  } else if (zoningAbbreviation.indexOf('EXP-CZ') >= 0) {
+    return 'https://library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTVIITEAMMAAM_S7-7-8COZO';
+  }
+  return 'https://library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE';
+}
+
 export const zoningLinks = {
   CBD: 'https://library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTVIIIGEUSEXDI_S7-8-18CEBUDI',
   CBI: 'https://library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTVIIIGEUSEXDI_S7-8-12COBUIDI',

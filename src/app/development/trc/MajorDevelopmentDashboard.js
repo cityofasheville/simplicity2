@@ -17,53 +17,42 @@ class MajorDevelopmentDashboard extends React.Component {
 
     this.sections = [
       {
-        linkId: 'about',
-        linkName: 'About',
+        linkId: 'types',
+        linkName: 'Project Types',
         selected: true,
-        header: 'Get notifications, attend meetings, and have your voice heard',
-        body: (
-          <div>
-            <p>There is a lot of private land development happening in Asheville.  This tool can help you:</p>
-            <ul>
-              <li>
-                Understand the process
-              </li>
-              <li>
-                Be notified when someone applies for a permit to build something near you
-              </li>
-              <li>
-                Find public meetings so that your voice can be heard
-              </li>
-            </ul>
-            <p>The Unified Development Ordinance defines six types of large scale development in Asheville.</p>
-            <PermitTypeCards/>
-            <br/>
-            <p>After the developer submits an application, it goes through a decision-making process that includes city staff, city council, developers, and residents.  Who is involved at what step depends on the type of project.</p>
-            <AnnotatedDagre />
-          </div>
-        ),
+        header: 'Types of large-scale development',
+        body: <React.Fragment><p>The types of large-scale development are defined by <a href="https://library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTVDEREPR_S7-5-9SIPLREDEPREXTHPAZOCEBUDILODODEREOVDICBDD" target="_blank" rel="noopener noreferrer">the City of Asheville's Unified Development Ordinance.</a>  Projects located downtown are <a href="https://library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTVDEREPR_S7-5-9.1DEAPPRPAZOCEBUDILODODEREOVDICBDD" target="_blank" rel="noopener noreferrer">defined slightly differently in the ordinance.</a></p><PermitTypeCards/></React.Fragment>,
+      },
+      {
+        linkId: 'process',
+        linkName: 'Process',
+        header: 'The development process',
+        body: (<div>
+          <p>After the developer submits an application, it goes through a decision-making process that includes city staff, elected and appointed city officials, developers, and residents.  Who is involved at what step depends on the type of project.</p>
+          <AnnotatedDagre />
+        </div>),
       },
       {
         linkId: 'notifications',
         linkName: 'Get Notifications',
-        header: 'Sign up for Notifications',
-        body: <p>The City of Asheville is piloting a new notification system that allows people to sign up for non-emergency alerts based on city data.  You can go to notifications.ashevillenc.gov to sign up for alerts about Level I and larger projects.</p>,
+        header: 'Sign up for notifications',
+        body: <p>The City of Asheville will be piloting a new notification system that allows people to sign up for non-emergency alerts based on city data.  Stay tuned for the launch of this tool!</p>,
       },
       {
         linkId: 'data',
         linkName: 'Project Details',
-        header: 'Development Details',
+        header: 'Development details',
         body: (
           <div>
-            <p>The table below contains proposed, large-scale, private development projects for which a permit application has been submitted.  You can also see a <a href="/permits">table of all permit applications</a> or <a href="/">search an address</a> to find nearby development.</p>
+            <p>The map and table below contain proposed, large-scale, private development projects for which a permit application has been submitted.  You can also see a <a href="/permits">table of all permit applications</a> or <a href="/">search an address</a> to find nearby development.  Visit <a href="https://www.google.com/maps/d/u/0/viewer?mid=1gTdFgMITqbYX7cm3L227CiClMzg&ll=35.54416648021354%2C-82.55690042880553&z=10" target="_blank" rel="noopener noreferrer">the old TRC projects map</a> to see projects that were started more than two years ago.</p>
             <TRCDataTable />
           </div>
         ),
       },
       {
         linkId: 'calendar',
-        linkName: 'Public Meetings',
-        header: 'Upcoming Public Meetings',
+        linkName: 'Neighborhood Meetings',
+        header: 'Upcoming neighborhood meetings',
         body: (
           <div>
             <p>Developers planning to submit applications for development that must go through the Technical Review Committee must hold a public meeting before submitting the application.</p>
@@ -75,21 +64,45 @@ class MajorDevelopmentDashboard extends React.Component {
       {
         linkId: 'faq',
         linkName: 'Frequently Asked Questions',
-        header: 'Frequently Asked Questions',
+        header: 'Frequently asked questions',
         body: <Accordion
           data={[
             {
-              header: 'Why is the sky blue?',
-              body: 'Something something light refracting',
+              header: 'How current is this data?',
+              body: 'Data in SimpliCity is updated nightly.',
             },
             {
-              header: 'What day is it?',
-              body: new Date().toLocaleDateString('en-us'),
+              header: 'Where is the Development Services Department?',
+              body: (<React.Fragment><a href="https://goo.gl/maps/sKweCmhK4iiEuz7t6" target="_blank" rel="noopener noreferrer">161 South Charlotte Street</a>, down the hill from City Hall.</React.Fragment>),
             },
             {
-              header: 'Why?',
-              body: '42',
+              header: 'Where is City Hall?',
+              body: (<React.Fragment><a href="https://goo.gl/maps/FWoy1aRrV1ktdF8T7" target="_blank" rel="noopener noreferrer">70 Court Plaza</a>, off of College Street.</React.Fragment>),
             },
+            {
+              header: 'Who builds these projects?',
+              body: 'Small business owners, land owners, developers, and other private investors submit applications for permission to develop property in the city.  Once approved, they work with private contractors.',
+            },
+            {
+              header: 'Who should I talk to if I have questions about one of these projects?',
+              body: 'Give our Planner of the Day a call at 828-259-5450 or email them at pod@ashevillenc.gov.  They will direct you to the city planner who is reviewing the application.',
+            },
+            {
+              header: 'How can I tell if a project includes affordable housing?',
+              body: 'If the developer has indicated that they are planning to include affordable housing, it will be indicated on the project page with an icon.  Throughout the process, a developer could alter their plans, and this may not be reflected on the project page immediately.',
+            },
+            {
+              header: 'How can I join one of the commissions that reviews projects?',
+              body: <React.Fragment>Visit <a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/" target="_blank" rel="noopener noreferrer">the Boards and Commissions web page</a> to view current vacancies and learn about application steps.</React.Fragment>,
+            },
+            {
+              header: 'I still have a question!',
+              body: <React.Fragment>If your question was not answered here, please <a href="https://forms.gle/CkkihZfs37opZfXM8" target="_blank" rel="noopener noreferrer">let us know what it was</a> so that we can improve this page.  If you have a question to which you need a response, please email pod@ashevillenc.gov instead.</React.Fragment>,
+            },
+            // {
+            //   header: 'How much control does the City have over the look and feel of a project?',
+            //   body: 'Some review levels or zoning districts allow the City to review architectural design and some do not.  For instance, projects downtown, in historic districts, or in the river design area are subject to certain architectural requirements.  Conditional zoning projects allow Council the authority and flexibility to mandate some design elements.  Most projects outside of these cases do not allow for much flexibility in regulating architectural design.',
+            // },
           ]}
         />,
       },
@@ -114,12 +127,14 @@ class MajorDevelopmentDashboard extends React.Component {
   }
 
   render() {
-    if (this.state.width < 768) {
+    if (this.state.width < 800) {
       return (
         <div id="majorDevDash">
           <h1>Major Development in Asheville</h1>
           <Accordion
             data={this.sections}
+            id="top-level"
+            classes="top-level-accordion"
           />
         </div>
       );
@@ -130,9 +145,24 @@ class MajorDevelopmentDashboard extends React.Component {
         links={this.sections}
       />
       <main>
-        <h1>Large Scale Development in Asheville</h1>
+        <h1>Large-Scale Development in Asheville</h1>
+        {/*<h1><small>Get notifications, attend meetings, and have your voice heard.</small></h1>*/}
+        <p>There is a lot of private land development happening in Asheville.  This tool can help you:</p>
+        <ul>
+          <li>
+            Understand the development process from the first permit application to breaking ground
+          </li>
+          <li>
+            Understand your role in the process and how your voice can be heard
+          </li>
+          <li>
+            Coming soon: be notified when someone applies for a permit to build something near you
+          </li>
+        </ul>
+        <br/>
+        <br/>
         {this.sections.map(section => (
-          <section id={section.linkId} ref={section.ref} key={section.linkId}>
+          <section id={section.linkId} ref={section.ref} key={section.linkId} style={{ overflow: 'auto' }}>
             <h2>{section.header}</h2>
             {section.body}
           </section>

@@ -23,7 +23,7 @@ class AccordionPanel extends React.Component {
         <a
           role="button"
           data-toggle="collapse"
-          data-parent="#accordion"
+          data-parent={`#${this.props.parentId}`}
           href={`#${collapsibleId}`}
           aria-expanded={this.state.open}
           aria-controls={collapsibleId}
@@ -45,8 +45,8 @@ class AccordionPanel extends React.Component {
           role="tabpanel"
           aria-labelledby={panelHeadingId}
         >
-          <div className="panel-body">
-            {this.props.body}
+          <div className={`accordion-panel-body ${this.props.inheritedClasses}`}>
+            {this.state.open && this.props.body}
           </div>
         </div>
       </div>
@@ -54,21 +54,23 @@ class AccordionPanel extends React.Component {
   }
 }
 
-const Accordion = props => (
+const Accordion = ({ classes = '', id, data }) => (
   <div
-    className="panel-group"
-    id="accordion"
+    className={`panel-group ${classes} accordion-root`}
+    id={id}
     role="tablist"
     aria-multiselectable="true"
   >
     {/* https://getbootstrap.com/docs/3.4/javascript/#collapse */}
-    {props.data.map((d, i) => (
+    {data.map((d, i) => (
       <AccordionPanel
         key={`accordion-item-${i}`}
         index={i}
         header={d.header}
         body={d.body}
         initiallyExpanded={d.selected}
+        parentId={id}
+        inheritedClasses={classes}
       />))}
   </div>
 )

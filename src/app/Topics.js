@@ -13,24 +13,31 @@ const Topics = props => (
     <div className="row">
       {props.topics.map((topic, i) => (
         <div className="card-item" key={['topic', i].join('_')}>
-          <TopicCard topic={topic} entity="city" label="City of Asheville" lang={props.language.language} />
+          <TopicCard topic={topic.name} lang={props.language.language} view={null} path={topic.path || topic.name} />
         </div>
       ))}
     </div>
   </div>
 );
 
-Topics.propTypes = {
-  topics: PropTypes.arrayOf(PropTypes.string),
-};
+// Topics.propTypes = {
+//   topics: PropTypes.arrayOf([PropTypes.oneOf(PropTypes.string, PropTypes.shape({}))]),
+// };
 
 Topics.defaultProps = {
   topics: [
-    'BUDGET',
-    'CAPITAL_PROJECTS',
-    //'CRIME',
-    //'DEVELOPMENT',
-    // 'HOMELESSNESS',
+    {
+      name: 'BUDGET',
+      path: 'budget',
+    },
+    {
+      name: 'CAPITAL_PROJECTS',
+      path: 'capital_projects',
+    },
+    {
+      name: 'DEVELOPMENT',
+      path: '/development/major'
+    },
   ],
 };
 

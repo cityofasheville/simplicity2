@@ -1,68 +1,45 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import moment from 'moment';
 import { Query } from 'react-apollo';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
-import Map from '../../../shared/visualization/Map';
+import PermitsMap from './PermitsMap';
 import TypePuck from '../trc/TypePuck';
-import { trcProjectTypes } from '../utils';
-
-// Make query based on URL, render sub components depending on query results
+import PermitTimeline from './PermitTimeline';
+import { permitFieldFormats } from './permitFieldFormats';
+import { trcProjectTypes, statusTranslation, getTRCTypeFromPermit, orderedDates } from '../utils';
 
 const GET_PERMIT = gql`
   query getPermitsQuery($permit_numbers: [String]) {
     permits(permit_numbers: $permit_numbers) {
       permit_number
-      permit_description
+      internal_record_id
       permit_group
       permit_type
       permit_subtype
       permit_category
+      permit_description
       application_name
       applied_date
       status_current
       status_date
       job_value
-      total_project_valuation
       total_sq_feet
+      civic_address_id
       address
       x
       y
-      internal_record_id
-      contractor_names
       custom_fields {
         type
         name
         value
       }
-      comments {
-        comment_seq_number
-        comment_date
-        comments
-      }
     }
   }
 `;
 
-// TODO: RETURN NULL IF THERE ISN'T A VALUE?  OR LEAVE IT BLANK?
-const DtSet = props => (
-  <div className="DtSet">
-    <dt
-      className="text-left text-capitalize"
-    >
-      {props.fieldFormatters[props.datum] && props.fieldFormatters[props.datum].keyFormatter ?
-        props.fieldFormatters[props.datum].keyFormatter(props.datum) : props.datum.split('_').join(' ')
-      }:
-    </dt>
-    <dd>
-      {props.fieldFormatters[props.datum] && props.fieldFormatters[props.datum].valueFormatter ?
-        props.fieldFormatters[props.datum].valueFormatter(props.formattedPermit[props.datum]) :
-        props.formattedPermit[props.datum]
-      }
-    </dd>
-  </div>
-);
+const dateFormatter = inputDate => moment(new Date(inputDate)).format('MMMM DD, YYYY');
 
 const Permit = props => (
   <Query
@@ -82,12 +59,35 @@ const Permit = props => (
       }
 
       const thisPermit = data.permits[0];
-      const formattedPermit = Object.assign({}, thisPermit);
-
+      const trcType = getTRCTypeFromPermit(thisPermit);
+      const formattedPermit = Object.assign({ contact: trcType ? 'pod@ashevillenc.gov' : null }, thisPermit, { trcType });
       // These are all the "misc" info fields that may or may not be filled out for any permit
       thisPermit.custom_fields.forEach((customField) => {
         formattedPermit[customField.name] = customField.value;
       });
+
+      formattedPermit.setbacks = [];
+      if (formattedPermit.front && formattedPermit.front > 0) {
+        formattedPermit.setbacks.push(`front: ${formattedPermit.front} feet`);
+      }
+      if (formattedPermit.corner_side && formattedPermit.corner_side > 0) {
+        formattedPermit.setbacks.push(`side or corner: ${formattedPermit.corner_side} feet`);
+      }
+      if (formattedPermit.rear && formattedPermit.rear > 0) {
+        formattedPermit.setbacks.push(`rear: ${formattedPermit.rear} feet`);
+      }
+
+      formattedPermit.orderedDates = orderedDates
+        .filter(dateObject => formattedPermit[dateObject.accelaLabel])
+        .map(dateObject =>
+          Object.assign(
+            {},
+            dateObject,
+            {
+              dateInput: formattedPermit[dateObject.accelaLabel],
+            }
+          )
+        );
 
       // The popup is what you see when you click on the pin
       const mapData = [Object.assign(
@@ -100,171 +100,104 @@ const Permit = props => (
       // Don't show map if there are no coordinates
       const showMap = thisPermit.y && thisPermit.x;
 
-      const dateFormatter = inputDate => moment(new Date(inputDate)).format('MM/DD/YYYY');
-      const fieldFormatters = {
-        applied_date: {
-          valueFormatter: dateFormatter,
-        },
-        status_date: {
-          valueFormatter: dateFormatter,
-        },
-        status_current: {
-          keyFormatter: () => 'Review Status',
-        },
-        contractor_names: {
-          valueFormatter: namesArray => Object.values(namesArray).join(', '),
-        },
-        Pinnumber: {
-          keyFormatter: () => 'Pin Number',
-          valueFormatter: pin => (
-            <a
-              href={`/property?search=${pin}&id=${pin}&entities=undefined&entity=property`}
-            >
-              {pin}
-            </a>
-          ),
-        },
-      };
-      // These fields are shown in the summary area
-      const firstGroupFields = [
-        'address',
-        'applied_date',
-        'permit_number', // TODO: MAKE THIS THE LINK TO ACA
-        'status_current',
-        'Pinnumber',
-      ];
+      const currentStatusItem = statusTranslation.find(item =>
+        item.accelaSpeak === formattedPermit.status_current);
 
-      /*
-      make address a link to simplicity
-      make permit number a link to ACA
-      show number of units if not 0 - include at top
-      show affordable housing at top - only if number of units is not 0
-      permit permit_description - as is
-      group, type, subtype, cat - show a nice version at the top
-      overall record status - make it "current review status" - do not include status date
+      const byDetailArea = {};
+      const fieldsForDisplay = permitFieldFormats
+        // If there is no display label, bring it to the top
+        .sort(a => (!a.displayLabel ? -1 : 0))
+        .forEach((d) => {
+          const val = formattedPermit[d.accelaLabel];
+          if (!val) {
+            return;
+          }
+          const formattedDisplayVal = d.formatFunc ? d.formatFunc(val, formattedPermit) : val;
+          if (!formattedDisplayVal) {
+            // Format functions return null if it should not show
+            return;
+          }
 
-      include in details section at bottom
-      construction value - from fields
-      total prop size - from fields, add unit of acres
-      subdivision # lots - yes
-      total sq feet - yes, not from fields?
-      zoning district - from fields, link to municode, call it "current zoning district"
-      */
+          if (!byDetailArea[d.displayGroup]) {
+            byDetailArea[d.displayGroup] = [];
+          }
+          if (!d.displayLabel) {
+            byDetailArea[d.displayGroup].push(
+              <div className="permit-form-group bool" key={d.accelaLabel}>
+                {formattedDisplayVal}
+              </div>
+            );
+          } else {
+            byDetailArea[d.displayGroup].push(
+              <div className="permit-form-group" key={d.accelaLabel}>
+                <div className="display-label">{d.displayLabel}</div>
+                <div className="formatted-val">{formattedDisplayVal}</div>
+              </div>
+            );
+          }
+        });
 
-
-      // label workflow tasks as timeline instead of recent updates
-      // add applied date, initial trc date if it exists
-      // const additionalTimelineEvents = [
-      //   // {
-      //   //   current_status_date:,
-      //   //   task:,
-      //   //   task_status:,
-      //   // },
-      // ]
-
-      // make contact section - applicant name, contractor names, planner name if available
-      // const contactInfoFields = [
-      //   'application_name',
-      //   'contractor_names',
-      //   // TODO: PLANNER NAME?
-      // ]
-
-      // These fields are handled in a special way and shouldn't just be iterated over
-      const specialFields = [
-        'permit_description',
-        'custom_fields',
-        'x',
-        'y',
-        'comments',
-        // TODO: SHOULD WE INCLUDE COMMENTS?
-      ].concat(firstGroupFields)
-
-      const detailsFields = Object.keys(formattedPermit)
-        .filter(d => specialFields.indexOf(d) === -1 && +formattedPermit[d] !== 0);
-      const halfLengthDetails = Math.ceil(detailsFields.length / 2);
-
-      // Sample ACA link
-      // https://services.ashevillenc.gov/CitizenAccess/Cap/CapDetail.aspx?Module=Planning&TabName=Planning&capID1=19CAP&capID2=00000&capID3=000NZ&agencyCode=ASHEVILLE
-
-      const h1Title = `${formattedPermit.permit_subtype} ${formattedPermit.permit_type} Application`;
-      let trcType = undefined;
-      if (formattedPermit.permit_group === 'Planning') {
-        trcType = Object.values(trcProjectTypes).find(type =>
-          type.permit_type === formattedPermit.permit_type &&
-          type.permit_subtype === formattedPermit.permit_subtype
-        )
-      }
-
-      return (<div className="container">
-        <div className="row">
-          <h1 className="title__text">{h1Title}</h1>
-          {showMap && (<div className="col-sm-12 col-md-6">
-            <div className="map-container" style={{ height: `${firstGroupFields.length * 4}em` }}>
-              <Map
-                data={mapData}
-                center={[formattedPermit.y, formattedPermit.x]}
-                height="100%"
-                width="100%"
-                zoom={14}
-              />
+      return (
+        <div className="container">
+          <h1 className="title__text">{formattedPermit.application_name}</h1>
+          <p className="permit-description">{formattedPermit.permit_description}</p>
+          <p className="permit-description">{`City staff accepted this application on ${dateFormatter(formattedPermit.applied_date)}.  ${currentStatusItem ? currentStatusItem.statusText : ''}`}</p>
+          {formattedPermit.trcType && formattedPermit.orderedDates.length > 0 &&
+            <PermitTimeline formattedPermit={formattedPermit} dateFormatter={dateFormatter} />}
+          <div className="row permit-map-row">
+            {showMap && (
+              <div className="col-sm-12 col-md-6 permit-map-container">
+                <PermitsMap
+                  permitData={mapData}
+                  centerCoords={[formattedPermit.y, formattedPermit.x]}
+                  zoom={14}
+                />
+              </div>
+            )}
+            <div className={`col-sm-12 col-md-${showMap ? 6 : 12} permit-details-card`}>
+              {byDetailArea['project details'] !== undefined &&
+                byDetailArea['project details'].map(d => d)}
+              {trcType !== undefined && (
+                <div style={{ display: 'flex', marginTop: '1rem' }}>
+                  <p>
+                    <em>
+                      This is a major development.  <a href="/development/major">Learn more</a> about the large-scale development process in Asheville.
+                    </em>
+                  </p>
+                </div>
+              )}
             </div>
-          </div>)}
-          <div className={`col-sm-12 col-md-${showMap ? 6 : 12}`}>
-            <h2>Summary</h2>
-            <p className="summary-group">{formattedPermit.permit_description}</p>
-            <dl className="dl-horizontal summary-group">
-              {firstGroupFields.map(d => (<DtSet
-                key={d}
-                datum={d}
-                fieldFormatters={fieldFormatters}
-                formattedPermit={formattedPermit}
-              />))}
-            </dl>
-            {trcType !== undefined &&
-              (<div style={{ display: 'flex' }}>
-                <a style={{ marginRight: '1em' }} href="/development/major">
-                  <TypePuck
-                    typeObject={trcType}
-                  />
-                </a>
-                <p><em>
-                  This is a major development.  <a href="/development/major">Learn more</a> about the large-scale development process in Asheville.
-                </em></p>
-              </div>)
+          </div>
+          <div className="row">
+            {byDetailArea['zoning details'] !== undefined &&
+              <div className="col-sm-12 col-md-6 permit-details-card">
+                <h2>Zoning Details</h2>
+                {byDetailArea['zoning details'].map(d => d)}
+              </div>
+            }
+            {byDetailArea['environment details'] !== undefined &&
+              <div className="col-sm-12 col-md-6 permit-details-card">
+                <h2>Environmental Details</h2>
+                {byDetailArea['environment details'].map(d => d)}
+              </div>
             }
           </div>
         </div>
-        {/*<div className="row">
-          <h2>Timeline</h2>
-          <PermitTasks {...props} />
-          <p>To see more details about this permit, look it up in <a href="https://services.ashevillenc.gov/CitizenAccess" target="_blank" rel="noopener noreferrer">Accela Citizen Access</a>.</p>
-        </div>*/}
-        <div className="row">
-          <h2>Details</h2>
-          <dl className="dl-horizontal col-sm-12 col-md-6">
-            {detailsFields.slice(0, halfLengthDetails)
-              .map(d => (<DtSet
-                key={d}
-                datum={d}
-                fieldFormatters={fieldFormatters}
-                formattedPermit={formattedPermit}
-              />))
-            }
-          </dl>
-          <dl className="dl-horizontal col-sm-12 col-md-6">
-            {detailsFields.slice(halfLengthDetails, detailsFields.length)
-              .map(d => (<DtSet
-                key={d}
-                datum={d}
-                fieldFormatters={fieldFormatters}
-                formattedPermit={formattedPermit}
-              />))
-            }
-          </dl>
-        </div>
-      </div>);
+      );
     }}
   </Query>
 );
+
+Permit.propTypes = {
+  routeParams: PropTypes.shape({
+    id: PropTypes.string,
+  }),
+};
+
+Permit.defaultProps = {
+  routeParams: {
+    id: '',
+  },
+};
 
 export default Permit;

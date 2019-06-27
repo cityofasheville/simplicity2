@@ -4,21 +4,36 @@ import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import moment from 'moment';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
+import PermitsMap from './PermitsMap';
 import PermitsTable from './PermitsTable';
 
 const GET_PROJECTS = gql`
-  query getPermitsQuery($date_field: String!, $after: String, $before: String, $permit_groups: [String]) {
-    permits(date_field: $date_field, after: $after, before: $before, permit_groups: $permit_groups) {
+  query getPermitsQuery(
+    $date_field: String!,
+    $after: String,
+    $before: String,
+    $permit_groups: [String]
+  ) {
+    permits(
+      date_field: $date_field,
+      after: $after,
+      before: $before,
+      permit_groups: $permit_groups
+    ) {
       application_name
       applied_date
       permit_category
+      permit_description
       permit_group
       permit_number
       permit_subtype
       permit_type
       status_current
       status_date
+      civic_address_id
       address
+      x
+      y
     }
   }
 `;
@@ -55,7 +70,36 @@ const PermitsTableWrapper = props => (
           return typeOfInterest;
         });
       }
-      return (<PermitsTable data={filteredData} {...props} />);
+      return (<div className="col-sm-12">
+        <div>
+          <div className="map-container" style={{ height: '350px', width: '100%' }}>
+            <a
+              href="#permitsDataTable"
+              className="skip-nav-link"
+              onClick={() => { document.getElementById('permitsDataTable').focus(); }}
+            >
+              This map contains information which is also represented in the table below.  Press enter to skip to the table or tab to continue to the map.
+            </a>
+            <PermitsMap
+              permitData={filteredData.filter(d => d.x && d.y).map(d => Object.assign(
+                {},
+                d,
+                {
+                  popup: `<a href="/permits/${d.permit_number}">
+                    ${d.application_name}</a><br/>
+                    ${d.address}<br/>
+                    ${d.permit_description}`,
+                },
+              ))}
+              zoom={12}
+              centerCoords={[35.5951, -82.5515]}
+            />
+          </div>
+        </div>
+        <div id="permitsDataTable" style={{ overflowX: 'scroll' }}>
+          <PermitsTable data={filteredData} {...props} />
+        </div>
+      </div>);
     }}
   </Query>
 );

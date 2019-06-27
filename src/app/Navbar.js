@@ -65,9 +65,9 @@ export default class Navbar extends React.Component { // eslint-disable-line rea
                 {/* We're not really using the activeClassName property anyway,
                   so we may as well silence that warning by using an <a> rather than
                   a Link */}
-                <li><a href="https://goo.gl/forms/XC9l7PTylog6Q9B83" target="_blank" rel="noopener noreferrer">Feedback</a></li>
+                {/*<li><a href="https://goo.gl/forms/XC9l7PTylog6Q9B83" target="_blank" rel="noopener noreferrer">Feedback</a></li>*/}
                 <li><a onClick={() => { browserHistory.push('/search?entities=address,property,neighborhood,street,owner') }}><Icon path={IM_SEARCH} size={16} /></a></li>
-                <AuthControl />
+                {/*<AuthControl />*/}
                 {(window.location.href.indexOf('localhost') > -1 || window.location.href.indexOf('dev-simplicity') > -1) &&
                   <li>
                     <hr style={{

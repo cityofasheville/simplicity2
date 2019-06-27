@@ -12,8 +12,24 @@
   border-bottom: 1px solid gray;
 }
 
+.accordion-panel-body {
+  padding: 1rem;
+}
+
+.accordion-panel-body a {
+  text-decoration: underline;
+}
+
+.accordion-panel-body a:focus, .accordion-panel-body a:hover {
+  color: #4077a5;
+}
+
 .panel-collapse {
   border: 1px solid #f2f2f2;
+}
+
+.panel-title {
+  padding: 0 1rem 0 0;
 }
 
 .panel-title-after {
@@ -28,9 +44,9 @@
   content: '';
   width: 0;
   height: 0;
-  border-left: 0.5em solid transparent;
-  border-right: 0.5em solid transparent;
-  border-top: 0.5em solid gray;
+  border-left: 0.4em solid transparent;
+  border-right: 0.4em solid transparent;
+  border-top: 0.4em solid gray;
   background-color: none;
   text-align: right;
 
@@ -39,8 +55,26 @@
   top: 0.5em;
   position: absolute;
   pointer-events: none;
+  margin-right: -2rem;
 }
 
 .panel-title-after.open:after {
   transform: rotate(180deg);
+}
+
+// For nested accordions
+.accordion-root .accordion-root {
+  margin: 0 0.5rem;
+
+  .accordion-item-set {
+    border-bottom: 1px solid #f2f2f2;
+  }
+
+  .panel-heading {
+    background-color: transparent;
+  }
+
+  .panel-collapse {
+    border: none;
+  }
 }

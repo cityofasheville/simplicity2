@@ -20,6 +20,10 @@
   min-height: 250px;
 }
 
+.display-label {
+  margin-right: 1rem;
+}
+
 @media(max-width: 767px) {
   .permit-map-container {
     height: 300px;

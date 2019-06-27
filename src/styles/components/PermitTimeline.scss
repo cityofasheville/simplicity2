@@ -2,15 +2,14 @@
 
 #permit-timeline-container {
   margin: 1rem 0;
-  padding: 0 0 1rem;
-  border: 1px solid #e6e6e6;
+  padding: 0.25rem;
   border-radius: 6px;
-  height: 125px;
+  height: 145px;
   width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
+  position: relative;
 }
-
 
 #permit-timeline-container::-webkit-scrollbar {
   height: 4px;
@@ -28,6 +27,6 @@
 
 @media(min-width: 767px){
   #permit-timeline-container {
-    height: 100px;
+    height: 135px;
   }
 }

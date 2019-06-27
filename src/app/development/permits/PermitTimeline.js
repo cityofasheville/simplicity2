@@ -34,7 +34,7 @@ class PermitTimeline extends React.Component {
   renderContent() {
     const { dimensions } = this.state;
     const padding = 15;
-    const pointRadius = 5;
+    const pointRadius = 8;
     let datesToUse = this.props.formattedPermit.orderedDates;
     if (datesToUse.length === 1) {
       datesToUse = this.props.formattedPermit.orderedDates
@@ -44,7 +44,7 @@ class PermitTimeline extends React.Component {
           displayLabel: '',
         }]);
     }
-    const timelineWidth = Math.max(datesToUse.length * 125, dimensions.width - 5);
+    const timelineWidth = Math.max(datesToUse.length * 125, dimensions.width - padding);
     const midpointX = timelineWidth / 2;
     const eachWidth = (timelineWidth - (padding + padding * datesToUse.length)) / datesToUse.length;
     const midRowIndex = (datesToUse.length - 1) / 2;
@@ -96,6 +96,7 @@ class PermitTimeline extends React.Component {
     const { dimensions } = this.state;
     return (
       <div id="permit-timeline-container">
+        <div style={{ padding: '0.25rem 0 0 0.25rem', fontWeight: '500' }}>Where is it in the process?</div>
         {dimensions && this.renderContent()}
       </div>
     );

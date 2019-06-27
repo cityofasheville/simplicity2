@@ -20,9 +20,9 @@ const Topics = props => (
   </div>
 );
 
-Topics.propTypes = {
-  topics: PropTypes.arrayOf(PropTypes.string),
-};
+// Topics.propTypes = {
+//   topics: PropTypes.arrayOf([PropTypes.oneOf(PropTypes.string, PropTypes.shape({}))]),
+// };
 
 Topics.defaultProps = {
   topics: [

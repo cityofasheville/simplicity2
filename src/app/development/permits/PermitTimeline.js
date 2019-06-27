@@ -33,7 +33,7 @@ class PermitTimeline extends React.Component {
 
   renderContent() {
     const { dimensions } = this.state;
-    const padding = 10;
+    const padding = 15;
     const pointRadius = 5;
     let datesToUse = this.props.formattedPermit.orderedDates;
     if (datesToUse.length === 1) {

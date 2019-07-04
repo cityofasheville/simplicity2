@@ -9,7 +9,9 @@
     "build": "webpack --optimize-minimize --config webpack.config.js",
     "deploySimplicity": "aws s3 sync dist s3://simplicity.ashevillenc.gov --delete --exclude \"*.map\" --exclude \"favicon.ico\"",
     "deployDashboards": "aws s3 sync dist s3://dashboards.ashevillenc.gov --delete --exclude \"*.map\" --exclude \"favicon.ico\"",
-    "devDeploy": "aws s3 sync dist s3://dev-simplicity.ashevillenc.gov --delete --exclude \"*.map\" --exclude \"favicon.ico\""
+    "devDeploy": "aws s3 sync dist s3://dev-simplicity.ashevillenc.gov --delete --exclude \"*.map\" --exclude \"favicon.ico\"",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "homepage": "https://github.com/cityofasheville/simplicity2#readme",
   "repository": {
@@ -110,6 +112,8 @@
     "semiotic": "^1.19.0",
     "semiotic-mark": "^0.1.2",
     "unfetch": "^3.0.0",
-    "url-loader": "^1.0.1"
-  }
+    "url-loader": "^1.0.1",
+    "snyk": "^1.189.0"
+  },
+  "snyk": true
 }

@@ -89,7 +89,7 @@ module.exports = {
       ),
     }),
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, 'src', 'index.html'),
+      template: path.join(__dirname, 'public', 'index.html'),
     }),
     extractSass,
     new ExtractTextPlugin('styles.css'),

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import styles from './topicCard.css';
 import Icon from './Icon';
 import {
   IM_SHIELD3,
@@ -73,7 +72,7 @@ const TopicCard = props => {
       query,
     }}
   >
-    <div className={styles.topicCard}>
+    <div className="topicCard">
       <div className="text-primary text-center">{getTopicIcon(props.topic)}</div>
       <div className="text-primary text-center">
         {translateTopic(props.topic, props.language.language).replace(/_/g, ' ')}

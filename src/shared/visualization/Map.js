@@ -125,7 +125,7 @@ const Map = (props) => {
             <Marker
               position={props.center}
               icon={L.icon({
-                iconUrl: require('../../shared/marker-icon-2.png'),
+                iconUrl: require('../../images/marker-icon-2.png'),
                 iconSize: [25, 41],
                 iconAnchor: [12, 41],
                 popupAnchor: [2, -22],

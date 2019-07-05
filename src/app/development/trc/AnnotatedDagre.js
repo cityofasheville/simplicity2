@@ -238,7 +238,7 @@ class AnnotatedDagre extends React.Component {
 
   renderContent() {
     const { dimensions } = this.state;
-    const height = dimensions.width < 768 ? 3000 : 5000;
+    const height = dimensions.width < 768 ? 2750 : 5000;
     const nodePadding = 5;
     const edgeStroke = dimensions.width < 768 ? 3 : 4;
     const arrowWidth = edgeStroke * 1.5;

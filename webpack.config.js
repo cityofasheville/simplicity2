@@ -12,12 +12,17 @@ const extractSass = new ExtractTextPlugin({
 module.exports = {
   context: path.resolve(__dirname),
   entry: {
-    app: ['babel-polyfill', path.join(__dirname, 'src', 'index.js')],
+    app: [
+      'babel-polyfill',
+      path.join(__dirname, 'src', 'index.js'),
+      path.join(__dirname, 'public', 'manifest.json'),
+      path.join(__dirname, 'public', 'favicon.ico')
+    ],
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].[chunkhash].bundle.js',
-    publicPath: '/',
+    publicPath: '/'
   },
   devtool: process.env.NODE_ENV === 'development' ? 'eval-source-map' : 'source-map',
   module: {
@@ -32,16 +37,16 @@ module.exports = {
       },
       {
         test: /\.(png|jpg)$/,
-        loader: 'url-loader?limit=25000',
+        loader: 'url-loader?limit=25000'
       },
-      // {
-      //   test: /\.ico$/,
-      //   loader: 'file-loader?name=[name].[ext]'  // <-- retain original file name
-      // },
-      // {
-      //   test: /manifest.json/,
-      //   loader: 'file-loader?name=[name].[ext]'  // <-- retain original file name
-      // },
+      {
+        test: /\.ico$/,
+        loader: 'file-loader?name=[name].[ext]'  // <-- retain original file name
+      },
+      {
+        test: /manifest.json/,
+        loader: 'file-loader?name=[name].[ext]'  // <-- retain original file name
+      },
       {
         test: /\.scss$/,
         use: extractSass.extract({
@@ -89,7 +94,7 @@ module.exports = {
       ),
     }),
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, 'src', 'index.html'),
+      template: path.join(__dirname, 'public', 'index.html'),
     }),
     extractSass,
     new ExtractTextPlugin('styles.css'),

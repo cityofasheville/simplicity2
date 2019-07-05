@@ -87,7 +87,7 @@ class BudgetSummaryBarChart extends React.Component {
               dataKeys={this.state.summaryData.dataKeys}
               yAxisTickFormatter={getDollars}
               tooltipYValFormatter={getDollarsLong}
-              domain={[0, 190000000]}
+              domain={[0, 200000000]}
               legendLabelFormatter={function(label) {return label.replace(' Department', '')}}
               altText={`${this.getTitle()} ${this.state.content.bar_chart}`}
               chartTitle={this.props.categoryType === 'use' ? this.state.content.spending_by_use : this.state.content.spending_by_department}

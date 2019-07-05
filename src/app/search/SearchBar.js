@@ -65,7 +65,6 @@ class SearchBar extends React.Component {
               onKeyUp={this.handleKeyUp}
               id="searchBox"
               name="searchBox"
-              autoFocus
             />
             <span className="input-group-btn">
               <button className="btn btn-primary" type="button" aria-label="search" onClick={() => this.handleSearchClick(document.getElementById('searchBox').value)}><Icon path={IM_SEARCH} size={16} /></button>

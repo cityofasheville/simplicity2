@@ -21,59 +21,59 @@ const getMarker = (type) => {
   switch (type) {
     case 'MISSING PERSON REPORT':
     case 'RUNAWAY JUVENILE':
-      return require('../../shared/User.png'); // eslint-disable-line
+      return require('../../images/User.png'); // eslint-disable-line
     case 'DAMAGE TO PERSONAL PROPERTY':
     case 'VANDALISM':
-      return require('../../shared/Hammer.png'); // eslint-disable-line
+      return require('../../images/Hammer.png'); // eslint-disable-line
     case 'ASSAULT - SIMPLE':
     case 'ASSAULT ON FEMALE':
     case 'ASSAULT W/DEADLY WEAPON':
-      return require('../../shared/Ambulance.png'); // eslint-disable-line
+      return require('../../images/Ambulance.png'); // eslint-disable-line
     case 'COMMUNICATING THREAT':
-      return require('../../shared/Bubble.png'); // eslint-disable-line
+      return require('../../images/Bubble.png'); // eslint-disable-line
     case 'INTIMIDATING STATE WITNESS':
     case 'PERJURY':
     case 'OBSTRUCTION OF JUSTICE':
-      return require('../../shared/Library2.png'); // eslint-disable-line
+      return require('../../images/Library2.png'); // eslint-disable-line
     case 'FRAUD':
     case 'FRAUD-CREDIT CARD':
     case 'FALSE PRETENSE - OBTAIN PROPERTY BY':
     case 'IMPERSONATE':
-      return require('../../shared/Profile.png'); // eslint-disable-line
+      return require('../../images/Profile.png'); // eslint-disable-line
     case 'CARRYING CONCEALED WEAPON':
-      return require('../../shared/Gun.png'); // eslint-disable-line
+      return require('../../images/Gun.png'); // eslint-disable-line
     case 'RESIST, DELAY, OBSTRUCT OFFICER':
     case 'CIT INCIDENT':
     case 'DV ASSISTANCE OTHER':
     case 'VICTIM ASSISTANCE OTHER':
     case 'ASSAULT ON GOVERNMENT OFFICIAL':
-      return require('../../shared/Shield3.png'); // eslint-disable-line
+      return require('../../images/Shield3.png'); // eslint-disable-line
     case 'DWI':
     case 'UNAUTHORIZED USE OF MOTOR VEHICLE':
-      return require('../../shared/Car.png'); // eslint-disable-line
+      return require('../../images/Car.png'); // eslint-disable-line
     case 'LARCENY OF MV OTHER':
     case 'LARCENY OF MV AUTO':
     case 'LARCENY OF MV TRUCK':
-      return require('../../shared/Car.png'); // eslint-disable-line
+      return require('../../images/Car.png'); // eslint-disable-line
     case 'TRESPASS':
-      return require('../../shared/Fence.png'); // eslint-disable-line
+      return require('../../images/Fence.png'); // eslint-disable-line
     case 'INFORMATION ONLY':
-      return require('../../shared/Pencil7.png'); // eslint-disable-line
+      return require('../../images/Pencil7.png'); // eslint-disable-line
     case 'DRUG PARAPHERNALIA POSSESS':
     case 'DRUG OFFENSE - FELONY':
     case 'DRUG OFFENSE - MISDEMEANOR':
     case 'DRUG PARAPHERNALIA OTHER':
-      return require('../../shared/AidKit2.png'); // eslint-disable-line
+      return require('../../images/AidKit2.png'); // eslint-disable-line
     case 'COUNTERFEITING-BUYING/RECEIVING':
-      return require('../../shared/BillDollar.png'); // eslint-disable-line
+      return require('../../images/BillDollar.png'); // eslint-disable-line
     case 'LARCENY ALL OTHER':
     case 'LARCENY FROM BUILDING':
     case 'LARCENY FROM MOTOR VEHICLE':
     case 'ROBBERY - COMMON LAW':
     case 'ROBBERY - ARMED - KNIFE':
-      return require('../../shared/Dollar.png'); // eslint-disable-line
+      return require('../../images/Dollar.png'); // eslint-disable-line
     default:
-      return require('../../shared/Ellipsis.png'); // eslint-disable-line
+      return require('../../images/Ellipsis.png'); // eslint-disable-line
   }
 };
 

@@ -122,10 +122,10 @@ const DevelopmentSummary = (props) => {
             location={props.location}
           />
       }
-      <div class="row">
-        <div class="col-sm-2">
+      <div className="row">
+        <div className="col-sm-2">
         </div>
-        <div class="col-sm-8">
+        <div className="col-sm-8">
           <br/>
           <p>
             The map, list, and chart represent all development permit types, of which there are over 40.  Some permit types included are:

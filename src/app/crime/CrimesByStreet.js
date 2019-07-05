@@ -64,7 +64,7 @@ const getMarker = (type) => {
     case 'DRUG OFFENSE - FELONY':
     case 'DRUG OFFENSE - MISDEMEANOR':
     case 'DRUG PARAPHERNALIA OTHER':
-      return require('../../images/Aidkit2.png');     
+      return require('../../images/AidKit2.png');     
     case 'COUNTERFEITING-BUYING/RECEIVING':
       return require('../../images/BillDollar.png');
     case 'LARCENY ALL OTHER':

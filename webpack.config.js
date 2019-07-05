@@ -16,13 +16,13 @@ module.exports = {
       'babel-polyfill',
       path.join(__dirname, 'src', 'index.js'),
       path.join(__dirname, 'public', 'manifest.json'),
-      path.join(__dirname, 'public', 'favicon.ico'),
+      path.join(__dirname, 'public', 'favicon.ico')
     ],
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].[chunkhash].bundle.js',
-    publicPath: '/',
+    publicPath: '/'
   },
   devtool: process.env.NODE_ENV === 'development' ? 'eval-source-map' : 'source-map',
   module: {
@@ -37,7 +37,7 @@ module.exports = {
       },
       {
         test: /\.(png|jpg)$/,
-        loader: 'url-loader?limit=25000',
+        loader: 'url-loader?limit=25000'
       },
       {
         test: /\.ico$/,

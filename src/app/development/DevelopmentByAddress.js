@@ -17,25 +17,25 @@ import { refreshLocation } from '../../utilities/generalUtilities';
 const getMarker = (type) => {
   switch (type) {
     case 'Commercial':
-      return require('../../shared/Office.png');
+      return require('../../images/Office.png');
     case 'Fire':
-      return require('../../shared/Fire.png');
+      return require('../../images/Fire.png');
     case 'Residential':
-      return require('../../shared/Home2.png');
+      return require('../../images/Home2.png');
     case 'Sign':
-      return require('../../shared/Direction.png');
+      return require('../../images/Direction.png');
     case 'Event-Temporary Use':
-      return require('../../shared/Users4.png');
+      return require('../../images/Users4.png');
     case 'Historical':
-      return require('../../shared/Library2.png');
+      return require('../../images/Library2.png');
     case 'Over The Counter':
-      return require('../../shared/Mug.png');
+      return require('../../images/Mug.png');
     case 'Outdoor Vendor':
-      return require('../../shared/Cook.png');
+      return require('../../images/Cook.png');
     case 'Development':
-      return require('../../shared/City.png');
+      return require('../../images/City.png');
     default:
-      return require('../../shared/Ellipsis.png');
+      return require('../../images/Ellipsis.png');
   }
 };
 

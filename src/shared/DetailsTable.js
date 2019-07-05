@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import AccessibleReactTable from 'accessible-react-table';
-import styles from './detailsTable.css';
 
 const DetailsTable = (props) => {
   const numColumns = props.columns.length;

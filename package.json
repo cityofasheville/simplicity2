@@ -113,7 +113,7 @@
     "semiotic-mark": "^0.1.2",
     "unfetch": "^3.0.0",
     "url-loader": "^1.0.1",
-    "snyk": "^1.189.0"
+    "snyk": "^1.192.2"
   },
   "snyk": true
 }

@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import SearchBar from './search/SearchBarLink'; // temporarily using the link version
+import Search from './search/Search';
 import Topics from './Topics';
 
 const Homepage = props => (
   <div className="template__home">
     <div className="row">
-      <SearchBar
+      <Search
         location={props.location}
         selectedEntities={props.location.query.entities !== undefined ? props.location.query.entities : 'address,property,neighborhood,street,owner'}
       />

@@ -62,7 +62,6 @@ const TopicCard = props => {
   const queryPossiblies = ['view', 'entity', 'id', 'label', 'entities', 'x', 'y', 'search'];
   queryPossiblies.forEach(possibility => {
     if (props[possibility]) {
-      console.log(props[possibility])
       query[possibility] = props[possibility];
     }
   })

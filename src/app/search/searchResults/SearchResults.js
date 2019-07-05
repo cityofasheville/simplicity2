@@ -14,7 +14,7 @@ import {
 
 const SearchResults = (props) => {
   if (props.data === undefined) {
-    return <div className="alert alert-info alert-sm">Enter a search term above to get results</div>;
+    return <div></div>;
   }
   if (props.data.loading) {
     return <LoadingAnimation message="Searching..." />;
@@ -29,7 +29,7 @@ const SearchResults = (props) => {
     <div className="row">
       <div className="col-sm-12">
         {
-          formattedResults.length > 0 ?
+          formattedResults.length > 0 &&
           formattedResults.map((resultGroup, index) => (
             <SearchResultGroup
               key={[resultGroup.label, index].join('_')}
@@ -37,14 +37,12 @@ const SearchResults = (props) => {
               searchText={props.searchText}
               selectedEntities={props.location.query.entities}
             />
-          )) :
-          props.searchText === undefined || props.searchText.length === 0 ?
-            <div className="alert alert-info alert-sm">
-              Enter a search term above to get results
-            </div> :
-            <div className="alert alert-warning alert-sm">
-              No results found. Try a different search term and/or different search type selections.
-            </div>
+          ))
+        }
+        {formattedResults.length === 0 &&
+          <div className="alert alert-warning alert-sm">
+            No results found. Try a different search term and/or different search type selections.
+          </div>
         }
       </div>
     </div>

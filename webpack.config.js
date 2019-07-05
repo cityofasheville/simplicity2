@@ -12,7 +12,12 @@ const extractSass = new ExtractTextPlugin({
 module.exports = {
   context: path.resolve(__dirname),
   entry: {
-    app: ['babel-polyfill', path.join(__dirname, 'src', 'index.js'), path.join(__dirname, 'public', 'manifest.json'), path.join(__dirname, 'public', 'favicon.ico')],
+    app: [
+      'babel-polyfill',
+      path.join(__dirname, 'src', 'index.js'),
+      path.join(__dirname, 'public', 'manifest.json'),
+      path.join(__dirname, 'public', 'favicon.ico'),
+    ],
   },
   output: {
     path: path.resolve(__dirname, 'dist'),

@@ -12,7 +12,7 @@ const extractSass = new ExtractTextPlugin({
 module.exports = {
   context: path.resolve(__dirname),
   entry: {
-    app: ['babel-polyfill', path.join(__dirname, 'src', 'index.js')],
+    app: ['babel-polyfill', path.join(__dirname, 'src', 'index.js'), path.join(__dirname, 'public', 'manifest.json'), path.join(__dirname, 'public', 'favicon.ico')],
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -34,14 +34,14 @@ module.exports = {
         test: /\.(png|jpg)$/,
         loader: 'url-loader?limit=25000',
       },
-      // {
-      //   test: /\.ico$/,
-      //   loader: 'file-loader?name=[name].[ext]'  // <-- retain original file name
-      // },
-      // {
-      //   test: /manifest.json/,
-      //   loader: 'file-loader?name=[name].[ext]'  // <-- retain original file name
-      // },
+      {
+        test: /\.ico$/,
+        loader: 'file-loader?name=[name].[ext]'  // <-- retain original file name
+      },
+      {
+        test: /manifest.json/,
+        loader: 'file-loader?name=[name].[ext]'  // <-- retain original file name
+      },
       {
         test: /\.scss$/,
         use: extractSass.extract({

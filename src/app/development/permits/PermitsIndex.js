@@ -11,7 +11,7 @@ class PermitsIndex extends React.Component {
     super();
     const now = timeDay.floor(new Date());
     this.initialBrushExtent = [
-      timeWeek.offset(now, -1).getTime(),
+      timeWeek.offset(now, -4).getTime(),
       now.getTime(),
     ];
     this.state = {

@@ -10,6 +10,8 @@ import PermitTimeline from './PermitTimeline';
 import { permitFieldFormats } from './permitFieldFormats';
 import { trcProjectTypes, statusTranslation, getTRCTypeFromPermit, orderedDates } from '../utils';
 
+// technical_contact_name
+// technical_contact_email
 const GET_PERMIT = gql`
   query getPermitsQuery($permit_numbers: [String]) {
     permits(permit_numbers: $permit_numbers) {

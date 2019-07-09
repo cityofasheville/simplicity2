@@ -150,9 +150,12 @@ export const permitFieldFormats = [
     )},
   },
   {
-    accelaLabel: 'contact',
+    accelaLabel: 'technical_contact_email',
     displayGroup: 'project details',
     displayLabel: 'Contact',
+    formatFunc: (d, permit) => {
+      return d || 'pod@ashevillenc.gov';
+    },
   },
   {
     accelaLabel: 'Zoning District',

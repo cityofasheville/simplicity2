@@ -71,8 +71,6 @@ const PermitsTableWrapper = props => (
         });
       }
 
-      filteredData.forEach(d => console.log(d.permit_group))
-
       return (<div className="col-sm-12">
         <div>
           <div className="map-container" style={{ height: '350px', width: '100%' }}>

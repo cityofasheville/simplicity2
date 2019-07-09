@@ -168,12 +168,19 @@ export const defaultTableHeaders = [
     display: 'Address',
   },
   {
-    field: 'permit_subtype',
+    field: 'permit_type',
     display: 'Type',
     formatFunc: d => {
       const trcType = getTRCTypeFromPermit(d);
       if (!trcType) {
-        return d.permit_subtype;
+        let returnString = d.permit_type;
+        if (d.permit_subtype !== 'NA') {
+          returnString += `: ${d.permit_subtype}`;
+        }
+        if (d.permit_category !== 'NA') {
+          returnString += `: ${d.permit_category}`;
+        }
+        return returnString;
       }
       return (<div>
         <span style={{ marginRight: '1em' }}>{trcType.id}</span>
@@ -181,6 +188,7 @@ export const defaultTableHeaders = [
           <TypePuck
             typeObject={trcType}
             size={30}
+            hover={false}
           />
         </div>
       </div>);

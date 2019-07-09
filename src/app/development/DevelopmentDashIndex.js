@@ -119,7 +119,7 @@ DevelopmentDashIndex.defaultProps = {
       },
     },
     {
-      name: 'Major Development Dashboard (Under Construction)',
+      name: 'Major Development Dashboard',
       linkTo: {
         pathname: '/development/major'
       }

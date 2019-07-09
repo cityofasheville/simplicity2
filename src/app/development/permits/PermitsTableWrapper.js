@@ -56,7 +56,7 @@ const PermitsTableWrapper = props => (
         return <div>Error :( </div>;
       }
 
-      let filteredData = data.permits;
+      let filteredData = data.permits.filter(d => d.permit_number.indexOf('TMP') === -1);
 
       if (props.projectTypes) {
         filteredData = data.permits.filter((d) => {
@@ -70,6 +70,7 @@ const PermitsTableWrapper = props => (
           return typeOfInterest;
         });
       }
+
       return (<div className="col-sm-12">
         <div>
           <div className="map-container" style={{ height: '350px', width: '100%' }}>
@@ -112,7 +113,7 @@ PermitsTableWrapper.propTypes = {
 
 PermitsTableWrapper.defaultProps = {
   date_field: 'applied_date',
-  after: moment.utc().subtract(7, 'days').format('YYYY-MM-DD'),
+  after: moment.utc().subtract(30, 'days').format('YYYY-MM-DD'),
   before: moment.utc().format('YYYY-MM-DD'),
   permit_groups: ['Permits', 'Planning', 'Services'],
 };

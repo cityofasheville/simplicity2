@@ -28,6 +28,8 @@ const GET_PERMIT = gql`
       total_sq_feet
       civic_address_id
       address
+      technical_contact_name
+      technical_contact_email
       x
       y
       custom_fields {
@@ -60,7 +62,7 @@ const Permit = props => (
 
       const thisPermit = data.permits[0];
       const trcType = getTRCTypeFromPermit(thisPermit);
-      const formattedPermit = Object.assign({ contact: trcType ? 'pod@ashevillenc.gov' : null }, thisPermit, { trcType });
+      const formattedPermit = Object.assign({}, thisPermit, { trcType });
 
       // These are all the "misc" info fields that may or may not be filled out for any permit
       thisPermit.custom_fields.forEach((customField) => {
@@ -110,9 +112,9 @@ const Permit = props => (
         .sort(a => (!a.displayLabel ? -1 : 0))
         .forEach((d) => {
           const val = formattedPermit[d.accelaLabel];
-          if (!val) {
-            return;
-          }
+          // if (!val) {
+          //   return;
+          // }
           const formattedDisplayVal = d.formatFunc ? d.formatFunc(val, formattedPermit) : val;
           if (!formattedDisplayVal) {
             // Format functions return null if it should not show

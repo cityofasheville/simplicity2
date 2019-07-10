@@ -5,6 +5,9 @@ import createFilterRenderer from '../../../shared/FilterRenderer';
 import { defaultTableHeaders } from '../utils';
 
 function extractTextFromReactComponents(component) {
+  if (component === null || component === undefined) {
+    return '';
+  }
   if (typeof component === 'string') {
     return component;
   } else if (!component.props || !component.props.children) {

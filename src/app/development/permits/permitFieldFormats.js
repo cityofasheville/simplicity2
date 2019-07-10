@@ -150,9 +150,27 @@ export const permitFieldFormats = [
     )},
   },
   {
-    accelaLabel: 'contact',
+    accelaLabel: 'technical_contact_email',
     displayGroup: 'project details',
     displayLabel: 'Contact',
+    formatFunc: (d, permit) => {
+      if (!d && !permit.trcType) {
+        // If there isn't a staff email address and we shouldn't direct to POD
+        // (Don't have people email POD about random small potatoes permits)
+        return null;
+      }
+      let emailLinkText = d;
+      if (permit.trcType && !d) {
+        emailLinkText = 'pod@ashevillenc.gov';
+      }
+      return (
+        <a
+          href={`mailto:${emailLinkText}?subject=Inquiry from SimpliCity user about ${permit.permit_number}`}
+        >
+          {emailLinkText}
+        </a>
+      );
+    },
   },
   {
     accelaLabel: 'Zoning District',

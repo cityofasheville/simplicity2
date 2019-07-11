@@ -73,7 +73,7 @@ export const dagreNodes = [
           what: 'Developers and city staff meet to look at initial sketches, discuss process and schedule, and identify applicable regulations.',
           who: ['dev', 'staff'],
           when: 'Required before application submission',
-          where: <a href="https://goo.gl/maps/FYcn1ATUY7Ux8q6G9" target="_blank" rel="noopener noreferrer">Development Services Department</a>,
+          where: <a href="https://goo.gl/maps/FYcn1ATUY7Ux8q6G9" target="_blank" rel="noopener noreferrer">Development Services Department offices</a>,
         },
       },
       {
@@ -96,10 +96,10 @@ export const dagreNodes = [
   {
     id: 'Permit application',
     steps: {
-      what: 'Submission of required plans and documents and payment of application fees.',
+      what: <React.Fragment>Submission of required plans and documents and payment of application fees to the <a href="https://www.ashevillenc.gov/department/development-services/" rel="noopener noreferrer" target="_blank">Development Services Department</a>.</React.Fragment>,
       who: ['dev'],
       when: 'After all required preliminary steps are completed.',
-      where: <a href="https://goo.gl/maps/FYcn1ATUY7Ux8q6G9" target="_blank" rel="noopener noreferrer">Development Services Department</a>,
+      where: <a href="https://goo.gl/maps/FYcn1ATUY7Ux8q6G9" target="_blank" rel="noopener noreferrer">Development Services Department offices</a>,
     },
     typeIds: [
       'Level I',
@@ -115,7 +115,7 @@ export const dagreNodes = [
       what: 'A staff member reviews plans for compliance with applicable ordinances and documents and creates a report.',
       who: ['staff'],
       when: 'Within ten days of application submittal',
-      where: <a href="https://goo.gl/maps/FYcn1ATUY7Ux8q6G9" target="_blank" rel="noopener noreferrer">Development Services Department</a>,
+      where: <a href="https://goo.gl/maps/FYcn1ATUY7Ux8q6G9" target="_blank" rel="noopener noreferrer">Development Services Department offices</a>,
     },
     typeIds: [
       'Level I',
@@ -135,7 +135,7 @@ export const dagreNodes = [
       what: <React.Fragment>An eight-member body that ensures that the proposed project complies with standards and requirements.  Meeting agendas are available on <a href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/technical-review-committee/" target="_blank" rel="noopener noreferrer">the city website</a>.</React.Fragment>,
       who: ['dev', 'staff'],
       when: 'First and third Monday of each month',
-      where: <a href="https://goo.gl/maps/FYcn1ATUY7Ux8q6G9" target="_blank" rel="noopener noreferrer">Development Services Department</a>,
+      where: <a href="https://goo.gl/maps/FYcn1ATUY7Ux8q6G9" target="_blank" rel="noopener noreferrer">Development Services Department offices</a>,
     },
     typeIds: [
       'Level II',

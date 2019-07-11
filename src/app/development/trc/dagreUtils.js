@@ -156,7 +156,7 @@ export const dagreNodes = [
   {
     id: 'Design review',
     steps: {
-      what: <div>Projects located Downtown or in the River District must be reviewed for architectural design elements by a special design review sub-committee of either the <a href="https://library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTIIIDEKIADADBO_S7-3-8ASDOCO" target="_blank" rel="noopener noreferrer">Asheville Downtown Commission</a> or the <a href="https://library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTIIIDEKIADADBO_S7-3-10ASARRIRECO" target="_blank" rel="noopener noreferrer">Asheville Area Riverfront Redevelopment Commission</a> prior to approval.</div>,
+      what: <div>Projects located Downtown or in the River District must be reviewed for architectural design elements by a special design review sub-committee of either the <a href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/downtown-commission/" target="_blank" rel="noopener noreferrer">Asheville Downtown Commission</a> or the <a href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/asheville-area-riverfront-redevelopment-commission/" target="_blank" rel="noopener noreferrer">Asheville Area Riverfront Redevelopment Commission</a> prior to approval.</div>,
       who: ['dev', 'staff', 'neighbors'],
       when: (<ul style={{ padding: 0 }}>
         <li>Downtown Commission: second Friday of each month</li>
@@ -183,9 +183,8 @@ export const dagreNodes = [
   {
     id: 'Planning and Zoning Commission',
     steps: {
-      what: 'For  Conditional Zoning, Conditional Use, and Level III projects, the Planning and Zoning Commission holds a public hearing and makes a recommendation for action to City Council.  For downtown Level II projects, the Planning and Zoning Commission verifies technical compliance with the requirements of applicable ordinances and documents and takes final action.',
+      what: <React.Fragment>For  Conditional Zoning, Conditional Use, and Level III projects, the <a href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/planning-and-zoning-commission/" target="_blank" rel="noopener noreferrer">Planning and Zoning Commission</a> holds a public hearing and makes a recommendation for action to City Council.  For downtown Level II projects, the Planning and Zoning Commission verifies technical compliance with the requirements of applicable ordinances and documents and takes final action.</React.Fragment>,
       who: ['dev', 'staff', 'neighbors', 'council'],
-      // TODO: ADD ICON ETC FOR CITY OFFICIALS
       when: (<React.Fragment>Per <a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/planning-and-zoning-commission/">published schedule</a></React.Fragment>),
       where: <a href="https://goo.gl/maps/7GkCkb1pPjRaXbAc7" target="_blank" rel="noopener noreferrer">City Hall</a>,
     },
@@ -206,7 +205,7 @@ export const dagreNodes = [
   {
     id: 'City Council',
     steps: {
-      what: 'Applications are reviewed during a public hearing before City Council.  These projects arrive at the City Council meeting with a recommendation for action that has been sent by the Planning and Zoning Commission.',
+      what: <React.Fragment>Applications are reviewed during a public hearing before <a href="https://www.ashevillenc.gov/government/meet-city-council/" target="_blank" rel="noopener noreferrer">City Council</a>.  These projects arrive at the City Council meeting with a recommendation for action that has been sent by the Planning and Zoning Commission.</React.Fragment>,
       who: ['dev', 'staff', 'neighbors', 'council'],
       when: 'The second and fourth Tuesday of each month',
       where: <a href="https://goo.gl/maps/7GkCkb1pPjRaXbAc7" target="_blank" rel="noopener noreferrer">City Hall</a>,

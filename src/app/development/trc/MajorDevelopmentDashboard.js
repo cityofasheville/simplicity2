@@ -19,7 +19,6 @@ class MajorDevelopmentDashboard extends React.Component {
       {
         linkId: 'types',
         linkName: 'Project Types',
-        selected: true,
         header: 'Types of large-scale development',
         body: <React.Fragment><p>The types of large-scale development are defined by <a href="https://library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTVDEREPR_S7-5-9SIPLREDEPREXTHPAZOCEBUDILODODEREOVDICBDD" target="_blank" rel="noopener noreferrer">the City of Asheville's Unified Development Ordinance.</a>  Projects located downtown are <a href="https://library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTVDEREPR_S7-5-9.1DEAPPRPAZOCEBUDILODODEREOVDICBDD" target="_blank" rel="noopener noreferrer">defined slightly differently in the ordinance.</a></p><PermitTypeCards/></React.Fragment>,
       },
@@ -127,14 +126,32 @@ class MajorDevelopmentDashboard extends React.Component {
   }
 
   render() {
+    // iterate over sections, make the selected one whichever one is in the URL
+    // otherwise make it the first one
+    const thisLocation = location.hash.replace('#', '');
+    this.sections = this.sections.map(d =>
+      Object.assign(d, { selected: d.linkId === thisLocation })
+    );
+
+
+    // TODO: control which one is open based on URL
     if (this.state.width < 800) {
       return (
         <div id="majorDevDash">
           <h1>Major Development in Asheville</h1>
           <Accordion
             data={this.sections}
-            id="top-level"
+            componentId="top-level"
             classes="top-level-accordion"
+            onPanelHeaderClick={(sectionData, opening) => {
+              if (opening) {
+                history.replaceState(
+                  {},
+                  sectionData.linkId,
+                  `${location.pathname}${location.search}#${sectionData.linkId}`
+                );
+              }
+            }}
           />
         </div>
       );

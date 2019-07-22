@@ -33,7 +33,7 @@ const GET_NEIGHBORHOODS = gql`
 const PermitMap = ({
   permitData,
   centerCoords,
-  zoom,
+  zoom = 12,
   showNeighborhoods = false,
 }) => {
   if (!showNeighborhoods) {
@@ -42,7 +42,7 @@ const PermitMap = ({
       center={centerCoords}
       height="100%"
       width="100%"
-      zoom={14}
+      zoom={zoom}
     />);
   }
   return (
@@ -60,7 +60,7 @@ const PermitMap = ({
           center={centerCoords}
           height="100%"
           width="100%"
-          zoom={14}
+          zoom={zoom}
           drawPolygon
           polygonData={combinePolygonsFromNeighborhoodList(data.neighborhoods)}
         />);

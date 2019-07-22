@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ErrorBoundary from '../../app/ErrorBoundary';
 
 /*
 TODO:
@@ -58,27 +59,29 @@ class AccordionPanel extends React.Component {
 }
 
 const Accordion = ({ classes = '', componentId, data, onPanelHeaderClick = null }) => (
-  <div
-    className={`panel-group ${classes} accordion-root`}
-    id={componentId}
-    role="tablist"
-    aria-multiselectable="true"
-  >
-    {/* https://getbootstrap.com/docs/3.4/javascript/#collapse */}
-    {data.map((d, i) => (
-      <AccordionPanel
-        key={`accordion-item-${i}`}
-        index={i}
-        header={d.header}
-        body={d.body}
-        initiallyExpanded={d.selected}
-        componentId={componentId}
-        inheritedClasses={classes}
-        onPanelHeaderClick={onPanelHeaderClick}
-        data={d}
-        linkId={d.linkId}
-      />))}
-  </div>
+  <ErrorBoundary>
+    <div
+      className={`panel-group ${classes} accordion-root`}
+      id={componentId}
+      role="tablist"
+      aria-multiselectable="true"
+    >
+      {/* https://getbootstrap.com/docs/3.4/javascript/#collapse */}
+      {data.map((d, i) => (
+        <AccordionPanel
+          key={`accordion-item-${i}`}
+          index={i}
+          header={d.header}
+          body={d.body}
+          initiallyExpanded={d.selected}
+          componentId={componentId}
+          inheritedClasses={classes}
+          onPanelHeaderClick={onPanelHeaderClick}
+          data={d}
+          linkId={d.linkId}
+        />))}
+    </div>
+  </ErrorBoundary>
 )
 
 export default Accordion;

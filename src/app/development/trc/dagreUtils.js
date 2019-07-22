@@ -69,7 +69,7 @@ export const dagreNodes = [
         steps: {
           what: 'Developers must notify all property owners within 200 feet of the proposed development site.  Neighbors meet with developers to collaborate on neighborhood needs and opportunities.',
           who: ['dev', 'neighbors'],
-          when: 'Ten days before application submission',
+          when: <React.Fragment>Ten days before application submission (<a href="/development/major#calendar">see calendar</a>)</React.Fragment>,
           where: 'Somewhere near the proposed development site, specified in the notice',
         },
       },

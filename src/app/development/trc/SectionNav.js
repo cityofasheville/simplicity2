@@ -45,7 +45,11 @@ class SectionNav extends React.Component {
     }
 
     // https://caniuse.com/#search=pushstate
-    history.replaceState({}, closestNavLinkId, `${location.pathname}${location.search}#${closestNavLinkId}`)
+    history.replaceState(
+      {},
+      closestNavLinkId,
+      `${location.pathname}${location.search}#${closestNavLinkId}`
+    );
     this.setSelectedNavLink(closestNavLinkId)
   }
 

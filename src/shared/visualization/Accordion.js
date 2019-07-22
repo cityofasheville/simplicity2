@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ErrorBoundary from '../../app/ErrorBoundary';
 
 /*
 TODO:
@@ -16,20 +17,23 @@ class AccordionPanel extends React.Component {
 
   render() {
     const panelHeadingId = `accordion-heading-${this.props.index}`;
-    const collapsibleId = `accordion-button-${this.props.index}`;
+    const collapsibleId = `${this.props.linkId}`;
 
     return (<div className="accordion-item-set">
       <div className={`panel${this.state.open ? ' open' : ''}`}>
         <a
           role="button"
           data-toggle="collapse"
-          data-parent={`#${this.props.parentId}`}
+          data-parent={`#${this.props.componentId}`}
           href={`#${collapsibleId}`}
           aria-expanded={this.state.open}
           aria-controls={collapsibleId}
           onClick={(e) => {
             e.preventDefault();
-            this.setState({ open: !this.state.open });
+            this.setState(
+              { open: !this.state.open },
+              () => this.props.onPanelHeaderClick ? this.props.onPanelHeaderClick(this.props.data, this.state.open) : null
+            );
           }}
         >
           <div className="panel-heading" role="tab" id={panelHeadingId}>
@@ -54,25 +58,30 @@ class AccordionPanel extends React.Component {
   }
 }
 
-const Accordion = ({ classes = '', id, data }) => (
-  <div
-    className={`panel-group ${classes} accordion-root`}
-    id={id}
-    role="tablist"
-    aria-multiselectable="true"
-  >
-    {/* https://getbootstrap.com/docs/3.4/javascript/#collapse */}
-    {data.map((d, i) => (
-      <AccordionPanel
-        key={`accordion-item-${i}`}
-        index={i}
-        header={d.header}
-        body={d.body}
-        initiallyExpanded={d.selected}
-        parentId={id}
-        inheritedClasses={classes}
-      />))}
-  </div>
+const Accordion = ({ classes = '', componentId, data, onPanelHeaderClick = null }) => (
+  <ErrorBoundary>
+    <div
+      className={`panel-group ${classes} accordion-root`}
+      id={componentId}
+      role="tablist"
+      aria-multiselectable="true"
+    >
+      {/* https://getbootstrap.com/docs/3.4/javascript/#collapse */}
+      {data.map((d, i) => (
+        <AccordionPanel
+          key={`accordion-item-${i}`}
+          index={i}
+          header={d.header}
+          body={d.body}
+          initiallyExpanded={d.selected}
+          componentId={componentId}
+          inheritedClasses={classes}
+          onPanelHeaderClick={onPanelHeaderClick}
+          data={d}
+          linkId={d.linkId}
+        />))}
+    </div>
+  </ErrorBoundary>
 )
 
 export default Accordion;

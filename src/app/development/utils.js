@@ -245,7 +245,7 @@ export const trcProjectTypes = {};
         <li>A new pharmacy</li>
         <li>A 15-unit apartment building</li>
       </ul>),
-      recentAppsLink: <a href="/development/major?permit_subtype=level%20I%20#data">Recently submitted Level I projects</a>,
+      recentAppsLink: <a href="/development/major?permit_type=level%20I%20#data">Recently submitted Level I projects</a>,
     },
     color: '#FF3A3A',
   };
@@ -264,7 +264,7 @@ export const trcProjectTypes = {};
       examples: (<ul>
         <li>A new neighborhood with a new road created</li>
       </ul>),
-      recentAppsLink: <a href="/development/major?permit_subtype=Major%20Subdivision#data">Recently submitted Major Subdivision projects</a>,
+      recentAppsLink: <a href="/development/major?permit_type=Major%20Subdivision#data">Recently submitted Major Subdivision projects</a>,
     },
     color: '#749B5F',
   };
@@ -292,7 +292,7 @@ export const trcProjectTypes = {};
         <li>A big box specialty retailer</li>
         <li>A medium-sized apartment complex</li>
       </ul>),
-      recentAppsLink: <a href="/development/major?permit_subtype=level%20II%20#data">Recently submitted Level II projects</a>,
+      recentAppsLink: <a href="/development/major?permit_type=level%20II%20#data">Recently submitted Level II projects</a>,
     },
     color: '#2d93ad',
   };
@@ -315,7 +315,7 @@ export const trcProjectTypes = {};
         <li>A large office building</li>
         <li>A large department store</li>
       </ul>),
-      recentAppsLink: <a href="/development/major?permit_subtype=Conditional%20Zoning#data">Recently submitted Conditional Zoning projects</a>,
+      recentAppsLink: <a href="/development/major?permit_type=Conditional%20Zoning#data">Recently submitted Conditional Zoning projects</a>,
     },
     color: '#9B6681',
   };
@@ -334,7 +334,7 @@ export const trcProjectTypes = {};
         <li>Government buildings</li>
         <li>Group homes</li>
       </ul>),
-      recentAppsLink: <a href="/development/major?permit_subtype=conditional%20use%20#data">Recently submitted Conditional Use projects</a>,
+      recentAppsLink: <a href="/development/major?permit_type=conditional%20use%20#data">Recently submitted Conditional Use projects</a>,
     },
     color: '#073d49',
   };

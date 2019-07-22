@@ -12,18 +12,16 @@ import {
   IM_MONUMENT,
   IM_FISH,
 } from '../../../shared/iconConstants';
-import { trcProjectTypes } from '../utils';
-
 
 export const permitFieldFormats = [
   {
     accelaLabel: 'Aquatic Buffer',
     displayGroup: 'environment details',
     displayLabel: null,
-    formatFunc: d => (d === 'No' ? null : (
+    formatFunc: d => (d === 'Yes' ? (
       <span className="permit-icon-boolean">
         <Icon path={IM_WATER} viewBox="0 0 576 512" />Aquatic buffer located on this property
-      </span>)
+      </span>) : null
     ),
   },
   {
@@ -61,10 +59,10 @@ export const permitFieldFormats = [
     accelaLabel: 'Seeking LEED Certification',
     displayGroup: 'environment details',
     displayLabel: null,
-    formatFunc: d => (d === 'No' ? null : (
+    formatFunc: d => (d === 'Yes' ? (
       <span className="permit-icon-boolean">
         <Icon path={IM_RECYCLE} viewBox="0 0 512 512" />Seeking LEED certification
-      </span>)
+      </span>) : null
     ),
   },
   {
@@ -121,11 +119,11 @@ export const permitFieldFormats = [
     accelaLabel: 'Affordable Housing',
     displayGroup: 'project details',
     displayLabel: null,
-    formatFunc: d => (d === 'No' ? null : (
+    formatFunc: d => (d === 'Yes' ? (
       <span className="permit-icon-boolean">
         <Icon path={IM_HOME2} />Affordable housing proposed
-      </span>
-    )),
+      </span>) : null
+    ),
   },
   {
     accelaLabel: 'Number of Units',
@@ -147,7 +145,8 @@ export const permitFieldFormats = [
         >
           {d}
         </a>
-    )},
+      );
+    },
   },
   {
     accelaLabel: 'technical_contact_email',
@@ -199,40 +198,40 @@ export const permitFieldFormats = [
     accelaLabel: 'DTDR Overlay',
     displayGroup: 'zoning details',
     displayLabel: null,
-    formatFunc: d => (d === 'No' ? null : (
+    formatFunc: d => (d === 'Yes' ? (
       <span className="permit-icon-boolean">
         <Icon path={IM_CITY} />Central business district
-      </span>
-    )),
+      </span>) : null
+    ),
   },
   {
     accelaLabel: 'HRC Overlay',
     displayGroup: 'zoning details',
     displayLabel: null,
-    formatFunc: d => (d === 'No' ? null : (
+    formatFunc: d => (d === 'Yes' ? (
       <span className="permit-icon-boolean">
         <Icon path={IM_LANDMARK} viewBox="0 0 512 512" />Historic district
-      </span>
-    )),
+      </span>) : null
+    ),
   },
   {
     accelaLabel: 'River District',
     displayGroup: 'zoning details',
     displayLabel: null,
-    formatFunc: d => (d === 'No' ? null : (
+    formatFunc: d => (d === 'Yes' ? (
       <span className="permit-icon-boolean">
         <Icon path={IM_FISH} viewBox="0 0 576 512" />River district
-      </span>
-    )),
+      </span>) : null
+    ),
   },
   {
     accelaLabel: 'Landmark',
     displayGroup: 'zoning details',
     displayLabel: null,
-    formatFunc: d => (d === 'No' ? null : (
+    formatFunc: d => (d === 'Yes' ? (
       <span className="permit-icon-boolean">
         <Icon path={IM_MONUMENT} viewBox="0 0 384 512" />Historic landmark
-      </span>
-    )),
+      </span>) : null
+    ),
   },
 ];

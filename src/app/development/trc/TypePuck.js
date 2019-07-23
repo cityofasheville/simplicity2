@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { color } from 'd3-color';
-import PermitTypeCard from './PermitTypeCard';
 
 class TypePuck extends React.Component {
   constructor() {
@@ -10,7 +9,7 @@ class TypePuck extends React.Component {
       tooltipOpen: false,
       tooltipX: 0,
       tooltipY: 0,
-    }
+    };
     this.maxWidth = 100;
     this.onHover = this.onHover.bind(this);
   }
@@ -28,7 +27,7 @@ class TypePuck extends React.Component {
     let tooltipY = bbox.y + 30 + window.scrollY;
 
     if (window.innerWidth < 700) {
-      tooltipX = bbox.x - this.maxWidth / 2;
+      tooltipX = bbox.x - (this.maxWidth / 2);
     } else {
       if ((window.innerWidth - bbox.x - 300) <= 0) {
         tooltipX -= this.maxWidth;

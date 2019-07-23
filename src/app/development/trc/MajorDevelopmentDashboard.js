@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import SectionNav from './SectionNav';
-import AnnotatedDagre from './AnnotatedDagre';
+import FlowDiagram from './FlowDiagram';
 import TRCDataTable from './TRCDataTable';
 import Accordion from '../../../shared/visualization/Accordion';
 import PermitTypeCards from './PermitTypeCards';
@@ -33,7 +33,7 @@ class MajorDevelopmentDashboard extends React.Component {
         body: (<ErrorBoundary>
           <div>
             <p>After the developer submits an application, it goes through a decision-making process that includes city staff, elected and appointed city officials, developers, and residents.  Who is involved at what step depends on the type of project.</p>
-            <AnnotatedDagre />
+            <FlowDiagram />
           </div>
         </ErrorBoundary>),
       },
@@ -63,8 +63,8 @@ class MajorDevelopmentDashboard extends React.Component {
         body: (<ErrorBoundary>
           <div>
             <p>Developers planning to submit applications for development that must go through the Technical Review Committee must hold a public meeting before submitting the application.</p>
-            <p>Currently, developers are not required to notify the City of Asheville when those meetings take place.  Thus, the first record the city has of a proposed development is when the application is submitted, after the meeting.</p>
-            <p>However, some developers choose to voluntarily notify the city.  After those developers fill out an online form, those meeting dates are automatically added to <a target="_blank" rel="noopener noreferrer" href="https://calendar.google.com/calendar/embed?src=ashevillenc.gov_gk5l650n9mopts9m7sfemhcpd8%40group.calendar.google.com&ctz=America%2FNew_York">this calendar</a>.</p>
+            <p>Currently, developers are not required by law to notify the City of Asheville when those meetings take place.  Thus, the first record the city has of a proposed development is when the application is submitted, after the meeting.</p>
+            <p>However, in order to help ensure that residents can find out about neighborhood meetings in advance, the city has asked developers to voluntarily notify the city.  After those developers fill out an online form, those meeting dates are automatically added to <a target="_blank" rel="noopener noreferrer" href="https://calendar.google.com/calendar/embed?src=ashevillenc.gov_gk5l650n9mopts9m7sfemhcpd8%40group.calendar.google.com&ctz=America%2FNew_York">a calendar that shows all neighborhood meetings about which the city has been notified</a>.</p>
           </div>
         </ErrorBoundary>)
       },

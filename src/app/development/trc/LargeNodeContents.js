@@ -10,7 +10,7 @@ const LargeNodeContents = ({ node, yOffset, edgeStroke, modalCloseFunc = null })
     content = (
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
         {node.subNodes.map((sub, subIndex, subNodeArray) =>
-          <SubNode node={sub} lastNode={subIndex === subNodeArray.length - 1} />
+          <SubNode node={sub} lastNode={subIndex === subNodeArray.length - 1} key={sub.id} />
         )}
       </div>
     );

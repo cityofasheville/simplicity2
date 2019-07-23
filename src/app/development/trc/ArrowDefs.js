@@ -1,5 +1,5 @@
 import React from 'react';
-import { trcProjectTypes } from '../utils';
+import { trcProjectTypes } from './textContent';
 
 const ArrowDefs = ({ arrowWidth }) => (
   <defs>

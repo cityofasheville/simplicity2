@@ -1,7 +1,7 @@
 import React from 'react';
 import { whoIcons } from './textContent';
 
-const NodeSteps = (steps, nodeId) => (
+const NodeSteps = ({ steps, nodeId }) => (
   <ul style={{ listStyleType: 'none', padding: '0' }}>{Object.keys(steps).map(stepKey => (
     <li key={`${stepKey}-${nodeId}`} style={{ padding: '0.25rem 0' }}>
       <div

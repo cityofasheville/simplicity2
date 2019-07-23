@@ -5,10 +5,11 @@ import moment from 'moment';
 import { Query } from 'react-apollo';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import PermitsMap from './PermitsMap';
-import TypePuck from '../trc/TypePuck';
 import PermitTimeline from './PermitTimeline';
 import { permitFieldFormats } from './permitFieldFormats';
-import { trcProjectTypes, statusTranslation, getTRCTypeFromPermit, orderedDates } from '../utils';
+import { orderedDates } from '../trc/textContent';
+import { getTRCTypeFromPermit } from '../trc/utils';
+import { statusTranslation } from '../utils';
 
 const GET_PERMIT = gql`
   query getPermitsQuery($permit_numbers: [String]) {

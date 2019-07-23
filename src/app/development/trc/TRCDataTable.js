@@ -4,7 +4,7 @@ import { timeDay, timeMonth } from 'd3-time';
 import PermitsTableWrapper from '../permits/PermitsTableWrapper';
 import TimeSlider from '../volume/TimeSlider';
 import ErrorBoundary from '../../ErrorBoundary';
-import { trcProjectTypes } from '../utils';
+import { trcProjectTypes } from './textContent';
 
 
 class TRCDataTable extends React.Component {

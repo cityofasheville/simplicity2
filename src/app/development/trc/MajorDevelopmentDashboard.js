@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import SectionNav from './SectionNav';
-import AnnotatedDagre from './AnnotatedDagre';
+import FlowDiagram from './FlowDiagram';
 import TRCDataTable from './TRCDataTable';
 import Accordion from '../../../shared/visualization/Accordion';
 import PermitTypeCards from './PermitTypeCards';
@@ -33,7 +33,7 @@ class MajorDevelopmentDashboard extends React.Component {
         body: (<ErrorBoundary>
           <div>
             <p>After the developer submits an application, it goes through a decision-making process that includes city staff, elected and appointed city officials, developers, and residents.  Who is involved at what step depends on the type of project.</p>
-            <AnnotatedDagre />
+            <FlowDiagram />
           </div>
         </ErrorBoundary>),
       },

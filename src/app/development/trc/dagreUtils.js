@@ -2,15 +2,187 @@ import React from 'react';
 import dagre from 'dagre';
 import CityLogoSvg from '../../../shared/CityLogoSvg';
 import Icon from '../../../shared/Icon';
+import TypePuck from './TypePuck';
+import { trcProjectTypes } from '../utils';
 import {
   DRAFTING_COMPASS,
   USER_FRIENDS,
   GAVEL,
 } from '../../../shared/iconConstants';
 
+export const LargeNodeContents = ({ node, yOffset, edgeStroke, modalCloseFunc = null }) => {
+  let content;
+  if (node.subNodes) {
+    content = (
+      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
+        {node.subNodes.map((sub, subIndex, subNodeArray) =>
+          displaySubNode(sub, subIndex === subNodeArray.length - 1))}
+      </div>
+    );
+  } else if (node.decisionNode) {
+    content = <div>{decisionIconHeader}</div>;
+  } else if (!node.subNodes && node.steps) {
+    content = nodeSteps(node.steps, node.id);
+  }
 
-// export const classFromTRCType = type =>
-//   type.split(' ').join('-').toLowerCase();
+  return (
+    <div
+      style={{
+        border: `${edgeStroke}px solid #e6e6e6`,
+        backgroundColor: 'white',
+        padding: '0.5rem 0.5rem',
+        borderRadius: '6px',
+      }}
+    >
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          padding: '0 0 0.25rem',
+        }}
+      >
+        <div
+          style={{
+            fontWeight: 400,
+            textAlign: 'left',
+            fontSize: '1.15rem',
+          }}
+        >
+          {node.id}
+        </div>
+        <div>
+          {node.typeIds.map(id =>
+            (<TypePuck
+              key={`${node.id}-puck-${id}`}
+              typeObject={trcProjectTypes[id]}
+              size={25}
+            />))
+          }
+        </div>
+      </div>
+      {content}
+      {modalCloseFunc &&
+        <button
+          style={{
+            borderRadius: '6px',
+            textDecoration: 'underline',
+            backgroundColor: 'transparent',
+            border: '1px solid transparent',
+            width: '100%',
+          }}
+          onClick={modalCloseFunc}
+        >
+          Close
+        </button>
+      }
+    </div>
+  );
+};
+
+export const LargeNode = ({ node, yOffset, edgeStroke }) => {
+  let content;
+  if (node.subNodes) {
+    content = (<div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
+      {node.subNodes.map((sub, subIndex, subNodeArray) =>
+        displaySubNode(sub, subIndex === subNodeArray.length - 1))}
+    </div>)
+  } else if (node.decisionNode) {
+    content = <div>{decisionIconHeader}</div>;
+  } else if (!node.subNodes && node.steps) {
+    content = nodeSteps(node.steps, node.id);
+  }
+
+  return (<foreignObject
+    x={node.x - (node.wrap / 2)}
+    y={node.y - yOffset}
+    width={node.wrap}
+    height={node.height}
+    key={`node-${node.id}`}
+    style={{ overflow: 'visible' }}
+  >
+    <LargeNodeContents node={node} yOffset={yOffset} edgeStroke={edgeStroke} />
+  </foreignObject>
+)};
+
+export const SmallNode = ({ node, yOffset, edgeStroke, clickAction }) => {
+  let content;
+  if (node.subNodes) {
+    content = (
+      <div>
+        {node.subNodes.map((sub, subIndex) => (
+          <div
+            style={{ padding: subIndex > 0 ? '1rem 0 0' : 0 }}
+            key={sub.id}
+          >
+            {sub.id}: {sub.steps.what}
+          </div>))
+        }
+      </div>
+    );
+  } else if (node.decisionNode) {
+    content = <div>{decisionIconHeader}</div>;
+  } else if (!node.subNodes && node.steps) {
+    content = node.steps.what;
+  }
+
+  return (<foreignObject
+    x={node.x - (node.wrap / 2)}
+    y={node.y - yOffset}
+    width={node.wrap}
+    height={node.height}
+    key={`node-${node.id}`}
+    style={{ overflow: 'visible' }}
+  >
+    <div
+      style={{
+        border: `${edgeStroke}px solid #e6e6e6`,
+        backgroundColor: 'white',
+        padding: '0.15rem',
+        borderRadius: '6px',
+      }}
+    >
+      <div style={{ textAlign: 'center' }}>
+        {node.typeIds.map(id =>
+          (<TypePuck
+            key={`${node.id}-puck-${id}`}
+            typeObject={trcProjectTypes[id]}
+            size={20}
+          />)
+        )}
+      </div>
+      <div
+        style={{
+          fontWeight: 400,
+          textAlign: 'center',
+          padding: '0 0 0.25rem',
+        }}
+      >
+        {node.id}
+      </div>
+      <div style={{
+        maxHeight: '100px',
+        overflow: 'hidden',
+      }}>
+        {content}
+      </div>
+      {!node.decisionNode && (
+        <div style={{ textAlign: 'center' }}>
+          <button
+            style={{
+              textDecoration: 'underline',
+              backgroundColor: '#f2f2f2',
+              border: '1px solid transparent',
+              width: '100%',
+            }}
+            onClick={e => clickAction(e, node)}
+          >
+            ...more details
+          </button>
+        </div>
+      )}
+    </div>
+  </foreignObject>
+)}
 
 export const whoIcons = {
   dev: {

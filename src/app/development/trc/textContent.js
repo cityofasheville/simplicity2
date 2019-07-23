@@ -5,6 +5,7 @@ import {
   USER_FRIENDS,
   GAVEL,
 } from '../../../shared/iconConstants';
+import CityLogoSvg from '../../../shared/CityLogoSvg';
 
 export const orderedDates = [
   {

@@ -1,7 +1,7 @@
 import React from 'react';
 import NodeSteps from './NodeSteps';
 
-const SubNode = (node, lastNode = false) => (
+const SubNode = ({ node }) => (
   <div
     key={node.id}
     style={{

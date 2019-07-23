@@ -4,7 +4,6 @@ import { timeDay, timeMonth } from 'd3-time';
 import PermitsTableWrapper from '../permits/PermitsTableWrapper';
 import TimeSlider from '../volume/TimeSlider';
 import ErrorBoundary from '../../ErrorBoundary';
-import TypePuck from './TypePuck';
 import { trcProjectTypes } from '../utils';
 
 

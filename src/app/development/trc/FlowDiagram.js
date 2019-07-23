@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import PropTypes from 'prop-types';
 import ArrowDefs from './ArrowDefs';
 import LargeNodeContents from './LargeNodeContents';
 import LargeNodeWrapper from './LargeNodeWrapper';
@@ -65,7 +64,7 @@ class FlowDiagram extends React.Component {
 
   showModal(e, node) {
     this.setState({
-      modalNode: node ,
+      modalNode: node,
       modalY: e.target.getBoundingClientRect().y + window.scrollY,
     });
   }

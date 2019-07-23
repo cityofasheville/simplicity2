@@ -1,10 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import SubNode from './SubNode';
 import NodeSteps from './NodeSteps';
 import TypePuck from './TypePuck';
 import { decisionIconHeader, trcProjectTypes } from './textContent';
 
-const LargeNodeContents = ({ node, yOffset, edgeStroke, modalCloseFunc = null }) => {
+/*
+Used to create contents of nodes on screens above tablet breakpoint (see FlowDiagram).  Also used to render modal after a users clicks "more details" link on a node on a smaller screen.
+
+See ./textContent for the nodes themselves.
+*/
+const LargeNodeContents = ({ node, edgeStroke, modalCloseFunc = null }) => {
   let content;
   if (node.subNodes) {
     content = (
@@ -72,6 +78,17 @@ const LargeNodeContents = ({ node, yOffset, edgeStroke, modalCloseFunc = null })
       }
     </div>
   );
+};
+
+LargeNodeContents.propTypes = {
+  node: PropTypes.shape({}).isRequired,
+  edgeStroke: PropTypes.number,
+  modalCloseFunc: PropTypes.func,
+};
+
+LargeNodeContents.defaultProps = {
+  modalCloseFunc: null,
+  edgeStroke: 3,
 };
 
 export default LargeNodeContents;

@@ -1,4 +1,5 @@
 import React from 'react';
+import { decisionIconHeader, trcProjectTypes } from './textContent';
 
 const SmallNode = ({ node, yOffset, edgeStroke, clickAction }) => {
   let content;
@@ -21,63 +22,67 @@ const SmallNode = ({ node, yOffset, edgeStroke, clickAction }) => {
     content = node.steps.what;
   }
 
-  return (<foreignObject
-    x={node.x - (node.wrap / 2)}
-    y={node.y - yOffset}
-    width={node.wrap}
-    height={node.height}
-    key={`node-${node.id}`}
-    style={{ overflow: 'visible' }}
-  >
-    <div
-      style={{
-        border: `${edgeStroke}px solid #e6e6e6`,
-        backgroundColor: 'white',
-        padding: '0.15rem',
-        borderRadius: '6px',
-      }}
+  return (
+    <foreignObject
+      x={node.x - (node.wrap / 2)}
+      y={node.y - yOffset}
+      width={node.wrap}
+      height={node.height}
+      key={`node-${node.id}`}
+      style={{ overflow: 'visible' }}
     >
-      <div style={{ textAlign: 'center' }}>
-        {node.typeIds.map(id =>
-          (<TypePuck
-            key={`${node.id}-puck-${id}`}
-            typeObject={trcProjectTypes[id]}
-            size={20}
-          />)
-        )}
-      </div>
       <div
         style={{
-          fontWeight: 400,
-          textAlign: 'center',
-          padding: '0 0 0.25rem',
+          border: `${edgeStroke}px solid #e6e6e6`,
+          backgroundColor: 'white',
+          padding: '0.15rem',
+          borderRadius: '6px',
         }}
       >
-        {node.id}
-      </div>
-      <div style={{
-        maxHeight: '100px',
-        overflow: 'hidden',
-      }}>
-        {content}
-      </div>
-      {!node.decisionNode && (
         <div style={{ textAlign: 'center' }}>
-          <button
-            style={{
-              textDecoration: 'underline',
-              backgroundColor: '#f2f2f2',
-              border: '1px solid transparent',
-              width: '100%',
-            }}
-            onClick={e => clickAction(e, node)}
-          >
-            ...more details
-          </button>
+          {node.typeIds.map(id =>
+            (<TypePuck
+              key={`${node.id}-puck-${id}`}
+              typeObject={trcProjectTypes[id]}
+              size={20}
+            />)
+          )}
         </div>
-      )}
-    </div>
-  </foreignObject>
-)}
+        <div
+          style={{
+            fontWeight: 400,
+            textAlign: 'center',
+            padding: '0 0 0.25rem',
+          }}
+        >
+          {node.id}
+        </div>
+        <div
+          style={{
+            maxHeight: '100px',
+            overflow: 'hidden',
+          }}
+        >
+          {content}
+        </div>
+        {!node.decisionNode && (
+          <div style={{ textAlign: 'center' }}>
+            <button
+              style={{
+                textDecoration: 'underline',
+                backgroundColor: '#f2f2f2',
+                border: '1px solid transparent',
+                width: '100%',
+              }}
+              onClick={e => clickAction(e, node)}
+            >
+              ...more details
+            </button>
+          </div>
+        )}
+      </div>
+    </foreignObject>
+  );
+};
 
 export default SmallNode;

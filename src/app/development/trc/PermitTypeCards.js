@@ -1,34 +1,37 @@
 import React from 'react';
-import PermitTypeCard from './PermitTypeCard'
-import { trcProjectTypes } from '../utils';
+import PermitTypeCard from './PermitTypeCard';
+import { trcProjectTypes } from './textContent';
 
 const PermitTypeCards = () => {
   let cardWidth = '40%';
-  // if (window.innerWidth < 760) {
-  //   cardWidth = '40%';
-  // }
   if (window.innerWidth < 500) {
     cardWidth = '90%';
   }
   return (
-    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'stretch', flexWrap: 'wrap' }}>
-    {Object.keys(trcProjectTypes).map(type => (
-      <div
+    <div
       style={{
-        width: cardWidth,
-        flexGrow: 1,
-        margin: '0.25em',
-        top: '0px',
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'stretch',
+        flexWrap: 'wrap',
       }}
-      className={type}
-      key={`card-${type}`}
-      >
-      <PermitTypeCard type={type} />
-      </div>
-    ))}
+    >
+      {Object.keys(trcProjectTypes).map(type => (
+        <div
+          style={{
+            width: cardWidth,
+            flexGrow: 1,
+            margin: '0.25em',
+            top: '0px',
+          }}
+          className={type}
+          key={`card-${type}`}
+        >
+          <PermitTypeCard type={type} />
+        </div>
+      ))}
     </div>
   );
-}
-
+};
 
 export default PermitTypeCards;

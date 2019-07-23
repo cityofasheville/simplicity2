@@ -1,18 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 // import PropTypes from 'prop-types';
-import { trcProjectTypes } from '../utils';
 import ArrowDefs from './ArrowDefs';
+import LargeNodeContents from './LargeNodeContents';
+import LargeNodeWrapper from './LargeNodeWrapper';
+import SmallNode from './SmallNode';
+import {
+  trcProjectTypes,
+  dagreNodes,
+  dagreLinks,
+} from './textContent';
 import {
   getDagreGraph,
   getNodes,
   getLinks,
-  dagreNodes,
-  dagreLinks,
-  LargeNode,
-  SmallNode,
-  LargeNodeContents,
-} from './dagreUtils';
+} from './utils';
 
 
 class FlowDiagram extends React.Component {
@@ -129,7 +131,7 @@ class FlowDiagram extends React.Component {
           </g>
           <g>
             {nodes.map(d => (dimensions.width > 767 ? (
-              <LargeNode
+              <LargeNodeWrapper
                 node={d}
                 yOffset={yOffset}
                 edgeStroke={edgeStroke}

@@ -1,188 +1,188 @@
 import React from 'react';
-import dagre from 'dagre';
-import CityLogoSvg from '../../../shared/CityLogoSvg';
 import Icon from '../../../shared/Icon';
-import TypePuck from './TypePuck';
-import { trcProjectTypes } from '../utils';
 import {
   DRAFTING_COMPASS,
   USER_FRIENDS,
   GAVEL,
 } from '../../../shared/iconConstants';
 
-export const LargeNodeContents = ({ node, yOffset, edgeStroke, modalCloseFunc = null }) => {
-  let content;
-  if (node.subNodes) {
-    content = (
-      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
-        {node.subNodes.map((sub, subIndex, subNodeArray) =>
-          displaySubNode(sub, subIndex === subNodeArray.length - 1))}
-      </div>
-    );
-  } else if (node.decisionNode) {
-    content = <div>{decisionIconHeader}</div>;
-  } else if (!node.subNodes && node.steps) {
-    content = nodeSteps(node.steps, node.id);
-  }
+export const orderedDates = [
+  {
+    accelaLabel: 'Pre-App Date',
+    displayLabel: 'Pre-application meeting',
+  },
+  {
+    accelaLabel: 'Neighborhood Meeting Date',
+    displayLabel: 'Neighborhood meeting',
+  },
+  {
+    accelaLabel: 'applied_date',
+    displayLabel: 'Application accepted by staff',
+  },
+  {
+    accelaLabel: 'Initial TRC Date 1',
+    displayLabel: 'Technical review committee meeting',
+  },
+  {
+    accelaLabel: 'Initial TRC Date 2',
+    displayLabel: 'Technical review committee meeting (revised materials)',
+  },
+  {
+    accelaLabel: 'Initial TRC Date 3',
+    displayLabel: 'Technical review committee meeting (revised materials)',
+  },
+  {
+    accelaLabel: 'DTC Date 1',
+    displayLabel: 'Downtown Commission meeting',
+  },
+  {
+    accelaLabel: 'DTC Date 2',
+    displayLabel: 'Downtown Commission meeting (revised materials)',
+  },
+  {
+    accelaLabel: 'PZC Date 1',
+    displayLabel: 'Planning and Zoning commission meeting',
+  },
+  {
+    accelaLabel: 'PZC Date 2',
+    displayLabel: 'Planning and Zoning commission meeting (revised materials)',
+  },
+  {
+    accelaLabel: 'Final TRC Date 1',
+    displayLabel: 'Technical review committee meeting (revised materials)',
+  },
+  {
+    accelaLabel: 'Final TRC Date 2',
+    displayLabel: 'Technical review committee meeting (revised materials)',
+  },
+  {
+    accelaLabel: 'City Council Date 1',
+    displayLabel: 'City Council meeting',
+  },
+  {
+    accelaLabel: 'City Council Date 2',
+    displayLabel: 'City Council meeting (revised materials)',
+  },
+];
 
-  return (
-    <div
-      style={{
-        border: `${edgeStroke}px solid #e6e6e6`,
-        backgroundColor: 'white',
-        padding: '0.5rem 0.5rem',
-        borderRadius: '6px',
-      }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          padding: '0 0 0.25rem',
-        }}
-      >
-        <div
-          style={{
-            fontWeight: 400,
-            textAlign: 'left',
-            fontSize: '1.15rem',
-          }}
-        >
-          {node.id}
-        </div>
-        <div>
-          {node.typeIds.map(id =>
-            (<TypePuck
-              key={`${node.id}-puck-${id}`}
-              typeObject={trcProjectTypes[id]}
-              size={25}
-            />))
-          }
-        </div>
-      </div>
-      {content}
-      {modalCloseFunc &&
-        <button
-          style={{
-            borderRadius: '6px',
-            textDecoration: 'underline',
-            backgroundColor: 'transparent',
-            border: '1px solid transparent',
-            width: '100%',
-          }}
-          onClick={modalCloseFunc}
-        >
-          Close
-        </button>
-      }
-    </div>
-  );
+export const descriptorTitles = {
+  whyLevel: 'What makes a project fit in this category?',
+  recentAppsLink: '',
+  participationOpp: 'Opportunities for public participation',
+  examples: 'Examples',
 };
 
-export const LargeNode = ({ node, yOffset, edgeStroke }) => {
-  let content;
-  if (node.subNodes) {
-    content = (<div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
-      {node.subNodes.map((sub, subIndex, subNodeArray) =>
-        displaySubNode(sub, subIndex === subNodeArray.length - 1))}
-    </div>)
-  } else if (node.decisionNode) {
-    content = <div>{decisionIconHeader}</div>;
-  } else if (!node.subNodes && node.steps) {
-    content = nodeSteps(node.steps, node.id);
-  }
-
-  return (<foreignObject
-    x={node.x - (node.wrap / 2)}
-    y={node.y - yOffset}
-    width={node.wrap}
-    height={node.height}
-    key={`node-${node.id}`}
-    style={{ overflow: 'visible' }}
-  >
-    <LargeNodeContents node={node} yOffset={yOffset} edgeStroke={edgeStroke} />
-  </foreignObject>
-)};
-
-export const SmallNode = ({ node, yOffset, edgeStroke, clickAction }) => {
-  let content;
-  if (node.subNodes) {
-    content = (
-      <div>
-        {node.subNodes.map((sub, subIndex) => (
-          <div
-            style={{ padding: subIndex > 0 ? '1rem 0 0' : 0 }}
-            key={sub.id}
-          >
-            {sub.id}: {sub.steps.what}
-          </div>))
-        }
-      </div>
-    );
-  } else if (node.decisionNode) {
-    content = <div>{decisionIconHeader}</div>;
-  } else if (!node.subNodes && node.steps) {
-    content = node.steps.what;
-  }
-
-  return (<foreignObject
-    x={node.x - (node.wrap / 2)}
-    y={node.y - yOffset}
-    width={node.wrap}
-    height={node.height}
-    key={`node-${node.id}`}
-    style={{ overflow: 'visible' }}
-  >
-    <div
-      style={{
-        border: `${edgeStroke}px solid #e6e6e6`,
-        backgroundColor: 'white',
-        padding: '0.15rem',
-        borderRadius: '6px',
-      }}
-    >
-      <div style={{ textAlign: 'center' }}>
-        {node.typeIds.map(id =>
-          (<TypePuck
-            key={`${node.id}-puck-${id}`}
-            typeObject={trcProjectTypes[id]}
-            size={20}
-          />)
-        )}
-      </div>
-      <div
-        style={{
-          fontWeight: 400,
-          textAlign: 'center',
-          padding: '0 0 0.25rem',
-        }}
-      >
-        {node.id}
-      </div>
-      <div style={{
-        maxHeight: '100px',
-        overflow: 'hidden',
-      }}>
-        {content}
-      </div>
-      {!node.decisionNode && (
-        <div style={{ textAlign: 'center' }}>
-          <button
-            style={{
-              textDecoration: 'underline',
-              backgroundColor: '#f2f2f2',
-              border: '1px solid transparent',
-              width: '100%',
-            }}
-            onClick={e => clickAction(e, node)}
-          >
-            ...more details
-          </button>
-        </div>
-      )}
-    </div>
-  </foreignObject>
-)}
+export const trcProjectTypes = {};
+trcProjectTypes['Level I'] = {
+  id: 'Level I',
+  permit_group: 'Planning',
+  permit_type: 'Development',
+  permit_subtype: 'Level I',
+  short: 'I',
+  descriptors: {
+    whyLevel: (<ul>
+      <li>Not located downtown and contains 3 to 19 residential units or 500 to 34,999 square feet of commercial space</li>
+      <li>Located downtown and is 500 to 19,999 square feet</li>
+    </ul>),
+    participationOpp: 'There are no public participation opportunities for Level I projects.',
+    examples: (<ul>
+      <li>A new restaurant</li>
+      <li>A new pharmacy</li>
+      <li>A 15-unit apartment building</li>
+    </ul>),
+    recentAppsLink: <a href="/development/major?permit_type=level%20I%20#data">Recently submitted Level I projects</a>,
+  },
+  color: '#FF3A3A',
+};
+trcProjectTypes['Major Subdivision'] = {
+  id: 'Major Subdivision',
+  permit_group: 'Planning',
+  permit_type: 'Subdivision',
+  permit_subtype: 'Major',
+  short: 'MS',
+  descriptors: {
+    whyLevel: (<ul>
+      <li>Creation or extension of a road</li>
+      <li>Usually creates new residential lots</li>
+    </ul>),
+    participationOpp: (<ul><li>Neighborhood meeting</li></ul>),
+    examples: (<ul>
+      <li>A new neighborhood with a new road created</li>
+    </ul>),
+    recentAppsLink: <a href="/development/major?permit_type=Major%20Subdivision#data">Recently submitted Major Subdivision projects</a>,
+  },
+  color: '#749B5F',
+};
+trcProjectTypes['Level II'] = {
+  id: 'Level II',
+  permit_group: 'Planning',
+  permit_type: 'Development',
+  permit_subtype: 'Level II',
+  short: 'II',
+  descriptors: {
+    whyLevel: (<ul>
+      <li>Not located downtown and contains 20 to 49 residential units or is 35,000 to 99,999 square feet</li>
+      <li>Located downtown and is 20,000 to 99,999 square feet</li>
+    </ul>),
+    participationOpp: (<ul>
+      <li>Downtown:
+        <ul><li>Neighborhood meeting</li><li>Design review</li><li>Planning and Zoning Commission</li></ul>
+      </li>
+      <li>Not downtown:
+        <ul><li>Neighborhood meeting</li><li>Design review (if on the river)</li></ul>
+      </li>
+                       </ul>),
+    examples: (<ul>
+      <li>A new grocery store</li>
+      <li>A big box specialty retailer</li>
+      <li>A medium-sized apartment complex</li>
+    </ul>),
+    recentAppsLink: <a href="/development/major?permit_type=level%20II%20#data">Recently submitted Level II projects</a>,
+  },
+  color: '#2d93ad',
+};
+trcProjectTypes['Conditional Zoning'] = {
+  id: 'Conditional Zoning',
+  permit_group: 'Planning',
+  permit_type: 'Development',
+  permit_subtype: 'Conditional Zoning',
+  short: 'CZ',
+  descriptors: {
+    whyLevel: (<ul>
+      <li>Requires a change in zoning</li>
+      <li>50 or more residential units</li>
+      <li>99,999 square feet or larger</li>
+      <li>Includes all projects previously designated as Level III</li>
+    </ul>),
+    participationOpp: (<ul><li>Neighborhood meeting</li><li>Design review (if downtown or on the river)</li><li>Planning and Zoning Commission</li><li>City Council hearing</li></ul>),
+    examples: (<ul>
+      <li>A large apartment complex</li>
+      <li>A large office building</li>
+      <li>A large department store</li>
+    </ul>),
+    recentAppsLink: <a href="/development/major?permit_type=Conditional%20Zoning#data">Recently submitted Conditional Zoning projects</a>,
+  },
+  color: '#9B6681',
+};
+trcProjectTypes['Conditional Use Permit'] = {
+  id: 'Conditional Use Permit',
+  permit_group: 'Planning',
+  permit_type: 'Development',
+  permit_subtype: 'Conditional Use',
+  short: 'CUP',
+  descriptors: {
+    whyLevel: <React.Fragment>This is highly specialized permit process for land uses with potential public impacts that require individual consideration of their location, design, configuration and operation.  These uses are defined by <a href="https:/library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTXVIUSRISUSPRECOUS_S7-16-2COUS" target="_blank" rel="noopener noreferrer">Section 7-16-2 of the Unified Development Ordinance</a>.</React.Fragment>,
+    participationOpp: (<ul><li>Neighborhood meeting</li><li>Design review (if downtown or on the river)</li><li>Planning and Zoning Commission</li><li>City Council hearing</li></ul>),
+    examples: (<ul>
+      <li>Cell phone towers</li>
+      <li>Jails</li>
+      <li>Government buildings</li>
+      <li>Group homes</li>
+    </ul>),
+    recentAppsLink: <a href="/development/major?permit_type=conditional%20use%20#data">Recently submitted Conditional Use projects</a>,
+  },
+  color: '#073d49',
+};
 
 export const whoIcons = {
   dev: {
@@ -481,185 +481,3 @@ export const dagreLinks = [
     ],
   },
 ];
-
-export function getDagreGraph(nodes, links, nodeSize) {
-  const g = new dagre.graphlib.Graph();
-  g.setGraph({
-    rankdir: 'TB',
-    ranker: 'network-simplex',
-    marginx: 0,
-    marginy: 0,
-  });
-  g.setDefaultEdgeLabel(() => ({}));
-
-  nodes.forEach((node) => {
-    g.setNode(
-      node.id,
-      Object.assign({ width: nodeSize, height: nodeSize }, node),
-    );
-  });
-
-  links.forEach((link) => {
-    g.setEdge(
-      link.source,
-      link.target,
-      {
-        parallelEdges: link.parallelEdges,
-      }
-    );
-  });
-
-  dagre.layout(g);
-
-  return g;
-}
-
-export function getNodes(dagreGraph, visWidth, nodeHeight, nodePadding) {
-  // Copy nodes so as not to have weird side effects
-  const nodeValues = [].concat(Object.values(dagreGraph._nodes));
-  const midpointX = visWidth / 2;
-  const annotationMargin = nodePadding;
-
-  // let totalYOffsetValue = 0;
-  // totalYOffsetValue has to be added to if there is a multi-row set of nodes
-  nodeValues.forEach((d) => {
-    d.coincidents = nodeValues.filter(val => val.y === d.y);
-
-    d.indexInCoincidents = d.coincidents.findIndex(c => c.id === d.id);
-    d.numPerRow = d.coincidents.length <= 3 ? d.coincidents.length : Math.ceil(d.coincidents.length / 2);
-
-    d.wrap = (visWidth - (annotationMargin + annotationMargin * d.numPerRow)) / d.numPerRow;
-    if (d.maxWidth) {
-      d.wrap = Math.min(d.wrap, d.maxWidth)
-    }
-
-    // Set x value
-    const midRowIndex = (d.numPerRow - 1) / 2;
-    d.x = midpointX + ((d.indexInCoincidents % d.numPerRow) - midRowIndex) * (annotationMargin + d.wrap);
-
-    // Y value must be set in separate iteration because it is used to determine coincidents
-    // let thisYOffset = totalYOffsetValue;
-    // Split into rows
-    // if (d.coincidents.length > 2) {
-    //   if (d.indexInCoincidents >= d.coincidents.length / 2) {
-    //     thisYOffset += nodeHeight;
-    //     if (d.indexInCoincidents % d.numPerRow === 0) {
-    //       // If it's a new row
-    //       totalYOffsetValue += nodeHeight;
-    //     }
-    //   }
-    // }
-    // d.yOffset = thisYOffset;
-  });
-
-  // Reiterate and update y values
-  return nodeValues;
-
-  // .map((d) => {
-  //   const rVal = Object.assign({}, d);
-  //   rVal.y = d.y + d.yOffset;
-  //   return rVal;
-  // });
-}
-
-export function getLinks(inputLinks, nodes, edgePadding, edgeStroke) {
-  const linkValues = JSON.parse(JSON.stringify(inputLinks))
-    .map((link) => {
-      const rObj = Object.assign({}, link);
-      // indexInCoincidents should be multiplier for spacing
-      // middle index in coincidents should be middle of node
-      // total num things leaving node =
-
-      const startNode = nodes.find(node => node.id === link.source);
-      const endNode = nodes.find(node => node.id === link.target);
-      rObj.startNode = startNode;
-      rObj.endNode = endNode;
-      rObj.x1 = startNode.x;
-      rObj.y1 = startNode.y;
-      rObj.x2 = endNode.x;
-      rObj.y2 = endNode.y;
-      return rObj;
-    });
-
-  const withParallelsOnly = linkValues.filter(link => link.parallelEdges);
-  const withoutParallels = linkValues.filter(link => !link.parallelEdges);
-
-  withParallelsOnly.forEach((link) => {
-    link.parallelEdges.forEach((parallel) => {
-      const newLinkVal = Object.assign({}, link);
-      newLinkVal.id = parallel.id;
-      withoutParallels.push(newLinkVal);
-    });
-  });
-
-  // Then iterate and reassign x values to all using parallelEdges algorithm
-  withoutParallels.forEach((link) => {
-    // TODO: also consider it a coincident if its nodes are coincident with one another
-    link.x1Coincidents = withoutParallels.filter(otherLink => otherLink.x1 === link.x1 && otherLink.y1 === link.y1);
-    link.x1CoincidentIndex = link.x1Coincidents.findIndex(coincident =>
-      coincident.source === link.source && coincident.target === link.target && coincident.id === link.id);
-
-    // total number of links entering and leaving node is how spread out they need to be
-    link.x2Coincidents = withoutParallels.filter(otherLink => otherLink.x2 === link.x2 && otherLink.y2 === link.y2);
-    link.x2CoincidentIndex = link.x2Coincidents.findIndex(coincident =>
-      coincident.source === link.source &&
-        coincident.target === link.target &&
-        coincident.id === link.id);
-  });
-
-  return withoutParallels.map((link) => {
-    // TODO: grab parallel edges logic to add more padding for parallel edges?
-    const rObj = Object.assign({}, link);
-    const paddingAndStroke = edgePadding + edgeStroke;
-    rObj.x1 = link.x1 + link.x1CoincidentIndex * paddingAndStroke - ((link.x1Coincidents.length - 1) * paddingAndStroke) / 2;
-    rObj.x2 = link.x2 + link.x2CoincidentIndex * paddingAndStroke - ((link.x2Coincidents.length - 1) * paddingAndStroke) / 2;;
-    return rObj;
-  });
-}
-
-export const displaySubNode = (node, lastNode = false) => (
-  <div
-    key={node.id}
-    style={{
-      verticalAlign: 'top',
-      padding: `0.5rem 0.25rem`,
-      flex: 1,
-      minWidth: '150px'
-    }}
-  >
-    <div style={{ fontSize: '1.25em', padding: '0 0 0.15em 0' }}>{node.id}</div>
-    {nodeSteps(node.steps, node.id)}
-  </div>
-);
-
-export const nodeSteps = (steps, nodeId) => (
-  <ul style={{ listStyleType: 'none', padding: '0' }}>{Object.keys(steps).map(stepKey => (
-    <li key={`${stepKey}-${nodeId}`} style={{ padding: '0.25rem 0' }}>
-      <div
-        style={{
-          textTransform: 'capitalize',
-          fontWeight: 400,
-          width: '100%',
-        }}
-      >
-        {stepKey}?
-      </div>
-      {stepKey === 'who' && steps.who &&
-        <div style={{ padding: '0 1rem' }}>
-          {steps.who.map(actor => (
-            <div key={`${actor}-${nodeId}`}>
-              <div
-                style={{ padding: '0 0.5rem 0 0', width: '2rem', display: 'inline-block' }}
-              >
-                {whoIcons[actor].icon}
-              </div>
-              <span>{whoIcons[actor].label}</span>
-            </div>
-          ))}
-        </div>
-      }
-      {stepKey !== 'who' && <div style={{ padding: '0 1rem' }}>{steps[stepKey]}</div>}
-    </li>
-  ))}
-  </ul>
-);

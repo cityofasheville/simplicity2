@@ -2,11 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ErrorBoundary from './ErrorBoundary';
 
-/*
-TODO:
-allow for more than one - make id unique
-*/
-
 class AccordionPanel extends React.Component {
   constructor(props) {
     super(props);
@@ -68,20 +63,21 @@ const Accordion = ({ classes = '', componentId, data, onPanelHeaderClick = null 
     >
       {/* https://getbootstrap.com/docs/3.4/javascript/#collapse */}
       {data.map((d, i) => (
-        <AccordionPanel
-          key={`accordion-item-${i}`}
-          index={i}
-          header={d.header}
-          body={d.body}
-          initiallyExpanded={d.selected}
-          componentId={componentId}
-          inheritedClasses={classes}
-          onPanelHeaderClick={onPanelHeaderClick}
-          data={d}
-          linkId={d.linkId}
-        />))}
+        <ErrorBoundary key={`accordion-item-${i}`}>
+          <AccordionPanel
+            index={i}
+            header={d.header}
+            body={d.body}
+            initiallyExpanded={d.selected}
+            componentId={componentId}
+            inheritedClasses={classes}
+            onPanelHeaderClick={onPanelHeaderClick}
+            data={d}
+            linkId={d.linkId}
+          />
+        </ErrorBoundary>))}
     </div>
   </ErrorBoundary>
-)
+);
 
 export default Accordion;

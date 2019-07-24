@@ -15,7 +15,9 @@ import {
   getLinks,
 } from './utils';
 
-
+/*
+Made with dagre: https://github.com/dagrejs/dagre
+*/
 class FlowDiagram extends React.Component {
   constructor() {
     super();

@@ -14,8 +14,8 @@ class MajorDevelopmentDashboard extends React.Component {
     };
     this.updateWindowWidth = this.updateWindowWidth.bind(this);
 
+    // Assign each a ref so that we can know the size
     this.sections = devDashSections.map((d) => {
-      // Assign each a ref so that we can know the size
       const rObj = Object.assign({}, d);
       rObj.ref = React.createRef();
       return rObj;
@@ -36,13 +36,14 @@ class MajorDevelopmentDashboard extends React.Component {
   }
 
   render() {
-    // iterate over sections, make the selected one whichever one is in the URL
-    // otherwise make it the first one
+    // Iterate over sections, make the selected one whichever one is in the URL
     const thisLocation = location.hash.replace('#', '');
-    this.sections = this.sections.map(d =>
-      Object.assign(d, { selected: d.linkId === thisLocation })
-    );
+    this.sections = this.sections.map(d => Object.assign(
+      d,
+      { selected: d.linkId === thisLocation }
+    ));
 
+    // Make it less overwhelming/scrolly for smaller screens
     if (this.state.width < 800) {
       return (
         <div id="majorDevDash">
@@ -52,6 +53,7 @@ class MajorDevelopmentDashboard extends React.Component {
             componentId="top-level"
             classes="top-level-accordion"
             onPanelHeaderClick={(sectionData, opening) => {
+              // When someone opens a panel header, change the URL
               if (opening) {
                 history.replaceState(
                   {},
@@ -72,7 +74,6 @@ class MajorDevelopmentDashboard extends React.Component {
         />
         <main>
           <h1>Large-Scale Development in Asheville</h1>
-          {/*<h1><small>Get notifications, attend meetings, and have your voice heard.</small></h1>*/}
           <p>There is a lot of private land development happening in Asheville.  This tool can help you:</p>
           <ul>
             <li>

@@ -1,7 +1,7 @@
 import React from 'react';
 import SectionNav from './SectionNav';
-import Accordion from '../../../shared/visualization/Accordion';
-import ErrorBoundary from '../../ErrorBoundary';
+import Accordion from '../../../shared/Accordion';
+import ErrorBoundary from '../../../shared/ErrorBoundary';
 import { devDashSections } from './textContent';
 
 class MajorDevelopmentDashboard extends React.Component {

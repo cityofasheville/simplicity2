@@ -2,7 +2,7 @@ import React from 'react';
 import Icon from '../../../shared/Icon';
 import FlowDiagram from './FlowDiagram';
 import TRCDataTable from './TRCDataTable';
-import Accordion from '../../../shared/visualization/Accordion';
+import Accordion from '../../../shared/Accordion';
 import PermitTypeCards from './PermitTypeCards';
 import CityLogoSvg from '../../../shared/CityLogoSvg';
 import {

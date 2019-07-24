@@ -48,7 +48,7 @@ export default class Navbar extends React.Component { // eslint-disable-line rea
               <div className="pull-left">
                 <IndexLink to="/">
                   <div className="logo">
-                    <img src={require('./citylogo-flatblue.png')} alt="City of Asheville logo"></img>
+                    <img src={require('../images/citylogo-flatblue.png')} alt="City of Asheville logo"></img>
                     <span className="logo__text">
                       <h1>SimpliCity</h1>
                       <h2>City of Asheville, NC</h2>

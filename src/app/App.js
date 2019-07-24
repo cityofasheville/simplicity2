@@ -7,7 +7,7 @@ import { updateUser } from '../utilities/auth/graphql/authMutations';
 import { getUser } from '../utilities/auth/graphql/authQueries';
 import Navbar from './Navbar';
 import Footer from './Footer';
-import ErrorBoundary from './ErrorBoundary';
+import ErrorBoundary from '../shared/ErrorBoundary';
 import CityInfoBar from './CityInfoBar';
 import AuthProviderModal from '../utilities/auth/authProviderModal';
 import { defaultAuthState } from '../utilities/auth/graphql/authDefaultState';

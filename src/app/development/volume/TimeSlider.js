@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { ResponsiveXYFrame } from 'semiotic';
 import moment from 'moment';
 import { timeDay, timeWeek, timeMonth, timeYear } from 'd3-time';
-import ErrorBoundary from '../../ErrorBoundary';
+import ErrorBoundary from '../../../shared/ErrorBoundary';
 
 function spanOfYears(numYears) {
   return [

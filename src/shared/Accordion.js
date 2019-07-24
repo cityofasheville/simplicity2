@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ErrorBoundary from '../../app/ErrorBoundary';
+import ErrorBoundary from './ErrorBoundary';
 
 /*
 TODO:

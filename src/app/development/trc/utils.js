@@ -126,6 +126,7 @@ export function getLinks(inputLinks, nodes, edgePadding, edgeStroke) {
   const withoutParallels = linkValues.filter(link => !link.parallelEdges);
 
   withParallelsOnly.forEach((link) => {
+    // Parallel edges are each links in their own right
     link.parallelEdges.forEach((parallel) => {
       const newLinkVal = Object.assign({}, link);
       newLinkVal.id = parallel.id;
@@ -149,7 +150,6 @@ export function getLinks(inputLinks, nodes, edgePadding, edgeStroke) {
   });
 
   return withoutParallels.map((link) => {
-    // TODO: grab parallel edges logic to add more padding for parallel edges?
     const rObj = Object.assign({}, link);
     const paddingAndStroke = edgePadding + edgeStroke;
     rObj.x1 = link.x1 + link.x1CoincidentIndex * paddingAndStroke - ((link.x1Coincidents.length - 1) * paddingAndStroke) / 2;

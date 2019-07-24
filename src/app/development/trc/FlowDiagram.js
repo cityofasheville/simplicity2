@@ -21,23 +21,27 @@ Made with dagre: https://github.com/dagrejs/dagre
 class FlowDiagram extends React.Component {
   constructor() {
     super();
-    // Find good node height
-    // const maxPerRow = 3;
+    // Find good svg height by first getting a graph with an arbitrary node height, then counting how many levels there are to set a better node height
+    // A better way to do this would be to render it, see how tall the nodes are, and set individual node heights based on how tall they would be as rendered
     const firstGraph = getDagreGraph(dagreNodes, dagreLinks, 100);
     const yVals = JSON.parse(JSON.stringify(Object.values(firstGraph._nodes)))
       .map(d => d.y);
-    const yValCounts = {};
-    for (const num of yVals) {
-      yValCounts[num] = yValCounts[num] ? yValCounts[num] + 1 : 1;
-    }
-    // Could re-implement splitting of node groups
-    // const multiRow = Object.values(yValCounts).filter(v => v > maxPerRow).length;
-
+    // How many sets of nodes sharing a y value are there?
     this.numLevels = yVals.filter((value, index, nodeArray) =>
       nodeArray.indexOf(value) === index).length;
+
+    // Could re-implement splitting of node groups
+    // const yValCounts = {};
+    // for (const num of yVals) {
+    //   yValCounts[num] = yValCounts[num] ? yValCounts[num] + 1 : 1;
+    // }
+    // const maxPerRow = 3;
+    // const multiRow = Object.values(yValCounts).filter(v => v > maxPerRow).length;
+
     this.updateDimensions = this.updateDimensions.bind(this);
     this.showModal = this.showModal.bind(this);
     this.hideModal = this.hideModal.bind(this);
+
     this.state = {
       dimensions: null,
       modalNode: null,
@@ -46,6 +50,7 @@ class FlowDiagram extends React.Component {
   }
 
   updateDimensions() {
+    // You will rip the DOM out of my cold, dead hands (jk there's probably a better way to grab the rendered element's dimensions)
     const container = document.getElementById('dagre-container').getBoundingClientRect();
     this.setState({
       dimensions: {
@@ -56,6 +61,7 @@ class FlowDiagram extends React.Component {
   }
 
   componentDidMount() {
+    // When window changes size, set dimensions so as to trigger re-render
     this.updateDimensions();
     window.addEventListener('resize', this.updateDimensions);
   }
@@ -65,6 +71,7 @@ class FlowDiagram extends React.Component {
   }
 
   showModal(e, node) {
+    // For tablet and mobile-- show all of the information (as LargeNodeContents) in a modal when a user clicks "see more information" or whatever
     this.setState({
       modalNode: node,
       modalY: e.target.getBoundingClientRect().y + window.scrollY,

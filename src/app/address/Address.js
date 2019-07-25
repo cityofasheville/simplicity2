@@ -23,7 +23,7 @@ import LinkButton from '../../shared/LinkButton';
 import DetailsFormGroup from '../../shared/DetailsFormGroup';
 import DetailsIconLinkFormGroup from '../../shared/DetailsIconLinkFormGroup';
 import TopicCard from '../../shared/TopicCard';
-import InCityMessage from '../InCityMessage';
+import InCityMessage from '../../shared/InCityMessage';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import Error from '../../shared/Error';
 import Map from '../../shared/visualization/Map';

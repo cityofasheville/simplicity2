@@ -4,7 +4,7 @@ import AccessibleReactTable, { CellFocusWrapper } from 'accessible-react-table';
 import { graphql } from 'react-apollo';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import Error from '../../shared/Error';
-import InCityMessage from '../InCityMessage';
+import InCityMessage from '../../shared/InCityMessage';
 import {
   formatSearchResults,
   getEntities,

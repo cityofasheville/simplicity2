@@ -7,7 +7,7 @@ import DetailsFormGroup from '../../shared/DetailsFormGroup';
 import DetailsIconLinkFormGroup from '../../shared/DetailsIconLinkFormGroup';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import Error from '../../shared/Error';
-import InCityMessage from '../InCityMessage';
+import InCityMessage from '../../shared/InCityMessage';
 import PageHeader from '../../shared/PageHeader';
 import ButtonGroup from '../../shared/ButtonGroup';
 import LinkButton from '../../shared/LinkButton';

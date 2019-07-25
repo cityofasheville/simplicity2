@@ -5,7 +5,7 @@ const CityInfoBar = () => (
   <div>
     <div className="navbar navbar-default text-primary navbar-fixed-top" style={{ fontSize: '30px', backgroundColor: '#f6fcff' }}>
       <div className="pull-left" style={{ marginRight: '5px', marginTop: '5px', marginBottom: '5px', marginLeft: '15px' }}>
-        <IndexLink to="/"><img src={require('./citylogo-flatblue.png')} width="80px" height="80px" alt="City of Asheville logo"></img></IndexLink>
+        <IndexLink to="/"><img src={require('../images/citylogo-flatblue.png')} width="80px" height="80px" alt="City of Asheville logo"></img></IndexLink>
       </div>
       <div className="navbar-header">
         <div className="pull-left">

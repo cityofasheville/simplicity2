@@ -1,7 +1,7 @@
-import React from 'react';
 import dagre from 'dagre';
 import { trcProjectTypes } from './textContent';
 
+// Return the whole trc type object, which includes label formatting, color, etc
 export const getTRCTypeFromPermit = (permit) => {
   if (permit.permit_group === 'Planning') {
     return Object.values(trcProjectTypes).find(type =>
@@ -11,7 +11,10 @@ export const getTRCTypeFromPermit = (permit) => {
   return null;
 };
 
-export function getDagreGraph(nodes, links, nodeSize) {
+export const getDagreGraph = (nodes, links, nodeSize) => {
+  /*
+  https://github.com/dagrejs/dagre
+  */
   const g = new dagre.graphlib.Graph();
   g.setGraph({
     rankdir: 'TB',
@@ -19,7 +22,6 @@ export function getDagreGraph(nodes, links, nodeSize) {
     marginx: 0,
     marginy: 0,
   });
-  g.setDefaultEdgeLabel(() => ({}));
 
   nodes.forEach((node) => {
     g.setNode(
@@ -32,39 +34,50 @@ export function getDagreGraph(nodes, links, nodeSize) {
     g.setEdge(
       link.source,
       link.target,
-      {
-        parallelEdges: link.parallelEdges,
-      }
+      link,
     );
   });
 
   dagre.layout(g);
-
   return g;
-}
+};
 
 export function getNodes(dagreGraph, visWidth, nodeHeight, nodePadding) {
+  /*
+  The default dagre layout optimizes for being able to see links.  This function optimizes for evenly spacing the nodes across a screen (which is better on mobile).
+  */
   // Copy nodes so as not to have weird side effects
-  const nodeValues = [].concat(Object.values(dagreGraph._nodes));
+  // What is the middle of the screen?
   const midpointX = visWidth / 2;
-  const annotationMargin = nodePadding;
 
-  // let totalYOffsetValue = 0;
   // totalYOffsetValue has to be added to if there is a multi-row set of nodes
-  nodeValues.forEach((d) => {
-    d.coincidents = nodeValues.filter(val => val.y === d.y);
+  // let totalYOffsetValue = 0;
 
-    d.indexInCoincidents = d.coincidents.findIndex(c => c.id === d.id);
-    d.numPerRow = d.coincidents.length <= 3 ? d.coincidents.length : Math.ceil(d.coincidents.length / 2);
+  return Object.values(dagreGraph._nodes).map((d) => {
+    const returnNode = Object.assign({}, d);
+    returnNode.coincidents = [].concat(Object.values(dagreGraph._nodes))
+      .filter(val => val.y === d.y);
 
-    d.wrap = (visWidth - (annotationMargin + annotationMargin * d.numPerRow)) / d.numPerRow;
-    if (d.maxWidth) {
-      d.wrap = Math.min(d.wrap, d.maxWidth)
+    returnNode.indexInCoincidents = returnNode.coincidents.findIndex(c => c.id === returnNode.id);
+    returnNode.numPerRow = returnNode.coincidents.length <= 3 ?
+      returnNode.coincidents.length : Math.ceil(returnNode.coincidents.length / 2);
+
+    returnNode.wrap = (visWidth -
+      (nodePadding + (nodePadding * returnNode.numPerRow))
+    ) / returnNode.numPerRow;
+
+    if (returnNode.maxWidth) {
+      returnNode.wrap = Math.min(returnNode.wrap, returnNode.maxWidth);
     }
 
+    const midRowIndex = (returnNode.numPerRow - 1) / 2;
     // Set x value
-    const midRowIndex = (d.numPerRow - 1) / 2;
-    d.x = midpointX + ((d.indexInCoincidents % d.numPerRow) - midRowIndex) * (annotationMargin + d.wrap);
+    returnNode.x = midpointX + (
+      ((returnNode.indexInCoincidents % returnNode.numPerRow) - midRowIndex) *
+      (nodePadding + returnNode.wrap)
+    );
+
+    return returnNode;
 
     // Y value must be set in separate iteration because it is used to determine coincidents
     // let thisYOffset = totalYOffsetValue;
@@ -82,8 +95,7 @@ export function getNodes(dagreGraph, visWidth, nodeHeight, nodePadding) {
   });
 
   // Reiterate and update y values
-  return nodeValues;
-
+  // return nodeValues;
   // .map((d) => {
   //   const rVal = Object.assign({}, d);
   //   rVal.y = d.y + d.yOffset;
@@ -114,6 +126,7 @@ export function getLinks(inputLinks, nodes, edgePadding, edgeStroke) {
   const withoutParallels = linkValues.filter(link => !link.parallelEdges);
 
   withParallelsOnly.forEach((link) => {
+    // Parallel edges are each links in their own right
     link.parallelEdges.forEach((parallel) => {
       const newLinkVal = Object.assign({}, link);
       newLinkVal.id = parallel.id;
@@ -137,7 +150,6 @@ export function getLinks(inputLinks, nodes, edgePadding, edgeStroke) {
   });
 
   return withoutParallels.map((link) => {
-    // TODO: grab parallel edges logic to add more padding for parallel edges?
     const rObj = Object.assign({}, link);
     const paddingAndStroke = edgePadding + edgeStroke;
     rObj.x1 = link.x1 + link.x1CoincidentIndex * paddingAndStroke - ((link.x1Coincidents.length - 1) * paddingAndStroke) / 2;

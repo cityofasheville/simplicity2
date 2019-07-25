@@ -3,7 +3,7 @@ import React from 'react';
 import { timeDay, timeMonth } from 'd3-time';
 import PermitsTableWrapper from '../permits/PermitsTableWrapper';
 import TimeSlider from '../volume/TimeSlider';
-import ErrorBoundary from '../../ErrorBoundary';
+import ErrorBoundary from '../../../shared/ErrorBoundary';
 import { trcProjectTypes } from './textContent';
 
 

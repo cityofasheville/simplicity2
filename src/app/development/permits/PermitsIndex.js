@@ -3,7 +3,7 @@ import React from 'react';
 import { timeDay, timeWeek } from 'd3-time';
 import PermitsTableWrapper from './PermitsTableWrapper';
 import TimeSlider from '../volume/TimeSlider';
-import ErrorBoundary from '../../ErrorBoundary';
+import ErrorBoundary from '../../../shared/ErrorBoundary';
 
 
 class PermitsIndex extends React.Component {

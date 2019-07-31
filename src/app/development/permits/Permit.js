@@ -108,7 +108,7 @@ const Permit = props => (
         item.accelaSpeak === formattedPermit.status_current);
 
       const byDetailArea = {};
-      const fieldsForDisplay = permitFieldFormats
+      permitFieldFormats
         // If there is no display label, bring it to the top
         .sort(a => (!a.displayLabel ? -1 : 0))
         .forEach((d) => {

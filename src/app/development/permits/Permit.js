@@ -6,7 +6,7 @@ import { Query } from 'react-apollo';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import PermitsMap from './PermitsMap';
 import PermitTimeline from './PermitTimeline';
-import { permitFieldFormats } from './permitFieldFormats';
+import { permitFieldFormats } from './utils';
 import { orderedDates } from '../trc/textContent';
 import { getTRCTypeFromPermit } from '../trc/utils';
 import { statusTranslation } from '../utils';
@@ -90,8 +90,7 @@ const Permit = props => (
             {
               dateInput: formattedPermit[dateObject.accelaLabel],
             }
-          )
-        );
+          ));
 
       // The popup is what you see when you click on the pin
       const mapData = [Object.assign(
@@ -125,18 +124,18 @@ const Permit = props => (
             byDetailArea[d.displayGroup] = [];
           }
           if (!d.displayLabel) {
-            byDetailArea[d.displayGroup].push(
+            byDetailArea[d.displayGroup].push((
               <div className="permit-form-group bool" key={d.accelaLabel}>
                 {formattedDisplayVal}
               </div>
-            );
+            ));
           } else {
-            byDetailArea[d.displayGroup].push(
+            byDetailArea[d.displayGroup].push((
               <div className="permit-form-group" key={d.accelaLabel}>
                 <div className="display-label">{d.displayLabel}</div>
                 <div className="formatted-val">{formattedDisplayVal}</div>
               </div>
-            );
+            ));
           }
         });
 

@@ -100,7 +100,7 @@ export const permitFieldFormats = [
     accelaLabel: 'Plans Folder Location',
     displayGroup: 'project details',
     displayLabel: 'Site plans and documents',
-    formatFunc: d => (<a href={d} target="_blank" rel="noopener noreferrer">documents folder</a>),
+    formatFunc: d => (d && d.length > 0 ? <a href={d} target="_blank" rel="noopener noreferrer">documents folder</a> : null),
     description: 'Google Drive folder link to view documents',
   },
   {

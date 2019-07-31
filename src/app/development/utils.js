@@ -15,6 +15,7 @@ export const statusTranslation = [
   {
     accelaSpeak: 'CC Issued',
     statusText: '',
+    closed: true,
   },
   {
     accelaSpeak: 'City Council Review',
@@ -23,14 +24,17 @@ export const statusTranslation = [
   {
     accelaSpeak: 'Closed',
     statusText: '',
+    closed: true,
   },
   {
     accelaSpeak: 'CO Issued',
     statusText: 'This project is complete and has been approved for occupancy.',
+    closed: true,
   },
   {
     accelaSpeak: 'Expired',
     statusText: 'This project was approved, but too much time has passed since that approval and the approval has now expired.',
+    closed: true,
   },
   {
     accelaSpeak: 'Finaled',
@@ -75,6 +79,7 @@ export const statusTranslation = [
   {
     accelaSpeak: 'Revoked',
     statusText: '',
+    closed: true,
   },
   {
     accelaSpeak: 'TCC Issued',
@@ -95,6 +100,7 @@ export const statusTranslation = [
   {
     accelaSpeak: 'Withdrawn',
     statusText: 'The applicant has asked the City to stop reviewing this project.',
+    closed: true,
   },
 ];
 

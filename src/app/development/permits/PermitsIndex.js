@@ -1,5 +1,4 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
 import { timeDay, timeWeek } from 'd3-time';
 import PermitsTableWrapper from './PermitsTableWrapper';
 import TimeSlider from '../volume/TimeSlider';

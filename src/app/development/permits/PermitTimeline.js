@@ -36,7 +36,7 @@ class PermitTimeline extends React.Component {
     const padding = 15;
     const pointRadius = 8;
     let datesToUse = this.props.formattedPermit.orderedDates;
-    if (datesToUse.length === 1) {
+    if (!this.props.currentStatusItem.closed) {
       datesToUse = this.props.formattedPermit.orderedDates
         .concat([{
           accelaLabel: 'dummy',

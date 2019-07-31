@@ -42,7 +42,12 @@ export const faqs = [
   },
   {
     header: 'I still have a question!',
-    body: <React.Fragment>If your question was not answered here, please <a href="https://forms.gle/CkkihZfs37opZfXM8" target="_blank" rel="noopener noreferrer">let us know what it was</a> so that we can improve this page.  If you have a question to which you need a response, please email pod@ashevillenc.gov instead.</React.Fragment>,
+    body: (
+      <React.Fragment>
+        <p>If your question was not answered here, please <a href="https://forms.gle/CkkihZfs37opZfXM8" target="_blank" rel="noopener noreferrer">let us know what it was</a> so that we can improve this page.  If you have a question to which you need a response, please email pod@ashevillenc.gov instead.</p>
+        <p>If you have thoughts about to improve this tool, please <a href="https://forms.gle/kSRTZidJUtNdZ8Rz7" rel="noopener noreferrer" target="_blank">tell us</a>.</p>
+      </React.Fragment>
+    ),
   },
   // {
   //   header: 'How much control does the City have over the look and feel of a project?',

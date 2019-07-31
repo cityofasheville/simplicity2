@@ -163,7 +163,7 @@ class TimeSlider extends React.Component {
               />
             </form>
           </div>
-          {document.documentElement.clientWidth > 400 &&
+          {document.documentElement.clientWidth > 600 &&
           <ResponsiveXYFrame
             responsiveWidth
             margin={{

@@ -71,7 +71,7 @@ const PermitMap = ({
 };
 
 PermitMap.propTypes = {
-  permitData: PropTypes.shape({}).isRequired,
+  permitData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   centerCoords: PropTypes.arrayOf(PropTypes.number).isRequired,
   zoom: PropTypes.number,
   showNeighborhoods: PropTypes.bool,

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import { combinePolygonsFromNeighborhoodList } from '../../../utilities/mapUtilities';
@@ -33,8 +34,8 @@ const GET_NEIGHBORHOODS = gql`
 const PermitMap = ({
   permitData,
   centerCoords,
-  zoom = 12,
-  showNeighborhoods = false,
+  zoom,
+  showNeighborhoods,
 }) => {
   if (!showNeighborhoods) {
     return (<Map
@@ -67,6 +68,18 @@ const PermitMap = ({
       }}
     </Query>
   );
+};
+
+PermitMap.propTypes = {
+  permitData: PropTypes.shape({}).isRequired,
+  centerCoords: PropTypes.arrayOf(PropTypes.number).isRequired,
+  zoom: PropTypes.number,
+  showNeighborhoods: PropTypes.bool,
+};
+
+PermitMap.defaultProps = {
+  zoom: 12,
+  showNeighborhoods: false,
 };
 
 export default PermitMap;

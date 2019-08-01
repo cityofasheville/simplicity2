@@ -12,10 +12,9 @@ function extractTextFromReactComponents(component) {
     return component;
   } else if (!component.props || !component.props.children) {
     return '';
-  } else {
-    return '' + React.Children.toArray(component.props.children)
-      .map(child => extractTextFromReactComponents(child)).join(' ');
   }
+  return '' + React.Children.toArray(component.props.children)
+    .map(child => extractTextFromReactComponents(child)).join(' ');
 }
 
 class PermitsTable extends React.Component {
@@ -78,6 +77,7 @@ class PermitsTable extends React.Component {
                     headerObj.formatFunc(d) :
                     d[headerObj.field];
                 },
+                sortMethod: headerObj.sortMethod,
                 Filter: createFilterRenderer(`Search ${headerObj.display}`),
                 show: true,
               })),

@@ -325,7 +325,7 @@ export const decisionIconHeader = (
   </div>
 );
 
-const decisionNodeMaxWidth = 400;
+const decisionNodeMaxWidth = 300;
 export const dagreNodes = [
   {
     id: 'Before the application is submitted',
@@ -383,6 +383,24 @@ export const dagreNodes = [
     typeIds: [
       'Level I',
     ],
+  },
+  {
+    id: 'Historic district review',
+    steps: {
+      what: <div><a href="https://cityofasheville.github.io/maps/historic/" target="_blank" rel="noopener noreferrer">Local landmarks and projects located within local historic districts</a> must be reviewed by the <a href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/certificate-of-appropriateness/" rel="noopener noreferrer" target="_blank">Historic Resources Commission</a> and issued a Certificate of Appropriateness.</div>,
+      who: ['dev', 'staff', 'neighbors'],
+      when: 'Second Wednesday of each month',
+      where: 'City Hall',
+    },
+    typeIds: [
+      // TODO: ADD THE REST OF THE TYPES-- IT'S ALL OF THEM
+      'Level I',
+      'Level II',
+      'Major Subdivision',
+      'Conditional Zoning',
+      'Conditional Use Permit',
+    ],
+    maxWidth: '250',
   },
   {
     id: 'Level I decision',
@@ -523,11 +541,71 @@ export const dagreLinks = [
     id: 'Level I',
   },
   {
+    source: 'Staff review',
+    target: 'Historic district review',
+    id: 'Level I',
+  },
+  {
+    source: 'Technical Review Committee',
+    target: 'Historic district review',
+    parallelEdges: [
+      { id: 'Major Subdivision' },
+      { id: 'Level II' },
+      { id: 'Conditional Zoning' },
+      { id: 'Conditional Use Permit' },
+    ],
+  },
+  {
+    source: 'Historic district review',
+    target: 'Level I decision',
+    id: 'Level I',
+  },
+  {
+    source: 'Historic district review',
+    target: 'Major Subdivision and Level II decision (not downtown)',
+    parallelEdges: [
+      { id: 'Major Subdivision' },
+      { id: 'Level II' },
+    ],
+  },
+  {
+    source: 'Historic district review',
+    target: 'Design review',
+    parallelEdges: [
+      { id: 'Major Subdivision' },
+      { id: 'Level II' },
+    ],
+  },
+  {
+    source: 'Historic district review',
+    target: 'Planning and Zoning Commission',
+    parallelEdges: [
+      { id: 'Conditional Zoning' },
+      { id: 'Conditional Use Permit' },
+    ],
+  },
+  {
     source: 'Technical Review Committee',
     target: 'Major Subdivision and Level II decision (not downtown)',
     parallelEdges: [
       { id: 'Major Subdivision' },
       { id: 'Level II' },
+    ],
+  },
+  {
+    source: 'Technical Review Committee',
+    target: 'Design review',
+    parallelEdges: [
+      { id: 'Major Subdivision' },
+      { id: 'Level II' },
+    ],
+  },
+  {
+    source: 'Technical Review Committee',
+    target: 'Planning and Zoning Commission',
+    parallelEdges: [
+      { id: 'Conditional Zoning' },
+      { id: 'Conditional Use Permit' },
     ],
   },
   {
@@ -542,22 +620,6 @@ export const dagreLinks = [
     target: 'Major Subdivision decision (downtown)',
     parallelEdges: [
       { id: 'Major Subdivision' },
-    ],
-  },
-  {
-    source: 'Technical Review Committee',
-    target: 'Design review',
-    parallelEdges: [
-      { id: 'Level II' },
-      { id: 'Major Subdivision' },
-    ],
-  },
-  {
-    source: 'Technical Review Committee',
-    target: 'Planning and Zoning Commission',
-    parallelEdges: [
-      { id: 'Conditional Zoning' },
-      { id: 'Conditional Use Permit' },
     ],
   },
   {

@@ -86,9 +86,9 @@ class FlowDiagram extends React.Component {
     const { dimensions } = this.state;
     const height = dimensions.width < 768 ? 2750 : 5000;
     const nodePadding = 5;
-    const edgeStroke = dimensions.width < 768 ? 3 : 4;
-    const arrowWidth = edgeStroke * 1.5;
-    const edgePadding = arrowWidth * 4;
+    const edgeStroke = 3
+    const arrowWidth = edgeStroke;
+    const edgePadding = arrowWidth * 2;
     const nodeHeight = (height - (nodePadding * (this.numLevels + 4))) / this.numLevels;
     const yOffset = nodeHeight / 2;
 

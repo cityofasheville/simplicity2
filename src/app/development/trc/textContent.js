@@ -98,15 +98,14 @@ export const devDashSections = [
       <ul className="paragraphy-list">
         <li>
           <h3>Neighborhood meetings</h3>
-          <p>Developers planning to submit applications for development that must go through the Technical Review Committee must hold a public meeting before submitting the application.</p>
+          <p>Developers planning to submit applications for development that must go through the Technical Review Committee (including projects of types Level II, Major Subdivision, Conditional Zoning, and Conditional Use Permit) must hold a public meeting before submitting the application.</p>
           <p>Currently, developers are not required by law to notify the City of Asheville when those meetings take place.  Thus, the first record the city has of a proposed development is when the application is submitted, after the meeting.</p>
           <p>However, in order to help ensure that residents can find out about developer-neighborhood meetings in advance, the city has asked developers to voluntarily notify the city.  After those developers fill out an online form, those meeting dates are automatically added to <a target="_blank" rel="noopener noreferrer" href="https://calendar.google.com/calendar/embed?src=ashevillenc.gov_gk5l650n9mopts9m7sfemhcpd8%40group.calendar.google.com&ctz=America%2FNew_York">a calendar that shows all developer-neighborhood meetings about which the city has been notified</a>.</p>
         </li>
         <li>
           <h3>Committee and commission meetings</h3>
-          <p>TRC</p>
-          <p>Riverfront, Historic, Downtown</p>
-          <p>Join a comittee or commission</p>
+          <p>As described above, there are several committees and commissions that participate in the major development review processs.  Depending on the size, type, and location of proposed development, it may go through the <a href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/technical-review-committee/" target="_blank" rel="noopener noreferrer">Technical Review Committee</a>, the <a href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/planning-and-zoning-commission/" target="_blank" rel="noopener noreferrer">Planning and Zoning Commission</a>, the <a href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/historic-resources-commission/" target="_blank" rel="noopener noreferrer">Historic Resources Commission</a>, the <a href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/downtown-commission/" target="_blank" rel="noopener noreferrer">Asheville Downtown Commission</a>, or the <a href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/asheville-area-riverfront-redevelopment-commission/" target="_blank" rel="noopener noreferrer">Asheville Area Riverfront Redevelopment Commission</a>.</p>
+          <p>Visit <a href="https://AshevilleNC.gov" rel="noopener noreferrer" target="_blank">AshevilleNC.gov</a> to learn more about city boards, commissions, and committees.</p>
         </li>
         <li>
           <h3>Council meetings</h3>
@@ -252,7 +251,7 @@ trcProjectTypes['Level II'] = {
     participationOpp: (
       <ul>
         <li>Downtown:
-          <ul><li><a href="/development/major#participate">Neighborhood meeting</a></li><li>Design review</li><li><a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/planning-and-zoning-commission/" target="_blank" rel="noopner noreferrer">Planning and Zoning Commission</a></li></ul>
+          <ul><li><a href="/development/major#participate">Neighborhood meeting</a></li><li>Design review</li><li><a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/planning-and-zoning-commission/" target="_blank" rel="noopener noreferrer">Planning and Zoning Commission</a></li></ul>
         </li>
         <li>Not downtown:
           <ul><li><a href="/development/major#participate">Neighborhood meeting</a></li><li>Design review (if on the river)</li></ul>
@@ -287,7 +286,7 @@ trcProjectTypes['Conditional Zoning'] = {
         <li><a href="/development/major#participate">Neighborhood meeting</a></li>
         <li>Design review (if downtown or on the river)</li>
         <li><a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/historic-resources-commission/" target="_blank" rel="noopener noreferrer">Historic Resources Commission meeting</a> (if in <a href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/historic-district-guidelines/" target="_blank" rel="noopener noreferrer">a historic district</a> or concerning a <a href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/landmarks/" target="_blank" rel="noopener noreferrer">historic landmark</a>)</li>
-        <li><a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/planning-and-zoning-commission/" target="_blank" rel="noopner noreferrer">Planning and Zoning Commission</a></li>
+        <li><a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/planning-and-zoning-commission/" target="_blank" rel="noopener noreferrer">Planning and Zoning Commission</a></li>
         <li><a href="https://ashevillenc.gov/government" target="_blank" rel="noopener noreferrer">City Council</a> hearing</li>
       </ul>),
     examples: (<ul>
@@ -312,7 +311,7 @@ trcProjectTypes['Conditional Use Permit'] = {
         <li><a href="/development/major#participate">Neighborhood meeting</a></li>
         <li>Design review (if downtown or on the river)</li>
         <li><a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/historic-resources-commission/" target="_blank" rel="noopener noreferrer">Historic Resources Commission meeting</a> (if in <a href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/historic-district-guidelines/" target="_blank" rel="noopener noreferrer">a historic district</a> or concerning a <a href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/landmarks/" target="_blank" rel="noopener noreferrer">historic landmark</a>)</li>
-        <li><a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/planning-and-zoning-commission/" target="_blank" rel="noopner noreferrer">Planning and Zoning Commission</a></li>
+        <li><a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/planning-and-zoning-commission/" target="_blank" rel="noopener noreferrer">Planning and Zoning Commission</a></li>
         <li><a href="https://ashevillenc.gov/government" target="_blank" rel="noopener noreferrer">City Council</a> hearing</li>
       </ul>
     ),

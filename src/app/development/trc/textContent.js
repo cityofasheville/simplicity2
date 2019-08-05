@@ -109,8 +109,8 @@ export const devDashSections = [
         </li>
         <li>
           <h3>Council meetings</h3>
-          <p>Schedule and agenda are on the website</p>
-          <p>Three minutes to speak, etc</p>
+          <p>Projects of types Conditional Zoning and Conditional Use Permit are reveiwed in a public hearing before City Council.  Community members may speak as individuals for three minutes or on behalf of organizations for ten minutes (if three other people cede their speaking time) at a council meeting.</p>
+          <p>Information about City Council as well as minutes and agendas for upcoming and past council meetings can be found on <a href="https://www.ashevillenc.gov/government/" rel="noopener noreferrer" target="_blank">the City of Asheville website</a>.</p>
         </li>
       </ul>
     </React.Fragment>)

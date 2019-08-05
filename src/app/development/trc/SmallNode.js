@@ -1,4 +1,5 @@
 import React from 'react';
+import TypePuck from './TypePuck';
 import { decisionIconHeader, trcProjectTypes } from './textContent';
 
 const SmallNode = ({ node, yOffset, edgeStroke, clickAction }) => {

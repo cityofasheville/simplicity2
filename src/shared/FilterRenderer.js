@@ -9,6 +9,7 @@ const createFilterRenderer = (placeholderText, extraProps) => ({ filter, onChang
         onChange={event => onChange(event.target.value)}
         style={{ width: '100%' }}
         value={filter ? filter.value : ''}
+        className={`table-filter${filter && filter.value ? ' filter-active' : ''}`}
         placeholder={placeholderText}
         tabIndex={focusable ? 0 : -1}
         ref={focusRef}

@@ -109,6 +109,7 @@ export const defaultTableHeaders = [
     field: 'applied_date',
     display: 'Date Applied',
     formatFunc: d => moment.utc(new Date(d.applied_date)).format('MMM DD, YYYY'),
+    sortMethod: (a, b) => a.valueOf() - b.valueOf(),
   },
   {
     field: 'address',

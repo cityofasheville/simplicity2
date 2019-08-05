@@ -104,12 +104,14 @@ export const devDashSections = [
         </li>
         <li>
           <h3>Committee and commission meetings</h3>
-          <p>They happen sometimes</p>
-          <p>Also join one</p>
+          <p>TRC</p>
+          <p>Riverfront, Historic, Downtown</p>
+          <p>Join a comittee or commission</p>
         </li>
         <li>
           <h3>Council meetings</h3>
-          <p>These also happen sometimes</p>
+          <p>Schedule and agenda are on the website</p>
+          <p>Three minutes to speak, etc</p>
         </li>
       </ul>
     </React.Fragment>)

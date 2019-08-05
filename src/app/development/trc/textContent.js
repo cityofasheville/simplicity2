@@ -90,7 +90,7 @@ export const devDashSections = [
     </React.Fragment>),
   },
   {
-    linkId: 'calendar',
+    linkId: 'participate',
     linkName: 'Get Involved',
     header: 'How to get involved',
     body: (<React.Fragment>
@@ -223,7 +223,12 @@ trcProjectTypes['Major Subdivision'] = {
       <li>Creation or extension of a road</li>
       <li>Usually creates new residential lots</li>
     </ul>),
-    participationOpp: (<ul><li>Neighborhood meeting</li></ul>),
+    participationOpp: (
+      <ul>
+        <li><a href="/development/major#participate">Neighborhood meeting</a></li>
+        <li><a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/historic-resources-commission/" target="_blank" rel="noopener noreferrer">Historic Resources Commission meeting</a> (if in <a href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/historic-district-guidelines/" target="_blank" rel="noopener noreferrer">a historic district</a> or concerning a <a href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/landmarks/" target="_blank" rel="noopener noreferrer">historic landmark</a>)</li>
+      </ul>
+    ),
     examples: (<ul>
       <li>A new neighborhood with a new road created</li>
     </ul>),
@@ -242,14 +247,17 @@ trcProjectTypes['Level II'] = {
       <li>Not located downtown and contains 20 to 49 residential units or is 35,000 to 99,999 square feet</li>
       <li>Located downtown and is 20,000 to 99,999 square feet</li>
     </ul>),
-    participationOpp: (<ul>
-      <li>Downtown:
-        <ul><li>Neighborhood meeting</li><li>Design review</li><li>Planning and Zoning Commission</li></ul>
-      </li>
-      <li>Not downtown:
-        <ul><li>Neighborhood meeting</li><li>Design review (if on the river)</li></ul>
-      </li>
-                       </ul>),
+    participationOpp: (
+      <ul>
+        <li>Downtown:
+          <ul><li><a href="/development/major#participate">Neighborhood meeting</a></li><li>Design review</li><li><a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/planning-and-zoning-commission/" target="_blank" rel="noopner noreferrer">Planning and Zoning Commission</a></li></ul>
+        </li>
+        <li>Not downtown:
+          <ul><li><a href="/development/major#participate">Neighborhood meeting</a></li><li>Design review (if on the river)</li></ul>
+        </li>
+        <li><a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/historic-resources-commission/" target="_blank" rel="noopener noreferrer">Historic Resources Commission meeting</a> (if in <a href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/historic-district-guidelines/" target="_blank" rel="noopener noreferrer">a historic district</a> or concerning a <a href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/landmarks/" target="_blank" rel="noopener noreferrer">historic landmark</a>)</li>
+      </ul>
+    ),
     examples: (<ul>
       <li>A new grocery store</li>
       <li>A big box specialty retailer</li>
@@ -272,7 +280,14 @@ trcProjectTypes['Conditional Zoning'] = {
       <li>99,999 square feet or larger</li>
       <li>Includes all projects previously designated as Level III</li>
     </ul>),
-    participationOpp: (<ul><li>Neighborhood meeting</li><li>Design review (if downtown or on the river)</li><li>Planning and Zoning Commission</li><li>City Council hearing</li></ul>),
+    participationOpp: (
+      <ul>
+        <li><a href="/development/major#participate">Neighborhood meeting</a></li>
+        <li>Design review (if downtown or on the river)</li>
+        <li><a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/historic-resources-commission/" target="_blank" rel="noopener noreferrer">Historic Resources Commission meeting</a> (if in <a href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/historic-district-guidelines/" target="_blank" rel="noopener noreferrer">a historic district</a> or concerning a <a href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/landmarks/" target="_blank" rel="noopener noreferrer">historic landmark</a>)</li>
+        <li><a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/planning-and-zoning-commission/" target="_blank" rel="noopner noreferrer">Planning and Zoning Commission</a></li>
+        <li><a href="https://ashevillenc.gov/government" target="_blank" rel="noopener noreferrer">City Council</a> hearing</li>
+      </ul>),
     examples: (<ul>
       <li>A large apartment complex</li>
       <li>A large office building</li>
@@ -290,7 +305,15 @@ trcProjectTypes['Conditional Use Permit'] = {
   short: 'CUP',
   descriptors: {
     whyLevel: <React.Fragment>This is highly specialized permit process for land uses with potential public impacts that require individual consideration of their location, design, configuration and operation.  These uses are defined by <a href="https:/library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTXVIUSRISUSPRECOUS_S7-16-2COUS" target="_blank" rel="noopener noreferrer">Section 7-16-2 of the Unified Development Ordinance</a>.</React.Fragment>,
-    participationOpp: (<ul><li>Neighborhood meeting</li><li>Design review (if downtown or on the river)</li><li>Planning and Zoning Commission</li><li>City Council hearing</li></ul>),
+    participationOpp: (
+      <ul>
+        <li><a href="/development/major#participate">Neighborhood meeting</a></li>
+        <li>Design review (if downtown or on the river)</li>
+        <li><a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/historic-resources-commission/" target="_blank" rel="noopener noreferrer">Historic Resources Commission meeting</a> (if in <a href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/historic-district-guidelines/" target="_blank" rel="noopener noreferrer">a historic district</a> or concerning a <a href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/landmarks/" target="_blank" rel="noopener noreferrer">historic landmark</a>)</li>
+        <li><a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/planning-and-zoning-commission/" target="_blank" rel="noopner noreferrer">Planning and Zoning Commission</a></li>
+        <li><a href="https://ashevillenc.gov/government" target="_blank" rel="noopener noreferrer">City Council</a> hearing</li>
+      </ul>
+    ),
     examples: (<ul>
       <li>Cell phone towers</li>
       <li>Jails</li>

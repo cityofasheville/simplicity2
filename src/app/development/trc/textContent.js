@@ -448,6 +448,8 @@ export const dagreNodes = [
     typeIds: [
       'Level II',
       'Major Subdivision',
+      'Conditional Zoning',
+      'Conditional Use Permit',
     ],
   },
   {
@@ -550,6 +552,8 @@ export const dagreLinks = [
     target: 'Planning and Zoning Commission',
     parallelEdges: [
       { id: 'Level II' },
+      { id: 'Conditional Zoning' },
+      { id: 'Conditional Use Permit' },
     ],
   },
   {
@@ -565,12 +569,6 @@ export const dagreLinks = [
     parallelEdges: [
       { id: 'Level II' },
       { id: 'Major Subdivision' },
-    ],
-  },
-  {
-    source: 'Technical Review Committee',
-    target: 'Planning and Zoning Commission',
-    parallelEdges: [
       { id: 'Conditional Zoning' },
       { id: 'Conditional Use Permit' },
     ],

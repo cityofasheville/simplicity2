@@ -96,7 +96,7 @@ export const devDashSections = [
     body: (<React.Fragment>
         <p>Developers planning to submit applications for development that must go through the Technical Review Committee must hold a public meeting before submitting the application.</p>
         <p>Currently, developers are not required by law to notify the City of Asheville when those meetings take place.  Thus, the first record the city has of a proposed development is when the application is submitted, after the meeting.</p>
-        <p>However, in order to help ensure that residents can find out about neighborhood meetings in advance, the city has asked developers to voluntarily notify the city.  After those developers fill out an online form, those meeting dates are automatically added to <a target="_blank" rel="noopener noreferrer" href="https://calendar.google.com/calendar/embed?src=ashevillenc.gov_gk5l650n9mopts9m7sfemhcpd8%40group.calendar.google.com&ctz=America%2FNew_York">a calendar that shows all neighborhood meetings about which the city has been notified</a>.</p>
+        <p>However, in order to help ensure that residents can find out about developer-neighborhood meetings in advance, the city has asked developers to voluntarily notify the city.  After those developers fill out an online form, those meeting dates are automatically added to <a target="_blank" rel="noopener noreferrer" href="https://calendar.google.com/calendar/embed?src=ashevillenc.gov_gk5l650n9mopts9m7sfemhcpd8%40group.calendar.google.com&ctz=America%2FNew_York">a calendar that shows all developer-neighborhood meetings about which the city has been notified</a>.</p>
     </React.Fragment>)
   },
   {

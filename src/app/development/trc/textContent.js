@@ -434,15 +434,17 @@ export const dagreNodes = [
   {
     id: 'Design review',
     steps: {
-      what: <div>Projects located Downtown or in the River District must be reviewed for architectural design elements by a special design review sub-committee of either the <a href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/downtown-commission/" target="_blank" rel="noopener noreferrer">Asheville Downtown Commission</a> or the <a href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/asheville-area-riverfront-redevelopment-commission/" target="_blank" rel="noopener noreferrer">Asheville Area Riverfront Redevelopment Commission</a> prior to approval.</div>,
+      what: <div>Projects located Downtown, in the River District, or involving a historic landmark or site must be reviewed for architectural design elements by a special design review sub-committee of the <a href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/downtown-commission/" target="_blank" rel="noopener noreferrer">Asheville Downtown Commission</a>, the <a href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/asheville-area-riverfront-redevelopment-commission/" target="_blank" rel="noopener noreferrer">Asheville Area Riverfront Redevelopment Commission</a>, or the <a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/historic-resources-commission/" rel="noopener noreferrer" target="_blank">Historic Resources Commission</a>, respectively, prior to approval.</div>,
       who: ['dev', 'staff', 'neighbors'],
       when: (<ul style={{ padding: 0 }}>
         <li>Downtown Commission: second Friday of each month</li>
         <li>Riverfront Commission: second Thursday of each month</li>
+        <li>Historic Resources Commission: second Wednesday of each month</li>
       </ul>),
       where: (<ul style={{ padding: 0 }}>
         <li>Downtown Commission: <a href="https://goo.gl/maps/7GkCkb1pPjRaXbAc7" target="_blank" rel="noopener noreferrer">City Hall</a></li>
         <li>Riverfront Commission: <a href="https://goo.gl/maps/Wbamfs7tbhSmQ1Uz7" target="_blank" rel="noopener noreferrer">Explore Asheville offices</a></li>
+        <li>Historic Resources Commission: <a href="https://goo.gl/maps/7GkCkb1pPjRaXbAc7" target="_blank" rel="noopener noreferrer">City Hall</a></li>
       </ul>),
     },
     typeIds: [

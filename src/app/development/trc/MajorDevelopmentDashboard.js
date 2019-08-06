@@ -83,7 +83,7 @@ class MajorDevelopmentDashboard extends React.Component {
               Understand your role in the process and how your voice can be heard
             </li>
             <li>
-              Coming soon: be notified when someone applies for a permit to build something near you
+              <a href="#notifications">Sign up to be notified</a> when someone applies for a permit to build something near you
             </li>
           </ul>
           <p>This is a brand new tool.  Like all digital products created by the City of Asheville, it will be updated and refined iteratively in response to public input.  Please <a href="https://forms.gle/kSRTZidJUtNdZ8Rz7" target="_blank" rel="noopener noreferrer">give us feedback</a> so that we may better understand your needs.</p>

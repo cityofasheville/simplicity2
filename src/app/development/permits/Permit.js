@@ -143,7 +143,7 @@ const Permit = props => (
         <div className="container">
           <h1 className="title__text">{formattedPermit.application_name}</h1>
           <p className="permit-description">{formattedPermit.permit_description}</p>
-          <p className="permit-description">{`City staff accepted this application on ${dateFormatter(formattedPermit.applied_date)}.  ${currentStatusItem ? currentStatusItem.statusText : ''}`}</p>
+          <p className="permit-description">{`City staff began processing this application on ${dateFormatter(formattedPermit.applied_date)}.  ${currentStatusItem ? currentStatusItem.statusText : ''}`}</p>
           {formattedPermit.trcType && formattedPermit.orderedDates.length > 0 &&
             <PermitTimeline
               formattedPermit={formattedPermit}

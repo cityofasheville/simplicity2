@@ -33,6 +33,7 @@ class PermitsIndex extends React.Component {
             // Defaults are fine for now
             after={this.state.timeSpan[0]}
             before={this.state.timeSpan[1]}
+            permit_groups={['Permits', 'Planning']}
           />
         </ErrorBoundary>
       </div>

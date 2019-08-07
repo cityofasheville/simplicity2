@@ -14,7 +14,7 @@ export const statusTranslation = [
   },
   {
     accelaSpeak: 'CC Issued',
-    statusText: '',
+    statusText: 'This project has been approved and the City has issued permits to begin construction.',
     closed: true,
   },
   {
@@ -78,7 +78,7 @@ export const statusTranslation = [
   },
   {
     accelaSpeak: 'Revoked',
-    statusText: '',
+    statusText: 'This is not an active permit application.',
     closed: true,
   },
   {
@@ -101,6 +101,10 @@ export const statusTranslation = [
     accelaSpeak: 'Withdrawn',
     statusText: 'The applicant has asked the City to stop reviewing this project.',
     closed: true,
+  },
+  {
+    accelaSpeak: 'Revisions Requested',
+    statusText: 'Staff has reviewed the plans and asked for further information from the applicant.',
   },
 ];
 

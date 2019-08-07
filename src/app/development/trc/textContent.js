@@ -78,7 +78,7 @@ export const devDashSections = [
     linkId: 'notifications',
     linkName: 'Get Notifications',
     header: 'Sign up for notifications',
-    body: (<p>The City of Asheville will be piloting a new notification system that allows people to sign up for non-emergency alerts based on city data.  Stay tuned for the launch of this tool!</p>),
+    body: (<p>The City of Asheville is piloting a system that allows people to receive an email notification when a developer submits an application for a new large-scale development.  Visit <a href="https://notifications.ashevillenc.gov" target="_blank" rel="noopener noreferrer">notifications.ashevillenc.gov</a> to sign up or change your notification settings.</p>),
   },
   {
     linkId: 'data',
@@ -90,13 +90,29 @@ export const devDashSections = [
     </React.Fragment>),
   },
   {
-    linkId: 'calendar',
-    linkName: 'Neighborhood Meetings',
-    header: 'Upcoming neighborhood meetings',
+    linkId: 'participate',
+    linkName: 'Get Involved',
+    header: 'How to get involved',
     body: (<React.Fragment>
-        <p>Developers planning to submit applications for development that must go through the Technical Review Committee must hold a public meeting before submitting the application.</p>
-        <p>Currently, developers are not required by law to notify the City of Asheville when those meetings take place.  Thus, the first record the city has of a proposed development is when the application is submitted, after the meeting.</p>
-        <p>However, in order to help ensure that residents can find out about neighborhood meetings in advance, the city has asked developers to voluntarily notify the city.  After those developers fill out an online form, those meeting dates are automatically added to <a target="_blank" rel="noopener noreferrer" href="https://calendar.google.com/calendar/embed?src=ashevillenc.gov_gk5l650n9mopts9m7sfemhcpd8%40group.calendar.google.com&ctz=America%2FNew_York">a calendar that shows all neighborhood meetings about which the city has been notified</a>.</p>
+      <p>Depending on the type of project, there are a few different ways for community members to get involved in the development process.</p>
+      <ul className="paragraphy-list">
+        <li>
+          <h3>Neighborhood meetings</h3>
+          <p>Developers planning to submit applications for development that must go through the Technical Review Committee (including projects of types Level II, Major Subdivision, Conditional Zoning, and Conditional Use Permit) must hold a public meeting before submitting the application.</p>
+          <p>Currently, developers are not required by law to notify the City of Asheville when those meetings take place.  Thus, the first record the city has of a proposed development is when the application is submitted, after the meeting.</p>
+          <p>However, in order to help ensure that residents can find out about developer-neighborhood meetings in advance, the city has asked developers to voluntarily notify the city.  After those developers fill out an online form, those meeting dates are automatically added to <a target="_blank" rel="noopener noreferrer" href="https://calendar.google.com/calendar/embed?src=ashevillenc.gov_gk5l650n9mopts9m7sfemhcpd8%40group.calendar.google.com&ctz=America%2FNew_York">a calendar that shows all developer-neighborhood meetings about which the city has been notified</a>.</p>
+        </li>
+        <li>
+          <h3>Committee and commission meetings</h3>
+          <p>As described above, there are several committees and commissions that participate in the major development review processs.  Depending on the size, type, and location of proposed development, it may go through the <a href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/technical-review-committee/" target="_blank" rel="noopener noreferrer">Technical Review Committee</a>, the <a href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/planning-and-zoning-commission/" target="_blank" rel="noopener noreferrer">Planning and Zoning Commission</a>, the <a href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/historic-resources-commission/" target="_blank" rel="noopener noreferrer">Historic Resources Commission</a>, the <a href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/downtown-commission/" target="_blank" rel="noopener noreferrer">Asheville Downtown Commission</a>, or the <a href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/asheville-area-riverfront-redevelopment-commission/" target="_blank" rel="noopener noreferrer">Asheville Area Riverfront Redevelopment Commission</a>.</p>
+          <p>Visit <a href="https://AshevilleNC.gov" rel="noopener noreferrer" target="_blank">AshevilleNC.gov</a> to learn more about city boards, commissions, and committees.</p>
+        </li>
+        <li>
+          <h3>Council meetings</h3>
+          <p>Projects of types Conditional Zoning and Conditional Use Permit are reveiwed in a public hearing before City Council.  Community members may speak as individuals for three minutes or on behalf of organizations for ten minutes (if three other people cede their speaking time) at a council meeting.</p>
+          <p>Information about City Council as well as minutes and agendas for upcoming and past council meetings can be found on <a href="https://www.ashevillenc.gov/government/" rel="noopener noreferrer" target="_blank">the City of Asheville website</a>.</p>
+        </li>
+      </ul>
     </React.Fragment>)
   },
   {
@@ -208,7 +224,12 @@ trcProjectTypes['Major Subdivision'] = {
       <li>Creation or extension of a road</li>
       <li>Usually creates new residential lots</li>
     </ul>),
-    participationOpp: (<ul><li>Neighborhood meeting</li></ul>),
+    participationOpp: (
+      <ul>
+        <li><a href="/development/major#participate">Neighborhood meeting</a></li>
+        <li><a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/historic-resources-commission/" target="_blank" rel="noopener noreferrer">Historic Resources Commission meeting</a> (if in <a href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/historic-district-guidelines/" target="_blank" rel="noopener noreferrer">a historic district</a> or concerning a <a href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/landmarks/" target="_blank" rel="noopener noreferrer">historic landmark</a>)</li>
+      </ul>
+    ),
     examples: (<ul>
       <li>A new neighborhood with a new road created</li>
     </ul>),
@@ -227,14 +248,17 @@ trcProjectTypes['Level II'] = {
       <li>Not located downtown and contains 20 to 49 residential units or is 35,000 to 99,999 square feet</li>
       <li>Located downtown and is 20,000 to 99,999 square feet</li>
     </ul>),
-    participationOpp: (<ul>
-      <li>Downtown:
-        <ul><li>Neighborhood meeting</li><li>Design review</li><li>Planning and Zoning Commission</li></ul>
-      </li>
-      <li>Not downtown:
-        <ul><li>Neighborhood meeting</li><li>Design review (if on the river)</li></ul>
-      </li>
-                       </ul>),
+    participationOpp: (
+      <ul>
+        <li>Downtown:
+          <ul><li><a href="/development/major#participate">Neighborhood meeting</a></li><li>Design review</li><li><a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/planning-and-zoning-commission/" target="_blank" rel="noopener noreferrer">Planning and Zoning Commission</a></li></ul>
+        </li>
+        <li>Not downtown:
+          <ul><li><a href="/development/major#participate">Neighborhood meeting</a></li><li>Design review (if on the river)</li></ul>
+        </li>
+        <li><a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/historic-resources-commission/" target="_blank" rel="noopener noreferrer">Historic Resources Commission meeting</a> (if in <a href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/historic-district-guidelines/" target="_blank" rel="noopener noreferrer">a historic district</a> or concerning a <a href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/landmarks/" target="_blank" rel="noopener noreferrer">historic landmark</a>)</li>
+      </ul>
+    ),
     examples: (<ul>
       <li>A new grocery store</li>
       <li>A big box specialty retailer</li>
@@ -257,7 +281,14 @@ trcProjectTypes['Conditional Zoning'] = {
       <li>99,999 square feet or larger</li>
       <li>Includes all projects previously designated as Level III</li>
     </ul>),
-    participationOpp: (<ul><li>Neighborhood meeting</li><li>Design review (if downtown or on the river)</li><li>Planning and Zoning Commission</li><li>City Council hearing</li></ul>),
+    participationOpp: (
+      <ul>
+        <li><a href="/development/major#participate">Neighborhood meeting</a></li>
+        <li>Design review (if downtown or on the river)</li>
+        <li><a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/historic-resources-commission/" target="_blank" rel="noopener noreferrer">Historic Resources Commission meeting</a> (if in <a href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/historic-district-guidelines/" target="_blank" rel="noopener noreferrer">a historic district</a> or concerning a <a href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/landmarks/" target="_blank" rel="noopener noreferrer">historic landmark</a>)</li>
+        <li><a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/planning-and-zoning-commission/" target="_blank" rel="noopener noreferrer">Planning and Zoning Commission</a></li>
+        <li><a href="https://ashevillenc.gov/government" target="_blank" rel="noopener noreferrer">City Council</a> hearing</li>
+      </ul>),
     examples: (<ul>
       <li>A large apartment complex</li>
       <li>A large office building</li>
@@ -275,7 +306,15 @@ trcProjectTypes['Conditional Use Permit'] = {
   short: 'CUP',
   descriptors: {
     whyLevel: <React.Fragment>This is highly specialized permit process for land uses with potential public impacts that require individual consideration of their location, design, configuration and operation.  These uses are defined by <a href="https:/library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTXVIUSRISUSPRECOUS_S7-16-2COUS" target="_blank" rel="noopener noreferrer">Section 7-16-2 of the Unified Development Ordinance</a>.</React.Fragment>,
-    participationOpp: (<ul><li>Neighborhood meeting</li><li>Design review (if downtown or on the river)</li><li>Planning and Zoning Commission</li><li>City Council hearing</li></ul>),
+    participationOpp: (
+      <ul>
+        <li><a href="/development/major#participate">Neighborhood meeting</a></li>
+        <li>Design review (if downtown or on the river)</li>
+        <li><a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/historic-resources-commission/" target="_blank" rel="noopener noreferrer">Historic Resources Commission meeting</a> (if in <a href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/historic-district-guidelines/" target="_blank" rel="noopener noreferrer">a historic district</a> or concerning a <a href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/landmarks/" target="_blank" rel="noopener noreferrer">historic landmark</a>)</li>
+        <li><a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/planning-and-zoning-commission/" target="_blank" rel="noopener noreferrer">Planning and Zoning Commission</a></li>
+        <li><a href="https://ashevillenc.gov/government" target="_blank" rel="noopener noreferrer">City Council</a> hearing</li>
+      </ul>
+    ),
     examples: (<ul>
       <li>Cell phone towers</li>
       <li>Jails</li>
@@ -419,20 +458,24 @@ export const dagreNodes = [
   {
     id: 'Design review',
     steps: {
-      what: <div>Projects located Downtown or in the River District must be reviewed for architectural design elements by a special design review sub-committee of either the <a href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/downtown-commission/" target="_blank" rel="noopener noreferrer">Asheville Downtown Commission</a> or the <a href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/asheville-area-riverfront-redevelopment-commission/" target="_blank" rel="noopener noreferrer">Asheville Area Riverfront Redevelopment Commission</a> prior to approval.</div>,
+      what: <div>Projects located Downtown, in the River District, or involving a historic landmark or site must be reviewed for architectural design elements by a special design review sub-committee of the <a href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/downtown-commission/" target="_blank" rel="noopener noreferrer">Asheville Downtown Commission</a>, the <a href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/asheville-area-riverfront-redevelopment-commission/" target="_blank" rel="noopener noreferrer">Asheville Area Riverfront Redevelopment Commission</a>, or the <a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/historic-resources-commission/" rel="noopener noreferrer" target="_blank">Historic Resources Commission</a>, respectively, prior to approval.</div>,
       who: ['dev', 'staff', 'neighbors'],
       when: (<ul style={{ padding: 0 }}>
         <li>Downtown Commission: second Friday of each month</li>
         <li>Riverfront Commission: second Thursday of each month</li>
+        <li>Historic Resources Commission: second Wednesday of each month</li>
       </ul>),
       where: (<ul style={{ padding: 0 }}>
         <li>Downtown Commission: <a href="https://goo.gl/maps/7GkCkb1pPjRaXbAc7" target="_blank" rel="noopener noreferrer">City Hall</a></li>
         <li>Riverfront Commission: <a href="https://goo.gl/maps/Wbamfs7tbhSmQ1Uz7" target="_blank" rel="noopener noreferrer">Explore Asheville offices</a></li>
+        <li>Historic Resources Commission: <a href="https://goo.gl/maps/7GkCkb1pPjRaXbAc7" target="_blank" rel="noopener noreferrer">City Hall</a></li>
       </ul>),
     },
     typeIds: [
       'Level II',
       'Major Subdivision',
+      'Conditional Zoning',
+      'Conditional Use Permit',
     ],
   },
   {
@@ -535,6 +578,8 @@ export const dagreLinks = [
     target: 'Planning and Zoning Commission',
     parallelEdges: [
       { id: 'Level II' },
+      { id: 'Conditional Zoning' },
+      { id: 'Conditional Use Permit' },
     ],
   },
   {
@@ -550,12 +595,6 @@ export const dagreLinks = [
     parallelEdges: [
       { id: 'Level II' },
       { id: 'Major Subdivision' },
-    ],
-  },
-  {
-    source: 'Technical Review Committee',
-    target: 'Planning and Zoning Commission',
-    parallelEdges: [
       { id: 'Conditional Zoning' },
       { id: 'Conditional Use Permit' },
     ],

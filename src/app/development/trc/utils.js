@@ -51,17 +51,29 @@ export function getNodes(dagreGraph, visWidth, nodeHeight, nodePadding) {
   const midpointX = visWidth / 2;
 
   // totalYOffsetValue has to be added to if there is a multi-row set of nodes
-  // let totalYOffsetValue = 0;
+  let totalYOffsetValue = 0;
 
-  return Object.values(dagreGraph._nodes).map((d) => {
+  const returnNodes = Object.values(dagreGraph._nodes).map((d) => {
     const returnNode = Object.assign({}, d);
     returnNode.coincidents = [].concat(Object.values(dagreGraph._nodes))
       .filter(val => val.y === d.y);
 
     returnNode.indexInCoincidents = returnNode.coincidents.findIndex(c => c.id === returnNode.id);
-    returnNode.numPerRow = returnNode.coincidents.length <= 3 ?
-      returnNode.coincidents.length : Math.ceil(returnNode.coincidents.length / 2);
+    // This logic allows for wrapping, but is unnecessary right now
+    // returnNode.numPerRow = returnNode.coincidents.length <= 3 ?
+    //   returnNode.coincidents.length : Math.ceil(returnNode.coincidents.length / 2);
+    returnNode.numPerRow = returnNode.coincidents.length;
 
+    // Basically, lower the nodes after design review if the larger nodes are being used
+    returnNode.y += totalYOffsetValue;
+    if (returnNode.numPerRow > 2
+      && returnNode.indexInCoincidents === returnNode.coincidents.length - 1
+      && visWidth > 767
+    ) {
+      totalYOffsetValue += 125;
+    }
+
+    // Wrap is just the width-- this is an artefact of using the React Annotations library for an earlier draft
     returnNode.wrap = (visWidth -
       (nodePadding + (nodePadding * returnNode.numPerRow))
     ) / returnNode.numPerRow;
@@ -93,6 +105,8 @@ export function getNodes(dagreGraph, visWidth, nodeHeight, nodePadding) {
     // }
     // d.yOffset = thisYOffset;
   });
+
+  return returnNodes;
 
   // Reiterate and update y values
   // return nodeValues;

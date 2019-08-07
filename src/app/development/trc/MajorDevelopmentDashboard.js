@@ -4,6 +4,27 @@ import Accordion from '../../../shared/Accordion';
 import ErrorBoundary from '../../../shared/ErrorBoundary';
 import { devDashSections } from './textContent';
 
+const introductoryContent = (
+  <React.Fragment>
+    <h1>Large-Scale Development in Asheville</h1>
+    <p>There is a lot of private land development happening in Asheville.  This tool can help you:</p>
+    <ul>
+      <li>
+        Understand the development process from the first permit application to breaking ground
+      </li>
+      <li>
+        Understand your role in the process and how your voice can be heard
+      </li>
+      <li>
+        <a href="https://notifications.ashevillenc.gov" target="_blank" rel="noopener noreferrer">Sign up to be notified</a> when someone applies for a permit to build something near you
+      </li>
+    </ul>
+    <p>This is a brand new tool.  Like all digital products created by the City of Asheville, it will be updated and refined iteratively in response to public input.  Please <a href="https://forms.gle/kSRTZidJUtNdZ8Rz7" target="_blank" rel="noopener noreferrer">give us feedback</a> so that we may better understand your needs.</p>
+    <br />
+    <br />
+  </React.Fragment>
+);
+
 class MajorDevelopmentDashboard extends React.Component {
   constructor() {
     super();
@@ -46,8 +67,8 @@ class MajorDevelopmentDashboard extends React.Component {
     // Make it less overwhelming/scrolly for smaller screens
     if (this.state.width < 800) {
       return (
-        <div id="majorDevDash">
-          <h1>Major Development in Asheville</h1>
+        <main id="majorDevDash">
+          {introductoryContent}
           <Accordion
             data={this.sections}
             componentId="top-level"
@@ -63,7 +84,7 @@ class MajorDevelopmentDashboard extends React.Component {
               }
             }}
           />
-        </div>
+        </main>
       );
     }
 
@@ -73,22 +94,7 @@ class MajorDevelopmentDashboard extends React.Component {
           links={this.sections}
         />
         <main>
-          <h1>Large-Scale Development in Asheville</h1>
-          <p>There is a lot of private land development happening in Asheville.  This tool can help you:</p>
-          <ul>
-            <li>
-              Understand the development process from the first permit application to breaking ground
-            </li>
-            <li>
-              Understand your role in the process and how your voice can be heard
-            </li>
-            <li>
-              <a href="#notifications">Sign up to be notified</a> when someone applies for a permit to build something near you
-            </li>
-          </ul>
-          <p>This is a brand new tool.  Like all digital products created by the City of Asheville, it will be updated and refined iteratively in response to public input.  Please <a href="https://forms.gle/kSRTZidJUtNdZ8Rz7" target="_blank" rel="noopener noreferrer">give us feedback</a> so that we may better understand your needs.</p>
-          <br />
-          <br />
+          {introductoryContent}
           {this.sections.map(section => (
             <section id={section.linkId} ref={section.ref} key={section.linkId} style={{ overflow: 'auto' }}>
               <h2>{section.header}</h2>

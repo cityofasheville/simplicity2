@@ -13,6 +13,7 @@ import {
   LI_BOLD,
   IM_INFO,
   IM_DROPLET,
+  IM_HAMMER,
 } from '../../shared/iconConstants';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import Error from '../../shared/Error';
@@ -56,6 +57,8 @@ const getIcon = (type, bond) => {
       return <Icon path={IM_SHIELD3} size={25} color="#4077a5" />;
     case 'Water':
       return <Icon path={IM_DROPLET} size={25} color="#4077a6" />;
+    case 'Building Construction':
+      return <Icon path={IM_HAMMER} size={25} color="#4077a6" />;
     case 'Other':
       return (
         <svg
@@ -180,6 +183,7 @@ const CategoryDetails = props => (
                 'Housing Program',
                 'Parks & Recreation',
                 'Water',
+                'Building Construction',
                 'Other'].map((cat, index) => {
                 if (categories.includes(cat)) {
                   return (

@@ -82,7 +82,7 @@
     "firebase": "^4.3.1",
     "firebaseui": "^2.3.0",
     "google-maps": "^3.2.1",
-    "graphql": "0.13.2",
+    "graphql": "^14.4.2",
     "graphql-tag": "^2.6.1",
     "leaflet": "^1.2.0",
     "leaflet.markercluster": "^1.2.0",

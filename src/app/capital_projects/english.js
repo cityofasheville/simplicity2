@@ -10,7 +10,7 @@ export const english = {
   contact_email: 'Contact email',
   contact_phone:  'Contact phone',
   data_info: 'Some explanation of the data and limitations of the data',
-  estimated_contruction_timeframe: 'Estimated construction timeframe',
+  estimated_construction_timeframe: 'Estimated construction timeframe',
   funding_info: 'projects within the City’s General Capital Improvement Program (CIP) are funded with a combination of general tax revenue, municipal debt and external grants or partnerships.',
   housing_bond_info: 'Housing Bond projects for housing affordability provide additional support for the Housing Trust Fund and other programs that assist in creating diverse and affordable housing choices. The projects also include support in the development of affordable housing on key City-owned sites.',
   include_only_bond_projects: 'Include only bond projects',

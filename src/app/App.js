@@ -25,24 +25,24 @@ const displayNavbar = (hideNavbar) => {
   return <CityInfoBar />;
 };
 
-const authProviders = [
-  firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+//const authProviders = [
+//  firebase.auth.GoogleAuthProvider.PROVIDER_ID,
   // firebase.auth.EmailAuthProvider.PROVIDER_ID,
-];
+//];
 
-const initializeFirebaseAuthUI = () => {
-  // Initialize the FirebaseUI Widget using Firebase.
-  const authUi = new firebaseui.auth.AuthUI(firebase.auth());
+// const initializeFirebaseAuthUI = () => {
+//   // Initialize the FirebaseUI Widget using Firebase.
+//   const authUi = new firebaseui.auth.AuthUI(firebase.auth());
 
-  // The start method will wait until the DOM is loaded.
-  authUi.start('#firebaseui-auth-container', {
-    signInSuccessUrl: '/',
-    signInOptions: authProviders,
-    signInFlow: 'popup',
-    // TODO:  Terms of service url.
-    tosUrl: '<your-tos-url>',
-  });
-};
+//   // The start method will wait until the DOM is loaded.
+//   authUi.start('#firebaseui-auth-container', {
+//     signInSuccessUrl: '/',
+//     signInOptions: authProviders,
+//     signInFlow: 'popup',
+//     // TODO:  Terms of service url.
+//     tosUrl: '<your-tos-url>',
+//   });
+// };
 
 class Main extends React.Component {
   constructor(props) {
@@ -51,47 +51,47 @@ class Main extends React.Component {
   }
 
   componentDidMount() {
-    firebase.initializeApp({
-      apiKey: 'AIzaSyAEwpGQsTfOhwxUXaLX43FNAPA7BfL4SQ0',
-      authDomain: 'simplicityii-878be.firebaseapp.com',
-      databaseURL: 'https://simplicityii-878be.firebaseio.com',
-      storageBucket: 'simplicityii-878be.appspot.com',
-    });
+    // firebase.initializeApp({
+    //   apiKey: 'AIzaSyAEwpGQsTfOhwxUXaLX43FNAPA7BfL4SQ0',
+    //   authDomain: 'simplicityii-878be.firebaseapp.com',
+    //   databaseURL: 'https://simplicityii-878be.firebaseio.com',
+    //   storageBucket: 'simplicityii-878be.appspot.com',
+    // });
 
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        user.getIdToken().then(
-          (token) => {
-            localStorage.setItem('token', token);
-            this.props.updateUser({
-              variables: {
-                loggedIn: true,
-                privilege: user.email.endsWith('ashevillenc.gov') ? 2 : 1,
-                name: user.displayName,
-                email: user.email,
-                provider: user.providerData[0].providerId,
-              },
-            });
-          },
-          (error) => {
-            console.log(`TOKEN ERROR: ${JSON.stringify(error)}`);
-          }
-        );
-      } else {
-        const defaultUser = defaultAuthState.user;
-        this.props.updateUser({
-          variables: {
-            loggedIn: defaultUser.loggedIn,
-            privilege: defaultUser.privilege,
-            name: defaultUser.name,
-            email: defaultUser.email,
-            provider: defaultUser.provider,
-          },
-        });
-      }
+    // firebase.auth().onAuthStateChanged((user) => {
+    //   if (user) {
+    //     user.getIdToken().then(
+    //       (token) => {
+    //         localStorage.setItem('token', token);
+    //         this.props.updateUser({
+    //           variables: {
+    //             loggedIn: true,
+    //             privilege: user.email.endsWith('ashevillenc.gov') ? 2 : 1,
+    //             name: user.displayName,
+    //             email: user.email,
+    //             provider: user.providerData[0].providerId,
+    //           },
+    //         });
+    //       },
+    //       (error) => {
+    //         console.log(`TOKEN ERROR: ${JSON.stringify(error)}`);
+    //       }
+    //     );
+    //   } else {
+    const defaultUser = defaultAuthState.user;
+    this.props.updateUser({
+      variables: {
+        loggedIn: defaultUser.loggedIn,
+        privilege: defaultUser.privilege,
+        name: defaultUser.name,
+        email: defaultUser.email,
+        provider: defaultUser.provider,
+      },
     });
+  // }
+    // });
 
-    initializeFirebaseAuthUI();
+  // initializeFirebaseAuthUI();
   }
 
   render() {
@@ -108,7 +108,8 @@ class Main extends React.Component {
             </ErrorBoundary>
           </div>
           {!this.props.location.query.hideNavbar && <Footer />}
-          <AuthProviderModal />
+          { //<AuthProviderModal />
+          }
         </LanguageProvider>
       </div>
     );

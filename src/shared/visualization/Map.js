@@ -112,9 +112,9 @@ const Map = (props) => {
               attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             />
           </BaseLayer>
-          <BaseLayer name="Google Maps Satellite">
+          {/* <BaseLayer name="Google Maps Satellite">
             <GoogleLayer googlekey={mapKey} maptype={satellite} />
-          </BaseLayer>
+          </BaseLayer> */}
           {props.drawCircle &&
             <Circle center={props.center} radius={props.radius} fillOpacity={0.22} />
           }

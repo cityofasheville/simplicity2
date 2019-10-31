@@ -15,7 +15,7 @@ class GranularVolume extends React.Component {
       now.getTime(),
     ];
     if (this.props.location.pathname.includes('granular_volume')) {
-      defaultBrushExtent[0] = timeMonth.offset(now, -3).getTime()
+      defaultBrushExtent[0] = timeMonth.offset(now, -3).getTime();
     }
 
     this.state = {

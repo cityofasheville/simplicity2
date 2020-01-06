@@ -136,14 +136,14 @@ export const permitFieldFormats = [
     displayGroup: 'project details',
     displayLabel: 'Application Number',
     formatFunc: (d, permit) => {
-      const splitCap = permit.internal_record_id.split('-');
+      const splitCap = permit.internal_record_id.split('-'); 
       return (
         <a
-          href={`https://services.ashevillenc.gov/CitizenAccess/Cap/CapDetail.aspx?Module=Planning&TabName=Planning&capID1=${splitCap[0]}&capID2=${splitCap[1]}&capID3=${splitCap[2]}&agencyCode=ASHEVILLE`}
+          href={`https://services.ashevillenc.gov/CitizenAccess/Cap/GlobalSearchResults.aspx?isNewQuery=yes&QueryText=${permit.permit_number}`}
           target="_blank"
           rel="noopener noreferrer"
         >
-          {d}
+        {d}
         </a>
       );
     },

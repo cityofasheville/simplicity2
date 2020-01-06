@@ -168,7 +168,8 @@ const Permit = props => (
                 <div style={{ display: 'flex', marginTop: '1rem' }}>
                   <p>
                     <em>
-                      This is a major development.  <a href="/development/major">Learn more</a> about the large-scale development process in Asheville.
+                    This is an application made for development or permitting by a private individual that is being reviewed by the City of Asheville.  
+                    <a href="/development/major">Learn more</a> about the development review process in Asheville.
                     </em>
                   </p>
                 </div>

@@ -105,104 +105,100 @@ const Map = (props) => {
         // Might need to update keyboard event in the next version
         onKeyPress={markerClusterKeyDown}
       >
-        <LayersControl position="topright">
-          <BaseLayer checked name="OpenStreetMap">
-            <TileLayer
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+
+      <TileLayer
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+      />
+
+        {props.drawCircle &&
+          <Circle center={props.center} radius={props.radius} fillOpacity={0.22} />
+        }
+        {shouldZoomToNonCenter &&
+          <Circle center={zoomTo} radius={15} fillOpacity={0.15} color="red" />
+        }
+        {props.showCenter &&
+          <Marker
+            position={props.center}
+            icon={L.icon({
+              iconUrl: require('../../images/marker-icon-2.png'),
+              iconSize: [25, 41],
+              iconAnchor: [12, 41],
+              popupAnchor: [2, -22],
+            })}
+          >
+            <Popup>
+              <div><b>{props.centerLabel}</b></div>
+            </Popup>
+          </Marker>
+        }
+        {props.drawStreet &&
+          props.streetData.map((line, index) => (
+            <Polyline
+              key={['street_line', index].join('_')}
+              positions={line}
+              weight={5}
+              className="noPointer"
             />
-          </BaseLayer>
-          <BaseLayer name="Google Maps Satellite">
-            <GoogleLayer googlekey={mapKey} maptype={satellite} />
-          </BaseLayer>
-          {props.drawCircle &&
-            <Circle center={props.center} radius={props.radius} fillOpacity={0.22} />
-          }
-          {shouldZoomToNonCenter &&
-            <Circle center={zoomTo} radius={15} fillOpacity={0.15} color="red" />
-          }
-          {props.showCenter &&
-            <Marker
-              position={props.center}
-              icon={L.icon({
-                iconUrl: require('../../images/marker-icon-2.png'),
-                iconSize: [25, 41],
-                iconAnchor: [12, 41],
-                popupAnchor: [2, -22],
-              })}
+          ))
+        }
+        {props.drawMaintenance &&
+          props.maintenanceData.map((line, index) => (
+            <Polyline
+              key={['maintenance_line', index].join('_')}
+              positions={line.line}
+              weight={10}
+              opacity={0.8}
+              color={line.color}
             >
               <Popup>
-                <div><b>{props.centerLabel}</b></div>
+                {line.popup}
               </Popup>
-            </Marker>
-          }
-          {props.drawStreet &&
-            props.streetData.map((line, index) => (
-              <Polyline
-                key={['street_line', index].join('_')}
-                positions={line}
-                weight={5}
-                className="noPointer"
-              />
-            ))
-          }
-          {props.drawMaintenance &&
-            props.maintenanceData.map((line, index) => (
-              <Polyline
-                key={['maintenance_line', index].join('_')}
-                positions={line.line}
-                weight={10}
-                opacity={0.8}
-                color={line.color}
-              >
+            </Polyline>
+          ))
+        }
+        {props.drawPolygon &&
+          props.polygonData.map((poly, index) => (
+            <Polygon
+              key={['polygon', index].join('_')}
+              positions={poly.polygons}
+              weight={1.5}
+            >
+              {poly.popup &&
                 <Popup>
-                  {line.popup}
+                  {poly.popup}
                 </Popup>
-              </Polyline>
-            ))
-          }
-          {props.drawPolygon &&
-            props.polygonData.map((poly, index) => (
-              <Polygon
-                key={['polygon', index].join('_')}
-                positions={poly.polygons}
-                weight={1.5}
-              >
-                {poly.popup &&
-                  <Popup>
-                    {poly.popup}
-                  </Popup>
-                }
-              </Polygon>
-            ))
-          }
-          <Query
-            query={GET_MUNICIPALITIES}
-            variables={{
-              jurisdictions: props.municipalities,
-            }}
-          >
-            {({ loading, error, data }) => {
-              if (loading) return null;
-              if (error) return null;
-              return (
-                data.municipalities.map(municipality => (
-                  <Polygon
-                    key={municipality.jurisdiction}
-                    fillColor="#BEE8FF"
-                    fillOpacity={0.27}
-                    color="gray"
-                    weight="1.5"
-                    positions={convertPolygonsToLatLngArrays(municipality.polygons)}
-                    className="noPointer"
-                  >
-                  </Polygon>
-                ))
-              );
-            }}
-          </Query>
-          <MarkerClusterGroup markers={markers} {...markerClusterOptions} />
-        </LayersControl>
+              }
+            </Polygon>
+          ))
+        }
+        <Query
+          query={GET_MUNICIPALITIES}
+          variables={{
+            jurisdictions: props.municipalities,
+          }}
+        >
+          {({ loading, error, data }) => {
+            if (loading) return null;
+            if (error) return null;
+            return (
+              data.municipalities.map(municipality => (
+                <Polygon
+                  key={municipality.jurisdiction}
+                  fillColor="#BEE8FF"
+                  fillOpacity={0.27}
+                  color="gray"
+                  weight="1.5"
+                  positions={convertPolygonsToLatLngArrays(municipality.polygons)}
+                  className="noPointer"
+                >
+                </Polygon>
+              ))
+            );
+          }}
+        </Query>
+        <MarkerClusterGroup markers={markers} {...markerClusterOptions} />
+
         {
           props.legend &&
           <MapLegendControl>

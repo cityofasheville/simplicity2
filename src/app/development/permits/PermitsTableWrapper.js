@@ -75,6 +75,7 @@ const PermitsTableWrapper = props => (
         <div>
           <div className="map-container" style={{ height: '350px', width: '100%' }}>
             <a
+              style={{ top: '-50px' }}
               href="#permitsDataTable"
               className="skip-nav-link"
               onClick={() => { document.getElementById('permitsDataTable').focus(); }}

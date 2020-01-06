@@ -19,4 +19,3 @@ phases:
     commands:
       - aws cloudfront create-invalidation --distribution-id "${DASHBOARDS_DIST_ID}" --paths '/*'
       - aws cloudfront create-invalidation --distribution-id "${SIMPLICITY_DIST_ID}" --paths '/*'
-      - aws cloudfront create-invalidation --distribution-id "${SIMPLICITY2_DIST_ID}" --paths '/*'

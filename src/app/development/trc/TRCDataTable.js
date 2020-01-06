@@ -12,7 +12,7 @@ class TRCDataTable extends React.Component {
     super();
     const now = timeDay.floor(new Date());
     this.initialBrushExtent = [
-      timeMonth.offset(now, -3).getTime(),
+      timeMonth.offset(now, -12).getTime(),
       now.getTime(),
     ];
     this.state = {

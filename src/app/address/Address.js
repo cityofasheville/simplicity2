@@ -16,7 +16,6 @@ import {
   IM_FLAG7,
   IM_LIBRARY,
 } from '../../shared/iconConstants';
-import { zoningLinks } from './zoning';
 import PageHeader from '../../shared/PageHeader';
 import ButtonGroup from '../../shared/ButtonGroup';
 import LinkButton from '../../shared/LinkButton';
@@ -39,6 +38,7 @@ query addresses($civicaddress_ids: [String]!) {
       trash_day
       brushweek
       zoning
+      zoning_links
       owner_name
       owner_address
       centerline_id
@@ -327,7 +327,7 @@ const Address = props => (
                             key={`zone_${index}`}
                           >
                             <a
-                              href={zoningLinks[zone]}
+                              href={addressData.zoning_links.split(',')[index]}
                               target="_blank"
                             >
                               {addressData.zoning.split(',')[index]}

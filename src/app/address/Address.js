@@ -326,12 +326,16 @@ const Address = props => (
                           <span
                             key={`zone_${index}`}
                           >
-                            <a
-                              href={addressData.zoning_links.split(',')[index]}
-                              target="_blank"
-                            >
-                              {addressData.zoning.split(',')[index]}
-                            </a>
+                            {addressData.zoning_links
+                            ?<a
+                                href={addressData.zoning_links.split(',')[index]}
+                                target="_blank"
+                              >
+                                {addressData.zoning.split(',')[index]}
+                              </a>
+                            :addressData.zoning.split(',')[index]
+                          }
+
                             {addressData.zoning.split(',').length > index + 1 ? ', ' : ''}
                           </span>))}
                         {

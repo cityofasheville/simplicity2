@@ -139,6 +139,30 @@ const Permit = props => (
           }
         });
 
+      function compareValues(key = 'dateInput', order = 'asc') {
+        return function innerSort(a, b) {
+          if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
+            // property doesn't exist on either object
+            return 0;
+          }
+      
+          const varA = new Date(a[key]); 
+          const varB = new Date(b[key]); 
+      
+          let comparison = 0;
+          if (varA > varB) {
+            comparison = 1;
+          } else if (varA < varB) {
+            comparison = -1;
+          }
+          return (
+            (order === 'desc') ? (comparison * -1) : comparison
+          );
+        };
+      }
+
+      formattedPermit.orderedDates.sort(compareValues());
+
       return (
         <div className="container">
           <h1 className="title__text">{formattedPermit.application_name}</h1>

@@ -60,11 +60,10 @@ const Permit = props => (
       if (data.permits.length > 1) {
         console.log('This is not quite right: ', data);
       }
-
       const thisPermit = data.permits[0];
       const trcType = getTRCTypeFromPermit(thisPermit);
       const formattedPermit = Object.assign({}, thisPermit, { trcType });
-
+      
       // These are all the "misc" info fields that may or may not be filled out for any permit
       thisPermit.custom_fields.forEach((customField) => {
         formattedPermit[customField.name] = customField.value;
@@ -112,9 +111,11 @@ const Permit = props => (
         .sort(a => (!a.displayLabel ? -1 : 0))
         .forEach((d) => {
           const val = formattedPermit[d.accelaLabel];
-          // if (!val) {
-          //   return;
-          // }
+          // If current data record does not have a value for a particular permit field, 
+          // skip rest of this foreach callback and go to the next permit field
+          if (!val) {
+            return;
+          }
           const formattedDisplayVal = d.formatFunc ? d.formatFunc(val, formattedPermit) : val;
           if (!formattedDisplayVal) {
             // Format functions return null if it should not show
@@ -142,7 +143,7 @@ const Permit = props => (
       function compareValues(key = 'dateInput', order = 'asc') {
         return function innerSort(a, b) {
           if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
-            // property doesn't exist on either object
+            // if property doesn't exist on either object
             return 0;
           }
       

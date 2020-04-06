@@ -96,7 +96,7 @@ class PermitTimeline extends React.Component {
     const { dimensions } = this.state;
     return (
       <div id="permit-timeline-container">
-        <div style={{ padding: '0.25rem 0 0 0.25rem', fontWeight: '500' }}>Where is it in the process?</div>
+        <div style={{ padding: '0.25rem 0.25rem 0.5rem 0', fontWeight: '500' }}>Where is it in the process?</div>
         {dimensions && this.renderContent()}
       </div>
     );

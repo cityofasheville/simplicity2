@@ -4,7 +4,7 @@
   margin: 1rem 0;
   padding: 0.25rem;
   border-radius: 6px;
-  height: 145px;
+  height: 165px;
   width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
@@ -27,6 +27,6 @@
 
 @media(min-width: 767px){
   #permit-timeline-container {
-    height: 135px;
+    /* min-height: 145px; */
   }
 }

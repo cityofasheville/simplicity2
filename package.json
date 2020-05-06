@@ -84,7 +84,7 @@
     "google-maps": "^3.2.1",
     "graphql": "0.13.2",
     "graphql-tag": "^2.6.1",
-    "leaflet": "^1.2.0",
+    "leaflet": "^1.6.0",
     "leaflet.markercluster": "^1.2.0",
     "merge-prop-functions": "^1.0.0",
     "moment": "^2.24.0",

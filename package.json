@@ -92,7 +92,7 @@
     "react": "^16.3.2",
     "react-annotation": "^1.4.1",
     "react-apollo": "^2.1.4",
-    "react-collapsible": "^2.0.4",
+    "react-collapsible": "^2.8.0",
     "react-csv": "^1.0.10",
     "react-dom": "^16.3.2",
     "react-ga": "^2.2.0",

@@ -5690,9 +5690,10 @@ react-aria@^0.8.2:
     scroll-into-view "^1.7.3"
     upper-case-first "^1.1.2"
 
-react-collapsible@^2.0.4:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/react-collapsible/-/react-collapsible-2.3.0.tgz#4373e5cfda75394ae0c15e755e6f67ff12b5dbae"
+react-collapsible@^2.8.1:
+  version "2.8.1"
+  resolved "https://registry.yarnpkg.com/react-collapsible/-/react-collapsible-2.8.1.tgz#60f47a12203bb8477d4c0e221b109fa839fed66c"
+  integrity sha512-ykV+EpCBYC6UoOsZLtBxrs/kFVgJc2gFMU1/SS2JLG+LrMHSOERpWSG+fexyFYk44hdfJRmc/If+HlSjXcbCiw==
 
 react-component-managers@^3.1.0:
   version "3.2.2"

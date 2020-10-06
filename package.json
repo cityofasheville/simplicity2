@@ -78,7 +78,7 @@
     "dagre": "^0.8.2",
     "data-tree": "^1.2.4",
     "dotenv-webpack": "^1.5.4",
-    "file-loader": "^1.1.11",
+    "file-loader": "^2.0.0",
     "firebase": "^6.4.0",
     "firebaseui": "^4.1.0",
     "google-maps": "^3.2.1",

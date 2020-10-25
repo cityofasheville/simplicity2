@@ -89,7 +89,7 @@
     "merge-prop-functions": "^1.0.0",
     "moment": "^2.24.0",
     "prop-types": "^15.5.10",
-    "react": "^16.3.2",
+    "react": "^16.14.0",
     "react-annotation": "^1.4.1",
     "react-apollo": "^2.1.4",
     "react-collapsible": "^2.0.4",

@@ -90,7 +90,7 @@ export const permitFieldFormats = [
             hover={false}
           />
           <span style={{ padding: '0 0 0 1rem' }}>
-            {permit.trcType.id}
+            <a href="/development/major#types" target="_blank" rel="noopener noreferrer">{permit.trcType.id}</a>
           </span>
         </div>
       );

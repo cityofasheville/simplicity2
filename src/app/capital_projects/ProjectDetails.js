@@ -211,7 +211,21 @@ const ProjectDetails = (props) => {
             <div className="capital-project__description row">
               <div className="col-sm-12">
                 <hr />
-                {props.project_description}
+                <p>
+                <label htmlFor="description">Project Description</label><br />
+                  {props.project_description}
+                </p>
+                {props.project_updates ? (
+                  <div>
+                    <hr />
+                    <p>
+                    <label htmlFor="update">Project Update</label><br />
+                      {props.project_updates}
+                    </p>
+                  </div>
+                ) : (
+                  <span></span>
+                )}
                 <hr />
                 <div>
                   <label htmlFor="contact">{content.project_contact}:&nbsp;</label><span name="contact">{props.coa_contact}</span>

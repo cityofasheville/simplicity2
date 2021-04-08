@@ -122,6 +122,7 @@ const GET_PROJECTS = gql`
       phone_number
       email_address
       project_description
+      project_updates
       status
       encumbered
       total_project_funding_budget_document

@@ -180,7 +180,7 @@ const CrimesByStreet = props => (
   <Query
     query={GET_CRIMES_BY_STREET}
     variables={{
-      centerline_ids: props.location.query.id.trim().split(','),
+      centerline_ids: props.location.query.id.trim().split(',').map(x=>+x),
       radius: props.radius,
       before: props.before,
       after: props.after,

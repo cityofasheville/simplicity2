@@ -183,8 +183,8 @@ const CrimesByAddress = props => (
   <Query
     query={GET_CRIMES_BY_ADDRESS}
     variables={{
-      civicaddress_id: props.location.query.id.trim(),
-      radius: props.radius,
+      civicaddress_id: +props.location.query.id.trim(),
+      radius: +props.radius,
       before: props.before,
       after: props.after,
     }}

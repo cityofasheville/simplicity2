@@ -52,7 +52,7 @@ const AddressesByStreet = props => (
   <Query
     query={GET_ADDRESSES_BY_STREET}
     variables={{
-      centerline_ids: props.location.query.id.trim().split(','),
+      centerline_ids: props.location.query.id.trim().split(',').map(x=>+x),
     }}
   >
     {({ loading, error, data }) => {

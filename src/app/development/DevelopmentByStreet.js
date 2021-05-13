@@ -217,7 +217,7 @@ const getPermitsAndStreetInfoQuery = gql`
 const DevelopmentByStreetGQL = graphql(getPermitsAndStreetInfoQuery, {
   options: ownProps => ({
     variables: {
-      centerline_ids: ownProps.location.query.id.trim().split(','),
+      centerline_ids: ownProps.location.query.id.trim().split(',').map(x=>+x),
       radius: ownProps.radius,
       before: ownProps.before,
       after: ownProps.after,

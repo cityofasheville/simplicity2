@@ -152,6 +152,7 @@ const Permit = props => (
 
       const acaLink = `https://services.ashevillenc.gov/CitizenAccess/Cap/GlobalSearchResults.aspx?isNewQuery=yes&QueryText=${formattedPermit.permit_number}`;
       const acaLogin = 'https://services.ashevillenc.gov/Citizenaccess/Login.aspx';
+      const resubmittalPortal = 'https://form.jotform.com/210403992691154';
 
       function compareValues(key = 'dateInput', order = 'asc') {
         return function innerSort(a, b) {
@@ -204,26 +205,45 @@ const Permit = props => (
               {byDetailArea['project details'] !== undefined &&
                 byDetailArea['project details'].map(d => d)}
 
+                <h3>Work with this Application</h3>
                 <div className="permit-form-group">
                   <div style={{marginRight: 16}}>
-                    <p>
+                    {/* <p>
                       <a href={acaLink}
                         className="btn btn-primary"
                         target="_blank"
                         rel="noopener noreferrer"
                         style={{textDecoration: 'none'}}>
                         Work with this Application</a>
-                    </p>
-                      <p>Check application status
-                      <ul><li>Record Info &raquo; Processing Status</li></ul></p>
-                      <p>Pay application fees
-                      <ul><li>Payments &raquo; Fees</li></ul></p>
-                      <p>Pick up an approved application or review comments
-                      <ul><li>Record Info &raquo; Attachments</li></ul></p>
-                      <p>Schedule an inspection (login required)
-                      <ul><li>Record Info &raquo; Inspections</li></ul></p>
-                      <p>Submit updated documents or an amended application
-                      <ul><li>[ Need Link or instructions ]</li></ul></p>
+                    </p> */}
+                    <a href={resubmittalPortal}
+                        target="_blank"
+                        rel="noopener noreferrer">
+                      Check application status</a>                      
+                      <ul><li>Record Info &raquo; Processing Status</li></ul>
+
+                    <a href={resubmittalPortal}
+                        target="_blank"
+                        rel="noopener noreferrer">
+                      Pay application fees</a>                      
+                      <ul><li>Payments &raquo; Fees</li></ul>
+
+                    <a href={resubmittalPortal}
+                        target="_blank"
+                        rel="noopener noreferrer">
+                      Pick up an approved application or review comments</a>                      
+                      <ul><li>Record Info &raquo; Attachments</li></ul>
+
+                    <a href={resubmittalPortal}
+                        target="_blank"
+                        rel="noopener noreferrer">
+                      Schedule an inspection (login required)</a>                      
+                      <ul><li>Record Info &raquo; Inspections</li></ul>
+
+                    <a href={resubmittalPortal}
+                          target="_blank"
+                          rel="noopener noreferrer">
+                        Submit updated documents or an amended application</a>
                   </div>
                 </div>
 

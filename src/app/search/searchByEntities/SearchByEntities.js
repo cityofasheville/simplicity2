@@ -53,6 +53,7 @@ SearchByEntities.defaultProps = {
     { label: 'Neighborhoods', type: 'neighborhood', checked: true },
     { label: 'Streets', type: 'street', checked: true },
     { label: 'Owners', type: 'owner', checked: true },
+    // { label: 'Permits', type: 'permit', checked: true },
     // { label: 'Google places', type: 'google', checked: true },
   ],
   selectedEntities: '',

@@ -5,6 +5,7 @@ import moment from 'moment';
 import { Query } from 'react-apollo';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import PermitsMap from './PermitsMap';
+import PermitSearchBar from './PermitSearchBar';
 import PermitTimeline from './PermitTimeline';
 import { permitFieldFormats } from './utils';
 import { orderedDates } from '../trc/textContent';
@@ -55,7 +56,16 @@ const Permit = props => (
       if (loading) return <LoadingAnimation />;
       if (error || data.permits.length === 0) {
         console.log(error);
-        return <div>Error :( </div>;
+        // TODO: add a field to "(re)enter permit number"
+        return (
+          <div className="container">
+            <h1 className="title__text">Permit Details</h1>
+            <div className="alert alert-warning">
+              No permit found for ID "{props.routeParams.id}". Please verify the permit ID and try again.
+            </div>
+            <PermitSearchBar />
+          </div>
+        );
       }
       if (data.permits.length > 1) {
         console.log('This is not quite right: ', data);
@@ -140,6 +150,9 @@ const Permit = props => (
           }
         });
 
+      const acaLink = `https://services.ashevillenc.gov/CitizenAccess/Cap/GlobalSearchResults.aspx?isNewQuery=yes&QueryText=${formattedPermit.permit_number}`;
+      const acaLogin = 'https://services.ashevillenc.gov/Citizenaccess/Login.aspx';
+
       function compareValues(key = 'dateInput', order = 'asc') {
         return function innerSort(a, b) {
           if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
@@ -165,8 +178,9 @@ const Permit = props => (
       formattedPermit.orderedDates.sort(compareValues());
 
       return (
-        <div className="container">
-          <h1 className="title__text">{formattedPermit.application_name}</h1>
+        <main className="container">
+          <h1 className="title__text">Permit Details</h1>
+          <h2 className="title__text">{formattedPermit.application_name}</h2>
           <p className="permit-description">{formattedPermit.permit_description}</p>
           <p className="permit-description">{`City staff began processing this application on ${dateFormatter(formattedPermit.applied_date)}.  ${currentStatusItem ? currentStatusItem.statusText : ''}`}</p>
           {formattedPermit.trcType && formattedPermit.orderedDates.length > 0 &&
@@ -189,6 +203,46 @@ const Permit = props => (
             <div className={`col-sm-12 col-md-${showMap ? 6 : 12} permit-details-card`}>
               {byDetailArea['project details'] !== undefined &&
                 byDetailArea['project details'].map(d => d)}
+
+                <div className="permit-form-group">
+                  <div style={{marginRight: 16}}>
+                    <p>
+                      <a href={acaLink}
+                        className="btn btn-primary"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{textDecoration: 'none'}}>
+                        Work with this Application</a>
+                    </p>
+                      <p>Check application status
+                      <ul><li>Record Info &raquo; Processing Status</li></ul></p>
+                      <p>Pay application fees
+                      <ul><li>Payments &raquo; Fees</li></ul></p>
+                      <p>Pick up an approved application or review comments
+                      <ul><li>Record Info &raquo; Attachments</li></ul></p>
+                      <p>Schedule an inspection (login required)
+                      <ul><li>Record Info &raquo; Inspections</li></ul></p>
+                      <p>Submit updated documents or an amended application
+                      <ul><li>[ Need Link or instructions ]</li></ul></p>
+                  </div>
+                </div>
+
+                {/* <div className="permit-form-group">
+                  <div style={{marginRight: 16}}>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <ul>
+                      <li>sed do eiusmod tempor</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <a href={acaLogin}
+                      className="btn btn-primary"
+                      target="_blank"
+                      rel="noopener noreferrer">
+                      Login</a>
+                  </div>
+                </div> */}
+
               {trcType !== undefined && (
                 <div style={{ display: 'flex', marginTop: '1rem' }}>
                   <p>
@@ -204,18 +258,25 @@ const Permit = props => (
           <div className="row">
             {byDetailArea['zoning details'] !== undefined &&
               <div className="col-sm-12 col-md-6 permit-details-card">
-                <h2>Zoning Details</h2>
+                <h3>Zoning Details</h3>
                 {byDetailArea['zoning details'].map(d => d)}
               </div>
             }
             {byDetailArea['environment details'] !== undefined &&
               <div className="col-sm-12 col-md-6 permit-details-card">
-                <h2>Environmental Details</h2>
+                <h3>Environmental Details</h3>
                 {byDetailArea['environment details'].map(d => d)}
               </div>
             }
           </div>
-        </div>
+          <hr />
+          <div className="row">
+            <div className="col-xs-12">
+              <h2>Look Up Another Application</h2>
+              <PermitSearchBar />
+            </div>
+          </div>
+        </main>
       );
     }}
   </Query>

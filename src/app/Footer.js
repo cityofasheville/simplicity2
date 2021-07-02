@@ -3,7 +3,7 @@ import Icon from '../shared/Icon';
 import { IM_GITHUB } from '../shared/iconConstants';
 
 const Footer = () => (
-  <div>
+  <div style={{ marginTop: 32 }}>
     <div className="clear-footer"></div>
     <footer className="footer">
       <div className="container">

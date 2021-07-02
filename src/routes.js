@@ -33,6 +33,7 @@ import MajorDevelopmentDashboard from './app/development/trc/MajorDevelopmentDas
 import PermitVolume from './app/development/volume/PermitVolume';
 import PermitsIndex from './app/development/permits/PermitsIndex';
 import Permit from './app/development/permits/Permit';
+import PermitSearchIndex from './app/development/permits/PermitSearchIndex';
 // import WorkflowContainer from './app/development/workflows/WorkflowContainer';
 //
 import ProjectFlowDashboard from './app/internal/bpt_projects/ProjectFlow';
@@ -134,6 +135,7 @@ const Routes = () => (
         </Route>
         <Route path="permits">
           <IndexRoute component={PermitsIndex} />
+          <Route exact path="/permits/search" component={PermitSearchIndex}></Route>
           <Route path="/permits/:id" component={Permit}></Route>
         </Route>
         <Route path="development">

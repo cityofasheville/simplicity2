@@ -216,25 +216,25 @@ const Permit = props => (
                         style={{textDecoration: 'none'}}>
                         Work with this Application</a>
                     </p> */}
-                    <a href={resubmittalPortal}
+                    <a href={acaLink}
                         target="_blank"
                         rel="noopener noreferrer">
                       Check application status</a>                      
                       <ul><li>Record Info &raquo; Processing Status</li></ul>
 
-                    <a href={resubmittalPortal}
+                    <a href={acaLink}
                         target="_blank"
                         rel="noopener noreferrer">
                       Pay application fees</a>                      
                       <ul><li>Payments &raquo; Fees</li></ul>
 
-                    <a href={resubmittalPortal}
+                    <a href={acaLink}
                         target="_blank"
                         rel="noopener noreferrer">
                       Pick up an approved application or review comments</a>                      
                       <ul><li>Record Info &raquo; Attachments</li></ul>
 
-                    <a href={resubmittalPortal}
+                    <a href={acaLink}
                         target="_blank"
                         rel="noopener noreferrer">
                       Schedule an inspection (login required)</a>                      

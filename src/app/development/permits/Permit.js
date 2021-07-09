@@ -30,6 +30,7 @@ const GET_PERMIT = gql`
       total_sq_feet
       civic_address_id
       address
+      balance
       technical_contact_name
       technical_contact_email
       x
@@ -112,6 +113,9 @@ const Permit = props => (
       // Don't show map if there are no coordinates
       const showMap = formattedPermit.y && formattedPermit.x;
 
+      const accelaStatus = formattedPermit.status_current;
+      const permitBalance = formattedPermit.balance;
+
       const currentStatusItem = statusTranslation.find(item =>
         item.accelaSpeak === formattedPermit.status_current);
 
@@ -151,7 +155,6 @@ const Permit = props => (
         });
 
       const acaLink = `https://services.ashevillenc.gov/CitizenAccess/Cap/GlobalSearchResults.aspx?isNewQuery=yes&QueryText=${formattedPermit.permit_number}`;
-      const acaLogin = 'https://services.ashevillenc.gov/Citizenaccess/Login.aspx';
       const resubmittalPortal = 'https://develop.ashevillenc.gov/';
 
       function compareValues(key = 'dateInput', order = 'asc') {
@@ -205,33 +208,30 @@ const Permit = props => (
               {byDetailArea['project details'] !== undefined &&
                 byDetailArea['project details'].map(d => d)}
 
+                {accelaStatus &&
+                  <div className="permit-form-group">
+                    <div className="display-label">Current Status</div>
+                    <div className="formatted-val"><a href={acaLink} target="_blank" rel="noopener noreferrer">{accelaStatus}</a></div>
+                  </div>
+                }
+
                 <h3>For Applicants: Work with this Application</h3>
                 <div className="permit-form-group">
                   <div style={{marginRight: 16}}>
-                    {/* <p>
-                      <a href={acaLink}
-                        className="btn btn-primary"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{textDecoration: 'none'}}>
-                        Work with this Application</a>
-                    </p> */}
-                    {/* <p>The following links...</p> */}
                     <ul>
                     <li className="margin-y">
                     <a href={acaLink}
                         target="_blank"
                         rel="noopener noreferrer">
-                      Check application status</a>                      
-                      {/* <ul><li>Record Info &raquo; Processing Status</li></ul> */}
+                      Check application status details</a>                      
                     </li>
 
                     <li className="margin-b">
                     <a href={acaLink}
                         target="_blank"
                         rel="noopener noreferrer">
-                      Pay application fees</a>                      
-                      {/* <ul><li>Payments &raquo; Fees</li></ul> */}
+                      Pay application fees</a><br /> 
+                      {permitBalance ? 'There is an outstanding balance on this application as of yesterday' : 'There is a zero balance on this application as of yesterday'}                   
                     </li>
 
                     <li className="margin-b">
@@ -239,7 +239,6 @@ const Permit = props => (
                         target="_blank"
                         rel="noopener noreferrer">
                       Pick up an approved application or review comments</a>                      
-                      {/* <ul><li>Record Info &raquo; Attachments</li></ul> */}
                     </li>
 
                     <li className="margin-b">
@@ -247,7 +246,6 @@ const Permit = props => (
                         target="_blank"
                         rel="noopener noreferrer">
                       Schedule an inspection (login required)</a>                      
-                      {/* <ul><li>Record Info &raquo; Inspections</li></ul> */}
                     </li>
 
                     <li className="margin-b">
@@ -259,22 +257,6 @@ const Permit = props => (
                     </ul>
                   </div>
                 </div>
-
-                {/* <div className="permit-form-group">
-                  <div style={{marginRight: 16}}>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <ul>
-                      <li>sed do eiusmod tempor</li>
-                    </ul>
-                  </div>
-                  <div>
-                    <a href={acaLogin}
-                      className="btn btn-primary"
-                      target="_blank"
-                      rel="noopener noreferrer">
-                      Login</a>
-                  </div>
-                </div> */}
 
               {trcType !== undefined && (
                 <div style={{ display: 'flex', marginTop: '1rem' }}>

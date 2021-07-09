@@ -34,8 +34,12 @@ h4{
   color: #6C787F;
 }
 
-p a, p + ul a {
+p a, p + ul a, .permit-form-group a {
 	text-decoration: underline;
+}
+
+p a:hover, p + ul a:hover, .permit-form-group a:hover {
+	text-decoration: none;
 }
 
 
@@ -763,6 +767,8 @@ label {
 /*************************************************************************************/
 footer.footer{
 	padding: 1rem 0;
+	/* elements (like input fields) with higher z-index values would layer on top of footer */
+	z-index: 99;
 }
 
 .old-version-link{
@@ -975,4 +981,17 @@ footer.footer{
     outline: 1px dotted #212121;
     outline: 5px auto -webkit-focus-ring-color;
   }
+}
+
+.margin-b {
+	margin-bottom: ($line-height-computed / 2);
+}
+
+.margin-t {
+	margin-top: ($line-height-computed / 2);
+}
+
+.margin-y {
+	margin-top: ($line-height-computed / 2);
+	margin-bottom: ($line-height-computed / 2);
 }

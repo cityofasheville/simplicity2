@@ -152,7 +152,7 @@ const Permit = props => (
 
       const acaLink = `https://services.ashevillenc.gov/CitizenAccess/Cap/GlobalSearchResults.aspx?isNewQuery=yes&QueryText=${formattedPermit.permit_number}`;
       const acaLogin = 'https://services.ashevillenc.gov/Citizenaccess/Login.aspx';
-      const resubmittalPortal = 'https://form.jotform.com/210403992691154';
+      const resubmittalPortal = 'https://develop.ashevillenc.gov/';
 
       function compareValues(key = 'dateInput', order = 'asc') {
         return function innerSort(a, b) {
@@ -205,7 +205,7 @@ const Permit = props => (
               {byDetailArea['project details'] !== undefined &&
                 byDetailArea['project details'].map(d => d)}
 
-                <h3>Work with this Application</h3>
+                <h3>For Applicants: Work with this Application</h3>
                 <div className="permit-form-group">
                   <div style={{marginRight: 16}}>
                     {/* <p>
@@ -216,34 +216,47 @@ const Permit = props => (
                         style={{textDecoration: 'none'}}>
                         Work with this Application</a>
                     </p> */}
+                    {/* <p>The following links...</p> */}
+                    <ul>
+                    <li className="margin-y">
                     <a href={acaLink}
                         target="_blank"
                         rel="noopener noreferrer">
                       Check application status</a>                      
-                      <ul><li>Record Info &raquo; Processing Status</li></ul>
+                      {/* <ul><li>Record Info &raquo; Processing Status</li></ul> */}
+                    </li>
 
+                    <li className="margin-b">
                     <a href={acaLink}
                         target="_blank"
                         rel="noopener noreferrer">
                       Pay application fees</a>                      
-                      <ul><li>Payments &raquo; Fees</li></ul>
+                      {/* <ul><li>Payments &raquo; Fees</li></ul> */}
+                    </li>
 
+                    <li className="margin-b">
                     <a href={acaLink}
                         target="_blank"
                         rel="noopener noreferrer">
                       Pick up an approved application or review comments</a>                      
-                      <ul><li>Record Info &raquo; Attachments</li></ul>
+                      {/* <ul><li>Record Info &raquo; Attachments</li></ul> */}
+                    </li>
 
+                    <li className="margin-b">
                     <a href={acaLink}
                         target="_blank"
                         rel="noopener noreferrer">
                       Schedule an inspection (login required)</a>                      
-                      <ul><li>Record Info &raquo; Inspections</li></ul>
+                      {/* <ul><li>Record Info &raquo; Inspections</li></ul> */}
+                    </li>
 
+                    <li className="margin-b">
                     <a href={resubmittalPortal}
-                          target="_blank"
-                          rel="noopener noreferrer">
-                        Submit updated documents or an amended application</a>
+                        target="_blank"
+                        rel="noopener noreferrer">
+                      Submit updated documents or an amended application</a>
+                    </li>
+                    </ul>
                   </div>
                 </div>
 

@@ -175,7 +175,18 @@ const Permit = props => (
           }
         });
 
-      const acaLink = `https://services.ashevillenc.gov/CitizenAccess/Cap/GlobalSearchResults.aspx?isNewQuery=yes&QueryText=${formattedPermit.permit_number}`;
+      const catchAllACALink = `https://services.ashevillenc.gov/CitizenAccess/Cap/GlobalSearchResults.aspx?isNewQuery=yes&QueryText=${formattedPermit.permit_number}`;
+      let acaLink = catchAllACALink;
+      
+      const internalRecordParts = formattedPermit.internal_record_id.split("-");
+
+      if (internalRecordParts.length === 3) {
+        const baseCapURL = 'https://services.ashevillenc.gov/CitizenAccess/Cap/CapDetail.aspx';
+        if (formattedPermit.permit_group === 'Permits' || formattedPermit.permit_group === 'Planning' || formattedPermit.permit_group === 'Planning') {
+          acaLink = `${baseCapURL}?Module=${formattedPermit.permit_group}&TabName=${formattedPermit.permit_group}&capID1=${internalRecordParts[0]}&capID2=${internalRecordParts[1]}&capID3=${internalRecordParts[2]}&agencyCode=ASHEVILLE`;
+        } 
+      } 
+
       const resubmittalPortal = 'https://develop.ashevillenc.gov/';
 
       function compareValues(key = 'dateInput', order = 'asc') {
@@ -252,7 +263,7 @@ const Permit = props => (
                         target="_blank"
                         rel="noopener noreferrer">
                       Pay application fees</a><br /> 
-                      {permitBalance ? 'There is an outstanding balance on this application as of yesterday' : 'There is a zero balance on this application as of yesterday'}                   
+                      {permitBalance ? 'There is an outstanding balance on this application' : 'There is a zero balance on this application'}                   
                     </li>
 
                     <li className="margin-b">

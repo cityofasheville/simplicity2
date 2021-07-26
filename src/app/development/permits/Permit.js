@@ -13,28 +13,42 @@ import { getTRCTypeFromPermit } from '../trc/utils';
 import { statusTranslation } from '../utils';
 
 const GET_PERMIT = gql`
-  query getPermitsQuery($permit_numbers: [String]) {
-    permits(permit_numbers: $permit_numbers) {
+  query getPermitsQuery($permit_numbers: String) {
+    permit_realtime(permit_number: $permit_numbers) {
       permit_number
-      internal_record_id
       permit_group
       permit_type
       permit_subtype
       permit_category
       permit_description
+      applicant_name
       application_name
       applied_date
       status_current
       status_date
-      job_value
-      total_sq_feet
-      civic_address_id
-      address
-      balance
       technical_contact_name
       technical_contact_email
+      created_by
+      building_value
+      job_value
+      total_project_valuation
+      total_sq_feet
+      fees
+      paid
+      balance
+      invoiced_fee_total
+      civic_address_id
+      address
       x
       y
+      contractor_names
+      contractor_license_numbers
+      internal_record_id
+      comments {
+        comment_date
+        comment_seq_number
+        comments
+      }
       custom_fields {
         type
         name
@@ -50,28 +64,35 @@ const Permit = props => (
   <Query
     query={GET_PERMIT}
     variables={{
-      permit_numbers: [props.routeParams.id],
+      permit_numbers: props.routeParams.id,
     }}
   >
     {({ loading, error, data }) => {
       if (loading) return <LoadingAnimation />;
-      if (error || data.permits.length === 0) {
-        console.log(error);
-        // TODO: add a field to "(re)enter permit number"
+      if (error || data.permit_realtime.length === 0) {
+        let message = '';
+        if (error) {
+          console.log('GQL error');
+          console.log(error);
+          message = 'There was an error retrieving ID '
+        } else {
+          console.log('GQL returned no results');
+          message = 'No permit found for ID '
+        }
         return (
           <div className="container">
             <h1 className="title__text">Permit Details</h1>
             <div className="alert alert-warning">
-              No permit found for ID "{props.routeParams.id}". Please verify the permit ID and try again.
+              {message} "{props.routeParams.id}". Please verify the permit ID and try again.
             </div>
             <PermitSearchBar />
           </div>
         );
       }
-      if (data.permits.length > 1) {
-        console.log('This is not quite right: ', data);
+      if (data.permit_realtime.length > 1) {
+        console.log('More than one permit found. This is not quite right: ', data);
       }
-      const thisPermit = data.permits[0];
+      const thisPermit = data.permit_realtime;
       const trcType = getTRCTypeFromPermit(thisPermit);
       const formattedPermit = Object.assign({}, thisPermit, { trcType });
       

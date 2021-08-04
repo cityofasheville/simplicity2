@@ -35,7 +35,7 @@ class PermitSearch extends React.Component {
   render() {
     return(
       <div>
-        <form onSubmit={(e) => { e.preventDefault(); this.handleFormSubmission(document.getElementById('permitSearchInput').value); }}>
+        <form onSubmit={(e) => { e.preventDefault(); this.handleFormSubmission(document.getElementById('permitSearchInput').value); }} target="_top">
           <label id="permitSearchLabel" htmlFor="permitSearch" className={this.state.labelClass}>{this.state.labelText}</label>
           <div className="input-group">
             <input

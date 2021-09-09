@@ -187,7 +187,7 @@ const Permit = props => (
         } 
       } 
 
-      const resubmittalPortal = 'https://sites.google.com/ashevillenc.gov/developmentportal21prototype/existing-application';
+      const resubmittalPortal = 'https://develop.ashevillenc.gov/';
 
       function compareValues(key = 'dateInput', order = 'asc') {
         return function innerSort(a, b) {

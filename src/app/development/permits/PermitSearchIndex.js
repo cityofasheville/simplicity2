@@ -17,7 +17,7 @@ class PermitSearchIndex extends React.Component {
           <h4>If you don't know the Application ID, you can look it up here: 
           </h4>
           <div style={{fontSize: "1.5em"}}>
-          <a href="https://simplicity.ashevillenc.gov/permits">Search Map by Date</a>
+          <a href="/permits">Search Map by Date</a>
           </div>
         </div>
       </div>

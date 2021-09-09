@@ -6,12 +6,6 @@ layout: default
 The SimpliCity frontend lives in AWS (Amazon Web Services). The static files are in an S3 bucket, and https is enabled through a CloudFront distribution pointing to the bucket. Domains are managed via AWS Route 53. The https certificate provided by the AWS certificate manager.
 
 ## Updates / Deployment
-## AWS CodeDeploy pushes Simplicity2 Github changes to S3
-
-```git push``` in development or master will deploy to dev or prod.
-
-
-## Old deploy instructions:
 
 Updates to the site content require two steps:
 * Push the new code to the S3 bucket

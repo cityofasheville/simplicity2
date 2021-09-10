@@ -1,5 +1,5 @@
 import React from 'react';
-import { browserHistory } from 'react-router';
+// import { browserHistory } from 'react-router';
 
 class PermitSearch extends React.Component {
   
@@ -22,9 +22,10 @@ class PermitSearch extends React.Component {
     e.preventDefault(); 
 
     // var permitFormatA = /^\d{2}-\d{5}$/;
-    var permitFormatB = /^\d{2}-\d{5}[a-zA-Z]{0,2}$/;
+    // var permitFormatB = /^\d{2}-\d{5}[a-zA-Z]{0,2}$/;
+    var permitFormat = /^\d{2}-\d{5}(s|S|pz|pZ|Pz|PZ){0,1}$/;
     var check = this.state.searchValue;
-    if (check.search(permitFormatB) === -1) { 
+    if (check.search(permitFormat) === -1) { 
       this.setState({
         labelClass: 'text-danger',
         labelText: 'Please Enter a Valid Application ID (e.g. 20-00965)',
@@ -33,7 +34,8 @@ class PermitSearch extends React.Component {
     }
     else { 
       console.log(`Valid Application ID - ${check}`); 
-      browserHistory.push(`/permits/${check}`);
+      window.open(`/permits/${check}`, '_self');
+      // browserHistory.push(`/permits/${check}`);
     }
   }
 

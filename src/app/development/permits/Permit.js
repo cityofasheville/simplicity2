@@ -69,7 +69,7 @@ const Permit = props => (
   >
     {({ loading, error, data }) => {
       if (loading) return <LoadingAnimation />;
-      if (error || data.permit_realtime.length === 0) {
+      if (error || data.permit_realtime === undefined || data.permit_realtime.length === 0) {
         let message = '';
         if (error) {
           console.log('GQL error');
@@ -89,7 +89,7 @@ const Permit = props => (
           </div>
         );
       }
-      if (data.permit_realtime.length > 1) {
+      if (data.permit_realtime !== undefined && data.permit_realtime.length > 1) {
         console.log('More than one permit found. This is not quite right: ', data);
       }
       const thisPermit = data.permit_realtime;
@@ -180,14 +180,14 @@ const Permit = props => (
       
       const internalRecordParts = formattedPermit.internal_record_id.split("-");
 
-      if (internalRecordParts.length === 3) {
+      if (internalRecordParts !== undefined && internalRecordParts.length === 3) {
         const baseCapURL = 'https://services.ashevillenc.gov/CitizenAccess/Cap/CapDetail.aspx';
         if (formattedPermit.permit_group === 'Permits' || formattedPermit.permit_group === 'Planning' || formattedPermit.permit_group === 'Planning') {
           acaLink = `${baseCapURL}?Module=${formattedPermit.permit_group}&TabName=${formattedPermit.permit_group}&capID1=${internalRecordParts[0]}&capID2=${internalRecordParts[1]}&capID3=${internalRecordParts[2]}&agencyCode=ASHEVILLE`;
         } 
       } 
 
-      const resubmittalPortal = 'https://develop.ashevillenc.gov/';
+      const resubmittalPortal = 'https://sites.google.com/ashevillenc.gov/developmentportal/existing-application';
 
       function compareValues(key = 'dateInput', order = 'asc') {
         return function innerSort(a, b) {
@@ -219,7 +219,7 @@ const Permit = props => (
           <h2 className="title__text">{formattedPermit.application_name}</h2>
           <p className="permit-description">{formattedPermit.permit_description}</p>
           <p className="permit-description">{`City staff began processing this application on ${dateFormatter(formattedPermit.applied_date)}.  ${currentStatusItem ? currentStatusItem.statusText : ''}`}</p>
-          {formattedPermit.trcType && formattedPermit.orderedDates.length > 0 &&
+          {formattedPermit.orderedDates !== undefined && formattedPermit.trcType && formattedPermit.orderedDates.length > 0 &&
             <PermitTimeline
               formattedPermit={formattedPermit}
               dateFormatter={dateFormatter}

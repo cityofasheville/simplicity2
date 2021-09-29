@@ -3,6 +3,7 @@ import { timeDay, timeWeek } from 'd3-time';
 import PermitsTableWrapper from './PermitsTableWrapper';
 import TimeSlider from '../volume/TimeSlider';
 import ErrorBoundary from '../../../shared/ErrorBoundary';
+import PermitSearchBar from './PermitSearchBar';
 
 
 class PermitsIndex extends React.Component {
@@ -21,7 +22,11 @@ class PermitsIndex extends React.Component {
   render() {
     return (
       <div className="container">
-        <h1>All Permit Applications by Date Applied</h1>
+        <h1>Find Permit Applications</h1>
+        <hr />
+        <h2>Look Up an Existing Application</h2>
+        <PermitSearchBar />
+        <h2 style={{marginTop: 40}}>Filter Permits by Date Applied</h2>
         <ErrorBoundary>
           <TimeSlider
             onBrushEnd={newExtent => this.setState({

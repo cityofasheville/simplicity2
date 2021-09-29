@@ -34,6 +34,9 @@ const getContractorData = (contractors, licenses) => {
 };
 
 const DevelopmentDetail = (props) => {
+  console.log('Detail Data');
+  console.log(props.data);
+
   const contractorData = getContractorData(props.data.contractor_names, props.data.contractor_license_numbers);
   return (
     <div>
@@ -52,12 +55,13 @@ const DevelopmentDetail = (props) => {
             <div className="row">
               <div className="col-xs-12 detailsFieldset__details-listings">
                 <DetailsFormGroup label="Description" name="permit_description" value={props.data.permit_description} hasLabel />
-                <div className="form-group">
+                <div style={{ padding: '0 15px' }}>
                   <a href={['https://www.google.com/maps/?q=', [props.data.y, props.data.x].join(',')].join('')} target="_blank" title="Click to view address in Google maps">
                     <span style={{ marginRight: '5px' }}><Icon path={IM_MAP5} size={20} /></span>
                     <label htmlFor="address" style={{ cursor: 'pointer' }}>Address</label>
                   </a>
-                  <div name="address">{props.data.address}</div>
+                  <div name="address" style={{ marginTop: '8px' }}>{props.data.address}</div>
+                  <div style={{ marginTop: '16px' }}><a href={`/permits/${props.data.permit_number}`} target="_blank" rel="noopener noreferrer">View Project Details</a></div>
                 </div>
                 <DetailsFormGroup label="Permit group" name="permit_group" value={props.data.permit_group} hasLabel />
                 <DetailsFormGroup label="Updated date" name="status_date" value={moment.utc(props.data.status_date).format('M/DD/YYYY')} hasLabel />

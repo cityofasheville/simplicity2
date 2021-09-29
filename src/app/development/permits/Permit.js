@@ -5,6 +5,7 @@ import moment from 'moment';
 import { Query } from 'react-apollo';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import PermitsMap from './PermitsMap';
+import PermitSearchBar from './PermitSearchBar';
 import PermitTimeline from './PermitTimeline';
 import { permitFieldFormats } from './utils';
 import { orderedDates } from '../trc/textContent';
@@ -12,27 +13,42 @@ import { getTRCTypeFromPermit } from '../trc/utils';
 import { statusTranslation } from '../utils';
 
 const GET_PERMIT = gql`
-  query getPermitsQuery($permit_numbers: [String]) {
-    permits(permit_numbers: $permit_numbers) {
+  query getPermitsQuery($permit_numbers: String) {
+    permit_realtime(permit_number: $permit_numbers) {
       permit_number
-      internal_record_id
       permit_group
       permit_type
       permit_subtype
       permit_category
       permit_description
+      applicant_name
       application_name
       applied_date
       status_current
       status_date
-      job_value
-      total_sq_feet
-      civic_address_id
-      address
       technical_contact_name
       technical_contact_email
+      created_by
+      building_value
+      job_value
+      total_project_valuation
+      total_sq_feet
+      fees
+      paid
+      balance
+      invoiced_fee_total
+      civic_address_id
+      address
       x
       y
+      contractor_names
+      contractor_license_numbers
+      internal_record_id
+      comments {
+        comment_date
+        comment_seq_number
+        comments
+      }
       custom_fields {
         type
         name
@@ -48,19 +64,35 @@ const Permit = props => (
   <Query
     query={GET_PERMIT}
     variables={{
-      permit_numbers: [props.routeParams.id],
+      permit_numbers: props.routeParams.id,
     }}
   >
     {({ loading, error, data }) => {
       if (loading) return <LoadingAnimation />;
-      if (error || data.permits.length === 0) {
-        console.log(error);
-        return <div>Error :( </div>;
+      if (error || data.permit_realtime === undefined || data.permit_realtime.length === 0) {
+        let message = '';
+        if (error) {
+          console.log('GQL error');
+          console.log(error);
+          message = 'There was an error retrieving ID '
+        } else {
+          console.log('GQL returned no results');
+          message = 'No permit found for ID '
+        }
+        return (
+          <div className="container">
+            <h1 className="title__text">Permit Details</h1>
+            <div className="alert alert-warning">
+              {message} "{props.routeParams.id}". Please verify the permit ID and try again.
+            </div>
+            <PermitSearchBar />
+          </div>
+        );
       }
-      if (data.permits.length > 1) {
-        console.log('This is not quite right: ', data);
+      if (data.permit_realtime !== undefined && data.permit_realtime.length > 1) {
+        console.log('More than one permit found. This is not quite right: ', data);
       }
-      const thisPermit = data.permits[0];
+      const thisPermit = data.permit_realtime;
       const trcType = getTRCTypeFromPermit(thisPermit);
       const formattedPermit = Object.assign({}, thisPermit, { trcType });
       
@@ -102,6 +134,9 @@ const Permit = props => (
       // Don't show map if there are no coordinates
       const showMap = formattedPermit.y && formattedPermit.x;
 
+      const accelaStatus = formattedPermit.status_current;
+      const permitBalance = formattedPermit.balance;
+
       const currentStatusItem = statusTranslation.find(item =>
         item.accelaSpeak === formattedPermit.status_current);
 
@@ -140,6 +175,20 @@ const Permit = props => (
           }
         });
 
+      const catchAllACALink = `https://services.ashevillenc.gov/CitizenAccess/Cap/GlobalSearchResults.aspx?isNewQuery=yes&QueryText=${formattedPermit.permit_number}`;
+      let acaLink = catchAllACALink;
+      
+      const internalRecordParts = formattedPermit.internal_record_id.split("-");
+
+      if (internalRecordParts !== undefined && internalRecordParts.length === 3) {
+        const baseCapURL = 'https://services.ashevillenc.gov/CitizenAccess/Cap/CapDetail.aspx';
+        if (formattedPermit.permit_group === 'Permits' || formattedPermit.permit_group === 'Planning' || formattedPermit.permit_group === 'Planning') {
+          acaLink = `${baseCapURL}?Module=${formattedPermit.permit_group}&TabName=${formattedPermit.permit_group}&capID1=${internalRecordParts[0]}&capID2=${internalRecordParts[1]}&capID3=${internalRecordParts[2]}&agencyCode=ASHEVILLE`;
+        } 
+      } 
+
+      const resubmittalPortal = 'https://sites.google.com/ashevillenc.gov/developmentportal/existing-application';
+
       function compareValues(key = 'dateInput', order = 'asc') {
         return function innerSort(a, b) {
           if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
@@ -165,11 +214,12 @@ const Permit = props => (
       formattedPermit.orderedDates.sort(compareValues());
 
       return (
-        <div className="container">
-          <h1 className="title__text">{formattedPermit.application_name}</h1>
+        <main className="container">
+          <h1 className="title__text">Permit Details</h1>
+          <h2 className="title__text">{formattedPermit.application_name}</h2>
           <p className="permit-description">{formattedPermit.permit_description}</p>
           <p className="permit-description">{`City staff began processing this application on ${dateFormatter(formattedPermit.applied_date)}.  ${currentStatusItem ? currentStatusItem.statusText : ''}`}</p>
-          {formattedPermit.trcType && formattedPermit.orderedDates.length > 0 &&
+          {formattedPermit.orderedDates !== undefined && formattedPermit.trcType && formattedPermit.orderedDates.length > 0 &&
             <PermitTimeline
               formattedPermit={formattedPermit}
               dateFormatter={dateFormatter}
@@ -189,6 +239,57 @@ const Permit = props => (
             <div className={`col-sm-12 col-md-${showMap ? 6 : 12} permit-details-card`}>
               {byDetailArea['project details'] !== undefined &&
                 byDetailArea['project details'].map(d => d)}
+
+                {accelaStatus &&
+                  <div className="permit-form-group">
+                    <div className="display-label">Current Status</div>
+                    <div className="formatted-val"><a href={acaLink} target="_blank" rel="noopener noreferrer">{accelaStatus}</a></div>
+                  </div>
+                }
+
+                <h3>For Applicants: Work with this Application</h3>
+                <div className="permit-form-group">
+                  <div style={{marginRight: 16}}>
+                    <ul>
+                    <li className="margin-y">
+                    <a href={acaLink}
+                        target="_blank"
+                        rel="noopener noreferrer">
+                      Check application status details</a>                      
+                    </li>
+
+                    <li className="margin-b">
+                    <a href={acaLink}
+                        target="_blank"
+                        rel="noopener noreferrer">
+                      Pay application fees</a><br /> 
+                      {permitBalance ? 'There is an outstanding balance on this application' : 'There is a zero balance on this application'}                   
+                    </li>
+
+                    <li className="margin-b">
+                    <a href={acaLink}
+                        target="_blank"
+                        rel="noopener noreferrer">
+                      Pick up an approved application or review comments</a>                      
+                    </li>
+
+                    <li className="margin-b">
+                    <a href={acaLink}
+                        target="_blank"
+                        rel="noopener noreferrer">
+                      Schedule an inspection (login required)</a>                      
+                    </li>
+
+                    <li className="margin-b">
+                    <a href={resubmittalPortal}
+                        target="_blank"
+                        rel="noopener noreferrer">
+                      Submit updated documents or an amended application</a>
+                    </li>
+                    </ul>
+                  </div>
+                </div>
+
               {trcType !== undefined && (
                 <div style={{ display: 'flex', marginTop: '1rem' }}>
                   <p>
@@ -204,18 +305,25 @@ const Permit = props => (
           <div className="row">
             {byDetailArea['zoning details'] !== undefined &&
               <div className="col-sm-12 col-md-6 permit-details-card">
-                <h2>Zoning Details</h2>
+                <h3>Zoning Details</h3>
                 {byDetailArea['zoning details'].map(d => d)}
               </div>
             }
             {byDetailArea['environment details'] !== undefined &&
               <div className="col-sm-12 col-md-6 permit-details-card">
-                <h2>Environmental Details</h2>
+                <h3>Environmental Details</h3>
                 {byDetailArea['environment details'].map(d => d)}
               </div>
             }
           </div>
-        </div>
+          <hr />
+          <div className="row">
+            <div className="col-xs-12">
+              <h2>Look Up Another Application</h2>
+              <PermitSearchBar />
+            </div>
+          </div>
+        </main>
       );
     }}
   </Query>

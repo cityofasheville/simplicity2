@@ -108,7 +108,7 @@ const DevelopmentByAddress = (props) => {
       {},
       item,
       {
-        popup: `<div><b>${item.permit_type}</b><p>${moment.utc(item.applied_date).format('M/DD/YYYY')}</p><p><b>Project</b>:<div>${item.application_name}</div></p><p><b>Contractor(s):</b> ${item.contractor_names.map((contractor, index) => `<div>${contractor}: ${item.contractor_license_numbers[index]}</div>`).join('')}</p></div>`,
+        popup: `<div><b>${item.permit_type}</b><p>${moment.utc(item.applied_date).format('M/DD/YYYY')}</p><p><b>Project <a href="/permits/${item.permit_number}" target="_blank" rel="noopener noreferrer">View Details</a></b>:<br /><br />${item.application_name}</p><p><b>Contractor(s):</b> ${item.contractor_names.map((contractor, index) => `<div>${contractor}: ${item.contractor_license_numbers[index]}</div>`).join('')}</p></div>`,
         options: {
           icon: L.icon({
             iconUrl: getMarker(item.permit_type),

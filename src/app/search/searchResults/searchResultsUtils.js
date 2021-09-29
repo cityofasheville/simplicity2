@@ -69,6 +69,7 @@ export const getEntities = (selected) => {
     { label: 'Neighborhoods', type: 'neighborhood', checked: true },
     { label: 'Streets', type: 'street', checked: true },
     { label: 'Owners', type: 'owner', checked: true },
+    // { label: 'Permits', type: 'permit', checked: true },
     // { label: 'Google places', type: 'google', checked: true },
   ];
   // return all if none
@@ -99,6 +100,8 @@ export const getEntitiesToSearch = (entities) => {
         entitiesToSearch.push('street');
       } else if (entity.type === 'owner') {
         entitiesToSearch.push('owner');
+      // } else if (entity.type === 'permit') {
+      //   entitiesToSearch.push('permit');
       } else if (entity.type === 'google') {
         entitiesToSearch.push('place');
       }

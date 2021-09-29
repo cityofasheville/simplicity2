@@ -2,29 +2,30 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from '../../shared/Icon';
 import { IM_SEARCH } from '../../shared/iconConstants';
-//import SearchByEntities from './searchByEntities/SearchByEntities';
+import SearchByEntities from './searchByEntities/SearchByEntities';
 import SearchResults from './searchResults/SearchResults';
 
-// const getEntities = (selected) => {
-//   let entityTypes = [];
-//   if (selected !== undefined && selected.length > 0) {
-//     entityTypes = selected.split(',');
-//   }
-//   const entities = [
-//     { label: 'Addresses', type: 'address', checked: true },
-//     { label: 'Properties', type: 'property', checked: true },
-//     { label: 'Neighborhoods', type: 'neighborhood', checked: true },
-//     { label: 'Streets', type: 'street', checked: true },
-//     { label: 'Owners', type: 'owner', checked: true },
-//     { label: 'Google places', type: 'google', checked: true },
-//   ];
-//   for (let entity of entities) {
-//     if (entityTypes.indexOf(entity.type) === -1) {
-//       entity.checked = false;
-//     }
-//   }
-//   return entities;
-// };
+const getEntities = (selected) => {
+  let entityTypes = [];
+  if (selected !== undefined && selected.length > 0) {
+    entityTypes = selected.split(',');
+  }
+  const entities = [
+    { label: 'Addresses', type: 'address', checked: true },
+    { label: 'Properties', type: 'property', checked: true },
+    { label: 'Neighborhoods', type: 'neighborhood', checked: true },
+    { label: 'Streets', type: 'street', checked: true },
+    { label: 'Owners', type: 'owner', checked: true },
+    // { label: 'Permits', type: 'permit', checked: true },
+    // { label: 'Google places', type: 'google', checked: true },
+  ];
+  for (let entity of entities) {
+    if (entityTypes.indexOf(entity.type) === -1) {
+      entity.checked = false;
+    }
+  }
+  return entities;
+};
 
 class SearchBar extends React.Component {
   constructor(props) {
@@ -73,7 +74,10 @@ class SearchBar extends React.Component {
           <div>
             <h3 className="text-center" style={{ marginBottom: '20px' }}><i>Or search by: owner, neighborhood, pin number, or street</i></h3>
           </div>
-          {/* <SearchByEntities entities={getEntities(this.props.selectedEntities)} location={this.props.location} /> */}
+
+          {/* {(window.location.href.indexOf('search') > -1) && 
+            <SearchByEntities entities={getEntities(this.props.selectedEntities)} location={this.props.location} />
+          } */}
         </form>
         <SearchResults results={[]} searchText={this.state.searchTermToUse} location={this.props.location}></SearchResults>
       </div>
@@ -88,6 +92,7 @@ SearchBar.defaultProps = {
     { label: 'Neighborhoods', type: 'neighborhood', checked: true },
     { label: 'Streets', type: 'street', checked: true },
     { label: 'Owners', type: 'owner', checked: true },
+    // { label: 'Permits', type: 'permit', checked: true },
     // { label: 'Google places', type: 'google', checked: true },
   ],
   selectedEntities: '',

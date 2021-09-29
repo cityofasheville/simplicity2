@@ -18,6 +18,8 @@ const getIcon = (entityType) => {
       return <span style={{ marginLeft: '4px'}}><Icon path={IM_GOOGLE} size={26} /></span>;
     case 'property':
       return <span style={{ marginLeft: '4px'}}><Icon path={IM_HOME2} size={26} /></span>;
+    case 'permit':
+      return <span style={{ marginLeft: '4px'}}><Icon path={IM_OFFICE} size={26} /></span>;
     default:
       return <span style={{ marginLeft: '3px'}}><Icon path={IM_LIBRARY2} size={26} /></span>;
   }

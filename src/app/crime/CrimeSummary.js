@@ -73,7 +73,7 @@ const CrimeSummary = (props) => {
           </h1>
           <a
             className="data-link"
-            href="https://apdp2c.buncombecounty.org/"
+            href="https://ashevillepd.policetocitizen.com/Home"
             target="_blank"
           >
             <button className="btn btn-xs btn-info">

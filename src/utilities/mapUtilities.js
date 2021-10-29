@@ -7,7 +7,7 @@ const getMaintenanceInfo = (entity, comma) => {
     return <div>No information available{comma ? ',' : ''}</div>;
   }
   if (entity === 'CITY OF ASHEVILLE') {
-    return (<div><span><a href="http://www.ashevillenc.gov/departments/street_services/maintenance.htm" target="_blank">{entity}</a></span><span style={{ marginLeft: '10px' }}><a href="http://www.ashevillenc.gov/departments/it/online/service_requests.htm" target="_blank"><button className="btn btn-xs btn-warning">Report with the Asheville App</button></a>
+    return (<div><span><a href="http://www.ashevillenc.gov/departments/street_services/maintenance.htm" target="_blank">{entity}</a></span><span style={{ marginLeft: '10px' }}><a href="https://iframe.publicstuff.com/#?client_id=819" target="_blank"><button className="btn btn-xs btn-warning">Report with the Asheville App</button></a>
     </span></div>);
   }
   if (entity === 'NCDOT') {

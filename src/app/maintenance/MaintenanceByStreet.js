@@ -39,7 +39,7 @@ const getMaintenanceInfo = (entity, comma) => {
             </span>
             <span style={{ marginLeft: '10px' }}>
               <a
-                href="http://www.ashevillenc.gov/departments/it/online/service_requests.htm"
+                href="https://iframe.publicstuff.com/#?client_id=819"
                 target="_blank"
                 tabIndex="-1"
               >

@@ -11,6 +11,9 @@ function PermitSearchResultsByAddress(props) {
   query get_permits_by_address ($civicaddress_id: Int!) {
     permits_by_address_realtime(civicaddress_id: $civicaddress_id) {
         permit_number
+        applicant_name
+        permit_type
+        permit_category
         applied_date
         permit_description
     }
@@ -19,38 +22,65 @@ function PermitSearchResultsByAddress(props) {
   console.log('address lookup props', props);
 
   return (
-    <Query 
-      query={addressQuery}
-      variables={{ civicaddress_id: parseInt(props.data.civic_address_id) } }
-    >
-      {({ loading, error, data }) => {
-        if (loading) {
-          console.log('loading');
-          return <LoadingAnimation />;
-        } 
-        if (error) {
-          console.log('error!', error);
-          return <p>Problem!</p>;
-        } 
-        console.log(data);
-        const permitList = data.permits_by_address_realtime.map((permit, index) => {
-          return <li key={index}><Link to={`/permits/${permit.permit_number}`}>{permit.permit_number}</Link></li>
-        });
-        let results;
-        // if (props.searchTarget === 'permit') {
-        //   results = <p><Link to={`/permits/${data.permit_realtime.permit_number}`}>{data.permit_realtime.permit_number} - {data.permit_realtime.application_name}</Link></p>;
-        // }
-        // else {
-          // results = <PermitSearchResultsAddress data={data.search[0].results} />;
-          results = <div>{props.data.address}, {props.data.zipcode}<ul>{permitList}</ul></div>;
-        // }
+    <div className="table-responsive" style={{"margin": "16px"}}>
+      <table className="table table-hover table-bordered">
+        <thead className="thead-dark">
+          <tr>
+            <th scope="col" style={{"width": "15%"}}>Permit Number</th>
+            <th scope="col" style={{"width": "15%"}}>Applicant</th>
+            <th scope="col" style={{"width": "15%"}}>Category</th>
+            <th scope="col" style={{"width": "15%"}}>Type</th>
+            <th scope="col" style={{"width": "40%"}}>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <Query 
+            query={addressQuery}
+            variables={{ civicaddress_id: parseInt(props.data.civic_address_id) } }
+          >
+            {({ loading, error, data }) => {
+              
+              if (loading) {
+                console.log('loading');
+                return (
+                  <tr key="loadingMessage">
+                    <td colSpan="5"><LoadingAnimation message="Loading Permits" /></td>
+                  </tr>
+                );
+              } 
 
-        
-       
-        return results;
-        
-      }}
-    </Query>
+              if (error) {
+                console.log('error!', error);
+                return <p>Problem!</p>;
+              } 
+
+              const permitList = data.permits_by_address_realtime.map((permit, index) => {
+                return (
+                  <tr key={index}>
+                    <td><Link to={`/permits/${permit.permit_number}`} target="_blank" rel="noopener noreferrer">{permit.permit_number}</Link></td>
+                    <td>{permit.applicant_name}</td>
+                    <td>{permit.permit_category}</td>
+                    <td>{permit.permit_type}</td>
+                    <td>{permit.permit_description}</td>
+                  </tr>
+                );
+              });
+
+              if (data.permits_by_address_realtime.length) {
+                return permitList;
+              } 
+              else {
+                return (
+                  <tr key="emptyResults">
+                    <td colSpan="5">No results found</td>
+                  </tr>
+                );
+              }
+            }}
+          </Query>
+        </tbody>
+      </table>
+    </div>
   ); 
 
 };

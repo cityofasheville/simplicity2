@@ -36,10 +36,10 @@ function PermitSearchIndex(props) {
           })}
           location={props.location}
         />
-        <h2 style={{ fontSize: '1.5rem', marginTop: '2rem' }}>
+        {/* <h2 style={{ fontSize: '1.5rem', marginTop: '2rem' }}>
           Don't know the application ID? 
         </h2>
-        <Link to="/permits">Search our map and filter by date</Link>
+        <Link to="/permits">Search our map and filter by date</Link> */}
       </div>
     </div>
   );

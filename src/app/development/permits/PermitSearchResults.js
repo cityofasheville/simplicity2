@@ -40,34 +40,36 @@ function PermitSearchResults(props) {
   }`;
 
   return (
-    <Query 
-      query={props.searchTarget === 'permit' ? permitQuery : addressQuery}
-      variables={props.searchTarget === 'permit' ? { permit_numbers: props.searchText } : { searchString: props.searchText, searchContexts: ["address"] } }
-    >
-      {({ loading, error, data }) => {
-        if (loading) {
-          console.log('loading');
-          return <LoadingAnimation />;
-        } 
-        if (error) {
-          console.log('error!', error);
-          return <p>Problem!</p>;
-        } 
-        console.log(data);
-        let results;
-        if (props.searchTarget === 'permit') {
-          results = <p><Link to={`/permits/${data.permit_realtime.permit_number}`}>{data.permit_realtime.permit_number} - {data.permit_realtime.application_name}</Link></p>;
-        }
-        else {
-          results = <PermitSearchResultsAddresses data={data.search[0].results} />;
-          // results = <p>Address</p>;
-        }
-
-        return results;
-      }}
-    </Query>
+    <section title="Search Results" style={{marginTop: '24px', marginBottom: '16px'}}>
+      <h2>Search Results for {props.searchText} ({props.searchTarget})</h2>
+      <ol className="list-group" style={{"listStyleType": "none"}}>
+        <Query 
+          query={props.searchTarget === 'permit' ? permitQuery : addressQuery}
+          variables={props.searchTarget === 'permit' ? { permit_numbers: props.searchText } : { searchString: props.searchText, searchContexts: ["address"] } }
+        >
+          {({ loading, error, data }) => {
+            if (loading) {
+              console.log('loading');
+              return <LoadingAnimation message={`Loading ${props.searchTarget}...`} />;
+            } 
+            if (error) {
+              console.log('error!', error);
+              return <p>{`There was a problem loading ${props.searchTarget}`} </p>;
+            } 
+            console.log(data);
+            let results;
+            if (props.searchTarget === 'permit') {
+              results = <li className="list-group-item"><Link to={`/permits/${data.permit_realtime.permit_number}`} target="_blank" rel="noopener noreferrer">{data.permit_realtime.permit_number} - {data.permit_realtime.application_name}</Link></li>;
+            }
+            else {
+              results = <PermitSearchResultsAddresses showPermitsForID={props.showPermitsForID} data={data.search[0].results} handleAddressSelection={props.handleAddressSelection} />;
+            }
+            return results;
+          }}
+        </Query>
+      </ol>
+    </section>
   ); 
-
 };
 
 export default PermitSearchResults;

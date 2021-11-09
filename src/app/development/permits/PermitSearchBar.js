@@ -12,18 +12,12 @@ class PermitSearchBar extends React.Component {
       searchValue: '',
       searchTarget: '',
       formSubmitted: false,
+      showPermitsForID: 0,
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleAddressSelection = this.handleAddressSelection.bind(this);
     this.handleFormSubmission = this.handleFormSubmission.bind(this);
   }
-
-  // handleKeyUp(e) {
-  //   this.setState({
-  //     searchValue: e.target.value,
-  //     formSubmitted: false,
-  //   });
-  //   this.props.onKeyUp(e);
-  // }
 
   handleChange(e) {
     this.setState({
@@ -32,15 +26,13 @@ class PermitSearchBar extends React.Component {
     });
   }
 
-  // handleSearchClick(e) {
-  //   e.preventDefault();
-  //   console.log(e.target.permitSearch.value);
-  //   this.setState({
-  //     searchValue: e.target.permitSearch.value,
-  //     formSubmitted: true
-  //   });
-  //   // this.props.onSearchClick(e.target.permitSearch.value);
-  // }
+  handleAddressSelection(e) {
+    console.log(e.target.dataset.address);
+    const newVal = (parseInt(e.target.dataset.address) === parseInt(this.state.showPermitsForID)) ? 0 : parseInt(e.target.dataset.address);
+    this.setState({
+      showPermitsForID: newVal,
+    });
+  }
 
   handleFormSubmission(e) {
 
@@ -75,13 +67,12 @@ class PermitSearchBar extends React.Component {
           formSubmitted: true,
         });
         console.log(`Valid Application ID - ${suppliedValue}`); 
-        // window.open(`/permits/${suppliedValue}`, '_self');
-        // browserHistory.push(`/permits/${suppliedValue}`);
       }  
     }
   }
 
   render() {
+    console.log('state in render: ', this.state);
     return(
       <div>
         <form onSubmit={(e) => this.handleFormSubmission(e)}>
@@ -108,7 +99,12 @@ class PermitSearchBar extends React.Component {
           </div>
         </form>
         {this.state.formSubmitted &&
-          <PermitSearchResults searchText={this.state.searchValue} searchTarget={this.state.searchTarget} />      
+          <PermitSearchResults 
+            searchText={this.state.searchValue} 
+            searchTarget={this.state.searchTarget} 
+            handleAddressSelection={this.handleAddressSelection} 
+            showPermitsForID={this.state.showPermitsForID} 
+          />      
         }
       </div>
     );

@@ -44,7 +44,7 @@ class PermitSearchBar extends React.Component {
     const permitFormat = /^\d{2}-\d{5}(s|S|pz|pZ|Pz|PZ){0,1}$/;
     const suppliedValue = this.state.searchValue;
 
-    if (suppliedValue.length < 3) {
+    if (suppliedValue.length <= 3) {
       this.setState({
         labelClass: 'text-danger',
         labelText: 'Please enter a valid application ID (e.g. 20-00965) or more than three characters of an address',
@@ -54,6 +54,8 @@ class PermitSearchBar extends React.Component {
     else {
       if (suppliedValue.search(permitFormat) === -1) { 
         this.setState({
+          labelClass: 'text-primary',
+          labelText: 'Enter application ID or address',    
           searchValue: suppliedValue,
           searchTarget: 'address',
           formSubmitted: true,
@@ -62,6 +64,8 @@ class PermitSearchBar extends React.Component {
       }
       else { 
         this.setState({
+          labelClass: 'text-primary',
+          labelText: 'Enter application ID or address',    
           searchValue: suppliedValue,
           searchTarget: 'permit',
           formSubmitted: true,

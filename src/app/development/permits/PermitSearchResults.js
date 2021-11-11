@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import { graphql, Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
-import Error from '../../../shared/Error';
+// import Error from '../../../shared/Error';
 import PermitSearchResultsAddresses from './PermitSearchResultsAddresses';
 
 function PermitSearchResults(props) {
@@ -40,7 +40,7 @@ function PermitSearchResults(props) {
   }`;
 
   return (
-    <section title="Search Results" style={{marginTop: '24px', marginBottom: '16px'}}>
+    <section title="Search Results" style={{marginTop: '32px', marginBottom: '16px'}}>
       <h2>Search Results for {props.searchText} ({props.searchTarget})</h2>
       <ol className="list-group" style={{"listStyleType": "none"}}>
         <Query 
@@ -59,7 +59,18 @@ function PermitSearchResults(props) {
             console.log(data);
             let results;
             if (props.searchTarget === 'permit') {
-              results = <li className="list-group-item"><Link to={`/permits/${data.permit_realtime.permit_number}`} target="_blank" rel="noopener noreferrer">{data.permit_realtime.permit_number} - {data.permit_realtime.application_name}</Link></li>;
+              if (data.permit_realtime !== null) {
+                results = 
+                  <li className="list-group-item">
+                    <Link to={`/permits/${data.permit_realtime.permit_number}`} target="_blank" rel="noopener noreferrer">
+                      {data.permit_realtime.permit_number} - {data.permit_realtime.application_name}
+                    </Link>
+                  </li>
+                ;
+              }
+              else {
+                results = <p>No results found</p>;
+              }
             }
             else {
               results = <PermitSearchResultsAddresses showPermitsForID={props.showPermitsForID} data={data.search[0].results} handleAddressSelection={props.handleAddressSelection} />;

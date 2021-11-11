@@ -3,6 +3,14 @@ import PermitSearchResultsByAddress from './PermitSearchResultsByAddress'
 
 function PermitSearchResultsAddress(props) {
 
+  if (props.data === null) {
+    return <p>No results found</p>;
+  }
+
+  if (!props.data.length) {
+    return <p>No results found</p>;
+  }
+
   const addressList = props.data.map((result, index) => {
 
     const addressButtonStyle = (parseInt(result.civic_address_id) === parseInt(props.showPermitsForID)) ? 'active' : '';

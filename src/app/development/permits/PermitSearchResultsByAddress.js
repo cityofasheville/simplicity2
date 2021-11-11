@@ -22,7 +22,7 @@ function PermitSearchResultsByAddress(props) {
   console.log('address lookup props', props);
 
   return (
-    <div className="table-responsive" style={{"margin": "16px"}}>
+    <div className="table-responsive" style={{"marginTop": "8px"}}>
       <table className="table table-hover table-bordered">
         <thead className="thead-dark">
           <tr>
@@ -54,28 +54,33 @@ function PermitSearchResultsByAddress(props) {
                 return <p>Problem!</p>;
               } 
 
-              const permitList = data.permits_by_address_realtime.map((permit, index) => {
-                return (
-                  <tr key={index}>
-                    <td><Link to={`/permits/${permit.permit_number}`} target="_blank" rel="noopener noreferrer">{permit.permit_number}</Link></td>
-                    <td>{permit.applicant_name}</td>
-                    <td>{permit.permit_category}</td>
-                    <td>{permit.permit_type}</td>
-                    <td>{permit.permit_description}</td>
-                  </tr>
-                );
-              });
+              if (data.permits_by_address_realtime !== null) {
 
-              if (data.permits_by_address_realtime.length) {
+                const permitList = data.permits_by_address_realtime.map((permit, index) => {
+                  return (
+                    <tr key={index} title={`Permit ${permit.permit_number} for ${permit.applicant_name}`}>
+                      <td><Link to={`/permits/${permit.permit_number}`} target="_blank" rel="noopener noreferrer">{permit.permit_number}</Link></td>
+                      <td>{permit.applicant_name}</td>
+                      <td>{permit.permit_category}</td>
+                      <td>{permit.permit_type}</td>
+                      <td>
+                        <div style={{whiteSpace: "break-spaces", minWidth: "300px"}}>
+                          {permit.permit_description}
+                        </div>                      
+                      </td>
+                    </tr>
+                  );
+                });
+  
                 return permitList;
-              } 
-              else {
-                return (
-                  <tr key="emptyResults">
-                    <td colSpan="5">No results found</td>
-                  </tr>
-                );
               }
+             
+              return (
+                <tr key="emptyResults">
+                  <td colSpan="5">No results found</td>
+                </tr>
+              );
+              
             }}
           </Query>
         </tbody>

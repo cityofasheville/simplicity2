@@ -12,8 +12,8 @@ function PermitSearchIndex(props) {
   let timeout = null;
 
   return(
-    <div>
-      <h1 className="">Look Up an Existing Application</h1>
+    <div style={{paddingTop: "32px"}}>
+      <h1 className="">Development &amp; Permit Search</h1>
       <PermitSearchBar 
         text={props.searchText.search || props.location.query.search}
         selectedEntities={props.location.query.entities}

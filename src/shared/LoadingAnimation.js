@@ -26,7 +26,7 @@ const LoadingAnimation = (props) => {
             <div className="cssload-dot"></div>
             <div className="cssload-dot"></div>
           </div>
-          <div style={{ paddingTop: '32px' }}>{props.message}</div>
+          <div style={{ paddingTop: '32px', paddingBottom: '32px' }}>{props.message}</div>
         </div>
       );
   }

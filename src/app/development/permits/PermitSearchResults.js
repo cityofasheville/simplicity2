@@ -62,7 +62,7 @@ function PermitSearchResults(props) {
               if (data.permit_realtime !== null) {
                 results = 
                   <li className="list-group-item">
-                    <Link to={`/permits/${data.permit_realtime.permit_number}`} target="_blank" rel="noopener noreferrer">
+                    <Link to={`/permits/${data.permit_realtime.permit_number}`}>
                       {data.permit_realtime.permit_number} - {data.permit_realtime.application_name}
                     </Link>
                   </li>

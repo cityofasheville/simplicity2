@@ -128,15 +128,17 @@ class MajorDevelopmentDashboard extends React.Component {
           </ul>
         </nav>
         <main>
-           {introductoryContent}
-           {devDashSections.map(section => (
-            <section id={section.linkId} key={section.linkId} style={{ overflow: 'auto' }}>
-              <h2>{section.header}</h2>
-              <ErrorBoundary>
-                {section.body}
-              </ErrorBoundary>
-            </section>
-          ))}
+          <div style={{margin: "0 auto"}}>
+            {introductoryContent}
+            {devDashSections.map(section => (
+              <section id={section.linkId} key={section.linkId} style={{ overflow: 'auto' }}>
+                <h2>{section.header}</h2>
+                <ErrorBoundary>
+                  {section.body}
+                </ErrorBoundary>
+              </section>
+            ))}
+          </div>
         </main>
 
       </div>

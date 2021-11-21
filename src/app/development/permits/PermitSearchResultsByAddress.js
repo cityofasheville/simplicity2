@@ -36,7 +36,7 @@ function PermitSearchResultsByAddress(props) {
         <tbody>
           <Query 
             query={addressQuery}
-            variables={{ civicaddress_id: parseInt(props.data.civic_address_id) } }
+            variables={{ civicaddress_id: parseInt(props.civicAddressID) } }
           >
             {({ loading, error, data }) => {
               
@@ -59,7 +59,7 @@ function PermitSearchResultsByAddress(props) {
                 const permitList = data.permits_by_address_realtime.map((permit, index) => {
                   return (
                     <tr key={index} title={`Permit ${permit.permit_number} for ${permit.applicant_name}`}>
-                      <td><Link to={`/permits/${permit.permit_number}`} target="_blank" rel="noopener noreferrer">{permit.permit_number}</Link></td>
+                      <td><Link to={`/permits/${permit.permit_number}`} title="View permit application details">{permit.permit_number}</Link></td>
                       <td>{permit.applicant_name}</td>
                       <td>{permit.permit_category}</td>
                       <td>{permit.permit_type}</td>

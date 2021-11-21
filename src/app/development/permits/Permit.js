@@ -317,7 +317,7 @@ const Permit = props => (
             }
           </div>
           <hr />
-          <div className="row">
+          <div className="row" style={{marginBottom: "32px"}}>
             <div className="col-xs-12">
               <h2>Look Up Another Application</h2>
               <PermitSearchBar />

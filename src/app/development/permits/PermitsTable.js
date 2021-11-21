@@ -60,65 +60,64 @@ class PermitsTable extends React.Component {
 
   render() {
     return (
-      <div className="row">
-        <div className="col-sm-12">
-          <AccessibleReactTable
-            className="-striped"
-            tableId="projects"
-            ariaLabel="Table of development permit applications"
-            data={this.props.data}
-            columns={[{
-              Header: 'Permits',
-              columns: this.props.tableHeaders.map(headerObj => ({
-                Header: headerObj.display,
-                id: headerObj.field,
-                accessor: (d) => {
-                  return headerObj.formatFunc ?
-                    headerObj.formatFunc(d) :
-                    d[headerObj.field];
-                },
-                sortMethod: headerObj.sortMethod,
-                Filter: createFilterRenderer(`Search ${headerObj.display}`),
-                show: true,
-              })),
-            }]}
-            filterable
-            sortable
-            defaultFilterMethod={(filter, row) => {
-              const id = filter.pivotId || filter.id;
-              // Allows comma separated values, makes it an OR
-              const values = filter.value.split(',');
-              let match = false;
-              // Iterate until you get children that are text and then use those?
-              const compareText = extractTextFromReactComponents(row[id]);
-              values.forEach((val) => {
-                match = match || (compareText !== undefined ?
-                  String(compareText).toLowerCase().indexOf(val.toLowerCase()) > -1
-                  :
-                  true);
-              });
-              return match;
-            }}
-            onFilteredChange={this.onFilteredChange}
-            filtered={this.state.filtered}
-            showPagination
-            defaultPageSize={20}
-            getTdProps={() => ({
-              style: {
-                whiteSpace: 'normal',
+      <section title="Table of all permits, filtered by date">
+        <AccessibleReactTable
+          className="-striped"
+          tableId="projects"
+          ariaLabel="Table of development permit applications"
+          data={this.props.data}
+          columns={[{
+            Header: 'Permits',
+            columns: this.props.tableHeaders.map(headerObj => ({
+              Header: headerObj.display,
+              id: headerObj.field,
+              accessor: (d) => {
+                return headerObj.formatFunc ?
+                  headerObj.formatFunc(d) :
+                  d[headerObj.field];
               },
-            })}
-          >
-            {(state, makeTable) => (
-              <div
-                style={{ marginTop: '10px' }}
-              >
-                {makeTable()}
-              </div>
-            )}
-          </AccessibleReactTable>
-        </div>
-      </div>
+              sortMethod: headerObj.sortMethod,
+              Filter: createFilterRenderer(`Search ${headerObj.display}`),
+              show: true,
+            })),
+          }]}
+          filterable
+          sortable
+          defaultFilterMethod={(filter, row) => {
+            const id = filter.pivotId || filter.id;
+            // Allows comma separated values, makes it an OR
+            const values = filter.value.split(',');
+            let match = false;
+            // Iterate until you get children that are text and then use those?
+            const compareText = extractTextFromReactComponents(row[id]);
+            values.forEach((val) => {
+              match = match || (compareText !== undefined ?
+                String(compareText).toLowerCase().indexOf(val.toLowerCase()) > -1
+                :
+                true);
+            });
+            return match;
+          }}
+          onFilteredChange={this.onFilteredChange}
+          filtered={this.state.filtered}
+          showPagination
+          defaultPageSize={20}
+          getTdProps={() => ({
+            style: {
+              whiteSpace: 'normal',
+            },
+          })}
+        >
+          {(state, makeTable) => (
+            <div
+              style={{ marginTop: '10px' }}
+            >
+              {makeTable()}
+            </div>
+          )}
+        </AccessibleReactTable>
+      </section>
+
     );
   }
 }

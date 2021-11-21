@@ -27,7 +27,7 @@ function PermitSearchResultsAddress(props) {
           {result.address}, {result.zipcode} (ID: {result.civic_address_id})
         </button>
         {parseInt(result.civic_address_id) === parseInt(props.showPermitsForID) &&
-          <PermitSearchResultsByAddress key={index} data={result} />      
+          <PermitSearchResultsByAddress key={index} civicAddressID={result.civic_address_id} />      
         }
       </li>
     );

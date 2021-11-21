@@ -85,7 +85,22 @@ export const devDashSections = [
     linkName: 'Project Details',
     header: 'Development details',
     body: (<React.Fragment>
-      <p>The map and table below contain proposed, large-scale, private development projects for which a permit application has been submitted.  You can also see a <a href="/permits">table of all permit applications</a> or <a href="/">search an address</a> to find nearby development.  Visit <a href="https://www.google.com/maps/d/u/0/viewer?mid=1gTdFgMITqbYX7cm3L227CiClMzg&ll=35.54416648021354%2C-82.55690042880553&z=10" target="_blank" rel="noopener noreferrer">the old TRC projects map</a> to see projects that were started more than two years ago.</p>
+      <p className="links-above-text">
+        <a href="/permits">All Permit Applications</a>
+        <a href="/">Search Nearby Development</a>
+        <a href="/permits/search">Search Permits by Address or ID</a>
+      </p>
+      <p>The map and table below contain proposed, large-scale, private development projects for which a permit application has been submitted.  
+        You can also explore permit applications using the above links. 
+      </p>
+      <p>Visit 
+        <a href="https://www.google.com/maps/d/u/0/viewer?mid=1gTdFgMITqbYX7cm3L227CiClMzg&ll=35.54416648021354%2C-82.55690042880553&z=10" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          style={{margin: "0 4px"}}
+        >the old TRC projects map</a> 
+        to see projects that were started more than two years ago.
+      </p>
       <TRCDataTable />
     </React.Fragment>),
   },

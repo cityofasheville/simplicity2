@@ -3,7 +3,9 @@
 }
 
 #majorDevDash main {
-  margin-left: 12.5vw;
+  // margin-left: 12.5vw;
+  // margin-left should match min-width of .sectionNav
+  margin-left: 200px;
   height: 100%;
 }
 
@@ -24,6 +26,7 @@
 .sectionNav {
   left: 0;
   width: 12.5vw;
+  min-width: 200px;
   height: 100%;
   z-index: 99;
   position: fixed;
@@ -89,8 +92,24 @@ ul.sectionNav li {
   margin-left: -1em; /* Also needed for space (tweak if needed) */
 }
 
+.links-above-text {
+  margin: 8px 0;
+}
 
-@media(max-width: 767px){
+.links-above-text a {
+  display: inline-block;
+  margin: 8px 16px 8px 0;
+}
+
+// .links-above-text a::after {
+//   content: ' | ';
+// }
+
+// .links-above-text:last-child::after {
+//   content: '';
+// }
+
+@media(max-width: 1120px){
   #majorDevDash p, #majorDevDash p ~ ul {
     width: 90%;
     margin-left: 5%;
@@ -99,5 +118,15 @@ ul.sectionNav li {
   #accordion {
     margin-left: -10px;
     margin-right: -10px;
+  }
+
+  .links-above-text a {
+    display: block;
+    margin: 16px 0;
+  }
+
+  .links-above-text:first-child {
+    display: block;
+    margin: 0 0 16px 0;
   }
 }

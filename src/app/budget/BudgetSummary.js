@@ -51,7 +51,7 @@ const BudgetSummary = props => (
               `${content.budget} ${parseInt(data.budgetParameters.end_year, 10) - 1}-${data.budgetParameters.end_year}` // eslint-disable-line
             }
             externalLinkText={content.full_budget_document}
-            externalLink="http://www.ashevillenc.gov/civicax/filebank/blobdload.aspx?blobid=30387"
+            externalLink="https://www.ashevillenc.gov/department/finance/city-budget/"
             // dataLinkPath="/budget/data"
             // dataLinkText={content.understand_the_budget_data}
             icon={<Icon

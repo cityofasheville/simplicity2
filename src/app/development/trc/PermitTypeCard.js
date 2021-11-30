@@ -14,7 +14,7 @@ const PermitTypeCard = ({ type }) => {
         height: '100%',
       }}
     >
-      <div style={{ textAlign: 'center' }}>
+      <div style={{ textAlign: 'center', paddingBottom: '10px' }}>
         <TypePuck
           typeObject={projectType}
           hover={false}

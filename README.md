@@ -7,8 +7,8 @@ You'll need Node and Yarn installed, then run the following commands to download
 
 1.  `git clone https://github.com/cityofasheville/simplicity2.git simplicity2`
 2.  `cd simplicity2`
-3.  `npm install`
-4.  `npm start`
+3.  `yarn install`
+4.  `yarn start`
 
 ## Documentation
 

@@ -112,13 +112,17 @@ export const getFundsAllocatedAndExpended = (projectData, categories, mode) => {
   for (let project of projectData) {
     if (categories.includes(project.category)) {
       if (mode !== 'bond' ||
-      (mode === 'bond' && project.type.toLowerCase() === 'bond')
+        (mode === 'bond' && project.type.toLowerCase() === 'bond')
       ) {
         totalExpended += parseFloat(project.total_spent);
         totalEncumbered += parseFloat(project.encumbered);
         if (project.total_project_funding_budget_document !== null && project.total_project_funding_budget_document.trim() !== '') {
-          let allocated = project.total_project_funding_budget_document.indexOf('$') === 0 ? project.total_project_funding_budget_document.slice(1).split(',').join('') : project.total_project_funding_budget_document.split(',').join('');
-          totalAllocated += parseFloat(allocated);
+          let cleanBudgetAmount = project.total_project_funding_budget_document.replace(/ /g, "");
+          let allocated = cleanBudgetAmount.indexOf('$') === 0 ? cleanBudgetAmount.slice(1).split(',').join('') : cleanBudgetAmount.split(',').join('');
+          console.log(cleanBudgetAmount, allocated, isNaN(allocated));
+          if (!isNaN(allocated)) {
+            totalAllocated += parseFloat(allocated);
+          }
         }
       }
     }

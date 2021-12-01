@@ -39,13 +39,6 @@ import PermitSearchIndex from './app/development/permits/PermitSearchIndex';
 import ProjectFlowDashboard from './app/internal/bpt_projects/ProjectFlow';
 import CrimeSummary from './app/crime/CrimeSummary';
 import Maintenance from './app/maintenance/Maintenance';
-// Budget
-import BudgetSummary from './app/budget/BudgetSummary';
-import BudgetDetailsContainer from './app/budget/BudgetDetailsContainer';
-import SummaryDepartments from './app/budget/SummaryDepartments';
-import SummaryUse from './app/budget/SummaryUse';
-import SummaryCashFlow from './app/budget/SummaryCashFlow';
-import BudgetData from './app/budget/BudgetData';
 // Capital Projects
 import CapitalProjectsSummary from './app/capital_projects/CapitalProjectsSummary';
 import CategoryDetails from './app/capital_projects/CategoryDetails';
@@ -108,16 +101,6 @@ const Routes = () => (
         <Route path="neighborhood" component={Neighborhood}></Route>
         <Route path="owner" component={Owner}></Route>
         <Route path="dashboards" component={Topics} />
-        <Route path="budget">
-          <IndexRoute component={BudgetSummary} />
-          <Route path="details" component={BudgetDetailsContainer}></Route>
-          <Route path="summaryUse" component={SummaryUse}></Route>
-          <Route path="summaryDepartments" component={SummaryDepartments}></Route>
-          <Route path="summaryCashFlow" component={SummaryCashFlow}></Route>
-          <Route path="detailsTreemap" component={BudgetDetailsContainer}></Route>
-          <Route path="detailsTable" component={BudgetDetailsContainer}></Route>
-          <Route path="data" component={BudgetData}></Route>
-        </Route>
         <Route path="capital_projects">
           <IndexRoute component={CapitalProjectsSummary} />
           <Route path="details" component={CategoryDetails}></Route>

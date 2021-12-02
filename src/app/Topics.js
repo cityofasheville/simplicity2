@@ -10,7 +10,7 @@ const Topics = props => (
         <h2>View citywide topic <strong>dashboards</strong> about your community.</h2>
       </div>
     </div>
-    <div className="row">
+    <div className="row topic-options">
       {props.topics.map((topic, i) => (
         <div className="card-item" key={['topic', i].join('_')}>
           <TopicCard topic={topic.name} lang={props.language.language} view={null} path={topic.path || topic.name} />
@@ -26,10 +26,10 @@ const Topics = props => (
 
 Topics.defaultProps = {
   topics: [
-    {
-      name: 'BUDGET',
-      path: 'budget',
-    },
+    // {
+    //   name: 'BUDGET',
+    //   path: 'budget',
+    // },
     {
       name: 'CAPITAL_PROJECTS',
       path: 'capital_projects',

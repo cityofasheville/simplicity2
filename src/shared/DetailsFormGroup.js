@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router';
 
 const DetailsFormGroup = props => (
   <div className={props.icon ? 'form-group form-group--has-content form-group--has-icon' : 'form-group form-group--has-content'}>
@@ -12,7 +13,9 @@ const DetailsFormGroup = props => (
         <label htmlFor={props.name}>{props.label}</label>
       }
       { props.name == "pinnum" && 
-      <div className="steep-slope-btn">Get Steep Slope Data</div>
+      <Link className="btn btn-default steep-slope-btn" to="https://mapwnc.org/find-slope-for-parcel" title="Get Steep Slope">
+        <span>Get Steep Slope Data</span>
+      </Link>
       }
       </div>
       <div className="form-group__value" name={props.name}>{props.value}</div>

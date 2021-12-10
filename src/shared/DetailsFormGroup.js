@@ -1,15 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router';
 
 const DetailsFormGroup = props => (
   <div className={props.icon ? 'form-group form-group--has-content form-group--has-icon' : 'form-group form-group--has-content'}>
     <div className="form-group__inner">
-      <div className="form-group__label">
+      <div className={props.name == "pinnum" ? 'form-group__label steep-slope-tag' : 'form-group__label'}>
       {props.icon !== null &&
       <span>{props.icon}</span>
       }
       {props.hasLabel &&
         <label htmlFor={props.name}>{props.label}</label>
+      }
+      { props.name == "pinnum" && 
+      <button className="btn btn-default steep-slope-btn"
+        onClick={props.onClick} title="Get Steep Slope" aria-label="get Steep Slope Data">
+        <span>Get Steep Slope Data</span>
+      </button>
       }
       </div>
       <div className="form-group__value" name={props.name}>{props.value}</div>

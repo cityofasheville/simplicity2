@@ -13,10 +13,10 @@ const DetailsFormGroup = props => (
         <label htmlFor={props.name}>{props.label}</label>
       }
       { props.name == "pinnum" && 
-      <Link className="btn btn-default steep-slope-btn"
+      <button className="btn btn-default steep-slope-btn"
         onClick={props.onClick} title="Get Steep Slope" aria-label="get Steep Slope Data">
         <span>Get Steep Slope Data</span>
-      </Link>
+      </button>
       }
       </div>
       <div className="form-group__value" name={props.name}>{props.value}</div>

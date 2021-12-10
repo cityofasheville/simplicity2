@@ -29,6 +29,25 @@ import {
 } from '../../shared/iconConstants';
 import createFilterRenderer from '../../shared/FilterRenderer';
 
+function getSteepSlope (pinValue) {
+  let steepSlopeUrl = "https://mapwnc.org/api/slopebypin/" + pinValue;
+  fetch(steepSlopeUrl)
+  .then(response => response.json())
+  .then(data => {
+    document.getElementById('ssData').classList.remove('hide-elem');
+    document.getElementById('successData').classList.remove('hide-elem');
+    document.getElementById('jurisdiction').innerText = data.jurisdiction;
+    document.getElementById('acres').innerText = data.acres;
+    document.getElementById('elevation').innerText = data.maxElevation;
+    document.getElementById('percentSlope').innerText = data.percentSlope;
+  })
+  .catch((e) => {
+    document.getElementById('ssData').classList.remove('hide-elem');
+    document.getElementById('slopeError').classList.remove('hide-elem');
+    document.getElementById('slopeError').innerText = "There has been an error in the server, please try again.";
+  });
+}
+
 const getDollars = (value) => {
   const initialSymbols = value < 0 ? '-$' : '$';
   return [initialSymbols, Math.abs(value).toLocaleString()].join('');
@@ -261,7 +280,17 @@ const Property = (props) => {
                     name="pinnum"
                     value={propertyData.pinnum}
                     hasLabel
+                    onClick={()=>getSteepSlope(propertyData.pinnum)}
                   />
+                </div>
+                <div id="ssData" className="detailsFieldset__details-listings hide-elem">
+                  <div id="successData" className="ss-container hide-elem" aria-label="Slope Steep Data">
+                    <div><p className="tag info">Jurisdiction:</p><p id="jurisdiction" className="info"></p></div>
+                    <div><p className="tag info">Acres: </p> <p id="acres" className="info"></p></div>
+                    <div><p className="tag info">Maximum Elevation:</p><p id="elevation" className="info"></p></div>
+                    <div><p className="tag info">Percent Slope:</p><p id="percentSlope" className="info"></p></div>
+                  </div>
+                  <div id="slopeError" aria-label="Server Error" className="slope-error hide-elem"></div>
                 </div>
                 <div className="detailsFieldset__details-listings">
                   <DetailsFormGroup

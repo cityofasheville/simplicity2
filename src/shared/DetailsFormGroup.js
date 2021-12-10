@@ -13,7 +13,8 @@ const DetailsFormGroup = props => (
         <label htmlFor={props.name}>{props.label}</label>
       }
       { props.name == "pinnum" && 
-      <Link className="btn btn-default steep-slope-btn" to="https://mapwnc.org/find-slope-for-parcel" title="Get Steep Slope">
+      <Link className="btn btn-default steep-slope-btn"
+        onClick={props.onClick} title="Get Steep Slope" aria-label="get Steep Slope Data">
         <span>Get Steep Slope Data</span>
       </Link>
       }

@@ -360,12 +360,10 @@ const Property = (props) => {
                     value={
                       <div>
                         <div>
-                          {
                             <button className="btn btn-default steep-slope-btn"
                               onClick={()=>getSteepSlope(propertyData.pinnum)} title="Get Steep Slope" aria-label="get Steep Slope Data">
                               <span>Get Steep Slope Data</span>
                             </button>
-                          }
                         </div>
                         <div id="ssData" className="detailsFieldset__details-listings">
                           <div id="successData" className="ss-container" aria-label="Slope Steep Data">
@@ -378,7 +376,6 @@ const Property = (props) => {
                         </div>
                       </div>
                     }
-                    onClick={()=>getSteepSlope(propertyData.pinnum)}
                     hasLabel
                   />
                 </div>

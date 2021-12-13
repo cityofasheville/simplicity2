@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 const DetailsFormGroup = props => (
   <div className={props.icon ? 'form-group form-group--has-content form-group--has-icon' : 'form-group form-group--has-content'}>
     <div className="form-group__inner">
-      <div className={props.name == "pinnum" ? 'form-group__label steep-slope-tag' : 'form-group__label'}>
+      <div className='form-group__label'>
       {props.icon !== null &&
       <span>{props.icon}</span>
       }

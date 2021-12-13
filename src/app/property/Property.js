@@ -280,17 +280,7 @@ const Property = (props) => {
                     name="pinnum"
                     value={propertyData.pinnum}
                     hasLabel
-                    onClick={()=>getSteepSlope(propertyData.pinnum)}
                   />
-                </div>
-                <div id="ssData" className="detailsFieldset__details-listings hide-elem">
-                  <div id="successData" className="ss-container hide-elem" aria-label="Slope Steep Data">
-                    <div><p className="tag info">Jurisdiction:</p><p id="jurisdiction" className="info"></p></div>
-                    <div><p className="tag info">Acres: </p> <p id="acres" className="info"></p></div>
-                    <div><p className="tag info">Maximum Elevation:</p><p id="elevation" className="info"></p></div>
-                    <div><p className="tag info">Percent Slope:</p><p id="percentSlope" className="info"></p></div>
-                  </div>
-                  <div id="slopeError" aria-label="Server Error" className="slope-error hide-elem"></div>
                 </div>
                 <div className="detailsFieldset__details-listings">
                   <DetailsFormGroup
@@ -361,6 +351,34 @@ const Property = (props) => {
                         }
                       </div>
                     }
+                    hasLabel
+                  />
+                  <DetailsFormGroup
+                    label="Steep Slope"
+                    name="steepslope"
+                    colWidth="6"
+                    value={
+                      <div>
+                        <div>
+                          {
+                            <button className="btn btn-default steep-slope-btn"
+                              onClick={()=>getSteepSlope(propertyData.pinnum)} title="Get Steep Slope" aria-label="get Steep Slope Data">
+                              <span>Get Steep Slope Data</span>
+                            </button>
+                          }
+                        </div>
+                        <div id="ssData" className="detailsFieldset__details-listings">
+                          <div id="successData" className="ss-container" aria-label="Slope Steep Data">
+                            <div><p className="tag info">Jurisdiction:</p><p id="jurisdiction" className="info"></p></div>
+                            <div><p className="tag info">Acres: </p> <p id="acres" className="info"></p></div>
+                            <div><p className="tag info">Maximum Elevation:</p><p id="elevation" className="info"></p></div>
+                            <div><p className="tag info">Percent Slope:</p><p id="percentSlope" className="info"></p></div>
+                          </div>
+                          <div id="slopeError" aria-label="Server Error" className="slope-error hide-elem"></div>
+                        </div>
+                      </div>
+                    }
+                    onClick={()=>getSteepSlope(propertyData.pinnum)}
                     hasLabel
                   />
                 </div>

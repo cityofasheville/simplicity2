@@ -32,16 +32,18 @@
       grid-template-columns: 1fr 1fr;
       grid-column-gap: 1em;
       align-items: center;
-      @media screen and (max-width: 240px) {
+      @media screen and (max-width: 300px) {
         display: block;        
       }
       p {
         margin: 0;
+        font-size: 0.85em;
         &.tag {
           font-weight: 700;
+          text-transform: uppercase;
         }
         &.info {
-          font-size: 0.7em;
+          font-weight: 100;
         }
       }
     }

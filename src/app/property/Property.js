@@ -374,10 +374,10 @@ const Property = (props) => {
                         </div>
                         <div id="ssData" className="detailsFieldset__details-listings hide-elem">
                           <div id="successData" className="ss-container hide-elem" aria-label="Slope Steep Data">
-                            <div><p className="tag info">Jurisdiction:</p><p id="jurisdiction" className="info"></p></div>
-                            <div><p className="tag info">Acres: </p> <p id="acres" className="info"></p></div>
-                            <div><p className="tag info">Maximum Elevation:</p><p id="elevation" className="info"></p></div>
-                            <div><p className="tag info">Percent Slope:</p><p id="percentSlope" className="info"></p></div>
+                            <div><p className="tag">Jurisdiction:</p><p id="jurisdiction" className="info"></p></div>
+                            <div><p className="tag">Acres: </p> <p id="acres" className="info"></p></div>
+                            <div><p className="tag">Maximum Elevation:</p><p id="elevation" className="info"></p></div>
+                            <div><p className="tag">Percent Slope:</p><p id="percentSlope" className="info"></p></div>
                           </div>
                           <div id="slopeError" aria-label="Server Error" className="slope-error hide-elem"></div>
                         </div>

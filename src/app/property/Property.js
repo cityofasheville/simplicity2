@@ -362,7 +362,7 @@ const Property = (props) => {
                     colWidth="6"
                     value={
                       <div>
-                        <div>
+                        <div className='steep-slope-tag'>
                             {
                               !isSlopeDataShown && 
                               <button className="btn btn-default steep-slope-btn"

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { graphql } from 'react-apollo';
 import AccessibleReactTable, { CellFocusWrapper } from 'accessible-react-table';
 import gql from 'graphql-tag';
@@ -29,11 +29,12 @@ import {
 } from '../../shared/iconConstants';
 import createFilterRenderer from '../../shared/FilterRenderer';
 
-function getSteepSlope (pinValue) {
+const getSteepSlope = (pinValue, callback) => {
   let steepSlopeUrl = "https://mapwnc.org/api/slopebypin/" + pinValue;
   fetch(steepSlopeUrl)
   .then(response => response.json())
   .then(data => {
+    callback(true);
     document.getElementById('ssData').classList.remove('hide-elem');
     document.getElementById('successData').classList.remove('hide-elem');
     document.getElementById('jurisdiction').innerText = data.jurisdiction;
@@ -62,6 +63,8 @@ const Property = (props) => {
   if (props.data.error) {
     return <Error message={props.data.error.message} />;
   }
+
+  const [isSlopeDataShown, setSlopeData] = useState(false);
 
   const propertyData = props.inTable ? props.data : props.data.properties[0];
   const dataForAddressesTable = [];
@@ -360,13 +363,17 @@ const Property = (props) => {
                     value={
                       <div>
                         <div>
-                            <button className="btn btn-default steep-slope-btn"
-                              onClick={()=>getSteepSlope(propertyData.pinnum)} title="Get Steep Slope" aria-label="get Steep Slope Data">
-                              <span>Get Steep Slope Data</span>
-                            </button>
+                            {
+                              !isSlopeDataShown && 
+                              <button className="btn btn-default steep-slope-btn"
+                                onClick={()=>getSteepSlope(propertyData.pinnum, setSlopeData)}
+                                title="Get Steep Slope" aria-label="get Steep Slope Data">
+                                <span>Get Steep Slope Data</span>
+                              </button>
+                            }
                         </div>
-                        <div id="ssData" className="detailsFieldset__details-listings">
-                          <div id="successData" className="ss-container" aria-label="Slope Steep Data">
+                        <div id="ssData" className="detailsFieldset__details-listings hide-elem">
+                          <div id="successData" className="ss-container hide-elem" aria-label="Slope Steep Data">
                             <div><p className="tag info">Jurisdiction:</p><p id="jurisdiction" className="info"></p></div>
                             <div><p className="tag info">Acres: </p> <p id="acres" className="info"></p></div>
                             <div><p className="tag info">Maximum Elevation:</p><p id="elevation" className="info"></p></div>

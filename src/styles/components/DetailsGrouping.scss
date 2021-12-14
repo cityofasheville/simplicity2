@@ -20,10 +20,9 @@
 }
 
 #ssData {
-  padding: 0 30px;
   width: 100%;
   display: flex;
-  justify-content: right;
+  justify-content: left;
   margin-bottom: 15px;
   .ss-container {
     display: inline-block;
@@ -31,11 +30,13 @@
       display: grid;
       flex-wrap: wrap;
       grid-template-columns: 1fr 1fr;
+      grid-column-gap: 1em;
+      align-items: center;
+      @media screen and (max-width: 240px) {
+        display: block;        
+      }
       p {
         margin: 0;
-        display: grid;
-        text-align: right;
-        align-items: center;
         &.tag {
           font-weight: 700;
         }

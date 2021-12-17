@@ -180,13 +180,16 @@ const Property = (props) => {
                 <div
                   className="detailsFieldset__details-listings detailsFieldset__details-listings--three-column"
                 >
-                  <DetailsIconLinkFormGroup
-                    colWidth="6"
-                    label="Deed"
-                    title="Deed"
-                    href={propertyData.deed_link}
-                    icon={<Icon path={IM_CERTIFICATE} size={20} />}
-                  />
+                  {
+                    propertyData.deed_link && 
+                    <DetailsIconLinkFormGroup
+                      colWidth="6"
+                      label="Deed"
+                      title="Deed"
+                      href={propertyData.deed_link}
+                      icon={<Icon path={IM_CERTIFICATE} size={20} />}
+                    />
+                  }
                   <DetailsIconLinkFormGroup
                     colWidth="6"
                     label="Property card"
@@ -194,13 +197,15 @@ const Property = (props) => {
                     href={propertyData.property_card_link}
                     icon={<Icon path={IM_PROFILE} size={20} />}
                   />
-                  <DetailsIconLinkFormGroup
-                    colWidth="6"
-                    label="Plat"
-                    title="Plat"
-                    href={propertyData.plat_link}
-                    icon={<Icon path={IM_CHECKBOX_PARTIAL2} size={20} />}
-                  />
+                  { propertyData.plat_link && 
+                    <DetailsIconLinkFormGroup
+                      colWidth="6"
+                      label="Plat"
+                      title="Plat"
+                      href={propertyData.plat_link}
+                      icon={<Icon path={IM_CHECKBOX_PARTIAL2} size={20} />}
+                    />
+                  }
                   <DetailsIconLinkFormGroup
                     colWidth="6"
                     label="Google map directions"

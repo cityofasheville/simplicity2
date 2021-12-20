@@ -18,7 +18,7 @@ const SteepSlope = (props) => {
     const getSteepSlope = (pinValue, setSlopeData, setShowSSData, setSlopeDataError) => {
         setSlopeData(true);
         setSlopeDataError(false);
-        let steepSlopeUrl = "https://mapwnc.org/api/slopebypin2/" + pinValue;
+        let steepSlopeUrl = "https://mapwnc.org/api/slopebypin/" + pinValue;
         fetch(steepSlopeUrl)
         .then(response => response.json())
         .then(data => {

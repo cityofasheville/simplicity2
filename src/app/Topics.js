@@ -16,6 +16,14 @@ const Topics = props => (
           <TopicCard topic={topic.name} lang={props.language.language} view={null} path={topic.path || topic.name} />
         </div>
       ))}
+      <div className="card-item">
+        <div className="topicCard">
+          <div className="text-primary text-center">ICON HERE</div>
+          <div className="text-primary text-center">
+            CLIMATE JUSTICE 2
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 );

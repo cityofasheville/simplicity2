@@ -29,6 +29,7 @@ import Map from '../../shared/visualization/Map';
 import { withLanguage } from '../../utilities/lang/LanguageContext';
 import { english } from './english';
 import { spanish } from './spanish';
+import ClimateJustice from '../../shared/ClimateJustice';
 
 const GET_ADDRESSES = gql`
 query addresses($civicaddress_ids: [String]!) {
@@ -77,6 +78,8 @@ const Address = props => (
       if (error) return <Error message={error.message} />;
       // set language
       let content;
+      console.log(props);
+      console.log(data, props.location.query.id.trim());
       switch (props.language.language) {
         case 'Spanish':
           content = spanish;
@@ -374,6 +377,14 @@ const Address = props => (
                     hasLabel
                     icon={<Icon path={IM_LOCATION2} size={20} />
                     }
+                  />
+                  <DetailsFormGroup 
+                    label="Climate Justice"
+                    name="climate"
+                    value={
+                      <ClimateJustice />
+                    }
+                    hasLabel
                   />
                   <DetailsIconLinkFormGroup
                     label={content.property_information}

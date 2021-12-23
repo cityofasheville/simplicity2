@@ -47,7 +47,7 @@ const SteepSlope = (props) => {
                     </button>
                 }
             </div>
-            <div id="ssData" className={((isSlopeDataShown && dataLoaded) || isSlopeDataError) ? 'detailsFieldset__details-listings' : 'detailsFieldset__details-listings hide-elem'}>
+            <div id="ssData" className={((isSlopeDataShown && dataLoaded) || isSlopeDataError) ? 'detailsFieldset__details-listings card-addons-container' : 'detailsFieldset__details-listings card-addons-container hide-elem'}>
                 <div id="successData" className={(!isSlopeDataError && isSlopeDataShown && dataLoaded) ? 'ss-container' : 'ss-container hide-elem' } aria-label="Slope Steep Data">
                 <div><p className="tag">Jurisdiction:</p><p className="info">{showSSData.jurisdiction ? showSSData.jurisdiction : '--'}</p></div>
                 <div><p className="tag">Acres: </p> <p className="info">{showSSData.acres  ? showSSData.acres : '--'}</p></div>

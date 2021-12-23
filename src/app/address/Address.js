@@ -78,8 +78,6 @@ const Address = props => (
       if (error) return <Error message={error.message} />;
       // set language
       let content;
-      console.log(props);
-      console.log(data, props.location.query.id.trim());
       switch (props.language.language) {
         case 'Spanish':
           content = spanish;
@@ -382,7 +380,7 @@ const Address = props => (
                     label="Climate Justice"
                     name="climate"
                     value={
-                      <ClimateJustice />
+                      <ClimateJustice civicAddress={props.location.query.id.trim()} pinnum={0} />
                     }
                     hasLabel
                   />

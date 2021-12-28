@@ -21,7 +21,7 @@
   }
 }
 
-#ssData {
+.card-addons-container {
   width: 100%;
   display: flex;
   justify-content: left;
@@ -34,7 +34,7 @@
       grid-template-columns: 1fr 1fr;
       grid-column-gap: 2em;
       align-items: center;
-      @media screen and (max-width: 300px) {
+      @media screen and (max-width: 380px) {
         display: block;        
       }
       p {
@@ -63,4 +63,11 @@
 
 .hide-elem {
   display: none !important;
+}
+
+.climate-justice-container {
+  .tag {
+    font-weight: 700;
+    text-transform: uppercase;
+  }
 }

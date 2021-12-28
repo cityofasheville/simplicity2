@@ -34,6 +34,7 @@ const ClimateJustice = (props) => {
                 <div aria-label="Flood"><p className='tag'>Flood: </p><p className='info'>{climateJusticeData.flood}</p></div>
                 <div aria-label="Wildfire"><p className='tag'>Wildfire: </p><p className='info'>{climateJusticeData.wildfire}</p></div>
                 <div aria-label="Landslide"><p className='tag'>Landslide: </p><p className='info'>{climateJusticeData.landslide}</p></div>
+                <div className='resiliency-guide'>See Resiliency guide <a href='https://drive.google.com/file/d/0BzZzONRPV-VAVF9vb2pOMUtkRmFJR1AyNFluYU5ESU9rODRJ/view?resourcekey=0-ZQ80xC-a8bw4JDs7z0Neaw' className='' target="_blank">here</a>.</div>
             </div>
         </div>
     )

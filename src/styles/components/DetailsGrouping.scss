@@ -34,6 +34,12 @@
       grid-template-columns: 1fr 1fr;
       grid-column-gap: 2em;
       align-items: center;
+
+      &.resiliency-guide {
+        display: block;
+        margin-top: 1.5em;
+      }
+
       @media screen and (max-width: 380px) {
         display: block;        
       }

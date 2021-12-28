@@ -29,6 +29,7 @@ import {
 } from '../../shared/iconConstants';
 import createFilterRenderer from '../../shared/FilterRenderer';
 import SteepSlope from './SteepSlope';
+import ClimateJustice from '../../shared/ClimateJustice';
 
 const getDollars = (value) => {
   const initialSymbols = value < 0 ? '-$' : '$';
@@ -346,6 +347,14 @@ const Property = (props) => {
                     colWidth="6"
                     value={
                       <SteepSlope pinnum={propertyData.pinnum}/>
+                    }
+                    hasLabel
+                  />
+                  <DetailsFormGroup 
+                    label="Climate Justice"
+                    name="climate"
+                    value={
+                      <ClimateJustice civicAddress={0} pinnum={propertyData.pinnum} />
                     }
                     hasLabel
                   />

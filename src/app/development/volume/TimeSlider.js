@@ -44,9 +44,9 @@ class TimeSlider extends React.Component {
       if (+newExtent[1] > +this.xSpan[1]) {
         newExtent[1] = this.xSpan[1];
       }
-      if (+newExtent[0] < +this.xSpan[0]) {
-        newExtent[0] = this.xSpan[0];
-      }
+      // if (+newExtent[0] < +this.xSpan[0]) {
+      //   newExtent[0] = this.xSpan[0];
+      // }
     } else {
       // If there isn't an e value
       newExtent = this.state.brushExtent;

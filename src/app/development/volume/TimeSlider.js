@@ -15,6 +15,7 @@ function spanOfYears(numYears) {
 class TimeSlider extends React.Component {
   constructor(props) {
     super(props);
+    console.log(props);
     this.state = {
       brushExtent: this.props.defaultBrushExtent,
       firstInputVal: this.props.defaultBrushExtent[0],
@@ -45,7 +46,11 @@ class TimeSlider extends React.Component {
         newExtent[1] = this.xSpan[1];
       }
       if (+newExtent[0] < +this.xSpan[0]) {
-        newExtent[0] = this.xSpan[0];
+        let auxDate = new Date(newExtent[0]);
+        auxDate.setDate(auxDate.getDate() + 720);
+        newExtent[1] = auxDate;
+        
+        //newExtent[0] = this.xSpan[0];
       }
     } else {
       // If there isn't an e value

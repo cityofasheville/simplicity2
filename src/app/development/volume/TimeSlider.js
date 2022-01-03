@@ -45,13 +45,25 @@ class TimeSlider extends React.Component {
       if (+newExtent[1] > +this.xSpan[1]) {
         newExtent[1] = this.xSpan[1];
       }
-      if (+newExtent[0] < +this.xSpan[0]) {
-        let auxDate = new Date(newExtent[0]);
-        auxDate.setDate(auxDate.getDate() + 720);
-        newExtent[1] = auxDate;
-        
-        //newExtent[0] = this.xSpan[0];
-      }
+      // if (+newExtent[0] < +this.xSpan[0]) {
+      //   newExtent[0] = this.xSpan[0];
+      // }
+
+      //if (+newExtent[0] < +this.xSpan[0]) {
+
+        let lessThanTwoDate = new Date(newExtent[1]);
+        lessThanTwoDate.setDate(lessThanTwoDate.getDate() - 720);
+        console.log(new Date(newExtent[0]), lessThanTwoDate, new Date(newExtent[0]) < lessThanTwoDate);
+
+        if (newExtent[0] < lessThanTwoDate) {
+          newExtent[0] = lessThanTwoDate;
+        } else {
+          let moreThanTwoDate = new Date(newExtent[0]);
+          moreThanTwoDate.setDate(moreThanTwoDate.getDate() + 720);
+          console.log(new Date(newExtent[0]), moreThanTwoDate, newExtent[1]);
+          newExtent[1] = moreThanTwoDate;
+        }
+      //}
     } else {
       // If there isn't an e value
       newExtent = this.state.brushExtent;

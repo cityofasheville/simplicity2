@@ -350,14 +350,14 @@ const Property = (props) => {
                     }
                     hasLabel
                   />
-                  <DetailsFormGroup 
+                  {/* <DetailsFormGroup 
                     label="Climate Justice"
                     name="climate"
                     value={
                       <ClimateJustice civicAddress={0} pinnum={propertyData.pinnum} />
                     }
                     hasLabel
-                  />
+                  /> */}
                 </div>
                 <AccessibleReactTable
                   ariaLabel="Property Addresses"

@@ -31,6 +31,26 @@ import createFilterRenderer from '../../shared/FilterRenderer';
 import SteepSlope from './SteepSlope';
 import ClimateJustice from '../../shared/ClimateJustice';
 
+const getSteepSlope = (pinValue, callback) => {
+  let steepSlopeUrl = "https://mapwnc.org/api/slopebypin/" + pinValue;
+  fetch(steepSlopeUrl)
+  .then(response => response.json())
+  .then(data => {
+    callback(true);
+    document.getElementById('ssData').classList.remove('hide-elem');
+    document.getElementById('successData').classList.remove('hide-elem');
+    document.getElementById('jurisdiction').innerText = data.jurisdiction;
+    document.getElementById('acres').innerText = data.acres;
+    document.getElementById('elevation').innerText = data.maxElevation;
+    document.getElementById('percentSlope').innerText = data.percentSlope;
+  })
+  .catch((e) => {
+    document.getElementById('ssData').classList.remove('hide-elem');
+    document.getElementById('slopeError').classList.remove('hide-elem');
+    document.getElementById('slopeError').innerText = "There has been an error in the server, please try again.";
+  });
+}
+
 const getDollars = (value) => {
   const initialSymbols = value < 0 ? '-$' : '$';
   return [initialSymbols, Math.abs(value).toLocaleString()].join('');
@@ -45,6 +65,8 @@ const Property = (props) => {
   if (props.data.error) {
     return <Error message={props.data.error.message} />;
   }
+
+  const [isSlopeDataShown, setSlopeData] = useState(false);
 
   const propertyData = props.inTable ? props.data : props.data.properties[0];
   const dataForAddressesTable = [];

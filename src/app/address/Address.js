@@ -241,7 +241,7 @@ const Address = props => (
             </ButtonGroup>
           </PageHeader>
           <div className="row">
-            <div className="col-sm-7">
+            <div className="col-sm-12">
               <fieldset className="detailsFieldset">
                 <InCityMessage inTheCity={addressData.is_in_city} />
                 <div className="map-container">
@@ -252,6 +252,26 @@ const Address = props => (
                     width="100%"
                   />
                 </div>
+                {addressData.is_in_city &&
+                  // <div className="col-sm-12">
+                    <div className="row small-padding">
+                      {['CRIME', 'DEVELOPMENT'].map((topic, i) => (
+                        <div className="col-xs-6" key={['topic', i]}>
+                          <TopicCard
+                            topic={topic}
+                            entity="address"
+                            id={props.location.query.id}
+                            label={`${addressData.address}, ${addressData.zipcode}`}
+                            entities={props.location.query.entities}
+                            x={addressData.x}
+                            y={addressData.y}
+                            search={props.location.query.search}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  // </div>
+                }
                 <div className="detailsFieldset__details-listings">
                   <DetailsFormGroup
                     label={content.trash_collection}
@@ -394,26 +414,6 @@ const Address = props => (
                 </div>
               </fieldset>
             </div>
-            {addressData.is_in_city &&
-              <div className="col-sm-5">
-                <div className="row small-padding">
-                  {['CRIME', 'DEVELOPMENT'].map((topic, i) => (
-                    <div className="col-xs-6" key={['topic', i]}>
-                      <TopicCard
-                        topic={topic}
-                        entity="address"
-                        id={props.location.query.id}
-                        label={`${addressData.address}, ${addressData.zipcode}`}
-                        entities={props.location.query.entities}
-                        x={addressData.x}
-                        y={addressData.y}
-                        search={props.location.query.search}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            }
           </div>
         </div>
       );

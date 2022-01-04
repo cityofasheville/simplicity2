@@ -29,6 +29,7 @@ import Map from '../../shared/visualization/Map';
 import { withLanguage } from '../../utilities/lang/LanguageContext';
 import { english } from './english';
 import { spanish } from './spanish';
+import ClimateJustice from '../../shared/ClimateJustice';
 
 const GET_ADDRESSES = gql`
 query addresses($civicaddress_ids: [String]!) {
@@ -375,6 +376,14 @@ const Address = props => (
                     icon={<Icon path={IM_LOCATION2} size={20} />
                     }
                   />
+                  {/* <DetailsFormGroup 
+                    label="Climate Justice"
+                    name="climate"
+                    value={
+                      <ClimateJustice civicAddress={props.location.query.id.trim()} pinnum={0} />
+                    }
+                    hasLabel
+                  /> */}
                   <DetailsIconLinkFormGroup
                     label={content.property_information}
                     title={content.property_information}

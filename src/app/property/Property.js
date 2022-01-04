@@ -28,6 +28,8 @@ import {
   IM_FLAG7
 } from '../../shared/iconConstants';
 import createFilterRenderer from '../../shared/FilterRenderer';
+import SteepSlope from './SteepSlope';
+import ClimateJustice from '../../shared/ClimateJustice';
 
 const getSteepSlope = (pinValue, callback) => {
   let steepSlopeUrl = "https://mapwnc.org/api/slopebypin/" + pinValue;
@@ -366,30 +368,18 @@ const Property = (props) => {
                     name="steepslope"
                     colWidth="6"
                     value={
-                      <div>
-                        <div className='steep-slope-tag'>
-                            {
-                              !isSlopeDataShown && 
-                              <button className="btn btn-default steep-slope-btn"
-                                onClick={()=>getSteepSlope(propertyData.pinnum, setSlopeData)}
-                                title="Get Steep Slope" aria-label="get Steep Slope Data">
-                                <span>Get Steep Slope Data</span>
-                              </button>
-                            }
-                        </div>
-                        <div id="ssData" className="detailsFieldset__details-listings hide-elem">
-                          <div id="successData" className="ss-container hide-elem" aria-label="Slope Steep Data">
-                            <div><p className="tag">Jurisdiction:</p><p id="jurisdiction" className="info"></p></div>
-                            <div><p className="tag">Acres: </p> <p id="acres" className="info"></p></div>
-                            <div><p className="tag">Maximum Elevation:</p><p id="elevation" className="info"></p></div>
-                            <div><p className="tag">Percent Slope:</p><p id="percentSlope" className="info"></p></div>
-                          </div>
-                          <div id="slopeError" aria-label="Server Error" className="slope-error hide-elem"></div>
-                        </div>
-                      </div>
+                      <SteepSlope pinnum={propertyData.pinnum}/>
                     }
                     hasLabel
                   />
+                  {/* <DetailsFormGroup 
+                    label="Climate Justice"
+                    name="climate"
+                    value={
+                      <ClimateJustice civicAddress={0} pinnum={propertyData.pinnum} />
+                    }
+                    hasLabel
+                  /> */}
                 </div>
                 <AccessibleReactTable
                   ariaLabel="Property Addresses"

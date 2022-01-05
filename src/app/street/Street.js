@@ -30,7 +30,16 @@ const Street = (props) => {
         </ButtonGroup>
       </PageHeader>
       <div className="row">
-        <div className="col-sm-6">
+      <div className="col-sm-12">
+          <div className="row">
+            {props.topics.map((topic, i) => (
+              <div className="col-xs-6" key={['topic', i].join('_')}>
+                <TopicCard topic={topic} entity="street" id={props.location.query.id} label={props.location.query.label} search={props.location.query.search} />
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="col-sm-12">
           <fieldset className="detailsFieldset">
             <div className="map-container">
               <Map height="250px" legend={createMaintenanceLegend(formatMaintenanceData(props.data.streets))} maintenanceData={formatMaintenanceData(props.data.streets)} drawMaintenance bounds={props.location.query.bounds !== undefined & props.location.query.bounds !== '' ? JSON.parse(props.location.query.bounds) : getBoundsFromStreetData(props.data.streets)} />
@@ -41,15 +50,6 @@ const Street = (props) => {
               <DetailsIconLinkFormGroup label="Maintenance" icon={<Icon path={IM_TRAFFIC_CONE} size={24} />} href={['maintenance', '?entity=', props.location.query.entity, '&entities=', props.location.query.entities, '&search=', props.location.query.search, '&id=', props.location.query.id, '&label=', props.location.query.label, '&hideNavbar=', props.location.query.hideNavbar, '&view=map'].join('')} title="Maintenance" inWindow />
             </div>
           </fieldset>
-        </div>
-        <div className="col-sm-6">
-          <div className="row">
-            {props.topics.map((topic, i) => (
-              <div className="col-xs-6" key={['topic', i].join('_')}>
-                <TopicCard topic={topic} entity="street" id={props.location.query.id} label={props.location.query.label} search={props.location.query.search} />
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </div>

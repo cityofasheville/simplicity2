@@ -6,7 +6,6 @@ import {
   IM_TREE
 } from '../shared/iconConstants';
 import Icon from '../shared/Icon';
-import { Link } from 'react-router';
 
 const Topics = props => (
   <div className="card-container">

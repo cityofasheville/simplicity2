@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 
-const LEVEL_NAME ={
-    0: 'LOWER',
-    1: 'MEDIUM',
-    2: 'HIGH',
+const RISK_NAME = {
+    0: 'lower',
+    1: 'medium',
+    2: 'high',
     3: 'HIGHEST'
 };
 
@@ -15,14 +15,14 @@ const getRiskLevel = (level, inCity) => {
     if (!inCity) {
         return 'There is no data for your Neighborhood';
     } else {
-        return LEVEL_NAME[level];
+        return RISK_NAME[level];
     }
-}
+};
 
 const ClimateJustice = (props) => {
     let pinNum = props.pinnum;
     let civicAddress = props.civicAddress;
-    let [climateJusticeData, setClimateJusticeData] = useState({})
+    let [climateJusticeData, setClimateJusticeData] = useState({});
     const getClimateJusticeData = ({civicAddress, pinNum}, setClimateJusticeData) => {
         let climateJusticeParam = 0;
         let cjParam = "";
@@ -47,6 +47,11 @@ const ClimateJustice = (props) => {
     useEffect(() => {
         getClimateJusticeData({civicAddress, pinNum}, setClimateJusticeData);
     }, []);
+
+    let floodText = getRiskLevel(climateJusticeData.flood, props.inCity);
+    let fireText = getRiskLevel(climateJusticeData.wildfire, props.inCity);
+    let landslideText = getRiskLevel(climateJusticeData.landslide, props.inCity);
+
     return (
         <div className='climate-justice-container' aria-label="Climate Justice">
             <div className="cj-threats">
@@ -55,21 +60,21 @@ const ClimateJustice = (props) => {
                     <div className="img">
                         <img src={floodImg} alt="Flood" />
                     </div>
-                    <p className='info'>{getRiskLevel(climateJusticeData.flood, props.inCity)}</p>
+                    <p className={`${floodText} info`}>{floodText}</p>
                 </div>
                 <div aria-label="Wildfire">
                     <p className='tag'>WILDFIRE</p>
                     <div className="img">
                         <img src={wildfireImg} alt="Wildfire" />
                     </div>
-                    <p className='info'>{getRiskLevel(climateJusticeData.wildfire, props.inCity)}</p>
+                    <p className={`${fireText} info`}>{fireText}</p>
                 </div>
                 <div aria-label="Landslide">
                     <p className='tag'>LANDSLIDE</p>
                     <div className="img">
                         <img src={landslideImg} alt="Landslide" />
                     </div>
-                    <p className='info'>{getRiskLevel(climateJusticeData.landslide, props.inCity)}</p>
+                    <p className={`${landslideText} info`}>{landslideText}</p>
                 </div>
             </div>
             <div className='resiliency-guide'>See Resiliency guide <a href='https://drive.google.com/file/d/0BzZzONRPV-VAVF9vb2pOMUtkRmFJR1AyNFluYU5ESU9rODRJ/view?resourcekey=0-ZQ80xC-a8bw4JDs7z0Neaw' className='' target="_blank">here</a>.</div>

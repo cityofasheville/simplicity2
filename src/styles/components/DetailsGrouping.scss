@@ -108,6 +108,18 @@
           &.info {
             padding: 1em;
           }
+          &.lower {
+            background-color: #622576;
+          }
+          &.medium {
+            background-color: #c66d85;
+          }
+          &.high {
+            background-color: #f8ac69;
+          }
+          &.highest {
+            background-color: #f2f44d;
+          }
           &.tag {
             padding-top: 1.5em;
           }

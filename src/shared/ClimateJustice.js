@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 
 const RISK_NAME = {
-    0: 'lower',
-    1: 'medium',
-    2: 'high',
-    3: 'HIGHEST'
+    0: {risk:'lower', color: '#622576'},
+    1: {risk:'medium', color: '#c66d85ba'},
+    2: {risk:'high', color: '#e9ab74'},
+    3: {risk:'highest', color: '#f2f44d'}
 };
 
 const floodImg = "https://drive.google.com/uc?export=view&id=1jS00hE1Y4Oto8PhPkldx4sHp7xtq8sIs";
@@ -23,6 +23,7 @@ const ClimateJustice = (props) => {
     let pinNum = props.pinnum;
     let civicAddress = props.civicAddress;
     let [climateJusticeData, setClimateJusticeData] = useState({});
+    
     const getClimateJusticeData = ({civicAddress, pinNum}, setClimateJusticeData) => {
         let climateJusticeParam = 0;
         let cjParam = "";
@@ -36,7 +37,7 @@ const ClimateJustice = (props) => {
             } else {
                 climateJusticeParam = 0;
             }
-        } 
+        }
         let climateJusticeApi = `https://arcgis.ashevillenc.gov/arcgis/rest/services/Environmental/ClimateJustice_Address/MapServer/0/query?where=${cjParam}&outFields=*&f=pjson`;
         fetch(climateJusticeApi)
         .then(response => response.json())
@@ -44,13 +45,19 @@ const ClimateJustice = (props) => {
             setClimateJusticeData(data.features[0].attributes);
         });
     }
+
     useEffect(() => {
         getClimateJusticeData({civicAddress, pinNum}, setClimateJusticeData);
     }, []);
 
+    console.log(climateJusticeData);
     let floodText = getRiskLevel(climateJusticeData.flood, props.inCity);
     let fireText = getRiskLevel(climateJusticeData.wildfire, props.inCity);
     let landslideText = getRiskLevel(climateJusticeData.landslide, props.inCity);
+
+    if (floodText !== undefined && fireText !== undefined && landslideText !== undefined) {
+        console.log(floodText.risk, fireText.risk, landslideText.risk);
+    }
 
     return (
         <div className='climate-justice-container' aria-label="Climate Justice">
@@ -60,21 +67,30 @@ const ClimateJustice = (props) => {
                     <div className="img">
                         <img src={floodImg} alt="Flood" />
                     </div>
-                    <p className={`${floodText} info`}>{floodText}</p>
+                    {  
+                        floodText !== undefined && 
+                        <p className={`${floodText.risk} info`}>{floodText.risk}</p>
+                    }
                 </div>
                 <div aria-label="Wildfire">
                     <p className='tag'>WILDFIRE</p>
                     <div className="img">
                         <img src={wildfireImg} alt="Wildfire" />
                     </div>
-                    <p className={`${fireText} info`}>{fireText}</p>
+                    {  
+                        fireText !== undefined && 
+                        <p className={`${fireText.risk} info`}>{fireText.risk}</p>
+                    }
                 </div>
                 <div aria-label="Landslide">
                     <p className='tag'>LANDSLIDE</p>
                     <div className="img">
                         <img src={landslideImg} alt="Landslide" />
                     </div>
-                    <p className={`${landslideText} info`}>{landslideText}</p>
+                    {  
+                        landslideText !== undefined && 
+                        <p className={`${landslideText.risk} info`}>{landslideText.risk}</p>
+                    }
                 </div>
             </div>
             <div className='resiliency-guide'>See Resiliency guide <a href='https://drive.google.com/file/d/0BzZzONRPV-VAVF9vb2pOMUtkRmFJR1AyNFluYU5ESU9rODRJ/view?resourcekey=0-ZQ80xC-a8bw4JDs7z0Neaw' className='' target="_blank">here</a>.</div>

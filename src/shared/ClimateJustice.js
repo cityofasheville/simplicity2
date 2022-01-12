@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 
 const RISK_NAME = {
-    0: {risk:'lower', color: '#622576'},
-    1: {risk:'medium', color: '#c66d85ba'},
-    2: {risk:'high', color: '#e9ab74'},
-    3: {risk:'highest', color: '#f2f44d'}
+    0: {risk:'lower'},
+    1: {risk:'medium'},
+    2: {risk:'high'},
+    3: {risk:'highest'}
 };
 
 const floodImg = "https://drive.google.com/uc?export=view&id=1jS00hE1Y4Oto8PhPkldx4sHp7xtq8sIs";
@@ -50,14 +50,9 @@ const ClimateJustice = (props) => {
         getClimateJusticeData({civicAddress, pinNum}, setClimateJusticeData);
     }, []);
 
-    console.log(climateJusticeData);
     let floodText = getRiskLevel(climateJusticeData.flood, props.inCity);
     let fireText = getRiskLevel(climateJusticeData.wildfire, props.inCity);
     let landslideText = getRiskLevel(climateJusticeData.landslide, props.inCity);
-
-    if (floodText !== undefined && fireText !== undefined && landslideText !== undefined) {
-        console.log(floodText.risk, fireText.risk, landslideText.risk);
-    }
 
     return (
         <div className='climate-justice-container' aria-label="Climate Justice">

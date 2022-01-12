@@ -372,14 +372,15 @@ const Property = (props) => {
                     }
                     hasLabel
                   />
-                  {/* <DetailsFormGroup 
-                    label="Climate Justice"
+                  <DetailsFormGroup 
+                    label="Neighborhood Climate Threats"
                     name="climate"
+                    fullWidth="true"
                     value={
                       <ClimateJustice civicAddress={0} pinnum={propertyData.pinnum} />
                     }
                     hasLabel
-                  /> */}
+                  />
                 </div>
                 <AccessibleReactTable
                   ariaLabel="Property Addresses"

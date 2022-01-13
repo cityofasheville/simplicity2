@@ -8,7 +8,7 @@ const RISK_NAME = {
 };
 
 const floodImg = "https://drive.google.com/uc?export=view&id=1jS00hE1Y4Oto8PhPkldx4sHp7xtq8sIs";
-const wildfireImg = "https://drive.google.com/uc?export=view&id=16DBmEGKAJQjVT31fdfxdtvG7nqjPPLAR";
+const wildfireImg = "https://drive.google.com/uc?export=view&id=1lm39qb7JIqDVsufNHReuHdZWK91WwbrX";
 const landslideImg = "https://drive.google.com/uc?export=view&id=13IVjkYx6rwpj1ELhwfnQOutC4OSEM_pe";
 
 const getRiskLevel = (level, inCity) => {
@@ -43,6 +43,9 @@ const ClimateJustice = (props) => {
         .then(response => response.json())
         .then(data => {
             setClimateJusticeData(data.features[0].attributes);
+        })
+        .catch(e => {
+            console.log(e);
         });
     }
 
@@ -63,8 +66,9 @@ const ClimateJustice = (props) => {
                         <img src={floodImg} alt="Flood" />
                     </div>
                     {  
-                        floodText !== undefined && 
-                        <p className={`${floodText.risk} info`}>{floodText.risk}</p>
+                        floodText !== undefined ? 
+                        <p className={`${floodText.risk} info`}>{floodText.risk}</p> : 
+                        <p className='info error'>There was a server error, please try again.</p>
                     }
                 </div>
                 <div aria-label="Wildfire">

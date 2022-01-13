@@ -377,7 +377,7 @@ const Property = (props) => {
                     name="climate"
                     fullWidth="true"
                     value={
-                      <ClimateJustice civicAddress={0} pinnum={propertyData.pinnum} />
+                      <ClimateJustice inCity={propertyData.is_in_city} civicAddress={0} pinnum={propertyData.pinnum} />
                     }
                     hasLabel
                   />

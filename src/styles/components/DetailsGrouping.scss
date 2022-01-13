@@ -107,6 +107,9 @@
           font-size: 1.2em;
           &.info {
             padding: 1em;
+            &.error {
+              font-size: 0.8em;
+            }
           }
           &.lower {
             background-color: #9760a9;

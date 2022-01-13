@@ -77,8 +77,9 @@ const ClimateJustice = (props) => {
                         <img src={wildfireImg} alt="Wildfire" />
                     </div>
                     {  
-                        fireText !== undefined && 
-                        <p className={`${fireText.risk} info`}>{fireText.risk}</p>
+                        fireText !== undefined ? 
+                        <p className={`${fireText.risk} info`}>{fireText.risk}</p> : 
+                        <p className='info error'>There was a server error, please try again.</p>
                     }
                 </div>
                 <div aria-label="Landslide">
@@ -87,8 +88,9 @@ const ClimateJustice = (props) => {
                         <img src={landslideImg} alt="Landslide" />
                     </div>
                     {  
-                        landslideText !== undefined && 
-                        <p className={`${landslideText.risk} info`}>{landslideText.risk}</p>
+                        landslideText !== undefined ? 
+                        <p className={`${landslideText.risk} info`}>{landslideText.risk}</p> : 
+                        <p className='info error'>There was a server error, please try again.</p>
                     }
                 </div>
             </div>

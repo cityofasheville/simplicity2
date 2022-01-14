@@ -87,9 +87,10 @@
         div.img {
           text-align: center;
           img {
-            max-width: 80%;
+            max-width: 100%;
+            width: 50%;
             max-height: auto;
-            margin: 1em auto;
+            margin: 0.5em 0 0.9em 0;
           }
         }
         p {
@@ -120,7 +121,7 @@
             background-color: #f2f44d;
           }
           &.tag {
-            padding-top: 1.5em;
+            padding-top: 0.8em;
           }
         }
       }

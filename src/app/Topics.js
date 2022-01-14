@@ -2,6 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TopicCard from '../shared/TopicCard';
 import { withLanguage } from '../utilities/lang/LanguageContext';
+import {
+  IM_TREE
+} from '../shared/iconConstants';
+import Icon from '../shared/Icon';
 
 const Topics = props => (
   <div className="card-container">
@@ -16,6 +20,16 @@ const Topics = props => (
           <TopicCard topic={topic.name} lang={props.language.language} view={null} path={topic.path || topic.name} />
         </div>
       ))}
+      <div className="card-item">
+        <a className="topic-card" target='blank' href={'https://avl.maps.arcgis.com/apps/instant/lookup/index.html?appid=10e2c4ae45614b92ad4efaa61342b249%2F'}>
+          <div className="topicCard">
+            <div className="text-primary text-center"><Icon path={IM_TREE} size={75} /></div>
+            <div className="text-primary text-center">
+              CLIMATE JUSTICE
+            </div>
+          </div>
+        </a>
+      </div>
     </div>
   </div>
 );

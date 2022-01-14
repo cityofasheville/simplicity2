@@ -201,7 +201,7 @@ const CrimesByStreet = props => (
 
       const pieData = convertToPieData(data.crimes_by_street);
       const mapData = data.crimes_by_street.map(item => (Object.assign({}, item, {
-        popup: `<div><b>${item.address}</b><p>${moment.utc(item.date_occurred).format('M/DD/YYYY')}</p><p>${item.offense_long_description}</p></div>`,
+        popup: `<div><b>${item.address}</b><p>${item.date_occurred.indexOf('-') === -1 ? moment.unix(item.date_occurred / 1000).format('M/DD/YYYY') : moment.utc(item.date_occurred).format('M/DD/YYYY')}</p><p>${item.offense_long_description}</p></div>`,
         options: { icon: L.icon({
           iconUrl: getMarker(item.offense_long_description),
           iconSize: [25, 41],

@@ -72,9 +72,6 @@
 
   .climate-justice-container {
     .cj-threats {
-      // display: grid;
-      // grid-template-columns: 1fr 1fr 1fr;
-      // grid-column-gap: 0.5em;
       display: flex;
       flex-wrap: wrap;
 
@@ -84,16 +81,15 @@
 
       > div {
         margin: auto;
-        background-color: #95a5a624;
+        background-color: #fff;
         margin-bottom: 1em;
         flex-basis: calc(33.333% - 10px);
         div.img {
-          margin: 0 auto;
-          width: 100%;
+          text-align: center;
           img {
-            max-width: 100%;
-            max-height: 100%;
-            display: block;
+            max-width: 80%;
+            max-height: auto;
+            margin: 1em auto;
           }
         }
         p {

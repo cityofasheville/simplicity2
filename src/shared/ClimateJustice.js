@@ -7,9 +7,10 @@ const RISK_NAME = {
     3: {risk:'highest'}
 };
 
-const floodImg = "https://drive.google.com/uc?export=view&id=1jS00hE1Y4Oto8PhPkldx4sHp7xtq8sIs";
-const wildfireImg = "https://drive.google.com/uc?export=view&id=1lm39qb7JIqDVsufNHReuHdZWK91WwbrX";
-const landslideImg = "https://drive.google.com/uc?export=view&id=13IVjkYx6rwpj1ELhwfnQOutC4OSEM_pe";
+
+const floodImg = "https://drive.google.com/uc?export=view&id=1RjvA8OfYaN55b1nOy4w2Bz3ja3aZC_3O";
+const wildfireImg = "https://drive.google.com/uc?export=view&id=1xwStl5e7d2BMtt7p59m1ZpQHrpIAtwzj";
+const landslideImg = "https://drive.google.com/uc?export=view&id=1ywKPriWubYDJk-UpPd5ea69jcdZf3Jk8";
 
 const getRiskLevel = (level, inCity) => {
     if (!inCity) {
@@ -23,7 +24,6 @@ const ClimateJustice = (props) => {
     let pinNum = props.pinnum;
     let civicAddress = props.civicAddress;
     let [climateJusticeData, setClimateJusticeData] = useState({});
-    
     const getClimateJusticeData = ({civicAddress, pinNum}, setClimateJusticeData) => {
         let climateJusticeParam = 0;
         let cjParam = "";
@@ -39,6 +39,7 @@ const ClimateJustice = (props) => {
             }
         }
         let climateJusticeApi = `https://arcgis.ashevillenc.gov/arcgis/rest/services/Environmental/ClimateJustice_Address/MapServer/0/query?where=${cjParam}&outFields=*&f=pjson`;
+        console.log(climateJusticeApi);
         fetch(climateJusticeApi)
         .then(response => response.json())
         .then(data => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { timeDay, timeWeek, timeMonth } from 'd3-time';
+import { timeDay, timeWeek } from 'd3-time';
 import PermitsTableWrapper from './PermitsTableWrapper';
 import TimeSlider from '../volume/TimeSlider';
 import ErrorBoundary from '../../../shared/ErrorBoundary';
@@ -7,41 +7,17 @@ import ErrorBoundary from '../../../shared/ErrorBoundary';
 
 
 class PermitsIndex extends React.Component {
-  constructor(props) {
-    super(props);
-    // const now = timeDay.floor(new Date());
-    // this.initialBrushExtent = [
-    //   this.props.initialBrushExtent,
-    //   now.getTime(),
-    // ];
-    console.log(props);
+  constructor() {
+    super();
+    const now = timeDay.floor(new Date());
+    this.initialBrushExtent = [
+      timeWeek.offset(now, -4).getTime(),
+      now.getTime(),
+    ];
     this.state = {
-      timeSpan: this.props.initialBrushExtent,
+      timeSpan: this.initialBrushExtent,
     };
   }
-
-  // onDateRangeChange(filter) {
-  //   let newParams = '';
-  //   if (filter.length > 0) {
-  //     newParams = `${filter
-  //       .map(filterObj => `${filterObj.id}=${filterObj.value}`)
-  //       .join('&')}`;
-  //   }
-  //   window
-  //     .history
-  //     .pushState(
-  //       {},
-  //       '',
-  //       `${location.pathname}${newParams.length > 0 ? '?' : ''}${newParams}${location.hash}`
-  //     );
-  //   this.setState({
-  //     filtered: filter,
-  //   });
-  // }
-
-  // componentDidMount() {
-
-  // }
 
   render() {
     return (
@@ -56,8 +32,7 @@ class PermitsIndex extends React.Component {
             onBrushEnd={newExtent => this.setState({
               timeSpan: newExtent,
             })}
-            defaultBrushExtent={this.state.timeSpan}
-            xSpan={2}
+            defaultBrushExtent={this.initialBrushExtent}
           />
           <PermitsTableWrapper
             // Defaults are fine for now
@@ -70,12 +45,5 @@ class PermitsIndex extends React.Component {
     );
   }
 }
-
-PermitsIndex.defaultProps = {
-  initialBrushExtent: [
-    timeMonth.offset(timeDay.floor(new Date()), -3).getTime(),
-    timeDay.floor(new Date()).getTime(),
-  ], // today and today minus 3 months
-};
 
 export default PermitsIndex;

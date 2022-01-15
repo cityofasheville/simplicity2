@@ -3,60 +3,97 @@ import { timeDay, timeWeek, timeMonth } from 'd3-time';
 import PermitsTableWrapper from './PermitsTableWrapper';
 import TimeSlider from '../volume/TimeSlider';
 import ErrorBoundary from '../../../shared/ErrorBoundary';
-// import PermitSearchBar from './PermitSearchBar';
 
 
 class PermitsIndex extends React.Component {
+
   constructor(props) {
     super(props);
-    // const now = timeDay.floor(new Date());
-    // this.initialBrushExtent = [
-    //   this.props.initialBrushExtent,
-    //   now.getTime(),
-    // ];
-    console.log(props);
+
+    let defaultExtent;
+    let currentUrlParams = new URLSearchParams(window.location.search);
+
+    if (currentUrlParams.has('rangeFrom') && currentUrlParams.has('rangeThrough')) {
+      if (isNaN(currentUrlParams.get('rangeFrom')) || isNaN(currentUrlParams.get('rangeThrough'))) {
+        defaultExtent = [
+          this.props.initialBrushExtent[0],
+          this.props.initialBrushExtent[1],
+        ];  
+        currentUrlParams.set('rangeFrom', this.props.initialBrushExtent[0]);
+        currentUrlParams.set('rangeThrough', this.props.initialBrushExtent[1]);
+
+        if (history.pushState) {
+          let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + `?${currentUrlParams}`;
+          window.history.pushState({path: newurl}, '', newurl);
+        }
+      } else {
+        const rangeOverhead = timeDay.count(currentUrlParams.get('rangeThrough'), this.props.spanUpperLimit);
+        const rangeUnderhead = timeDay.count(this.props.spanLowerLimit, currentUrlParams.get('rangeFrom'));
+
+        if (rangeOverhead <= 0 || rangeUnderhead <= 0) {
+          defaultExtent = [
+            this.props.initialBrushExtent[0],
+            this.props.initialBrushExtent[1],
+          ];  
+        } else {
+          defaultExtent = [
+            currentUrlParams.get('rangeFrom'),
+            currentUrlParams.get('rangeThrough'),
+          ];  
+        }
+      }
+      
+    } else {
+      defaultExtent = [
+        this.props.initialBrushExtent[0],
+        this.props.initialBrushExtent[1],
+      ];
+    }
+
+    currentUrlParams.set('rangeFrom', defaultExtent[0]);
+    currentUrlParams.set('rangeThrough', defaultExtent[1]);
+
+    if (history.pushState) {
+      let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + `?${currentUrlParams}`;
+      window.history.pushState({path: newurl}, '', newurl);
+    }
+
     this.state = {
-      timeSpan: this.props.initialBrushExtent,
+      timeSpan: defaultExtent,
     };
+
+    this.onDateRangeChange = this.onDateRangeChange.bind(this);
   }
 
-  // onDateRangeChange(filter) {
-  //   let newParams = '';
-  //   if (filter.length > 0) {
-  //     newParams = `${filter
-  //       .map(filterObj => `${filterObj.id}=${filterObj.value}`)
-  //       .join('&')}`;
-  //   }
-  //   window
-  //     .history
-  //     .pushState(
-  //       {},
-  //       '',
-  //       `${location.pathname}${newParams.length > 0 ? '?' : ''}${newParams}${location.hash}`
-  //     );
-  //   this.setState({
-  //     filtered: filter,
-  //   });
-  // }
+  onDateRangeChange(newExtent) {
+    let currentUrlParams = new URLSearchParams(window.location.search);
+    currentUrlParams.set('rangeFrom', newExtent[0]);
+    currentUrlParams.set('rangeThrough', newExtent[1]);
 
-  // componentDidMount() {
+    if (history.pushState) {
+      let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + `?${currentUrlParams}`;
+      window.history.pushState({path: newurl}, '', newurl);
+    }
 
-  // }
+    this.setState({
+      timeSpan: newExtent,
+    });
+  }
 
   render() {
     return (
       <div className="container">
         <h1>All Permit Applications</h1>
         <hr />
-        {/* <h2>Look Up an Existing Application</h2>
-        <PermitSearchBar /> */}
         <h2 style={{marginTop: "32px"}}>Filter Permits by Date Applied</h2>
         <ErrorBoundary>
           <TimeSlider
-            onBrushEnd={newExtent => this.setState({
-              timeSpan: newExtent,
-            })}
+            onBrushEnd={(newExtent) => {
+              this.onDateRangeChange(newExtent);
+            }}
             defaultBrushExtent={this.state.timeSpan}
+            spanLowerLimit={this.props.spanLowerLimit}
+            spanUpperLimit={this.props.spanUpperLimit}
             xSpan={2}
           />
           <PermitsTableWrapper
@@ -73,9 +110,11 @@ class PermitsIndex extends React.Component {
 
 PermitsIndex.defaultProps = {
   initialBrushExtent: [
-    timeMonth.offset(timeDay.floor(new Date()), -3).getTime(),
+    timeWeek.offset(timeDay.floor(new Date()), -8).getTime(),
     timeDay.floor(new Date()).getTime(),
-  ], // today and today minus 3 months
+  ], 
+  spanUpperLimit: timeDay.floor(new Date()).getTime(),
+  spanLowerLimit: timeDay.floor(new Date(Date.UTC(1999, 6, 1))).getTime(),
 };
 
 export default PermitsIndex;

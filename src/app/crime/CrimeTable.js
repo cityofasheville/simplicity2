@@ -127,7 +127,7 @@ const CrimeTable = (props) => {
     {
       Header: content.date,
       id: 'date_occurred',
-      accessor: crime => (<span>{moment.utc(crime.date_occurred).format('M/DD/YYYY')}</span>),
+      accessor: crime => (<span>{crime.date_occurred.indexOf('-') === -1 ? moment.unix(crime.date_occurred / 1000).format('M/DD/YYYY') : moment.utc(crime.date_occurred).format('M/DD/YYYY')}</span>),
       width: 100,
       Filter: FilterRenderer,
       filterMethod: (filter, row) => {

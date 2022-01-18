@@ -95,7 +95,10 @@ const ClimateJustice = (props) => {
                     }
                 </div>
             </div>
-            <div className='resiliency-guide'>See Resiliency guide <a href='https://drive.google.com/file/d/0BzZzONRPV-VAVF9vb2pOMUtkRmFJR1AyNFluYU5ESU9rODRJ/view?resourcekey=0-ZQ80xC-a8bw4JDs7z0Neaw' className='' target="_blank">here</a>.</div>
+            <div className='resiliency-guide'>
+                For mitigation strategies, see the 
+                <a href='https://drive.google.com/file/d/0BzZzONRPV-VAVF9vb2pOMUtkRmFJR1AyNFluYU5ESU9rODRJ/view?resourcekey=0-ZQ80xC-a8bw4JDs7z0Neaw' className='' target="_blank"> Climate Resiliency Guide</a>.
+            </div>
         </div>
     )
 }

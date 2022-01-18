@@ -71,6 +71,7 @@
   background-color: #fbfbfb;
 
   .climate-justice-container {
+    margin: 1rem 1rem 0 1rem;
     .cj-threats {
       display: flex;
       flex-wrap: wrap;
@@ -84,6 +85,9 @@
         background-color: #fff;
         margin-bottom: 1em;
         flex-basis: calc(33.333% - 10px);
+        @media screen and (min-width: 950px) {
+          flex-basis: calc(30.333% - 10px);
+        }
         div.img {
           text-align: center;
           img {
@@ -131,7 +135,7 @@
     
     .resiliency-guide {
       display: block;
-      margin-top: 1em;
+      margin-top: 0.1em;
     }
   }
 }

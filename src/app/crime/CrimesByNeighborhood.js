@@ -134,7 +134,6 @@ const convertToPieData = (crimeData) => {
       ));
     }
   }
-
   pieData.sort((a, b) => (
     ((a.value > b.value) ? -1 : ((a.value < b.value) ? 1 : 0)) // eslint-disable-line
   ));
@@ -218,7 +217,7 @@ const CrimesByNeighborhood = props => (
       }
       const pieData = convertToPieData(data.crimes_by_neighborhood);
       const mapData = data.crimes_by_neighborhood.map(item => (Object.assign({}, item, {
-        popup: `<div><b>${item.address}</b><p>${moment.utc(item.date_occurred).format('M/DD/YYYY')}</p><p>${item.offense_long_description}</p></div>`, // eslint-disable-line
+        popup: `<div><b>${item.address}</b><p>${item.date_occurred.indexOf('-') === -1 ? moment.unix(item.date_occurred / 1000).format('M/DD/YYYY') : moment.utc(item.date_occurred).format('M/DD/YYYY')}</p><p>${item.offense_long_description}</p></div>`, // eslint-disable-line
         options: {
           icon: L.icon({
             iconUrl: getMarker(item.offense_long_description),

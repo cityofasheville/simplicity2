@@ -2,7 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const DetailsFormGroup = props => (
-  <div className={props.icon ? 'form-group form-group--has-content form-group--has-icon' : 'form-group form-group--has-content'}>
+  <div className={props.icon ? 
+    'form-group form-group--has-content form-group--has-icon' : 
+    (props.fullWidth ? 'form-group form-group--has-content full-width-card' : 'form-group form-group--has-content')}>
     <div className="form-group__inner">
       <div className='form-group__label'>
       {props.icon !== null &&

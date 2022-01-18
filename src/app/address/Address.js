@@ -396,14 +396,6 @@ const Address = props => (
                     icon={<Icon path={IM_LOCATION2} size={20} />
                     }
                   />
-                  {/* <DetailsFormGroup 
-                    label="Climate Justice"
-                    name="climate"
-                    value={
-                      <ClimateJustice civicAddress={props.location.query.id.trim()} pinnum={0} />
-                    }
-                    hasLabel
-                  /> */}
                   <DetailsIconLinkFormGroup
                     label={content.property_information}
                     title={content.property_information}
@@ -413,6 +405,15 @@ const Address = props => (
                   />
                 </div>
               </fieldset>
+              <DetailsFormGroup 
+                label="Neighborhood Climate Threats"
+                name="climate"
+                fullWidth="true"
+                value={
+                  <ClimateJustice inCity={addressData.is_in_city} civicAddress={props.location.query.id.trim()} pinnum={0} />
+                }
+                hasLabel
+              />
             </div>
           </div>
         </div>

@@ -398,7 +398,7 @@ const Property = (props) => {
               </div>
             </div>
           </fieldset>
-          <DetailsFormGroup 
+          {/* <DetailsFormGroup 
             label="Neighborhood Climate Threats"
             name="climate"
             fullWidth="true"
@@ -406,7 +406,7 @@ const Property = (props) => {
               <ClimateJustice inCity={propertyData.is_in_city} civicAddress={0} pinnum={propertyData.pinnum} />
             }
             hasLabel
-          />
+          /> */}
         </div>
       </div>
     </div>

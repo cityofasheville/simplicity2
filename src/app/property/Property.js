@@ -372,14 +372,6 @@ const Property = (props) => {
                     }
                     hasLabel
                   />
-                  {/* <DetailsFormGroup 
-                    label="Climate Justice"
-                    name="climate"
-                    value={
-                      <ClimateJustice civicAddress={0} pinnum={propertyData.pinnum} />
-                    }
-                    hasLabel
-                  /> */}
                 </div>
                 <AccessibleReactTable
                   ariaLabel="Property Addresses"
@@ -406,6 +398,15 @@ const Property = (props) => {
               </div>
             </div>
           </fieldset>
+          {/* <DetailsFormGroup 
+            label="Neighborhood Climate Threats"
+            name="climate"
+            fullWidth="true"
+            value={
+              <ClimateJustice inCity={propertyData.is_in_city} civicAddress={0} pinnum={propertyData.pinnum} />
+            }
+            hasLabel
+          /> */}
         </div>
       </div>
     </div>

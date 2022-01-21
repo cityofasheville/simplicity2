@@ -12,7 +12,7 @@ class TRCDataTable extends React.Component {
     super();
     const now = timeDay.floor(new Date());
     this.initialBrushExtent = [
-      timeMonth.offset(now, -12).getTime(),
+      timeMonth.offset(now, -6).getTime(),
       now.getTime(),
     ];
     this.state = {
@@ -28,7 +28,7 @@ class TRCDataTable extends React.Component {
             timeSpan: newExtent,
           })}
           defaultBrushExtent={this.initialBrushExtent}
-          xSpan={3}
+          xSpan={2}
         />
         <PermitsTableWrapper
           after={this.state.timeSpan[0]}

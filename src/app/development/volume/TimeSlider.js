@@ -26,20 +26,19 @@ class TimeSlider extends React.Component {
     this.brushDuring = this.brushDuring.bind(this);
     this.brushEnd = this.brushEnd.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-
   }
 
-  determineNewExtent(e, snap = false) {
-    let newExtent = e;
+  determineNewExtent(proposedExtent, snap = false) {
+    let newExtent = proposedExtent;
     let newSpan = this.state.xSpan;
 
     // If someone just clicked on the timeline there might not be an e
-    if (e) {
+    if (proposedExtent) {
 
       // When brushing stops (brushEnd calls with snap=true), snap to "whole time" (drop the decimal part)
       if (snap) {
         const timeFunc = timeDay;
-        newExtent = [timeFunc.floor(e[0]).getTime(), timeFunc.ceil(e[1]).getTime()];
+        newExtent = [timeFunc.ceil(proposedExtent[0]).getTime(), timeFunc.floor(proposedExtent[1]).getTime()];
       }
 
       let selectedRange = timeDay.count(newExtent[0], newExtent[1]);
@@ -56,22 +55,27 @@ class TimeSlider extends React.Component {
       }
 
       // Don't allow ranges bigger or smaller (i.e. negative) than allowed, just reset to "last good" value
-      if (selectedRange > this.props.maxDaysAllowedToQuery || +newExtent[0] >= +newExtent[1]) {
+      if (+selectedRange > +this.props.maxDaysAllowedToQuery || +newExtent[0] >= +newExtent[1]) {
         console.log(`Date range too big or small. Max range is ${this.props.maxDaysAllowedToQuery} days. Min range is 1 day.`);
         newExtent = this.state.brushExtent;
         // no need to change the existing span
       }
+
       // Don't allow dates before or after defined limits
       else if (+newExtent[0] < +this.props.spanLowerLimit || +newExtent[1] > +this.props.spanUpperLimit) {
         console.log(`Selected date(s) are out of bounds.`);
         newExtent = this.state.brushExtent;
         // no need to change the existing span
       }
-      // Don't allow date ranges starting before AND ending after the current span
+
+      // Don't allow date ranges starting before AND ending after the current span (i.e. longer than the span)
+      // Set the start and end dates to match the start and end of the span
+      // NOTE: if this.props.maxDaysAllowedToQuery >= this.state.xSpan, this condition will never happen (the first condition will fire instead)
       else if (+newExtent[0] < +this.state.xSpan[0] && +newExtent[1] > +this.state.xSpan[1]) {
         newExtent = this.state.brushExtent;
         // no need to change the existing span
       }
+
       // If only the end date is outside span limit
       else if (+newExtent[0] > +this.state.xSpan[0] && +newExtent[1] > +this.state.xSpan[1]) {
         if (+newExtent[1] > +this.props.spanUpperLimit) {
@@ -95,7 +99,8 @@ class TimeSlider extends React.Component {
             ];
           }
         }
-      }      
+      }    
+
       // If only the start date is outside span limit
       else if (+newExtent[0] < +this.state.xSpan[0] && +newExtent[1] < +this.state.xSpan[1]) {
         if (+newExtent[0] < +this.props.spanLowerLimit) {
@@ -121,39 +126,19 @@ class TimeSlider extends React.Component {
         }
       }
 
-      // Selected date above current span ceiling?
-        // Is selected date above permitted upper limit for span?
-      // if (+newExtent[1] > +this.state.xSpan[1]) {
-      //   if (+newExtent[1] > +this.props.spanUpperLimit) {
-      //     newExtent[1] = this.props.spanUpperLimit;
-      //   }
-      //   newExtent[1] = this.state.xSpan[1];
-      // }
-      // Start date selected is before start of current span
-      if (+newExtent[0] < +this.state.xSpan[0]) {
-
-        // Is new start date valid for existing data? (e.g. > 1999-ish)
-        // - if no, just reset to "last good" values as above
-        // If valid, does it create a span larger than our max range? (e.g. over 2 years)
-        // - if yes, set end date and span end = [new start] + [max range]
-        // - if no, keep end date and reset span start/end (leave space before start and after end? like (maxRange - selectedDateRange) / 2)
-
-        // newExtent[0] = this.state.xSpan[0];
-      }
-      
-
+    // If there isn't an e value
     } else {
-      // If there isn't an e value
       newExtent = this.state.brushExtent;
     }
+
     return {
       extent: newExtent,
       span: newSpan
     };
   }
 
-  brushDuring(e) {
-    const newRanges = this.determineNewExtent(e, false);
+  brushDuring(proposedExtent) {
+    const newRanges = this.determineNewExtent(proposedExtent, false);
     this.setState({
       brushExtent: newRanges.extent,
       firstInputVal: newRanges.extent[0],
@@ -161,8 +146,8 @@ class TimeSlider extends React.Component {
     });
   }
 
-  brushEnd(e, snap = true) {
-    const newRanges = this.determineNewExtent(e, snap);
+  brushEnd(proposedExtent, snap = true) {
+    const newRanges = this.determineNewExtent(proposedExtent, snap);
     this.props.onBrushEnd(newRanges.extent);
     this.setState({
       brushExtent: newRanges.extent,
@@ -330,7 +315,7 @@ TimeSlider.defaultProps = {
   onBrushEnd: newExtent => console.log(newExtent),
   spanEnd: timeDay.floor(new Date()).getTime(),
   spanUpperLimit: timeDay.floor(new Date()).getTime(),
-  spanLowerLimit: timeDay.floor(new Date(Date.UTC(1999, 6, 1))).getTime(),
+  spanLowerLimit: timeDay.floor(new Date(Date.UTC(1999, 0, 1))).getTime(),
   maxDaysAllowedToQuery: 730,
   xSpan: 2, // in years
 };

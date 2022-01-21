@@ -14,6 +14,7 @@ class PermitsIndex extends React.Component {
     let currentUrlParams = new URLSearchParams(window.location.search);
 
     if (currentUrlParams.has('rangeFrom') && currentUrlParams.has('rangeThrough')) {
+
       if (isNaN(currentUrlParams.get('rangeFrom')) || isNaN(currentUrlParams.get('rangeThrough'))) {
         defaultExtent = [
           this.props.initialBrushExtent[0],
@@ -26,7 +27,9 @@ class PermitsIndex extends React.Component {
           let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + `?${currentUrlParams}`;
           window.history.pushState({path: newurl}, '', newurl);
         }
+
       } else {
+
         const rangeOverhead = timeDay.count(currentUrlParams.get('rangeThrough'), this.props.spanUpperLimit);
         const rangeUnderhead = timeDay.count(this.props.spanLowerLimit, currentUrlParams.get('rangeFrom'));
 
@@ -42,6 +45,12 @@ class PermitsIndex extends React.Component {
           ];  
         }
       }
+
+    } else if (currentUrlParams.has('range') && currentUrlParams.get('range').toLowerCase() === 'oneyearback') {
+      defaultExtent = [
+        timeMonth.offset(timeDay.floor(new Date()), -12).getTime(),
+        timeDay.floor(new Date()).getTime(),
+      ];
       
     } else {
       defaultExtent = [
@@ -52,6 +61,7 @@ class PermitsIndex extends React.Component {
 
     currentUrlParams.set('rangeFrom', defaultExtent[0]);
     currentUrlParams.set('rangeThrough', defaultExtent[1]);
+    currentUrlParams.delete('range');
 
     if (history.pushState) {
       let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + `?${currentUrlParams}`;
@@ -110,11 +120,11 @@ class PermitsIndex extends React.Component {
 
 PermitsIndex.defaultProps = {
   initialBrushExtent: [
-    timeWeek.offset(timeDay.floor(new Date()), -8).getTime(),
+    timeMonth.offset(timeDay.floor(new Date()), -1).getTime(),
     timeDay.floor(new Date()).getTime(),
   ], 
   spanUpperLimit: timeDay.floor(new Date()).getTime(),
-  spanLowerLimit: timeDay.floor(new Date(Date.UTC(1999, 6, 1))).getTime(),
+  spanLowerLimit: timeDay.floor(new Date(Date.UTC(1999, 0, 1))).getTime(),
 };
 
 export default PermitsIndex;

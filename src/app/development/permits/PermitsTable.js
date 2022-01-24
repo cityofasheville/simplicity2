@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import AccessibleReactTable from 'accessible-react-table';
 import createFilterRenderer from '../../../shared/FilterRenderer';
 import { defaultTableHeaders } from '../utils';
+import { filter } from 'd3-array';
 
 function extractTextFromReactComponents(component) {
   if (component === null || component === undefined) {
@@ -20,41 +21,51 @@ function extractTextFromReactComponents(component) {
 class PermitsTable extends React.Component {
   constructor(props) {
     super(props);
-    const filtered = [];
-    if (window.location.search) {
-      const queryParams = window.location.search.slice(1).split('&');
-      queryParams.forEach((param) => {
-        const keyVal = param.split('=');
-        filtered.push({
-          id: keyVal[0],
-          value: decodeURI(keyVal[1]),
+    const initialFilterParams = [];
+
+    let currentUrlParams = new URLSearchParams(window.location.search);
+
+    for (let thisParam of currentUrlParams.entries()) {
+      if (this.props.ignoredParams.indexOf(thisParam[0]) === -1) {
+        initialFilterParams.push({
+          id: thisParam[0],
+          value: decodeURI(thisParam[1]),
         });
-      });
+      }
     }
 
     this.state = {
-      filtered,
+      filterParams: initialFilterParams,
     };
 
-    this.onFilteredChange = this.onFilteredChange.bind(this);
+    this.onFilterParamsChange = this.onFilterParamsChange.bind(this);
   }
 
-  onFilteredChange(filter) {
-    let newParams = '';
-    if (filter.length > 0) {
-      newParams = `${filter
-        .map(filterObj => `${filterObj.id}=${filterObj.value}`)
-        .join('&')}`;
+  onFilterParamsChange(updatedFilterSet) {
+    let currentUrlParams = new URLSearchParams(window.location.search);
+    // using Array.from() and forEach because the keys() iterator alone was not hitting all params (weird)
+    let currentParamKeys = Array.from(currentUrlParams.keys());
+
+    currentParamKeys.forEach( (paramKey) => {
+      if (this.props.ignoredParams.indexOf(paramKey) === -1) {
+        // delete all old filter-related parameters before adding those from the updatedFilterSet (this makes sure previous but now empty filters are removed)
+        currentUrlParams.delete(paramKey);
+      }
+    });
+
+    if (updatedFilterSet.length > 0) {
+      updatedFilterSet.forEach( filterObj => {
+        currentUrlParams.set(filterObj.id, filterObj.value);
+      });
     }
-    window
-      .history
-      .pushState(
-        {},
-        '',
-        `${location.pathname}${newParams.length > 0 ? '?' : ''}${newParams}${location.hash}`
-      );
+
+    if (history.pushState) {
+      let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + `?${currentUrlParams}${window.location.hash}`;
+      window.history.pushState({path: newurl}, '', newurl);
+    }
+
     this.setState({
-      filtered: filter,
+      filterParams: updatedFilterSet,
     });
   }
 
@@ -98,8 +109,8 @@ class PermitsTable extends React.Component {
             });
             return match;
           }}
-          onFilteredChange={this.onFilteredChange}
-          filtered={this.state.filtered}
+          onFilteredChange={this.onFilterParamsChange}
+          filtered={this.state.filterParams}
           showPagination
           defaultPageSize={20}
           getTdProps={() => ({
@@ -130,6 +141,7 @@ PermitsTable.propTypes = {
 PermitsTable.defaultProps = {
   data: [],
   tableHeaders: defaultTableHeaders,
+  ignoredParams: [],
 };
 
 export default PermitsTable;

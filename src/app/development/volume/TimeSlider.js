@@ -14,7 +14,6 @@ class TimeSlider extends React.Component {
       brushExtent: this.props.defaultBrushExtent,
       firstInputVal: this.props.defaultBrushExtent[0],
       secondInputVal: this.props.defaultBrushExtent[1],
-      spanEnd: this.props.spanEnd,
       xSpan: [
         timeYear.offset(this.props.spanEnd, -1 * this.props.xSpan).getTime(),
         this.props.spanEnd,
@@ -35,19 +34,23 @@ class TimeSlider extends React.Component {
     // If someone just clicked on the timeline there might not be an e
     if (proposedExtent) {
 
-      // When brushing stops (brushEnd calls with snap=true), snap to "whole time" (drop the decimal part)
+      // When brushing stops (brushEnd invokes with snap=true), snap to "whole time" (drop the decimal part)
       if (snap) {
         const timeFunc = timeDay;
         newExtent = [timeFunc.ceil(proposedExtent[0]).getTime(), timeFunc.floor(proposedExtent[1]).getTime()];
       }
 
+      
       let selectedRange = timeDay.count(newExtent[0], newExtent[1]);
       let spanRange = timeDay.count(this.state.xSpan[0], this.state.xSpan[1]);
       let rangeDiff = spanRange - selectedRange;
-      let rangeOverhead = timeDay.count(newExtent[1], this.props.spanUpperLimit);
+
+      // measure the amount of available valid date range input (in days) after selected end date and before selected start date
+      let rangeOverhead = timeDay.count(newExtent[1], parseInt(this.props.spanUpperLimit));
       let rangeUnderhead = timeDay.count(this.props.spanLowerLimit, newExtent[0]);
 
-      if (rangeOverhead <= 0 || rangeUnderhead <= 0) {
+      // if either value is negative, then input is out of range; revert to default values
+      if (rangeOverhead < 0 || rangeUnderhead < 0) {
         return {
           extent: this.state.brushExtent,
           span: newSpan
@@ -210,7 +213,7 @@ class TimeSlider extends React.Component {
                   name="startdate"
                   className="form-control input-sm"
                   // style={{ display: 'inline-block', width: '11em' }}
-                  value={moment.utc(new Date(this.state.firstInputVal)).format('YYYY-MM-DD')}
+                  value={moment.utc(new Date(parseInt(this.state.firstInputVal))).format('YYYY-MM-DD')}
                   onChange={(e) => {
                     if (!moment(new Date(e.target.value)).isValid()) {
                       return;
@@ -238,7 +241,7 @@ class TimeSlider extends React.Component {
                   id="enddate"
                   name="enddate"
                   className="form-control input-sm"
-                  value={moment.utc(new Date(this.state.secondInputVal)).format('YYYY-MM-DD')}
+                  value={moment.utc(new Date(parseInt(this.state.secondInputVal))).format('YYYY-MM-DD')}
                   onChange={(e) => {
                     if (!moment(new Date(e.target.value)).isValid()) {
                       return;

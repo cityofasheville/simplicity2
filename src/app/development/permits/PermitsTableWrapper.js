@@ -44,8 +44,8 @@ const PermitsTableWrapper = props => (
     query={GET_PROJECTS}
     variables={{
       date_field: 'applied_date',
-      after: moment(props.after).subtract(1, 'hours').format('YYYY-MM-DD hh:mm:ss GMT'),
-      before: moment(props.before).format('YYYY-MM-DD hh:mm:ss GMT'),
+      after: moment(parseInt(props.after)).subtract(1, 'hours').format('YYYY-MM-DD hh:mm:ss GMT'),
+      before: moment(parseInt(props.before)).format('YYYY-MM-DD hh:mm:ss GMT'),
       permit_groups: props.permit_groups,
     }}
   >
@@ -99,7 +99,11 @@ const PermitsTableWrapper = props => (
           </div>
         </div>
         <div id="permitsDataTable" style={{ overflowX: 'scroll' }}>
-          <PermitsTable data={filteredData} {...props} />
+          <PermitsTable 
+            data={filteredData} 
+            ignoredParams={props.ignoredParams}
+            {...props} 
+          />
         </div>
       </div>);
     }}
@@ -117,6 +121,7 @@ PermitsTableWrapper.defaultProps = {
   after: moment.utc().subtract(30, 'days').format('YYYY-MM-DD'),
   before: moment.utc().format('YYYY-MM-DD'),
   permit_groups: ['Permits', 'Planning', 'Services'],
+  ignoredParams: [],
 };
 
 export default PermitsTableWrapper;

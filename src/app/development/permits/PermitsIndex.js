@@ -20,20 +20,15 @@ class PermitsIndex extends React.Component {
           this.props.initialBrushExtent[0],
           this.props.initialBrushExtent[1],
         ];  
-        currentUrlParams.set('rangeFrom', this.props.initialBrushExtent[0]);
-        currentUrlParams.set('rangeThrough', this.props.initialBrushExtent[1]);
-
-        if (history.pushState) {
-          let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + `?${currentUrlParams}`;
-          window.history.pushState({path: newurl}, '', newurl);
-        }
 
       } else {
 
+        // measure the amount of available valid date range input (in days) after selected end date and before selected start date
         const rangeOverhead = timeDay.count(currentUrlParams.get('rangeThrough'), this.props.spanUpperLimit);
         const rangeUnderhead = timeDay.count(this.props.spanLowerLimit, currentUrlParams.get('rangeFrom'));
 
-        if (rangeOverhead <= 0 || rangeUnderhead <= 0) {
+        // if either value is negative, then input is out of range; revert to default values
+        if (rangeOverhead < 0 || rangeUnderhead < 0) {
           defaultExtent = [
             this.props.initialBrushExtent[0],
             this.props.initialBrushExtent[1],
@@ -46,12 +41,13 @@ class PermitsIndex extends React.Component {
         }
       }
 
+    // Use this block for defining "date range shortcuts" (e.g. requested by DSD)
     } else if (currentUrlParams.has('range') && currentUrlParams.get('range').toLowerCase() === 'oneyearback') {
       defaultExtent = [
         timeMonth.offset(timeDay.floor(new Date()), -12).getTime(),
         timeDay.floor(new Date()).getTime(),
       ];
-      
+
     } else {
       defaultExtent = [
         this.props.initialBrushExtent[0],
@@ -64,7 +60,7 @@ class PermitsIndex extends React.Component {
     currentUrlParams.delete('range');
 
     if (history.pushState) {
-      let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + `?${currentUrlParams}`;
+      let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + `?${currentUrlParams}${window.location.hash}`;
       window.history.pushState({path: newurl}, '', newurl);
     }
 
@@ -76,6 +72,8 @@ class PermitsIndex extends React.Component {
   }
 
   onDateRangeChange(newExtent) {
+    // NOTE: this method is invoked within TimeSlider, after updated date range input is validated
+
     let currentUrlParams = new URLSearchParams(window.location.search);
     currentUrlParams.set('rangeFrom', newExtent[0]);
     currentUrlParams.set('rangeThrough', newExtent[1]);
@@ -107,10 +105,15 @@ class PermitsIndex extends React.Component {
             xSpan={2}
           />
           <PermitsTableWrapper
-            // Defaults are fine for now
             after={this.state.timeSpan[0]}
             before={this.state.timeSpan[1]}
             permit_groups={['Permits', 'Planning']}
+            // PermitsTable will mutate some query params, we want it to ignore our date range params
+            ignoredParams={[
+              'range',
+              'rangeFrom',
+              'rangeThrough'
+            ]}
           />
         </ErrorBoundary>
       </div>

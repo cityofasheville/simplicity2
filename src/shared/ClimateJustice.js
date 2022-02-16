@@ -7,10 +7,7 @@ const RISK_NAME = {
     3: {risk:'highest'}
 };
 
-
-const floodImg = "https://drive.google.com/uc?export=view&id=1RjvA8OfYaN55b1nOy4w2Bz3ja3aZC_3O";
-const wildfireImg = "https://drive.google.com/uc?export=view&id=1xwStl5e7d2BMtt7p59m1ZpQHrpIAtwzj";
-const landslideImg = "https://drive.google.com/uc?export=view&id=1ywKPriWubYDJk-UpPd5ea69jcdZf3Jk8";
+const cjiEquityImg = "https://drive.google.com/uc?export=view&id=1jHBgXX4Ic0LlP1JCexFIAGUYSC-9VBAw";
 
 const getRiskLevel = (level, inCity) => {
     if (!inCity) {
@@ -40,6 +37,7 @@ const ClimateJustice = (props) => {
         }
         let climateJusticeApi = `https://arcgis.ashevillenc.gov/arcgis/rest/services/Environmental/ClimateJustice_Address/MapServer/0/query?where=${cjParam}&outFields=*&f=pjson`;
         console.log(climateJusticeApi);
+        alert(climateJusticeApi);
         fetch(climateJusticeApi)
         .then(response => response.json())
         .then(data => {
@@ -54,43 +52,18 @@ const ClimateJustice = (props) => {
         getClimateJusticeData({civicAddress, pinNum}, setClimateJusticeData);
     }, []);
 
-    let floodText = getRiskLevel(climateJusticeData.flood, props.inCity);
-    let fireText = getRiskLevel(climateJusticeData.wildfire, props.inCity);
-    let landslideText = getRiskLevel(climateJusticeData.landslide, props.inCity);
+    let cjiScore = getRiskLevel(climateJusticeData.sum_scores, props.inCity);
 
     return (
         <div className='climate-justice-container' aria-label="Climate Justice">
             <div className="cj-threats">
-                <div aria-label="Flood">
-                    <p className='tag'>FLOOD</p>
+                <div aria-label="Climate Justice Index">
                     <div className="img">
-                        <img src={floodImg} alt="Flood" />
+                        <img src={cjiEquityImg} alt="Flood" />
                     </div>
                     {  
-                        floodText !== undefined ? 
-                        <p className={`${floodText.risk} info`}>{floodText.risk}</p> : 
-                        <p className='info error'>There was a server error, please try again.</p>
-                    }
-                </div>
-                <div aria-label="Wildfire">
-                    <p className='tag'>WILDFIRE</p>
-                    <div className="img">
-                        <img src={wildfireImg} alt="Wildfire" />
-                    </div>
-                    {  
-                        fireText !== undefined ? 
-                        <p className={`${fireText.risk} info`}>{fireText.risk}</p> : 
-                        <p className='info error'>There was a server error, please try again.</p>
-                    }
-                </div>
-                <div aria-label="Landslide">
-                    <p className='tag'>LANDSLIDE</p>
-                    <div className="img">
-                        <img src={landslideImg} alt="Landslide" />
-                    </div>
-                    {  
-                        landslideText !== undefined ? 
-                        <p className={`${landslideText.risk} info`}>{landslideText.risk}</p> : 
+                        cjiScore !== undefined ? 
+                        <p className={`${cjiScore.risk} info`}>{cjiScore.risk}</p> : 
                         <p className='info error'>There was a server error, please try again.</p>
                     }
                 </div>

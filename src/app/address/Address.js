@@ -405,7 +405,7 @@ const Address = props => (
                   />
                 </div>
               </fieldset>
-              {/* <DetailsFormGroup 
+              <DetailsFormGroup 
                 label="Neighborhood Climate Threats"
                 name="climate"
                 fullWidth="true"
@@ -413,7 +413,7 @@ const Address = props => (
                   <ClimateJustice inCity={addressData.is_in_city} civicAddress={props.location.query.id.trim()} pinnum={0} />
                 }
                 hasLabel
-              /> */}
+              />
             </div>
           </div>
         </div>

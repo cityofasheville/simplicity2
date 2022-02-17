@@ -1,19 +1,35 @@
 import React, { useState, useEffect } from 'react'
 
 const RISK_NAME = {
-    0: {risk:'lower'},
-    1: {risk:'medium'},
-    2: {risk:'high'},
-    3: {risk:'highest'}
+    0: {risk:'purple'},
+    1: {risk:'violet'},
+    2: {risk:'pink'},
+    3: {risk:'orange'},
+    4: {risk:'yellow'}
 };
 
 const cjiEquityImg = "https://drive.google.com/uc?export=view&id=1jHBgXX4Ic0LlP1JCexFIAGUYSC-9VBAw";
 
 const getRiskLevel = (level, inCity) => {
+    console.log(level, inCity, ':::::');
     if (!inCity) {
         return 'There is no data for your Neighborhood';
     } else {
-        return RISK_NAME[level];
+        if (level <= 6) {
+            return RISK_NAME[0];
+        }
+        if (level > 6 && level <= 10) {
+            return RISK_NAME[1];
+        }
+        if (level > 10 && level <= 14) {
+            return RISK_NAME[2];
+        }
+        if (level > 14 && level <= 18) {
+            return RISK_NAME[3];
+        }
+        if (level > 18) {
+            return RISK_NAME[4];
+        }
     }
 };
 
@@ -37,10 +53,10 @@ const ClimateJustice = (props) => {
         }
         let climateJusticeApi = `https://arcgis.ashevillenc.gov/arcgis/rest/services/Environmental/ClimateJustice_Address/MapServer/0/query?where=${cjParam}&outFields=*&f=pjson`;
         console.log(climateJusticeApi);
-        alert(climateJusticeApi);
         fetch(climateJusticeApi)
         .then(response => response.json())
         .then(data => {
+            console.log(data);
             setClimateJusticeData(data.features[0].attributes);
         })
         .catch(e => {
@@ -53,24 +69,28 @@ const ClimateJustice = (props) => {
     }, []);
 
     let cjiScore = getRiskLevel(climateJusticeData.sum_scores, props.inCity);
-
+    console.log(cjiScore, ':::::');
     return (
-        <div className='climate-justice-container' aria-label="Climate Justice">
+        <div className='climate-justice-container' aria-label="CJI score for your general area">
             <div className="cj-threats">
-                <div aria-label="Climate Justice Index">
+                <div aria-label="CJI score for your general area">
                     <div className="img">
                         <img src={cjiEquityImg} alt="Flood" />
                     </div>
                     {  
                         cjiScore !== undefined ? 
-                        <p className={`${cjiScore.risk} info`}>{cjiScore.risk}</p> : 
+                        <p className={`${cjiScore.risk} info`}>Score: [ {climateJusticeData.sum_scores} ]</p> : 
                         <p className='info error'>There was a server error, please try again.</p>
                     }
                 </div>
             </div>
             <div className='resiliency-guide'>
+                What does this score mean? 
+                <a href='https://avl.maps.arcgis.com/apps/instant/lookup/index.html?appid=10e2c4ae45614b92ad4efaa61342b249%2F' target="_blank"> Learn More</a>.
+            </div>
+            <div className='resiliency-guide'>
                 For mitigation strategies, see the 
-                <a href='https://drive.google.com/file/d/0BzZzONRPV-VAVF9vb2pOMUtkRmFJR1AyNFluYU5ESU9rODRJ/view?resourcekey=0-ZQ80xC-a8bw4JDs7z0Neaw' className='' target="_blank"> Climate Resiliency Guide</a>.
+                <a href='https://drive.google.com/file/d/0BzZzONRPV-VAVF9vb2pOMUtkRmFJR1AyNFluYU5ESU9rODRJ/view?resourcekey=0-ZQ80xC-a8bw4JDs7z0Neaw' target="_blank"> Climate Resiliency Guide</a>.
             </div>
         </div>
     )

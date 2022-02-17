@@ -114,17 +114,20 @@
               font-weight: 200;
             }
           }
-          &.lower {
-            background-color: #9760a9;
+          &.purple {
+            background-color: rgba(12, 7, 135, 0.78);
           }
-          &.medium {
-            background-color: #c66d85ba;
+          &.violet {
+            background-color: rgba(126, 2, 168, 0.78);
           }
-          &.high {
-            background-color: #e9ab74;
+          &.pink {
+            background-color: rgba(203, 71, 120, 0.78);
           }
-          &.highest {
-            background-color: #f2f44d;
+          &.orange {
+            background-color: rgba(248, 148, 65, 0.78);
+          }
+          &.yellow {
+            background-color: rgba(240, 249, 33, 0.78);
           }
         }
       }

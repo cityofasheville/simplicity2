@@ -71,7 +71,7 @@
   background-color: #fbfbfb;
 
   .climate-justice-container {
-    margin: 1rem 1rem 0 1rem;
+    margin: 0;
     .cj-threats {
       display: flex;
       flex-wrap: wrap;
@@ -92,8 +92,8 @@
           text-align: center;
           img {
             max-width: 100%;
-            width: 80%;
-            margin: 2em auto 3em auto;
+            width: 100%;
+            padding: 1em;
           }
         }
         p {
@@ -107,6 +107,18 @@
           font-size: 1.2em;
           &.info {
             padding: 1em;
+            span {
+              font-size: 12px;
+              &.score {
+                font-size: 15px;
+              }
+              @media screen and (min-width: 480px) {
+                font-size: 14px;
+                &.score {
+                  font-size: 17px;
+                }
+              }
+            }
             &.error {
               font-size: 0.8em;
               background-color: #181818;

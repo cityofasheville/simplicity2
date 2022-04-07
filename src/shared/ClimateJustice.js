@@ -8,7 +8,7 @@ const RISK_NAME = {
     4: {risk:'yellow'}
 };
 
-const cjiEquityImg = "https://drive.google.com/uc?export=view&id=1jHBgXX4Ic0LlP1JCexFIAGUYSC-9VBAw";
+const cjiEquityImg = "https://drive.google.com/uc?export=view&id=1Yf9C_64R9cWf83c8oHt5QfS268d0kfF_";
 
 const getRiskLevel = (level, inCity) => {
     console.log(level, inCity, ':::::');
@@ -79,18 +79,18 @@ const ClimateJustice = (props) => {
                     </div>
                     {  
                         cjiScore !== undefined ? 
-                        <p className={`${cjiScore.risk} info`}>Score: [ {climateJusticeData.sum_scores} ]</p> : 
+                        <p className={`${cjiScore.risk} info`}><span>CLIMATE INDEX SCORE FOR THIS AREA: </span><span class="score">{climateJusticeData.sum_scores}</span></p> : 
                         <p className='info error'>There was a server error, please try again.</p>
                     }
                 </div>
             </div>
             <div className='resiliency-guide'>
                 What does this score mean? 
-                <a href='https://avl.maps.arcgis.com/apps/instant/lookup/index.html?appid=10e2c4ae45614b92ad4efaa61342b249%2F' target="_blank"> Learn More</a>.
+                <a href='https://avl.maps.arcgis.com/apps/instant/lookup/index.html?appid=10e2c4ae45614b92ad4efaa61342b249%2F' target="_blank"> See the Climate Justice Dashboard</a>.
             </div>
             <div className='resiliency-guide'>
-                For mitigation strategies, see the 
-                <a href='https://drive.google.com/file/d/0BzZzONRPV-VAVF9vb2pOMUtkRmFJR1AyNFluYU5ESU9rODRJ/view?resourcekey=0-ZQ80xC-a8bw4JDs7z0Neaw' target="_blank"> Climate Resiliency Guide</a>.
+                What can I do to increase my household resilience?
+                <a href='https://drive.google.com/file/d/0BzZzONRPV-VAVF9vb2pOMUtkRmFJR1AyNFluYU5ESU9rODRJ/view?resourcekey=0-ZQ80xC-a8bw4JDs7z0Neaw' target="_blank"> See Climate Resiliency Guide</a>.
             </div>
         </div>
     )

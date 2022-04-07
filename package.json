@@ -111,5 +111,8 @@
     "semiotic-mark": "^0.1.2",
     "unfetch": "^3.0.0",
     "url-loader": "^1.0.1"
+  },
+  "engines": {
+    "yarn": "YARN package manager is no longer preferred - please use npm instead."
   }
 }

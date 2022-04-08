@@ -4,6 +4,9 @@ export const getTasks = () => (
     'Building Review',
     'Fire Review',
     'Zoning Review',
+    'Driveway',
+    'Grading',
+    'Stormwater',
   ]
 );
 

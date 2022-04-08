@@ -46,7 +46,7 @@ const DevelopmentSLADashboard = (props) => {
                     }
                   ]}
                   chartTitle="Percentage meeting SLA"
-                  data={aggregateData[task]}
+                  // data={aggregateData[task]}
                   dataKeys={[[task, 'Met SLA Percent'].join(' ')]}
                   altText={['Line chart of percentage of records meeting SLA for ', task].join(' ')}
                   mainAxisDataKey="displayDate"

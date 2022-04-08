@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 
 class PermitTimeline extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       dimensions: null,
@@ -36,7 +36,7 @@ class PermitTimeline extends React.Component {
     const padding = 15;
     const pointRadius = 8;
     let datesToUse = this.props.formattedPermit.orderedDates;
-    if (!this.props.currentStatusItem.closed) {
+    if (this.props.currentStatusItem !== undefined && !this.props.currentStatusItem.closed) {
       datesToUse = this.props.formattedPermit.orderedDates
         .concat([{
           accelaLabel: 'dummy',

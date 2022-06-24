@@ -13,6 +13,8 @@ import ButtonGroup from '../../shared/ButtonGroup';
 import LinkButton from '../../shared/LinkButton';
 import { zoningLinks } from '../address/zoning';
 import Map from '../../shared/visualization/Map';
+import { Link } from 'react-router';
+
 import {
   getBoundsFromPropertyPolygons,
   combinePolygonsFromPropertyList,
@@ -375,28 +377,20 @@ const Property = (props) => {
                     hasLabel
                   />
                 </div>
-                <AccessibleReactTable
-                  ariaLabel="Property Addresses"
-                  data={dataForAddressesTable}
-                  columns={dataColumns}
-                  showPagination={dataForAddressesTable.length > 5}
-                  defaultPageSize={
-                    dataForAddressesTable.length <= 5 ? dataForAddressesTable.length : 5
-                  }
-                  filterable={dataForAddressesTable.length > 5}
-                  defaultFilterMethod={(filter, row) => {
-                    const id = filter.pivotId || filter.id;
-                    return row[id] !== undefined ?
-                      String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
-                  }}
-                  getTdProps={(state, rowInfo) => {
-                    return {
-                      style: {
-                        whiteSpace: 'normal',
-                      },
-                    };
-                  }}
-                />
+
+                <div style={{padding: '16px 24px'}}>
+                  <p className='h4'>Associated Addresses</p>
+                  {dataForAddressesTable.map( (addressEntity, index) => {
+                    return (
+                      <p key={index}>
+                        <Link to={`/address?id=${addressEntity.civic_address_id}`}>
+                          {addressEntity.address} (Civic Address ID: {addressEntity.civic_address_id}) 
+                        </Link>                      
+                      </p>
+                    );
+                  })}
+                </div>
+
               </div>
             </div>
           </fieldset>

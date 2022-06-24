@@ -78,6 +78,8 @@ const Property = (props) => {
     });
   }
 
+  console.log('For address table: ', dataForAddressesTable);
+
   const dataColumns = [
     {
       Header: 'Civic address ID(s)',

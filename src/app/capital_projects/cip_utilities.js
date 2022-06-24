@@ -119,7 +119,7 @@ export const getFundsAllocatedAndExpended = (projectData, categories, mode) => {
         if (project.total_project_funding_budget_document !== null && project.total_project_funding_budget_document.trim() !== '') {
           let cleanBudgetAmount = project.total_project_funding_budget_document.replace(/ /g, "");
           let allocated = cleanBudgetAmount.indexOf('$') === 0 ? cleanBudgetAmount.slice(1).split(',').join('') : cleanBudgetAmount.split(',').join('');
-          console.log(cleanBudgetAmount, allocated, isNaN(allocated));
+          // console.log(cleanBudgetAmount, allocated, isNaN(allocated));
           if (!isNaN(allocated)) {
             totalAllocated += parseFloat(allocated);
           }

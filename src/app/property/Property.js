@@ -377,23 +377,40 @@ const Property = (props) => {
                     hasLabel
                   />
                 </div>
-
-                <div style={{padding: '16px 24px'}}>
-                  <p className='h4'>Associated Addresses</p>
-                  {dataForAddressesTable.map( (addressEntity, index) => {
-                    return (
-                      <p key={index}>
-                        <Link to={`/address?id=${addressEntity.civic_address_id}`}>
-                          {addressEntity.address} (Civic Address ID: {addressEntity.civic_address_id}) 
-                        </Link>                      
-                      </p>
-                    );
-                  })}
-                </div>
-
               </div>
             </div>
           </fieldset>
+
+          {dataForAddressesTable.length && (
+            <div className='p-3'>
+              <p className='h4'>Associated Addresses</p>
+              <table className='table table-bordered table-striped table-hover'>
+                <thead>
+                  <tr>
+                    <th>Address</th>
+                    <th>Civic Address ID</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {dataForAddressesTable.map( (addressEntity, index) => {
+                    return (
+                      <tr key={index}>
+                        <td>
+                          <Link to={`/address?id=${addressEntity.civic_address_id}`}>
+                            {addressEntity.address}
+                          </Link>                                 
+                        </td>
+                        <td>
+                          {addressEntity.civic_address_id}
+                        </td>               
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
+
           {/* <DetailsFormGroup 
             label="Neighborhood Climate Threats"
             name="climate"

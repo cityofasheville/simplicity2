@@ -13,6 +13,8 @@ import ButtonGroup from '../../shared/ButtonGroup';
 import LinkButton from '../../shared/LinkButton';
 import { zoningLinks } from '../address/zoning';
 import Map from '../../shared/visualization/Map';
+import { Link } from 'react-router';
+
 import {
   getBoundsFromPropertyPolygons,
   combinePolygonsFromPropertyList,
@@ -77,6 +79,8 @@ const Property = (props) => {
       zipcode: propertyData.zipcode[i],
     });
   }
+
+  console.log('For address table: ', dataForAddressesTable);
 
   const dataColumns = [
     {
@@ -373,31 +377,40 @@ const Property = (props) => {
                     hasLabel
                   />
                 </div>
-                <AccessibleReactTable
-                  ariaLabel="Property Addresses"
-                  data={dataForAddressesTable}
-                  columns={dataColumns}
-                  showPagination={dataForAddressesTable.length > 5}
-                  defaultPageSize={
-                    dataForAddressesTable.length <= 5 ? dataForAddressesTable.length : 5
-                  }
-                  filterable={dataForAddressesTable.length > 5}
-                  defaultFilterMethod={(filter, row) => {
-                    const id = filter.pivotId || filter.id;
-                    return row[id] !== undefined ?
-                      String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
-                  }}
-                  getTdProps={(state, rowInfo) => {
-                    return {
-                      style: {
-                        whiteSpace: 'normal',
-                      },
-                    };
-                  }}
-                />
               </div>
             </div>
           </fieldset>
+
+          {dataForAddressesTable.length && (
+            <div className='p-3'>
+              <p className='h4'>Associated Addresses</p>
+              <table className='table table-bordered table-striped table-hover'>
+                <thead>
+                  <tr>
+                    <th>Address</th>
+                    <th>Civic Address ID</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {dataForAddressesTable.map( (addressEntity, index) => {
+                    return (
+                      <tr key={index}>
+                        <td>
+                          <Link to={`/address?id=${addressEntity.civic_address_id}`}>
+                            {addressEntity.address}
+                          </Link>                                 
+                        </td>
+                        <td>
+                          {addressEntity.civic_address_id}
+                        </td>               
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
+
           {/* <DetailsFormGroup 
             label="Neighborhood Climate Threats"
             name="climate"

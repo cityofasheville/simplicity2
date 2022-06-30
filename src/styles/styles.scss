@@ -1001,3 +1001,32 @@ footer.footer{
 	margin-top: ($line-height-computed / 2);
 	margin-bottom: ($line-height-computed / 2);
 }
+
+.p-3 {
+  padding: 1rem;
+}
+
+.px-3 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.py-3 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.m-3 {
+  margin: 1rem;
+}
+
+.mx-3 {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+.my-3 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+

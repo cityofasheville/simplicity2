@@ -63,8 +63,8 @@ const CapitalProjectsSummary = props => (
             h1={content.capital_projects}
             externalLinkText={content.view_cip_plan}
             externalLink="https://drive.google.com/file/d/0B2t_Ch5LbY5eZ19Db0hFYThVR0V6b2JqcXo4NGhFTDk2OVZr/view" // eslint-disable-line
-            dataLinkPath="/capital_projects/data"
-            dataLinkText={content.understand_the_capital_projects_data}
+            // dataLinkPath="/capital_projects/data"
+            // dataLinkText={content.understand_the_capital_projects_data}
             icon={<Icon path={IM_CITY} size={60} />}
           >
             <span>{content.search_by_note}</span>

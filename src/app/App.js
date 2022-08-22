@@ -4,6 +4,7 @@ import { graphql, compose, withApollo } from 'react-apollo';
 import { updateUser } from '../utilities/auth/graphql/authMutations';
 import { getUser } from '../utilities/auth/graphql/authQueries';
 import Navbar from './Navbar';
+import EnvBanner from './EnvBanner';
 import Footer from './Footer';
 import ErrorBoundary from '../shared/ErrorBoundary';
 import CityInfoBar from './CityInfoBar';
@@ -49,7 +50,8 @@ class Main extends React.Component {
         <LanguageProvider>
           <a href="#content" className="skip-nav-link">Skip to Main Content</a>
           {displayNavbar(this.props.location.query.hideNavbar)}
-          <div className="container" id="content">
+          <div className="container" id="content">   
+            <EnvBanner />      
             <ErrorBoundary>
               {this.props.children}
             </ErrorBoundary>

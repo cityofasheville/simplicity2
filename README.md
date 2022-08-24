@@ -3,16 +3,16 @@
 
 ## Getting started
 
-You'll need Node and Yarn installed, then run the following commands to download the repository, install dependencies, and launch a dev server:
+You'll need Node (v14, see .nvmrc) and npm installed, then run the following commands to download the repository, install dependencies, and launch a dev server:
 
 1.  `git clone https://github.com/cityofasheville/simplicity2.git simplicity2`
 2.  `cd simplicity2`
-3.  `yarn install`
-4.  `yarn start`
+3.  `npm install`
+4.  `npm start`
 
 ## Documentation
 
-The documentation is maintained in the [docs directory](./docs), but may be more easily navigated on [Github pages](https://cityofasheville.github.io/simplicity2).
+The documentation is maintained in the [docs directory](./docs).
 
 ## License
 

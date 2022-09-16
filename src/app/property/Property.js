@@ -318,18 +318,26 @@ const Property = (props) => {
                     value={
                       <div>
                         {
-                          propertyData.zoning.split(',').map((zone, index) => (
-                            <span
-                              key={['zone', index].join('_')}
-                            >
-                              <a
-                                href={zoningLinks[zone]}
-                                target="_blank"
-                              >{propertyData.zoning.split(',')[index]}
-                              </a>
-                              {
-                                propertyData.zoning.split(',').length > index + 1 ? ', ' : ''}
-                            </span>))
+                          // propertyData.zoning.split(',').map((zone, index) => (
+                          //   <span
+                          //     key={['zone', index].join('_')}
+                          //   >
+                          //     <a
+                          //       href={zoningLinks[zone]}
+                          //       target="_blank"
+                          //     >{propertyData.zoning.split(',')[index]}
+                          //     </a>
+                          //     {
+                          //       propertyData.zoning.split(',').length > index + 1 ? ', ' : ''}
+                          //   </span>))
+                          <div>
+                            <p>
+                              Property-specific zoning links are temporarily unavailable 
+                              as we transition to a new online code publisher. 
+                              For accurate zoning links related to this property, 
+                              please click on one of the associated addresses linked below.
+                            </p>
+                          </div>
                         }
                         {
                           propertyData.local_landmark &&
@@ -440,8 +448,8 @@ const propertyQuery = gql`
       appraisal_area,
       acreage,
       zoning,
-      local_landmark
-      historic_district
+      local_landmark,
+      historic_district,
       deed_link,
       property_card_link,
       plat_link,

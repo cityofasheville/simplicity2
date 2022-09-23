@@ -80,8 +80,6 @@ const Property = (props) => {
     });
   }
 
-  console.log('For address table: ', dataForAddressesTable);
-
   const dataColumns = [
     {
       Header: 'Civic address ID(s)',
@@ -317,28 +315,23 @@ const Property = (props) => {
                     colWidth="6"
                     value={
                       <div>
-                        {
-                          // propertyData.zoning.split(',').map((zone, index) => (
-                          //   <span
-                          //     key={['zone', index].join('_')}
-                          //   >
-                          //     <a
-                          //       href={zoningLinks[zone]}
-                          //       target="_blank"
-                          //     >{propertyData.zoning.split(',')[index]}
-                          //     </a>
-                          //     {
-                          //       propertyData.zoning.split(',').length > index + 1 ? ', ' : ''}
-                          //   </span>))
-                          <div>
-                            <p>
-                              Property-specific zoning links are temporarily unavailable 
-                              as we transition to a new online code publisher. 
-                              For accurate zoning links related to this property, 
-                              please click on one of the associated addresses linked below.
-                            </p>
-                          </div>
-                        }
+                        {propertyData.zoning.split(',').map((zone, index) => (
+                          <span
+                            key={`zone_${index}`}
+                          >
+                            {propertyData.zoning_links
+                            ?<a
+                                href={propertyData.zoning_links.split(',')[index]}
+                                target="_blank"
+                              >
+                                {propertyData.zoning.split(',')[index]}
+                              </a>
+                            :propertyData.zoning.split(',')[index]
+                          }
+
+                            {propertyData.zoning.split(',').length > index + 1 ? ', ' : ''}
+                          </span>
+                        ))}
                         {
                           propertyData.local_landmark &&
                           <DetailsFormGroup
@@ -448,6 +441,7 @@ const propertyQuery = gql`
       appraisal_area,
       acreage,
       zoning,
+      zoning_links,
       local_landmark,
       historic_district,
       deed_link,

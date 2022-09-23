@@ -359,7 +359,8 @@ const Address = props => (
                           }
 
                             {addressData.zoning.split(',').length > index + 1 ? ', ' : ''}
-                          </span>))}
+                          </span>
+                        ))}
                         {
                           addressData.local_landmark &&
                             <DetailsFormGroup

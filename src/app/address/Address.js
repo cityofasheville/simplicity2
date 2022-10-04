@@ -118,7 +118,7 @@ const Address = props => (
             return (
               <span>
                 {content.sometime_this_week}
-                <span title={content.place_on_curb_by_7am_monday} style={{ marginLeft: '3px' }} >
+                <span title={content.place_on_curb_by_7am_monday} style={{ marginLeft: '4px' }} >
                   <Icon path={IM_INFO} size={16} />
                 </span>
                 <br />
@@ -129,7 +129,7 @@ const Address = props => (
           return (
             <span>
               {content.sometime_next_week}
-              <span title={content.place_on_curb_by_7am_monday} style={{ marginLeft: '3px' }} >
+              <span title={content.place_on_curb_by_7am_monday} style={{ marginLeft: '4px' }} >
                 <Icon path={IM_INFO} size={16} />
               </span>
               <br />

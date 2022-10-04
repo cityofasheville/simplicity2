@@ -25,7 +25,7 @@ export const english = {
   of_this_week: 'of this week',
   owner: 'Owner',
   placeholder: 'Search...',
-  place_on_curb_by_7am_moday: 'Place on curb by 7am Monday',
+  place_on_curb_by_7am_monday: 'Place on curb by 7am Monday',
   property_information: 'Property information',
   recycle_week: 'Recycle Week',
   recycling_collection: 'Recycling collection',

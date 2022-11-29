@@ -150,6 +150,7 @@ const propertyQuery = gql`
       zipcode,
       property_zipcode,
       tax_exempt,
+      is_in_city,
       neighborhood,
       appraisal_area,
       acreage,

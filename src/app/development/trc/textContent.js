@@ -61,7 +61,7 @@ export const devDashSections = [
     linkName: 'Project Types',
     header: 'Types of large-scale development',
     body: (<React.Fragment>
-      <p>The types of large-scale development are defined by <a href="https://library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTVDEREPR_S7-5-9SIPLREDEPREXTHPAZOCEBUDILODODEREOVDICBDD" target="_blank" rel="noopener noreferrer">the City of Asheville's Unified Development Ordinance.</a>  Projects located downtown are <a href="https://library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTVDEREPR_S7-5-9.1DEAPPRPAZOCEBUDILODODEREOVDICBDD" target="_blank" rel="noopener noreferrer">defined slightly differently in the ordinance.</a></p>
+      <p>The types of large-scale development are defined by <a href="https://codelibrary.amlegal.com/codes/ashevillenc/latest/asheville_nc/0-0-0-2930" target="_blank" rel="noopener noreferrer">the City of Asheville's Unified Development Ordinance.</a>  Projects located downtown are <a href="https://codelibrary.amlegal.com/codes/ashevillenc/latest/asheville_nc/0-0-0-14740#JD_7-5-9.1" target="_blank" rel="noopener noreferrer">defined slightly differently in the ordinance.</a></p>
       <PermitTypeCards />
     </React.Fragment>),
   },
@@ -320,7 +320,7 @@ trcProjectTypes['Conditional Use Permit'] = {
   permit_subtype: 'Conditional Use',
   short: 'CUP',
   descriptors: {
-    whyLevel: <React.Fragment>This is highly specialized permit process for land uses with potential public impacts that require individual consideration of their location, design, configuration and operation.  These uses are defined by <a href="https:/library.municode.com/nc/asheville/codes/code_of_ordinances?nodeId=PTIICOOR_CH7DE_ARTXVIUSRISUSPRECOUS_S7-16-2COUS" target="_blank" rel="noopener noreferrer">Section 7-16-2 of the Unified Development Ordinance</a>.</React.Fragment>,
+    whyLevel: <React.Fragment>This is highly specialized permit process for land uses with potential public impacts that require individual consideration of their location, design, configuration and operation.  These uses are defined by <a href="https://codelibrary.amlegal.com/codes/ashevillenc/latest/asheville_nc/0-0-0-9513#JD_7-16-2" target="_blank" rel="noopener noreferrer">Section 7-16-2 of the Unified Development Ordinance</a>.</React.Fragment>,
     participationOpp: (
       <ul>
         <li><a href="/development/major#participate">Neighborhood meeting</a></li>

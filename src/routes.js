@@ -1,91 +1,102 @@
-import React from 'react';
-import { Router, Route, IndexRoute, browserHistory } from 'react-router';
-import { ApolloProvider } from 'react-apollo';
+import React from "react";
+import { Router, Route, IndexRoute, browserHistory } from "react-router";
+import { ApolloProvider } from "react-apollo";
+import ReactGA from "react-ga4";
 
 // GraphQL Client
-import { client } from './gqlClient';
+import { client } from "./gqlClient";
 
 // Routed components
-import App from './app/App';
-import Home from './app/Home';
-import MySimpliCity from './app/MySimpliCity';
-import Search from './app/search/Search';
+import App from "./app/App";
+import Home from "./app/Home";
+import MySimpliCity from "./app/MySimpliCity";
+import Search from "./app/search/Search";
 // Locations
-import Locations from './app/Locations';
-import Address from './app/address/Address';
-import AddressList from './app/address/AddressList';
-import Property from './app/property/Property';
-import Properties from './app/property/Properties';
-import Street from './app/street/Street';
-import Neighborhood from './app/neighborhood/Neighborhood';
-import Owner from './app/owner/Owner';
-import GooglePlaceResults from './app/search/searchResults/GooglePlaceResults';
+import Locations from "./app/Locations";
+import Address from "./app/address/Address";
+import AddressList from "./app/address/AddressList";
+import Property from "./app/property/Property";
+import Properties from "./app/property/Properties";
+import Street from "./app/street/Street";
+import Neighborhood from "./app/neighborhood/Neighborhood";
+import Owner from "./app/owner/Owner";
+import GooglePlaceResults from "./app/search/searchResults/GooglePlaceResults";
 // Topics
-import Topics from './app/Topics';
+import Topics from "./app/Topics";
 //Development endpoints
-import DevelopmentSummary from './app/development/DevelopmentSummary';
-import DevelopmentDetail from './app/development/DevelopmentDetail';
-import DevelopmentSLADashboard from './app/development/sla_dashboard/SLADashboard';
-import DevelopmentDashIndex from './app/development/DevelopmentDashIndex';
+import DevelopmentSummary from "./app/development/DevelopmentSummary";
+import DevelopmentDetail from "./app/development/DevelopmentDetail";
+import DevelopmentSLADashboard from "./app/development/sla_dashboard/SLADashboard";
+import DevelopmentDashIndex from "./app/development/DevelopmentDashIndex";
 // import TrcTimeline from './app/development/trc/TrcTimeline';
-import MajorDevelopmentDashboard from './app/development/trc/MajorDevelopmentDashboard';
+import MajorDevelopmentDashboard from "./app/development/trc/MajorDevelopmentDashboard";
 // import SurveyResults from './app/development/trc/SurveyResults';
-import PermitVolume from './app/development/volume/PermitVolume';
-import PermitsIndex from './app/development/permits/PermitsIndex';
-import Permit from './app/development/permits/Permit';
-import PermitSearchIndex from './app/development/permits/PermitSearchIndex';
+import PermitVolume from "./app/development/volume/PermitVolume";
+import PermitsIndex from "./app/development/permits/PermitsIndex";
+import Permit from "./app/development/permits/Permit";
+import PermitSearchIndex from "./app/development/permits/PermitSearchIndex";
 // import WorkflowContainer from './app/development/workflows/WorkflowContainer';
 //
-import ProjectFlowDashboard from './app/internal/bpt_projects/ProjectFlow';
-import CrimeSummary from './app/crime/CrimeSummary';
-import Maintenance from './app/maintenance/Maintenance';
+import ProjectFlowDashboard from "./app/internal/bpt_projects/ProjectFlow";
+import CrimeSummary from "./app/crime/CrimeSummary";
+import Maintenance from "./app/maintenance/Maintenance";
 // Capital Projects
-import CapitalProjectsSummary from './app/capital_projects/CapitalProjectsSummary';
-import CategoryDetails from './app/capital_projects/CategoryDetails';
-import CIPData from './app/capital_projects/CIPData';
+import CapitalProjectsSummary from "./app/capital_projects/CapitalProjectsSummary";
+import CategoryDetails from "./app/capital_projects/CategoryDetails";
+import CIPData from "./app/capital_projects/CIPData";
 // Homelessness
-import HomelessnessSummary from './app/homelessness/HomelessnessSummary';
-import HomelessnessCounts from './app/homelessness/HomelessnessCounts';
-import HomelessnessDemographics from './app/homelessness/HomelessnessDemographics';
-import HomelessnessVeterans from './app/homelessness/HomelessnessVeterans';
-import HomelessnessVeteransInflowOutflow from './app/homelessness/HomelessnessVeteransInflowOutflow';
-import HomelessnessVeteransEnrollment from './app/homelessness/HomelessnessVeteransEnrollment';
-import HomelessnessVeteransChronicAssignments from './app/homelessness/HomelessnessVeteransChronicAssignments';
-import HomelessnessVeteransExitTime from './app/homelessness/HomelessnessVeteransExitTime';
-import HomelessnessEnrollment from './app/homelessness/HomelessnessEnrollment';
-import HomelessnessData from './app/homelessness/HomelessnessData';
+import HomelessnessSummary from "./app/homelessness/HomelessnessSummary";
+import HomelessnessCounts from "./app/homelessness/HomelessnessCounts";
+import HomelessnessDemographics from "./app/homelessness/HomelessnessDemographics";
+import HomelessnessVeterans from "./app/homelessness/HomelessnessVeterans";
+import HomelessnessVeteransInflowOutflow from "./app/homelessness/HomelessnessVeteransInflowOutflow";
+import HomelessnessVeteransEnrollment from "./app/homelessness/HomelessnessVeteransEnrollment";
+import HomelessnessVeteransChronicAssignments from "./app/homelessness/HomelessnessVeteransChronicAssignments";
+import HomelessnessVeteransExitTime from "./app/homelessness/HomelessnessVeteransExitTime";
+import HomelessnessEnrollment from "./app/homelessness/HomelessnessEnrollment";
+import HomelessnessData from "./app/homelessness/HomelessnessData";
 // MiniSearch
-import MiniSearch from './app/mini_search/MiniSearch';
+import MiniSearch from "./app/mini_search/MiniSearch";
 // Finance
-import PCardCompliance from './app/internal/pcard_compliance/PCardCompliance';
-import PCardComplianceReceipts from './app/internal/pcard_compliance/PCardComplianceReceipts';
+import PCardCompliance from "./app/internal/pcard_compliance/PCardCompliance";
+import PCardComplianceReceipts from "./app/internal/pcard_compliance/PCardComplianceReceipts";
 // General
-import NotFound from './shared/NotFound';
+import NotFound from "./shared/NotFound";
 
 // Google Analytics
-const ReactGA = require('react-ga');
+// const ReactGA = require('react-ga');
 
 let logPageView = () => {
   ReactGA.set({ page: window.location.pathname });
-  ReactGA.pageview(window.location.pathname + window.location.search);
+  ReactGA.send({
+    hitType: "pageview",
+    page: window.location.pathname + window.location.search,
+  });
+  // ReactGA.pageview(window.location.pathname + window.location.search);
 };
 
-if (window.location.href.indexOf('dashboards.ashevillenc.gov') > -1) {
-  ReactGA.initialize('UA-16340971-12');
-} else if (window.location.href.indexOf('simplicity.ashevillenc.gov') > -1) {
-  ReactGA.initialize('UA-16340971-11');
+if (window.location.href.indexOf("dashboards.ashevillenc.gov") > -1) {
+  ReactGA.initialize("G-91G5QF0KSC");
+} else if (window.location.href.indexOf("simplicity.ashevillenc.gov") > -1) {
+  ReactGA.initialize("G-HXJE68WHRD");
 } else {
   logPageView = null;
 }
 
 const Routes = () => (
-  <ApolloProvider client={client} >
-    <Router history={browserHistory} onUpdate={logPageView === null ? null : () => logPageView()}>
+  <ApolloProvider client={client}>
+    <Router
+      history={browserHistory}
+      onUpdate={logPageView === null ? null : () => logPageView()}
+    >
       <Route path="/" component={App}>
         <IndexRoute component={Home} />
         <Route path="search">
           <IndexRoute component={Search} />
-          <Route path="googlePlaceMatches" component={GooglePlaceResults}></Route>
+          <Route
+            path="googlePlaceMatches"
+            component={GooglePlaceResults}
+          ></Route>
         </Route>
         <Route path="my-simplicity" component={MySimpliCity}></Route>
         <Route path="locations" component={Locations} />
@@ -118,7 +129,11 @@ const Routes = () => (
         </Route>
         <Route path="permits">
           <IndexRoute component={PermitsIndex} />
-          <Route exact path="/permits/search" component={PermitSearchIndex}></Route>
+          <Route
+            exact
+            path="/permits/search"
+            component={PermitSearchIndex}
+          ></Route>
           <Route path="/permits/:id" component={Permit}></Route>
         </Route>
         <Route path="development">
@@ -127,7 +142,10 @@ const Routes = () => (
           {/* The rest of these are dashboards */}
           <Route path="dashboards" component={DevelopmentDashIndex}></Route>
           <Route path="data" component={DevelopmentDashIndex}></Route>
-          <Route path="sla-dashboard" component={DevelopmentSLADashboard}></Route>
+          <Route
+            path="sla-dashboard"
+            component={DevelopmentSLADashboard}
+          ></Route>
           <Route path="major" component={MajorDevelopmentDashboard}></Route>
           <Route path="granular_volume" component={PermitVolume}></Route>
           <Route path="status_volume" component={PermitVolume}></Route>
@@ -136,12 +154,27 @@ const Routes = () => (
           <IndexRoute component={HomelessnessSummary} />
           <Route path="veterans" component={HomelessnessVeterans}></Route>
           <Route path="data" component={HomelessnessData}></Route>
-          <Route path="veteranEnrollments" component={HomelessnessVeteransEnrollment}></Route>
-          <Route path="veteranChronicAssignments" component={HomelessnessVeteransChronicAssignments}></Route>
-          <Route path="veteranInflowOutflow" component={HomelessnessVeteransInflowOutflow}></Route>
-          <Route path="veteranExitTime" component={HomelessnessVeteransExitTime}></Route>
+          <Route
+            path="veteranEnrollments"
+            component={HomelessnessVeteransEnrollment}
+          ></Route>
+          <Route
+            path="veteranChronicAssignments"
+            component={HomelessnessVeteransChronicAssignments}
+          ></Route>
+          <Route
+            path="veteranInflowOutflow"
+            component={HomelessnessVeteransInflowOutflow}
+          ></Route>
+          <Route
+            path="veteranExitTime"
+            component={HomelessnessVeteransExitTime}
+          ></Route>
           <Route path="counts" component={HomelessnessCounts}></Route>
-          <Route path="demographics" component={HomelessnessDemographics}></Route>
+          <Route
+            path="demographics"
+            component={HomelessnessDemographics}
+          ></Route>
           <Route path="enrollments" component={HomelessnessEnrollment}></Route>
         </Route>
         <Route path="maintenance">

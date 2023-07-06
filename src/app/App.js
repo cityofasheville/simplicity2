@@ -1,22 +1,21 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { graphql, compose, withApollo } from 'react-apollo';
-import { updateUser } from '../utilities/auth/graphql/authMutations';
-import { getUser } from '../utilities/auth/graphql/authQueries';
-import Navbar from './Navbar';
-import EnvBanner from './EnvBanner';
-import Footer from './Footer';
-import ErrorBoundary from '../shared/ErrorBoundary';
-import CityInfoBar from './CityInfoBar';
-import { defaultAuthState } from '../utilities/auth/graphql/authDefaultState';
-import LanguageProvider from '../utilities/lang/LanguageContext';
-
+import React from "react";
+import PropTypes from "prop-types";
+import { graphql, compose, withApollo } from "react-apollo";
+import { updateUser } from "../utilities/auth/graphql/authMutations";
+import { getUser } from "../utilities/auth/graphql/authQueries";
+import Navbar from "./Navbar";
+import EnvBanner from "./EnvBanner";
+import Footer from "./Footer";
+import ErrorBoundary from "../shared/ErrorBoundary";
+import CityInfoBar from "./CityInfoBar";
+import { defaultAuthState } from "../utilities/auth/graphql/authDefaultState";
+import LanguageProvider from "../utilities/lang/LanguageContext";
 
 const displayNavbar = (hideNavbar) => {
-  if (hideNavbar) {
+  if (hideNavbar || window.location.pathname === "/mini_search") {
     return null;
   }
-  if (window.location.href.indexOf('dashboards.ashevillenc.gov') < 0) {
+  if (window.location.href.indexOf("dashboards.ashevillenc.gov") < 0) {
     return <Navbar />; // / Navbar is SimpliCity
   }
   // CityInfoBar is dashboards
@@ -45,19 +44,24 @@ class Main extends React.Component {
   render() {
     return (
       <div
-        className={this.props.location.query.hideNavbar ? 'app-parent hidden-navbar' : 'app-parent'}
+        className={
+          this.props.location.query.hideNavbar
+            ? "app-parent hidden-navbar"
+            : "app-parent"
+        }
       >
         <LanguageProvider>
-          <a href="#content" className="skip-nav-link">Skip to Main Content</a>
+          <a href="#content" className="skip-nav-link">
+            Skip to Main Content
+          </a>
           {displayNavbar(this.props.location.query.hideNavbar)}
-          <div className="container" id="content">   
-            <EnvBanner />      
-            <ErrorBoundary>
-              {this.props.children}
-            </ErrorBoundary>
+          <div className="container" id="content">
+            <EnvBanner />
+            <ErrorBoundary>{this.props.children}</ErrorBoundary>
           </div>
           {!this.props.location.query.hideNavbar && <Footer />}
-          { // <AuthProviderModal />
+          {
+            // <AuthProviderModal />
           }
         </LanguageProvider>
       </div>
@@ -76,12 +80,12 @@ Main.defaultProps = {
 };
 
 const App = compose(
-  graphql(updateUser, { name: 'updateUser' }),
+  graphql(updateUser, { name: "updateUser" }),
   graphql(getUser, {
     props: ({ data: { user } }) => ({
       user,
     }),
-  }),
+  })
 )(Main);
 
 export default withApollo(App);

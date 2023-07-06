@@ -2,6 +2,7 @@ import React from 'react';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import Icon from '../../shared/Icon';
+import { Link } from 'react-router';
 import {
   IM_LOCATION,
   IM_BIN,
@@ -62,6 +63,7 @@ query addresses($civicaddress_ids: [String]!) {
       owner_zipcode
       local_landmark
       historic_district
+      block_group
     }
   }
   `;
@@ -255,22 +257,22 @@ const Address = props => (
                 </div>
                 {addressData.is_in_city &&
                   // <div className="col-sm-12">
-                    <div className="row small-padding">
-                      {['CRIME', 'DEVELOPMENT'].map((topic, i) => (
-                        <div className="col-xs-6" key={['topic', i]}>
-                          <TopicCard
-                            topic={topic}
-                            entity="address"
-                            id={props.location.query.id}
-                            label={`${addressData.address}, ${addressData.zipcode}`}
-                            entities={props.location.query.entities}
-                            x={addressData.x}
-                            y={addressData.y}
-                            search={props.location.query.search}
-                          />
-                        </div>
-                      ))}
-                    </div>
+                  <div className="row small-padding">
+                    {['CRIME', 'DEVELOPMENT'].map((topic, i) => (
+                      <div className="col-xs-6" key={['topic', i]}>
+                        <TopicCard
+                          topic={topic}
+                          entity="address"
+                          id={props.location.query.id}
+                          label={`${addressData.address}, ${addressData.zipcode}`}
+                          entities={props.location.query.entities}
+                          x={addressData.x}
+                          y={addressData.y}
+                          search={props.location.query.search}
+                        />
+                      </div>
+                    ))}
+                  </div>
                   // </div>
                 }
                 <div className="detailsFieldset__details-listings">
@@ -324,6 +326,18 @@ const Address = props => (
                     />
                   }
                   <DetailsFormGroup
+                    label={content.block_group}
+                    name="block_groups"
+                    value={addressData.block_group === null ?
+                      content.no_block_group
+                      :
+                      <Link to={`/block_group?id=${addressData.block_group}&fromAddress=${props.location.query.id}&search=${props.location.query.search}`}>
+                      {content.block_group_link}
+                      </Link>}
+                    hasLabel
+                    icon={<Icon path={IM_USERS} size={20} />}
+                  />
+                  <DetailsFormGroup
                     label={content.owner}
                     name="owner"
                     value={
@@ -349,49 +363,49 @@ const Address = props => (
                             key={`zone_${index}`}
                           >
                             {addressData.zoning_links
-                            ?<a
+                              ? <a
                                 href={addressData.zoning_links.split(',')[index]}
                                 target="_blank"
                               >
                                 {addressData.zoning.split(',')[index]}
                               </a>
-                            :addressData.zoning.split(',')[index]
-                          }
+                              : addressData.zoning.split(',')[index]
+                            }
 
                             {addressData.zoning.split(',').length > index + 1 ? ', ' : ''}
                           </span>
                         ))}
                         {
                           addressData.local_landmark &&
-                            <DetailsFormGroup
-                              label={content.local_landmark}
-                              name="local_landmark"
-                              value={
+                          <DetailsFormGroup
+                            label={content.local_landmark}
+                            name="local_landmark"
+                            value={
+                              <div>
                                 <div>
-                                  <div>
-                                    {addressData.local_landmark}
-                                  </div>
+                                  {addressData.local_landmark}
                                 </div>
-                              }
-                              hasLabel
-                              icon={<Icon path={IM_FLAG7} size={20} />}
-                            />
+                              </div>
+                            }
+                            hasLabel
+                            icon={<Icon path={IM_FLAG7} size={20} />}
+                          />
                         }
                         {
                           addressData.historic_district &&
-                            <DetailsFormGroup
-                              label={content.historic_district}
-                              name="historic_district"
-                              value={
+                          <DetailsFormGroup
+                            label={content.historic_district}
+                            name="historic_district"
+                            value={
+                              <div>
                                 <div>
-                                  <div>
-                                    {addressData.historic_district}
-                                  </div>
+                                  {addressData.historic_district}
                                 </div>
-                              }
-                              hasLabel
-                              icon={<Icon path={IM_LIBRARY} size={20} />}
-                            />
+                              </div>
+                            }
+                            hasLabel
+                            icon={<Icon path={IM_LIBRARY} size={20} />}
+                          />
                         }
                       </div>}
                     hasLabel

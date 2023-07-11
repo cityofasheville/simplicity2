@@ -11,8 +11,6 @@ import ButtonGroup from '../../shared/ButtonGroup';
 import LinkButton from '../../shared/LinkButton';
 import PageHeader from '../../shared/PageHeader';
 import { getBoundsFromPolygonData, combinePolygonsFromNeighborhoodList } from '../../utilities/mapUtilities';
-// import { english } from './english';
-// import { spanish } from './spanish';
 
 const BlockGroup = (props) => {
   if (props.data.loading) { // eslint-disable-line react/prop-types
@@ -21,15 +19,7 @@ const BlockGroup = (props) => {
   if (props.data.error) { // eslint-disable-line react/prop-types
     return <Error message={props.data.error.message} />; // eslint-disable-line react/prop-types
   }
-  // // set language
-  // let content;
-  // switch (props.language.language) {
-  //   case 'Spanish':
-  //     content = spanish;
-  //     break;
-  //   default:
-  //     content = english;
-  // }
+
   return (
     <div>
       <PageHeader h1={props.data.blockgroups[0].name} dataType="Census Block Group" h2="About this Block Group" icon={<Icon path={IM_USERS} size={50} />}>

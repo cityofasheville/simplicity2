@@ -64,6 +64,7 @@ query addresses($civicaddress_ids: [String]!) {
       local_landmark
       historic_district
       block_group
+      climate_justice_score
     }
   }
   `;
@@ -331,9 +332,15 @@ const Address = props => (
                     value={addressData.block_group === null ?
                       content.no_block_group
                       :
+                      <div>
+                      <div>
+                      Climate Justice Score: {addressData.climate_justice_score}
+                      </div>
                       <Link to={`/block_group?id=${addressData.block_group}&fromAddress=${props.location.query.id}&search=${props.location.query.search}`}>
-                      {content.block_group_link}
-                      </Link>}
+                      More Information
+                      </Link>
+                      </div>
+                    }
                     hasLabel
                     icon={<Icon path={IM_USERS} size={20} />}
                   />

@@ -37,7 +37,7 @@ const BlockGroup = (props) => {
         </ButtonGroup>
       </PageHeader>
       <div className="row small-padding">
-        <div className="col-sm-7">
+        <div className="col-sm-12">
           <fieldset className="detailsFieldset">
             <div className="map-container">
               <Map
@@ -48,9 +48,55 @@ const BlockGroup = (props) => {
             </div>
           </fieldset>
         </div>
-        <div className="col-sm-4">
+        <div className="col-sm-12">
+
           <div className="row small-padding">
-            <table>
+            <h2>Climate Justice Data for this Block Group</h2>
+            <h3>Climate Justice Index Score: <span style={{color: "red", fontWeight: "bold"}}>{props.data.blockgroups[0].sum_scores}</span> out of 25</h3>
+            <div>
+              Risk factors are scaled from 1 to 5, and summed up to caclulate the Index Score.
+            </div>
+            <ul className='cjdata'>
+                <li><b>BIPOC Score: {props.data.blockgroups[0].bipoc_score}</b>
+                  <ul>
+                    <li>BIPOC is Black, Indigenous and People of Color.</li>
+                    <li>This area has a <b>{props.data.blockgroups[0].bipoc}%</b> BIPOC Population</li>
+                  </ul>
+                </li>
+                <li><b>Heat Vulnerability Score: {props.data.blockgroups[0].heat_score}</b>
+                  <ul>
+                    <li>This heat vulnerability index shows which parts of Asheville are vulnerable to extreme heat, taking into account land surface temperature, tree cover, age, and poverty level.</li>
+                    <li>Overall Heat Vulnerability Index Value: <b>{props.data.blockgroups[0].hvi_value.toFixed(2)}</b></li>
+                    <li>The closer this value is to 3, the more vulnerable it is, and the closer it is to 0, the less vulnerable it is.
+                    </li>
+                  </ul>
+                </li>
+                <li><b>Energy Burden Score: {props.data.blockgroups[0].energy_sco}</b>
+                  <ul>
+                    <li>
+                      <p>Energy Burden represents the percentage of annual income that a household pays towards their energy bills (electricity/gas utility.)</p>
+                    </li>
+                  </ul>
+                </li>
+                <li><b>CDC Social Vulnerability Score: {props.data.blockgroups[0].cdc_score}</b>
+                  <ul>
+                    <li>CDC Social Vulnerability Index</li>
+                    <li>2018 Overall Score: <b>{props.data.blockgroups[0].rpl_themes}</b></li>
+                    <li>Possible scores range from 0 (lowest vulnerability) to 1 (highest vulnerability).
+                    </li>
+                  </ul>
+                </li>
+                <li><b>Climate Resiliency Neighborhood Threats Score: {props.data.blockgroups[0].resiliency}</b>
+                  <ul>
+                    <li>The Climate Resiliency Neighborhood Threats Score was determined by taking the percentage of land with risk by neighborhood (census block group) and classifying by risk level.</li>
+                    <li>Score from Flood Risk: <b>{props.data.blockgroups[0].resflood}</b></li>
+                    <li>Score from Wildfire Risk: <b>{props.data.blockgroups[0].wfirescore}</b></li>
+                    <li>Score from Landslide Risk: <b>{props.data.blockgroups[0].resland}</b>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            {/* <table>
               <thead><th colSpan="2">Climate Justice Data for this Block Group</th></thead>
               <tr><td>below_pov</td><td>{props.data.blockgroups[0].below_pov}</td></tr>
               <tr><td>bipoc</td><td>{props.data.blockgroups[0].bipoc}</td></tr>
@@ -81,11 +127,19 @@ const BlockGroup = (props) => {
               <tr><td>holc</td><td>{props.data.blockgroups[0].holc}</td></tr>
               <tr><td>red_score</td><td>{props.data.blockgroups[0].red_score}</td></tr>
               <tr><td>wfirescore</td><td>{props.data.blockgroups[0].wfirescore}</td></tr>
-            </table>
+            </table> */}
           </div>
         </div>
+        <div>
+          For mitigation strategies, see the
+          <a href='https://drive.google.com/file/d/0BzZzONRPV-VAVF9vb2pOMUtkRmFJR1AyNFluYU5ESU9rODRJ/view?resourcekey=0-ZQ80xC-a8bw4JDs7z0Neaw' className='' target="_blank"> Climate Resiliency Guide</a>.
+        </div>
+        <div>
+          Overview of Asheville's Climate Justice Initiative:
+          <a href='https://storymaps.arcgis.com/stories/1d90d45f3e71482397a944e8d6786df4' className='' target="_blank"> Storymap</a>.
+        </div>
       </div>
-    </div>
+    </div >
   );
 };
 

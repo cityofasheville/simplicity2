@@ -334,7 +334,7 @@ const Address = props => (
                       :
                       <div>
                       <div>
-                      Climate Justice Score: {addressData.climate_justice_score}
+                      Climate Justice Score: <b>{addressData.climate_justice_score}</b> out of 25
                       </div>
                       <Link to={`/block_group?id=${addressData.block_group}&fromAddress=${props.location.query.id}&search=${props.location.query.search}`}>
                       More Information

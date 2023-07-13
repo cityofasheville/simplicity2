@@ -326,7 +326,7 @@ const Address = props => (
                       icon={<Icon path={IM_USERS} size={20} />}
                     />
                   }
-                  <DetailsFormGroup
+                  {/* <DetailsFormGroup
                     label={content.block_group}
                     name="block_groups"
                     value={addressData.block_group === null ?
@@ -343,7 +343,7 @@ const Address = props => (
                     }
                     hasLabel
                     icon={<Icon path={IM_USERS} size={20} />}
-                  />
+                  /> */}
                   <DetailsFormGroup
                     label={content.owner}
                     name="owner"

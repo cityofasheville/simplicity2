@@ -63,8 +63,6 @@ query addresses($civicaddress_ids: [String]!) {
       owner_zipcode
       local_landmark
       historic_district
-      block_group
-      climate_justice_score
     }
   }
   `;

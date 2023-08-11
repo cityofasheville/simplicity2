@@ -36,7 +36,7 @@ const BlockGroup = (props) => {
           </LinkButton>
         </ButtonGroup>
       </PageHeader>
-      <div><a href="https://www.census.gov/programs-surveys/geography/about/glossary.html#par_textimage_4">What is a Block Group?</a></div>
+      <div><a href="https://www.census.gov/programs-surveys/geography/about/glossary.html#par_textimage_4" target="_blank">What is a Block Group? (census.gov)</a></div>
       <div className="row small-padding">
         <div className="col-sm-12">
           <fieldset className="detailsFieldset">

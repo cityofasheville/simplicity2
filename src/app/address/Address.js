@@ -64,6 +64,7 @@ query addresses($civicaddress_ids: [String]!) {
       local_landmark
       historic_district
       block_group
+      block_group_name
       climate_justice_score
     }
   }
@@ -334,10 +335,11 @@ const Address = props => (
                       :
                       <div>
                       <div>
-                      Climate Justice Score: <b>{addressData.climate_justice_score}</b> out of 25
+                      {/* Climate Justice Score: <b>{addressData.climate_justice_score}</b> out of 25 */}
+                      This address is in:<p><i>{addressData.block_group_name}</i></p>
                       </div>
                       <Link to={`/block_group?id=${addressData.block_group}&fromAddress=${props.location.query.id}&search=${props.location.query.search}`}>
-                      More Information
+                      View Climate Justice Data for this Block Group
                       </Link>
                       </div>
                     }

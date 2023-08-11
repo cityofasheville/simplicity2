@@ -18,7 +18,7 @@ export const english = {
   map_view: 'Map view',
   neighborhood: 'Neighborhood',
   no_neighborhood_name: 'No neighborhood name',
-  block_group: ' Census Block Group',
+  block_group: ' Climate Justice Information',
   block_group_link: 'Climate Justice Information',
   no_block_group: 'Unknown Census Block Group',
   no_city_pickup: 'No city pickup',

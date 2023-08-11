@@ -57,13 +57,13 @@ const BlockGroup = (props) => {
               Risk factors are scaled from 1 to 5, and summed up to caclulate the Index Score.
             </div>
             <ul className='cjdata'>
-                <li><b>BIPOC Score: {props.data.blockgroups[0].bipoc_score}</b>
+                <li><h4>BIPOC Score: {props.data.blockgroups[0].bipoc_score}</h4>
                   <ul>
                     <li>BIPOC is Black, Indigenous and People of Color.</li>
                     <li>This area has a <b>{props.data.blockgroups[0].bipoc}%</b> BIPOC Population</li>
                   </ul>
                 </li>
-                <li><b>Heat Vulnerability Score: {props.data.blockgroups[0].heat_score}</b>
+                <li><h4>Heat Vulnerability Score: {props.data.blockgroups[0].heat_score}</h4>
                   <ul>
                     <li>This heat vulnerability index shows which parts of Asheville are vulnerable to extreme heat, taking into account land surface temperature, tree cover, age, and poverty level.</li>
                     <li>Overall Heat Vulnerability Index Value: <b>{props.data.blockgroups[0].hvi_value.toFixed(2)}</b></li>
@@ -71,14 +71,14 @@ const BlockGroup = (props) => {
                     </li>
                   </ul>
                 </li>
-                <li><b>Energy Burden Score: {props.data.blockgroups[0].energy_sco}</b>
+                <li><h4>Energy Burden Score: {props.data.blockgroups[0].energy_sco}</h4>
                   <ul>
                     <li>
                       <p>Energy Burden represents the percentage of annual income that a household pays towards their energy bills (electricity/gas utility.)</p>
                     </li>
                   </ul>
                 </li>
-                <li><b>CDC Social Vulnerability Score: {props.data.blockgroups[0].cdc_score}</b>
+                <li><h4>CDC Social Vulnerability Score: {props.data.blockgroups[0].cdc_score}</h4>
                   <ul>
                     <li>CDC Social Vulnerability Index</li>
                     <li>2018 Overall Score: <b>{props.data.blockgroups[0].rpl_themes}</b></li>
@@ -86,7 +86,7 @@ const BlockGroup = (props) => {
                     </li>
                   </ul>
                 </li>
-                <li><b>Climate Resiliency Neighborhood Threats Score: {props.data.blockgroups[0].resiliency}</b>
+                <li><h4>Climate Resiliency Neighborhood Threats Score: {props.data.blockgroups[0].resiliency}</h4>
                   <ul>
                     <li>The Climate Resiliency Neighborhood Threats Score was determined by taking the percentage of land with risk by neighborhood (census block group) and classifying by risk level.</li>
                     <li>Score from Flood Risk: <b>{props.data.blockgroups[0].resflood}</b></li>

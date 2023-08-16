@@ -54,15 +54,16 @@ const BlockGroup = (props) => {
           <div className="row small-padding">
             <h2>Climate Justice Data for this Block Group</h2>
             <h3>Climate Justice Index Score: <span style={{ color: "red", fontWeight: "bold" }}>{props.data.blockgroups[0].sum_scores}</span> out of 25</h3>
-            <div className="">
-              For mitigation strategies, see the
+            <div className="detailsFieldset__details-listings">
+              For mitigation strategies, see the&nbsp;
               <a href='https://drive.google.com/file/d/0BzZzONRPV-VAVF9vb2pOMUtkRmFJR1AyNFluYU5ESU9rODRJ/view?resourcekey=0-ZQ80xC-a8bw4JDs7z0Neaw' className='' target="_blank"> Climate Resiliency Guide</a>.
-
+            </div>
+            <div>
               Overview of Asheville's Climate Justice Initiative:
               <a href='https://storymaps.arcgis.com/stories/1d90d45f3e71482397a944e8d6786df4' className='' target="_blank"> Storymap</a>.
             </div>
             <p>
-              Risk factors are scaled from 1 to 5, and summed up to caclulate the Index Score.
+              <i>Risk factors are scaled from 1 to 5, and summed up to caclulate the Index Score.</i>
             </p>
             <ul className='cjdata'>
               <li><h4>BIPOC Score: {props.data.blockgroups[0].bipoc_score}</h4>

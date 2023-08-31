@@ -98,9 +98,30 @@ const BlockGroup = (props) => {
               <li><h4>Climate Resiliency Neighborhood Threats Score: {props.data.blockgroups[0].resiliency}</h4>
                 <ul>
                   <li>The Climate Resiliency Neighborhood Threats Score was determined by taking the percentage of land with risk by neighborhood (census block group) and classifying by risk level.</li>
-                  <li>Score from Flood Risk: <b>{props.data.blockgroups[0].resflood}</b></li>
-                  <li>Score from Wildfire Risk: <b>{props.data.blockgroups[0].wfirescore}</b></li>
+
+                  <li>Score from Flood Risk: <b>{props.data.blockgroups[0].resflood}</b>
+                    <i>{props.data.blockgroups[0].resflood < 3
+                      ? " (Lower Risk) "
+                      : props.data.blockgroups[0].resflood === 3
+                        ? " (Medium Risk) "
+                        : " (Higher Risk) "}</i>
+                    <a href='https://drive.google.com/file/d/0BzZzONRPV-VAVF9vb2pOMUtkRmFJR1AyNFluYU5ESU9rODRJ/view?resourcekey=0-ZQ80xC-a8bw4JDs7z0Neaw' className='' target="_blank"> Actions you can take now</a>
+                  </li>
+                  <li>Score from Wildfire Risk: <b>{props.data.blockgroups[0].wfirescore}</b>
+                    <i>{props.data.blockgroups[0].wfirescore < 3
+                      ? " (Lower Risk) "
+                      : props.data.blockgroups[0].wfirescore === 3
+                        ? " (Medium Risk) "
+                        : " (Higher Risk) "}</i>
+                    <a href='https://drive.google.com/file/d/0BzZzONRPV-VAVF9vb2pOMUtkRmFJR1AyNFluYU5ESU9rODRJ/view?resourcekey=0-ZQ80xC-a8bw4JDs7z0Neaw' className='' target="_blank"> Actions you can take now</a>
+                  </li>
                   <li>Score from Landslide Risk: <b>{props.data.blockgroups[0].resland}</b>
+                    <i>{props.data.blockgroups[0].resland < 3
+                      ? " (Lower Risk) "
+                      : props.data.blockgroups[0].resland === 3
+                        ? " (Medium Risk) "
+                        : " (Higher Risk) "}</i>
+                    <a href='https://drive.google.com/file/d/0BzZzONRPV-VAVF9vb2pOMUtkRmFJR1AyNFluYU5ESU9rODRJ/view?resourcekey=0-ZQ80xC-a8bw4JDs7z0Neaw' className='' target="_blank"> Actions you can take now</a>
                   </li>
                 </ul>
               </li>

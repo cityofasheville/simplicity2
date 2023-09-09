@@ -14,6 +14,7 @@ import {
   getBoundsFromPolygonData,
   combinePolygonsFromNeighborhoodList,
 } from "../../utilities/mapUtilities";
+import IM_HEAT from "./svg/heat.svg";
 
 const BlockGroup = (props) => {
   if (props.data.loading) {

@@ -13,7 +13,8 @@ function RiskOverview({ title, icon, overview, actions, riskLevel }) {
         display: "flex",
         height: "100%",
         // padding: "12px 0",
-        marginBottom: "24px",
+        marginBottom: "32px",
+        marginRight: "48px",
       }}
     >
       <div

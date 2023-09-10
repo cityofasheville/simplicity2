@@ -145,7 +145,7 @@ const BlockGroup = (props) => {
   }
 
   climateThreats[thisThreatLevel].data.push({
-    name: "Landslide",
+    name: "Wildfire",
     overview: wildfireRiskOverview,
     score: wildfireScore,
     icon: ICON_WILDFIRE,
@@ -206,10 +206,12 @@ const BlockGroup = (props) => {
   return (
     <div className="container" style={{ padding: "0" }}>
       <PageHeader
-        h1={`Climate: ${props.data.blockgroups[0].name.slice(0, -33)}`}
+        h1={`Climate Risk: ${props.data.blockgroups[0].name.slice(0, -33)}`}
         dataType="Census Block Group in Buncombe County, North Carolina"
         // h2={"About this Block Group"}
         icon={<Icon path={IM_USERS} size={50} />}
+        externalLink="https://www.census.gov/programs-surveys/geography/about/glossary.html#par_textimage_4"
+        externalLinkText="What is a Block Group? (census.gov)"
       >
         <ButtonGroup alignment="">
           <LinkButton
@@ -227,7 +229,7 @@ const BlockGroup = (props) => {
           </LinkButton>
         </ButtonGroup>
       </PageHeader>
-      <div>
+      {/* <div>
         <h2></h2>
         <a
           href="https://www.census.gov/programs-surveys/geography/about/glossary.html#par_textimage_4"
@@ -235,7 +237,7 @@ const BlockGroup = (props) => {
         >
           What is a Block Group? (census.gov)
         </a>
-      </div>
+      </div> */}
 
       <fieldset className="detailsFieldset">
         <div className="map-container">
@@ -256,12 +258,28 @@ const BlockGroup = (props) => {
         </div>
       </fieldset>
 
-      <h2>Climate Justice Data for this Block Group</h2>
+      <h2>Climate Risk Information for this Block Group</h2>
       <p>
-        Your property or neighborhood may be vulnerable to climate-related
-        threats. Based on the available information about your location, you may
-        want to consider the following threats and strategies to build
-        resilience.
+        Through the{" "}
+        <a
+          href="https://drive.google.com/file/d/1X_Gr4eUCmkXPOzAcvyxCe-uZPkX84Byz/view"
+          target="_blank"
+        >
+          2018 Climate Resilience Assessment
+        </a>
+        , the City of Asheville worked with the National Environmental Modeling
+        and Analysis Center (NEMAC) at UNC Asheville to better understand which
+        areas are most at risk for various climate threats. This assessment
+        assigned levels of risk for different geographic areas of the city (i.e.
+        census block groups). Levels of risk are determined by considering the
+        percentage of land with risk inside each geographic area.
+      </p>
+      <p>
+        Properties within this particular block group (
+        {props.data.blockgroups[0].name.slice(0, -33)}) may be vulnerable to
+        climate-related threats. Based on the available information about this
+        block group, the following threats and strategies to build resilience
+        should be considered.
       </p>
 
       <h3>
@@ -285,7 +303,8 @@ const BlockGroup = (props) => {
       </h3>
       <p>{climateScoreMethodologyNote}</p>
       <div class="row">
-        <div class=" col-xs-8">
+        <div class=" col-xs-12 col-md-8">
+          <h3>Risks and Mitigation</h3>
           {climateThreats.high.data.length > 0 && (
             <>
               <p>{climateThreats.high.notice}</p>
@@ -337,38 +356,47 @@ const BlockGroup = (props) => {
             </>
           )}
         </div>
-        <div class=" col-xs-4">
-          <div style={{ padding: "16px" }}>
+        <div
+          class=" col-xs-12 col-md-4"
+          style={{
+            backgroundColor: "#FAFAFA",
+            border: "1px solid rgba(0,0,0,.15)",
+            borderRadius: "4px",
+            paddingBottom: "64px",
+          }}
+        >
+          <h3>Learn More</h3>
+          <div style={{ padding: "16px 0" }}>
             {/* For mitigation strategies, see the */}
             <a
               href="https://drive.google.com/file/d/0BzZzONRPV-VAVF9vb2pOMUtkRmFJR1AyNFluYU5ESU9rODRJ/view?resourcekey=0-ZQ80xC-a8bw4JDs7z0Neaw"
-              className="btn btn-default"
+              className="btn btn-info"
               target="_blank"
               style={{ maxWidth: "100%" }}
             >
-              Mitigation Strategies
+              Climate Resilience Guide
             </a>
           </div>
-          <div style={{ padding: "16px" }}>
+          <div style={{ padding: "16px 0" }}>
             {/* Overview of Asheville's Climate Justice Initiative: */}
             <a
               href="https://storymaps.arcgis.com/stories/1d90d45f3e71482397a944e8d6786df4"
-              className="btn btn-primary"
+              className="btn btn-info"
               target="_blank"
               style={{ maxWidth: "100%" }}
             >
-              Climate Justice Overview
+              Climate Justice Initiative
             </a>
           </div>
-          <div style={{ padding: "16px" }}>
+          <div style={{ padding: "16px 0" }}>
             {/* Comprehensive look at climate justice data in Asheville: */}
             <a
               href="https://avl.maps.arcgis.com/apps/instant/lookup/index.html?appid=10e2c4ae45614b92ad4efaa61342b249%2F"
-              className="btn btn-primary"
+              className="btn btn-info"
               target="_blank"
               style={{ maxWidth: "100%" }}
             >
-              Citywide Climate Justice Map
+              Citywide Climate Justice Index Map
             </a>
           </div>
         </div>
@@ -503,7 +531,6 @@ const BlockGroup = (props) => {
                   ? " (Medium Risk) "
                   : " (Higher Risk) "}
               </i>
-              <div dangerouslySetInnerHTML={{ __html: floodRiskOverview }} />
               <a
                 href="https://drive.google.com/file/d/0BzZzONRPV-VAVF9vb2pOMUtkRmFJR1AyNFluYU5ESU9rODRJ/view?resourcekey=0-ZQ80xC-a8bw4JDs7z0Neaw"
                 className=""

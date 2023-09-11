@@ -64,7 +64,61 @@ export const lowRiskIntro = `
 The following risks mostly pertain to other parts of the city.
 `;
 
-export const climateScoreMethodologyNote = `The Climate Resiliency Threats 
-Score was determined by taking the percentage of land with risk inside a region 
-(census block group) and caluculating that region's risk level.
+export const climateScoreMethodologyNote = `
+<p>Through the
+<a
+  href="https://drive.google.com/file/d/1X_Gr4eUCmkXPOzAcvyxCe-uZPkX84Byz/view"
+  target="_blank"
+>
+  2018 Climate Resilience Assessment
+</a>, the City of Asheville worked with the National Environmental Modeling
+and Analysis Center (NEMAC) at UNC Asheville to better understand which
+areas are most at risk for various climate threats. This assessment
+assigned levels of risk for different geographic areas of the city (i.e.
+census block groups). Levels of risk for climate-related threats are
+determined by considering the percentage of land at risk within each
+geographic area.
+</p>
 `;
+
+export const riskMitigationSteps = {
+  allRisks: [
+    "Be informed",
+    "Make a plan and build a kit",
+    "Sign up for hazard alerts",
+    "Post emergency contact information",
+  ],
+  heat: [
+    "Create shade",
+    "Cool the air",
+    "Be a good neighbor",
+    "Check the back seat",
+    "Recognize the signs of heat-related illness",
+    "Know where you can go to get cool",
+  ],
+  flood: [
+    "Purchase/review flood insurance",
+    "Floodproofing (emergency)",
+    "Floodproofing (permanent)",
+    "Remove or secure toxic materials",
+    "Elevate critical equipment and important personal property",
+    "Elevate your home or building",
+    "Reduce runoff and redirect stormwater",
+    "Install “green” infrastructure and store rainwater",
+    "Clear stormwater drains",
+    "Maintain natural vegetation",
+    "Protect stream buffers",
+  ],
+  wildfire: [
+    "Purchase/review insurance coverage",
+    "Use fire-resistant building materials",
+    "Consider neigborhood strategies",
+    "Manage vegetation and fuels",
+  ],
+  landslide: [
+    "Be aware of surface water runoff and keep ditches and culverts clear",
+    "Recognize the signs of slope instability",
+    "Maintain natural vegetation to prevent erosion",
+    "Stabilize slopes as needed",
+  ],
+};

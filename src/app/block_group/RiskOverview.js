@@ -1,4 +1,11 @@
-function RiskOverview({ title, icon, overview, actions, riskLevel }) {
+function RiskOverview({
+  title,
+  icon,
+  overview,
+  actions,
+  riskLevel,
+  externalLink,
+}) {
   let indicatorColor;
   if (riskLevel === "high") {
     indicatorColor = "#bd2304";
@@ -12,9 +19,7 @@ function RiskOverview({ title, icon, overview, actions, riskLevel }) {
       style={{
         display: "flex",
         height: "100%",
-        // padding: "12px 0",
         marginBottom: "32px",
-        marginRight: "48px",
       }}
     >
       <div
@@ -42,22 +47,47 @@ function RiskOverview({ title, icon, overview, actions, riskLevel }) {
           }}
         >
           <div
-            className="col-xs-4 col-sm-3 col-md-2 col-lg-2 "
+            className="hidden-xs hidden-sm  col-md-2 col-lg-2 "
             style={{ padding: "16px" }}
           >
             <div className="text-center">
               <img src={icon} width="100%" height="auto" aria-hidden="true" />
-              <h3 className="h4">{title}</h3>
             </div>
           </div>
           <div
-            className="col-xs-8 col-sm-9 col-md-10 col-lg-10"
+            className="col-xs-12  col-md-10 col-lg-10"
             style={{ padding: "16px" }}
           >
-            <div dangerouslySetInnerHTML={{ __html: overview }} />
-            <a href={actions} className="" target="_blank">
-              Actions you can take now
-            </a>
+            <div className="col-xs-12 col-md-6">
+              <h3 className="h4">{title} Risk</h3>
+              <div dangerouslySetInnerHTML={{ __html: overview }} />
+            </div>
+            <div className="col-xs-12 col-md-6">
+              <h4 className="h4">Mitigation Strategies</h4>
+              <ul className="list-unstyled">
+                {actions.map((action, index) => {
+                  return (
+                    <li
+                      key={index}
+                      style={{
+                        padding: "0",
+                        marginBottom: "16px",
+                      }}
+                    >
+                      <span
+                        style={{
+                          borderLeft: "1px solid rgba(64, 119, 165, 0.5)",
+                          padding: "0 8px",
+                          display: "block",
+                        }}
+                      >
+                        {action}
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
           </div>
         </div>
       </div>

@@ -1,6 +1,14 @@
-.topic-tile{
+.topic-tile {
   border: 4px solid #ccc;
   border-radius: 4px;
   margin-bottom: 20px;
   padding: 20px;
+}
+
+.clickable-tile:hover,
+.clickable-tile:focus,
+.clickable-tile:focus-within {
+  box-shadow: 0 0 .25rem #004987;
+  z-index: 1;
+  background-color: #ffffff;
 }

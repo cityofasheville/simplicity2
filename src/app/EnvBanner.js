@@ -10,7 +10,9 @@ const EnvBanner = props => {
     bannerOverride = true;
   }
 
-  if (window.location.href.indexOf('simplicity.ashevillenc.gov') === -1 && !bannerOverride) {
+  if ((window.location.href.indexOf('simplicity.ashevillenc.gov') === -1
+    || window.location.href.indexOf('climatej.d1thp43hcib1lz.amplifyapp.com') === -1)
+    && !bannerOverride) {
 
     let productionPathAddons = '';
 
@@ -27,10 +29,10 @@ const EnvBanner = props => {
     }
 
     bannerContent = (
-      <div role={'alert'} className='alert' style={{backgroundColor: 'orange', marginTop: '32px', marginLeft: defaultLeftMargin}}>
-        <p style={{fontWeight: '500', fontSize: '1.5rem', textAlign:'center'}}><em>Attention!</em></p> <p>This is an experimental version of SimpliCity, and may
-        produce unexpected results. Unless you understand how you've ended up here, we
-        recommend <a href={`https://simplicity.ashevillenc.gov${productionPathAddons}`} style={{color: 'black'}}>visiting this page in the production version of SimpliCity</a> instead. </p>
+      <div role={'alert'} className='alert' style={{ backgroundColor: 'orange', marginTop: '32px', marginLeft: defaultLeftMargin }}>
+        <p style={{ fontWeight: '500', fontSize: '1.5rem', textAlign: 'center' }}><em>Attention!</em></p> <p>This is an experimental version of SimpliCity, and may
+          produce unexpected results. Unless you understand how you've ended up here, we
+          recommend <a href={`https://simplicity.ashevillenc.gov${productionPathAddons}`} style={{ color: 'black' }}>visiting this page in the production version of SimpliCity</a> instead. </p>
       </div>
     );
   }
@@ -38,6 +40,6 @@ const EnvBanner = props => {
   return (
     bannerContent
   );
-} 
+}
 
 export default EnvBanner;

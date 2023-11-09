@@ -339,7 +339,7 @@ const Address = props => (
                       This address is in:<p><i>{addressData.block_group_name}</i></p>
                       </div>
                       <Link to={`/block_group?id=${addressData.block_group}&fromAddress=${props.location.query.id}&search=${props.location.query.search}`}>
-                      View Climate Justice Data for this Block Group
+                      View Climate Risks and Actions for this Block Group
                       </Link>
                       </div>
                     }

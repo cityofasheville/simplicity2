@@ -11,6 +11,7 @@ const EnvBanner = props => {
   }
 
   if ((window.location.href.indexOf('simplicity.ashevillenc.gov') === -1
+    && window.location.href.indexOf('http://localhost:3000/') === -1
     && window.location.href.indexOf('climatej.d1thp43hcib1lz.amplifyapp.com') === -1)
     && !bannerOverride) {
 

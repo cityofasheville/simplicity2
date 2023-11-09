@@ -19,7 +19,6 @@ export const spanish = {
   neighborhood: 'Barrio',
   no_neighborhood_name: 'Barrio sin nombre',
   block_group: 'Censo Block Group',
-  block_group_link: 'Clima Justicia',
   no_block_group: 'Censo Block Group sin nombre',
   no_city_pickup: 'no proporcionada por la ciudad de Asheville',
   no_information_available: 'No hay informaci\xF3n disponisble',

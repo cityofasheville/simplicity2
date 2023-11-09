@@ -9,6 +9,8 @@ import {
   IM_CITY,
   IM_BED,
   IM_LIBRARY2,
+  IM_ENVELOP3,
+  IM_TREE,
 } from './iconConstants';
 import { withLanguage } from '../utilities/lang/LanguageContext';
 
@@ -16,33 +18,47 @@ const getTopicIcon = (topic) => {
   switch (topic) {
     case 'CRIME':
       return (<Icon path={IM_SHIELD3} size={75} />)
-    case 'DEVELOPMENT':
+    case 'DEVELOPMENT_WEBSITE':
+      return (<Icon path={IM_CITY} size={75} />)
+    case 'DEVELOPMENT_DASHBOARD':
       return (<Icon path={IM_OFFICE} size={75} />)
+    case 'DEVELOPMENT_NOTIFICATION':
+      return (<Icon path={IM_ENVELOP3} size={75} />)
     case 'BUDGET':
       return (<Icon path={IM_COIN_DOLLAR} size={75} />)
     case 'HOMELESSNESS':
       return (<Icon path={IM_BED} size={75} />)
     case 'CAPITAL_PROJECTS':
       return (<Icon path={IM_CITY} size={75} />)
+    case 'CLIMATE':
+      return (<Icon path={IM_TREE} size={75} />)
     default:
       return (<Icon path={IM_LIBRARY2} size={75} />)
   }
 };
 
 const spanish = {
-  CRIME: 'CRIMEN',
-  DEVELOPMENT: 'URBANIZACI\xD3N',
-  BUDGET: 'PRESUPUESTO',
-  HOMELESSNESS: 'FALTA DE VIVIENDA',
-  CAPITAL_PROJECTS: 'PROYECTOS_CAPITALES',
+  CRIME: ['', 'CRIMEN'],
+  DEVELOPMENT_WEBSITE: ['DEVELOPMENT_DEPARTMENT_WEBSITE', 'Learn more or apply for a permit'],
+  DEVELOPMENT_DASHBOARD: ['DEVELOPMENT_DASHBOARD', 'View Building Permits and get Email Notifications'],
+  DEVELOPMENT_NOTIFICATION: ['DEVELOPMENT_NOTIFICATION', 'Recieve Emails about Development Permits'],
+  DEVELOPMENT: ['', 'URBANIZACI\xD3N'],
+  BUDGET: ['', 'PRESUPUESTO'],
+  HOMELESSNESS: ['', 'FALTA DE VIVIENDA'],
+  CAPITAL_PROJECTS: ['', 'PROYECTOS_CAPITALES'],
+  CLIMATE: ['', 'Climate Threats and Vulnerability'],
 };
 
 const english = {
-  CRIME: 'CRIME',
-  DEVELOPMENT: 'DEVELOPMENT',
-  BUDGET: 'BUDGET',
-  HOMELESSNESS: 'HOMELESSNESS',
-  CAPITAL_PROJECTS: 'CAPITAL_PROJECTS',
+  CRIME: ['', 'CRIME'],
+  DEVELOPMENT_WEBSITE: ['DEVELOPMENT_DEPARTMENT_WEBSITE', 'Learn more or apply for a permit'],
+  DEVELOPMENT_DASHBOARD: ['DEVELOPMENT_DASHBOARD', 'View Building Permits and get Email Notifications'],
+  DEVELOPMENT_NOTIFICATION: ['DEVELOPMENT_NOTIFICATION', 'Recieve Emails about Development Permits'],
+  DEVELOPMENT: ['', 'DEVELOPMENT'],
+  BUDGET: ['', 'BUDGET'],
+  HOMELESSNESS: ['', 'HOMELESSNESS'],
+  CAPITAL_PROJECTS: ['CAPITAL_PROJECTS', 'Major City Expendatures'],
+  CLIMATE: ['CLIMATE', 'Climate Threats and Vulnerability'],
 };
 
 const translateTopic = (topic, language) => {
@@ -52,7 +68,7 @@ const translateTopic = (topic, language) => {
     case 'English':
       return english[topic];
     default:
-      return topic;
+      return english[topic];
   }
 };
 
@@ -65,21 +81,32 @@ const TopicCard = props => {
     }
   })
 
+  let target = '_self';
+  if (props.path && props.path.substring(0, 4) === 'http') {
+    target = '_blank';
+  }
+  const topics = translateTopic(props.topic, props.language.language);
   return (<Link
     className="topic-card"
     to={{
       pathname: props.path || props.topic,
       query,
     }}
+    target={target}
   >
+
     <div className="topicCard">
+      <div className="text-primary text-center">
+        {topics[0].replace(/_/g, ' ')}
+      </div>
       <div className="text-primary text-center">{getTopicIcon(props.topic)}</div>
       <div className="text-primary text-center">
-        {translateTopic(props.topic, props.language.language).replace(/_/g, ' ')}
+        {topics[1].replace(/_/g, ' ')}
       </div>
     </div>
   </Link>
-)};
+  )
+};
 
 TopicCard.propTypes = {
   topic: PropTypes.string,

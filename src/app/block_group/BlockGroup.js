@@ -1,547 +1,152 @@
-import React from "react";
-import { graphql } from "react-apollo";
-import gql from "graphql-tag";
-import LoadingAnimation from "../../shared/LoadingAnimation";
-import Error from "../../shared/Error";
-import { Link } from "react-router";
-import Icon from "../../shared/Icon";
-import Map from "../../shared/visualization/Map";
-import { IM_USERS } from "../../shared/iconConstants";
-import ButtonGroup from "../../shared/ButtonGroup";
-import LinkButton from "../../shared/LinkButton";
-import PageHeader from "../../shared/PageHeader";
-import RiskOverview from "./RiskOverview";
-import ClickableTile from "./ClickableTile";
-import {
-  getBoundsFromPolygonData,
-  combinePolygonsFromNeighborhoodList,
-} from "../../utilities/mapUtilities";
-import ICON_HEAT from "../../images/climate/heat.svg";
-import ICON_FLOOD from "../../images/climate/flood.svg";
-import ICON_WILDFIRE from "../../images/climate/wildfire.svg";
-import ICON_LANDSLIDE from "../../images/climate/landslide.svg";
-import IMG_CJI_MAP from "../../images/climate/cji-map.jpg";
-import IMG_CJI_STORYMAP from "../../images/climate/cji-storymap.jpg";
-import IMG_RESILIENCY_GUIDE from "../../images/climate/resiliency-guide.jpg";
-import IMG_CJI_WEB from "../../images/climate/sustainability-webpage.jpg";
 
-import {
-  floodRiskOverview,
-  landslideRiskOverview,
-  heatRiskOverview,
-  wildfireRiskOverview,
-  highRiskIntro,
-  mediumRiskIntro,
-  lowRiskIntro,
-  climateScoreMethodologyNote,
-  riskMitigationSteps,
-} from "./climateRiskText.js";
+import React from 'react';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
+import LoadingAnimation from '../../shared/LoadingAnimation';
+import Error from '../../shared/Error';
+import { Link } from 'react-router';
+import Icon from '../../shared/Icon';
+import Map from '../../shared/visualization/Map';
+import { IM_USERS } from '../../shared/iconConstants';
+import ButtonGroup from '../../shared/ButtonGroup';
+import LinkButton from '../../shared/LinkButton';
+import PageHeader from '../../shared/PageHeader';
+import { getBoundsFromPolygonData, combinePolygonsFromNeighborhoodList } from '../../utilities/mapUtilities';
 
 const BlockGroup = (props) => {
-  if (props.data.loading) {
-    // eslint-disable-line react/prop-types
+  if (props.data.loading) { // eslint-disable-line react/prop-types
     return <LoadingAnimation />;
   }
-  if (props.data.error) {
-    // eslint-disable-line react/prop-types
+  if (props.data.error) { // eslint-disable-line react/prop-types
     return <Error message={props.data.error.message} />; // eslint-disable-line react/prop-types
   }
 
-  const climateTotalScore = props.data.blockgroups[0].sum_scores;
-  const heatIndex = props.data.blockgroups[0].hvi_value.toFixed(2);
-  const floodScore = props.data.blockgroups[0].resflood;
-  const landslideScore = props.data.blockgroups[0].resland;
-  const wildfireScore = props.data.blockgroups[0].wfirescore;
-
-  let heatScore = 0;
-
-  // Scaffold object to hold threat info in three sections, grouped by risk
-  const climateThreats = {
-    high: {
-      notice: highRiskIntro,
-      data: [],
-    },
-    medium: {
-      notice: mediumRiskIntro,
-      data: [],
-    },
-    low: {
-      notice: lowRiskIntro,
-      data: [],
-    },
-  };
-
-  let thisThreatLevel;
-
-  // Check Heat Threat
-
-  if (heatIndex <= 0.25) {
-    heatScore = 1;
-    thisThreatLevel = "low";
-  } else if (heatIndex > 0.25 && heatIndex <= 0.678) {
-    heatScore = 2;
-    thisThreatLevel = "low";
-  } else if (heatIndex > 0.678 && heatIndex <= 0.94) {
-    heatScore = 3;
-    thisThreatLevel = "medium";
-  } else if (heatIndex > 0.94 && heatIndex <= 1.16) {
-    heatScore = 4;
-    thisThreatLevel = "medium";
-  } else if (heatIndex > 1.16) {
-    heatScore = 5;
-    thisThreatLevel = "high";
-  }
-
-  climateThreats[thisThreatLevel].data.push({
-    name: "Heat",
-    overview: heatRiskOverview,
-    score: heatScore,
-    icon: ICON_HEAT,
-    actions: riskMitigationSteps.heat,
-    externalLink:
-      "https://drive.google.com/file/d/0BzZzONRPV-VAVF9vb2pOMUtkRmFJR1AyNFluYU5ESU9rODRJ/view?resourcekey=0-ZQ80xC-a8bw4JDs7z0Neaw",
-  });
-
-  // Check Flood Threat
-
-  if (floodScore < 2) {
-    thisThreatLevel = "low";
-  } else if (floodScore === 2) {
-    thisThreatLevel = "medium";
-  } else {
-    thisThreatLevel = "high";
-  }
-
-  climateThreats[thisThreatLevel].data.push({
-    name: "Flood",
-    overview: floodRiskOverview,
-    score: floodScore,
-    icon: ICON_FLOOD,
-    actions: riskMitigationSteps.flood,
-    externalLink:
-      "https://drive.google.com/file/d/0BzZzONRPV-VAVF9vb2pOMUtkRmFJR1AyNFluYU5ESU9rODRJ/view?resourcekey=0-ZQ80xC-a8bw4JDs7z0Neaw",
-  });
-
-  // Check Landslide Threat
-
-  if (landslideScore < 2) {
-    thisThreatLevel = "low";
-  } else if (landslideScore === 2) {
-    thisThreatLevel = "medium";
-  } else {
-    thisThreatLevel = "high";
-  }
-
-  climateThreats[thisThreatLevel].data.push({
-    name: "Landslide",
-    overview: landslideRiskOverview,
-    score: landslideScore,
-    icon: ICON_LANDSLIDE,
-    actions: riskMitigationSteps.landslide,
-    externalLink:
-      "https://drive.google.com/file/d/0BzZzONRPV-VAVF9vb2pOMUtkRmFJR1AyNFluYU5ESU9rODRJ/view?resourcekey=0-ZQ80xC-a8bw4JDs7z0Neaw",
-  });
-
-  // Check Wildfire Threat
-
-  if (wildfireScore < 2) {
-    thisThreatLevel = "low";
-  } else if (wildfireScore === 2) {
-    thisThreatLevel = "medium";
-  } else {
-    thisThreatLevel = "high";
-  }
-
-  climateThreats[thisThreatLevel].data.push({
-    name: "Wildfire",
-    overview: wildfireRiskOverview,
-    score: wildfireScore,
-    icon: ICON_WILDFIRE,
-    actions: riskMitigationSteps.wildfire,
-    externalLink:
-      "https://drive.google.com/file/d/0BzZzONRPV-VAVF9vb2pOMUtkRmFJR1AyNFluYU5ESU9rODRJ/view?resourcekey=0-ZQ80xC-a8bw4JDs7z0Neaw",
-  });
-
-  let fillColor, scoreColor;
-  if (isNaN(props.data.blockgroups[0].sum_scores)) {
-    fillColor = null;
-    scoreColor = null;
-  } else if (
-    props.data.blockgroups[0].sum_scores > 0 &&
-    props.data.blockgroups[0].sum_scores <= 6
-  ) {
-    fillColor = "#413da1";
-    scoreColor = "white";
-  } else if (
-    props.data.blockgroups[0].sum_scores > 6 &&
-    props.data.blockgroups[0].sum_scores <= 10
-  ) {
-    fillColor = "#9a3abb";
-    scoreColor = "white";
-  } else if (
-    props.data.blockgroups[0].sum_scores > 10 &&
-    props.data.blockgroups[0].sum_scores <= 14
-  ) {
-    fillColor = "#d66f96";
-    scoreColor = "black";
-  } else if (
-    props.data.blockgroups[0].sum_scores > 14 &&
-    props.data.blockgroups[0].sum_scores <= 18
-  ) {
-    fillColor = "#faab6b";
-    scoreColor = "black";
-  } else if (
-    props.data.blockgroups[0].sum_scores > 18 &&
-    props.data.blockgroups[0].sum_scores <= 24
-  ) {
-    fillColor = "#f3fa52";
-    scoreColor = "black";
-  }
-
   return (
-    <div className="container" style={{ padding: "0" }}>
-      <PageHeader
-        h1={`Climate Resilience: ${props.data.blockgroups[0].name.slice(
-          0,
-          -33
-        )}`}
-        dataType="Census Block Group in Buncombe County, North Carolina"
-        // h2={"About this Block Group"}
-        icon={<Icon path={IM_USERS} size={50} />}
-        externalLink="https://www.census.gov/programs-surveys/geography/about/glossary.html#par_textimage_4"
-        externalLinkText="What is a Block Group? (census.gov)"
-      >
+    <div>
+      <PageHeader h1={props.data.blockgroups[0].name} dataType="Census Block Group" h2="About this Block Group" icon={<Icon path={IM_USERS} size={50} />}>
         <ButtonGroup alignment="">
           <LinkButton
             pathname="/address"
             query={{
-              id: props.location.query.fromAddress,
-              entities: props.location.query.entities,
-              search: props.location.query.search,
-              hideNavbar: props.location.query.hideNavbar,
-              entity: "address",
-              label: props.location.query.label,
-            }}
+              id: props.location.query.fromAddress, entities: props.location.query.entities, search: props.location.query.search, hideNavbar: props.location.query.hideNavbar,
+              entity: "address", label: props.location.query.label
+            }
+            }
           >
             Back to address
           </LinkButton>
         </ButtonGroup>
       </PageHeader>
-
-      <fieldset className="detailsFieldset">
-        <div className="map-container">
-          <Map
-            drawPolygon
-            polygonData={combinePolygonsFromNeighborhoodList([
-              props.data.blockgroups[0],
-            ])}
-            bounds={getBoundsFromPolygonData([
-              props.data.blockgroups[0].polygon,
-            ])}
-            color={fillColor}
-            opacity={1}
-            weight={3}
-            fillColor={fillColor}
-            fillOpacity={0.5}
-          />
+      <div className="row small-padding">
+        <div className="col-sm-12">
+          <fieldset className="detailsFieldset">
+            <div className="map-container">
+              <Map
+                drawPolygon
+                polygonData={combinePolygonsFromNeighborhoodList([props.data.blockgroups[0]])}
+                bounds={getBoundsFromPolygonData([props.data.blockgroups[0].polygon])}
+              />
+            </div>
+          </fieldset>
         </div>
-      </fieldset>
+        <div className="col-sm-12">
 
-      <h2>Climate Risk Information for this Block Group</h2>
-      <p dangerouslySetInnerHTML={{ __html: climateScoreMethodologyNote }}></p>
-
-      <h3>
-        Climate Justice Index Score:{" "}
-        <span
-          style={{
-            backgroundColor: fillColor,
-            paddingLeft: "12px",
-            paddingRight: "12px",
-            border: "1px solid gray",
-            fontWeight: "bold",
-            color: scoreColor,
-          }}
-        >
-          {climateTotalScore}
-        </span>{" "}
-        out of 25
-      </h3>
-      <p>
-        Properties within this particular block group (
-        {props.data.blockgroups[0].name.slice(0, -33)}) may be vulnerable to
-        climate-related threats. Based on the available information about this
-        block group, the following risks and strategies to build resilience
-        should be considered.
-      </p>
-
-      <div className="row">
-        <div className=" col-xs-12">
-          <h3>Risks and Mitigation</h3>
-          {climateThreats.high.data.length > 0 && (
-            <>
-              <p className="h4" style={{ fontWeight: "300", margin: "24px 0" }}>
-                {climateThreats.high.notice}
-              </p>
-              {climateThreats.high.data.map((threat, index) => {
-                return (
-                  <RiskOverview
-                    key={index}
-                    icon={threat.icon}
-                    title={threat.name}
-                    overview={threat.overview}
-                    actions={threat.actions}
-                    externalLink={threat.externalLink}
-                    riskLevel={"high"}
-                  />
-                );
-              })}
-            </>
-          )}
-
-          {climateThreats.medium.data.length > 0 && (
-            <>
-              <p className="h4" style={{ fontWeight: "300", margin: "24px 0" }}>
-                {climateThreats.medium.notice}
-              </p>
-              {climateThreats.medium.data.map((threat, index) => {
-                return (
-                  <RiskOverview
-                    key={index}
-                    icon={threat.icon}
-                    title={threat.name}
-                    overview={threat.overview}
-                    actions={threat.actions}
-                    externalLink={threat.externalLink}
-                    riskLevel={"medium"}
-                  />
-                );
-              })}
-            </>
-          )}
-
-          {climateThreats.low.data.length > 0 && (
-            <>
-              <p className="h4" style={{ fontWeight: "300", margin: "24px 0" }}>
-                {climateThreats.low.notice}
-              </p>
-              {climateThreats.low.data.map((threat, index) => {
-                return (
-                  <RiskOverview
-                    key={index}
-                    icon={threat.icon}
-                    title={threat.name}
-                    overview={threat.overview}
-                    actions={threat.actions}
-                    externalLink={threat.externalLink}
-                    riskLevel={"low"}
-                  />
-                );
-              })}
-            </>
-          )}
+          <div className="row small-padding">
+            <h2>Climate Justice Data for this Block Group</h2>
+            <h3>Climate Justice Index Score: <span style={{color: "red", fontWeight: "bold"}}>{props.data.blockgroups[0].sum_scores}</span> out of 25</h3>
+            <div>
+              Risk factors are scaled from 1 to 5, and summed up to caclulate the Index Score.
+            </div>
+            <ul className='cjdata'>
+                <li><b>BIPOC Score: {props.data.blockgroups[0].bipoc_score}</b>
+                  <ul>
+                    <li>BIPOC is Black, Indigenous and People of Color.</li>
+                    <li>This area has a <b>{props.data.blockgroups[0].bipoc}%</b> BIPOC Population</li>
+                  </ul>
+                </li>
+                <li><b>Heat Vulnerability Score: {props.data.blockgroups[0].heat_score}</b>
+                  <ul>
+                    <li>This heat vulnerability index shows which parts of Asheville are vulnerable to extreme heat, taking into account land surface temperature, tree cover, age, and poverty level.</li>
+                    <li>Overall Heat Vulnerability Index Value: <b>{props.data.blockgroups[0].hvi_value.toFixed(2)}</b></li>
+                    <li>The closer this value is to 3, the more vulnerable it is, and the closer it is to 0, the less vulnerable it is.
+                    </li>
+                  </ul>
+                </li>
+                <li><b>Energy Burden Score: {props.data.blockgroups[0].energy_sco}</b>
+                  <ul>
+                    <li>
+                      <p>Energy Burden represents the percentage of annual income that a household pays towards their energy bills (electricity/gas utility.)</p>
+                    </li>
+                  </ul>
+                </li>
+                <li><b>CDC Social Vulnerability Score: {props.data.blockgroups[0].cdc_score}</b>
+                  <ul>
+                    <li>CDC Social Vulnerability Index</li>
+                    <li>2018 Overall Score: <b>{props.data.blockgroups[0].rpl_themes}</b></li>
+                    <li>Possible scores range from 0 (lowest vulnerability) to 1 (highest vulnerability).
+                    </li>
+                  </ul>
+                </li>
+                <li><b>Climate Resiliency Neighborhood Threats Score: {props.data.blockgroups[0].resiliency}</b>
+                  <ul>
+                    <li>The Climate Resiliency Neighborhood Threats Score was determined by taking the percentage of land with risk by neighborhood (census block group) and classifying by risk level.</li>
+                    <li>Score from Flood Risk: <b>{props.data.blockgroups[0].resflood}</b></li>
+                    <li>Score from Wildfire Risk: <b>{props.data.blockgroups[0].wfirescore}</b></li>
+                    <li>Score from Landslide Risk: <b>{props.data.blockgroups[0].resland}</b>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            {/* <table>
+              <thead><th colSpan="2">Climate Justice Data for this Block Group</th></thead>
+              <tr><td>below_pov</td><td>{props.data.blockgroups[0].below_pov}</td></tr>
+              <tr><td>bipoc</td><td>{props.data.blockgroups[0].bipoc}</td></tr>
+              <tr><td>totalhh</td><td>{props.data.blockgroups[0].totalhh}</td></tr>
+              <tr><td>school_chi</td><td>{props.data.blockgroups[0].school_chi}</td></tr>
+              <tr><td>bipoc_score</td><td>{props.data.blockgroups[0].bipoc_score}</td></tr>
+              <tr><td>poverty_sc</td><td>{props.data.blockgroups[0].poverty_sc}</td></tr>
+              <tr><td>acres</td><td>{props.data.blockgroups[0].acres}</td></tr>
+              <tr><td>hvi_value</td><td>{props.data.blockgroups[0].hvi_value}</td></tr>
+              <tr><td>heat_score</td><td>{props.data.blockgroups[0].heat_score}</td></tr>
+              <tr><td>rpl_themes</td><td>{props.data.blockgroups[0].rpl_themes}</td></tr>
+              <tr><td>cdc_score</td><td>{props.data.blockgroups[0].cdc_score}</td></tr>
+              <tr><td>avg_energy</td><td>{props.data.blockgroups[0].avg_energy}</td></tr>
+              <tr><td>hh_energy_</td><td>{props.data.blockgroups[0].hh_energy_}</td></tr>
+              <tr><td>pct_hh_ene</td><td>{props.data.blockgroups[0].pct_hh_ene}</td></tr>
+              <tr><td>energy_sco</td><td>{props.data.blockgroups[0].energy_sco}</td></tr>
+              <tr><td>resland</td><td>{props.data.blockgroups[0].resland}</td></tr>
+              <tr><td>resflood</td><td>{props.data.blockgroups[0].resflood}</td></tr>
+              <tr><td>critland</td><td>{props.data.blockgroups[0].critland}</td></tr>
+              <tr><td>critflood</td><td>{props.data.blockgroups[0].critflood}</td></tr>
+              <tr><td>comflood</td><td>{props.data.blockgroups[0].comflood}</td></tr>
+              <tr><td>shape__len</td><td>{props.data.blockgroups[0].shape__len}</td></tr>
+              <tr><td>shape__are</td><td>{props.data.blockgroups[0].shape__are}</td></tr>
+              <tr><td>nemacscore</td><td>{props.data.blockgroups[0].nemacscore}</td></tr>
+              <tr><td>resiliency</td><td>{props.data.blockgroups[0].resiliency}</td></tr>
+              <tr><td>cj_score</td><td>{props.data.blockgroups[0].cj_score}</td></tr>
+              <tr><td>sum_scores</td><td>{props.data.blockgroups[0].sum_scores}</td></tr>
+              <tr><td>holc</td><td>{props.data.blockgroups[0].holc}</td></tr>
+              <tr><td>red_score</td><td>{props.data.blockgroups[0].red_score}</td></tr>
+              <tr><td>wfirescore</td><td>{props.data.blockgroups[0].wfirescore}</td></tr>
+            </table> */}
+          </div>
+        </div>
+        <div>
+          For mitigation strategies, see the
+          <a href='https://drive.google.com/file/d/0BzZzONRPV-VAVF9vb2pOMUtkRmFJR1AyNFluYU5ESU9rODRJ/view?resourcekey=0-ZQ80xC-a8bw4JDs7z0Neaw' className='' target="_blank"> Climate Resiliency Guide</a>.
+        </div>
+        <div>
+          Overview of Asheville's Climate Justice Initiative:
+          <a href='https://storymaps.arcgis.com/stories/1d90d45f3e71482397a944e8d6786df4' className='' target="_blank"> Storymap</a>.
         </div>
       </div>
-      <aside
-        className="row"
-        style={{
-          backgroundColor: "#FAFAFA",
-          border: "1px solid rgba(0,0,0,.15)",
-          borderRadius: "4px",
-          padding: "16px",
-        }}
-      >
-        <h3>Climate Justice Resources</h3>
-        <div
-          className="col-xs-12 col-sm-6 col-lg-3"
-          style={{ margin: "24px 0" }}
-        >
-          <ClickableTile
-            image={IMG_RESILIENCY_GUIDE}
-            text="Climate Resiliency Guide"
-            url="https://drive.google.com/file/d/0BzZzONRPV-VAVF9vb2pOMUtkRmFJR1AyNFluYU5ESU9rODRJ/view?resourcekey=0-ZQ80xC-a8bw4JDs7z0Neaw"
-          />
-        </div>
-        <div
-          className="col-xs-12 col-sm-6 col-lg-3"
-          style={{ margin: "24px 0" }}
-        >
-          <ClickableTile
-            image={IMG_CJI_MAP}
-            text="Citywide Climate Justice Index Map"
-            url="https://avl.maps.arcgis.com/apps/instant/lookup/index.html?appid=10e2c4ae45614b92ad4efaa61342b249%2F"
-          />
-        </div>
-        <div
-          className="col-xs-12 col-sm-6 col-lg-3"
-          style={{ margin: "24px 0" }}
-        >
-          <ClickableTile
-            image={IMG_CJI_STORYMAP}
-            text="Climate Justice Initiative"
-            url="https://storymaps.arcgis.com/stories/1d90d45f3e71482397a944e8d6786df4"
-          />
-        </div>
-
-        <div
-          className="col-xs-12 col-sm-6 col-lg-3"
-          style={{ margin: "24px 0" }}
-        >
-          <ClickableTile
-            image={IMG_CJI_WEB}
-            text="Office of Sustainability"
-            url="https://www.ashevillenc.gov/department/sustainability/"
-          />
-        </div>
-      </aside>
-
-      <div
-        className="row"
-        style={{
-          margin: "24px 0",
-          border: "1px solid #CDCDCD",
-        }}
-      ></div>
-      <p>
-        Risk factors are scaled from 1 to 5, and summed up to caclulate the
-        Index Score.
-      </p>
-      <ul className="cjdata">
-        <li>
-          <h4>BIPOC Score: {props.data.blockgroups[0].bipoc_score}</h4>
-          <ul>
-            <li>BIPOC is Black, Indigenous and People of Color.</li>
-            <li>
-              This area has a <b>{props.data.blockgroups[0].bipoc}%</b> BIPOC
-              Population
-            </li>
-          </ul>
-        </li>
-        <li>
-          <h4>
-            Heat Vulnerability Score: {props.data.blockgroups[0].heat_score}
-          </h4>
-          <ul>
-            <li>
-              This heat vulnerability index shows which parts of Asheville are
-              vulnerable to extreme heat, taking into account land surface
-              temperature, tree cover, age, and poverty level.
-            </li>
-            <li>
-              Overall Heat Vulnerability Index Value:{" "}
-              <b>{props.data.blockgroups[0].hvi_value.toFixed(2)}</b>
-            </li>
-            <li>
-              The closer this value is to 3, the more vulnerable it is, and the
-              closer it is to 0, the less vulnerable it is.
-            </li>
-          </ul>
-        </li>
-        <li>
-          <h4>Energy Burden Score: {props.data.blockgroups[0].energy_sco}</h4>
-          <ul>
-            <li>
-              <p>
-                Energy Burden represents the percentage of annual income that a
-                household pays towards their energy bills (electricity/gas
-                utility.)
-              </p>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <h4>
-            CDC Social Vulnerability Score:{" "}
-            {props.data.blockgroups[0].cdc_score}
-          </h4>
-          <ul>
-            <li>CDC Social Vulnerability Index</li>
-            <li>
-              2018 Overall Score: <b>{props.data.blockgroups[0].rpl_themes}</b>
-            </li>
-            <li>
-              Possible scores range from 0 (lowest vulnerability) to 1 (highest
-              vulnerability).
-            </li>
-          </ul>
-        </li>
-        <li>
-          <h4>
-            Climate Resiliency Neighborhood Threats Score:{" "}
-            {props.data.blockgroups[0].resiliency}
-          </h4>
-          <ul>
-            <li>
-              The Climate Resiliency Neighborhood Threats Score was determined
-              by taking the percentage of land with risk by neighborhood (census
-              block group) and classifying by risk level.
-            </li>
-
-            <li>
-              Score from Flood Risk: <b>{props.data.blockgroups[0].resflood}</b>
-              <i>
-                {props.data.blockgroups[0].resflood < 3
-                  ? " (Lower Risk) "
-                  : props.data.blockgroups[0].resflood === 3
-                  ? " (Medium Risk) "
-                  : " (Higher Risk) "}
-              </i>
-              <a
-                href="https://drive.google.com/file/d/0BzZzONRPV-VAVF9vb2pOMUtkRmFJR1AyNFluYU5ESU9rODRJ/view?resourcekey=0-ZQ80xC-a8bw4JDs7z0Neaw"
-                className=""
-                target="_blank"
-              >
-                {" "}
-                Actions you can take now
-              </a>
-            </li>
-            <li>
-              Score from Wildfire Risk:{" "}
-              <b>{props.data.blockgroups[0].wfirescore}</b>
-              <i>
-                {props.data.blockgroups[0].wfirescore < 3
-                  ? " (Lower Risk) "
-                  : props.data.blockgroups[0].wfirescore === 3
-                  ? " (Medium Risk) "
-                  : " (Higher Risk) "}
-              </i>
-              <a
-                href="https://drive.google.com/file/d/0BzZzONRPV-VAVF9vb2pOMUtkRmFJR1AyNFluYU5ESU9rODRJ/view?resourcekey=0-ZQ80xC-a8bw4JDs7z0Neaw"
-                className=""
-                target="_blank"
-              >
-                {" "}
-                Actions you can take now
-              </a>
-            </li>
-            <li>
-              Score from Landslide Risk:{" "}
-              <b>{props.data.blockgroups[0].resland}</b>
-              <i>
-                {props.data.blockgroups[0].resland < 3
-                  ? " (Lower Risk) "
-                  : props.data.blockgroups[0].resland === 3
-                  ? " (Medium Risk) "
-                  : " (Higher Risk) "}
-              </i>
-              <a
-                href="https://drive.google.com/file/d/0BzZzONRPV-VAVF9vb2pOMUtkRmFJR1AyNFluYU5ESU9rODRJ/view?resourcekey=0-ZQ80xC-a8bw4JDs7z0Neaw"
-                className=""
-                target="_blank"
-              >
-                {" "}
-                Actions you can take now
-              </a>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </div>
+    </div >
   );
 };
 
 const getBlockGroupQuery = gql`
   query getBlockGroup($geoid: [String]) {
-    blockgroups(geoid: $geoid) {
+    blockgroups (geoid: $geoid) {
       geoid
       name
       below_pov
@@ -592,7 +197,7 @@ const getBlockGroupQuery = gql`
 `;
 
 const BlockGroupQGL = graphql(getBlockGroupQuery, {
-  options: (ownProps) => ({
+  options: ownProps => ({
     variables: {
       geoid: [ownProps.location.query.id.trim()],
     },

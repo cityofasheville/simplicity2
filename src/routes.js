@@ -19,7 +19,7 @@ import Property from './app/property/Property';
 import Properties from './app/property/Properties';
 import Street from './app/street/Street';
 import Neighborhood from './app/neighborhood/Neighborhood';
-import BlockGroup from './app/block_group/BlockGroup';
+import Climate from './app/climate/climate';
 import Owner from './app/owner/Owner';
 import GooglePlaceResults from './app/search/searchResults/GooglePlaceResults';
 // Topics
@@ -111,7 +111,7 @@ const Routes = () => (
         </Route>
         <Route path="street" component={Street}></Route>
         <Route path="neighborhood" component={Neighborhood}></Route>
-        <Route path="block_group" component={BlockGroup}></Route>
+        <Route path="climate" component={Climate}></Route>
         <Route path="owner" component={Owner}></Route>
         <Route path="dashboards" component={Topics} />
         <Route path="capital_projects">

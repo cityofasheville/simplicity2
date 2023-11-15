@@ -326,19 +326,18 @@ const Address = props => (
                       hasLabel
                       icon={<Icon path={IM_USERS} size={20} />}
                     />
-                  }
+                  }                  
                   <DetailsFormGroup
-                    label={content.block_group}
-                    name="block_groups"
-                    value={addressData.block_group === null ?
-                      content.no_block_group
+                    label={content.climate}
+                    name="blockgroups"
+                    value={addressData.blockgroups === null ?
+                      content.no_climate
                       :
                       <div>
                       <div>
-                      {/* Climate Justice Score: <b>{addressData.climate_justice_score}</b> out of 25 */}
                       This address is in:<p><i>{addressData.block_group_name}</i></p>
                       </div>
-                      <Link to={`/block_group?id=${addressData.block_group}&fromAddress=${props.location.query.id}&search=${props.location.query.search}`}>
+                      <Link to={`/climate?id=${addressData.block_group}&fromAddress=${props.location.query.id}&search=${props.location.query.search}`}>
                       View Climate Risks and Actions for this Block Group
                       </Link>
                       </div>

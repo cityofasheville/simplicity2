@@ -63,7 +63,7 @@ function RiskOverview({
               <div dangerouslySetInnerHTML={{ __html: overview }} />
             </div>
             <div className="col-xs-12 col-md-6">
-              <h4 className="h4">Mitigation Strategies</h4>
+              <h4 className="h4">Action Strategies</h4>
               <ul className="list-unstyled">
                 {actions.map((action, index) => {
                   return (

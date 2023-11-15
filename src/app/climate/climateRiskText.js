@@ -53,7 +53,7 @@ These are also areas where the terrain is more challenging.
 
 export const highRiskIntro = `
 For the safety of people, homes, and businesses in this area, 
-the following risks and mitigation strategies should be considered.
+the following risks and strategies should be considered.
 `;
 
 export const mediumRiskIntro = `
@@ -64,7 +64,7 @@ export const lowRiskIntro = `
 The following risks mostly pertain to other parts of the city.
 `;
 
-export const climateScoreMethodologyNote = `
+export const blockgroupscoreMethodologyNote = `
 <p>Through the
 <a
   href="https://drive.google.com/file/d/1X_Gr4eUCmkXPOzAcvyxCe-uZPkX84Byz/view"
@@ -78,6 +78,16 @@ assigned levels of risk for different geographic areas of the city (i.e.
 census block groups). Levels of risk for climate-related threats are
 determined by considering the percentage of land at risk within each
 geographic area.
+<br>
+Climate Risks can also be increased when extreme weather events impact communities 
+that have been marginalized by systemic discrimination, have health complications 
+and/or other risk factors.  To better understand how non climate factors impact 
+overall vulnerability,
+<a
+  href="#Climate Data"
+>
+ learn more about Climate Justice information and data for Asheville below. 
+</a>
 </p>
 `;
 
@@ -112,7 +122,7 @@ export const riskMitigationSteps = {
   wildfire: [
     "Purchase/review insurance coverage",
     "Use fire-resistant building materials",
-    "Consider neigborhood strategies",
+    "Consider neighborhood strategies",
     "Manage vegetation and fuels",
   ],
   landslide: [

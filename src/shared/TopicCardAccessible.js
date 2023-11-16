@@ -2,11 +2,11 @@
 // and yet allow whole card to act as single click or tab target.
 // Based on https://inclusive-components.design/cards/
 export function TopicCardAccessible() {
-    console.log('useEffect mount');
+    // console.log('useEffect mount');
     const clickableCards = document.querySelectorAll('.topicCard'); 
 
     if (clickableCards.length) {
-      console.log('CC module engaging, CCs found');
+      // console.log('CC module engaging, CCs found');
       // console.log(clickableCards);
 
       Array.prototype.forEach.call(clickableCards, (card) => {

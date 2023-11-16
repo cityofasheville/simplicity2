@@ -78,7 +78,7 @@ const Address = props => (
     }}
   >
     {({ loading, error, data }) => {
-      console.log('props:', props);
+      // console.log('props:', props);
       if (loading) return <LoadingAnimation />;
       if (error) return <Error message={error.message} />;
       // set language

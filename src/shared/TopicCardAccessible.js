@@ -16,17 +16,18 @@ export function TopicCardAccessible() {
           upTarget,
           link = card.querySelector('a.topic-card');  // Link in card (should be title)
 
-        const extraLinksInCard = card.querySelectorAll('a:not(.topic-card)');
-        // console.log(extraLinksInCard);
+        // Use this code if your cards have additional links
+        // const extraLinksInCard = card.querySelectorAll('a:not(.topic-card)');
+        // // console.log(extraLinksInCard);
 
-        Array.prototype.forEach.call(extraLinksInCard, (extraLink) => {
-          extraLink.classList.add('card-extra-link');
-          extraLink.addEventListener('click', (e) => {
-            // e.preventDefault(); // this line prevents changing to the URL of the link href
-            e.stopPropagation(); // this line prevents the link click from bubbling
-            // console.log("child clicked");
-          });
-        });
+        // Array.prototype.forEach.call(extraLinksInCard, (extraLink) => {
+        //   extraLink.classList.add('card-extra-link');
+        //   extraLink.addEventListener('click', (e) => {
+        //     // e.preventDefault(); // this line prevents changing to the URL of the link href
+        //     e.stopPropagation(); // this line prevents the link click from bubbling
+        //     // console.log("child clicked");
+        //   });
+        // });
 
         card.style.cursor = 'pointer';
 

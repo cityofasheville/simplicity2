@@ -46,7 +46,6 @@ const Climate = (props) => {
     // eslint-disable-line react/prop-types
     return <Error message={props.data.error.message} />; // eslint-disable-line react/prop-types
   }
-  console.log(props.data);
   const climateTotalScore = props.data.blockgroups[0].sum_scores;
   const heatIndex = props.data.blockgroups[0].hvi_value.toFixed(2);
   const floodScore = props.data.blockgroups[0].resflood;

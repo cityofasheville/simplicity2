@@ -58,7 +58,7 @@ const english = {
   DEVELOPMENT: ['', 'DEVELOPMENT'],
   BUDGET: ['', 'BUDGET'],
   HOMELESSNESS: ['', 'HOMELESSNESS'],
-  CAPITAL_PROJECTS: ['CAPITAL_PROJECTS', 'Major City Expendatures'],
+  CAPITAL_PROJECTS: ['CAPITAL_PROJECTS', 'Major City Expenditures'],
   CLIMATE: ['CLIMATE', 'Climate Threats and Vulnerability'],
 };
 
@@ -88,9 +88,30 @@ const TopicCard = props => {
     target = '_blank';
   }
   const topics = translateTopic(props.topic, props.language.language);
+
+  const styles = {
+    card: {
+      padding: '1rem',
+    },
+    cardLink: {
+      margin: 0,
+      padding: 0,
+    },
+    cardHeading: {
+      marginBottom: '1rem',
+      padding:0
+    },
+    cardIcon: {
+      marginBottom: '1rem',
+    },
+    cardSubheading: {
+      marginBottom: '1rem',
+    }
+  }
+
   return (
 
-    <div className="topicCard">
+    <div className="topicCard" style={styles.card}>
       <Link
         className="topic-card"
         to={{
@@ -98,13 +119,16 @@ const TopicCard = props => {
           query,
         }}
         target={target}
+        style={styles.cardLink}
       >
-        <div className="h4 text-primary text-center">
+        <div className="h4 text-primary text-center" style={styles.cardHeading}>
           {topics[0].replace(/_/g, ' ')}
         </div>
+
+
       </Link>
-      <div className="text-primary text-center">{getTopicIcon(props.topic)}</div>
-      <div className="text-primary text-center">
+      <div className="text-primary text-center" style={styles.cardIcon}>{getTopicIcon(props.topic)}</div>
+      <div className="text-primary text-center" style={styles.cardSubheading}>
         {topics[1].replace(/_/g, ' ')}
       </div>
 

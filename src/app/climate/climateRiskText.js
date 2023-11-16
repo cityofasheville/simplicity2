@@ -73,7 +73,7 @@ export const blockgroupscoreMethodologyNote = `
   2018 Climate Resilience Assessment
 </a>, the City of Asheville worked with the National Environmental Modeling
 and Analysis Center (NEMAC) at UNC Asheville to better understand which
-areas are most at risk for various climate threats. This assessment
+areas of the city are most at risk for various climate threats. This assessment
 assigned levels of risk for different geographic areas of the city (i.e.
 census block groups). Levels of risk for climate-related threats are
 determined by considering the percentage of land at risk within each

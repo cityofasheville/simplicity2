@@ -338,7 +338,7 @@ const Climate = (props) => {
       >
         <h3>Climate Justice Resources</h3>
         <p>
-          Our neighborhood and personal risk is defined not only by weather and
+          Our neighborhood, household, and personal risk is defined not only by weather and
           climate events, but also by health, age, community and historical factors.
           To better understand how climate events affect different Asheville
           communities differently,

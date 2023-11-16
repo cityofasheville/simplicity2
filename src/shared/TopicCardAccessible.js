@@ -3,7 +3,7 @@
 // Based on https://inclusive-components.design/cards/
 export function TopicCardAccessible() {
     // console.log('useEffect mount');
-    const clickableCards = document.querySelectorAll('.topicCard'); 
+    const clickableCards = document.querySelectorAll('.topicCard');  // Outer class of whole card
 
     if (clickableCards.length) {
       // console.log('CC module engaging, CCs found');
@@ -14,7 +14,7 @@ export function TopicCardAccessible() {
           upTime,
           downTarget,
           upTarget,
-          link = card.querySelector('a.topic-card');
+          link = card.querySelector('a.topic-card');  // Link in card (should be title)
 
         const extraLinksInCard = card.querySelectorAll('a:not(.topic-card)');
         // console.log(extraLinksInCard);

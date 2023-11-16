@@ -326,17 +326,17 @@ const Climate = (props) => {
         </div>
       </div>
       <aside
+        id="Climate Data"
         className="row"
         style={{
           backgroundColor: "#FAFAFA",
           border: "1px solid rgba(0,0,0,.15)",
           borderRadius: "4px",
           padding: "16px",
+          scrollMarginTop: "100px",
         }}
       >
-        <a id="Climate Data">
-          <h3>Climate Justice Resources</h3>
-        </a>
+        <h3>Climate Justice Resources</h3>
         <p>
           Our neighborhood and personal risk is defined not only by weather and
           climate events, but also by health, age, community and historical factors.
@@ -455,27 +455,27 @@ const Climate = (props) => {
             {props.data.blockgroups[0].cdc_score}
           </h4>
           <ul>
-            <li>The CDC Social Vulnerability Index uses U.S. Census data to determine the relative social 
-              vulnerability of every census tract. By ranking 14 factors and 4 themes, an overall score 
-              is determined that supports emergency response and public health planning by identifying 
-              where the most vulnerable populations are located. 
+            <li>The CDC Social Vulnerability Index uses U.S. Census data to determine the relative social
+              vulnerability of every census tract. By ranking 14 factors and 4 themes, an overall score
+              is determined that supports emergency response and public health planning by identifying
+              where the most vulnerable populations are located.
             </li>
             <li>
               Possible scores range from 0 (lowest vulnerability) to 1 (highest
               vulnerability).
             </li>
             <li>
-              2018 Overall Score: <b>{props.data.blockgroups[0].rpl_themes}</b> This score is then scaled to 
-              fit into the Climate Justice Data Map 1-5 scoring. 
+              2018 Overall Score: <b>{props.data.blockgroups[0].rpl_themes}</b> This score is then scaled to
+              fit into the Climate Justice Data Map 1-5 scoring.
             </li>
           </ul>
         </li>
         <li>
           <h4>BIPOC Score: {props.data.blockgroups[0].bipoc_score}</h4>
           <ul>
-            <li>BIPOC is Black, Indigenous and People of Color. This specific demographic information is 
-              significant as it is well documented that climate change impacts communities of color most 
-              significantly and that long standing disinvestment in these communities has resulted in 
+            <li>BIPOC is Black, Indigenous and People of Color. This specific demographic information is
+              significant as it is well documented that climate change impacts communities of color most
+              significantly and that long standing disinvestment in these communities has resulted in
               less resources available to prepare for and recover from disaster.  </li>
             <li>
               This area has a <b>{props.data.blockgroups[0].bipoc}%</b> BIPOC
@@ -489,17 +489,17 @@ const Climate = (props) => {
           </h4>
           <ul>
             <li>
-            This heat vulnerability index goes beyond temperature to better illustrate which parts of 
-            Asheville are vulnerable to extreme heat. This score takes into account land surface 
-            temperature, tree cover, age, and poverty level.
+              This heat vulnerability index goes beyond temperature to better illustrate which parts of
+              Asheville are vulnerable to extreme heat. This score takes into account land surface
+              temperature, tree cover, age, and poverty level.
             </li>
             <li>
               Overall Heat Vulnerability Index Value:{" "}
               <b>{props.data.blockgroups[0].hvi_value.toFixed(2)}</b>
             </li>
             <li>
-            Possible scores range from 0 (lowest vulnerability) to 3 (highest vulnerability), this score 
-            is then scaled to fit into the Climate Justice Data Map 1-5 scoring.
+              Possible scores range from 0 (lowest vulnerability) to 3 (highest vulnerability), this score
+              is then scaled to fit into the Climate Justice Data Map 1-5 scoring.
             </li>
           </ul>
         </li>

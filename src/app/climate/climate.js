@@ -341,8 +341,9 @@ const Climate = (props) => {
           Our neighborhood, household, and personal risk is defined not only by weather and
           climate events, but also by health, age, community and historical factors.
           To better understand how climate events affect different Asheville
-          communities differently,
-          &nbsp;<a href="https://avl.maps.arcgis.com/apps/instant/lookup/index.html?appid=10e2c4ae45614b92ad4efaa61342b249%2F">this map</a>&nbsp;
+          communities differently, the
+          &nbsp;<a href="https://avl.maps.arcgis.com/apps/instant/lookup/index.html?appid=10e2c4ae45614b92ad4efaa61342b249%2F">
+          Citywide Climate Justice Index Map</a>&nbsp;
           visualizes the climate risks outlined
           above alongside additional factors that can intensify impact and influence
           a community's ability to bounce back after disruption. Details about

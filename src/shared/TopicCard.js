@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import Icon from './Icon';
+import { TopicCardAccessible } from './TopicCardAccessible';
 import {
   IM_SHIELD3,
   IM_COIN_DOLLAR,
@@ -17,23 +18,23 @@ import { withLanguage } from '../utilities/lang/LanguageContext';
 const getTopicIcon = (topic) => {
   switch (topic) {
     case 'CRIME':
-      return (<Icon path={IM_SHIELD3} size={75} />)
+      return (<Icon path={IM_SHIELD3} size={40} />)
     case 'DEVELOPMENT_WEBSITE':
-      return (<Icon path={IM_CITY} size={75} />)
+      return (<Icon path={IM_CITY} size={40} />)
     case 'DEVELOPMENT_DASHBOARD':
-      return (<Icon path={IM_OFFICE} size={75} />)
+      return (<Icon path={IM_OFFICE} size={40} />)
     case 'DEVELOPMENT_NOTIFICATION':
-      return (<Icon path={IM_ENVELOP3} size={75} />)
+      return (<Icon path={IM_ENVELOP3} size={40} />)
     case 'BUDGET':
-      return (<Icon path={IM_COIN_DOLLAR} size={75} />)
+      return (<Icon path={IM_COIN_DOLLAR} size={40} />)
     case 'HOMELESSNESS':
-      return (<Icon path={IM_BED} size={75} />)
+      return (<Icon path={IM_BED} size={40} />)
     case 'CAPITAL_PROJECTS':
-      return (<Icon path={IM_CITY} size={75} />)
+      return (<Icon path={IM_CITY} size={40} />)
     case 'CLIMATE':
-      return (<Icon path={IM_TREE} size={75} />)
+      return (<Icon path={IM_TREE} size={40} />)
     default:
-      return (<Icon path={IM_LIBRARY2} size={75} />)
+      return (<Icon path={IM_LIBRARY2} size={40} />)
   }
 };
 
@@ -73,6 +74,7 @@ const translateTopic = (topic, language) => {
 };
 
 const TopicCard = props => {
+  React.useEffect(TopicCardAccessible, []);
   const query = {};
   const queryPossiblies = ['view', 'entity', 'id', 'label', 'entities', 'x', 'y', 'search'];
   queryPossiblies.forEach(possibility => {
@@ -88,48 +90,25 @@ const TopicCard = props => {
   const topics = translateTopic(props.topic, props.language.language);
   return (
 
-    // WIP
-
-    // <div className="topicCard" style={{ "position": "relative" }}>
-    //   <div className="h4 text-primary text-center">
-    //     <Link
-    //       className="topic-card"
-    //       to={{
-    //         pathname: props.path || props.topic,
-    //         query,
-    //       }}
-    //       target={target}
-    //     >
-
-    //       {topics[0].replace(/_/g, ' ')}
-
-    //     </Link>
-    //   </div>
-    //   <div className="text-primary text-center">{getTopicIcon(props.topic)}</div>
-    //   <div className="text-primary text-center">
-    //     {topics[1].replace(/_/g, ' ')}
-    //   </div>
-    // </div >
-
-    <Link
-      className="topic-card"
-      to={{
-        pathname: props.path || props.topic,
-        query,
-      }}
-      target={target}
-    >
-
-      <div className="topicCard">
+    <div className="topicCard">
+      <Link
+        className="topic-card"
+        to={{
+          pathname: props.path || props.topic,
+          query,
+        }}
+        target={target}
+      >
         <div className="h4 text-primary text-center">
           {topics[0].replace(/_/g, ' ')}
         </div>
-        <div className="text-primary text-center">{getTopicIcon(props.topic)}</div>
-        <div className="text-primary text-center">
-          {topics[1].replace(/_/g, ' ')}
-        </div>
+      </Link>
+      <div className="text-primary text-center">{getTopicIcon(props.topic)}</div>
+      <div className="text-primary text-center">
+        {topics[1].replace(/_/g, ' ')}
       </div>
-    </Link>
+
+    </div>
   )
 };
 

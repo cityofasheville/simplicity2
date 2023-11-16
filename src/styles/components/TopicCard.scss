@@ -16,3 +16,28 @@
   display: flex;
   justify-content: space-evenly;
 }
+
+.topicCard .topic-card {
+  text-decoration: none;
+}
+
+.topicCard .topic-card:focus {
+  outline: none;
+  text-decoration: underline;
+}
+
+.topicCard {
+  box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
+}
+
+.topicCard:hover,
+.topicCard:focus,
+.topicCard:focus-within {
+  box-shadow: 0 0 .15rem #004987;
+  z-index: 1;
+}
+
+.topicCard a:focus,
+.topicCard:hover a {
+  text-decoration: underline;
+}

@@ -86,25 +86,50 @@ const TopicCard = props => {
     target = '_blank';
   }
   const topics = translateTopic(props.topic, props.language.language);
-  return (<Link
-    className="topic-card"
-    to={{
-      pathname: props.path || props.topic,
-      query,
-    }}
-    target={target}
-  >
+  return (
 
-    <div className="topicCard">
-      <div className="text-primary text-center">
-        {topics[0].replace(/_/g, ' ')}
+    // WIP
+
+    // <div className="topicCard" style={{ "position": "relative" }}>
+    //   <div className="h4 text-primary text-center">
+    //     <Link
+    //       className="topic-card"
+    //       to={{
+    //         pathname: props.path || props.topic,
+    //         query,
+    //       }}
+    //       target={target}
+    //     >
+
+    //       {topics[0].replace(/_/g, ' ')}
+
+    //     </Link>
+    //   </div>
+    //   <div className="text-primary text-center">{getTopicIcon(props.topic)}</div>
+    //   <div className="text-primary text-center">
+    //     {topics[1].replace(/_/g, ' ')}
+    //   </div>
+    // </div >
+
+    <Link
+      className="topic-card"
+      to={{
+        pathname: props.path || props.topic,
+        query,
+      }}
+      target={target}
+    >
+
+      <div className="topicCard">
+        <div className="h4 text-primary text-center">
+          {topics[0].replace(/_/g, ' ')}
+        </div>
+        <div className="text-primary text-center">{getTopicIcon(props.topic)}</div>
+        <div className="text-primary text-center">
+          {topics[1].replace(/_/g, ' ')}
+        </div>
       </div>
-      <div className="text-primary text-center">{getTopicIcon(props.topic)}</div>
-      <div className="text-primary text-center">
-        {topics[1].replace(/_/g, ' ')}
-      </div>
-    </div>
-  </Link>
+    </Link>
   )
 };
 

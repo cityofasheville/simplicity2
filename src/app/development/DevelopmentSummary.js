@@ -124,10 +124,27 @@ const DevelopmentSummary = (props) => {
           />
       }
       <div className="row">
+        <div className="card-container">
+          <div className="row">
+            <div className="col-sm-12">
+              <div className="row topic-options">
+                <div className="card-item">
+                  <TopicCard topic="DEVELOPMENT_WEBSITE" lang='' view={null} path='https://ashevillenc.gov/department/development-services/' />
+                </div>
+                <div className="card-item">
+                  <TopicCard topic="DEVELOPMENT_DASHBOARD" lang='' view={null} path='/development/major' />
+                </div>
+                <div className="card-item">
+                  <TopicCard topic="DEVELOPMENT_NOTIFICATION" lang='' view={null} path='https://notifications.ashevillenc.gov/' />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div className="col-sm-2">
         </div>
         <div className="col-sm-8">
-          <br/>
+          <br />
           <p>
             The map, list, and chart represent all development permit types, of which there are over 40.  Some permit types included are:
           </p>
@@ -141,23 +158,7 @@ const DevelopmentSummary = (props) => {
             <li>Large scale development</li>
             <li>Historical resource development</li>
           </ul>
-          <div className="card-container">
-            <div className="row">
-              <div className="col-sm-12">
-                <div className="row topic-options">
-                  <div className="card-item">
-                    <TopicCard topic="DEVELOPMENT_WEBSITE" lang='' view={null} path='https://ashevillenc.gov/department/development-services/' />
-                  </div>
-                  <div className="card-item">
-                    <TopicCard topic="DEVELOPMENT_DASHBOARD" lang='' view={null} path='/development/major' />
-                  </div>
-                  <div className="card-item">
-                    <TopicCard topic="DEVELOPMENT_NOTIFICATION" lang='' view={null} path='https://notifications.ashevillenc.gov/' />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+
         </div>
       </div>
     </div>

@@ -54,7 +54,7 @@ const english = {
   CRIME: ['', 'CRIME'],
   DEVELOPMENT_WEBSITE: ['DEVELOPMENT_DEPARTMENT_WEBSITE', 'Learn more or apply for a permit'],
   DEVELOPMENT_DASHBOARD: ['DEVELOPMENT_DASHBOARD', 'View Building Permits and get Email Notifications'],
-  DEVELOPMENT_NOTIFICATION: ['DEVELOPMENT_NOTIFICATION', 'Recieve Emails about Development Permits'],
+  DEVELOPMENT_NOTIFICATION: ['GET NOTIFICATIONS', 'Recieve Emails about Development Permits'],
   DEVELOPMENT: ['', 'DEVELOPMENT'],
   BUDGET: ['', 'BUDGET'],
   HOMELESSNESS: ['', 'HOMELESSNESS'],

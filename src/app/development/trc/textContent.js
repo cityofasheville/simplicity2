@@ -78,7 +78,7 @@ export const devDashSections = [
     linkId: 'notifications',
     linkName: 'Get Notifications',
     header: 'Sign up for notifications',
-    body: (<p>The City of Asheville is piloting a system that allows people to receive an email notification when a developer submits an application for a new large-scale development.  Visit <a href="https://notifications.ashevillenc.gov" target="_blank" rel="noopener noreferrer">notifications.ashevillenc.gov</a> to sign up or change your notification settings.</p>),
+    body: (<p>You can receive an email notification when a developer submits an application for a new large-scale development.  Visit <a href="https://notifications.ashevillenc.gov" target="_blank" rel="noopener noreferrer">notifications.ashevillenc.gov</a> to sign up or change your notification settings.</p>),
   },
   {
     linkId: 'data',

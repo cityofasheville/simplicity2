@@ -13,12 +13,13 @@ import { IM_OFFICE } from '../../shared/iconConstants';
 import styles from '../spatial_event_topic_summary/spatialEventTopicFilters.css';
 import SpatialEventTopicLocationInfo from '../spatial_event_topic_summary/SpatialEventTopicLocationInfo';
 import { refreshLocation, timeOptions, extentOptions } from '../../utilities/generalUtilities';
+import TopicCard from '../../shared/TopicCard';
 
 const DevelopmentSummary = (props) => {
   if (Object.keys(props.location.query).length === 0) {
     props.location.query = {
       during: "30",
-      entities:"undefined",
+      entities: "undefined",
       entity: "address",
       id: "9688",
       label: "70 COURT PLZ, 28801",
@@ -123,10 +124,27 @@ const DevelopmentSummary = (props) => {
           />
       }
       <div className="row">
+        <div className="card-container">
+          <div className="row">
+            <div className="col-sm-12">
+              <div className="row topic-options">
+                <div className="card-item">
+                  <TopicCard topic="DEVELOPMENT_WEBSITE" lang='' view={null} path='https://ashevillenc.gov/department/development-services/' />
+                </div>
+                <div className="card-item">
+                  <TopicCard topic="DEVELOPMENT_DASHBOARD" lang='' view={null} path='/development/major' />
+                </div>
+                <div className="card-item">
+                  <TopicCard topic="DEVELOPMENT_NOTIFICATION" lang='' view={null} path='https://notifications.ashevillenc.gov/' />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div className="col-sm-2">
         </div>
         <div className="col-sm-8">
-          <br/>
+          <br />
           <p>
             The map, list, and chart represent all development permit types, of which there are over 40.  Some permit types included are:
           </p>
@@ -140,11 +158,7 @@ const DevelopmentSummary = (props) => {
             <li>Large scale development</li>
             <li>Historical resource development</li>
           </ul>
-          <p>To learn more about permitting in the City of Asheville or apply for a permit, visit <a
-            href="https://ashevillenc.gov/department/development-services/"
-            target="_blank"
-            rel="noopener noreferrer"
-            >the Development Services Department website</a>.  To learn more about large-scale development, visit <a href="/development/major">the large-scale development dashboard</a>.</p>
+
         </div>
       </div>
     </div>

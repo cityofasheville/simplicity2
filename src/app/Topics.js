@@ -20,16 +20,6 @@ const Topics = props => (
           <TopicCard topic={topic.name} lang={props.language.language} view={null} path={topic.path || topic.name} />
         </div>
       ))}
-      <div className="card-item">
-        <a className="topic-card" target='blank' href={'https://avl.maps.arcgis.com/apps/instant/lookup/index.html?appid=10e2c4ae45614b92ad4efaa61342b249%2F'}>
-          <div className="topicCard">
-            <div className="text-primary text-center"><Icon path={IM_TREE} size={75} /></div>
-            <div className="text-primary text-center">
-              CLIMATE JUSTICE
-            </div>
-          </div>
-        </a>
-      </div>
     </div>
   </div>
 );
@@ -49,8 +39,12 @@ Topics.defaultProps = {
       path: 'capital_projects',
     },
     {
-      name: 'DEVELOPMENT',
+      name: 'DEVELOPMENT_DASHBOARD',
       path: '/development/major'
+    },
+    {
+      name: 'CLIMATE',
+      path: 'https://avl.maps.arcgis.com/apps/instant/lookup/index.html?appid=10e2c4ae45614b92ad4efaa61342b249%2F'
     },
   ],
 };

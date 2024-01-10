@@ -19,11 +19,7 @@ import Property from './app/property/Property';
 import Properties from './app/property/Properties';
 import Street from './app/street/Street';
 import Neighborhood from './app/neighborhood/Neighborhood';
-<<<<<<< HEAD
 import Climate from './app/climate/climate';
-=======
-// import BlockGroup from './app/block_group/BlockGroup';
->>>>>>> development
 import Owner from './app/owner/Owner';
 import GooglePlaceResults from './app/search/searchResults/GooglePlaceResults';
 // Topics

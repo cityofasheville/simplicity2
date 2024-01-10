@@ -63,12 +63,9 @@ query addresses($civicaddress_ids: [String]!) {
       owner_zipcode
       local_landmark
       historic_district
-<<<<<<< HEAD
       block_group
       block_group_name
       climate_justice_score
-=======
->>>>>>> development
     }
   }
   `;
@@ -347,7 +344,7 @@ const Address = props => (
                     }
                     hasLabel
                     icon={<Icon path={IM_USERS} size={20} />}
-                  /> */}
+                  />
                   <DetailsFormGroup
                     label={content.owner}
                     name="owner"

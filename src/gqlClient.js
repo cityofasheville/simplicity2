@@ -10,7 +10,7 @@ import { fragmentTypes } from './fragmentTypes';
 
 let SERVER_URL = 'https://data-api1.ashevillenc.gov/graphql';
 if (process.env.REACT_APP_USE_DEV_API === true || process.env.REACT_APP_USE_DEV_API === 'true') {
-  SERVER_URL = 'https://grsqv5p6eu73mhq5tofaflesem0fuaie.lambda-url.us-east-1.on.aws/';
+  SERVER_URL = 'https://develop-simplicity.ashevillenc.gov/api';
   // SERVER_URL = 'https://dev-data-api1.ashevillenc.gov/graphql';
 }
 if (process.env.REACT_APP_USE_LOCAL_API === true || process.env.REACT_APP_USE_LOCAL_API === 'true') {

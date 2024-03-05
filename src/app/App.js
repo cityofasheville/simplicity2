@@ -5,6 +5,7 @@ import { updateUser } from "../utilities/auth/graphql/authMutations";
 import { getUser } from "../utilities/auth/graphql/authQueries";
 import Navbar from "./Navbar";
 import EnvBanner from "./EnvBanner";
+import Banner from "./Banner";
 import Footer from "./Footer";
 import ErrorBoundary from "../shared/ErrorBoundary";
 import CityInfoBar from "./CityInfoBar";
@@ -57,6 +58,20 @@ class Main extends React.Component {
           {displayNavbar(this.props.location.query.hideNavbar)}
           <div className="container" id="content">
             <EnvBanner />
+            <Banner message={(
+              <div>
+                <p style={{ fontWeight: '500', fontSize: '1.5rem', textAlign: 'center' }}>
+                  <em>Maintenance Notification:</em>
+                </p>
+                <p>
+                  The City of Asheville GIS team will be performing system maintenance on March 14-15, 2024. 
+                  During this time, all GIS services will be temporarily unavailable and some parts of Simplicity may not function as expected.
+                  Thanks for your patience as we work to improve our systems.
+                </p>
+              </div>
+            )} 
+              color="orange" 
+            />
             <ErrorBoundary>{this.props.children}</ErrorBoundary>
           </div>
           {!this.props.location.query.hideNavbar && <Footer />}

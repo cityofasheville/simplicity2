@@ -58,21 +58,13 @@ class Main extends React.Component {
           {displayNavbar(this.props.location.query.hideNavbar)}
           <div className="container" id="content">
             <EnvBanner />
-            <Banner message={(
+            {/* <Banner message={(
               <div>
-                <p style={{ fontWeight: '500', fontSize: '1.5rem', textAlign: 'center' }}>
-                  <em>Maintenance Notification:</em>
-                </p>
-                <p>
-                  The City of Asheville GIS team is currently performing system maintenance. 
-                  During this time, all GIS services will be temporarily unavailable and some parts of Simplicity may not function as expected.
-                  This message will be removed when the maintenance is complete.
-                  Thanks for your patience as we work to improve our systems.
-                </p>
+                Banner message here
               </div>
             )} 
               color="orange" 
-            />
+            /> */}
             <ErrorBoundary>{this.props.children}</ErrorBoundary>
           </div>
           {!this.props.location.query.hideNavbar && <Footer />}

@@ -60,7 +60,7 @@ class Main extends React.Component {
             <EnvBanner />
             <Banner color="orange" path="/">
               <>
-                <b className="h4" style={{color: 'black'}}>Notice: Intermittent Search Errors</b>
+                <p style={{fontWeight: '500', fontSize: '1.5rem', textAlign: 'center'}}><em>Notice: Intermittent Search Errors</em></p>
                 <p>We are aware of intermittent errors when searching for addresses in SimpliCity and are working on a fix. 
                   If your search produces an error, please wait a moment and try agian.</p>
               </>

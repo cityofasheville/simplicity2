@@ -11,6 +11,7 @@ import App from "./app/App";
 import Home from "./app/Home";
 import MySimpliCity from "./app/MySimpliCity";
 import Search from "./app/search/Search";
+import SuggestSearchWrapper from "./app/search/SuggestSearchWrapper";
 // Locations
 import Locations from './app/Locations';
 import Address from './app/address/Address';
@@ -93,7 +94,7 @@ const Routes = () => (
       <Route path="/" component={App}>
         <IndexRoute component={Home} />
         <Route path="search">
-          <IndexRoute component={Search} />
+          <IndexRoute component={SuggestSearchWrapper} />
           <Route
             path="googlePlaceMatches"
             component={GooglePlaceResults}

@@ -48,6 +48,78 @@ export const searchQuery = gql`
   }
 `;
 
+export const suggestionsQuery = `
+query searchQuery($searchString: String!, $searchContexts: [String]) {
+    search(searchString: $searchString, searchContexts: $searchContexts) {
+      type
+      results {
+        type
+      ... on StreetResult {
+          full_street_name
+      }
+      ... on NeighborhoodResult {
+          name
+      }
+      ... on OwnerResult {
+          ownerName: name
+      }
+    }
+  }
+}
+`;
+
+export const homePageQuery = `
+query searchQuery($searchString: String!, $searchContexts: [String]) {
+    search(searchString: $searchString, searchContexts: $searchContexts) {
+      type
+      results {
+        type
+        ... on AddressResult {
+          civic_address_id
+          address
+          zipcode
+          is_in_city
+          __typename
+      }
+      ... on PropertyResult {
+          pinnum
+          address
+          city
+          zipcode
+          __typename
+      }
+      ... on StreetResult {
+          full_street_name
+          zip_code
+          centerline_ids
+          __typename
+      }
+      ... on NeighborhoodResult {
+          name
+          nbhd_id
+          __typename
+      }
+      ... on OwnerResult {
+          ownerName: name
+          pinnums
+          __typename
+      }
+      ... on PlaceResult {
+          type
+          placeName: name
+          id
+          place_id
+          address
+          types
+          __typename
+      }
+      __typename
+    }
+      __typename
+  }
+}
+`;
+
 export const getResultType = (type) => {
   switch (type) {
     case 'address':

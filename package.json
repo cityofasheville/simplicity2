@@ -48,6 +48,7 @@
     "style-loader": "^0.20.3"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.18",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^12.1.5",
     "@testing-library/user-event": "^13.5.0",

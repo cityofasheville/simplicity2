@@ -2,16 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Search from './search/Search';
+import SuggestSearch from './search/SuggestSearch';
+import SuggestSearchWrapper from './search/SuggestSearchWrapper';
 import Topics from './Topics';
 
 function Homepage(props)  {
   return (
     <div className="template__home">
       <div>
-        <Search
+        <SuggestSearchWrapper />
+        {/* <Search
           location={props.location}
           selectedEntities={props.location.query.entities !== undefined ? props.location.query.entities : 'address,property,neighborhood,street,owner'}
-        />
+        /> */}
       </div>
       <hr />
       <Topics />

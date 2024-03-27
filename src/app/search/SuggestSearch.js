@@ -34,7 +34,7 @@ function SuggestSearch( {setUserQuery} ) {
   // const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [status, setStatus] = useState('idle');
-  const debouncedInputValue = useDebounce({ value: inputValue, delay: 500 });
+  const debouncedInputValue = useDebounce({ value: inputValue, delay: 100 });
 
   const inputRef = useRef(null);
   const formRef = useRef(null);

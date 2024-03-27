@@ -13,12 +13,17 @@ function SuggestSearchWrapper() {
       {/* <h1>WrappyWrap</h1> */}
 
       <section style={{marginBottom: "32px", marginTop: "32px"}}>
-        <SuggestSearch setUserQuery={setUserQuery} />
+        <SuggestSearch 
+          setUserQuery={setUserQuery} 
+          debounceInterval={100}
+          suggestionEntities={['neighborhood', 'street', 'owner']}
+        />
       </section>
 
       {userQuery.length > 2 && (
         <Query 
           query={searchQuery}
+          errorPolicy="all"
           variables={{
             searchContexts: ['address', 'civicAddressId', 'pin', 'property', 'neighborhood', 'street', 'owner'],
             searchString: userQuery,
@@ -31,10 +36,17 @@ function SuggestSearchWrapper() {
             } 
 
             if (error) {
-              console.log('error!', error);
               return (
                 <div className="alert alert-danger alert-sm">
-                  There was an error fetching results.
+                  <span style={{fontSize: '1.25rem'}}>
+                    There was an error fetching results.
+                  </span>
+                  <hr style={{margin: '0'}} />
+                  <p style={{marginTop: '12px'}}>
+                    {error.graphQLErrors.map(({ message }, i) => (
+                      <span key={i}>{message}</span>
+                    ))}
+                  </p>                
                 </div>
               );
             } 
@@ -56,7 +68,7 @@ function SuggestSearchWrapper() {
                   }
                   {formattedResults.length === 0 &&
                     <div className="alert alert-warning alert-sm">
-                      No results found. Try a different search term and/or different search type selections.
+                      No results were found for "{userQuery}". Try a different search term and/or different search type selections.
                     </div>
                   }
                 </div>

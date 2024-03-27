@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { Combobox } from '@headlessui/react';
+// import { Combobox } from '@headlessui/react';
 import * as Ariakit from '@ariakit/react';
 import { homePageQuery, searchQuery, suggestionsQuery, formatSearchResults, getIcon } from './searchResults/searchResultsUtils';
 import useDebounce from '../../hooks/useDebounce';

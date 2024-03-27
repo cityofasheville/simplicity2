@@ -70,7 +70,7 @@ function SuggestSearch( {setUserQuery} ) {
       const encodedQuery = encodeURIComponent(debouncedInputValue);
       const geocoderEndpoint = `https://gis.ashevillenc.gov/server/rest/services/Geocoders/simplicity/GeocodeServer/suggest?text=${encodedQuery}&maxSuggestions=10&category=&countryCode=&searchExtent=&location=&distance=&f=pjson`;
 
-      const simplicityEndpoint = 'https://dev-data-api2.ashevillenc.gov/graphql';
+      const simplicityEndpoint = 'https://data-api1.ashevillenc.gov/graphql';
       const simplicityOptions = {
         method: 'POST',
         headers: {

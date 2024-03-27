@@ -157,6 +157,7 @@ function SuggestSearch( {setUserQuery} ) {
       return;
     }
     console.log('combo box change detected', event.target.value);
+    setStatus('pending');
     setInputValue(event.target.value);
     // setUserQuery(event.target.value);
   }
@@ -174,10 +175,10 @@ function SuggestSearch( {setUserQuery} ) {
     // handleSubmit(suggestion);
   }
 
-  function handleChange(event) {
-    console.log('input change detected', event.target.value);
-    setInputValue(event.target.value);
-  }
+  // function handleChange(event) {
+  //   console.log('input change detected', event.target.value);
+  //   setInputValue(event.target.value);
+  // }
 
   function handleClear() {
     console.log('clear detected');
@@ -202,6 +203,8 @@ function SuggestSearch( {setUserQuery} ) {
         window.history.pushState({path: newurl}, '', newurl);
       }
       console.log('form submission detected');
+      submitButtonRef.current.focus();
+      setStatus('loading');
       setUserQuery(inputValue);
     }
   }
@@ -270,6 +273,9 @@ function SuggestSearch( {setUserQuery} ) {
                       if (event.key === 'Tab') {
                         setInputValue(suggestion.text);
                       }
+                      // if (event.key === 'Enter') {
+                      //   submitButtonRef.current.focus();
+                      // }
                     }}
                   >
                     <div style={{display:'flex', alignItems: 'flex-end'}}>
@@ -295,7 +301,7 @@ function SuggestSearch( {setUserQuery} ) {
             >
               X
             </button>
-            <button className="btn btn-primary" type="submit" id="button-addon2">
+            <button ref={submitButtonRef} className="btn btn-primary" type="submit" id="button-addon2">
               Search
             </button>
           </div>

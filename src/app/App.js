@@ -58,13 +58,13 @@ class Main extends React.Component {
           {displayNavbar(this.props.location.query.hideNavbar)}
           <div className="container" id="content">
             <EnvBanner />
-            <Banner color="orange" path="/">
+            {/* <Banner color="orange" path="/">
               <>
                 <p style={{fontWeight: '500', fontSize: '1.5rem', textAlign: 'center'}}><em>Notice: Intermittent Search Errors</em></p>
                 <p>We are aware of intermittent errors when searching for addresses in SimpliCity and are working on a fix. 
                   If your search produces an error, please wait a moment and try agian.</p>
               </>
-            </Banner>
+            </Banner> */}
             <ErrorBoundary>{this.props.children}</ErrorBoundary>
           </div>
           {!this.props.location.query.hideNavbar && <Footer />}

@@ -18,7 +18,7 @@ const SearchResultGroup = (props) => {
         {getIcon(props.data.label)}
         {getPlural(props.data.label)}
         <span className="offscreen">Number of results</span>
-        <span className="badge">{props.data.results.length}</span>
+        <span className="badge" style={{marginLeft: '8px'}}>{props.data.results.length}</span>
         {props.data.label === 'place' &&
           <img src={poweredByGoogle} alt="Powered by Google" style={{ marginLeft: '20px' }}></img>
         }

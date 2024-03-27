@@ -281,27 +281,27 @@ export const formatSearchResults = (search) => {
   return formattedResults;
 };
 
-export const getIcon = (type) => {
+export const getIcon = (type, size=26) => {
   switch (type) {
     case 'address':
-      return (<span style={{ marginRight: '5px' }}><Icon path={IM_LOCATION} size={26} /></span>);
+      return (<span style={{ marginRight: '5px' }}><Icon path={IM_LOCATION} size={size} /></span>);
     case 'property':
-      return (<span style={{ marginRight: '5px' }}><Icon path={IM_HOME2} size={26} /></span>);
+      return (<span style={{ marginRight: '5px' }}><Icon path={IM_HOME2} size={size} /></span>);
     case 'street':
-      return (<span style={{ marginRight: '5px' }}><Icon path={IM_ROAD} size={26} /></span>);
+      return (<span style={{ marginRight: '5px' }}><Icon path={IM_ROAD} size={size} /></span>);
     case 'neighborhood':
-      return (<span style={{ marginRight: '5px' }}><Icon path={IM_USERS} size={26} /></span>);
+      return (<span style={{ marginRight: '5px' }}><Icon path={IM_USERS} size={size} /></span>);
     case 'permit':
-      return (<span style={{ marginRight: '5px' }}><Icon path={IM_OFFICE} size={26} /></span>);
+      return (<span style={{ marginRight: '5px' }}><Icon path={IM_OFFICE} size={size} /></span>);
     case 'crime':
-      return (<span style={{ marginRight: '5px' }}><Icon path={IM_SHIELD3} size={26} /></span>);
+      return (<span style={{ marginRight: '5px' }}><Icon path={IM_SHIELD3} size={size} /></span>);
     case 'owner':
-      return (<span style={{ marginRight: '5px' }}><Icon path={IM_USER} size={26} /></span>);
+      return (<span style={{ marginRight: '5px' }}><Icon path={IM_USER} size={size} /></span>);
     case 'place':
-      return (<span style={{ marginRight: '5px' }}><Icon path={IM_GOOGLE} size={26} /></span>);
+      return (<span style={{ marginRight: '5px' }}><Icon path={IM_GOOGLE} size={size} /></span>);
     case 'search':
-      return (<span style={{ marginRight: '5px' }}><Icon path={IM_SEARCH} size={26} /></span>);
+      return (<span style={{ marginRight: '5px' }}><Icon path={IM_SEARCH} size={size} /></span>);
     default:
-      return (<span style={{ marginRight: '5px' }}><Icon path={IM_QUESTION} size={26} /></span>);
+      return (<span style={{ marginRight: '5px' }}><Icon path={IM_QUESTION} size={size} /></span>);
   }
 };

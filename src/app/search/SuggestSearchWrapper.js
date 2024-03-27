@@ -10,9 +10,9 @@ function SuggestSearchWrapper() {
 
   return (
     <div>
-      <h1>WrappyWrap</h1>
+      {/* <h1>WrappyWrap</h1> */}
 
-      <section style={{marginBottom: "32px"}}>
+      <section style={{marginBottom: "32px", marginTop: "32px"}}>
         <SuggestSearch setUserQuery={setUserQuery} />
       </section>
 
@@ -50,6 +50,7 @@ function SuggestSearchWrapper() {
                       <SearchResultGroup
                         key={[resultGroup.label, index].join('_')}
                         data={resultGroup}
+                        searchText={userQuery}
                       />
                     ))
                   }

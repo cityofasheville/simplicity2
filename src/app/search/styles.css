@@ -1,0 +1,45 @@
+.popover {
+  max-height: var(--popover-available-height);
+}
+
+.combobox-item {
+  display: flex;
+  cursor: default;
+  scroll-margin: 0.5rem;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  outline: none !important;
+}
+
+.combobox-item:hover {
+  background-color: #c3ebff;
+}
+
+.combobox-item[data-active-item] {
+  background-color: #c3ebff;
+  /* color: hsl(204 20% 100%); */
+}
+
+.suggestion-text {
+  line-height: 1;
+  text-transform: capitalize;
+  margin-left: 2px;
+}
+
+.suggestion-icon {
+  color: #4077a5;
+}
+
+/* .suggestion-text:first-letter {
+  text-transform: uppercase;
+} */
+
+/* :is(.dark .combobox-item:hover) {
+  background-color: hsl(204 100% 40% / 0.25);
+}
+
+:is(.dark .combobox-item)[data-active-item] {
+  background-color: hsl(204 100% 40%);
+} */

@@ -1,8 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Combobox } from '@headlessui/react';
-import { homePageQuery, searchQuery, suggestionsQuery, formatSearchResults } from './searchResults/searchResultsUtils';
+import * as Ariakit from '@ariakit/react';
+import { homePageQuery, searchQuery, suggestionsQuery, formatSearchResults, getIcon } from './searchResults/searchResultsUtils';
 import useDebounce from '../../hooks/useDebounce';
 // import DebouncedInput from './DebouncedInput';
+import './styles.css';
 
 const comboBoxStyle = {
   position: 'absolute',
@@ -12,9 +14,10 @@ const comboBoxStyle = {
   listStyle: 'none',
   width: '100%',
   zIndex: 1000,
-  height: '250px',
+  // height: '250px',
   overflow: 'auto',
-  top: '42px',
+  // top: '42px',
+
 };
 
 const highlightedStyle = {
@@ -24,6 +27,8 @@ const highlightedStyle = {
 
 function SuggestSearch( {setUserQuery} ) {
 
+  const combobox = Ariakit.useComboboxStore();
+
   const [inputValue, setInputValue] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   // const [searchQuery, setSearchQuery] = useState('');
@@ -32,10 +37,30 @@ function SuggestSearch( {setUserQuery} ) {
   const debouncedInputValue = useDebounce({ value: inputValue, delay: 500 });
 
   const inputRef = useRef(null);
+  const formRef = useRef(null);
+  const clearButtonRef = useRef(null);
+  const submitButtonRef = useRef(null);
+
+  // const triggerBottom = React.useMemo(
+  //   () => trigger?.offsetTop + trigger?.offsetHeight + CONTENT_OFFSET,
+  //   [trigger]
+  // );
+
+  let currentUrlParams = new URLSearchParams(window.location.search);
+  let urlQuery = '';
+  if (currentUrlParams.has('search')) {
+    console.log('SuggestSearch query params:', currentUrlParams.get('search'));
+    urlQuery = currentUrlParams.get('search');
+    // setUserQuery(currentUrlParams.get('search'));
+  }
 
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
+    }
+    if (urlQuery.length > 2) {
+      setInputValue(urlQuery);
+      setUserQuery(urlQuery);
     }
   }, []);
 
@@ -45,7 +70,7 @@ function SuggestSearch( {setUserQuery} ) {
       const encodedQuery = encodeURIComponent(debouncedInputValue);
       const geocoderEndpoint = `https://gis.ashevillenc.gov/server/rest/services/Geocoders/simplicity/GeocodeServer/suggest?text=${encodedQuery}&maxSuggestions=10&category=&countryCode=&searchExtent=&location=&distance=&f=pjson`;
 
-      const simplicityEndpoint = 'https://data-api1.ashevillenc.gov/graphql';
+      const simplicityEndpoint = 'https://dev-data-api2.ashevillenc.gov/graphql';
       const simplicityOptions = {
         method: 'POST',
         headers: {
@@ -72,16 +97,12 @@ function SuggestSearch( {setUserQuery} ) {
       // const geocoderData = await geocoderResponse.json();
 
       // console.log('geocoder data: ', geocoderData.suggestions);
-      newSuggestionSet = [{
-        type: 'user',
-        text: debouncedInputValue,
-        magicKey: `${debouncedInputValue}_0`,
-      }, ...geocoderData.suggestions.map((suggestion) => {
+      newSuggestionSet = geocoderData.suggestions.map((suggestion) => {
         return {
           type: 'address',
           ...suggestion,
         };
-      })];
+      });
 
       // const simplicityResponse = await fetch(simplicityEndpoint, simplicityOptions);
       // const simplicityData = await simplicityResponse.json();
@@ -120,22 +141,37 @@ function SuggestSearch( {setUserQuery} ) {
     if (status === 'loading') {
       return;
     }
-    // if (parseInt(debouncedInputValue) !== NaN) {
-    //   console.log('PIN DETECTED');
-    //   return;
-    // }
+    const isnum = /^\d+$/.test(debouncedInputValue);
+
+    if (isnum) {
+      console.log('All-numberic (PIN?) DETECTED');
+      return;
+    }
 
     getSuggestions();
     
   }, [debouncedInputValue]);
 
-  function handleComboBoxChange(value) {
-    if (value === null) {
+  function handleComboBoxChange(event) {
+    if (event.target.value === null) {
       return;
     }
-    console.log('combo box change detected', value);
-    setInputValue(value.text);
-    setUserQuery(value.text);
+    console.log('combo box change detected', event.target.value);
+    setInputValue(event.target.value);
+    // setUserQuery(event.target.value);
+  }
+
+  function handleSelect(suggestion) {
+    // setQuery(suggestion);
+    currentUrlParams.set('search', suggestion);
+    if (history.pushState) {
+      const newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + `?${currentUrlParams}${window.location.hash}`;
+      window.history.pushState({path: newurl}, '', newurl);
+    }
+    setInputValue(suggestion);
+    setUserQuery(suggestion);
+    // setStatus('loading');
+    // handleSubmit(suggestion);
   }
 
   function handleChange(event) {
@@ -145,6 +181,11 @@ function SuggestSearch( {setUserQuery} ) {
 
   function handleClear() {
     console.log('clear detected');
+    currentUrlParams.delete('search');
+    if (history.pushState) {
+      const newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + `?${currentUrlParams}${window.location.hash}`;
+      window.history.pushState({path: newurl}, '', newurl);
+    }
     setInputValue('');
     setSuggestions([]);
     inputRef.current.focus();
@@ -155,12 +196,17 @@ function SuggestSearch( {setUserQuery} ) {
     if (inputValue.length > 2) {
       // setStatus('loading');
       // handleSubmit(inputValue);
+      currentUrlParams.set('search', inputValue);
+      if (history.pushState) {
+        const newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + `?${currentUrlParams}${window.location.hash}`;
+        window.history.pushState({path: newurl}, '', newurl);
+      }
       console.log('form submission detected');
       setUserQuery(inputValue);
     }
   }
 
-  async function handleSubmit(userQuery) {
+  async function handleSubmit() {
     const endpoint = 'https://data-api1.ashevillenc.gov/graphql';
     // const endpoint = "https://data-api1.ashevillenc.gov/graphql";
     const options = {
@@ -180,90 +226,71 @@ function SuggestSearch( {setUserQuery} ) {
     const response = await fetch(endpoint, options);
     const data = await response.json();
     const formattedResults = formatSearchResults(data.data.search);
-    console.log('API DATA:', formattedResults);
+    // console.log('API DATA:', formattedResults);
     setSearchResults(formattedResults);
     setStatus('idle');
   }
 
-
   return (
     <div>
-      <form onSubmit={handleFormSubmission}>
-        <div className="input-group mb-3">
+      <form ref={formRef} onSubmit={handleFormSubmission}>
+        <div className="input-group mb-3" style={{position: 'relative'}}>
           {/* <input className="form-control combobox" type="text" placeholder="e.g. 123 Main St" /> */}
 
-
-          <Combobox
-            // value={value_rhf ? value_rhf : ''}
+          <Ariakit.Combobox
+            store={combobox}
+            placeholder="e.g. 123 Main St"
+            className="form-control combobox position-relative"
+            value={inputValue ? inputValue : ''}
             onChange={handleComboBoxChange}
-            open={true}
-            as="div"
-            multiple={false}
-            nullable={true}
-          >
-            {/* <Combobox.Label>
-              Field Label
-            </Combobox.Label> */}
-            <div className="position-relative">
-              <Combobox.Input
-                
-                onChange={handleChange}
-                // onBlur={onBlur_rhf}
-                className="form-control combobox position-relative"
-                value={inputValue ? inputValue : ''}
-                displayValue={inputValue ? inputValue : ''}
-                // name={fieldInputName}
-                autoComplete="off"
-                ref={inputRef}
-              />
-              <div style={{position: 'relative'}}>
-                {suggestions.length > 0 && (
-                  <Combobox.Options
-                  className="list-unstyled position-absolute w-100 bg-white border rounded shadow-sm"
-                  style={comboBoxStyle}
+            autoComplete="off"
+            ref={inputRef}
+          />
+          {suggestions.length > 0 && (
+            <Ariakit.ComboboxPopover 
+              store={combobox} 
+              gutter={4} 
+              sameWidth 
+              className="list-unstyled position-absolute w-100 bg-white border rounded shadow-sm"
+              style={{
+                ...comboBoxStyle,
+                // The below variable is supplied, inline, by the Ariakit.ComboboxPopover component
+                maxHeight: 'var(--popover-available-height)',
+              }}
+            >
+              {suggestions.map((suggestion) => {
+                return (
+                  <Ariakit.ComboboxItem
+                    className="combobox-item"
+                    // style={active ? highlightedStyle : {}}
+                    key={suggestion.magicKey}
+                    onClick={() => handleSelect(suggestion.text)}
+                    value={suggestion.text}
+                    onKeyDown={(event) => {
+                      if (event.key === 'Tab') {
+                        setInputValue(suggestion.text);
+                      }
+                    }}
                   >
-                    {suggestions.map((suggestion) => (
-                      /* Use the `active` state to conditionally style the active option. */
-                      /* Use the `selected` state to conditionally style the selected option. */
-                      <Combobox.Option key={suggestion.magicKey} value={suggestion} as={React.Fragment} data-suggestion={suggestion.text}>
-                        {({ active, selected }) => (
-                          <li
-                            className={`d-flex ${active ? 'bg-dark text-light' : 'bg-white text-dark'} ${
-                              selected ? 'border-left' : ''
-                            }`}
-                            style={active ? highlightedStyle : {}}
-                          >
-                            {selected ? (
-                              <div className="py-1 d-flex align-items-center justify-content-center pl-2 mr-2 bg-success">
-                                {/* <i className="fa fa-lg fa-check mr-2 bg-dark"></i> */}
-                              </div>
-                            ) : (
-                              <div className="py-1 d-flex align-items-center justify-content-center pl-2 mr-2">
-                                {/* <i className="fa fa-lg fa-times mr-2"></i> */}
-                              </div>
-                            )}
-                            <div className="py-1 d-inline-block">
-                              {suggestion.text}
-                              <br />
-                              <small>{suggestion.type}</small>
-                            </div>
-                          </li>
-                        )}
-                      </Combobox.Option>
-                    ))}
-                  </Combobox.Options>
-                )}
-              </div>
-            </div>
-          </Combobox>
+                    <div style={{display:'flex', alignItems: 'flex-end'}}>
+                      <span className="offscreen">{suggestion.type}</span>
+                      <span className="suggestion-icon" aria-hidden="true">{getIcon(suggestion.type, 16)}</span>
+                      <span className="suggestion-text">{suggestion.text.toLowerCase()}</span>
+                    </div>
+                  </Ariakit.ComboboxItem>
+                );
+              })}
+            </Ariakit.ComboboxPopover>
+          )}
 
-
+          
           <div className="input-group-btn">
             <button
               className="btn btn-primary"
               type="button"
               id="button-addon2"
               onClick={handleClear}
+              ref={clearButtonRef}
               style={{borderRight: '2px solid #ccc'}}
             >
               X

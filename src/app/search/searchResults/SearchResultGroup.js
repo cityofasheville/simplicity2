@@ -28,7 +28,7 @@ const SearchResultGroup = (props) => {
       Cell: row => (
         <CellFocusWrapper>
           {(focusRef, focusable) => (
-            <span className="search-results-group__row-inner">
+            <span className="search-results-group__row-inner" style={{justifyContent: 'space-between', alignItems: 'baseline', lineHeight: '1'}}>
               {/* This LinkFocusWrapper can be replaced by the innerRef prop on the Link component
                 in react-router ^4.2.0. Presently it serves as a work around for not having that
                 prop. */}
@@ -66,6 +66,11 @@ const SearchResultGroup = (props) => {
                   </a>
                 </span>
               }
+              {props.data.label === 'address' && (
+                <div>
+                  <Link to={`/permits/search?search=${row.original.id}`}>Permits</Link>
+                </div>
+              )}
             </span>
           )}
         </CellFocusWrapper>

@@ -4,19 +4,19 @@ import { graphql, compose } from 'react-apollo';
 import { getSearchText } from '../../search/graphql/searchQueries';
 import { updateSearchText } from '../../search/graphql/searchMutations';
 
+import PermitSearchWrapper from './PermitSearchWrapper';
 import PermitSearchBar from './PermitSearchBar';
 
 
 function PermitSearchIndex(props) {
 
-  let timeout = null;
-
   return(
     <div style={{paddingTop: "32px"}}>
       <h1 className="">Development &amp; Permit Search</h1>
+      {/* <PermitSearchWrapper /> */}
       <PermitSearchBar 
-        text={props.searchText.search || props.location.query.search}
-        selectedEntities={props.location.query.entities}
+        // text={props.searchText.search || props.location.query.search}
+        // selectedEntities={props.location.query.entities}
         onKeyUp={(e) => {
           e.persist();
           clearTimeout(timeout);
@@ -44,11 +44,4 @@ function PermitSearchIndex(props) {
 
 }
 
-export default compose(
-  graphql(updateSearchText, { name: 'updateSearchText' }),
-  graphql(getSearchText, {
-    props: ({ data: { searchText } }) => ({
-      searchText,
-    }),
-  })
-)(PermitSearchIndex);
+export default PermitSearchIndex;

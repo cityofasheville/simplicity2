@@ -6,6 +6,7 @@ import { Query } from 'react-apollo';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import PermitsMap from './PermitsMap';
 import PermitSearchBar from './PermitSearchBar';
+import PermitSearchWrapper from "./PermitSearchWrapper";
 import PermitTimeline from './PermitTimeline';
 import { permitFieldFormats } from './utils';
 import { orderedDates } from '../trc/textContent';
@@ -320,7 +321,7 @@ const Permit = props => (
           <div className="row" style={{marginBottom: "32px"}}>
             <div className="col-xs-12">
               <h2>Look Up Another Application</h2>
-              <PermitSearchBar />
+              <PermitSearchWrapper />
             </div>
           </div>
         </main>

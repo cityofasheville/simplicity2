@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 // import { Combobox } from '@headlessui/react';
+import * as DOMPurify from 'dompurify';
 import * as Ariakit from '@ariakit/react';
 import { homePageQuery, searchQuery, suggestionsQuery, formatSearchResults, getIcon } from './searchResults/searchResultsUtils';
 import useDebounce from '../../hooks/useDebounce';
@@ -21,12 +22,16 @@ const comboBoxStyle = {
 function SuggestSearch({
   setUserQuery,
   debounceInterval = 500,
+  suggestWithGeocoder = true,
+  suggestWithSimplicity = true,
+  simplicitySuggestValue = 'name',
   suggestionEntities = ['neighborhood', 'street', 'owner'],
   patternsToExcludeFromSuggestions = [/^\d+$/],
 }) {
 
   const combobox = Ariakit.useComboboxStore();
 
+  const [inputDisplayValue, setInputDisplayValue] = useState('');
   const [inputValue, setInputValue] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
@@ -38,10 +43,12 @@ function SuggestSearch({
   const clearButtonRef = useRef(null);
   const submitButtonRef = useRef(null);
 
+  const inputReplacePattern = /[{("')}]/g;
   let currentUrlParams = new URLSearchParams(window.location.search);
   let urlQuery = '';
   if (currentUrlParams.has('search')) {
-    urlQuery = currentUrlParams.get('search');
+    urlQuery = DOMPurify.sanitize(currentUrlParams.get('search'));
+    // urlQuery = currentUrlParams.get('search');
   }
 
   useEffect(() => {
@@ -50,6 +57,7 @@ function SuggestSearch({
     }
     if (urlQuery.length > 2) {
       setInputValue(urlQuery);
+      setInputDisplayValue(urlQuery);
       setStatus('loading');
       setUserQuery(urlQuery);
     }
@@ -66,6 +74,7 @@ function SuggestSearch({
 
       const encodedQuery = encodeURIComponent(debouncedInputValue);
       const geocoderEndpoint = `https://gis.ashevillenc.gov/server/rest/services/Geocoders/simplicity/GeocodeServer/suggest?text=${encodedQuery}&maxSuggestions=10&category=&countryCode=&searchExtent=&location=&distance=&f=pjson`;
+      const geocoderOptions = {signal: geocoderSignal};
 
       const simplicityEndpoint = 'https://data-api1.ashevillenc.gov/graphql';
       const simplicityOptions = {
@@ -88,15 +97,36 @@ function SuggestSearch({
       let newSuggestionSet = [];
 
       try {
-        const t0 = performance.now();
+        // const t0 = performance.now();
 
-        [geocoderData, simplicityData] = await Promise.all([
-          fetch(geocoderEndpoint, {signal: geocoderSignal}).then((response) => response.json()),
-          fetch(simplicityEndpoint, simplicityOptions).then((response) => response.json()),
-        ]);
+        const suggestionPromises = [];
 
-        const t1 = performance.now();
-        console.log(`Suggestions took ${t1 - t0} milliseconds.`);
+        if (suggestWithGeocoder) {
+          suggestionPromises.push(fetch(geocoderEndpoint, geocoderOptions).then((response) => response.json()));
+        }
+        if (suggestWithSimplicity) { 
+          suggestionPromises.push(fetch(simplicityEndpoint, simplicityOptions).then((response) => response.json()));
+        }
+
+        // const suggestionResponses = await Promise.all(suggestionPromises);
+        const suggestionResponses = await Promise.allSettled(suggestionPromises);
+        
+        // console.log('suggestionResponses', suggestionResponses);
+
+        if (suggestWithGeocoder) {
+          geocoderData = suggestionResponses[0].value;
+        } else {
+          geocoderData = {suggestions: []}
+        }
+
+        if (suggestWithSimplicity) {  
+          simplicityData = suggestionResponses[suggestionResponses.length - 1].value;
+        } else {
+          simplicityData = {data: {search: []}};
+        }
+
+        // const t1 = performance.now();
+        // console.log(`Suggestions took ${t1 - t0} milliseconds.`);
           
       } catch (error) {
         setStatus('error');
@@ -108,6 +138,7 @@ function SuggestSearch({
           ...geocoderData?.suggestions?.map((suggestion) => {
           return {
             type: 'address',
+            value: suggestion.text,
             ...suggestion,
           };
         })];
@@ -123,20 +154,27 @@ function SuggestSearch({
               })
               .map((result, index) => {
                 let nameProperty = 'name';
+                let idProperty = '';
                 if (resultSet.type === 'owner') {
                   nameProperty = 'ownerName';
                 } else if (resultSet.type === 'street') {
                   nameProperty = 'full_street_name';
+                } else if (resultSet.type === 'address') {
+                  nameProperty = 'address';
+                  idProperty = 'civic_address_id';
                 }
                 return {
                   type: resultSet.type,
-                  text: result[nameProperty],
+                  text: result[nameProperty].trim(),
+                  value: simplicitySuggestValue === 'id' && idProperty !== '' ? result[idProperty].trim() : result[nameProperty].trim(),
                   magicKey: `${index}${result[nameProperty]}`,
                 };
               }),
           ];
         });
       }
+
+      // console.log('newSuggestionSet', newSuggestionSet);
 
       setSuggestions([...newSuggestionSet]);
     }
@@ -160,7 +198,7 @@ function SuggestSearch({
     // const isnum = /^\d+$/.test(debouncedInputValue.trim());
 
     if (shouldSkip) {
-      console.log('Input excluded from suggestions');
+      // console.log('Input excluded from suggestions');
       return;
     }
 
@@ -178,19 +216,23 @@ function SuggestSearch({
     if (event.target.value === null) {
       return;
     }
+    const sanitizedInput = DOMPurify.sanitize(event.target.value).replace(inputReplacePattern, '');
+    // console.log(event.target.value, sanitizedInput);
     setStatus('pending');
-    setInputValue(event.target.value);
+    setInputValue(sanitizedInput);
+    setInputDisplayValue(sanitizedInput)
   }
 
   function handleSelect(suggestion) {
-    currentUrlParams.set('search', suggestion);
+    currentUrlParams.set('search', suggestion.value);
     if (history.pushState) {
       const newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + `?${currentUrlParams}${window.location.hash}`;
       window.history.pushState({path: newurl}, '', newurl);
     }
-    setInputValue(suggestion);
+    setInputValue(suggestion.value);
+    setInputDisplayValue(suggestion.text);
     setStatus('loading');
-    setUserQuery(suggestion);
+    setUserQuery(suggestion.value);
   }
 
   function handleClear() {
@@ -200,23 +242,25 @@ function SuggestSearch({
       window.history.pushState({path: newurl}, '', newurl);
     }
     setInputValue('');
+    setInputDisplayValue('');
     setStatus('idle');
     setSuggestions([]);
     inputRef.current.focus();
   }
 
   function handleFormSubmission(event) {
+    const sanitizedInput = DOMPurify.sanitize(inputValue).replace(inputReplacePattern, '');
     event.preventDefault();
-    if (inputValue.length > 2) {
-      currentUrlParams.set('search', inputValue);
+    if (sanitizedInput.length > 2) {
+      currentUrlParams.set('search', sanitizedInput);
       if (history.pushState) {
         const newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + `?${currentUrlParams}${window.location.hash}`;
         window.history.pushState({path: newurl}, '', newurl);
       }
-      console.log('form submission detected');
+      // console.log('form submission detected');
       submitButtonRef.current.focus();
       setStatus('loading');
-      setUserQuery(inputValue);
+      setUserQuery(sanitizedInput);
     }
   }
 
@@ -229,7 +273,7 @@ function SuggestSearch({
             store={combobox}
             placeholder="e.g. 123 Main St"
             className="form-control combobox position-relative"
-            value={inputValue ? inputValue : ''}
+            value={inputDisplayValue ? inputDisplayValue : ''}
             onChange={handleComboBoxChange}
             autoComplete="off"
             ref={inputRef}
@@ -251,11 +295,11 @@ function SuggestSearch({
                   <Ariakit.ComboboxItem
                     className="combobox-item"
                     key={suggestion.magicKey}
-                    onClick={() => handleSelect(suggestion.text)}
+                    onClick={() => handleSelect(suggestion)}
                     value={suggestion.text}
                     onKeyDown={(event) => {
                       if (event.key === 'Tab') {
-                        setInputValue(suggestion.text);
+                        setInputValue(suggestion.value);
                       }
                     }}
                   >

@@ -54,6 +54,10 @@ query searchQuery($searchString: String!, $searchContexts: [String]) {
       type
       results {
         type
+        ... on AddressResult {
+          civic_address_id
+          address
+      }
       ... on StreetResult {
           full_street_name
       }

@@ -16,6 +16,9 @@ function SuggestSearchWrapper() {
         <SuggestSearch 
           setUserQuery={setUserQuery} 
           debounceInterval={100}
+          suggestWithGeocoder={true}
+          suggestWithSimplicity={true}
+          simplicitySuggestValue='id'
           suggestionEntities={['neighborhood', 'street', 'owner']}
         />
       </section>

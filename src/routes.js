@@ -37,6 +37,7 @@ import PermitVolume from "./app/development/volume/PermitVolume";
 import PermitsIndex from "./app/development/permits/PermitsIndex";
 import Permit from "./app/development/permits/Permit";
 import PermitSearchIndex from "./app/development/permits/PermitSearchIndex";
+import PermitSearchWrapper from "./app/development/permits/PermitSearchWrapper";
 // import WorkflowContainer from './app/development/workflows/WorkflowContainer';
 //
 import ProjectFlowDashboard from "./app/internal/bpt_projects/ProjectFlow";
@@ -135,7 +136,7 @@ const Routes = () => (
           <Route
             exact
             path="/permits/search"
-            component={PermitSearchIndex}
+            component={PermitSearchWrapper}
           ></Route>
           <Route path="/permits/:id" component={Permit}></Route>
         </Route>

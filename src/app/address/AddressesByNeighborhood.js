@@ -107,12 +107,22 @@ const AddressesByNeighborhood = props => (
         },
       ];
 
-      const mapData = data.addresses_by_neighborhood.map(item =>
-        (Object.assign(
+      const mapData = data.addresses_by_neighborhood.map((item) => {
+        return Object.assign(
           {},
           item,
-          { popup: `<b>${content.address}</b><div>${item.street_number} ${item.street_prefix} ${item.street_name} ${item.unit || ''}</div><div>${item.city}, NC ${item.zipcode}</div><br /><b>${content.owner}</b><div>${item.owner_name}</div><div>${item.owner_address}</div><div>${item.owner_cityname}, ${item.owner_state} ${item.owner_zipcode}</div>` } // eslint-disable-line
-        )));
+          { 
+            popup: `
+              <b>${content.address || ''}</b>
+              <div>${item.street_number || ''} ${item.street_prefix || ''} ${item.street_name || ''} ${item.street_type || ''} ${item.unit || ''}</div>
+              <div>${item.city || ''}, NC ${item.zipcode || ''}</div>
+              <br /><b>${content.owner || ''}</b>
+              <div>${item.owner_name || ''}</div>
+              <div>${item.owner_address || ''}</div>
+              <div>${item.owner_cityname || ''}, ${item.owner_state || ''} ${item.owner_zipcode || ''}</div>` 
+          } // eslint-disable-line
+        )
+      });
 
       return (
         <div>

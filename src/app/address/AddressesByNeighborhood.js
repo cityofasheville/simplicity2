@@ -53,129 +53,131 @@ const GET_ADDRESSES_BY_NEIGHBORHOOD = gql`
   }
 `;
 
-const AddressesByNeighborhood = props => (
-  <Query
-    query={GET_ADDRESSES_BY_NEIGHBORHOOD}
-    variables={{
-      nbrhd_ids: [props.location.query.id.trim()],
-    }}
-  >
-    {({ loading, error, data }) => {
-      if (loading) return <LoadingAnimation />;
-      if (error) return <Error message={error.message} />;
-      // set language
-      let content;
-      switch (props.language.language) {
-        case 'Spanish':
-          content = spanish;
-          break;
-        default:
-          content = english;
-      }
-      const dataColumns = [
-        {
-          Header: content.address,
-          accessor: 'Address',
-          Cell: row => (
-            <div>
-              <div>{row.original.street_number} {row.original.street_prefix} {row.original.street_name} {row.original.street_type} {row.original.unit ? `#${row.original.unit}` : ''}</div>
-              <div>{row.original.city}, NC {row.original.zipcode}</div>
-            </div>
-          ),
-          Filter: createFilterRenderer(content.placeholder),
-          filterMethod: (filter, row) => {
-            const joinedAddressInfo = `${row._original.street_number} ${row._original.street_prefix} ${row._original.street_name} ${row._original.street_type} ${row._original.unit ? '#' : ''} ${row._original.unit} ${row._original.city}, NC ${row._original.zipcode}`;
-            return row._original !== undefined ? joinedAddressInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true; // eslint-disable-line
+function AddressesByNeighborhood(props) {
+  return (
+    <Query
+      query={GET_ADDRESSES_BY_NEIGHBORHOOD}
+      variables={{
+        nbrhd_ids: [props.location.query.id.trim()],
+      }}
+    >
+      {({ loading, error, data }) => {
+        if (loading) return <LoadingAnimation />;
+        if (error) return <Error message={error.message} />;
+        // set language
+        let content;
+        switch (props.language.language) {
+          case 'Spanish':
+            content = spanish;
+            break;
+          default:
+            content = english;
+        }
+        const dataColumns = [
+          {
+            Header: content.address,
+            accessor: 'Address',
+            Cell: row => (
+              <div>
+                <div>{row.original.street_number} {row.original.street_prefix} {row.original.street_name} {row.original.street_type} {row.original.unit ? `#${row.original.unit}` : ''}</div>
+                <div>{row.original.city}, NC {row.original.zipcode}</div>
+              </div>
+            ),
+            Filter: createFilterRenderer(content.placeholder),
+            filterMethod: (filter, row) => {
+              const joinedAddressInfo = `${row._original.street_number} ${row._original.street_prefix} ${row._original.street_name} ${row._original.street_type} ${row._original.unit ? '#' : ''} ${row._original.unit} ${row._original.city}, NC ${row._original.zipcode}`;
+              return row._original !== undefined ? joinedAddressInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true; // eslint-disable-line
+            },
           },
-        },
-        {
-          Header: content.owner,
-          accessor: 'Owner',
-          Cell: row => (
-            <div>
-              <div>{row.original.owner_name}</div>
-              <div>{row.original.owner_address}</div>
-              <div>{row.original.owner_cityname}, {row.original.owner_state} {row.original.owner_zipcode}</div>
-            </div>
-          ),
-          Filter: createFilterRenderer(content.placeholder),
-          filterMethod: (filter, row) => {
-            const joinedOwnerInfo = [row._original.owner_name, row._original.owner_address, row._original.owner_cityname, [',', row._original.owner_state].join(''), row._original.owner_zipcode].join(' '); // eslint-disable-line
-            return row._original !== undefined ? // eslint-disable-line
-              joinedOwnerInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
+          {
+            Header: content.owner,
+            accessor: 'Owner',
+            Cell: row => (
+              <div>
+                <div>{row.original.owner_name}</div>
+                <div>{row.original.owner_address}</div>
+                <div>{row.original.owner_cityname}, {row.original.owner_state} {row.original.owner_zipcode}</div>
+              </div>
+            ),
+            Filter: createFilterRenderer(content.placeholder),
+            filterMethod: (filter, row) => {
+              const joinedOwnerInfo = [row._original.owner_name, row._original.owner_address, row._original.owner_cityname, [',', row._original.owner_state].join(''), row._original.owner_zipcode].join(' '); // eslint-disable-line
+              return row._original !== undefined ? // eslint-disable-line
+                joinedOwnerInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
+            },
           },
-        },
-      ];
+        ];
 
-      const mapData = data.addresses_by_neighborhood.map((item) => {
-        return Object.assign(
-          {},
-          item,
-          { 
-            popup: `
-              <b>${content.address || ''}</b>
-              <div>${item.street_number || ''} ${item.street_prefix || ''} ${item.street_name || ''} ${item.street_type || ''} ${item.unit || ''}</div>
-              <div>${item.city || ''}, NC ${item.zipcode || ''}</div>
-              <br /><b>${content.owner || ''}</b>
-              <div>${item.owner_name || ''}</div>
-              <div>${item.owner_address || ''}</div>
-              <div>${item.owner_cityname || ''}, ${item.owner_state || ''} ${item.owner_zipcode || ''}</div>` 
-          } // eslint-disable-line
-        )
-      });
+        const mapData = data.addresses_by_neighborhood.map((item) => {
+          return Object.assign(
+            {},
+            item,
+            { 
+              popup: `
+                <b>${content.address || ''}</b>
+                <div>${item.street_number || ''} ${item.street_prefix || ''} ${item.street_name || ''} ${item.street_type || ''} ${item.unit || ''}</div>
+                <div>${item.city || ''}, NC ${item.zipcode || ''}</div>
+                <br /><b>${content.owner || ''}</b>
+                <div>${item.owner_name || ''}</div>
+                <div>${item.owner_address || ''}</div>
+                <div>${item.owner_cityname || ''}, ${item.owner_state || ''} ${item.owner_zipcode || ''}</div>` 
+            } // eslint-disable-line
+          );
+        });
 
-      return (
-        <div>
-          <div className="row">
-            <div className="col-sm-12">
-              <EmailDownload
-                downloadData={data.addresses_by_neighborhood}
-                fileName={content.addresses_by_neighborhood_filename}
-              />
-            </div>
-            <div id="listView" hidden={props.location.query.view === 'map'} className="col-sm-12">
-              {data.addresses_by_neighborhood.length < 1 ?
-                <div className="alert alert-info">{content.no_results_found}</div>
-                :
-                <div style={{ marginTop: '10px' }}>
-                  <AccessibleReactTable
-                    data={data.addresses_by_neighborhood}
-                    arialLabel="Neighborhood Addresses"
-                    columns={dataColumns}
-                    showPagination={data.addresses_by_neighborhood.length > 20}
-                    defaultPageSize={data.addresses_by_neighborhood.length <= 20
-                      ? data.addresses_by_neighborhood.length : 20}
-                    getTdProps={() => (
-                      {
-                        style: {
-                          whiteSpace: 'normal',
-                        },
-                      }
-                    )}
-                    filterable
-                  />
-                </div>
-              }
-            </div>
-
-            <div id="mapView" className="col-xs-12" hidden={props.location.query.view !== 'map'}>
-              {data.addresses_by_neighborhood.length === 0 || props.location.query.view !== 'map' ?
-                <div className="alert alert-info">{content.no_results_found}</div>
-                :
-                <Map
-                  data={mapData}
-                  drawPolygon
-                  polygonData={combinePolygonsFromNeighborhoodList([data.neighborhoods[0]])}
-                  bounds={getBoundsFromPolygonData([data.neighborhoods[0].polygon])}
+        return (
+          <div>
+            <div className="row">
+              <div className="col-sm-12">
+                <EmailDownload
+                  downloadData={data.addresses_by_neighborhood}
+                  fileName={content.addresses_by_neighborhood_filename}
                 />
-              }
+              </div>
+              <div id="listView" hidden={props.location.query.view === 'map'} className="col-sm-12">
+                {data.addresses_by_neighborhood.length < 1 ?
+                  <div className="alert alert-info">{content.no_results_found}</div>
+                  :
+                  <div style={{ marginTop: '10px' }}>
+                    <AccessibleReactTable
+                      data={data.addresses_by_neighborhood}
+                      arialLabel="Neighborhood Addresses"
+                      columns={dataColumns}
+                      showPagination={data.addresses_by_neighborhood.length > 20}
+                      defaultPageSize={data.addresses_by_neighborhood.length <= 20
+                        ? data.addresses_by_neighborhood.length : 20}
+                      getTdProps={() => (
+                        {
+                          style: {
+                            whiteSpace: 'normal',
+                          },
+                        }
+                      )}
+                      filterable
+                    />
+                  </div>
+                }
+              </div>
+
+              <div id="mapView" className="col-xs-12" hidden={props.location.query.view !== 'map'}>
+                {data.addresses_by_neighborhood.length === 0 || props.location.query.view !== 'map' ?
+                  <div className="alert alert-info">{content.no_results_found}</div>
+                  :
+                  <Map
+                    data={mapData}
+                    drawPolygon
+                    polygonData={combinePolygonsFromNeighborhoodList([data.neighborhoods[0]])}
+                    bounds={getBoundsFromPolygonData([data.neighborhoods[0].polygon])}
+                  />
+                }
+              </div>
             </div>
           </div>
-        </div>
-      );
-    }}
-  </Query>
-);
+        );
+      }}
+    </Query>
+  );
+}
 
 AddressesByNeighborhood.propTypes = {
   spatialEventTopic: PropTypes.string.isRequired,

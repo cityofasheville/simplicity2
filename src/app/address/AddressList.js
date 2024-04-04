@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router';
 import AddressesByStreet from './AddressesByStreet';
 import AddressesByNeighborhood from './AddressesByNeighborhood';
 import ButtonGroup from '../../shared/ButtonGroup';
@@ -13,7 +14,7 @@ import { english } from './english';
 import { spanish } from './spanish';
 import { withLanguage } from '../../utilities/lang/LanguageContext';
 
-const AddressList = (props) => {
+function AddressList(props) {
   let content;
   switch (props.language.language) {
     case 'Spanish':
@@ -29,16 +30,23 @@ const AddressList = (props) => {
     }
   );
 
+  const searchParams = new URLSearchParams(window.location.search);
+  const currentView = searchParams.get('view');
+  searchParams.set('view', 'map');
+  const searchParamsMap = searchParams.toString();
+  searchParams.set('view', 'list');
+  const searchParamsList = searchParams.toString();
+
   return (
     <div>
       <PageHeader
-        h1={props.location.query.label}
+        h1={searchParams.get('label')}
         h2={content.address_and_owner_mailing_lists}
         icon={<Icon path={IM_ENVELOP3} size={50} />}
       >
         <ButtonGroup>
           <LinkButton
-            pathname={props.location.query.entity ===
+            pathname={searchParams.get('entity') ===
               'neighborhood' ? '/neighborhood' : '/street'}
             query={{
               entities: props.location.query.entities,
@@ -49,7 +57,7 @@ const AddressList = (props) => {
               label: props.location.query.label,
             }}
           >
-            {props.location.query.entity === 'street' ?
+            {searchParams.get('entity') === 'street' ?
               content.back_to_street
               :
               content.back_to_neighborhood
@@ -60,24 +68,22 @@ const AddressList = (props) => {
       <div className="row">
         <div className="col-sm-12">
           <ButtonGroup alignment="right">
-            <Button
-              onClick={() => refreshLocation(getNewUrlParams('list'), props.location)}
-              active={props.location.query.view !== 'map'}
-              positionInGroup="left"
+            <Link 
+              className={`btn btn-primary ${currentView !== 'map' ? 'active' : ''}`} 
+              to={window.location.pathname + '?' + searchParamsList}
             >
-              {content.list_view}
-            </Button>
-            <Button
-              onClick={() => refreshLocation(getNewUrlParams('map'), props.location)}
-              active={props.location.query.view === 'map'}
-              positionInGroup="right"
+              List view
+            </Link>
+            <Link 
+              className={`btn btn-primary ${currentView === 'map' ? 'active' : ''}`} 
+              to={window.location.pathname + '?' + searchParamsMap}
             >
-              {content.map_view}
-            </Button>
+              Map view
+            </Link>
           </ButtonGroup>
         </div>
       </div>
-      {props.location.query.entity === 'street' ?
+      {searchParams.get('entity') === 'street' ?
         <AddressesByStreet {...props} />
         :
         <AddressesByNeighborhood {...props} />

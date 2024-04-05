@@ -14,7 +14,7 @@ import LinkButton from '../../shared/LinkButton';
 import PageHeader from '../../shared/PageHeader';
 import { IM_ENVELOP3, IM_ROAD, IM_HOME2, IM_TRAFFIC_CONE } from '../../shared/iconConstants';
 
-const Street = (props) => {
+function Street(props) {
   if (props.data.loading) { // eslint-disable-line react/prop-types
     return <LoadingAnimation />;
   }
@@ -41,8 +41,8 @@ const Street = (props) => {
               </div>
             ))}
             <div className="detailsFieldset__details-listings">
-              <DetailsIconLinkFormGroup label="Address & Owner Mailing Lists" icon={<Icon path={IM_ENVELOP3} size={24} />} href={['address/addressList', '?entity=', props.location.query.entity, '&entities=', props.location.query.entities, '&id=', props.location.query.id, '&label=', props.location.query.label, '&search=', props.location.query.search, '&hideNavbar=', props.location.query.hideNavbar].join('')} title="Address & Owner Mailing Lists" inWindow />
-              <DetailsIconLinkFormGroup label="Properties" icon={<Icon path={IM_HOME2} size={24} />} href={['property/properties', '?entity=', props.location.query.entity, '&entities=', props.location.query.entities, '&id=', props.location.query.id, '&search=', props.location.query.search, '&label=', props.location.query.label, '&hideNavbar=', props.location.query.hideNavbar].join('')} title="Properties" inWindow />
+              <DetailsIconLinkFormGroup label="Address & Owner Mailing Lists" icon={<Icon path={IM_ENVELOP3} size={24} />} href={['address/addressList', '?entity=', props.location.query.entity, '&entities=', props.location.query.entities, '&id=', props.location.query.id, '&label=', props.location.query.label, '&search=', props.location.query.search, '&hideNavbar=', props.location.query.hideNavbar, '&view=list'].join('')} title="Address & Owner Mailing Lists" inWindow />
+              <DetailsIconLinkFormGroup label="Properties" icon={<Icon path={IM_HOME2} size={24} />} href={['property/properties', '?entity=', props.location.query.entity, '&entities=', props.location.query.entities, '&id=', props.location.query.id, '&search=', props.location.query.search, '&label=', props.location.query.label, '&hideNavbar=', props.location.query.hideNavbar, '&view=list'].join('')} title="Properties" inWindow />
               <DetailsIconLinkFormGroup label="Maintenance" icon={<Icon path={IM_TRAFFIC_CONE} size={24} />} href={['maintenance', '?entity=', props.location.query.entity, '&entities=', props.location.query.entities, '&search=', props.location.query.search, '&id=', props.location.query.id, '&label=', props.location.query.label, '&hideNavbar=', props.location.query.hideNavbar, '&view=map'].join('')} title="Maintenance" inWindow />
             </div>
           </fieldset>

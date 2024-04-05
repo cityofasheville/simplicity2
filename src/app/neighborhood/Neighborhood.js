@@ -13,7 +13,7 @@ import LinkButton from '../../shared/LinkButton';
 import PageHeader from '../../shared/PageHeader';
 import { getBoundsFromPolygonData, combinePolygonsFromNeighborhoodList } from '../../utilities/mapUtilities';
 
-const Neighborhood = (props) => {
+function Neighborhood(props) {
   if (props.data.loading) { // eslint-disable-line react/prop-types
     return <LoadingAnimation />;
   }
@@ -33,7 +33,8 @@ const Neighborhood = (props) => {
     '&search=',
     props.location.query.search,
     '&hideNavbar=',
-    props.location.query.hideNavbar
+    props.location.query.hideNavbar,
+    '&view=list',
   ].join('')
 
   return (

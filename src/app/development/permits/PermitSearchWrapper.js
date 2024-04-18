@@ -7,6 +7,30 @@ import LoadingAnimation from '../../../shared/LoadingAnimation';
 import gql from 'graphql-tag';
 import { formatSearchResults } from '../../search/searchResults/searchResultsUtils';
 
+import PermitSearchResultsTable from './PermitSearchResultsTable';
+
+
+  const addressPermitQuery = gql`
+  query get_permits_by_address ($civicaddress_id: Int!) {
+    permits_by_address(civicaddress_id: $civicaddress_id) {
+      application_name
+      applicant_name
+      applied_date
+      permit_category
+      permit_description
+      permit_group
+      permit_number
+      permit_subtype
+      permit_type
+      status_current
+      status_date
+      civic_address_id
+      address
+      x
+      y
+    }
+  }`;
+
 const addressQuery = gql`
 query searchQuery($searchString: String!, $searchContexts: [String]) {
   search(searchString: $searchString, searchContexts: $searchContexts) {
@@ -132,7 +156,7 @@ function SuggestSearchWrapper() {
 
       {userQuery.length > 2 && (
         <Query 
-          query={isPermit ? permitQuery : permitsByAddressQuery}
+          query={isPermit ? permitQuery : addressPermitQuery}
           errorPolicy="all"
           variables={isPermit ? { permit_numbers: userQuery } : { civicaddress_id: parseInt(userQuery) } }
         >
@@ -162,6 +186,9 @@ function SuggestSearchWrapper() {
               );
             } 
 
+            console.log('permits_by_address', data);
+
+
             if (isPermit) {
               if (data.permit_realtime !== null) {
                 return ( 
@@ -176,42 +203,45 @@ function SuggestSearchWrapper() {
                 return (<p>No results found</p>);
               }
             } else {
-              if (data.permits_by_address_realtime !== null) {
+              if (data.permits_by_address !== null) {
 
-                const permitList = data.permits_by_address_realtime.map((permit, index) => {
-                  return (
-                    <tr key={index} title={`Permit ${permit.permit_number} for ${permit.applicant_name}`}>
-                      <td><Link to={`/permits/${permit.permit_number}`} title="View permit application details">{permit.permit_number}</Link></td>
-                      <td>{permit.applicant_name}</td>
-                      <td>{permit.permit_category}</td>
-                      <td>{permit.permit_type}</td>
-                      <td>
-                        <div style={{whiteSpace: "break-spaces", minWidth: "300px"}}>
-                          {permit.permit_description}
-                        </div>                      
-                      </td>
-                    </tr>
-                  );
-                });
+                // const permitList = data.permits_by_address_realtime.map((permit, index) => {
+                //   return (
+                //     <tr key={index} title={`Permit ${permit.permit_number} for ${permit.applicant_name}`}>
+                //       <td><Link to={`/permits/${permit.permit_number}`} title="View permit application details">{permit.permit_number}</Link></td>
+                //       <td>{permit.applicant_name}</td>
+                //       <td>{permit.permit_category}</td>
+                //       <td>{permit.permit_type}</td>
+                //       <td>
+                //         <div style={{whiteSpace: "break-spaces", minWidth: "300px"}}>
+                //           {permit.permit_description}
+                //         </div>                      
+                //       </td>
+                //     </tr>
+                //   );
+                // });
+                console.log(data);
+
+                return <PermitSearchResultsTable data={data.permits_by_address} />;
   
-                return (
-                  <div className="table-responsive" style={{"marginTop": "8px"}}>
-                    <table className="table table-hover table-bordered">
-                      <thead className="thead-dark">
-                        <tr>
-                          <th scope="col" style={{"width": "15%"}}>Permit Number</th>
-                          <th scope="col" style={{"width": "15%"}}>Applicant</th>
-                          <th scope="col" style={{"width": "15%"}}>Category</th>
-                          <th scope="col" style={{"width": "15%"}}>Type</th>
-                          <th scope="col" style={{"width": "40%"}}>Description</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {permitList}
-                      </tbody>
-                    </table>     
-                  </div>
-                );
+              //   return (
+              //     <div className="table-responsive" style={{"marginTop": "8px"}}>
+              //       <table className="table table-hover table-bordered">
+              //         <thead className="thead-dark">
+              //           <tr>
+              //             <th scope="col" style={{"width": "15%"}}>Permit Number</th>
+              //             <th scope="col" style={{"width": "15%"}}>Applicant</th>
+              //             <th scope="col" style={{"width": "15%"}}>Category</th>
+              //             <th scope="col" style={{"width": "15%"}}>Type</th>
+              //             <th scope="col" style={{"width": "40%"}}>Description!!</th>
+              //           </tr>
+              //         </thead>
+              //         <tbody>
+              //           {permitList}
+              //         </tbody>
+              //       </table>     
+              //     </div>
+              //   );
               }
             }
             

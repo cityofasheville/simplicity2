@@ -43,6 +43,12 @@ export const searchQuery = gql`
           address
           types
         }
+        ... on PermitResult {
+          type
+          permit_number
+          applicant_name
+          address
+        }
       }
     }
   }
@@ -200,7 +206,7 @@ export const getLink = (type, id, search, entities, label, originalSearch) => {
     case 'neighborhood':
       return `/neighborhood?search=${search}&id=${id}&entities=${entities}&label=${label}&entity=neighborhood`;
     case 'permit':
-      return `/development/detail?search=${search}&id=${id}&entities=${entities}&entity=permit`;
+      return `/permits/${id}?search=${search}`;
     case 'crime':
       return `/crime/detail?search=${search}&id=${id}&entities=${entities}&entity=crime`;
     case 'owner':
@@ -275,7 +281,13 @@ export const formatSearchResults = (search) => {
                   place_name: result.placeName,
                   place_id: result.place_id,
                 };
-              default:
+              case 'permit':
+                return {
+                  label: `${result.permit_number.trim()} - ${result.address.trim()} - ${result.applicant_name.trim()}`,
+                  type: 'permit',
+                  id: result.permit_number,
+                };
+                default:
                 return result;
             }
           }),
@@ -288,24 +300,24 @@ export const formatSearchResults = (search) => {
 export const getIcon = (type, size=26) => {
   switch (type) {
     case 'address':
-      return (<span style={{ marginRight: '5px' }}><Icon path={IM_LOCATION} size={size} /></span>);
+      return (<span style={{ display: 'inline-block', marginRight: '5px' }}><Icon path={IM_LOCATION} size={size} /></span>);
     case 'property':
-      return (<span style={{ marginRight: '5px' }}><Icon path={IM_HOME2} size={size} /></span>);
+      return (<span style={{ display: 'inline-block', marginRight: '5px' }}><Icon path={IM_HOME2} size={size} /></span>);
     case 'street':
-      return (<span style={{ marginRight: '5px' }}><Icon path={IM_ROAD} size={size} /></span>);
+      return (<span style={{ display: 'inline-block', marginRight: '5px' }}><Icon path={IM_ROAD} size={size} /></span>);
     case 'neighborhood':
-      return (<span style={{ marginRight: '5px' }}><Icon path={IM_USERS} size={size} /></span>);
+      return (<span style={{ display: 'inline-block', marginRight: '5px' }}><Icon path={IM_USERS} size={size} /></span>);
     case 'permit':
-      return (<span style={{ marginRight: '5px' }}><Icon path={IM_OFFICE} size={size} /></span>);
+      return (<span style={{ display: 'inline-block', marginRight: '12px' }}><Icon path={IM_OFFICE} size={size} /></span>);
     case 'crime':
-      return (<span style={{ marginRight: '5px' }}><Icon path={IM_SHIELD3} size={size} /></span>);
+      return (<span style={{ display: 'inline-block', marginRight: '5px' }}><Icon path={IM_SHIELD3} size={size} /></span>);
     case 'owner':
-      return (<span style={{ marginRight: '5px' }}><Icon path={IM_USER} size={size} /></span>);
+      return (<span style={{ display: 'inline-block', marginRight: '5px' }}><Icon path={IM_USER} size={size} /></span>);
     case 'place':
-      return (<span style={{ marginRight: '5px' }}><Icon path={IM_GOOGLE} size={size} /></span>);
+      return (<span style={{ display: 'inline-block', marginRight: '5px' }}><Icon path={IM_GOOGLE} size={size} /></span>);
     case 'search':
-      return (<span style={{ marginRight: '5px' }}><Icon path={IM_SEARCH} size={size} /></span>);
+      return (<span style={{ display: 'inline-block', marginRight: '5px' }}><Icon path={IM_SEARCH} size={size} /></span>);
     default:
-      return (<span style={{ marginRight: '5px' }}><Icon path={IM_QUESTION} size={size} /></span>);
+      return (<span style={{ display: 'inline-block', marginRight: '5px' }}><Icon path={IM_QUESTION} size={size} /></span>);
   }
 };

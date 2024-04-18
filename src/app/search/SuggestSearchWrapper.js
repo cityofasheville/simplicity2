@@ -8,10 +8,31 @@ import { searchQuery, formatSearchResults } from './searchResults/searchResultsU
 function SuggestSearchWrapper() {
   const [userQuery, setUserQuery] = useState('');
 
+  const permitFormat = /^\d{2}-\d{5,10}(s|S|pz|pZ|Pz|PZ){0,1}$/;
+  const allNumericFormat = /^\d+$/;
+
+  const isPermit = permitFormat.test(userQuery.trim());
+  const isAllNumeric = allNumericFormat.test(userQuery.trim());
+
+  let searchContexts;
+
+  // console.log('userQuery', userQuery);
+
+  if (isPermit) {
+    searchContexts = ['permit'];
+    // console.log('isPermit');
+  } else if (isAllNumeric) {
+    searchContexts = ['civicAddressId', 'pin'];
+    // console.log('isAllNumeric');
+  } else {
+    // do we need the "property" context? is "pin" sufficient?
+    // searchContexts = ['address', 'property', 'neighborhood', 'street', 'owner'];
+    searchContexts = ['address', 'neighborhood', 'street', 'owner'];
+    // console.log('is neither');
+  }
+
   return (
     <div>
-      {/* <h1>WrappyWrap</h1> */}
-
       <section style={{marginBottom: "32px", marginTop: "32px"}}>
         <SuggestSearch 
           setUserQuery={setUserQuery} 
@@ -28,8 +49,8 @@ function SuggestSearchWrapper() {
           query={searchQuery}
           errorPolicy="all"
           variables={{
-            searchContexts: ['address', 'civicAddressId', 'pin', 'property', 'neighborhood', 'street', 'owner'],
-            searchString: userQuery,
+            searchContexts: searchContexts,
+            searchString: isPermit ? userQuery.toUpperCase() : userQuery,
           }}
         >
           {({ loading, error, data }) => {
@@ -55,6 +76,9 @@ function SuggestSearchWrapper() {
             } 
 
             const formattedResults = formatSearchResults(data.search);
+
+            // console.log('raw data', data.search);
+            // console.log('formattedResults', formattedResults);
 
             return (
               <div className="row">

@@ -18,7 +18,7 @@ const SearchResultGroup = (props) => {
         {getIcon(props.data.label)}
         {getPlural(props.data.label)}
         <span className="offscreen">Number of results</span>
-        <span className="badge" style={{marginLeft: '8px'}}>{props.data.results.length}</span>
+        <span className="badge" style={{margin: '0 8px'}}>{props.data.results.length}</span>
         {props.data.label === 'place' &&
           <img src={poweredByGoogle} alt="Powered by Google" style={{ marginLeft: '20px' }}></img>
         }
@@ -38,7 +38,8 @@ const SearchResultGroup = (props) => {
                   tabIndex={focusable ? 0 : -1}
                   to={getLink(
                     row.original.type,
-                    row.original.id, props.searchText,
+                    row.original.id, 
+                    props.searchText,
                     props.selectedEntities,
                     row.original.label,
                     props.originalSearch
@@ -67,7 +68,7 @@ const SearchResultGroup = (props) => {
                 </span>
               }
               {props.data.label === 'address' && (
-                <div>
+                <div style={{marginRight: '8px'}}>
                   <Link to={`/permits/search?search=${row.original.id}`}>Permits</Link>
                 </div>
               )}

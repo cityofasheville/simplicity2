@@ -23,15 +23,10 @@ const GET_PROJECTS = gql`
       application_name
       applied_date
       permit_category
-      permit_description
       permit_group
       permit_number
       permit_subtype
       permit_type
-      status_current
-      status_date
-      civic_address_id
-      address
       x
       y
     }

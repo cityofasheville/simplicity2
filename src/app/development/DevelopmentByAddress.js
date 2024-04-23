@@ -188,6 +188,15 @@ DevelopmentByAddress.defaultProps = {
   query: { entity: 'address', label: '123 Main street' },
 };
 
+// refactor to use urlSearchParams and local state to trigger UI changes (layout, extent, time period, etc)
+  // Conditionally assign the below query based on value of extentOptions (timeline)
+  // Add an option in the UI for "at this address" (radius = 0 or radius simply omitted from query?)
+  // May be same query (permits_by_address) but without the radius?
+// Add timeline for selecting range (capped at 2 year period?)
+  // Let timeline output the before and during variables (just need to be in YYYY-MM-DD format)
+  // Look at DevelopmentSummary line 48 to see what's up
+// refactor graphql logic to be self-contained in this file (no abstract props via HoC)
+
 const getPermitsQuery = gql`
   query getPermitsQuery($civicaddress_id: Int!, $radius: Int, $before: String, $after: String) {
     permits_by_address (civicaddress_id: $civicaddress_id, radius: $radius, before: $before, after: $after) {

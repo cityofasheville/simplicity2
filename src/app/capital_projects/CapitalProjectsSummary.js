@@ -69,7 +69,7 @@ const CapitalProjectsSummary = props => (
           >
             <span>{content.search_by_note}</span>
             <br></br>
-            <a className="" href="http://arcg.is/Sy5KC" target="_blank">
+            <a className="" href="https://gis.ashevillenc.gov/arcgis/apps/experiencebuilder/experience/?id=1397c75f257248b5b030f6b420618e88" target="_blank">
               {content.try_project_map}
             </a>
           </PageHeader>

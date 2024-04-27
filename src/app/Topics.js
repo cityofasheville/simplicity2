@@ -10,13 +10,13 @@ import Icon from '../shared/Icon';
 const Topics = props => (
   <div className="card-container">
     <div className="row">
-      <div className="col-sm-12">
+      <div className="col-xs-12">
         <h2>View citywide topic <strong>dashboards</strong> about your community.</h2>
       </div>
     </div>
-    <div className="row topic-options">
+    <div className="row aligned-row">
       {props.topics.map((topic, i) => (
-        <div className="card-item" key={['topic', i].join('_')}>
+        <div className="col-xs-12 col-md-4" style={{padding: '15px'}} key={['topic', i].join('_')}>
           <TopicCard topic={topic.name} lang={props.language.language} view={null} path={topic.path || topic.name} />
         </div>
       ))}

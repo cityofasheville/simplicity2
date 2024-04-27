@@ -15,6 +15,8 @@ export const searchQuery = gql`
           address
           zipcode
           is_in_city
+          x
+          y
         }
         ... on PropertyResult {
           pinnum
@@ -89,6 +91,8 @@ query searchQuery($searchString: String!, $searchContexts: [String]) {
           address
           zipcode
           is_in_city
+          x
+          y
           __typename
       }
       ... on PropertyResult {
@@ -243,10 +247,12 @@ export const formatSearchResults = (search) => {
               case 'address':
               case 'civicAddressId':
                 return {
-                  label: [result.address, result.zipcode].join(', '),
+                  label: `${result.address ? result.address.trim() : ''}${result.zipcode ? ', ' + result.zipcode.trim() : ''}`,
                   type: 'address',
                   id: result.civic_address_id,
                   inCity: result.is_in_city,
+                  x: result.x,
+                  y: result.y,
                 };
               case 'property':
               case 'pin':

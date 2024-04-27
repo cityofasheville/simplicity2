@@ -11,6 +11,7 @@ import createFilterRenderer from '../../../shared/FilterRenderer';
 import LinkFocusWrapper from '../../../shared/LinkFocusWrapper';
 
 const SearchResultGroup = (props) => {
+
   const dataColumns = [
     {
       headerStyle: { boxShadow: 'none' },
@@ -69,7 +70,19 @@ const SearchResultGroup = (props) => {
               }
               {props.data.label === 'address' && (
                 <div style={{marginRight: '8px'}}>
-                  <Link to={`/permits/search?search=${row.original.id}`}>Permits</Link>
+                  <Link to={
+                    `/DEVELOPMENT?view=list&` +
+                    `entities=undefined&` +
+                    `entity=address&` +
+                    `within=0&` +
+                    `id=${row.original.id}&` +
+                    `label=${row.original.label}&` +
+                    `search=${props.originalSearch}&` +
+                    `x=${row.original.x}&` +
+                    `y=${row.original.y}`
+                  }>
+                    Permits
+                  </Link>
                 </div>
               )}
             </span>
@@ -82,6 +95,8 @@ const SearchResultGroup = (props) => {
       ),
     },
   ];
+
+  console.log(props.data.results);
 
   return (
     <div className={styles.searchResultGroup + ' search-results-group' + ' search-results-group-'+props.data.label }>

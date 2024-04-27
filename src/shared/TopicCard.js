@@ -92,6 +92,10 @@ const TopicCard = props => {
   const styles = {
     card: {
       padding: '1rem',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'stretch',
+      minHeight: '100%',
     },
     cardLink: {
       margin: 0,

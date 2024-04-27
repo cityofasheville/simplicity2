@@ -27,6 +27,7 @@ import GooglePlaceResults from './app/search/searchResults/GooglePlaceResults';
 import Topics from "./app/Topics";
 //Development endpoints
 import DevelopmentSummary from "./app/development/DevelopmentSummary";
+import DevelopmentByEntityWrapper from "./app/development/DevelopmentByEntityWrapper";
 import DevelopmentDetail from "./app/development/DevelopmentDetail";
 import DevelopmentSLADashboard from "./app/development/sla_dashboard/SLADashboard";
 import DevelopmentDashIndex from "./app/development/DevelopmentDashIndex";
@@ -141,7 +142,7 @@ const Routes = () => (
           <Route path="/permits/:id" component={Permit}></Route>
         </Route>
         <Route path="development">
-          <IndexRoute component={DevelopmentSummary} />
+          <IndexRoute component={DevelopmentByEntityWrapper} />
           <Route path="detail" component={DevelopmentDetail}></Route>
           {/* The rest of these are dashboards */}
           <Route path="dashboards" component={DevelopmentDashIndex}></Route>
@@ -154,7 +155,7 @@ const Routes = () => (
           <Route path="granular_volume" component={PermitVolume}></Route>
           <Route path="status_volume" component={PermitVolume}></Route>
         </Route>
-        <Route path="homelessness">
+        {/* <Route path="homelessness">
           <IndexRoute component={HomelessnessSummary} />
           <Route path="veterans" component={HomelessnessVeterans}></Route>
           <Route path="data" component={HomelessnessData}></Route>
@@ -180,7 +181,7 @@ const Routes = () => (
             component={HomelessnessDemographics}
           ></Route>
           <Route path="enrollments" component={HomelessnessEnrollment}></Route>
-        </Route>
+        </Route> */}
         <Route path="maintenance">
           <IndexRoute component={Maintenance} />
         </Route>

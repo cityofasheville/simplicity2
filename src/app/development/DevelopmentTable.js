@@ -47,7 +47,31 @@ class DevelopmentTable extends React.Component {
 
   componentDidMount() {
     this.setState({
-      urlString: [this.props.location.pathname, '?entity=', this.props.location.query.entity, '&id=', this.props.location.query.id, '&entities=', this.props.location.query.entities, '&label=', this.props.location.query.label, '&within=', document.getElementById('extent').value, '&during=', document.getElementById('time').value, '&hideNavbar=', this.props.location.query.hideNavbar, '&search=', this.props.location.query.search, '&view=map', '&x=', this.props.location.query.x, '&y=', this.props.location.query.y].join('')
+      urlString: [
+        this.props.location.pathname, 
+        '?entity=', 
+        this.props.location.query.entity, 
+        '&id=', 
+        this.props.location.query.id, 
+        '&entities=', 
+        this.props.location.query.entities, 
+        '&label=', 
+        this.props.location.query.label, 
+        '&within=', 
+        // document.getElementById('extent').value,
+        this.props.location.query.within, 
+        '&during=', 
+        // document.getElementById('time').value, 
+        this.props.location.query.during, 
+        '&hideNavbar=', 
+        this.props.location.query.hideNavbar, 
+        '&search=', 
+        this.props.location.query.search, 
+        '&view=map', 
+        '&x=', 
+        this.props.location.query.x, 
+        '&y=', 
+        this.props.location.query.y].join('')
     })
   }
 

@@ -27,7 +27,11 @@ const getButtonStyle = (positionInGroup, extraStyle) => {
 };
 
 const Button = props => (
-  <button className={getButtonClass(props.size, props.type, props.active)} style={getButtonStyle(props.positionInGroup, props.style)} onClick={props.onClick} >
+  <button className={getButtonClass(props.size, props.type, props.active)} 
+    style={getButtonStyle(props.positionInGroup, props.style)} 
+    onClick={props.onClick} 
+    disabled={props.disabled}
+  >
     {props.children}
   </button>
 );
@@ -46,6 +50,7 @@ Button.defaultProps = {
   size: 'regular',
   type: 'primary',
   active: false,
+  disabled: false,
   positionInGroup: null, // left, middle, right
   onClick: null,
   style: {},

@@ -189,6 +189,7 @@ class TimeSlider extends React.Component {
       timeMonth.ceil(this.state.xSpan[0]),
       timeMonth.ceil(this.state.xSpan[1]),
     );
+
     // TODO: Use hover annotation and fake lines to make tooltip
     return (
       <div

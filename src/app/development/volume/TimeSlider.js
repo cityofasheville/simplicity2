@@ -4,6 +4,7 @@ import { ResponsiveXYFrame } from 'semiotic';
 import moment from 'moment';
 import { timeDay, timeWeek, timeMonth, timeYear } from 'd3-time';
 import ErrorBoundary from '../../../shared/ErrorBoundary';
+// import { format, getTime, isValid, set } from "date-fns";
 
 class TimeSlider extends React.Component {
 
@@ -19,12 +20,14 @@ class TimeSlider extends React.Component {
         this.props.spanEnd,
       ],
       initialParamsChecked: false,
+      sliderWidth: window.innerWidth,
     };
 
     this.determineNewExtent = this.determineNewExtent.bind(this);
     this.brushDuring = this.brushDuring.bind(this);
     this.brushEnd = this.brushEnd.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.updateWindowWidth = this.updateWindowWidth.bind(this);
   }
 
   determineNewExtent(proposedExtent, snap = false) {
@@ -171,7 +174,16 @@ class TimeSlider extends React.Component {
     ], false);
   }
 
+  updateWindowWidth() {
+    const timelineContainer = document.getElementById("timeline-container");
+    this.setState({
+      sliderWidth: timelineContainer.offsetWidth,
+    });
+  }
+
   componentDidMount() {
+    window.addEventListener("resize", this.updateWindowWidth);
+    this.updateWindowWidth();
     if (!this.state.initialParamsChecked) {
       const initialParams = this.determineNewExtent(this.state.defaultBrushExtent, false);
       this.setState({
@@ -184,17 +196,67 @@ class TimeSlider extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updateWindowWidth);
+  }
+
   render() {
-    const ticks = timeMonth.range(
-      timeMonth.ceil(this.state.xSpan[0]),
-      timeMonth.ceil(this.state.xSpan[1]),
+    // const ticks = timeMonth.range(
+    //   timeMonth.ceil(this.state.xSpan[0]),
+    //   timeMonth.ceil(this.state.xSpan[1]),
+    // );
+
+    let timeFunc = timeYear;
+    if (this.props.tickMeasure === 'month') { 
+      timeFunc = timeMonth;
+    } else if (this.props.tickMeasure === 'week') {
+      timeFunc = timeWeek;
+    }
+    let tickGap = this.props.initialTickGap;
+    let ticks = timeFunc.range(
+      timeFunc.ceil(this.state.xSpan[0]),
+      timeFunc.ceil(this.state.xSpan[1]),
+      tickGap
     );
+
+    let tickCount = ticks.length;
+
+    // Figure out how many pixels each tick mark would get
+    let tickRatio = this.state.sliderWidth / tickCount;
+
+    // if each tick mark lacks adequate pixel width, we'll increase the tick interval (tickGap)
+    if (tickRatio < this.props.minimumTickWidth) {
+      // If we double the current tick interval, we'll halve the number of tick marks in our tick array
+      let newTickCount = tickCount / 2;
+      let newTickRatio = this.state.sliderWidth / newTickCount;
+      tickGap++;
+
+      // Figure out which tick interval would yield an adequate gap betweek tick marks, then rebuild the tick array using the new gap
+      while (newTickRatio < this.props.minimumTickWidth) {
+        newTickCount = newTickCount / 2;
+        newTickRatio = this.state.sliderWidth / newTickCount;
+        tickGap++;
+      }
+
+      ticks = timeFunc.range(
+        timeFunc.ceil(this.state.xSpan[0]),
+        timeFunc.ceil(this.state.xSpan[1]),
+        tickGap
+      );
+    }
+
+    let tickFormat = "yyyy";
+    if (this.props.tickMeasure === 'month') {
+      tickFormat = "MMM yyyy";
+    } else if (this.props.tickMeasure === 'week') {
+      tickFormat = "MMM dd";
+    }
 
     // TODO: Use hover annotation and fake lines to make tooltip
     return (
       <div
         className="brushedChart"
-        style={{ width: '100%', margin: '2em 0' }}
+        style={{ width: '100%', margin: '0' }}
       >
         <ErrorBoundary>
           <div>
@@ -204,7 +266,7 @@ class TimeSlider extends React.Component {
               >
                 <label
                   htmlFor="startdate"
-                  // style={{ display: 'inline-block', padding: '0 0.25em 0 0' }}
+                  style={{ marginBottom: '0', padding: '0 0.25em 0 0' }}
                 >
                   From
                 </label>
@@ -234,8 +296,9 @@ class TimeSlider extends React.Component {
               >
                 <label
                   htmlFor="enddate"
+                  style={{ marginBottom: '0', padding: '0 0.25em 0 0' }}
                 >
-                  through
+                  Through
                 </label>
                 <input
                   type="date"
@@ -264,41 +327,42 @@ class TimeSlider extends React.Component {
               />
             </form>
           </div>
-          {document.documentElement.clientWidth > 600 &&
-          <ResponsiveXYFrame
-            responsiveWidth
-            margin={{
-              top: 20,
-              right: 10,
-              bottom: 50,
-              left: 25,
-            }}
-            size={[1000, 75]}
-            xAccessor={d => d}
-            yAccessor={() => 0}
-            xExtent={this.state.xSpan}
-            axes={[
-              {
-                orient: 'bottom',
-                tickFormat: d => (
-                  <text
-                    textAnchor="middle"
-                    style={{ fontSize: '0.70em' }}
-                    transform="rotate(-45)"
-                  >
-                    {moment.utc(d).format('MMM YY')}
-                  </text>
-                ),
-                tickValues: ticks,
-              },
-            ]}
-            interaction={{
-              during: this.brushDuring,
-              end: this.brushEnd,
-              brush: 'xBrush',
-              extent: this.state.brushExtent,
-            }}
-          />}
+          <div id='timeline-container'>
+            <ResponsiveXYFrame
+              responsiveWidth
+              margin={{
+                top: 20,
+                right: 10,
+                bottom: 50,
+                left: 25,
+              }}
+              size={[1000, 75]}
+              xAccessor={d => d}
+              yAccessor={() => 0}
+              xExtent={this.state.xSpan}
+              axes={[
+                {
+                  orient: 'bottom',
+                  tickFormat: d => (
+                    <text
+                      textAnchor="middle"
+                      style={{ fontSize: '0.70em', left: '-14px'}}
+                      transform="rotate(-45)"
+                    >
+                      {moment.utc(d).format(tickFormat)}
+                    </text>
+                  ),
+                  tickValues: ticks,
+                },
+              ]}
+              interaction={{
+                during: this.brushDuring,
+                end: this.brushEnd,
+                brush: 'xBrush',
+                extent: this.state.brushExtent,
+              }}
+            />
+          </div>
         </ErrorBoundary>
       </div>
     );
@@ -321,6 +385,9 @@ TimeSlider.defaultProps = {
   spanUpperLimit: timeDay.floor(new Date()).getTime(),
   spanLowerLimit: timeDay.floor(new Date(Date.UTC(1999, 0, 1))).getTime(),
   maxDaysAllowedToQuery: 730,
+  minimumTickWidth: 25,
+  initialTickGap: 1,
+  tickMeasure: 'year',
   xSpan: 2, // in years
 };
 

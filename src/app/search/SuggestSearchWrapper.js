@@ -36,7 +36,7 @@ function SuggestSearchWrapper() {
       <section style={{marginBottom: "32px", marginTop: "32px"}}>
         <SuggestSearch 
           setUserQuery={setUserQuery} 
-          debounceInterval={100}
+          debounceInterval={250}
           suggestWithGeocoder={true}
           suggestWithSimplicity={true}
           simplicitySuggestValue='id'

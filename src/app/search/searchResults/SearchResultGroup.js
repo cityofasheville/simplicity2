@@ -77,7 +77,7 @@ const SearchResultGroup = (props) => {
                     `within=0&` +
                     `id=${row.original.id}&` +
                     `label=${row.original.label}&` +
-                    `search=${props.originalSearch}&` +
+                    `search=${props.searchText}&` +
                     `x=${row.original.x}&` +
                     `y=${row.original.y}`
                   }>

@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 // import { Combobox } from '@headlessui/react';
 import * as DOMPurify from 'dompurify';
 import * as Ariakit from '@ariakit/react';
 import { homePageQuery, searchQuery, suggestionsQuery, formatSearchResults, getIcon } from './searchResults/searchResultsUtils';
 import useDebounce from '../../hooks/useDebounce';
+import { ApiEnvironmentContext } from '../../routes';
 // import DebouncedInput from './DebouncedInput';
 import './styles.css';
 
@@ -51,6 +52,8 @@ function SuggestSearch({
     // urlQuery = currentUrlParams.get('search');
   }
 
+  const apiEnvironment = React.useContext(ApiEnvironmentContext);
+
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
@@ -76,7 +79,7 @@ function SuggestSearch({
       const geocoderEndpoint = `https://gis.ashevillenc.gov/server/rest/services/Geocoders/simplicity/GeocodeServer/suggest?text=${encodedQuery}&maxSuggestions=10&category=&countryCode=&searchExtent=&location=&distance=&f=pjson`;
       const geocoderOptions = {signal: geocoderSignal};
 
-      const simplicityEndpoint = 'https://dev-data-api2.ashevillenc.gov/graphql';
+      const simplicityEndpoint = apiEnvironment;
       const simplicityOptions = {
         method: 'POST',
         headers: {

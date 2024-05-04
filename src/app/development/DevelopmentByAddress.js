@@ -206,6 +206,8 @@ DevelopmentByAddress.defaultProps = {
   // instead of using referrer, check for existing search and add "back to search" button
 // Add logic to at/near address buttons that change view to list and show permits for all time or map for nearby permits
 // Fis padding and alignment for timeline
+// Fix tab behavior for search suggestions (should select and focus clear button)
+// query for address info based on civic ID, instead of using URL params?
 
 const getPermitsQuery = gql`
   query getPermitsQuery($civicaddress_id: Int!, $radius: Int, $before: String, $after: String) {
@@ -240,13 +242,13 @@ const DevelopmentByAddressGQL = graphql(getPermitsQuery, {
       radius: +ownProps.radius,
     };
 
-    if (+ownProps.radius > 0) {
+    // if (+ownProps.radius > 0) {
       queryVariables.before = ownProps.before;
       queryVariables.after = ownProps.after;
-    } else {
-      queryVariables.before = moment.utc().format('YYYY-MM-DD');
-      queryVariables.after = '1970-01-01';
-    }
+    // } else {
+    //   queryVariables.before = moment.utc().format('YYYY-MM-DD');
+    //   queryVariables.after = '1970-01-01';
+    // }
 
     return ({
       variables: queryVariables,

@@ -47,6 +47,9 @@ function PageHeader (props) {
         {props.h3 !== null &&
           <h3>{props.h3}</h3>
         }
+        {props.subheading !== null &&
+          props.subheading
+        }
       </div>
     </div>
   );

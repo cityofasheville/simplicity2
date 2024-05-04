@@ -103,6 +103,7 @@ class PermitsIndex extends React.Component {
             spanLowerLimit={this.props.spanLowerLimit}
             spanUpperLimit={this.props.spanUpperLimit}
             xSpan={2}
+            tickMeasure="month"
           />
           <PermitsTableWrapper
             after={this.state.timeSpan[0]}

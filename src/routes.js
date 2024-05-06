@@ -10,7 +10,7 @@ import { client } from "./gqlClient";
 import App from "./app/App";
 import Home from "./app/Home";
 import MySimpliCity from "./app/MySimpliCity";
-import Search from "./app/search/Search";
+// import Search from "./app/search/Search";
 import SuggestSearchWrapper from "./app/search/SuggestSearchWrapper";
 // Locations
 import Locations from './app/Locations';
@@ -37,8 +37,8 @@ import MajorDevelopmentDashboard from "./app/development/trc/MajorDevelopmentDas
 import PermitVolume from "./app/development/volume/PermitVolume";
 import PermitsIndex from "./app/development/permits/PermitsIndex";
 import Permit from "./app/development/permits/Permit";
-import PermitSearchIndex from "./app/development/permits/PermitSearchIndex";
-import PermitSearchWrapper from "./app/development/permits/PermitSearchWrapper";
+// import PermitSearchIndex from "./app/development/permits/PermitSearchIndex";
+// import PermitSearchWrapper from "./app/development/permits/PermitSearchWrapper";
 // import WorkflowContainer from './app/development/workflows/WorkflowContainer';
 //
 import ProjectFlowDashboard from "./app/internal/bpt_projects/ProjectFlow";
@@ -49,16 +49,16 @@ import CapitalProjectsSummary from "./app/capital_projects/CapitalProjectsSummar
 import CategoryDetails from "./app/capital_projects/CategoryDetails";
 import CIPData from "./app/capital_projects/CIPData";
 // Homelessness
-import HomelessnessSummary from "./app/homelessness/HomelessnessSummary";
-import HomelessnessCounts from "./app/homelessness/HomelessnessCounts";
-import HomelessnessDemographics from "./app/homelessness/HomelessnessDemographics";
-import HomelessnessVeterans from "./app/homelessness/HomelessnessVeterans";
-import HomelessnessVeteransInflowOutflow from "./app/homelessness/HomelessnessVeteransInflowOutflow";
-import HomelessnessVeteransEnrollment from "./app/homelessness/HomelessnessVeteransEnrollment";
-import HomelessnessVeteransChronicAssignments from "./app/homelessness/HomelessnessVeteransChronicAssignments";
-import HomelessnessVeteransExitTime from "./app/homelessness/HomelessnessVeteransExitTime";
-import HomelessnessEnrollment from "./app/homelessness/HomelessnessEnrollment";
-import HomelessnessData from "./app/homelessness/HomelessnessData";
+// import HomelessnessSummary from "./app/homelessness/HomelessnessSummary";
+// import HomelessnessCounts from "./app/homelessness/HomelessnessCounts";
+// import HomelessnessDemographics from "./app/homelessness/HomelessnessDemographics";
+// import HomelessnessVeterans from "./app/homelessness/HomelessnessVeterans";
+// import HomelessnessVeteransInflowOutflow from "./app/homelessness/HomelessnessVeteransInflowOutflow";
+// import HomelessnessVeteransEnrollment from "./app/homelessness/HomelessnessVeteransEnrollment";
+// import HomelessnessVeteransChronicAssignments from "./app/homelessness/HomelessnessVeteransChronicAssignments";
+// import HomelessnessVeteransExitTime from "./app/homelessness/HomelessnessVeteransExitTime";
+// import HomelessnessEnrollment from "./app/homelessness/HomelessnessEnrollment";
+// import HomelessnessData from "./app/homelessness/HomelessnessData";
 // MiniSearch
 import MiniSearch from "./app/mini_search/MiniSearch";
 // Finance
@@ -148,7 +148,6 @@ const Routes = () => (
             <Route
               exact
               path="/permits/search"
-              // render={(props) => <SuggestSearchWrapper {searchMode="permit"} />}
               component={() => <SuggestSearchWrapper searchMode="permit" />}
             ></Route>
             <Route path="/permits/:id" component={Permit}></Route>

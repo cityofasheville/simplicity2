@@ -61,16 +61,14 @@ function SuggestSearchWrapper({
   //   } else {
   //     searchContexts = ['address', 'neighborhood', 'street', 'owner'];
   //   }
-    console.log('wrap state', isPermit, isAllNumeric, searchContexts, searchMode);
-    // console.log('searchContexts, not numeric', searchContexts);
-  // }
-
-  // if (!userQueryChecked) {
-  //   return <LoadingAnimation />;
   // }
 
   return (
     <div>
+      {searchMode === 'permit' && window.location.pathname.includes('permits/search') && (
+        <h1 className="">Development &amp; Permit Search</h1>
+      )}    
+
       <section style={{marginBottom: "32px", marginTop: "32px"}}>
         <SuggestSearch 
           setUserQuery={setUserQuery} 

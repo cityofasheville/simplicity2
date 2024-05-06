@@ -55,7 +55,7 @@ function DevelopmentByEntityWrapper(props) {
   }
 
   const [extentOptionsWithAt, setExtentOptionsWithAt] = useState([
-    {value: '0', display: 'at this location'},
+    {value: '0', display: 'At this location'},
     ...extentOptions
   ]);
 
@@ -224,16 +224,16 @@ function DevelopmentByEntityWrapper(props) {
   // const pageSubHeading = radius === '0' ? `At ${props.location.query.label}` : `Within ${extentOptions.find(o => o.value === radius).display} of ${props.location.query.label}`;
 
   let pageSubHeading
-  if (radius === '0' && false) {
-    pageSubHeading = (
-      <div>
-        At {props.location.query.label}
-      </div>
-    );
-  } else {
+  if (props.location.query.entity !== 'address') {
     pageSubHeading = (
       <div className='h4' style={{fontWeight: '300'}}>
-        Within 
+        {props.location.query.label} ({props.location.query.entity})
+      </div>
+    );
+  } else if (props.location.query.entity === 'address') {
+    pageSubHeading = (
+      <div className='h4' style={{fontWeight: '300'}}>
+        {props.location.query.label}{" "}
         <select 
           value={radius} 
           onChange={(event) => onRadiusChange(event.target.value)} 
@@ -243,10 +243,9 @@ function DevelopmentByEntityWrapper(props) {
           style={{width: 'auto', display: 'inline', margin: '0 5px'}}
         >
           {extentOptionsWithAt.map((option, i) => (
-            <option value={option.value} key={['extent', 'option', i].join('_')} name="extent">{option.display}</option>
+            <option value={option.value} key={['extent', 'option', i].join('_')} name="extent">{i !== 0 ? 'Within ' : ''}{option.display}</option>
           ))}
         </select>
-        of {props.location.query.label}
       </div>
     );
   }
@@ -323,7 +322,12 @@ function DevelopmentByEntityWrapper(props) {
 
 
       <div className="row">
-        {props.location.query.entity === 'address' && radius !== '0' && (
+        {((
+          props.location.query.entity === 'address' && radius !== '0'
+        ) || (
+          props.location.query.entity === 'street' ||
+          props.location.query.entity === 'neighborhood'
+        )) && (
           <div className="col-xs-12" style={{margin: '1rem 0'}}>
             <TimeSlider
               onBrushEnd={(newExtent) => {

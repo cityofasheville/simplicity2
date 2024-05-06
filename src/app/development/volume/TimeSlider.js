@@ -15,6 +15,7 @@ class TimeSlider extends React.Component {
       brushExtent: this.props.defaultBrushExtent,
       firstInputVal: this.props.defaultBrushExtent[0],
       secondInputVal: this.props.defaultBrushExtent[1],
+      selectedTimespan: 0,
       xSpan: [
         timeYear.offset(this.props.spanEnd, -1 * this.props.xSpan).getTime(),
         this.props.spanEnd,
@@ -26,6 +27,7 @@ class TimeSlider extends React.Component {
     this.determineNewExtent = this.determineNewExtent.bind(this);
     this.brushDuring = this.brushDuring.bind(this);
     this.brushEnd = this.brushEnd.bind(this);
+    this.handleTimespanSelection = this.handleTimespanSelection.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.updateWindowWidth = this.updateWindowWidth.bind(this);
   }
@@ -149,10 +151,11 @@ class TimeSlider extends React.Component {
       brushExtent: newRanges.extent,
       firstInputVal: newRanges.extent[0],
       secondInputVal: newRanges.extent[1],
+      // selectedTimespan: 0,
     });
   }
 
-  brushEnd(proposedExtent, snap = true) {
+  brushEnd(proposedExtent, snap = true, daysBack = 0) {
     const newRanges = this.determineNewExtent(proposedExtent, snap);
     this.props.onBrushEnd(newRanges.extent);
     this.setState({
@@ -160,6 +163,29 @@ class TimeSlider extends React.Component {
       firstInputVal: newRanges.extent[0],
       secondInputVal: newRanges.extent[1],
       xSpan: newRanges.span,
+      selectedTimespan: daysBack,
+    });
+  }
+
+  handleTimespanSelection(daysBack) {
+    if (daysBack === 0) {
+      this.setState({
+        selectedTimespan: 0,
+      });
+      return;
+    }
+    const proposedExtent = [
+      timeDay.offset(this.props.spanEnd, -1 * daysBack).getTime(),
+      this.props.spanEnd,
+    ];
+    const newRanges = this.determineNewExtent(proposedExtent, true);
+    // this.props.onBrushEnd(newRanges.extent, true, daysBack);
+    this.setState({
+      brushExtent: newRanges.extent,
+      firstInputVal: newRanges.extent[0],
+      secondInputVal: newRanges.extent[1],
+      xSpan: newRanges.span,
+      selectedTimespan: daysBack,
     });
   }
 
@@ -261,9 +287,7 @@ class TimeSlider extends React.Component {
         <ErrorBoundary>
           <div>
             <form onSubmit={this.handleSubmit} className="timepicker-dropdown">
-              <div
-                className="timepicker-input-item"
-              >
+              <div className="timepicker-input-item">
                 <label
                   htmlFor="startdate"
                   style={{ marginBottom: '0', padding: '0 0.25em 0 0' }}
@@ -291,9 +315,7 @@ class TimeSlider extends React.Component {
                   }}
                 />
               </div>
-              <div
-                className="timepicker-input-item"
-              >
+              <div className="timepicker-input-item">
                 <label
                   htmlFor="enddate"
                   style={{ marginBottom: '0', padding: '0 0.25em 0 0' }}
@@ -320,6 +342,18 @@ class TimeSlider extends React.Component {
                   }}
                 />
               </div>
+              <div className="timepicker-input-item">
+                <select value={this.state.selectedTimespan} className='form-control input-sm' onChange={(e) => {
+                  console.log(e.currentTarget.value);
+                  this.handleTimespanSelection(e.currentTarget.value);
+                }}>
+                  <option value={0}>Choose timespan</option>
+                  <option value={30}>Last 30 days</option>
+                  <option value={180}>Last 6 months</option>
+                  <option value={365}>Last year</option>
+                </select>
+              </div>
+
               <input
                 type="submit"
                 value="Set Dates"

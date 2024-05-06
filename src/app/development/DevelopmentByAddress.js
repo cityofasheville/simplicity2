@@ -127,8 +127,6 @@ const DevelopmentByAddress = (props) => {
     }
   );
 
-  console.log('dev by address', props)
-
   return (
     <div>
       <div className="row">
@@ -190,24 +188,7 @@ DevelopmentByAddress.propTypes = {
 DevelopmentByAddress.defaultProps = {
   spatialEventTopic: 'crime',
   query: { entity: 'address', label: '123 Main street' },
-};
-// *** make changes to dev by address, street, neighborhood components
-// refactor to use urlSearchParams and local state to trigger UI changes (layout, extent, time period, etc)
-  // Conditionally assign the below query based on value of extentOptions (timeline)
-  // Add an option in the UI for "at this address" (radius = 0) or "development nearby" (as is)
-    // If "at this address" is selected, hide the radius and timeline inputs; show permits for all time (by omitting before and after variables from query)
-    // If "nearby" is selected, show the radius and timeline inputs; show permits within the selected radius and within the selected time period
-// Add timeline for selecting range (capped at 2 year period?)
-  // Let timeline output the before and during variables (just need to be in YYYY-MM-DD format)
-  // Look at DevelopmentSummary line 48 to see what's up
-// refactor graphql logic to be self-contained in this file (no abstract props via HoC)
-// Figure out referring URL issue with the back button on the Development page
-// Add a back button to the DevelopmentByAddress component
-  // instead of using referrer, check for existing search and add "back to search" button
-// Add logic to at/near address buttons that change view to list and show permits for all time or map for nearby permits
-// Fis padding and alignment for timeline
-// Fix tab behavior for search suggestions (should select and focus clear button)
-// query for address info based on civic ID, instead of using URL params?
+}
 
 const getPermitsQuery = gql`
   query getPermitsQuery($civicaddress_id: Int!, $radius: Int, $before: String, $after: String) {

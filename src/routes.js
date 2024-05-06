@@ -148,7 +148,8 @@ const Routes = () => (
             <Route
               exact
               path="/permits/search"
-              component={PermitSearchWrapper}
+              // render={(props) => <SuggestSearchWrapper {searchMode="permit"} />}
+              component={() => <SuggestSearchWrapper searchMode="permit" />}
             ></Route>
             <Route path="/permits/:id" component={Permit}></Route>
           </Route>

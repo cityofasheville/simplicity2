@@ -4,47 +4,86 @@ import SuggestSearch from './SuggestSearch';
 import SearchResultGroup from './searchResults/SearchResultGroup';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import { searchQuery, formatSearchResults } from './searchResults/searchResultsUtils';
+import { set } from 'd3-collection';
 
-function SuggestSearchWrapper() {
-  const [userQuery, setUserQuery] = useState('');
+function SuggestSearchWrapper({
+  searchMode = 'main',
+  debounceInterval = 250
+}) {
 
   const permitFormat = /^\d{2}-\d{5,10}(s|S|pz|pZ|Pz|PZ){0,1}$/;
   const allNumericFormat = /^\d+$/;
 
-  const isPermit = permitFormat.test(userQuery.trim());
-  const isAllNumeric = allNumericFormat.test(userQuery.trim());
+  const [userQueryChecked, setUserQueryChecked] = useState(false);
+  const [userQuery, setUserQuery] = useState('');
+  const [isPermit, setIsPermit] = useState(permitFormat.test(userQuery.trim()));
+  const [isAllNumeric, setIsAllNumeric] = useState(allNumericFormat.test(userQuery.trim()));
+  const [searchContexts, setSearchContexts] = useState(
+    searchMode === 'permit' ? 
+    ['address'] :
+    ['address', 'neighborhood', 'street', 'owner']
+  );
 
-  let searchContexts;
+  useEffect(() => {
+    const nextIsPermit = permitFormat.test(userQuery.trim());
+    const nextIsAllNumeric = allNumericFormat.test(userQuery.trim());
+    let nextSearchContexts;
+    
+    if (nextIsPermit) {
+      nextSearchContexts = ['permit'];
+    } else if (nextIsAllNumeric) {
+      nextSearchContexts = ['civicAddressId', 'pin'];
+    } else {
+      if (searchMode === 'permit') {
+        nextSearchContexts = ['address'];
+      } else {
+        nextSearchContexts = ['address', 'neighborhood', 'street', 'owner'];
+      }
+    }
+    setIsPermit(nextIsPermit);
+    setIsAllNumeric(nextIsAllNumeric);
+    setSearchContexts(nextSearchContexts);
+    setUserQueryChecked(true);
+  }, [userQuery]);
 
-  // console.log('userQuery', userQuery);
+  // let searchContexts;
 
-  if (isPermit) {
-    searchContexts = ['permit'];
-    // console.log('isPermit');
-  } else if (isAllNumeric) {
-    searchContexts = ['civicAddressId', 'pin'];
-    // console.log('isAllNumeric');
-  } else {
-    // do we need the "property" context? is "pin" sufficient?
-    // searchContexts = ['address', 'property', 'neighborhood', 'street', 'owner'];
-    searchContexts = ['address', 'neighborhood', 'street', 'owner'];
-    // console.log('is neither');
-  }
+  // if (isPermit) {
+  //   searchContexts = ['permit'];
+  //   console.log('isPermit');
+  // } else if (isAllNumeric) {
+  //   searchContexts = ['civicAddressId', 'pin'];
+  //   console.log('isAllNumeric');
+  // } else {
+  //   // do we need the "property" context? is "pin" sufficient?
+  //   if (searchMode === 'permit') {
+  //     searchContexts = ['address'];
+  //   } else {
+  //     searchContexts = ['address', 'neighborhood', 'street', 'owner'];
+  //   }
+    console.log('wrap state', isPermit, isAllNumeric, searchContexts, searchMode);
+    // console.log('searchContexts, not numeric', searchContexts);
+  // }
+
+  // if (!userQueryChecked) {
+  //   return <LoadingAnimation />;
+  // }
 
   return (
     <div>
       <section style={{marginBottom: "32px", marginTop: "32px"}}>
         <SuggestSearch 
           setUserQuery={setUserQuery} 
-          debounceInterval={250}
+          setUserQueryChecked={setUserQueryChecked}
+          debounceInterval={debounceInterval}
           suggestWithGeocoder={true}
-          suggestWithSimplicity={true}
+          suggestWithSimplicity={searchMode === 'main'}
           simplicitySuggestValue='id'
           suggestionEntities={['neighborhood', 'street', 'owner']}
         />
       </section>
 
-      {userQuery.length > 2 && (
+      {userQuery.length > 2 && userQueryChecked && (
         <Query 
           query={searchQuery}
           errorPolicy="all"
@@ -77,9 +116,6 @@ function SuggestSearchWrapper() {
 
             const formattedResults = formatSearchResults(data.search);
 
-            // console.log('raw data', data.search);
-            // console.log('formattedResults', formattedResults);
-
             return (
               <div className="row">
                 <div className="col-sm-12">
@@ -105,7 +141,6 @@ function SuggestSearchWrapper() {
           }}
         </Query>
       )}
-
       
     </div>
   );

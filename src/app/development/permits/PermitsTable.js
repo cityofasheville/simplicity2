@@ -70,7 +70,6 @@ class PermitsTable extends React.Component {
   }
 
   render() {
-    console.log('PermitsTable', this.props);
 
     return (
       <section title="Table of all permits, filtered by date">
@@ -98,7 +97,6 @@ class PermitsTable extends React.Component {
           sortable
           defaultFilterMethod={(filter, row) => {
             const id = filter.pivotId || filter.id;
-            console.log(row[id]);
             // Allows comma separated values, makes it an OR
             const values = filter.value.split(',');
             let match = false;

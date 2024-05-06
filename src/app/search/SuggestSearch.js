@@ -22,12 +22,13 @@ const comboBoxStyle = {
 
 function SuggestSearch({
   setUserQuery,
+  setUserQueryChecked,
   debounceInterval = 500,
   suggestWithGeocoder = true,
   suggestWithSimplicity = true,
   simplicitySuggestValue = 'name',
   suggestionEntities = ['neighborhood', 'street', 'owner'],
-  patternsToExcludeFromSuggestions = [/^\d+$/],
+  patternsToExcludeFromSuggestions = [/^\d+$/,/^\d+-?\d*$/],
 }) {
 
   const combobox = Ariakit.useComboboxStore();
@@ -63,6 +64,7 @@ function SuggestSearch({
       setInputDisplayValue(urlQuery);
       setStatus('loading');
       setUserQuery(urlQuery);
+      setUserQueryChecked(false);
     }
   }, []);
 
@@ -181,6 +183,7 @@ function SuggestSearch({
 
       setSuggestions([...newSuggestionSet]);
     }
+
     if (debouncedInputValue.length < 3) {
       return;
     }
@@ -190,6 +193,7 @@ function SuggestSearch({
 
     let shouldSkip = false;
     patternsToExcludeFromSuggestions.forEach((pattern) => {
+      // console.log('Testing pattern', pattern, debouncedInputValue.trim(), pattern.test(debouncedInputValue.trim()));
       if (pattern.test(debouncedInputValue.trim())) {
         shouldSkip = true;
       }
@@ -236,6 +240,7 @@ function SuggestSearch({
     setInputDisplayValue(suggestion.text);
     setStatus('loading');
     setUserQuery(suggestion.value);
+    setUserQueryChecked(false);
   }
 
   function handleClear() {
@@ -264,6 +269,7 @@ function SuggestSearch({
       submitButtonRef.current.focus();
       setStatus('loading');
       setUserQuery(sanitizedInput);
+      setUserQueryChecked(false);
     }
   }
 

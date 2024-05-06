@@ -96,8 +96,6 @@ const SearchResultGroup = (props) => {
     },
   ];
 
-  console.log(props.data.results);
-
   return (
     <div className={styles.searchResultGroup + ' search-results-group' + ' search-results-group-'+props.data.label }>
       <AccessibleReactTable

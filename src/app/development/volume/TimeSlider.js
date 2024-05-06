@@ -4,7 +4,6 @@ import { ResponsiveXYFrame } from 'semiotic';
 import moment from 'moment';
 import { timeDay, timeWeek, timeMonth, timeYear } from 'd3-time';
 import ErrorBoundary from '../../../shared/ErrorBoundary';
-// import { format, getTime, isValid, set } from "date-fns";
 
 class TimeSlider extends React.Component {
 
@@ -151,7 +150,6 @@ class TimeSlider extends React.Component {
       brushExtent: newRanges.extent,
       firstInputVal: newRanges.extent[0],
       secondInputVal: newRanges.extent[1],
-      // selectedTimespan: 0,
     });
   }
 
@@ -179,7 +177,6 @@ class TimeSlider extends React.Component {
       this.props.spanEnd,
     ];
     const newRanges = this.determineNewExtent(proposedExtent, true);
-    // this.props.onBrushEnd(newRanges.extent, true, daysBack);
     this.setState({
       brushExtent: newRanges.extent,
       firstInputVal: newRanges.extent[0],
@@ -227,10 +224,6 @@ class TimeSlider extends React.Component {
   }
 
   render() {
-    // const ticks = timeMonth.range(
-    //   timeMonth.ceil(this.state.xSpan[0]),
-    //   timeMonth.ceil(this.state.xSpan[1]),
-    // );
 
     let timeFunc = timeYear;
     if (this.props.tickMeasure === 'month') { 
@@ -342,23 +335,39 @@ class TimeSlider extends React.Component {
                   }}
                 />
               </div>
-              <div className="timepicker-input-item">
-                <select value={this.state.selectedTimespan} className='form-control input-sm' onChange={(e) => {
-                  console.log(e.currentTarget.value);
-                  this.handleTimespanSelection(e.currentTarget.value);
-                }}>
-                  <option value={0}>Choose timespan</option>
-                  <option value={30}>Last 30 days</option>
-                  <option value={180}>Last 6 months</option>
-                  <option value={365}>Last year</option>
-                </select>
-              </div>
-
               <input
                 type="submit"
                 value="Set Dates"
                 className="btn btn-primary btn-sm timepicker-input-item"
+                style={{marginRight: '1rem'}}
+                disabled={this.state.firstInputVal === this.state.brushExtent[0] && this.state.secondInputVal === this.state.brushExtent[1]}
               />
+              <div className="timepicker-input-item">
+                <select value={this.state.selectedTimespan} className='form-control input-sm' onChange={(e) => {
+                  this.handleTimespanSelection(e.currentTarget.value);
+                }}>
+                  <option value={0}>Choose timespan</option>
+                  {[
+                    {days: 30, label: 'month'},
+                    {days: 90, label: '3 months'},
+                    {days: 180, label: '6 months'},
+                    {days: 365, label: 'year'},
+                    {days: 730, label: '2 years'},
+                    {days: 1825, label: '5 years'},
+                  ].filter((timeSpan) => {
+                    return timeSpan.days <= this.props.maxDaysAllowedToQuery
+                  }).map((timeSpan, i) => {
+                    return (
+                      <option 
+                        key={['timespan', 'option', i].join('_')} 
+                        value={timeSpan.days}
+                      >
+                        {`Last ${timeSpan.label}`}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
             </form>
           </div>
           <div id='timeline-container'>
@@ -421,7 +430,7 @@ TimeSlider.defaultProps = {
   maxDaysAllowedToQuery: 730,
   minimumTickWidth: 25,
   initialTickGap: 1,
-  tickMeasure: 'year',
+  tickMeasure: 'month',
   xSpan: 2, // in years
 };
 

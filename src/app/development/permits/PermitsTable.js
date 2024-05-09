@@ -70,6 +70,7 @@ class PermitsTable extends React.Component {
   }
 
   render() {
+
     return (
       <section title="Table of all permits, filtered by date">
         <AccessibleReactTable

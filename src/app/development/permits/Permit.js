@@ -5,7 +5,9 @@ import moment from 'moment';
 import { Query } from 'react-apollo';
 import LoadingAnimation from '../../../shared/LoadingAnimation';
 import PermitsMap from './PermitsMap';
-import PermitSearchBar from './PermitSearchBar';
+// import PermitSearchBar from './PermitSearchBar';
+// import PermitSearchWrapper from "./PermitSearchWrapper";
+import SuggestSearchWrapper from "../../search/SuggestSearchWrapper";
 import PermitTimeline from './PermitTimeline';
 import { permitFieldFormats } from './utils';
 import { orderedDates } from '../trc/textContent';
@@ -69,7 +71,8 @@ const Permit = props => (
   >
     {({ loading, error, data }) => {
       if (loading) return <LoadingAnimation />;
-      if (error || data.permit_realtime === undefined || data.permit_realtime.length === 0) {
+      console.log('Permit data: ', data);
+      if (error || data.permit_realtime === undefined || data.permit_realtime === null) {
         let message = '';
         if (error) {
           console.log('GQL error');
@@ -85,7 +88,9 @@ const Permit = props => (
             <div className="alert alert-warning">
               {message} "{props.routeParams.id}". Please verify the permit ID and try again.
             </div>
-            <PermitSearchBar />
+            <SuggestSearchWrapper 
+                searchMode="permit"
+            />
           </div>
         );
       }
@@ -320,7 +325,9 @@ const Permit = props => (
           <div className="row" style={{marginBottom: "32px"}}>
             <div className="col-xs-12">
               <h2>Look Up Another Application</h2>
-              <PermitSearchBar />
+              <SuggestSearchWrapper 
+                searchMode="permit"
+              />
             </div>
           </div>
         </main>

@@ -266,7 +266,7 @@ const Address = props => (
                           topic={topic}
                           entity="address"
                           id={props.location.query.id}
-                          label={`${addressData.address}, ${addressData.zipcode}`}
+                          label={`${addressData.address ? addressData.address.trim() : ''}, ${addressData.zipcode}`}
                           entities={props.location.query.entities}
                           x={addressData.x}
                           y={addressData.y}

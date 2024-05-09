@@ -11,6 +11,7 @@ import createFilterRenderer from '../../../shared/FilterRenderer';
 import LinkFocusWrapper from '../../../shared/LinkFocusWrapper';
 
 const SearchResultGroup = (props) => {
+
   const dataColumns = [
     {
       headerStyle: { boxShadow: 'none' },
@@ -18,7 +19,7 @@ const SearchResultGroup = (props) => {
         {getIcon(props.data.label)}
         {getPlural(props.data.label)}
         <span className="offscreen">Number of results</span>
-        <span className="badge">{props.data.results.length}</span>
+        <span className="badge" style={{margin: '0 8px'}}>{props.data.results.length}</span>
         {props.data.label === 'place' &&
           <img src={poweredByGoogle} alt="Powered by Google" style={{ marginLeft: '20px' }}></img>
         }
@@ -28,7 +29,7 @@ const SearchResultGroup = (props) => {
       Cell: row => (
         <CellFocusWrapper>
           {(focusRef, focusable) => (
-            <span className="search-results-group__row-inner">
+            <span className="search-results-group__row-inner" style={{justifyContent: 'space-between', alignItems: 'baseline', lineHeight: '1'}}>
               {/* This LinkFocusWrapper can be replaced by the innerRef prop on the Link component
                 in react-router ^4.2.0. Presently it serves as a work around for not having that
                 prop. */}
@@ -38,7 +39,8 @@ const SearchResultGroup = (props) => {
                   tabIndex={focusable ? 0 : -1}
                   to={getLink(
                     row.original.type,
-                    row.original.id, props.searchText,
+                    row.original.id, 
+                    props.searchText,
                     props.selectedEntities,
                     row.original.label,
                     props.originalSearch
@@ -66,6 +68,23 @@ const SearchResultGroup = (props) => {
                   </a>
                 </span>
               }
+              {props.data.label === 'address' && (
+                <div style={{marginRight: '8px'}}>
+                  <Link to={
+                    `/DEVELOPMENT?view=list&` +
+                    `entities=undefined&` +
+                    `entity=address&` +
+                    `within=0&` +
+                    `id=${row.original.id}&` +
+                    `label=${row.original.label}&` +
+                    `search=${props.searchText}&` +
+                    `x=${row.original.x}&` +
+                    `y=${row.original.y}`
+                  }>
+                    Permits
+                  </Link>
+                </div>
+              )}
             </span>
           )}
         </CellFocusWrapper>

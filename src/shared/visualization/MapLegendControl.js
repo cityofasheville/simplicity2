@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { createRoot } from 'react-dom/client';
 import { MapControl } from 'react-leaflet';
 import L from 'leaflet';
@@ -28,7 +27,6 @@ export default class MapLegendControl extends MapControl {
       });
       const root = createRoot(div);
       root.render(jsx);
-      // ReactDOM.render(jsx, div);
       return div;
     };
 

@@ -29,6 +29,7 @@ class TRCDataTable extends React.Component {
           })}
           defaultBrushExtent={this.initialBrushExtent}
           xSpan={2}
+          tickMeasure="month"
         />
         <PermitsTableWrapper
           after={this.state.timeSpan[0]}

@@ -43,11 +43,13 @@ class SearchBar extends React.Component {
     this.props.onKeyUp(e);
   }
 
-  handleSearchClick(value) {
-    this.setState({
-      searchTermToUse: value,
-    });
-    this.props.onSearchClick(value);
+  handleSearchClick(event) {
+    event.preventDefault();
+    console.log('search submit:', this.state.searchTermToUse);
+    // this.setState({
+    //   searchTermToUse: value,
+    // });
+    this.props.onSearchClick(this.state.searchTermToUse);
   }
 
 
@@ -55,7 +57,7 @@ class SearchBar extends React.Component {
     return (
       <div className="col-xs-12">
         <h2>Enter address for trash pickup day, property details, and more</h2>
-        <form onSubmit={event => event.preventDefault()}>
+        <form onSubmit={this.handleSearchClick}>
           <div className="input-group">
             <label htmlFor="searchBox" className="offscreen">Search terms</label>
             <input
@@ -63,12 +65,14 @@ class SearchBar extends React.Component {
               className="form-control"
               placeholder="Search text..."
               defaultValue={this.state.searchTermToUse}
+              // onKeyUp={this.props.onKeyUp}
               onKeyUp={this.handleKeyUp}
               id="searchBox"
               name="searchBox"
             />
             <span className="input-group-btn">
-              <button className="btn btn-primary" type="button" aria-label="search" onClick={() => this.handleSearchClick(document.getElementById('searchBox').value)}><Icon path={IM_SEARCH} size={16} /></button>
+              {/* <button className="btn btn-primary" type="button" aria-label="search" onClick={() => this.handleSearchClick(document.getElementById('searchBox').value)}><Icon path={IM_SEARCH} size={16} /></button> */}
+              <button className="btn btn-primary" type="submit" aria-label="search"><Icon path={IM_SEARCH} size={16} /></button>
             </span>
           </div>
           <div>

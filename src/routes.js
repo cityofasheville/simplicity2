@@ -10,7 +10,8 @@ import { client } from "./gqlClient";
 import App from "./app/App";
 import Home from "./app/Home";
 import MySimpliCity from "./app/MySimpliCity";
-import Search from "./app/search/Search";
+// import Search from "./app/search/Search";
+import SuggestSearchWrapper from "./app/search/SuggestSearchWrapper";
 // Locations
 import Locations from './app/Locations';
 import Address from './app/address/Address';
@@ -26,6 +27,7 @@ import GooglePlaceResults from './app/search/searchResults/GooglePlaceResults';
 import Topics from "./app/Topics";
 //Development endpoints
 import DevelopmentSummary from "./app/development/DevelopmentSummary";
+import DevelopmentByEntityWrapper from "./app/development/DevelopmentByEntityWrapper";
 import DevelopmentDetail from "./app/development/DevelopmentDetail";
 import DevelopmentSLADashboard from "./app/development/sla_dashboard/SLADashboard";
 import DevelopmentDashIndex from "./app/development/DevelopmentDashIndex";
@@ -35,7 +37,8 @@ import MajorDevelopmentDashboard from "./app/development/trc/MajorDevelopmentDas
 import PermitVolume from "./app/development/volume/PermitVolume";
 import PermitsIndex from "./app/development/permits/PermitsIndex";
 import Permit from "./app/development/permits/Permit";
-import PermitSearchIndex from "./app/development/permits/PermitSearchIndex";
+// import PermitSearchIndex from "./app/development/permits/PermitSearchIndex";
+// import PermitSearchWrapper from "./app/development/permits/PermitSearchWrapper";
 // import WorkflowContainer from './app/development/workflows/WorkflowContainer';
 //
 import ProjectFlowDashboard from "./app/internal/bpt_projects/ProjectFlow";
@@ -46,16 +49,16 @@ import CapitalProjectsSummary from "./app/capital_projects/CapitalProjectsSummar
 import CategoryDetails from "./app/capital_projects/CategoryDetails";
 import CIPData from "./app/capital_projects/CIPData";
 // Homelessness
-import HomelessnessSummary from "./app/homelessness/HomelessnessSummary";
-import HomelessnessCounts from "./app/homelessness/HomelessnessCounts";
-import HomelessnessDemographics from "./app/homelessness/HomelessnessDemographics";
-import HomelessnessVeterans from "./app/homelessness/HomelessnessVeterans";
-import HomelessnessVeteransInflowOutflow from "./app/homelessness/HomelessnessVeteransInflowOutflow";
-import HomelessnessVeteransEnrollment from "./app/homelessness/HomelessnessVeteransEnrollment";
-import HomelessnessVeteransChronicAssignments from "./app/homelessness/HomelessnessVeteransChronicAssignments";
-import HomelessnessVeteransExitTime from "./app/homelessness/HomelessnessVeteransExitTime";
-import HomelessnessEnrollment from "./app/homelessness/HomelessnessEnrollment";
-import HomelessnessData from "./app/homelessness/HomelessnessData";
+// import HomelessnessSummary from "./app/homelessness/HomelessnessSummary";
+// import HomelessnessCounts from "./app/homelessness/HomelessnessCounts";
+// import HomelessnessDemographics from "./app/homelessness/HomelessnessDemographics";
+// import HomelessnessVeterans from "./app/homelessness/HomelessnessVeterans";
+// import HomelessnessVeteransInflowOutflow from "./app/homelessness/HomelessnessVeteransInflowOutflow";
+// import HomelessnessVeteransEnrollment from "./app/homelessness/HomelessnessVeteransEnrollment";
+// import HomelessnessVeteransChronicAssignments from "./app/homelessness/HomelessnessVeteransChronicAssignments";
+// import HomelessnessVeteransExitTime from "./app/homelessness/HomelessnessVeteransExitTime";
+// import HomelessnessEnrollment from "./app/homelessness/HomelessnessEnrollment";
+// import HomelessnessData from "./app/homelessness/HomelessnessData";
 // MiniSearch
 import MiniSearch from "./app/mini_search/MiniSearch";
 // Finance
@@ -84,110 +87,123 @@ if (window.location.href.indexOf("dashboards.ashevillenc.gov") > -1) {
   logPageView = null;
 }
 
+export const ApiEnvironmentContext = React.createContext();
+
+let SERVER_URL = 'https://data-api1.ashevillenc.gov/graphql';
+if (process.env.REACT_APP_USE_DEV_API === true || process.env.REACT_APP_USE_DEV_API === 'true') {
+  SERVER_URL = 'https://dev-data-api2.ashevillenc.gov/graphql';
+}
+if (process.env.REACT_APP_USE_LOCAL_API === true || process.env.REACT_APP_USE_LOCAL_API === 'true') {
+  SERVER_URL = 'http://localhost:8080/graphql';
+}
+
 const Routes = () => (
   <ApolloProvider client={client}>
-    <Router
-      history={browserHistory}
-      onUpdate={logPageView === null ? null : () => logPageView()}
-    >
-      <Route path="/" component={App}>
-        <IndexRoute component={Home} />
-        <Route path="search">
-          <IndexRoute component={Search} />
-          <Route
-            path="googlePlaceMatches"
-            component={GooglePlaceResults}
-          ></Route>
+    <ApiEnvironmentContext.Provider value={SERVER_URL}>
+      <Router
+        history={browserHistory}
+        onUpdate={logPageView === null ? null : () => logPageView()}
+      >
+        <Route path="/" component={App}>
+          <IndexRoute component={Home} />
+          <Route path="search">
+            <IndexRoute component={SuggestSearchWrapper} />
+            <Route
+              path="googlePlaceMatches"
+              component={GooglePlaceResults}
+            ></Route>
+          </Route>
+          <Route path="my-simplicity" component={MySimpliCity}></Route>
+          <Route path="locations" component={Locations} />
+          <Route path="address">
+            <IndexRoute component={Address} />
+            <Route path="addressList" component={AddressList}></Route>
+          </Route>
+          <Route path="property">
+            <IndexRoute component={Property} />
+            <Route path="properties" component={Properties}></Route>
+          </Route>
+          <Route path="street" component={Street}></Route>
+          <Route path="neighborhood" component={Neighborhood}></Route>
+          <Route path="climate" component={Climate}></Route>
+          <Route path="owner" component={Owner}></Route>
+          <Route path="dashboards" component={Topics} />
+          <Route path="capital_projects">
+            <IndexRoute component={CapitalProjectsSummary} />
+            <Route path="details" component={CategoryDetails}></Route>
+            <Route path="data" component={CIPData}></Route>
+          </Route>
+          <Route path="crime">
+            <IndexRoute component={CrimeSummary} />
+          </Route>
+          <Route path="bpt_projects">
+            <IndexRoute component={ProjectFlowDashboard} />
+          </Route>
+          <Route path="pcard_compliance">
+            <IndexRoute component={PCardCompliance} />
+            <Route path="receipts" component={PCardComplianceReceipts} />
+          </Route>
+          <Route path="permits">
+            <IndexRoute component={PermitsIndex} />
+            <Route
+              exact
+              path="/permits/search"
+              component={() => <SuggestSearchWrapper searchMode="permit" />}
+            ></Route>
+            <Route path="/permits/:id" component={Permit}></Route>
+          </Route>
+          <Route path="development">
+            <IndexRoute component={DevelopmentByEntityWrapper} />
+            <Route path="detail" component={DevelopmentDetail}></Route>
+            {/* The rest of these are dashboards */}
+            <Route path="dashboards" component={DevelopmentDashIndex}></Route>
+            <Route path="data" component={DevelopmentDashIndex}></Route>
+            <Route
+              path="sla-dashboard"
+              component={DevelopmentSLADashboard}
+            ></Route>
+            <Route path="major" component={MajorDevelopmentDashboard}></Route>
+            <Route path="granular_volume" component={PermitVolume}></Route>
+            <Route path="status_volume" component={PermitVolume}></Route>
+          </Route>
+          {/* <Route path="homelessness">
+            <IndexRoute component={HomelessnessSummary} />
+            <Route path="veterans" component={HomelessnessVeterans}></Route>
+            <Route path="data" component={HomelessnessData}></Route>
+            <Route
+              path="veteranEnrollments"
+              component={HomelessnessVeteransEnrollment}
+            ></Route>
+            <Route
+              path="veteranChronicAssignments"
+              component={HomelessnessVeteransChronicAssignments}
+            ></Route>
+            <Route
+              path="veteranInflowOutflow"
+              component={HomelessnessVeteransInflowOutflow}
+            ></Route>
+            <Route
+              path="veteranExitTime"
+              component={HomelessnessVeteransExitTime}
+            ></Route>
+            <Route path="counts" component={HomelessnessCounts}></Route>
+            <Route
+              path="demographics"
+              component={HomelessnessDemographics}
+            ></Route>
+            <Route path="enrollments" component={HomelessnessEnrollment}></Route>
+          </Route> */}
+          <Route path="maintenance">
+            <IndexRoute component={Maintenance} />
+          </Route>
+          <Route path="mini_search">
+            <IndexRoute component={MiniSearch} />
+          </Route>
+          <Route path="*" component={NotFound} />
         </Route>
-        <Route path="my-simplicity" component={MySimpliCity}></Route>
-        <Route path="locations" component={Locations} />
-        <Route path="address">
-          <IndexRoute component={Address} />
-          <Route path="addressList" component={AddressList}></Route>
-        </Route>
-        <Route path="property">
-          <IndexRoute component={Property} />
-          <Route path="properties" component={Properties}></Route>
-        </Route>
-        <Route path="street" component={Street}></Route>
-        <Route path="neighborhood" component={Neighborhood}></Route>
-        <Route path="climate" component={Climate}></Route>
-        <Route path="owner" component={Owner}></Route>
-        <Route path="dashboards" component={Topics} />
-        <Route path="capital_projects">
-          <IndexRoute component={CapitalProjectsSummary} />
-          <Route path="details" component={CategoryDetails}></Route>
-          <Route path="data" component={CIPData}></Route>
-        </Route>
-        <Route path="crime">
-          <IndexRoute component={CrimeSummary} />
-        </Route>
-        <Route path="bpt_projects">
-          <IndexRoute component={ProjectFlowDashboard} />
-        </Route>
-        <Route path="pcard_compliance">
-          <IndexRoute component={PCardCompliance} />
-          <Route path="receipts" component={PCardComplianceReceipts} />
-        </Route>
-        <Route path="permits">
-          <IndexRoute component={PermitsIndex} />
-          <Route
-            exact
-            path="/permits/search"
-            component={PermitSearchIndex}
-          ></Route>
-          <Route path="/permits/:id" component={Permit}></Route>
-        </Route>
-        <Route path="development">
-          <IndexRoute component={DevelopmentSummary} />
-          <Route path="detail" component={DevelopmentDetail}></Route>
-          {/* The rest of these are dashboards */}
-          <Route path="dashboards" component={DevelopmentDashIndex}></Route>
-          <Route path="data" component={DevelopmentDashIndex}></Route>
-          <Route
-            path="sla-dashboard"
-            component={DevelopmentSLADashboard}
-          ></Route>
-          <Route path="major" component={MajorDevelopmentDashboard}></Route>
-          <Route path="granular_volume" component={PermitVolume}></Route>
-          <Route path="status_volume" component={PermitVolume}></Route>
-        </Route>
-        <Route path="homelessness">
-          <IndexRoute component={HomelessnessSummary} />
-          <Route path="veterans" component={HomelessnessVeterans}></Route>
-          <Route path="data" component={HomelessnessData}></Route>
-          <Route
-            path="veteranEnrollments"
-            component={HomelessnessVeteransEnrollment}
-          ></Route>
-          <Route
-            path="veteranChronicAssignments"
-            component={HomelessnessVeteransChronicAssignments}
-          ></Route>
-          <Route
-            path="veteranInflowOutflow"
-            component={HomelessnessVeteransInflowOutflow}
-          ></Route>
-          <Route
-            path="veteranExitTime"
-            component={HomelessnessVeteransExitTime}
-          ></Route>
-          <Route path="counts" component={HomelessnessCounts}></Route>
-          <Route
-            path="demographics"
-            component={HomelessnessDemographics}
-          ></Route>
-          <Route path="enrollments" component={HomelessnessEnrollment}></Route>
-        </Route>
-        <Route path="maintenance">
-          <IndexRoute component={Maintenance} />
-        </Route>
-        <Route path="mini_search">
-          <IndexRoute component={MiniSearch} />
-        </Route>
-        <Route path="*" component={NotFound} />
-      </Route>
-    </Router>
+      </Router>
+    </ApiEnvironmentContext.Provider>
+
   </ApolloProvider>
 );
 

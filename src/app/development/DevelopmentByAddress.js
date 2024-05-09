@@ -166,8 +166,10 @@ const DevelopmentByAddress = (props) => {
               center={props.location.query.y !== '' ? [parseFloat(props.location.query.y), parseFloat(props.location.query.x)] : null}
               centerLabel={props.location.query.label}
               drawCircle
-              radius={(props.location.query.within === undefined || props.location.query.within === '') ? 215 : parseInt(props.location.query.within, 10) / 3}
-              within={(props.location.query.within === undefined || props.location.query.within === '') ? 660 : parseInt(props.location.query.within, 10)}
+              radius={(props.radius) ? parseInt(props.radius, 10) / 3 : 215 }
+              within={(props.radius) ? parseInt(props.radius, 10) : 660 }
+              zoom={parseInt(props.radius, 10) > 2640 ? 14 : parseInt(props.radius, 10) > 1320 ? 15 : 16}
+              // within={(props.location.query.within === undefined || props.location.query.within === '') ? 660 : parseInt(props.location.query.within, 10)}
               zoomToPoint={(props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== '') ? props.location.query.zoomToPoint : null}
             />
           }
@@ -186,7 +188,7 @@ DevelopmentByAddress.propTypes = {
 DevelopmentByAddress.defaultProps = {
   spatialEventTopic: 'crime',
   query: { entity: 'address', label: '123 Main street' },
-};
+}
 
 const getPermitsQuery = gql`
   query getPermitsQuery($civicaddress_id: Int!, $radius: Int, $before: String, $after: String) {
@@ -215,14 +217,24 @@ const getPermitsQuery = gql`
 `;
 
 const DevelopmentByAddressGQL = graphql(getPermitsQuery, {
-  options: ownProps => ({
-    variables: {
+  options: (ownProps) => {
+    const queryVariables = {
       civicaddress_id: +ownProps.location.query.id.trim(),
       radius: +ownProps.radius,
-      before: ownProps.before,
-      after: ownProps.after,
-    },
-  }),
+    };
+
+    // if (+ownProps.radius > 0) {
+      queryVariables.before = ownProps.before;
+      queryVariables.after = ownProps.after;
+    // } else {
+    //   queryVariables.before = moment.utc().format('YYYY-MM-DD');
+    //   queryVariables.after = '1970-01-01';
+    // }
+
+    return ({
+      variables: queryVariables,
+    });
+  },
 })(DevelopmentByAddress);
 
 export default DevelopmentByAddressGQL;

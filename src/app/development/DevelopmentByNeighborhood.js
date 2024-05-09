@@ -132,6 +132,8 @@ const DevelopmentByNeighborhood = (props) => {
     }
   );
 
+  console.log('props.data.permits_by_neighborhood', props.data.permits_by_neighborhood);
+
   return (
     <div>
       <div className="row">

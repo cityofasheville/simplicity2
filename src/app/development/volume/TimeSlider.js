@@ -14,17 +14,21 @@ class TimeSlider extends React.Component {
       brushExtent: this.props.defaultBrushExtent,
       firstInputVal: this.props.defaultBrushExtent[0],
       secondInputVal: this.props.defaultBrushExtent[1],
+      selectedTimespan: 0,
       xSpan: [
         timeYear.offset(this.props.spanEnd, -1 * this.props.xSpan).getTime(),
         this.props.spanEnd,
       ],
       initialParamsChecked: false,
+      sliderWidth: window.innerWidth,
     };
 
     this.determineNewExtent = this.determineNewExtent.bind(this);
     this.brushDuring = this.brushDuring.bind(this);
     this.brushEnd = this.brushEnd.bind(this);
+    this.handleTimespanSelection = this.handleTimespanSelection.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.updateWindowWidth = this.updateWindowWidth.bind(this);
   }
 
   determineNewExtent(proposedExtent, snap = false) {
@@ -149,7 +153,7 @@ class TimeSlider extends React.Component {
     });
   }
 
-  brushEnd(proposedExtent, snap = true) {
+  brushEnd(proposedExtent, snap = true, daysBack = 0) {
     const newRanges = this.determineNewExtent(proposedExtent, snap);
     this.props.onBrushEnd(newRanges.extent);
     this.setState({
@@ -157,6 +161,28 @@ class TimeSlider extends React.Component {
       firstInputVal: newRanges.extent[0],
       secondInputVal: newRanges.extent[1],
       xSpan: newRanges.span,
+      selectedTimespan: daysBack,
+    });
+  }
+
+  handleTimespanSelection(daysBack) {
+    if (daysBack === 0) {
+      this.setState({
+        selectedTimespan: 0,
+      });
+      return;
+    }
+    const proposedExtent = [
+      timeDay.offset(this.props.spanEnd, -1 * daysBack).getTime(),
+      this.props.spanEnd,
+    ];
+    const newRanges = this.determineNewExtent(proposedExtent, true);
+    this.setState({
+      brushExtent: newRanges.extent,
+      firstInputVal: newRanges.extent[0],
+      secondInputVal: newRanges.extent[1],
+      xSpan: newRanges.span,
+      selectedTimespan: daysBack,
     });
   }
 
@@ -171,7 +197,16 @@ class TimeSlider extends React.Component {
     ], false);
   }
 
+  updateWindowWidth() {
+    const timelineContainer = document.getElementById("timeline-container");
+    this.setState({
+      sliderWidth: timelineContainer.offsetWidth,
+    });
+  }
+
   componentDidMount() {
+    window.addEventListener("resize", this.updateWindowWidth);
+    this.updateWindowWidth();
     if (!this.state.initialParamsChecked) {
       const initialParams = this.determineNewExtent(this.state.defaultBrushExtent, false);
       this.setState({
@@ -184,26 +219,71 @@ class TimeSlider extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updateWindowWidth);
+  }
+
   render() {
-    const ticks = timeMonth.range(
-      timeMonth.ceil(this.state.xSpan[0]),
-      timeMonth.ceil(this.state.xSpan[1]),
+
+    let timeFunc = timeYear;
+    if (this.props.tickMeasure === 'month') { 
+      timeFunc = timeMonth;
+    } else if (this.props.tickMeasure === 'week') {
+      timeFunc = timeWeek;
+    }
+    let tickGap = this.props.initialTickGap;
+    let ticks = timeFunc.range(
+      timeFunc.ceil(this.state.xSpan[0]),
+      timeFunc.ceil(this.state.xSpan[1]),
+      tickGap
     );
+
+    let tickCount = ticks.length;
+
+    // Figure out how many pixels each tick mark would get
+    let tickRatio = this.state.sliderWidth / tickCount;
+
+    // if each tick mark lacks adequate pixel width, we'll increase the tick interval (tickGap)
+    if (tickRatio < this.props.minimumTickWidth) {
+      // If we double the current tick interval, we'll halve the number of tick marks in our tick array
+      let newTickCount = tickCount / 2;
+      let newTickRatio = this.state.sliderWidth / newTickCount;
+      tickGap++;
+
+      // Figure out which tick interval would yield an adequate gap betweek tick marks, then rebuild the tick array using the new gap
+      while (newTickRatio < this.props.minimumTickWidth) {
+        newTickCount = newTickCount / 2;
+        newTickRatio = this.state.sliderWidth / newTickCount;
+        tickGap++;
+      }
+
+      ticks = timeFunc.range(
+        timeFunc.ceil(this.state.xSpan[0]),
+        timeFunc.ceil(this.state.xSpan[1]),
+        tickGap
+      );
+    }
+
+    let tickFormat = "yyyy";
+    if (this.props.tickMeasure === 'month') {
+      tickFormat = "MMM yyyy";
+    } else if (this.props.tickMeasure === 'week') {
+      tickFormat = "MMM dd";
+    }
+
     // TODO: Use hover annotation and fake lines to make tooltip
     return (
       <div
         className="brushedChart"
-        style={{ width: '100%', margin: '2em 0' }}
+        style={{ width: '100%', margin: '0' }}
       >
         <ErrorBoundary>
           <div>
             <form onSubmit={this.handleSubmit} className="timepicker-dropdown">
-              <div
-                className="timepicker-input-item"
-              >
+              <div className="timepicker-input-item">
                 <label
                   htmlFor="startdate"
-                  // style={{ display: 'inline-block', padding: '0 0.25em 0 0' }}
+                  style={{ marginBottom: '0', padding: '0 0.25em 0 0' }}
                 >
                   From
                 </label>
@@ -228,13 +308,12 @@ class TimeSlider extends React.Component {
                   }}
                 />
               </div>
-              <div
-                className="timepicker-input-item"
-              >
+              <div className="timepicker-input-item">
                 <label
                   htmlFor="enddate"
+                  style={{ marginBottom: '0', padding: '0 0.25em 0 0' }}
                 >
-                  through
+                  Through
                 </label>
                 <input
                   type="date"
@@ -260,44 +339,73 @@ class TimeSlider extends React.Component {
                 type="submit"
                 value="Set Dates"
                 className="btn btn-primary btn-sm timepicker-input-item"
+                style={{marginRight: '1rem'}}
+                disabled={this.state.firstInputVal === this.state.brushExtent[0] && this.state.secondInputVal === this.state.brushExtent[1]}
               />
+              <div className="timepicker-input-item">
+                <select value={this.state.selectedTimespan} className='form-control input-sm' onChange={(e) => {
+                  this.handleTimespanSelection(e.currentTarget.value);
+                }}>
+                  <option value={0}>Choose timespan</option>
+                  {[
+                    {days: 30, label: 'month'},
+                    {days: 90, label: '3 months'},
+                    {days: 180, label: '6 months'},
+                    {days: 365, label: 'year'},
+                    {days: 730, label: '2 years'},
+                    {days: 1825, label: '5 years'},
+                  ].filter((timeSpan) => {
+                    return timeSpan.days <= this.props.maxDaysAllowedToQuery
+                  }).map((timeSpan, i) => {
+                    return (
+                      <option 
+                        key={['timespan', 'option', i].join('_')} 
+                        value={timeSpan.days}
+                      >
+                        {`Last ${timeSpan.label}`}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
             </form>
           </div>
-          {document.documentElement.clientWidth > 600 &&
-          <ResponsiveXYFrame
-            responsiveWidth
-            margin={{
-              top: 20,
-              right: 10,
-              bottom: 50,
-              left: 25,
-            }}
-            size={[1000, 75]}
-            xAccessor={d => d}
-            yAccessor={() => 0}
-            xExtent={this.state.xSpan}
-            axes={[
-              {
-                orient: 'bottom',
-                tickFormat: d => (
-                  <text
-                    textAnchor="middle"
-                    style={{ fontSize: '0.70em' }}
-                    transform="rotate(-45)"
-                  >
-                    {moment.utc(d).format('MMM YY')}
-                  </text>
-                ),
-                tickValues: ticks,
-              },
-            ]}
-            interaction={{
-              during: this.brushDuring,
-              end: this.brushEnd,
-              brush: 'xBrush',
-              extent: this.state.brushExtent,
-            }}
-          />}
+          <div id='timeline-container'>
+            <ResponsiveXYFrame
+              responsiveWidth
+              margin={{
+                top: 20,
+                right: 10,
+                bottom: 50,
+                left: 25,
+              }}
+              size={[1000, 75]}
+              xAccessor={d => d}
+              yAccessor={() => 0}
+              xExtent={this.state.xSpan}
+              axes={[
+                {
+                  orient: 'bottom',
+                  tickFormat: d => (
+                    <text
+                      textAnchor="middle"
+                      style={{ fontSize: '0.70em', left: '-14px'}}
+                      transform="rotate(-45)"
+                    >
+                      {moment.utc(d).format(tickFormat)}
+                    </text>
+                  ),
+                  tickValues: ticks,
+                },
+              ]}
+              interaction={{
+                during: this.brushDuring,
+                end: this.brushEnd,
+                brush: 'xBrush',
+                extent: this.state.brushExtent,
+              }}
+            />
+          </div>
         </ErrorBoundary>
       </div>
     );
@@ -320,6 +428,9 @@ TimeSlider.defaultProps = {
   spanUpperLimit: timeDay.floor(new Date()).getTime(),
   spanLowerLimit: timeDay.floor(new Date(Date.UTC(1999, 0, 1))).getTime(),
   maxDaysAllowedToQuery: 730,
+  minimumTickWidth: 25,
+  initialTickGap: 1,
+  tickMeasure: 'month',
   xSpan: 2, // in years
 };
 

@@ -15,6 +15,8 @@ export const searchQuery = gql`
           address
           zipcode
           is_in_city
+          x
+          y
         }
         ... on PropertyResult {
           pinnum
@@ -43,9 +45,93 @@ export const searchQuery = gql`
           address
           types
         }
+        ... on PermitResult {
+          type
+          permit_number
+          applicant_name
+          address
+        }
       }
     }
   }
+`;
+
+export const suggestionsQuery = `
+query searchQuery($searchString: String!, $searchContexts: [String]) {
+    search(searchString: $searchString, searchContexts: $searchContexts) {
+      type
+      results {
+        type
+        ... on AddressResult {
+          civic_address_id
+          address
+      }
+      ... on StreetResult {
+          full_street_name
+      }
+      ... on NeighborhoodResult {
+          name
+      }
+      ... on OwnerResult {
+          ownerName: name
+      }
+    }
+  }
+}
+`;
+
+export const homePageQuery = `
+query searchQuery($searchString: String!, $searchContexts: [String]) {
+    search(searchString: $searchString, searchContexts: $searchContexts) {
+      type
+      results {
+        type
+        ... on AddressResult {
+          civic_address_id
+          address
+          zipcode
+          is_in_city
+          x
+          y
+          __typename
+      }
+      ... on PropertyResult {
+          pinnum
+          address
+          city
+          zipcode
+          __typename
+      }
+      ... on StreetResult {
+          full_street_name
+          zip_code
+          centerline_ids
+          __typename
+      }
+      ... on NeighborhoodResult {
+          name
+          nbhd_id
+          __typename
+      }
+      ... on OwnerResult {
+          ownerName: name
+          pinnums
+          __typename
+      }
+      ... on PlaceResult {
+          type
+          placeName: name
+          id
+          place_id
+          address
+          types
+          __typename
+      }
+      __typename
+    }
+      __typename
+  }
+}
 `;
 
 export const getResultType = (type) => {
@@ -124,7 +210,7 @@ export const getLink = (type, id, search, entities, label, originalSearch) => {
     case 'neighborhood':
       return `/neighborhood?search=${search}&id=${id}&entities=${entities}&label=${label}&entity=neighborhood`;
     case 'permit':
-      return `/development/detail?search=${search}&id=${id}&entities=${entities}&entity=permit`;
+      return `/permits/${id}?search=${search}`;
     case 'crime':
       return `/crime/detail?search=${search}&id=${id}&entities=${entities}&entity=crime`;
     case 'owner':
@@ -161,10 +247,12 @@ export const formatSearchResults = (search) => {
               case 'address':
               case 'civicAddressId':
                 return {
-                  label: [result.address, result.zipcode].join(', '),
+                  label: `${result.address ? result.address.trim() : ''}${result.zipcode ? ', ' + result.zipcode.trim() : ''}`,
                   type: 'address',
                   id: result.civic_address_id,
                   inCity: result.is_in_city,
+                  x: result.x,
+                  y: result.y,
                 };
               case 'property':
               case 'pin':
@@ -199,7 +287,13 @@ export const formatSearchResults = (search) => {
                   place_name: result.placeName,
                   place_id: result.place_id,
                 };
-              default:
+              case 'permit':
+                return {
+                  label: `${result.permit_number.trim()} - ${result.address.trim()} - ${result.applicant_name.trim()}`,
+                  type: 'permit',
+                  id: result.permit_number,
+                };
+                default:
                 return result;
             }
           }),
@@ -209,27 +303,27 @@ export const formatSearchResults = (search) => {
   return formattedResults;
 };
 
-export const getIcon = (type) => {
+export const getIcon = (type, size=26) => {
   switch (type) {
     case 'address':
-      return (<span style={{ marginRight: '5px' }}><Icon path={IM_LOCATION} size={26} /></span>);
+      return (<span style={{ display: 'inline-block', marginRight: '5px' }}><Icon path={IM_LOCATION} size={size} /></span>);
     case 'property':
-      return (<span style={{ marginRight: '5px' }}><Icon path={IM_HOME2} size={26} /></span>);
+      return (<span style={{ display: 'inline-block', marginRight: '5px' }}><Icon path={IM_HOME2} size={size} /></span>);
     case 'street':
-      return (<span style={{ marginRight: '5px' }}><Icon path={IM_ROAD} size={26} /></span>);
+      return (<span style={{ display: 'inline-block', marginRight: '5px' }}><Icon path={IM_ROAD} size={size} /></span>);
     case 'neighborhood':
-      return (<span style={{ marginRight: '5px' }}><Icon path={IM_USERS} size={26} /></span>);
+      return (<span style={{ display: 'inline-block', marginRight: '5px' }}><Icon path={IM_USERS} size={size} /></span>);
     case 'permit':
-      return (<span style={{ marginRight: '5px' }}><Icon path={IM_OFFICE} size={26} /></span>);
+      return (<span style={{ display: 'inline-block', marginRight: '12px' }}><Icon path={IM_OFFICE} size={size} /></span>);
     case 'crime':
-      return (<span style={{ marginRight: '5px' }}><Icon path={IM_SHIELD3} size={26} /></span>);
+      return (<span style={{ display: 'inline-block', marginRight: '5px' }}><Icon path={IM_SHIELD3} size={size} /></span>);
     case 'owner':
-      return (<span style={{ marginRight: '5px' }}><Icon path={IM_USER} size={26} /></span>);
+      return (<span style={{ display: 'inline-block', marginRight: '5px' }}><Icon path={IM_USER} size={size} /></span>);
     case 'place':
-      return (<span style={{ marginRight: '5px' }}><Icon path={IM_GOOGLE} size={26} /></span>);
+      return (<span style={{ display: 'inline-block', marginRight: '5px' }}><Icon path={IM_GOOGLE} size={size} /></span>);
     case 'search':
-      return (<span style={{ marginRight: '5px' }}><Icon path={IM_SEARCH} size={26} /></span>);
+      return (<span style={{ display: 'inline-block', marginRight: '5px' }}><Icon path={IM_SEARCH} size={size} /></span>);
     default:
-      return (<span style={{ marginRight: '5px' }}><Icon path={IM_QUESTION} size={26} /></span>);
+      return (<span style={{ display: 'inline-block', marginRight: '5px' }}><Icon path={IM_QUESTION} size={size} /></span>);
   }
 };

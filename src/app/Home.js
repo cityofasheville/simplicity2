@@ -5,16 +5,14 @@ import Search from './search/Search';
 import SuggestSearch from './search/SuggestSearch';
 import SuggestSearchWrapper from './search/SuggestSearchWrapper';
 import Topics from './Topics';
+import GetVersion from '../shared/GetVersion'
 
 function Homepage(props)  {
   return (
     <div className="template__home">
       <div>
+        <GetVersion />
         <SuggestSearchWrapper />
-        {/* <Search
-          location={props.location}
-          selectedEntities={props.location.query.entities !== undefined ? props.location.query.entities : 'address,property,neighborhood,street,owner'}
-        /> */}
       </div>
       <hr />
       <Topics />

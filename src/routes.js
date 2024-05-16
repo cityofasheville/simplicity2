@@ -197,7 +197,8 @@ const Routes = () => (
             <IndexRoute component={Maintenance} />
           </Route>
           <Route path="mini_search">
-            <IndexRoute component={MiniSearch} />
+            {/* <IndexRoute component={MiniSearch} /> */}
+            <IndexRoute component={() => <SuggestSearchWrapper searchMode="mini" />} />
           </Route>
           <Route path="*" component={NotFound} />
         </Route>

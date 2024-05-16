@@ -9,8 +9,11 @@ import { IM_GOOGLE } from '../../../shared/iconConstants';
 import * as poweredByGoogle from './powered_by_google_on_white.png';
 import createFilterRenderer from '../../../shared/FilterRenderer';
 import LinkFocusWrapper from '../../../shared/LinkFocusWrapper';
+import InCityMessage from '../../../shared/InCityMessage';
 
 const SearchResultGroup = (props) => {
+
+  const searchMode = props.searchMode || 'main';
 
   const dataColumns = [
     {
@@ -33,25 +36,38 @@ const SearchResultGroup = (props) => {
               {/* This LinkFocusWrapper can be replaced by the innerRef prop on the Link component
                 in react-router ^4.2.0. Presently it serves as a work around for not having that
                 prop. */}
-              <LinkFocusWrapper focusRef={focusRef}>
-                <Link
-                  className="search-results-group__link"
-                  tabIndex={focusable ? 0 : -1}
-                  to={getLink(
-                    row.original.type,
-                    row.original.id, 
-                    props.searchText,
-                    props.selectedEntities,
-                    row.original.label,
-                    props.originalSearch
-                  )}
-                >
-                  <span className="text-primary">
-                    {getIcon(row.original.type === 'place' ? 'search' : row.original.type)}
-                    {row.value}
+              <span style={{border: '0px solid red'}}>
+                <LinkFocusWrapper focusRef={focusRef}>
+                  <Link
+                    className="search-results-group__link"
+                    tabIndex={focusable ? 0 : -1}
+                    to={getLink(
+                      row.original.type,
+                      row.original.id, 
+                      props.searchText,
+                      props.selectedEntities,
+                      row.original.label,
+                      props.originalSearch
+                    )}
+                    target={searchMode === 'mini' ? '_blank' : null}
+                  >
+                    <span className="text-primary" >
+                      {getIcon(row.original.type === 'place' ? 'search' : row.original.type)}
+                      {row.value}
+                    </span>
+                  </Link>
+                </LinkFocusWrapper>
+
+                {props.data.label === 'address' && row.original.inCity !== undefined && (
+                  <span style={{ display: 'inline-block', fontSize: '0.85em', marginLeft: "20px"}}>
+                    <InCityMessage
+                      inTheCity={row.original.inCity}
+                      icon={false}
+                    />
                   </span>
-                </Link>
-              </LinkFocusWrapper>
+                )}
+              </span>
+
               {props.data.label === 'place' &&
                 <span className="text-primary">
                   <a
@@ -68,8 +84,8 @@ const SearchResultGroup = (props) => {
                   </a>
                 </span>
               }
-              {props.data.label === 'address' && (
-                <div style={{marginRight: '8px'}}>
+              {props.data.label === 'address' && searchMode !== 'mini' && (
+                <span style={{marginRight: '8px' }}>
                   <Link to={
                     `/DEVELOPMENT?view=list&` +
                     `entities=undefined&` +
@@ -83,7 +99,7 @@ const SearchResultGroup = (props) => {
                   }>
                     Permits
                   </Link>
-                </div>
+                </span>
               )}
             </span>
           )}

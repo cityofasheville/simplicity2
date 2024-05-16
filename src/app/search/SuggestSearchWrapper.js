@@ -4,7 +4,7 @@ import SuggestSearch from './SuggestSearch';
 import SearchResultGroup from './searchResults/SearchResultGroup';
 import LoadingAnimation from '../../shared/LoadingAnimation';
 import { searchQuery, formatSearchResults } from './searchResults/searchResultsUtils';
-import { set } from 'd3-collection';
+// import { set } from 'd3-collection';
 
 function SuggestSearchWrapper({
   searchMode = 'main',
@@ -19,9 +19,9 @@ function SuggestSearchWrapper({
   const [isPermit, setIsPermit] = useState(permitFormat.test(userQuery.trim()));
   const [isAllNumeric, setIsAllNumeric] = useState(allNumericFormat.test(userQuery.trim()));
   const [searchContexts, setSearchContexts] = useState(
-    searchMode === 'permit' ? 
-    ['address'] :
-    ['address', 'neighborhood', 'street', 'owner']
+    searchMode === 'main' ? 
+    ['address', 'neighborhood', 'street', 'owner'] :
+    ['address']
   );
 
   useEffect(() => {
@@ -34,10 +34,10 @@ function SuggestSearchWrapper({
     } else if (nextIsAllNumeric) {
       nextSearchContexts = ['civicAddressId', 'pin'];
     } else {
-      if (searchMode === 'permit') {
-        nextSearchContexts = ['address'];
-      } else {
+      if (searchMode === 'main') {
         nextSearchContexts = ['address', 'neighborhood', 'street', 'owner'];
+      } else {
+        nextSearchContexts = ['address'];
       }
     }
     setIsPermit(nextIsPermit);
@@ -45,23 +45,6 @@ function SuggestSearchWrapper({
     setSearchContexts(nextSearchContexts);
     setUserQueryChecked(true);
   }, [userQuery]);
-
-  // let searchContexts;
-
-  // if (isPermit) {
-  //   searchContexts = ['permit'];
-  //   console.log('isPermit');
-  // } else if (isAllNumeric) {
-  //   searchContexts = ['civicAddressId', 'pin'];
-  //   console.log('isAllNumeric');
-  // } else {
-  //   // do we need the "property" context? is "pin" sufficient?
-  //   if (searchMode === 'permit') {
-  //     searchContexts = ['address'];
-  //   } else {
-  //     searchContexts = ['address', 'neighborhood', 'street', 'owner'];
-  //   }
-  // }
 
   return (
     <div>
@@ -124,6 +107,7 @@ function SuggestSearchWrapper({
                         key={[resultGroup.label, index].join('_')}
                         data={resultGroup}
                         searchText={userQuery}
+                        searchMode={searchMode}
                       />
                     ))
                   }

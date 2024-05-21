@@ -15,8 +15,8 @@ import { getTRCTypeFromPermit } from '../trc/utils';
 import { statusTranslation } from '../utils';
 
 const GET_PERMIT = gql`
-  query getPermitsQuery($permit_numbers: String) {
-    permit_realtime(permit_number: $permit_numbers) {
+  query getPermitsQuery($permit_numbers: [String]) {
+    permits(permit_numbers: $permit_numbers) {
       permit_number
       permit_group
       permit_type
@@ -56,6 +56,10 @@ const GET_PERMIT = gql`
         name
         value
       }
+      address_info {
+        zoning
+        zoning_links
+      }
     }
   }
 `;
@@ -66,13 +70,12 @@ const Permit = props => (
   <Query
     query={GET_PERMIT}
     variables={{
-      permit_numbers: props.routeParams.id,
+      permit_numbers: [props.routeParams.id],
     }}
   >
     {({ loading, error, data }) => {
       if (loading) return <LoadingAnimation />;
-      console.log('Permit data: ', data);
-      if (error || data.permit_realtime === undefined || data.permit_realtime === null) {
+      if (error || data.permits === undefined || data.permits === null) {
         let message = '';
         if (error) {
           console.log('GQL error');
@@ -94,10 +97,10 @@ const Permit = props => (
           </div>
         );
       }
-      if (data.permit_realtime !== undefined && data.permit_realtime.length > 1) {
+      if (data.permits !== undefined && data.permits.length > 1) {
         console.log('More than one permit found. This is not quite right: ', data);
       }
-      const thisPermit = data.permit_realtime;
+      const thisPermit = data.permits[0];
       const trcType = getTRCTypeFromPermit(thisPermit);
       const formattedPermit = Object.assign({}, thisPermit, { trcType });
       
@@ -311,7 +314,28 @@ const Permit = props => (
             {byDetailArea['zoning details'] !== undefined &&
               <div className="col-sm-12 col-md-6 permit-details-card">
                 <h3>Zoning Details</h3>
-                {byDetailArea['zoning details'].map(d => d)}
+                {byDetailArea['zoning details'].map((d) => {
+                  if (d.key === 'Zoning District') {
+                    // zoning links are now provided by the backend, skipping the permitFieldFormats abstraction
+                    return (
+                      <div key={d.key} className="permit-form-group">
+                        <div className="display-label">Zoning District</div>
+                        <div className="formatted-val">
+                          {formattedPermit.address_info.zoning.split(',').map((zoning, index) => {
+                            let prepend = (index !== 0) ? ', ': '';
+                            return (
+                              <span key={`zoning=${index}`}>
+                                {prepend}
+                                <a href={formattedPermit.address_info.zoning_links.split(',')[index]} target="_blank" rel="noopener noreferrer">{zoning}</a>
+                              </span>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  }
+                  return d;
+                })}
               </div>
             }
             {byDetailArea['environment details'] !== undefined &&
@@ -327,6 +351,7 @@ const Permit = props => (
               <h2>Look Up Another Application</h2>
               <SuggestSearchWrapper 
                 searchMode="permit"
+                autoFocusInput={false}
               />
             </div>
           </div>

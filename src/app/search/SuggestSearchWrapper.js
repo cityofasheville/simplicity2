@@ -8,6 +8,7 @@ import { searchQuery, formatSearchResults } from './searchResults/searchResultsU
 
 function SuggestSearchWrapper({
   searchMode = 'main',
+  autoFocusInput = true,
   debounceInterval = 250
 }) {
 
@@ -56,6 +57,7 @@ function SuggestSearchWrapper({
         <SuggestSearch 
           setUserQuery={setUserQuery} 
           setUserQueryChecked={setUserQueryChecked}
+          autoFocusInput={autoFocusInput}
           debounceInterval={debounceInterval}
           suggestWithGeocoder={true}
           suggestWithSimplicity={searchMode === 'main'}

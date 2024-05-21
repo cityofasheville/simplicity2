@@ -23,6 +23,7 @@ const comboBoxStyle = {
 function SuggestSearch({
   setUserQuery,
   setUserQueryChecked,
+  autoFocusInput = true,
   debounceInterval = 500,
   suggestWithGeocoder = true,
   suggestWithSimplicity = true,
@@ -56,7 +57,7 @@ function SuggestSearch({
   const apiEnvironment = React.useContext(ApiEnvironmentContext);
 
   useEffect(() => {
-    if (inputRef.current) {
+    if (inputRef.current && autoFocusInput) {
       inputRef.current.focus();
     }
     if (urlQuery.length > 2) {

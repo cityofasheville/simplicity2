@@ -204,14 +204,7 @@ const Permit = props => (
       if (internalRecordParts !== undefined && internalRecordParts.length === 3) {
         const baseCapURL = 'https://services.ashevillenc.gov/CitizenAccess/Cap/CapDetail.aspx';
         if (formattedPermit.permit_group === 'Permits' || formattedPermit.permit_group === 'Planning' || formattedPermit.permit_group === 'Planning') {
-          acaLink = `${baseCapURL}?
-            Module=${formattedPermit.permit_group}&
-            TabName=${formattedPermit.permit_group}&
-            capID1=${internalRecordParts[0]}&
-            capID2=${internalRecordParts[1]}&
-            capID3=${internalRecordParts[2]}&
-            agencyCode=ASHEVILLE
-          `;
+          acaLink = `${baseCapURL}?Module=${formattedPermit.permit_group}&TabName=${formattedPermit.permit_group}&capID1=${internalRecordParts[0]}&capID2=${internalRecordParts[1]}&capID3=${internalRecordParts[2]}&agencyCode=ASHEVILLE`;
         } 
       } 
 

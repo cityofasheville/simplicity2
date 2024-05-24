@@ -74,22 +74,18 @@ const Permit = props => (
     }}
   >
     {({ loading, error, data }) => {
-      if (loading) return <LoadingAnimation />;
-      if (error || data.permits === undefined || data.permits === null) {
-        let message = '';
-        if (error) {
-          console.log('GQL error');
-          console.log(error);
-          message = 'There was an error retrieving ID '
-        } else {
-          console.log('GQL returned no results');
-          message = 'No permit found for ID '
-        }
+      if (loading) {
+        return <LoadingAnimation />;
+      }
+
+      if (error) {
+        console.log('GQL error');
+        console.log(error);
         return (
           <div className="container">
             <h1 className="title__text">Permit Details</h1>
-            <div className="alert alert-warning">
-              {message} "{props.routeParams.id}". Please verify the permit ID and try again.
+            <div className={`alert alert-danger`} style={{margin: '2rem 0'}}>
+              There was an error retrieving permit number "{props.routeParams.id}" - {error.message}. If this problem perists, please contact help@ashevillenc.gov.
             </div>
             <SuggestSearchWrapper 
                 searchMode="permit"
@@ -97,9 +93,26 @@ const Permit = props => (
           </div>
         );
       }
+
+      if (data.permits === undefined || data.permits === null || data.permits.length === 0) {
+        console.log('GQL returned no results');
+        return (
+          <div className="container">
+            <h1 className="title__text">Permit Details</h1>
+            <div className={`alert alert-warning`} style={{margin: '2rem 0'}}>
+              No permit found for ID "{props.routeParams.id}". Please verify the permit ID and try again.
+            </div>
+            <SuggestSearchWrapper 
+                searchMode="permit"
+            />
+          </div>
+        );
+      }
+
       if (data.permits !== undefined && data.permits.length > 1) {
         console.log('More than one permit found. This is not quite right: ', data);
       }
+
       const thisPermit = data.permits[0];
       const trcType = getTRCTypeFromPermit(thisPermit);
       const formattedPermit = Object.assign({}, thisPermit, { trcType });
@@ -191,7 +204,14 @@ const Permit = props => (
       if (internalRecordParts !== undefined && internalRecordParts.length === 3) {
         const baseCapURL = 'https://services.ashevillenc.gov/CitizenAccess/Cap/CapDetail.aspx';
         if (formattedPermit.permit_group === 'Permits' || formattedPermit.permit_group === 'Planning' || formattedPermit.permit_group === 'Planning') {
-          acaLink = `${baseCapURL}?Module=${formattedPermit.permit_group}&TabName=${formattedPermit.permit_group}&capID1=${internalRecordParts[0]}&capID2=${internalRecordParts[1]}&capID3=${internalRecordParts[2]}&agencyCode=ASHEVILLE`;
+          acaLink = `${baseCapURL}?
+            Module=${formattedPermit.permit_group}&
+            TabName=${formattedPermit.permit_group}&
+            capID1=${internalRecordParts[0]}&
+            capID2=${internalRecordParts[1]}&
+            capID3=${internalRecordParts[2]}&
+            agencyCode=ASHEVILLE
+          `;
         } 
       } 
 

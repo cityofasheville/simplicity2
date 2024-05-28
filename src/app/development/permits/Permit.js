@@ -233,6 +233,7 @@ const Permit = props => (
       }
 
       formattedPermit.orderedDates.sort(compareValues());
+      console.log('formattedPermit.orderedDates', formattedPermit);
 
       return (
         <main className="container">
@@ -334,15 +335,24 @@ const Permit = props => (
                       <div key={d.key} className="permit-form-group">
                         <div className="display-label">Zoning District</div>
                         <div className="formatted-val">
-                          {formattedPermit.address_info.zoning.split(',').map((zoning, index) => {
-                            let prepend = (index !== 0) ? ', ': '';
-                            return (
-                              <span key={`zoning=${index}`}>
-                                {prepend}
-                                <a href={formattedPermit.address_info.zoning_links.split(',')[index]} target="_blank" rel="noopener noreferrer">{zoning}</a>
-                              </span>
-                            );
-                          })}
+                          {/* 
+                            zoning_links and zoning can be different lengths when split by commas
+                            for example, when zoning_links is null, zoning may say "No zoning"
+                            so we need to handle this case by checking if zoning_links exists
+                          */}
+                          {formattedPermit.address_info.zoning_links ? (
+                            formattedPermit.address_info.zoning.split(',').map((zoning, index) => {
+                              let prepend = (index !== 0) ? ', ': '';
+                              return (
+                                <span key={`zoning=${index}`}>
+                                  {prepend}
+                                  <a href={formattedPermit.address_info.zoning_links.split(',')[index]} target="_blank" rel="noopener noreferrer">{zoning}</a>
+                                </span>
+                              );
+                            })
+                          ) : (
+                            formattedPermit.address_info.zoning
+                          )}
                         </div>
                       </div>
                     );

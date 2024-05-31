@@ -340,7 +340,7 @@ const Permit = props => (
                             for example, when zoning_links is null, zoning may say "No zoning"
                             so we need to handle this case by checking if zoning_links exists
                           */}
-                          {formattedPermit.address_info.zoning_links ? (
+                          {formattedPermit.address_info?.zoning_links?.length && formattedPermit.address_info?.zoning?.length ? (
                             formattedPermit.address_info.zoning.split(',').map((zoning, index) => {
                               let prepend = (index !== 0) ? ', ': '';
                               return (
@@ -351,7 +351,7 @@ const Permit = props => (
                               );
                             })
                           ) : (
-                            formattedPermit.address_info.zoning
+                            'No zoning'
                           )}
                         </div>
                       </div>

@@ -35,6 +35,7 @@ class TRCDataTable extends React.Component {
           after={this.state.timeSpan[0]}
           before={this.state.timeSpan[1]}
           projectTypes={trcProjectTypes}
+          trc={true}
         />
       </ErrorBoundary>
     </div>);

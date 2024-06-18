@@ -36,77 +36,80 @@ const GET_PROJECTS = gql`
 `;
 
 
-const PermitsTableWrapper = props => (
-  <Query
-    query={GET_PROJECTS}
-    variables={{
-      date_field: 'applied_date',
-      after: moment(parseInt(props.after)).subtract(1, 'hours').format('YYYY-MM-DD hh:mm:ss GMT'),
-      before: moment(parseInt(props.before)).format('YYYY-MM-DD hh:mm:ss GMT'),
-      permit_groups: props.permit_groups,
-      trc: true,
-    }}
-  >
-    {({ loading, error, data }) => {
-      if (loading) return <LoadingAnimation />;
-      if (error) {
-        console.log(error);
-        return <div>Error :( </div>;
-      }
-
-      let filteredData = data.permits.filter(d => d.permit_number.indexOf('TMP') === -1);
-
-      if (props.projectTypes) {
-        filteredData = data.permits.filter((d) => {
-          let typeOfInterest = false;
-          Object.values(props.projectTypes).forEach((type) => {
-            // ASSUMING THEY ARE ALL PLANNING
-            if (d.permit_type === type.permit_type && d.permit_subtype === type.permit_subtype) {
-              typeOfInterest = typeOfInterest || true;
-            }
+function PermitsTableWrapper(props) {
+  console.log(props);
+  return (
+    <Query
+      query={GET_PROJECTS}
+      variables={{
+        date_field: 'applied_date',
+        after: moment(parseInt(props.after)).subtract(1, 'hours').format('YYYY-MM-DD hh:mm:ss GMT'),
+        before: moment(parseInt(props.before)).format('YYYY-MM-DD hh:mm:ss GMT'),
+        permit_groups: props.permit_groups,
+        trc: props.trc,
+      }}
+    >
+      {({ loading, error, data }) => {
+        if (loading) return <LoadingAnimation />;
+        if (error) {
+          console.log(error);
+          return <div>Error :( </div>;
+        }
+  
+        let filteredData = data.permits.filter(d => d.permit_number.indexOf('TMP') === -1);
+  
+        if (props.projectTypes) {
+          filteredData = data.permits.filter((d) => {
+            let typeOfInterest = false;
+            Object.values(props.projectTypes).forEach((type) => {
+              // ASSUMING THEY ARE ALL PLANNING
+              if (d.permit_type === type.permit_type && d.permit_subtype === type.permit_subtype) {
+                typeOfInterest = typeOfInterest || true;
+              }
+            });
+            return typeOfInterest;
           });
-          return typeOfInterest;
-        });
-      }
-
-      return (<div className="col-sm-12">
-        <div>
-          <div className="map-container" style={{ height: '350px', width: '100%' }}>
-            <a
-              style={{ top: '-50px' }}
-              href="#permitsDataTable"
-              className="skip-nav-link"
-              onClick={() => { document.getElementById('permitsDataTable').focus(); }}
-            >
-              This map contains information which is also represented in the table below.  Press enter to skip to the table or tab to continue to the map.
-            </a>
-            <PermitsMap
-              permitData={filteredData.filter(d => d.x && d.y).map(d => Object.assign(
-                {},
-                d,
-                {
-                  popup: `<a href="/permits/${d.permit_number}">
-                    ${d.application_name}</a><br/>
-                    ${d.address}<br/>
-                    ${d.permit_description}`,
-                },
-              ))}
-              zoom={12}
-              centerCoords={[35.5951, -82.5515]}
+        }
+  
+        return (<div className="col-sm-12">
+          <div>
+            <div className="map-container" style={{ height: '350px', width: '100%' }}>
+              <a
+                style={{ top: '-50px' }}
+                href="#permitsDataTable"
+                className="skip-nav-link"
+                onClick={() => { document.getElementById('permitsDataTable').focus(); }}
+              >
+                This map contains information which is also represented in the table below.  Press enter to skip to the table or tab to continue to the map.
+              </a>
+              <PermitsMap
+                permitData={filteredData.filter(d => d.x && d.y).map(d => Object.assign(
+                  {},
+                  d,
+                  {
+                    popup: `<a href="/permits/${d.permit_number}">
+                      ${d.application_name}</a><br/>
+                      ${d.address}<br/>
+                      ${d.permit_description}`,
+                  },
+                ))}
+                zoom={12}
+                centerCoords={[35.5951, -82.5515]}
+              />
+            </div>
+          </div>
+          <div id="permitsDataTable" style={{ overflowX: 'scroll' }}>
+            <PermitsTable 
+              data={filteredData} 
+              ignoredParams={props.ignoredParams}
+              {...props} 
             />
           </div>
-        </div>
-        <div id="permitsDataTable" style={{ overflowX: 'scroll' }}>
-          <PermitsTable 
-            data={filteredData} 
-            ignoredParams={props.ignoredParams}
-            {...props} 
-          />
-        </div>
-      </div>);
-    }}
-  </Query>
-);
+        </div>);
+      }}
+    </Query>
+  );
+} 
 
 PermitsTableWrapper.propTypes = {
   date_field: PropTypes.string,
@@ -120,6 +123,7 @@ PermitsTableWrapper.defaultProps = {
   before: moment.utc().format('YYYY-MM-DD'),
   permit_groups: ['Permits', 'Planning', 'Services'],
   ignoredParams: [],
+  trc: false,
 };
 
 export default PermitsTableWrapper;

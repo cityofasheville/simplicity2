@@ -7,20 +7,21 @@ import LoadingAnimation from '../../../shared/LoadingAnimation';
 import PermitsMap from './PermitsMap';
 import PermitsTable from './PermitsTable';
 
+// $trc: Boolean
+// trc: $trc
+
 const GET_PROJECTS = gql`
   query getPermitsQuery(
     $date_field: String!,
     $after: String,
     $before: String,
     $permit_groups: [String],
-    $trc: Boolean
   ) {
     permits(
       date_field: $date_field,
       after: $after,
       before: $before,
       permit_groups: $permit_groups,
-      trc: $trc
     ) {
       application_name
       applied_date
@@ -46,7 +47,7 @@ function PermitsTableWrapper(props) {
         after: moment(parseInt(props.after)).subtract(1, 'hours').format('YYYY-MM-DD hh:mm:ss GMT'),
         before: moment(parseInt(props.before)).format('YYYY-MM-DD hh:mm:ss GMT'),
         permit_groups: props.permit_groups,
-        trc: props.trc,
+        // trc: props.trc,
       }}
     >
       {({ loading, error, data }) => {

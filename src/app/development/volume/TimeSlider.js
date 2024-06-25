@@ -10,6 +10,13 @@ class TimeSlider extends React.Component {
   constructor(props) {
     super(props);
 
+    this.defaultMessage = `Select a date range between
+      ${moment.utc(this.props.spanLowerLimit).format('MMM DD, YYYY')} and
+      ${moment.utc(this.props.spanUpperLimit).format('MMM DD, YYYY')}. Maximum range for a single query is
+      ${this.props.maxDaysAllowedToQuery} days.`;
+    this.defaultMessageColor = '#222';
+    this.errorMessageColor = '#f00';
+
     this.state = {
       brushExtent: this.props.defaultBrushExtent,
       firstInputVal: this.props.defaultBrushExtent[0],
@@ -21,6 +28,8 @@ class TimeSlider extends React.Component {
       ],
       initialParamsChecked: false,
       sliderWidth: window.innerWidth,
+      message: this.defaultMessage,
+      messageColor: this.defaultMessageColor,
     };
 
     this.determineNewExtent = this.determineNewExtent.bind(this);
@@ -34,6 +43,8 @@ class TimeSlider extends React.Component {
   determineNewExtent(proposedExtent, snap = false) {
     let newExtent = proposedExtent;
     let newSpan = this.state.xSpan;
+    let message = this.defaultMessage;
+    let messageColor = this.defaultMessageColor;
 
     // If someone just clicked on the timeline there might not be an e
     if (proposedExtent) {
@@ -43,11 +54,11 @@ class TimeSlider extends React.Component {
         const timeFunc = timeDay;
         newExtent = [timeFunc.ceil(proposedExtent[0]).getTime(), timeFunc.floor(proposedExtent[1]).getTime()];
       }
-
       
       let selectedRange = timeDay.count(newExtent[0], newExtent[1]);
       let spanRange = timeDay.count(this.state.xSpan[0], this.state.xSpan[1]);
       let rangeDiff = spanRange - selectedRange;
+      let newExtentHuman = `${moment.utc(newExtent[0]).format('MMM DD, YYYY')} - ${moment.utc(newExtent[1]).format('MMM DD, YYYY')}`;
 
       // measure the amount of available valid date range input (in days) after selected end date and before selected start date
       let rangeOverhead = timeDay.count(newExtent[1], parseInt(this.props.spanUpperLimit));
@@ -55,22 +66,31 @@ class TimeSlider extends React.Component {
 
       // if either value is negative, then input is out of range; revert to default values
       if (rangeOverhead < 0 || rangeUnderhead < 0) {
+        message = `${newExtentHuman} is invalid. ${this.defaultMessage}`;
+        messageColor = this.errorMessageColor;
+        console.log(`${message}`);
         return {
           extent: this.state.brushExtent,
-          span: newSpan
+          span: newSpan,
+          message: message,
+          messageColor: messageColor,
         };
       }
 
       // Don't allow ranges bigger or smaller (i.e. negative) than allowed, just reset to "last good" value
-      if (+selectedRange > +this.props.maxDaysAllowedToQuery || +newExtent[0] >= +newExtent[1]) {
-        console.log(`Date range too big or small. Max range is ${this.props.maxDaysAllowedToQuery} days. Min range is 1 day.`);
+      if ((+selectedRange > +this.props.maxDaysAllowedToQuery || +newExtent[0] >= +newExtent[1]) && selectedRange !== 0) {
+        message = `The range ${newExtentHuman} is ${selectedRange < 0 ? 'invalid' : 'too big (' + selectedRange + ' days)'}. ${this.defaultMessage}`;
+        messageColor = this.errorMessageColor;
+        console.log(message);
         newExtent = this.state.brushExtent;
         // no need to change the existing span
       }
 
       // Don't allow dates before or after defined limits
       else if (+newExtent[0] < +this.props.spanLowerLimit || +newExtent[1] > +this.props.spanUpperLimit) {
-        console.log(`Selected date(s) are out of bounds.`);
+        message = `One or both of the dates (${newExtentHuman}) are outisde the allowed range. ${this.defaultMessage}`;
+        messageColor = this.errorMessageColor;
+        console.log(message);
         newExtent = this.state.brushExtent;
         // no need to change the existing span
       }
@@ -79,12 +99,18 @@ class TimeSlider extends React.Component {
       // Set the start and end dates to match the start and end of the span
       // NOTE: if this.props.maxDaysAllowedToQuery >= this.state.xSpan, this condition will never happen (the first condition will fire instead)
       else if (+newExtent[0] < +this.state.xSpan[0] && +newExtent[1] > +this.state.xSpan[1]) {
+        message = `Date range too big or small. ${this.defaultMessage}.`;
+        messageColor = this.errorMessageColor;
+        console.log(message);
         newExtent = this.state.brushExtent;
         // no need to change the existing span
       }
 
       // If only the end date is outside span limit
       else if (+newExtent[0] > +this.state.xSpan[0] && +newExtent[1] > +this.state.xSpan[1]) {
+        message = `${moment.utc(newExtent[1]).format('MMM DD, YYYY')} is outisde the allowed range. ${this.defaultMessage}`;
+        messageColor = this.errorMessageColor;
+        console.log(message);
         if (+newExtent[1] > +this.props.spanUpperLimit) {
           newExtent[1] = this.props.spanUpperLimit;
           newSpan = [
@@ -110,6 +136,9 @@ class TimeSlider extends React.Component {
 
       // If only the start date is outside span limit
       else if (+newExtent[0] < +this.state.xSpan[0] && +newExtent[1] < +this.state.xSpan[1]) {
+        message = `The start date is outisde the allowed range. ${this.defaultMessage}`;
+        messageColor = this.errorMessageColor;
+        console.log(message);
         if (+newExtent[0] < +this.props.spanLowerLimit) {
           newExtent[0] = this.props.spanLowerLimit;
           newSpan = [
@@ -140,7 +169,9 @@ class TimeSlider extends React.Component {
 
     return {
       extent: newExtent,
-      span: newSpan
+      span: newSpan,
+      message: message,
+      messageColor: messageColor,
     };
   }
 
@@ -150,6 +181,8 @@ class TimeSlider extends React.Component {
       brushExtent: newRanges.extent,
       firstInputVal: newRanges.extent[0],
       secondInputVal: newRanges.extent[1],
+      // message: newRanges.message,
+      // messageColor: newRanges.message
     });
   }
 
@@ -162,6 +195,8 @@ class TimeSlider extends React.Component {
       secondInputVal: newRanges.extent[1],
       xSpan: newRanges.span,
       selectedTimespan: daysBack,
+      message: newRanges.message,
+      messageColor: newRanges.messageColor,
     });
   }
 
@@ -183,6 +218,8 @@ class TimeSlider extends React.Component {
       secondInputVal: newRanges.extent[1],
       xSpan: newRanges.span,
       selectedTimespan: daysBack,
+      message: newRanges.message,
+      messageColor: newRanges.messageColor,
     });
   }
 
@@ -271,6 +308,8 @@ class TimeSlider extends React.Component {
       tickFormat = "MMM dd";
     }
 
+    console.log(this.state.selectedTimespan);
+
     // TODO: Use hover annotation and fake lines to make tooltip
     return (
       <div
@@ -279,6 +318,17 @@ class TimeSlider extends React.Component {
       >
         <ErrorBoundary>
           <div>
+            <div 
+              className={`small`} 
+              style={{
+                borderLeft: `1px solid ${this.state.messageColor}`, 
+                paddingLeft: '.5rem', 
+                margin: '0 .5rem .5rem .5rem',
+                color: this.state.messageColor,
+              }}
+            >
+              {this.state.message}
+            </div>
             <form onSubmit={this.handleSubmit} className="timepicker-dropdown">
               <div className="timepicker-input-item">
                 <label
@@ -366,11 +416,34 @@ class TimeSlider extends React.Component {
                       </option>
                     );
                   })}
+                  {/* {this.state.selectedTimespan > 0 && (
+                    [
+                      {days: 30, label: 'month'},
+                      {days: 90, label: '3 months'},
+                      {days: 180, label: '6 months'},
+                      {days: 365, label: 'year'},
+                      {days: 730, label: '2 years'},
+                      {days: 1825, label: '5 years'},
+                    ].filter((timeSpan) => {
+                      console.log(timeSpan.days, +this.state.selectedTimespan);
+                      return timeSpan.days === +this.state.selectedTimespan;
+                    }).map((timeSpan, i) => {
+                      console.log('mappin', timeSpan.days, +this.state.selectedTimespan);
+                      return (
+                        <option 
+                          key={['timespan_move', 'option', i].join('_')} 
+                          value={timeSpan.days}
+                        >
+                          {`Another ${timeSpan.label} back`}
+                        </option>
+                      );
+                    })
+                  )} */}
                 </select>
               </div>
             </form>
           </div>
-          <div id='timeline-container'>
+          <div id='timeline-container' aria-hidden="true">
             <ResponsiveXYFrame
               responsiveWidth
               margin={{

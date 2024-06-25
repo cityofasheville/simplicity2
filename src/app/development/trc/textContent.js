@@ -89,6 +89,7 @@ export const devDashSections = [
         <a href="/permits">All Permit Applications</a>
         <a href="/">Search Nearby Development</a>
         <a href="/permits/search">Search Permits by Address or ID</a>
+        <a href="https://data-avl.opendata.arcgis.com/datasets/b8fdb63db30b42d0875afb617e1551f4_2/explore?location=35.604370%2C-82.530822%2C11.13&showTable=true" target='_blank'>Open Data Portal - Permits</a>
       </p>
       <p style={{marginBottom: '1.5rem'}}>The map and table below contain proposed, large-scale, private development projects for which a permit application has been submitted.  
         You can also explore permit applications using the above links. 

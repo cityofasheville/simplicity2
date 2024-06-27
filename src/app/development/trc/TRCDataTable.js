@@ -24,9 +24,9 @@ class TRCDataTable extends React.Component {
     return (<div>
       <ErrorBoundary>
         <TimeSlider
-          onBrushEnd={newExtent => this.setState({
-            timeSpan: newExtent,
-          })}
+          // onBrushEnd={newExtent => this.setState({
+          //   timeSpan: newExtent,
+          // })}
           defaultBrushExtent={this.initialBrushExtent}
           xSpan={2}
           tickMeasure="month"

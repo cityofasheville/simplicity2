@@ -94,6 +94,11 @@ class PermitsIndex extends React.Component {
         <h1>All Permit Applications</h1>
         <hr />
         <h2 style={{marginTop: "32px"}}>Filter Permits by Date Applied</h2>
+        <p>
+          If you require access to the full permits dataset (i.e. more than is available with a single query on this page), please visit the City of Asheville's {' '}
+          <a href="https://data-avl.opendata.arcgis.com/datasets/b8fdb63db30b42d0875afb617e1551f4_2/explore?location=35.604370%2C-82.530822%2C11.13&showTable=true" target='_blank'>Open Data Portal</a>.
+        </p>
+
         <ErrorBoundary>
           <TimeSlider
             onBrushEnd={(newExtent) => {
@@ -102,7 +107,8 @@ class PermitsIndex extends React.Component {
             defaultBrushExtent={this.state.timeSpan}
             spanLowerLimit={this.props.spanLowerLimit}
             spanUpperLimit={this.props.spanUpperLimit}
-            xSpan={2}
+            xSpan={1}
+            maxDaysAllowedToQuery={365}
             tickMeasure="month"
           />
           <PermitsTableWrapper

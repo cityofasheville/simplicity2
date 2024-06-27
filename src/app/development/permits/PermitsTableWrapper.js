@@ -29,6 +29,7 @@ const GET_PROJECTS = gql`
       permit_number
       permit_subtype
       permit_type
+      address
       x
       y
     }

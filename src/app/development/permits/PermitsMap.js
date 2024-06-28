@@ -31,12 +31,12 @@ const GET_NEIGHBORHOODS = gql`
   }
 `;
 
-const PermitMap = ({
+function PermitMap({
   permitData,
   centerCoords,
   zoom,
   showNeighborhoods,
-}) => {
+}) {
   if (!showNeighborhoods) {
     return (<Map
       data={permitData}

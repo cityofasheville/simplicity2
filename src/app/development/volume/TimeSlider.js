@@ -418,7 +418,7 @@ class TimeSlider extends React.Component {
                 <div className="btn-group" role="group" aria-label="...">
                   <button 
                     type="button" 
-                    className="btn btn-default btn-sm" 
+                    className="btn btn-primary btn-sm" 
                     style={{borderColor: 'transparent', borderWidth: 'revert'}}
                     disabled={timeDay.count(this.props.spanLowerLimit, this.state.brushExtent[0]) === 0}
                     onClick={() => {
@@ -457,7 +457,7 @@ class TimeSlider extends React.Component {
                   </div>
                   <button 
                     type="button" 
-                    className="btn btn-default btn-sm" 
+                    className="btn btn-primary btn-sm" 
                     style={{borderColor: 'transparent', borderWidth: 'revert'}}
                     disabled={timeDay.count(this.state.brushExtent[1], this.props.spanUpperLimit) === 0}
                     onClick={() => {

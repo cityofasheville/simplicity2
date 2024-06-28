@@ -146,10 +146,11 @@ export const defaultTableHeaders = [
       </div>);
     },
   },
-  {
-    field: 'status_current',
-    display: 'Status',
-  },
+  // Don't seem to be using status in permit tables, so leaving it off
+  // {
+  //   field: 'status_current',
+  //   display: 'Status',
+  // },
   {
     field: 'application_name',
     display: 'Project',

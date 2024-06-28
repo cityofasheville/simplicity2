@@ -89,9 +89,9 @@ function PermitsTableWrapper(props) {
                   d,
                   {
                     popup: `<a href="/permits/${d.permit_number}">
-                      ${d.application_name}</a><br/>
-                      ${d.address}<br/>
-                      ${d.permit_description}`,
+                      ${d.application_name ? d.application_name : d.permit_number}</a><br/>
+                      ${d.address ? d.address + '<br/>' : ''}
+                      ${d.permit_description ? d.permit_description : ''}`,
                   },
                 ))}
                 zoom={12}

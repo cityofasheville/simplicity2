@@ -10,6 +10,14 @@ class TimeSlider extends React.Component {
   constructor(props) {
     super(props);
 
+    this.defaultMessage = `Set a date range between
+      ${moment.utc(this.props.spanLowerLimit).format('MMM DD, YYYY')} and
+      ${moment.utc(this.props.spanUpperLimit).format('MMM DD, YYYY')}. Maximum range for a single query is
+      ${this.props.maxDaysAllowedToQuery} days.`;
+    this.defaultMessageColor = '#222';
+    this.errorMessageColor = '#f00';
+    this.today = timeDay.floor(new Date()).getTime();
+
     this.state = {
       brushExtent: this.props.defaultBrushExtent,
       firstInputVal: this.props.defaultBrushExtent[0],
@@ -21,6 +29,8 @@ class TimeSlider extends React.Component {
       ],
       initialParamsChecked: false,
       sliderWidth: window.innerWidth,
+      message: this.defaultMessage,
+      messageColor: this.defaultMessageColor,
     };
 
     this.determineNewExtent = this.determineNewExtent.bind(this);
@@ -34,6 +44,8 @@ class TimeSlider extends React.Component {
   determineNewExtent(proposedExtent, snap = false) {
     let newExtent = proposedExtent;
     let newSpan = this.state.xSpan;
+    let message = this.defaultMessage;
+    let messageColor = this.defaultMessageColor;
 
     // If someone just clicked on the timeline there might not be an e
     if (proposedExtent) {
@@ -41,13 +53,13 @@ class TimeSlider extends React.Component {
       // When brushing stops (brushEnd invokes with snap=true), snap to "whole time" (drop the decimal part)
       if (snap) {
         const timeFunc = timeDay;
-        newExtent = [timeFunc.ceil(proposedExtent[0]).getTime(), timeFunc.floor(proposedExtent[1]).getTime()];
+        newExtent = [timeFunc.ceil(proposedExtent[0]).getTime(), timeFunc.ceil(proposedExtent[1]).getTime()];
       }
-
       
       let selectedRange = timeDay.count(newExtent[0], newExtent[1]);
       let spanRange = timeDay.count(this.state.xSpan[0], this.state.xSpan[1]);
       let rangeDiff = spanRange - selectedRange;
+      let newExtentHuman = `${moment.utc(newExtent[0]).format('MMM DD, YYYY')} - ${moment.utc(newExtent[1]).format('MMM DD, YYYY')}`;
 
       // measure the amount of available valid date range input (in days) after selected end date and before selected start date
       let rangeOverhead = timeDay.count(newExtent[1], parseInt(this.props.spanUpperLimit));
@@ -55,22 +67,28 @@ class TimeSlider extends React.Component {
 
       // if either value is negative, then input is out of range; revert to default values
       if (rangeOverhead < 0 || rangeUnderhead < 0) {
+        message = `${newExtentHuman} is invalid. ${this.defaultMessage}`;
+        messageColor = this.errorMessageColor;
         return {
           extent: this.state.brushExtent,
-          span: newSpan
+          span: newSpan,
+          message: message,
+          messageColor: messageColor,
         };
       }
 
       // Don't allow ranges bigger or smaller (i.e. negative) than allowed, just reset to "last good" value
-      if (+selectedRange > +this.props.maxDaysAllowedToQuery || +newExtent[0] >= +newExtent[1]) {
-        console.log(`Date range too big or small. Max range is ${this.props.maxDaysAllowedToQuery} days. Min range is 1 day.`);
+      if ((+selectedRange > +this.props.maxDaysAllowedToQuery || +newExtent[0] >= +newExtent[1]) && selectedRange !== 0) {
+        message = `The range ${newExtentHuman} is ${selectedRange < 0 ? 'invalid' : 'too big (' + selectedRange + ' days)'}. ${this.defaultMessage}`;
+        messageColor = this.errorMessageColor;
         newExtent = this.state.brushExtent;
         // no need to change the existing span
       }
 
       // Don't allow dates before or after defined limits
       else if (+newExtent[0] < +this.props.spanLowerLimit || +newExtent[1] > +this.props.spanUpperLimit) {
-        console.log(`Selected date(s) are out of bounds.`);
+        message = `One or both of the dates (${newExtentHuman}) are outisde the allowed range. ${this.defaultMessage}`;
+        messageColor = this.errorMessageColor;
         newExtent = this.state.brushExtent;
         // no need to change the existing span
       }
@@ -79,12 +97,16 @@ class TimeSlider extends React.Component {
       // Set the start and end dates to match the start and end of the span
       // NOTE: if this.props.maxDaysAllowedToQuery >= this.state.xSpan, this condition will never happen (the first condition will fire instead)
       else if (+newExtent[0] < +this.state.xSpan[0] && +newExtent[1] > +this.state.xSpan[1]) {
+        message = `Date range too big or small. ${this.defaultMessage}.`;
+        messageColor = this.errorMessageColor;
         newExtent = this.state.brushExtent;
         // no need to change the existing span
       }
 
       // If only the end date is outside span limit
       else if (+newExtent[0] > +this.state.xSpan[0] && +newExtent[1] > +this.state.xSpan[1]) {
+        message = `${moment.utc(newExtent[1]).format('MMM DD, YYYY')} is outisde the allowed range. ${this.defaultMessage}`;
+        messageColor = this.errorMessageColor;
         if (+newExtent[1] > +this.props.spanUpperLimit) {
           newExtent[1] = this.props.spanUpperLimit;
           newSpan = [
@@ -110,7 +132,11 @@ class TimeSlider extends React.Component {
 
       // If only the start date is outside span limit
       else if (+newExtent[0] < +this.state.xSpan[0] && +newExtent[1] < +this.state.xSpan[1]) {
+        // console.log(message);
         if (+newExtent[0] < +this.props.spanLowerLimit) {
+          message = `The start date is outisde the allowed range. ${this.defaultMessage}`;
+          messageColor = this.errorMessageColor;
+          
           newExtent[0] = this.props.spanLowerLimit;
           newSpan = [
             this.props.spanLowerLimit,
@@ -140,7 +166,9 @@ class TimeSlider extends React.Component {
 
     return {
       extent: newExtent,
-      span: newSpan
+      span: newSpan,
+      message: message,
+      messageColor: messageColor,
     };
   }
 
@@ -153,37 +181,68 @@ class TimeSlider extends React.Component {
     });
   }
 
-  brushEnd(proposedExtent, snap = true, daysBack = 0) {
+  brushEnd(proposedExtent, snap = true) {
     const newRanges = this.determineNewExtent(proposedExtent, snap);
+    let selectedRange = timeDay.count(newRanges.extent[0], newRanges.extent[1]);
+
     this.props.onBrushEnd(newRanges.extent);
     this.setState({
       brushExtent: newRanges.extent,
       firstInputVal: newRanges.extent[0],
       secondInputVal: newRanges.extent[1],
       xSpan: newRanges.span,
-      selectedTimespan: daysBack,
+      selectedTimespan: selectedRange,
+      message: newRanges.message,
+      messageColor: newRanges.messageColor,
     });
   }
 
-  handleTimespanSelection(daysBack) {
-    if (daysBack === 0) {
+  handleTimespanSelection(daySpan, requestedRange = "today") {
+    // check if calculation should be relative to the current span or the current end date
+    let relativeDate;
+    let proposedExtent;
+
+    if (+daySpan === 0) {
       this.setState({
         selectedTimespan: 0,
       });
       return;
+    } else {
+      if (requestedRange === "forward") {
+        let daysOverhead = timeDay.count(this.state.brushExtent[1], this.props.spanUpperLimit);
+        let daySpanToUse = daysOverhead < this.state.selectedTimespan ? daysOverhead : daySpan;
+        relativeDate = this.state.brushExtent[1];       
+        proposedExtent = [
+          relativeDate,
+          timeDay.offset(relativeDate, 1 * daySpanToUse).getTime(),
+        ];
+      } else if (requestedRange === "backward") {
+        let daysUnderhead = timeDay.count(this.props.spanLowerLimit, this.state.brushExtent[0]);
+        let daySpanToUse = daysUnderhead < this.state.selectedTimespan ? daysUnderhead : daySpan;
+        relativeDate = this.state.brushExtent[0];
+        proposedExtent = [
+          timeDay.offset(relativeDate, -1 * daySpanToUse).getTime(),
+          relativeDate,
+        ];
+      } else {
+        // count back from end of available span
+        relativeDate = this.props.spanUpperLimit;
+        proposedExtent = [
+          timeDay.offset(relativeDate, -1 * daySpan).getTime(),
+          relativeDate,
+        ];
+      }
+      const newRanges = this.determineNewExtent(proposedExtent, true);
+      this.setState({
+        brushExtent: newRanges.extent,
+        firstInputVal: newRanges.extent[0],
+        secondInputVal: newRanges.extent[1],
+        xSpan: newRanges.span,
+        selectedTimespan: daySpan,
+        message: newRanges.message,
+        messageColor: newRanges.messageColor,
+      });
     }
-    const proposedExtent = [
-      timeDay.offset(this.props.spanEnd, -1 * daysBack).getTime(),
-      this.props.spanEnd,
-    ];
-    const newRanges = this.determineNewExtent(proposedExtent, true);
-    this.setState({
-      brushExtent: newRanges.extent,
-      firstInputVal: newRanges.extent[0],
-      secondInputVal: newRanges.extent[1],
-      xSpan: newRanges.span,
-      selectedTimespan: daysBack,
-    });
   }
 
   handleSubmit(e = false) {
@@ -194,7 +253,7 @@ class TimeSlider extends React.Component {
     this.brushEnd([
       this.state.firstInputVal,
       this.state.secondInputVal,
-    ], false);
+    ], true);
   }
 
   updateWindowWidth() {
@@ -271,6 +330,7 @@ class TimeSlider extends React.Component {
       tickFormat = "MMM dd";
     }
 
+    // console.log(this.state.selectedTimespan, this.state.brushExtent, this.state.firstInputVal, this.state.secondInputVal);
     // TODO: Use hover annotation and fake lines to make tooltip
     return (
       <div
@@ -279,6 +339,17 @@ class TimeSlider extends React.Component {
       >
         <ErrorBoundary>
           <div>
+            <div 
+              className={`small`} 
+              style={{
+                borderLeft: `1px solid ${this.state.messageColor}`, 
+                paddingLeft: '.5rem', 
+                margin: '0 .5rem .5rem .5rem',
+                color: this.state.messageColor,
+              }}
+            >
+              {this.state.message}
+            </div>
             <form onSubmit={this.handleSubmit} className="timepicker-dropdown">
               <div className="timepicker-input-item">
                 <label
@@ -326,7 +397,7 @@ class TimeSlider extends React.Component {
                       return;
                     }
                     const date = moment.utc(new Date(e.target.value))
-                      .hour(23).minute(59).seconds(59)
+                      .hour(0).minute(0).seconds(1)
                       .valueOf();
 
                     this.setState({
@@ -338,39 +409,73 @@ class TimeSlider extends React.Component {
               <input
                 type="submit"
                 value="Set Dates"
+                title='Set the date range to the values in the input fields.'
                 className="btn btn-primary btn-sm timepicker-input-item"
                 style={{marginRight: '1rem'}}
                 disabled={this.state.firstInputVal === this.state.brushExtent[0] && this.state.secondInputVal === this.state.brushExtent[1]}
               />
               <div className="timepicker-input-item">
-                <select value={this.state.selectedTimespan} className='form-control input-sm' onChange={(e) => {
-                  this.handleTimespanSelection(e.currentTarget.value);
-                }}>
-                  <option value={0}>Choose timespan</option>
-                  {[
-                    {days: 30, label: 'month'},
-                    {days: 90, label: '3 months'},
-                    {days: 180, label: '6 months'},
-                    {days: 365, label: 'year'},
-                    {days: 730, label: '2 years'},
-                    {days: 1825, label: '5 years'},
-                  ].filter((timeSpan) => {
-                    return timeSpan.days <= this.props.maxDaysAllowedToQuery
-                  }).map((timeSpan, i) => {
-                    return (
-                      <option 
-                        key={['timespan', 'option', i].join('_')} 
-                        value={timeSpan.days}
-                      >
-                        {`Last ${timeSpan.label}`}
-                      </option>
-                    );
-                  })}
-                </select>
+                <div className="btn-group" role="group" aria-label="...">
+                  <button 
+                    type="button" 
+                    className="btn btn-primary btn-sm" 
+                    style={{borderColor: 'transparent', borderWidth: 'revert'}}
+                    disabled={timeDay.count(this.props.spanLowerLimit, this.state.brushExtent[0]) === 0}
+                    title="Move current timespan earlier"
+                    onClick={() => {
+                      const currentTimespan = this.state.selectedTimespan;
+                      this.handleTimespanSelection(currentTimespan, "backward");
+                    }}
+                  >
+                    <span aria-hidden="true">&laquo;</span>
+                    {/* <span className="sr-only">Move current timespan earlier</span> */}
+                  </button>
+                  <div className="btn-group" role="group">
+                  <select value={this.state.brushExtent[1] === this.props.spanUpperLimit ? this.state.selectedTimespan : 0} className='form-control input-sm' style={{borderColor: '#ccc', borderWidth: 'revert', borderRadius: 'revert'}} onChange={(e) => {
+                    this.handleTimespanSelection(e.currentTarget.value);
+                  }}>
+                    <option value={0}>Choose timespan</option>
+                    {[
+                      {days: 30, label: 'month'},
+                      {days: 90, label: '3 months'},
+                      {days: 180, label: '6 months'},
+                      {days: 365, label: 'year'},
+                      {days: 730, label: '2 years'},
+                      {days: 1825, label: '5 years'},
+                    ].filter((timeSpan) => {
+                      return (timeSpan.days <= this.props.maxDaysAllowedToQuery)
+                    }).map((timeSpan, i) => {
+                      return (
+                        <option 
+                          key={['timespan', 'option', i].join('_')} 
+                          value={timeSpan.days}
+                        >
+                          {`Last ${timeSpan.label}`}
+                        </option>
+                      );
+                    })}
+                  
+                  </select>
+                  </div>
+                  <button 
+                    type="button" 
+                    className="btn btn-primary btn-sm" 
+                    style={{borderColor: 'transparent', borderWidth: 'revert'}}
+                    disabled={timeDay.count(this.state.brushExtent[1], this.props.spanUpperLimit) === 0}
+                    title='Move current timespan later'
+                    onClick={() => {
+                      const currentTimespan = this.state.selectedTimespan;
+                      this.handleTimespanSelection(currentTimespan, "forward");
+                    }}
+                  >
+                    <span aria-hidden="true">&raquo;</span>
+                    {/* <span className="sr-only">Move current timespan later</span> */}
+                  </button>
+                </div>
               </div>
             </form>
           </div>
-          <div id='timeline-container'>
+          <div id='timeline-container' aria-hidden="true">
             <ResponsiveXYFrame
               responsiveWidth
               margin={{

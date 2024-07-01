@@ -29,6 +29,7 @@ const GET_PROJECTS = gql`
       permit_number
       permit_subtype
       permit_type
+      address
       x
       y
     }
@@ -37,7 +38,6 @@ const GET_PROJECTS = gql`
 
 
 function PermitsTableWrapper(props) {
-  console.log(props);
   return (
     <Query
       query={GET_PROJECTS}
@@ -75,7 +75,7 @@ function PermitsTableWrapper(props) {
           <div>
             <div className="map-container" style={{ height: '350px', width: '100%' }}>
               <a
-                style={{ top: '-50px' }}
+                style={{ top: '-60px' }}
                 href="#permitsDataTable"
                 className="skip-nav-link"
                 onClick={() => { document.getElementById('permitsDataTable').focus(); }}
@@ -88,9 +88,9 @@ function PermitsTableWrapper(props) {
                   d,
                   {
                     popup: `<a href="/permits/${d.permit_number}">
-                      ${d.application_name}</a><br/>
-                      ${d.address}<br/>
-                      ${d.permit_description}`,
+                      ${d.application_name ? d.application_name : d.permit_number}</a><br/>
+                      ${d.address ? d.address + '<br/>' : ''}
+                      ${d.permit_description ? d.permit_description : ''}`,
                   },
                 ))}
                 zoom={12}

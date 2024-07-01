@@ -132,10 +132,11 @@ class TimeSlider extends React.Component {
 
       // If only the start date is outside span limit
       else if (+newExtent[0] < +this.state.xSpan[0] && +newExtent[1] < +this.state.xSpan[1]) {
-        message = `The start date is outisde the allowed range. ${this.defaultMessage}`;
-        messageColor = this.errorMessageColor;
-        console.log(message);
+        // console.log(message);
         if (+newExtent[0] < +this.props.spanLowerLimit) {
+          message = `The start date is outisde the allowed range. ${this.defaultMessage}`;
+          messageColor = this.errorMessageColor;
+          
           newExtent[0] = this.props.spanLowerLimit;
           newSpan = [
             this.props.spanLowerLimit,
@@ -372,8 +373,6 @@ class TimeSlider extends React.Component {
                       .hour(0).minute(0).seconds(1)
                       .valueOf();
 
-                    console.log(e.target.value, date);
-
                     this.setState({
                       firstInputVal: date,
                     });
@@ -410,6 +409,7 @@ class TimeSlider extends React.Component {
               <input
                 type="submit"
                 value="Set Dates"
+                title='Set the date range to the values in the input fields.'
                 className="btn btn-primary btn-sm timepicker-input-item"
                 style={{marginRight: '1rem'}}
                 disabled={this.state.firstInputVal === this.state.brushExtent[0] && this.state.secondInputVal === this.state.brushExtent[1]}
@@ -421,12 +421,14 @@ class TimeSlider extends React.Component {
                     className="btn btn-primary btn-sm" 
                     style={{borderColor: 'transparent', borderWidth: 'revert'}}
                     disabled={timeDay.count(this.props.spanLowerLimit, this.state.brushExtent[0]) === 0}
+                    title="Move current timespan earlier"
                     onClick={() => {
                       const currentTimespan = this.state.selectedTimespan;
                       this.handleTimespanSelection(currentTimespan, "backward");
                     }}
                   >
-                    &laquo;
+                    <span aria-hidden="true">&laquo;</span>
+                    {/* <span className="sr-only">Move current timespan earlier</span> */}
                   </button>
                   <div className="btn-group" role="group">
                   <select value={this.state.brushExtent[1] === this.props.spanUpperLimit ? this.state.selectedTimespan : 0} className='form-control input-sm' style={{borderColor: '#ccc', borderWidth: 'revert', borderRadius: 'revert'}} onChange={(e) => {
@@ -460,12 +462,14 @@ class TimeSlider extends React.Component {
                     className="btn btn-primary btn-sm" 
                     style={{borderColor: 'transparent', borderWidth: 'revert'}}
                     disabled={timeDay.count(this.state.brushExtent[1], this.props.spanUpperLimit) === 0}
+                    title='Move current timespan later'
                     onClick={() => {
                       const currentTimespan = this.state.selectedTimespan;
                       this.handleTimespanSelection(currentTimespan, "forward");
                     }}
                   >
-                    &raquo;
+                    <span aria-hidden="true">&raquo;</span>
+                    {/* <span className="sr-only">Move current timespan later</span> */}
                   </button>
                 </div>
               </div>

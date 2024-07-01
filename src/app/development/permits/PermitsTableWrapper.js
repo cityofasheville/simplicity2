@@ -38,7 +38,6 @@ const GET_PROJECTS = gql`
 
 
 function PermitsTableWrapper(props) {
-  console.log(props);
   return (
     <Query
       query={GET_PROJECTS}

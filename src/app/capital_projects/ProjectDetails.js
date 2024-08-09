@@ -72,7 +72,7 @@ const calculateBounds = (points) => {
   return null;
 };
 
-const ProjectDetails = (props) => {
+function ProjectDetails(props) {
   const getMyPoints = () => (
     props.latitude.map((y, index) => (
       Object.assign({}, {}, {
@@ -243,9 +243,12 @@ const ProjectDetails = (props) => {
             <div className="map-container">
               <Map data={getMyPoints(props.project)} bounds={calculateBounds(getMyPoints(props.project))} height="300px"/>
             </div>
-            <a href={props.photo_url} target="_blank">
-              <img alt={content.project} className="img-responsive" src={props.photo_url} />
-            </a>
+            {props.photo_url && (
+              <a href={props.photo_url} target="_blank">
+                <img alt={content.project} className="img-responsive" src={props.photo_url} />
+              </a>
+            )}
+
           </div>
         </div>
       </div>

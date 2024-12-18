@@ -11,6 +11,9 @@ import ErrorBoundary from "../shared/ErrorBoundary";
 import CityInfoBar from "./CityInfoBar";
 import { defaultAuthState } from "../utilities/auth/graphql/authDefaultState";
 import LanguageProvider from "../utilities/lang/LanguageContext";
+import '@radix-ui/themes/styles.css';
+import Disclaimer from "./Disclaimer";
+
 
 const displayNavbar = (hideNavbar) => {
   if (hideNavbar || window.location.pathname === "/mini_search") {
@@ -26,10 +29,24 @@ const displayNavbar = (hideNavbar) => {
 class Main extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      disclaimerAccepted: false,  // Set initial state for disclaimer visibility
+    };
+
+    this.handleAcceptDisclaimer = this.handleAcceptDisclaimer.bind(this);
+  }
+
+  handleAcceptDisclaimer() {
+    localStorage.setItem('disclaimerAccepted', 'true');
+    this.setState({ disclaimerAccepted: true });  // Corrected: Use this.setState()
   }
 
   componentDidMount() {
+    const accepted = localStorage.getItem('disclaimerAccepted');
+    if (accepted === 'true') {
+      this.setState({ disclaimerAccepted: true });
+    }
+
     const defaultUser = defaultAuthState.user;
     this.props.updateUser({
       variables: {
@@ -42,7 +59,14 @@ class Main extends React.Component {
     });
   }
 
+
+
   render() {
+    const { disclaimerAccepted } = this.state;
+
+    if (!disclaimerAccepted) {
+      return <Disclaimer onAccept={this.handleAcceptDisclaimer} />;
+    }
     return (
       <div
         className={
@@ -50,13 +74,14 @@ class Main extends React.Component {
             ? "app-parent hidden-navbar"
             : "app-parent"
         }
-      >
+      >        
         <LanguageProvider>
           <a href="#content" className="skip-nav-link">
             Skip to Main Content
           </a>
           {displayNavbar(this.props.location.query.hideNavbar)}
           <div className="container" id="content">
+          {/* <Disclaimer /> */}
             <EnvBanner />
             {/* <Banner color="orange" path="/">
               <>

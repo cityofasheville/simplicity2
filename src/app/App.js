@@ -11,7 +11,6 @@ import ErrorBoundary from "../shared/ErrorBoundary";
 import CityInfoBar from "./CityInfoBar";
 import { defaultAuthState } from "../utilities/auth/graphql/authDefaultState";
 import LanguageProvider from "../utilities/lang/LanguageContext";
-import '@radix-ui/themes/styles.css';
 import Disclaimer from "./Disclaimer";
 
 

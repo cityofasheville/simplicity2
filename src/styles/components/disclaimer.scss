@@ -1,4 +1,5 @@
 
+
 @import "@radix-ui/colors/black-alpha.css";
 @import "@radix-ui/colors/mauve.css";
 @import "@radix-ui/colors/red.css";
@@ -9,30 +10,17 @@ button {
 	all: unset;
 }
 
-/* Disclaimer.css */
-.fade-in {
-	opacity: 0;
-	animation: fadeIn 3s ease-in-out forwards;
-  }
-  
-  @keyframes fadeIn {
-	0% {
-	  opacity: 0;
-	}
-	100% {
-	  opacity: 1;
-	}
-  }
-  
-
 .AlertDialogOverlay {
-	background-color: lightgrey;
+	z-index: 9998;
+	backdrop-filter: blur(4px);
+	background-color: rgba(0, 0, 0, 0.3);
 	position: fixed;
 	inset: 0;
-	animation: overlayShow 1s cubic-bezier(0.16, 1, 0.3, 1);
+	animation: overlayShow .5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .AlertDialogContent {
+	z-index: 9999;
 	background-color: white;
 	border-radius: 6px;
 	box-shadow:
@@ -46,9 +34,7 @@ button {
 	max-width: 500px;
 	max-height: 85vh;
 	padding: 25px;
-	// animation: contentShow 1s cubic-bezier(0.16, 1, 0.3, 1);
-	opacity: 0;
-	animation: fadeIn .5s ease-in-out forwards;
+	animation: contentShow .5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .AlertDialogContent:focus {
 	outline: none;
@@ -58,7 +44,7 @@ button {
 	margin-top: 5px;
 	margin-bottom: 30px;
 	color: var(--mauve-12);
-	font-size: 25px;
+	font-size: 17px;
 	font-weight: 500;
 }
 
@@ -88,3 +74,5 @@ button {
 		transform: translate(-50%, -50%) scale(1);
 	}
 }
+
+

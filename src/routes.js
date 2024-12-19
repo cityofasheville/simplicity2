@@ -66,6 +66,7 @@ import PCardCompliance from "./app/internal/pcard_compliance/PCardCompliance";
 import PCardComplianceReceipts from "./app/internal/pcard_compliance/PCardComplianceReceipts";
 // General
 import NotFound from "./shared/NotFound";
+import Disclaimer from "./app/Disclaimer";
 
 // Google Analytics
 // const ReactGA = require('react-ga');

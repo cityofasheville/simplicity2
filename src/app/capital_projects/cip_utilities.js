@@ -119,7 +119,6 @@ export const getFundsAllocatedAndExpended = (projectData, categories, mode) => {
         if (project.total_project_funding_budget_document !== null && project.total_project_funding_budget_document.trim() !== '') {
           let cleanBudgetAmount = project.total_project_funding_budget_document.replace(/ /g, "");
           let allocated = cleanBudgetAmount.indexOf('$') === 0 ? cleanBudgetAmount.slice(1).split(',').join('') : cleanBudgetAmount.split(',').join('');
-          // console.log(cleanBudgetAmount, allocated, isNaN(allocated));
           if (!isNaN(allocated)) {
             totalAllocated += parseFloat(allocated);
           }
@@ -136,17 +135,22 @@ export const getFundsAllocatedAndExpended = (projectData, categories, mode) => {
   }];
 };
 
-export const filterProjects = (projects, categories, mode) => {
+export const filterProjects = (projects, categories, types, mode) => {
   const filteredProjects = [];
   for (let project of projects) {
-    if (categories.includes(project.category)) {
-      if (mode === 'bond') {
-        if (project.type.toLowerCase() === 'bond') {
-          filteredProjects.push(project);
-        }
+    const isCategoryMatch = categories.includes(project.category);
+    let isTypeMatch = types.includes(project.type); 
+
+    if (project.type == 'Bond') {
+      if (types.includes('Bond 2016')) {
+        isTypeMatch = true
       } else {
-        filteredProjects.push(project);
+        isTypeMatch = false
       }
+    } 
+
+    if (isCategoryMatch && isTypeMatch) {
+      filteredProjects.push(project);
     }
   }
   return filteredProjects;

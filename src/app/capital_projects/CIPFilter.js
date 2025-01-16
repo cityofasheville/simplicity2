@@ -10,8 +10,11 @@ import { english } from './english';
 import { spanish } from './spanish';
 import Icon from '../../shared/Icon';
 import { IM_INFO } from '../../shared/iconConstants';
+import { useEffect, useState } from 'react';
 
 const CIPFilter = (props) => {
+  let [newValues, updateNewValues] = useState([])
+
   // set language
   let content;
   switch (props.language.language) {
@@ -22,38 +25,43 @@ const CIPFilter = (props) => {
       content = english;
   }
 
-  const toggleMode = () => (
-    {
-      mode: props.location.query.mode === 'bond' ? 'all' : 'bond',
-      selected: props.selected.map(cat => urlCategory(cat)),
-    }
-  );
+  function updateURL(url, values) {
+    const params = new URLSearchParams(url.split('?')[1]);
+    const baseUrl = url.split('?')[0];
+    let serializedArray;
 
-  const getNewUrlParams = (selected) => {
-    const newSelected = selected.map(cat => urlCategory(cat));
-    return {
-      selected: newSelected.join(','),
-    };
-  };
+    if (values.length > 1) {
+      serializedArray = values.join(',');
+    } else {
+      serializedArray = values
+    }
+
+    if (props.variableString == 'categories') {
+      params.set('categories', serializedArray);
+    } else if (props.variableString == 'types') {
+      params.set('types', serializedArray);
+    }
+
+    const updatedUrl = `${baseUrl}?${params.toString()}`;
+    window.history.pushState({}, '', updatedUrl);
+    props.setUpdatedURL(updatedUrl)
+}
 
   const handleClick = (checkedValues) => {
     let newValues = checkedValues;
     if (checkedValues.includes('All') && !visibleSelection.includes('All')) {
-      newValues = [...props.categories];
+      newValues = [...props.filter_variable];
     } else if (!checkedValues.includes('All') && visibleSelection.includes('All')) {
       newValues = [];
-    }
-    refreshLocation(getNewUrlParams(newValues.filter(e => e !== 'All')), props.location);
+    } 
+    updateURL(location.href, newValues.filter(e => e !== 'All'))
+    getVisibleSelection()
   };
-
-  const bondOnly = props.location.query.mode === 'bond';
-
+  
   const getVisibleSelection = () => {
-    let { selected } = props;
-    if (bondOnly) {
-      selected = selected.filter(e => props.bond_categories.indexOf(e) !== -1);
-    }
-    if (selected.length > 0) {
+      let { selected } = props;
+
+    if (selected.length == props.filter_variable.length) {
       selected.push('All');
     }
     return selected;
@@ -68,7 +76,7 @@ const CIPFilter = (props) => {
         <CheckboxGroup
           checkedValues={visibleSelection}
           indeterminateValues={realSelection.length <
-            (bondOnly ? props.categories.length - 1 : props.categories.length) &&
+            (props.filter_variable.length) &&
             realSelection.length > 0 ? ['All'] : []}
           onChange={handleClick}
           className="checkboxGroup"
@@ -76,35 +84,17 @@ const CIPFilter = (props) => {
           <FilterCheckbox
             label="All"
             value="All"
-            // selected={visibleSelection.includes('All')}
+            selected={visibleSelection.includes('All')}
           />
-          {props.categories.filter(e => e !== 'All').map((category, index) => (
+          {props.filter_variable.filter(e => e !== 'All').map((type, index) => (
             <FilterCheckbox
-              key={['SummaryCard', category, index].join('_')}
-              label={category}
-              value={category}
-              // selected={visibleSelection.includes(category)}
-              disabled={props.location.query.mode === 'bond' &&
-                !props.bond_categories.includes(category)}
+              key={['SummaryCard', type, index].join('_')}
+              label={type}
+              value={type}
+              selected={visibleSelection.includes(type)}
             />
           ))}
         </CheckboxGroup>
-        <div className="toggle toggle--table">
-          <div>
-            <label>
-              <span
-                title={content.bond_definition_note} // eslint-disable-line
-                style={{ marginRight: '5px' }}
-              ><Icon path={IM_INFO} size={16} color="#4077a7" />
-              </span>
-              <span>{content.include_only_bond_projects}</span>
-              <Toggle
-                defaultChecked={props.location.query.mode === 'bond'}
-                onChange={() => refreshLocation(toggleMode(), props.location)}
-              />
-            </label>
-          </div>
-        </div>
       </div>
     </div>
   );

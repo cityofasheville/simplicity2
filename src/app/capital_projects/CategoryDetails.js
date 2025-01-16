@@ -146,6 +146,7 @@ const CategoryDetails = props => (
     query={GET_PROJECTS}
     variables={{
       categories: props.categories,
+      types: props.types,
     }}
   >
     {({ loading, error, data }) => {
@@ -225,12 +226,14 @@ const CategoryDetails = props => (
         </div>
       );
 
+      const actualTypes = props.types;
       const actualCategories = props.categories;
       actualCategories.sort((a, b) =>
         props.sortedCategories.indexOf(a) > props.sortedCategories.indexOf(b));
       const filteredProjects = filterProjects(
         data.cip_projects,
         actualCategories,
+        actualTypes,
         props.location.query.mode,
       );
       const fundingDetails = getFundsAllocatedAndExpended(

@@ -135,7 +135,8 @@ const CapitalProjectsSummary = props => {
           <CategoryDetails
             location={props.location}
             // Mystery I have not been able to figure out: if I use the commented code below, and click a box, 
-            // an error is thrown. 
+            // an error is thrown. Is it fine doing it the way that works, even though it's different from 
+            // how it's done in the CIPfilter component?
             // categories={selectedCats}
             // types={selectedTypes}
             categories={getSelectedFromURL().categories}

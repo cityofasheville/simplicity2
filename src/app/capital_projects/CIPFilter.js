@@ -11,6 +11,8 @@ import { spanish } from './spanish';
 import Icon from '../../shared/Icon';
 import { IM_INFO } from '../../shared/iconConstants';
 import { useEffect, useState } from 'react';
+import { browserHistory } from 'react-router';
+
 
 const CIPFilter = (props) => {
   let [newValues, updateNewValues] = useState([])
@@ -26,8 +28,8 @@ const CIPFilter = (props) => {
   }
 
   function updateURL(url, values) {
+    let baseUrl = location.pathname;
     const params = new URLSearchParams(url.split('?')[1]);
-    const baseUrl = url.split('?')[0];
     let serializedArray;
 
     if (values.length > 1) {
@@ -42,9 +44,8 @@ const CIPFilter = (props) => {
       params.set('types', serializedArray);
     }
 
-    const updatedUrl = `${baseUrl}?${params.toString()}`;
-    window.history.pushState({}, '', updatedUrl);
-    props.setUpdatedURL(updatedUrl)
+    const updatedURL = `${baseUrl}?${params.toString()}`;
+    browserHistory.replace(updatedURL)
 }
 
   const handleClick = (checkedValues) => {
@@ -55,7 +56,6 @@ const CIPFilter = (props) => {
       newValues = [];
     } 
     updateURL(location.href, newValues.filter(e => e !== 'All'))
-    getVisibleSelection()
   };
   
   const getVisibleSelection = () => {
@@ -68,23 +68,18 @@ const CIPFilter = (props) => {
   };
 
   const visibleSelection = getVisibleSelection();
-  const realSelection = visibleSelection.filter(e => e !== 'All');
 
   return (
     <div>
       <div>
         <CheckboxGroup
           checkedValues={visibleSelection}
-          indeterminateValues={realSelection.length <
-            (props.filter_variable.length) &&
-            realSelection.length > 0 ? ['All'] : []}
           onChange={handleClick}
           className="checkboxGroup"
         >
           <FilterCheckbox
             label="All"
             value="All"
-            selected={visibleSelection.includes('All')}
           />
           {props.filter_variable.filter(e => e !== 'All').map((type, index) => (
             <FilterCheckbox

@@ -41,7 +41,7 @@ const CapitalProjectsSummary = props => (
           content = english;
       }
 
-      const allTypes = ['Bond 2016', 'Bond 2024', 'CIP', 'Helene']
+      const allTypes = ['Bond 2016', 'Bond 2024', 'Operating Budget', 'Helene']
       let allCats = Array.from(data.cip_project_categories);
       allCats.sort((a, b) => (a.category_number > b.category_number) ? 1 : ((b.category_number > a.category_number) ? -1 : 0)).map((item) => item.category_name); // eslint-disable-line
       allCats = allCats.map(cat => cat.category_name);

@@ -149,6 +149,14 @@ export const filterProjects = (projects, categories, types, mode) => {
       }
     } 
 
+    if (project.type == 'CIP') {
+      if (types.includes('Operating Budget')) {
+        isTypeMatch = true
+      } else {
+        isTypeMatch = false
+      }
+    } 
+
     if (isCategoryMatch && isTypeMatch) {
       filteredProjects.push(project);
     }

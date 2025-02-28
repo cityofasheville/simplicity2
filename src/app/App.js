@@ -80,14 +80,14 @@ class Main extends React.Component {
           {displayNavbar(this.props.location.query.hideNavbar)}
           <div className="container" id="content">
             <EnvBanner />
-            <Banner color="orange" path="*">
+            {/* <Banner color="orange" path="*">
               <>
                 <p style={{fontWeight: '500', fontSize: '1.25rem', textAlign: 'center' }}>
                   <em>IMPORTANT: Planned Maintenance Outage for All GIS Services</em>
                 </p>
                 <p style={{textAlign: 'center', fontSize: '1.25rem', }}>Friday, February 28, 7 a.m. – 10 a.m.</p>
               </>
-            </Banner>
+            </Banner> */}
             <ErrorBoundary>{this.props.children}</ErrorBoundary>
           </div>
           {!this.props.location.query.hideNavbar && <Footer />}

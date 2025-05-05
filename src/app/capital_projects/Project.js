@@ -238,16 +238,7 @@ const Project = (props) => (
       return (
         <main className="container">
           <h1 className="title__text">{project.display_name}</h1>
-          {project.project_webpage_more_information && (
-            <div style={{ marginTop: "16px" }}>
-              <a href={project.project_webpage_more_information}>
-                {" "}
-                <span>{getIcon("Sphere")}</span> Project Website
-              </a>
-            </div>
-          )}
           <h2>Overview</h2>
-
           <p className="permit-description" style={{ marginTop: "16px" }}>
             {project.project_description}
           </p>
@@ -255,6 +246,14 @@ const Project = (props) => (
           {project.project_updates && (
             <div>
               <h2>Updates</h2>
+              {project.project_webpage_more_information && (
+            <div style={{ marginTop: "16px", marginBottom: "16px" }}>
+              <a href={project.project_webpage_more_information}>
+                {" "}
+                <span>{getIcon("Sphere")}</span> Project Website
+              </a>
+            </div>
+          )}
               {project.project_updates}
             </div>
           )}
@@ -263,7 +262,7 @@ const Project = (props) => (
             className="row"
             style={{
               padding: "11px",
-              marginTop: "40px",
+              marginTop: "30px",
             }}
           >
             <div className={columnClass} style={columnStyle}>

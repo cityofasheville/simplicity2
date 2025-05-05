@@ -302,6 +302,7 @@ const Project = (props) => (
         // padding: "20px"
         border: "4px solid white",
         textAlign: "center",
+        // whiteSpace: "nowrap"
       };
 
       const titleStyle = {
@@ -350,9 +351,9 @@ const Project = (props) => (
               </div>
             
               {project.status !== null && (
-                <div>
-                <div className="capital-project__status" style={{ whiteSpace: "nowrap" }}>
-                  <div
+                <div style={{ whiteSpace: "nowrap" }}>
+                {project.status !== 'Proposed' && <div className="capital-project__status" style={{ whiteSpace: "nowrap" }}>
+                  <span
                     className="project-status"
                     style={{ whiteSpace: "nowrap" }}
                   >
@@ -362,22 +363,22 @@ const Project = (props) => (
                       color={
                         getStageNumber(project.status) >= 1
                           ? phaseColor(1)
-                          : "#ecf0f1"
+                          : "#ffffff"
                       }
                     />
-                  </div>
-                  <div className="project-status">
+                  </span>
+                  <span className="project-status">
                     <Icon
                       path={IM_CIRCLE2}
                       size={25}
                       color={
                         getStageNumber(project.status) >= 2
                           ? phaseColor(2)
-                          : "#ecf0f1"
+                          : "#ffffff"
                       }
                     />
-                  </div>
-                  <div className="project-status">
+                  </span>
+                  <span className="project-status">
                     <Icon
                       path={IM_CIRCLE2}
                       size={25}
@@ -386,24 +387,24 @@ const Project = (props) => (
                           ? "#FFC107"
                           : getStageNumber(project.status) >= 3
                           ? phaseColor(3)
-                          : "#ecf0f1"
+                          : "#ffffff"
                       }
                     />
-                  </div>
+                  </span>
                   {project.status !== "Ongoing" && (
-                    <div className="project-status">
+                    <span className="project-status">
                       <Icon
                         path={IM_CIRCLE2}
                         size={25}
                         color={
                           getStageNumber(project.status) >= 4
                             ? phaseColor(4)
-                            : "#ecf0f1"
+                            : "#ffffff"
                         }
                       />
-                    </div>
+                    </span>
                   )}
-                  <div
+                  <span
                     style={{
                       color:
                         project.status === "Ongoing"
@@ -412,15 +413,17 @@ const Project = (props) => (
                     }}
                   >
 
-                  </div>
-                </div>
-                <span
+                  </span>
+
+                  <span
                       style={{
                         color: phaseColor(getStageNumber(project.status), true), whiteSpace: "nowrap",
                       }}
                     >
                       {project.status}
                     </span>
+                </div>}
+
                 </div>
                 
               )}

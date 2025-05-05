@@ -1,131 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { Query } from "react-apollo";
-import gql from "graphql-tag";
+
 import Collapsible from "../../shared/Collapsible";
 import ProjectsTable from "./ProjectsTable";
-import { getFundsAllocatedAndExpended, filterProjects, getIcon } from "./cip_utilities";
-import Icon from "../../shared/Icon";
 import {
-  IM_SHIELD3,
-  IM_TREE,
-  IM_HOME2,
-  IM_BUS,
-  LI_BOLD,
-  IM_INFO,
-  IM_DROPLET,
-  IM_HAMMER,
-  IM_LOCATION,
-  IM_CITY,
-  IM_USERS,
-  IM_LIBRARY2
-} from "../../shared/iconConstants";
-import LoadingAnimation from "../../shared/LoadingAnimation";
-import Error from "../../shared/Error";
+  getFundsAllocatedAndExpended,
+  filterProjects,
+  getIcon,
+} from "./cip_utilities";
+import Icon from "../../shared/Icon";
+import { IM_INFO } from "../../shared/iconConstants";
 import { withLanguage } from "../../utilities/lang/LanguageContext";
 import { english } from "./english";
 import { spanish } from "./spanish";
-import ProjectsMap from "./ProjectsMap";
-import { filter } from "d3-array";
-import ProjectsTableRefactor from "./ProjectsTableRefactor";
-import CIPFilter from "./CIPFilter";
+import ProjectMap from "../../shared/visualization/ProjectMap";
 import CPCheckboxes from "./CPCheckboxes";
 import { browserHistory } from "react-router";
-
-// This component receives data from parents, then filters it based on url params (from cip filter only).
-// The data is given to the react table component, which filters based on url params for the table column
-// That component updates a different data variable in the parent (dataFromTable) which is given to the map component
-// voila
-// this was set up this way so that the filters and table aren't trying to update the same data variable, as this causes issues
-
-// const getIcon = (type, bond) => {
-//   switch (type) {
-//     case "Transportation & Infrastructure":
-//       if (bond) {
-//         return (
-//           <span>
-//             <Icon path={IM_BUS} size={25} color="#4077a5" />
-//             <Icon
-//               path={LI_BOLD}
-//               size={16}
-//               color="#4077a5"
-//               viewBox="0 0 24 24"
-//             />
-//           </span>
-//         );
-//       }
-//       return <Icon path={IM_BUS} size={25} color="#4077a5" />;
-//     case "Parks & Recreation":
-//       if (bond) {
-//         return (
-//           <span>
-//             <Icon path={IM_TREE} size={25} color="#4077a5" />
-//             <Icon
-//               path={LI_BOLD}
-//               size={16}
-//               color="#4077a5"
-//               viewBox="0 0 24 24"
-//             />
-//           </span>
-//         );
-//       }
-//       return <Icon path={IM_TREE} size={25} color="#4077a5" />;
-//     case "Housing Program":
-//       if (bond) {
-//         return (
-//           <span>
-//             <Icon path={IM_HOME2} size={25} color="#4077a5" />
-//             <Icon
-//               path={LI_BOLD}
-//               size={16}
-//               color="#4077a5"
-//               viewBox="0 0 24 24"
-//             />
-//           </span>
-//         );
-//       }
-//       return <Icon path={IM_HOME2} size={25} color="#4077a5" />;
-//     case "Public Safety":
-//       return <Icon path={IM_SHIELD3} size={25} color="#4077a5" />;
-//     case "Water":
-//       return <Icon path={IM_DROPLET} size={25} color="#4077a6" />;
-//     case "Building Construction":
-//       return <Icon path={IM_HAMMER} size={25} color="#4077a6" />;
-//     case "Entertainment Facilities":
-//       return <Icon path={IM_CITY} size={25} color="#4077a5" />;
-//     case "Other":
-//       return (
-//         <svg
-//           xmlns="http://www.w3.org/2000/svg"
-//           height="25px"
-//           transform="translate(0,4)"
-//           version="1.1"
-//           viewBox="0 0 16 16"
-//           width="25px"
-//         >
-//           <g
-//             fill="none"
-//             fillRule="evenodd"
-//             id="Icons with numbers"
-//             stroke="none"
-//             strokeWidth="1"
-//           >
-//             <g
-//               fill="#4077a5"
-//               id="Group"
-//               transform="translate(-528.000000, -576.000000)"
-//             >
-//               <path
-//                 d="M536,592 C531.581722,592 528,588.418278 528,584 C528,579.581722 531.581722,576 536,576 C540.418278,576 544,579.581722 544,584 C544,588.418278 540.418278,592 536,592 Z M541,586 C542.10457,586 543,585.10457 543,584 C543,582.89543 542.10457,582 541,582 C539.89543,582 539,582.89543 539,584 C539,585.10457 539.89543,586 541,586 Z M531,586 C532.10457,586 533,585.10457 533,584 C533,582.89543 532.10457,582 531,582 C529.89543,582 529,582.89543 529,584 C529,585.10457 529.89543,586 531,586 Z M536,586 C537.10457,586 538,585.10457 538,584 C538,582.89543 537.10457,582 536,582 C534.89543,582 534,582.89543 534,584 C534,585.10457 534.89543,586 536,586 Z M536,586"
-//                 id="Oval 12 copy"
-//               />
-//             </g>
-//           </g>
-//         </svg>
-//       );
-//     default:
-//       return null;
-//   }
-// };
 
 const getDollars = (value) => {
   let formatted;
@@ -184,9 +73,10 @@ function CategoryDetails(props) {
           Object.assign({}, d, {
             x: coord.x,
             y: coord.y,
-            popup: `<strong><a href="/capital_projects/${d.gis_id}">${d.display_name}</a></strong><br/>
-        ${d.project_description ? d.project_description : ""}`
-
+            popup: `<strong><a href="/capital_projects/${d.gis_id}">${
+              d.display_name
+            }</a></strong><br/>
+        ${d.project_description ? d.project_description : ""}`,
           })
         );
       })
@@ -402,6 +292,14 @@ function CategoryDetails(props) {
     <div>
       <div className="row">
         <div className="col-sm-12">
+        <Icon path={IM_INFO} size={16} color="#4077a7" />
+          <a href="/capital_projects/about" style={{marginLeft: "4px"}}>
+            Click here to learn more about Capital Projects
+          </a>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-sm-12">
           <div className="funding-summary">
             <div className="col-sm-4 col-xs-4">
               <h2>
@@ -410,7 +308,6 @@ function CategoryDetails(props) {
                     title={content.total_budget_note} // eslint-disable-line
                     style={{ marginRight: "5px" }}
                   >
-                    <Icon path={IM_INFO} size={16} color="#4077a7" />
                   </span>
                   {content.total_budget}:
                 </span>
@@ -430,21 +327,18 @@ function CategoryDetails(props) {
               </h2>
             </div>
           </div>
-          <div className="row">
-            <div className="col-sm-12">
-              <a href="/capital_projects/about">Click here to learn more about Capital Projects</a>
-            </div>
-          </div>
+
           <div
             className="map-container"
             style={{ height: "350px", width: "100%" }}
           >
-            <ProjectsMap
-              permitData={mapData}
+            <ProjectMap
+              data={mapData}
+              center={[35.5951, -82.5515]}
+              height="100%"
+              width="100%"
               zoom={12}
-              centerCoords={[35.5951, -82.5515]}
               eventHandlers={{ click: handleMarkerClick }}
-              style={{ marginBottom: "10px" }}
             />
           </div>
           <div style={{ marginTop: "10px" }}>
@@ -500,7 +394,7 @@ function CategoryDetails(props) {
               {content.select_a_category}
             </div>
           ) : (
-            <ProjectsTableRefactor
+            <ProjectsTable
               data={updatedData}
               language={{ language: "English" }}
               updateData={setUpdatedData}

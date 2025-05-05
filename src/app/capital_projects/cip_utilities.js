@@ -184,13 +184,13 @@ export const urlCategory = category => (
   encodeURIComponent(category)
 );
 
-export function getIcon(type, bond) {
+export function getIcon(type, bond, size=25) {
   switch (type) {
     case "Transportation & Infrastructure":
       if (bond) {
         return (
           <span>
-            <Icon path={IM_BUS} size={25} color="#4077a5" />
+            <Icon path={IM_BUS} size={size} color="#4077a5" />
             <Icon
               path={LI_BOLD}
               size={16}
@@ -200,12 +200,12 @@ export function getIcon(type, bond) {
           </span>
         );
       }
-      return <Icon path={IM_BUS} size={25} color="#4077a5" />;
+      return <Icon path={IM_BUS} size={size} color="#4077a5" />;
     case "Parks & Recreation":
       if (bond) {
         return (
           <span>
-            <Icon path={IM_TREE} size={25} color="#4077a5" />
+            <Icon path={IM_TREE} size={size} color="#4077a5" />
             <Icon
               path={LI_BOLD}
               size={16}
@@ -215,12 +215,12 @@ export function getIcon(type, bond) {
           </span>
         );
       }
-      return <Icon path={IM_TREE} size={25} color="#4077a5" />;
+      return <Icon path={IM_TREE} size={size} color="#4077a5" />;
     case "Housing Program":
       if (bond) {
         return (
           <span>
-            <Icon path={IM_HOME2} size={25} color="#4077a5" />
+            <Icon path={IM_HOME2} size={size} color="#4077a5" />
             <Icon
               path={LI_BOLD}
               size={16}
@@ -230,26 +230,26 @@ export function getIcon(type, bond) {
           </span>
         );
       }
-      return <Icon path={IM_HOME2} size={25} color="#4077a5" />;
+      return <Icon path={IM_HOME2} size={size} color="#4077a5" />;
     case "Public Safety":
-      return <Icon path={IM_SHIELD3} size={25} color="#4077a5" />;
+      return <Icon path={IM_SHIELD3} size={size} color="#4077a5" />;
     case "Water":
-      return <Icon path={IM_DROPLET} size={25} color="#4077a6" />;
+      return <Icon path={IM_DROPLET} size={size} color="#4077a6" />;
     case "Building Construction":
-      return <Icon path={IM_HAMMER} size={25} color="#4077a6" />;
+      return <Icon path={IM_HAMMER} size={size} color="#4077a6" />;
     case "Entertainment Facilities":
-      return <Icon path={IM_CITY} size={25} color="#4077a5" />;
+      return <Icon path={IM_CITY} size={size} color="#4077a5" />;
     case "Sphere":
-      return <Icon path={IM_SPHERE3} size={25} color="#4077a5" />;
+      return <Icon path={IM_SPHERE3} size={size} color="#4077a5" />;
     case "Other":
       return (
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          height="25px"
+          height={size}
           transform="translate(0,4)"
           version="1.1"
           viewBox="0 0 16 16"
-          width="25px"
+          width={size}
         >
           <g
             fill="none"

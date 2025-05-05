@@ -12,16 +12,7 @@ import {
   IM_CIRCLE2,
 } from "../../shared/iconConstants";
 import { getIcon } from "./cip_utilities";
-
-// import PermitsMap from './PermitsMap';
-// // import PermitSearchBar from './PermitSearchBar';
-// // import PermitSearchWrapper from "./PermitSearchWrapper";
 import SuggestSearchWrapper from "../search/SuggestSearchWrapper";
-// import PermitTimeline from './PermitTimeline';
-// import { permitFieldFormats } from './utils';
-// import { orderedDates } from '../trc/textContent';
-// import { getTRCTypeFromPermit } from '../trc/utils';
-// import { statusTranslation } from '../utils';
 
 const getStageNumber = (stage) => {
   switch (stage) {
@@ -39,46 +30,6 @@ const getStageNumber = (stage) => {
       return 0;
   }
 };
-
-function getStageColors(stage, isText = false) {
-  switch (stage) {
-    case "Planning":
-      if (isText) {
-        return "#86298a";
-      }
-      return "#f844ff";
-    case "Design":
-      if (isText) {
-        return "#17607a";
-      }
-      return "#44cdff";
-    case "Construction":
-      if (isText) {
-        return "#a13210";
-      }
-      return "#FF5722";
-    case "Completed":
-      if (isText) {
-        return "#317501";
-      }
-      return "#57d500";
-    default:
-      return "#57d500";
-  }
-}
-
-// const phaseColor = (phaseNumber) => {
-//     switch (phaseNumber) {
-//       case 1:
-//         return '#f844ff';
-//       case 2:
-//         return '#44cdff';
-//       case 3:
-//         return '#FF5722';
-//       default:
-//         return '#57d500';
-//     }
-//   };
 
 const phaseColor = (phaseNumber, isText = false) => {
   switch (phaseNumber) {
@@ -104,19 +55,6 @@ const phaseColor = (phaseNumber, isText = false) => {
       return "#57d500";
   }
 };
-
-// const phaseColor = (phaseNumber) => {
-//   switch (phaseNumber) {
-//     case 1:
-//       return "#86298a";
-//     case 2:
-//       return "#17607a";
-//     case 3:
-//       return "#a13210";
-//     default:
-//       return "#317501";
-//   }
-// };
 
 const GET_PROJECTS = gql`
   query cip_projects($categories: [String]) {
@@ -262,53 +200,28 @@ const Project = (props) => (
         return null;
       };
 
-      // const containerStyle = {
-      //   display: "flex",
-      //   justifyContent: "space-between",
-      //   padding: "20px",
-      //   border: 'solid'
-
-      // };
-
       const containerStyle = {
         display: "flex",
         flexWrap: "wrap",
         justifyContent: "space-between",
         border: "solid",
-        gap: "10px", // optional: adds consistent spacing
       };
-
-      // const columnStyle = {
-      //   display: "flex",
-      //   flexDirection: "column",
-      //   alignItems: "center",
-      //   margin: "0 10px",
-      //   border: 'solid'
-      // };
 
       const columnStyle = {
         background: "rgb(242, 242, 242)",
         display: "flex",
-        flexDirection: "column", // stack children vertically
-        justifyContent: "center", // vertical alignment
-        alignItems: "center", // horizontal alignment
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
         height: "120px",
-        // border: "1px solid black",
-        // marginBottom: "10px",
-        // margin: "10px",
-        // width: '24%',
-        // marginRight: '1%',
-        // boxSizing: 'border-box', 
-        // padding: "20px"
         border: "4px solid white",
         textAlign: "center",
-        // whiteSpace: "nowrap"
       };
 
       const titleStyle = {
         fontWeight: "bold",
         marginBottom: "5px",
-        whiteSpace: "nowrap",
+        // whiteSpace: "nowrap",
       };
 
       const valueStyle = {
@@ -317,6 +230,10 @@ const Project = (props) => (
       };
 
       const columnClass = "col-xs-12 col-sm-6 col-md-3";
+
+      const iconSpanStyle = {
+        verticalAlign: "middle",
+      }
 
       return (
         <main className="container">
@@ -331,8 +248,6 @@ const Project = (props) => (
           )}
           <h2>Overview</h2>
 
-          
-
           <p className="permit-description" style={{ marginTop: "16px" }}>
             {project.project_description}
           </p>
@@ -344,88 +259,100 @@ const Project = (props) => (
             </div>
           )}
 
-<div className="row" style={{paddingRight: "16px", paddingLeft: "1px", marginTop: "40px"}}>
+          <div
+            className="row"
+            style={{
+              padding: "11px",
+              marginTop: "40px",
+            }}
+          >
             <div className={columnClass} style={columnStyle}>
               <div className="" style={titleStyle}>
                 Phase
               </div>
-            
+
               {project.status !== null && (
-                <div style={{ whiteSpace: "nowrap" }}>
-                {project.status !== 'Proposed' && <div className="capital-project__status" style={{ whiteSpace: "nowrap" }}>
-                  <span
-                    className="project-status"
-                    style={{ whiteSpace: "nowrap" }}
-                  >
-                    <Icon
-                      path={IM_CIRCLE2}
-                      size={25}
-                      color={
-                        getStageNumber(project.status) >= 1
-                          ? phaseColor(1)
-                          : "#ffffff"
-                      }
-                    />
-                  </span>
-                  <span className="project-status">
-                    <Icon
-                      path={IM_CIRCLE2}
-                      size={25}
-                      color={
-                        getStageNumber(project.status) >= 2
-                          ? phaseColor(2)
-                          : "#ffffff"
-                      }
-                    />
-                  </span>
-                  <span className="project-status">
-                    <Icon
-                      path={IM_CIRCLE2}
-                      size={25}
-                      color={
-                        project.status === "Ongoing"
-                          ? "#FFC107"
-                          : getStageNumber(project.status) >= 3
-                          ? phaseColor(3)
-                          : "#ffffff"
-                      }
-                    />
-                  </span>
-                  {project.status !== "Ongoing" && (
-                    <span className="project-status">
-                      <Icon
-                        path={IM_CIRCLE2}
-                        size={25}
-                        color={
-                          getStageNumber(project.status) >= 4
-                            ? phaseColor(4)
-                            : "#ffffff"
-                        }
-                      />
-                    </span>
-                  )}
-                  <span
-                    style={{
-                      color:
-                        project.status === "Ongoing"
-                          ? "#FFC107"
-                          : phaseColor(getStageNumber(project.status)),
-                    }}
-                  >
-
-                  </span>
-
-                  <span
-                      style={{
-                        color: phaseColor(getStageNumber(project.status), true), whiteSpace: "nowrap",
-                      }}
+                <div style={{ whiteSpace: "nowrap", textAlign: "center" }}>
+                  {project.status !== "Proposed" && (
+                    <div
+                      className="capital-project__status"
+                      style={{ whiteSpace: "nowrap", textAlign: "center", marginBottom: "4px" }}
                     >
-                      {project.status}
-                    </span>
-                </div>}
+                      <span
+                        className="project-status"
+                        style={{ whiteSpace: "nowrap" }}
+                      >
+                        <Icon
+                          path={IM_CIRCLE2}
+                          size={25}
+                          color={
+                            getStageNumber(project.status) >= 1
+                              ? phaseColor(1)
+                              : "#ffffff"
+                          }
+                        />
+                      </span>
+                      <span className="project-status">
+                        <Icon
+                          path={IM_CIRCLE2}
+                          size={25}
+                          color={
+                            getStageNumber(project.status) >= 2
+                              ? phaseColor(2)
+                              : "#ffffff"
+                          }
+                        />
+                      </span>
+                      <span className="project-status">
+                        <Icon
+                          path={IM_CIRCLE2}
+                          size={25}
+                          color={
+                            project.status === "Ongoing"
+                              ? "#FFC107"
+                              : getStageNumber(project.status) >= 3
+                              ? phaseColor(3)
+                              : "#ffffff"
+                          }
+                        />
+                      </span>
+                      {project.status !== "Ongoing" && (
+                        <span className="project-status">
+                          <Icon
+                            path={IM_CIRCLE2}
+                            size={25}
+                            color={
+                              getStageNumber(project.status) >= 4
+                                ? phaseColor(4)
+                                : "#ffffff"
+                            }
+                          />
+                        </span>
+                      )}
+                      <span
+                        style={{
+                          color:
+                            project.status === "Ongoing"
+                              ? "#FFC107"
+                              : phaseColor(getStageNumber(project.status)),
+                        }}
+                      ></span>
 
+     
+                    </div>
+                  )}
+                                   <span
+                        style={{
+                          color: phaseColor(
+                            getStageNumber(project.status),
+                            true
+                          ),
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {project.status}
+                      </span>
                 </div>
-                
               )}
             </div>
 
@@ -433,8 +360,12 @@ const Project = (props) => (
               <div style={columnStyle} className={columnClass}>
                 <div style={titleStyle}>Category</div>
                 <div style={valueStyle}>
-                  <span>{getIcon(project.category)}</span>
-                  <span style={{whiteSpace: "normal"}}>{project.category}</span>
+                  <span >{getIcon(project.category, false, 20)}</span>
+                  <span style={{ whiteSpace: "normal", marginLeft: "4px",verticalAlign: "middle"}}>
+                    {project.category === "DCREF"
+                      ? "Entertainment Facilities"
+                      : project.category}
+                  </span>
                 </div>
               </div>
             )}
@@ -461,7 +392,9 @@ const Project = (props) => (
               <div style={columnStyle} className={columnClass}>
                 <div style={titleStyle}>Owner Department</div>
                 <div style={valueStyle}>
-                  <span style={{whiteSpace: "normal"}}>{project.owner_department}</span>
+                  <span style={{ whiteSpace: "normal" }}>
+                    {project.owner_department}
+                  </span>
                 </div>
               </div>
             )}
@@ -530,39 +463,17 @@ const Project = (props) => (
                   </div>
                 </div>
               )}
-              {/* {
-                project.map(d => d)} */}
-
-              {/* {project.project_updates && (
-                <div className="permit-form-group">
-                  <div
-                    className="display-label"
-                    style={{ whiteSpace: "nowrap" }}
-                  >
-                    Project Updates
-                  </div>
-                  <div style={{ width: "100%" }}>
-                    <span style={{ display: "block", textAlign: "right" }}>
-                      {project.project_updates}
-                    </span>
-                  </div>
-                </div>
-              )} */}
             </div>
           </div>
-          {/* <hr /> */}
-
-          {/* <div className="row"> */}
           <div style={{ marginTop: "21px" }}>
             <div className="">
               <h2>Project Contact</h2>
-              <ul style={{ listStyleType: "none" }}>
-                <li>{project.coa_contact}</li>
-                <li>{project.phone_number}</li>
-                <li>{project.email_address}</li>
-              </ul>
+              <address style={{ listStyleType: "none" }}>
+              <div><span>{project.coa_contact}</span></div>
+              <div><a href={`tel:${project.phone_number}`}>{project.phone_number}</a></div>
+              <div><a href={`mailto:${project.email_address}`}>{project.email_address}</a></div>
+              </address>
             </div>
-            {/* </div> */}
           </div>
         </main>
       );
@@ -583,82 +494,3 @@ Project.defaultProps = {
 };
 
 export default Project;
-
-// {project.category && (
-//   <div className="permit-form-group">
-//     <div className="display-label">Category</div>
-//     <div className="formatted-val">
-//       <span>{project.category}</span>
-//     </div>
-//   </div>
-// )}
-
-// {project.zip_code && (
-//   <div className="permit-form-group">
-//     <div className="display-label">Zip Code</div>
-//     <div className="formatted-val">
-//       <span>{project.zip_code}</span>
-//     </div>
-//   </div>
-// )}
-// {/*
-// {project.status && (
-//   <div className="permit-form-group">
-//     <div className="display-label">Phase</div>
-//     <div className="formatted-val">
-//       <span>
-//         {project.status}
-//       </span>
-//     </div>
-//   </div>
-// )} */}
-
-// {project.estimated_construction_duration && (
-//   <div className="permit-form-group">
-//     <div className="display-label">
-//       Estimated construction timeframe
-//     </div>
-//     <div className="formatted-val">
-//       <span>{project.estimated_construction_duration}</span>
-//     </div>
-//   </div>
-// )}
-
-// {project.owner_department && (
-//   <div className="permit-form-group">
-//     <div className="display-label">Owner Department</div>
-//     <div className="formatted-val">
-//       <span>{project.owner_department}</span>
-//     </div>
-//   </div>
-// )}
-// </div>
-{
-  /* <div className="col-sm-12 col-md-6 permit-details-card">
-              <h3>Contact</h3>
-              <div className="permit-form-group">
-                <div className="display-label">Department</div>
-                <div className="formatted-val">
-                  <span>{project.administering_department}</span>
-                </div>
-              </div>
-              <div className="permit-form-group">
-                <div className="display-label">Contact Name</div>
-                <div className="formatted-val">
-                  <span>{project.coa_contact}</span>
-                </div>
-              </div>
-              <div className="permit-form-group">
-                <div className="display-label">Phone</div>
-                <div className="formatted-val">
-                  <span>{project.phone_number}</span>
-                </div>
-              </div>
-              <div className="permit-form-group">
-                <div className="display-label">Email</div>
-                <div className="formatted-val">
-                  <span>{project.email_address}</span>
-                </div>
-              </div>
-            </div> */
-}

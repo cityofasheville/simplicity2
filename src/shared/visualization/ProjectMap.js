@@ -75,7 +75,7 @@ const markerClusterOptions = {
 //     [center[0] + degToAdd, center[1] + degToAdd]
 //   ];
 // };
-const MapCopy = (props) => {
+const ProjectMap = (props) => {
   const markers = [];
   for (let pt of props.data) {
     markers.push({
@@ -328,4 +328,4 @@ Map.defaultProps = {
   weight: 1.5,
 };
 
-export default MapCopy;
+export default ProjectMap;

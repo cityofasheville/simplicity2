@@ -49,6 +49,9 @@ const CIPFilter = (props) => {
 }
 
   const handleClick = (checkedValues) => {
+    if (event && event.preventDefault) {
+      event.preventDefault();
+    }
     let newValues = checkedValues;
     if (checkedValues.includes('All') && !visibleSelection.includes('All')) {
       newValues = [...props.filter_variable];
@@ -59,14 +62,15 @@ const CIPFilter = (props) => {
   };
   
   const getVisibleSelection = () => {
-      let { selected } = props;
-
-    if (selected.length == props.filter_variable.length) {
-      selected.push('All');
+    let { selected } = props;
+  
+    if (selected.length === props.filter_variable.length) {
+      return [...selected, 'All'];
     }
+  
     return selected;
   };
-
+  
   const visibleSelection = getVisibleSelection();
 
   return (

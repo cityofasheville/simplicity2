@@ -6,7 +6,7 @@ export const english = {
   bond_project_statuses: 'bond project statuses',
   budget: 'Budget',
   capital_projects: 'Capital Projects',
-  collapsible_text: 'Click here to learn how projects in each category are supported',
+  collapsible_text: 'Click here to learn more about capital projects',
   contact_email: 'Contact email',
   contact_phone:  'Contact phone',
   data_info: 'Some explanation of the data and limitations of the data',

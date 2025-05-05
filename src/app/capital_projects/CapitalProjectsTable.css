@@ -1,0 +1,226 @@
+/* reactTable.module.scss
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    box-sizing: border-box;
+  }
+  
+  /* .header {
+    background-color: #f4f4f4;
+    font-weight: bold;
+
+  } */
+/* 
+  
+  th {
+
+    flex: 1 0;
+    overflow: hidden;
+    padding: 7px 5px;
+    text-overflow: ellipsis;
+    transition: .3s ease;
+    transition-property: width, min-width, padding, opacity;
+    white-space: nowrap;
+
+border-collapse: collapse;
+border-right-color: rgb(34, 34, 34);
+border-right-style: none;
+border-right-width: 0px;
+box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px inset;
+box-sizing: border-box;
+color: rgb(34, 34, 34);
+display: block;
+flex-basis: auto;
+flex-grow: 500;
+flex-shrink: 0;
+font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 16px;
+font-weight: 100;
+height: 36.8516px;
+line-height: 22.8571px;
+overflow-x: hidden;
+overflow-y: hidden;
+padding-bottom: 7px;
+padding-left: 5px;
+padding-right: 5px;
+padding-top: 7px;
+text-align: center;
+text-overflow: ellipsis;
+text-size-adjust: 100%;
+text-wrap-mode: nowrap;
+transition-behavior: normal;
+transition-delay: 0s;
+transition-duration: 0.3s;
+transition-property: box-shadow;
+transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+unicode-bidi: isolate;
+white-space-collapse: collapse;
+width: 500px;
+}
+
+.ReactTable {
+    border-bottom-color: rgba(0, 0, 0, 0.1);
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-image-outset: 0;
+    border-image-repeat: stretch;
+    border-image-slice: 100%;
+    border-image-source: none;
+    border-image-width: 1;
+    border-left-color: rgba(0, 0, 0, 0.1);
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-right-color: rgba(0, 0, 0, 0.1);
+    border-right-style: solid;
+    border-right-width: 1px;
+    border-top-color: rgba(0, 0, 0, 0.1);
+    border-top-style: solid;
+    border-top-width: 1px;
+    box-sizing: border-box;
+    color: rgb(34, 34, 34);
+    display: block;
+    font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 100;
+    height: 1277.83px;
+    line-height: 22.8571px;
+    margin-bottom: 20px;
+    position: relative;
+    text-size-adjust: 100%;
+    unicode-bidi: isolate;
+    width: 720px;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  }
+   */ 
+
+   /* table.css */
+
+.table-container {
+  overflow-x: auto;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 14px;
+  padding: 14px;
+}
+
+ table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+}
+
+/* Header row */
+ thead {
+  background-color: #f8f8f8;
+  border-bottom: 1px solid #ddd;
+  padding: 10px 12px;
+
+}
+
+tr {
+      padding: 10px 12px;
+
+}
+
+ th {
+  text-align: left;
+  /* padding: 10px 12px; */
+  font-weight: 600;
+  color: #333;
+  border-right: 1px solid #e0e0e0;
+  background-color: #2e7d32;
+}
+
+ th:last-child {
+  border-right: none;
+}
+
+th .div{
+    padding: 10px 12px;
+
+}
+
+/* Filter input in header */
+ thead input {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+/* Table rows */
+ tbody tr {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+ tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* Table cells */
+ td {
+  padding: 10px 12px;
+  border-right: 1px solid #f0f0f0;
+  vertical-align: middle;
+  color: #333;
+}
+
+ td:last-child {
+  border-right: none;
+}
+
+/* Project name styling */
+.project-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+/* Icon styles (expand/collapse, project type) */
+.icon {
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+  color: #555;
+}
+
+.icon-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 4px 0 0;
+}
+
+.icon-button:hover {
+  opacity: 0.7;
+}
+
+/* Money columns */
+.money {
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Optional styling for 'Completed' / 'Construction' etc. */
+.phase-completed {
+  color: #2e7d32;
+  font-weight: 500;
+}
+
+.phase-construction {
+  color: #ef6c00;
+  font-weight: 500;
+}
+
+.phase-design {
+  color: #1976d2;
+  font-weight: 500;
+}
+
+.phase-planning {
+  color: #6a1b9a;
+  font-weight: 500;
+}

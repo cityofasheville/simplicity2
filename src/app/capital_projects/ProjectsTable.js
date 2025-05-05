@@ -47,9 +47,12 @@ const getIcon = (category, isExpanded) => {
 const ExpandableAccessibleReactTable = expandingRows(AccessibleReactTable);
 
 class ProjectsTable extends React.Component {
+  //do away with constructor
   constructor(props) {
     super(props);
     // set language
+    // content may need to be state, maybe not
+    //initialize content to english, doesn't need to be in state
     let content;
     switch (props.language.language) {
       case 'Spanish':
@@ -63,6 +66,20 @@ class ProjectsTable extends React.Component {
     };
   }
 
+  handleFilteredChange = (...args) => {
+    // The filtered data is inside `state.rows`
+    console.log('the stuff:', {args}); // Logs the filtered rows
+    // const currentRecords = this.selectTable.getResolvedState().sortedData;
+    console.log(this.selectTable);
+    // console.log('Filtered Rows:', state.filteredData); // Logs the filtered rows
+    // const reactTable = useReactTable()
+// const rows = reactTable.getRowModel().flatRows
+// console.log(rows)
+  };
+  
+  
+
+// don't need to replace, delete
   componentWillReceiveProps(nextProps) {
     let content;
     switch (nextProps.language.language) {
@@ -75,6 +92,7 @@ class ProjectsTable extends React.Component {
     this.setState({ content });
   }
 
+  
   dataColumns = () => ([
     {
       Header: this.state.content.project,
@@ -169,6 +187,9 @@ class ProjectsTable extends React.Component {
             >
               {({ measureRef }) => (
                 <ExpandableAccessibleReactTable
+                ref={(r) => {
+                  this.selectTable = r;
+                }}
                   // ref={measureRef}
                   tableId="projects"
                   ariaLabel={this.state.content.capital_projects}
@@ -178,6 +199,7 @@ class ProjectsTable extends React.Component {
                   defaultPageSize={20}
                   filterable
                   defaultFilterMethod={(filter, row) => {
+                    // console.log(row)
                     const id = filter.pivotId || filter.id;
                     return row[id] !== undefined ?
                       String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1
@@ -211,7 +233,8 @@ class ProjectsTable extends React.Component {
                       <ProjectDetails {...row.original} hideTitle />
                     </div>
                   )}
-                >
+                  onFilteredChange={this.handleFilteredChange}
+                  >
                   {(state, makeTable) => (
                     <div
                       ref={measureRef}

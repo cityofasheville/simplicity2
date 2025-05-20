@@ -292,8 +292,8 @@ function CategoryDetails(props) {
     <div>
       <div className="row">
         <div className="col-sm-12">
-        <Icon path={IM_INFO} size={16} color="#4077a7" />
-          <a href="/capital_projects/about" style={{marginLeft: "4px"}}>
+          <Icon path={IM_INFO} size={16} color="#4077a7" />
+          <a href="/capital_projects/about" style={{ marginLeft: "4px" }}>
             Click here to learn more about Capital Projects
           </a>
         </div>
@@ -307,8 +307,7 @@ function CategoryDetails(props) {
                   <span
                     title={content.total_budget_note} // eslint-disable-line
                     style={{ marginRight: "5px" }}
-                  >
-                  </span>
+                  ></span>
                   {content.total_budget}:
                 </span>
                 <span className="amount">{getDollars(totalBudget)}</span>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 import Collapsible from "../../shared/Collapsible";
 import ProjectsTable from "./ProjectsTable";
@@ -13,8 +13,10 @@ import { withLanguage } from "../../utilities/lang/LanguageContext";
 import { english } from "./english";
 import { spanish } from "./spanish";
 import ProjectMap from "../../shared/visualization/ProjectMap";
+import CIPMap from "./CIPMap";
 import CPCheckboxes from "./CPCheckboxes";
 import { browserHistory } from "react-router";
+import { iconDictionary } from "./CIPIcons";
 
 const getDollars = (value) => {
   let formatted;
@@ -37,6 +39,8 @@ const getDollars = (value) => {
   ].join("");
 };
 
+
+
 function CategoryDetails(props) {
   let [targetProject, setTargetProject] = useState("");
   let [updatedData, setUpdatedData] = useState([]);
@@ -48,6 +52,18 @@ function CategoryDetails(props) {
   let [types, setTypes] = useState([]);
   let [categories, setCategories] = useState([]);
   let [dataFromTable, setDataFromTable] = useState([]);
+
+  const prevLocationRef = useRef(props.location);
+
+  useEffect(() => {
+    if (props.location !== prevLocationRef.current) {
+      console.log('Location changed to:', props.location.pathname);
+      // Do something like re-fetch data
+      prevLocationRef.current = props.location;
+    }
+  }, [props.location]);
+
+
 
   function processUpdatedData(data) {
     let formattedData = [];
@@ -73,10 +89,14 @@ function CategoryDetails(props) {
           Object.assign({}, d, {
             x: coord.x,
             y: coord.y,
-            popup: `<strong><a href="/capital_projects/${d.gis_id}">${
-              d.display_name
-            }</a></strong><br/>
-        ${d.project_description ? d.project_description : ""}`,
+            color: '#004987',
+            popup: `<strong><a href="/capital_projects/${d.gis_id}">${d.display_name}</a></strong><br/>
+    <span>
+      <i
+        class="bi ${iconDictionary[d.category]}"
+        style="font-size: .8rem; margin-right: 3px; color: rgb(64, 119, 165);"
+      ></i>${d.category}</span><br/>
+    ${d.project_description ? d.project_description : ""}`,
           })
         );
       })
@@ -84,7 +104,6 @@ function CategoryDetails(props) {
   }
 
   useEffect(() => {
-    console.log("Updating map data now", dataFromTable);
     setMapData(processUpdatedData(dataFromTable));
 
     let formattedData = [];
@@ -101,6 +120,7 @@ function CategoryDetails(props) {
     setTotalSpent(fundingDetails[0]["Expended funds"]);
     setTotalUnderCon(fundingDetails[0]["Under contract"]);
   }, [dataFromTable]);
+
 
   // set language
   let content;
@@ -183,7 +203,9 @@ function CategoryDetails(props) {
     </div>;
   }
 
-  const actualTypes = props.types;
+  // const actualTypes = props.types;
+  const actualTypes = allTypes;
+
   const actualCategories = props.categories;
   actualCategories.sort(
     (a, b) =>
@@ -191,7 +213,6 @@ function CategoryDetails(props) {
   );
 
   const handleMarkerClick = (id) => {
-    // console.log("Anything")
     setMarkers((prevMarkers) =>
       prevMarkers.map((marker) =>
         marker.id === id
@@ -235,7 +256,6 @@ function CategoryDetails(props) {
 
   useEffect(() => {
     setSelected(getSelectedFromURL());
-    console.log("selected", selected);
   }, [location.search]);
 
   useEffect(() => {
@@ -243,7 +263,6 @@ function CategoryDetails(props) {
     const uniqueNames = [
       ...new Set(props.filteredProjects.map((item) => item.type)),
     ];
-    console.log("TYPE VALUES", uniqueNames);
   }, [props.filteredProjects]);
 
   useEffect(() => {
@@ -255,16 +274,6 @@ function CategoryDetails(props) {
       return false;
     };
 
-    console.log(types, selected.types, categories, selected.categories);
-    console.log(
-      "IS THIS WORKING",
-      filterProjects(
-        props.filteredProjects,
-        selected.categories,
-        selected.types,
-        props.location.query.mode
-      )
-    );
     setUpdatedData(
       filterProjects(
         props.filteredProjects,
@@ -280,7 +289,6 @@ function CategoryDetails(props) {
   }, [selected]);
 
   useEffect(() => {
-    console.log("UPDDAAAATED", updatedData);
   }, [updatedData]);
 
   function clearURLParams() {
@@ -290,7 +298,7 @@ function CategoryDetails(props) {
 
   return (
     <div>
-      <div className="row">
+      <div className="row" style={{marginBottom: "10px"}}>
         <div className="col-sm-12">
           <Icon path={IM_INFO} size={16} color="#4077a7" />
           <a href="/capital_projects/about" style={{ marginLeft: "4px" }}>
@@ -300,6 +308,19 @@ function CategoryDetails(props) {
       </div>
       <div className="row">
         <div className="col-sm-12">
+          <div
+            className="map-container"
+            style={{ height: "500px", width: "100%" }}
+          >
+            <CIPMap
+              data={mapData}
+              center={[35.5951, -82.5515]}
+              height="100%"
+              width="100%"
+              zoom={12}
+              eventHandlers={{ click: handleMarkerClick }}
+            />
+          </div>
           <div className="funding-summary">
             <div className="col-sm-4 col-xs-4">
               <h2>
@@ -326,64 +347,63 @@ function CategoryDetails(props) {
               </h2>
             </div>
           </div>
+          <p>Placehoder for budget info blurb</p>
+          <div style={{ marginTop: "5px" }}>
+            <div
+              style={{
+                backgroundColor: "rgb(64, 119, 165)",
+                color: "white",
+                outline: "#4579B3 3px solid",
+                padding: "2px 15px"
+              }}
+            >
+              <span>Filters</span>
+            </div>
+            <div
+              style={{
+                outline: "#4579B3 3px solid",
+                padding: "10px 15px 5px",
+              }}
+            >
+              <div className="row" style={{ marginBottom: "16px" }}>
+                <button
+                  style={{
+                    backgroundColor: "rgb(64, 119, 165)",
+                    color: "white",
+                    padding: "2px 5px",
+                    margin: "2px",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                    fontSize: "14px",
+                    display: "block",
+                    marginLeft: "15px",
+                  }}
+                  onClick={clearURLParams}
+                >
+                  Reset Filters
+                </button>
 
-          <div
-            className="map-container"
-            style={{ height: "350px", width: "100%" }}
-          >
-            <ProjectMap
-              data={mapData}
-              center={[35.5951, -82.5515]}
-              height="100%"
-              width="100%"
-              zoom={12}
-              eventHandlers={{ click: handleMarkerClick }}
-            />
-          </div>
-          <div style={{ marginTop: "10px" }}>
-            <Collapsible trigger="Filters">
-              {getKeyText(actualCategories, props.location.query.mode)}
-              <div>
-                <div className="row" style={{ marginBottom: "16px" }}>
-                  <button
-                    style={{
-                      backgroundColor: "rgb(64, 119, 165)",
-                      color: "white",
-                      padding: "2px 5px",
-                      margin: "2px",
-                      borderRadius: "4px",
-                      cursor: "pointer",
-                      fontSize: "14px",
-                      display: "block",
-                      marginLeft: "15px",
-                    }}
-                    onClick={clearURLParams}
-                  >
-                    Reset Filters
-                  </button>
+                <div className="col-md-6 col-xs-12">
+                  <h4>Categories</h4>
+                  <CPCheckboxes
+                    selected={selected.categories}
+                    location={props.location}
+                    filter_variable={props.sortedCategories}
+                    variableString={"categories"}
+                  />
+                </div>
 
-                  <div className="col-md-6 col-xs-12">
-                    <h4>Categories</h4>
-                    <CPCheckboxes
-                      selected={selected.categories}
-                      location={props.location}
-                      filter_variable={props.sortedCategories}
-                      variableString={"categories"}
-                    />
-                  </div>
-
-                  <div className="col-md-6 col-xs-12">
-                    <h4>Funding Types</h4>
-                    <CPCheckboxes
-                      selected={selected.types}
-                      location={props.location}
-                      filter_variable={allTypes}
-                      variableString={"types"}
-                    />
-                  </div>
+                <div className="col-md-6 col-xs-12">
+                  <h4>Funding Types</h4>
+                  <CPCheckboxes
+                    selected={selected.types}
+                    location={props.location}
+                    filter_variable={allTypes}
+                    variableString={"types"}
+                  />
                 </div>
               </div>
-            </Collapsible>
+            </div>
           </div>
           {updatedData === undefined ? (
             <div

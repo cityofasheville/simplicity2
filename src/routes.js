@@ -133,9 +133,10 @@ const Routes = () => (
           <Route path="dashboards" component={Topics} />
           <Route path="capital_projects">
             <IndexRoute component={CapitalProjectsSummary} />
-            <Route path="details" component={CategoryDetails}></Route>
-            <Route path="data" component={CIPData}></Route>
+            {/* <Route path="details" component={CategoryDetails}></Route> */}
+            {/* <Route path="data" component={CIPData}></Route> */}
           </Route>
+          <Route path="/capital_projects/dashboard" component={CapitalProjectsSummary}></Route>
           <Route path="/capital_projects/about" component={AboutPage}></Route>
           <Route path="/capital_projects/:id" component={Project}></Route>
           <Route path="crime">

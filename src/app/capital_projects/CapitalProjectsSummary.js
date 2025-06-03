@@ -58,15 +58,15 @@ const CapitalProjectsSummary = (props) => (
       return (
         <div>
           <PageHeader h1={content.capital_projects}>
-            <span>{content.search_by_note}</span>
-            <br></br>
+            {/* <span> </span> */}
+            {/* <br></br>
             <a
               className=""
               href="https://gis.ashevillenc.gov/arcgis/apps/experiencebuilder/experience/?id=1397c75f257248b5b030f6b420618e88"
               target="_blank"
             >
               {content.try_project_map}
-            </a>
+            </a> */}
           </PageHeader>
           <CategoryDetailsWrapper
             location={props.location}

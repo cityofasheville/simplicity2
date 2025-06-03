@@ -13,6 +13,9 @@ import {
 } from "../../shared/iconConstants";
 import { getIcon } from "./cip_utilities";
 import SuggestSearchWrapper from "../search/SuggestSearchWrapper";
+import LinkButton from "../../shared/LinkButton";
+import { browserHistory, Link } from "react-router";
+
 
 const getStageNumber = (stage) => {
   switch (stage) {
@@ -139,7 +142,7 @@ const Project = (props) => (
         );
       }
 
-      console.log(data);
+      // console.log(data);
       const project = data.cip_projects.find(
         (obj) => obj.gis_id === props.routeParams.id
       );
@@ -229,16 +232,39 @@ const Project = (props) => (
         whiteSpace: "nowrap",
       };
 
-      const columnClass = "col-xs-12 col-sm-6 col-md-3";
+      const columnClass = "col-xs-12 col-sm-6 col-md-4";
 
       const iconSpanStyle = {
         verticalAlign: "middle",
+      };
+
+      let buttonText;
+      let pathname;
+      let previous = props.location?.state?.previousPath.split("3001")[1];
+      console.log("PREVIOUS", previous);
+      if (previous) {
+        buttonText = "Return to Dashboard";
+        pathname = previous;
+      } else {
+        buttonText = "Go to Dashboard";
+        pathname = "/capital_projects";
       }
+      console.log("PATHNAME", pathname);
 
       return (
         <main className="container">
           <h1 className="title__text">{project.display_name}</h1>
-          <h2>Overview</h2>
+
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <h2 style={{ margin: 0 }}>Overview</h2>
+\            <Link to={pathname} class="btn btn-primary">Back to Dash</Link>
+          </div>
           <p className="permit-description" style={{ marginTop: "16px" }}>
             {project.project_description}
           </p>
@@ -247,13 +273,13 @@ const Project = (props) => (
             <div>
               <h2>Updates</h2>
               {project.project_webpage_more_information && (
-            <div style={{ marginTop: "16px", marginBottom: "16px" }}>
-              <a href={project.project_webpage_more_information}>
-                {" "}
-                <span>{getIcon("Sphere")}</span> Project Website
-              </a>
-            </div>
-          )}
+                <div style={{ marginTop: "16px", marginBottom: "16px" }}>
+                  <a href={project.project_webpage_more_information}>
+                    {" "}
+                    <span>{getIcon("Sphere")}</span> Project Website
+                  </a>
+                </div>
+              )}
               {project.project_updates}
             </div>
           )}
@@ -275,7 +301,11 @@ const Project = (props) => (
                   {project.status !== "Proposed" && (
                     <div
                       className="capital-project__status"
-                      style={{ whiteSpace: "nowrap", textAlign: "center", marginBottom: "4px" }}
+                      style={{
+                        whiteSpace: "nowrap",
+                        textAlign: "center",
+                        marginBottom: "4px",
+                      }}
                     >
                       <span
                         className="project-status"
@@ -336,21 +366,16 @@ const Project = (props) => (
                               : phaseColor(getStageNumber(project.status)),
                         }}
                       ></span>
-
-     
                     </div>
                   )}
-                                   <span
-                        style={{
-                          color: phaseColor(
-                            getStageNumber(project.status),
-                            true
-                          ),
-                          whiteSpace: "nowrap",
-                        }}
-                      >
-                        {project.status}
-                      </span>
+                  <span
+                    style={{
+                      color: phaseColor(getStageNumber(project.status), true),
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {project.status}
+                  </span>
                 </div>
               )}
             </div>
@@ -359,8 +384,14 @@ const Project = (props) => (
               <div style={columnStyle} className={columnClass}>
                 <div style={titleStyle}>Category</div>
                 <div style={valueStyle}>
-                  <span >{getIcon(project.category, false, 20)}</span>
-                  <span style={{ whiteSpace: "normal", marginLeft: "4px",verticalAlign: "middle"}}>
+                  <span>{getIcon(project.category, false, 20)}</span>
+                  <span
+                    style={{
+                      whiteSpace: "normal",
+                      marginLeft: "4px",
+                      verticalAlign: "middle",
+                    }}
+                  >
                     {project.category === "DCREF"
                       ? "Entertainment Facilities"
                       : project.category}
@@ -383,17 +414,6 @@ const Project = (props) => (
                 <div style={titleStyle}>Estimated construction timeframe</div>
                 <div style={valueStyle}>
                   <span>{project.estimated_construction_duration}</span>
-                </div>
-              </div>
-            )}
-
-            {project.owner_department && (
-              <div style={columnStyle} className={columnClass}>
-                <div style={titleStyle}>Owner Department</div>
-                <div style={valueStyle}>
-                  <span style={{ whiteSpace: "normal" }}>
-                    {project.owner_department}
-                  </span>
                 </div>
               </div>
             )}
@@ -468,9 +488,19 @@ const Project = (props) => (
             <div className="">
               <h2>Project Contact</h2>
               <address style={{ listStyleType: "none" }}>
-              <div><span>{project.coa_contact}</span></div>
-              <div><a href={`tel:${project.phone_number}`}>{project.phone_number}</a></div>
-              <div><a href={`mailto:${project.email_address}`}>{project.email_address}</a></div>
+                <div>
+                  <span>{project.coa_contact}</span>
+                </div>
+                <div>
+                  <a href={`tel:${project.phone_number}`}>
+                    {project.phone_number}
+                  </a>
+                </div>
+                <div>
+                  <a href={`mailto:${project.email_address}`}>
+                    {project.email_address}
+                  </a>
+                </div>
               </address>
             </div>
           </div>

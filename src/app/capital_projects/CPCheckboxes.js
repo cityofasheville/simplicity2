@@ -4,6 +4,8 @@ import { browserHistory } from "react-router";
 import { withLanguage } from "../../utilities/lang/LanguageContext";
 import { english } from "./english";
 import { spanish } from "./spanish";
+import { iconDictionary } from "./CIPIcons";
+import { CIPcolors } from "./CIPColors";
 
 const CPCheckboxes = (props) => {
   const [newValues, updateNewValues] = useState([]);
@@ -13,7 +15,8 @@ const CPCheckboxes = (props) => {
 
   const DISPLAY_NAMES = {
     DCREF: "Entertainment Facilities",
-    Helene: "Helene Disaster Recovery",
+    Helene: "Helene Recovery",
+    "Operating Budget": "Capital Improvement Plan",
   };
 
   function updateURL(url, values) {
@@ -65,13 +68,35 @@ const CPCheckboxes = (props) => {
     );
   };
 
+ 
+
   return (
     <div>
       <div className="checkboxGroup">
         {["All", ...props.filter_variable.filter((type) => type !== "All")].map(
           (type, index) => {
+            let displayExtra;
             const isChecked = visibleSelection.includes(type);
             const label = DISPLAY_NAMES[type] || type; // Use mapped label or default
+            if (props.variableString == "categories") {
+               displayExtra = <i
+              className={`bi ${iconDictionary[type]}`}
+              style={{
+                fontSize: "1rem",
+                marginRight: "3px",
+                color: "rgb(64, 119, 165)",
+              }}
+            ></i>
+            } else if (props.variableString == "types" && label != "All") {
+              displayExtra = <i
+              className={`bi bi-circle-fill`}
+              style={{
+                fontSize: "1rem",
+                marginRight: "3px",
+                color: CIPcolors[type],
+              }}
+            ></i>
+            }
 
             return (
               <label
@@ -91,8 +116,9 @@ const CPCheckboxes = (props) => {
                   value={type}
                   checked={isChecked}
                   onChange={() => handleCheckboxChange(type)}
-                  style={{ marginRight: "5px" }}
+                  style={{ marginRight: "2px" }}
                 />
+                {displayExtra}
                 {label}
               </label>
             );

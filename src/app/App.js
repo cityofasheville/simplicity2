@@ -65,7 +65,8 @@ class Main extends React.Component {
     const { disclaimerAccepted } = this.state;
 
     return (
-      <>    
+      <>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"></link>    
       <div
         className={
           this.props.location.query.hideNavbar

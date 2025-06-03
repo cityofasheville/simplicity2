@@ -20,7 +20,7 @@ import {
   IM_DROPLET,
   IM_HAMMER,
 } from "../../shared/iconConstants";
-import { browserHistory } from "react-router";
+import { browserHistory, Link } from "react-router";
 
 const getIcon = (category, isExpanded) => {
   switch (category) {
@@ -126,6 +126,19 @@ function ProjectsTable(props) {
   let [width, setWidth] = useState(0);
   const [columnVisibility, setColumnVisibility] = useState({});
   let [data, setData] = React.useState(() => props.data);
+  let [nameColumnWidth, setNameColumnWidth] = useState(0);
+  const projectColumnWidth = width < 576 ? 100 : width < 768 ? 300 : 500;
+  // let location = 
+
+  useEffect(() => {
+    if (width < 576) {
+      setNameColumnWidth(100);
+    } else if (width < 768) {
+      setNameColumnWidth(300);
+    } else {
+      setNameColumnWidth(500);
+    }
+  }, [width]);
 
   function getInitialFiltersFromURL() {
     const params = new URLSearchParams(location.search);
@@ -142,9 +155,6 @@ function ProjectsTable(props) {
     setData(props.data);
   }, [props.data]);
 
-  useEffect(() => {
-    console.log("IN TABLE ARRRG", props.data);
-  }, [data]);
 
   const [columnFilters, setColumnFilters] = useState(
     getInitialFiltersFromURL()
@@ -152,12 +162,8 @@ function ProjectsTable(props) {
 
   useEffect(() => {
     setColumnFilters(getInitialFiltersFromURL());
-    console.log("in TABLE, filters:", columnFilters);
   }, [location.search]);
 
-  useEffect(() => {
-    console.log("COLUMN FILTERS UPDATED", columnFilters);
-  }, [columnFilters]);
 
   function updateURL(url, filters) {
     const baseUrl = location.pathname;
@@ -185,7 +191,6 @@ function ProjectsTable(props) {
     }
 
     const updatedURL = `${baseUrl}?${params.toString()}`;
-    console.log("updatedURL", updatedURL);
     browserHistory.replace(updatedURL);
   }
 
@@ -204,13 +209,15 @@ function ProjectsTable(props) {
             style={{
               cursor: "pointer",
               padding: "10px",
-              textAlign: "center",
-              width: "100%",
+              // width: 400,
+              // display: 'inline-block'
             }}
           >
             Project
           </button>
         ),
+        size: 400,
+        minSize: 100,
         cell: (cell) => (
           <span>
             <span title={cell.row.original.category}>
@@ -230,10 +237,50 @@ function ProjectsTable(props) {
               </span>
             )}
             <span style={{ marginLeft: "5px" }}>
-              <a href={`/capital_projects/${cell.row.original.gis_id}`}>
+              {/* <Link to={`/capital_projects/${cell.row.original.gis_id}`} 
+            previousPath={location}
+            >{cell.row.original.display_name}</Link> */}
+              {/* <a href={`/capital_projects/${cell.row.original.gis_id}`}>
                 {cell.row.original.display_name}
-              </a>
+              </a> */}
+              {/* <Link to={{`/capital_projects/${cell.row.original.gis_id}`},  state: { previousPath: location }}>
+                          {cell.row.original.display_name}</Link> */}
+              <Link
+                to={{
+                  pathname: `/capital_projects/${cell.row.original.gis_id}`,
+                  state: { previousPath: location.href },
+                }}
+              >
+                {cell.row.original.display_name}
+              </Link>
             </span>
+          </span>
+        ),
+      },
+      {
+        accessorKey: `status`,
+        id: "status",
+        header: (
+          <button
+            aria-label="sort by status"
+            style={{
+              cursor: "pointer",
+              borderRadius: "0px",
+              border: "1px solid rgba(0, 0, 0, .02)",
+              padding: "10px",
+              // width: "100%",
+            }}
+          >
+            Status
+          </button>
+        ),
+        size: 100,
+        // maxWidth: 50,
+        cell: (cell) => (
+          <span>
+            {cell.row.original.status === null
+              ? "--"
+              : cell.row.original.status}
           </span>
         ),
       },
@@ -248,42 +295,16 @@ function ProjectsTable(props) {
               borderRadius: "0px",
               border: "1px solid rgba(0, 0, 0, .02)",
               padding: "10px",
-              textAlign: "center",
               width: "100%",
             }}
           >
             Zip code
           </button>
         ),
+        size: 100,
+
         maxWidth: 120,
-        size: "5%",
-      },
-      {
-        accessorKey: `status`,
-        id: "status",
-        header: (
-          <button
-            aria-label="sort by phase"
-            style={{
-              cursor: "pointer",
-              borderRadius: "0px",
-              border: "1px solid rgba(0, 0, 0, .02)",
-              padding: "10px",
-              textAlign: "center",
-              width: "100%",
-            }}
-          >
-            Phase
-          </button>
-        ),
-        maxWidth: 120,
-        cell: (cell) => (
-          <span>
-            {cell.row.original.status === null
-              ? "--"
-              : cell.row.original.status}
-          </span>
-        ),
+        // size: "5%",
       },
       {
         accessorKey: `total_project_funding_budget_document`,
@@ -296,14 +317,13 @@ function ProjectsTable(props) {
               borderRadius: "0px",
               border: "1px solid rgba(0, 0, 0, .02)",
               padding: "10px",
-              textAlign: "center",
               width: "100%",
             }}
           >
             Budget
           </button>
         ),
-        maxWidth: 120,
+        size: 100,
         sortingFn: (a, b) => {
           const parseCurrency = (val) => {
             if (typeof val === "number") return val;
@@ -332,14 +352,13 @@ function ProjectsTable(props) {
               borderRadius: "0px",
               border: "1px solid rgba(0, 0, 0, .02)",
               padding: "10px",
-              textAlign: "center",
               width: "100%",
             }}
           >
             Under Contract
           </button>
         ),
-        maxWidth: 120,
+        size: 110,
         sortingFn: (a, b) => {
           const aVal = parseInt(a.original.encumbered, 10) || 0;
           const bVal = parseInt(b.original.encumbered, 10) || 0;
@@ -358,14 +377,13 @@ function ProjectsTable(props) {
               borderRadius: "0px",
               border: "1px solid rgba(0, 0, 0, .02)",
               padding: "10px",
-              textAlign: "center",
               width: "100%",
             }}
           >
             Spent
           </div>
         ),
-        maxWidth: 120,
+        size: 100,
         sortingFn: (a, b) => {
           const aVal = parseInt(a.original.total_spent, 10) || 0;
           const bVal = parseInt(b.original.total_spent, 10) || 0;
@@ -390,10 +408,11 @@ function ProjectsTable(props) {
   const table = useReactTable({
     data,
     columns,
-    defaultColumn: {
-      maxSize: 120,
-    },
+    // defaultColumn: {
+    //   maxSize: 120,
+    // },
     filterFns: {},
+    columnResizeMode: "onChange",
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -438,7 +457,12 @@ function ProjectsTable(props) {
                       <tr key={headerGroup.id}>
                         {headerGroup.headers.map((header) => {
                           return (
-                            <th key={header.id} colSpan={header.colSpan}>
+                            // <th key={header.id} colSpan={header.colSpan}>
+                            <th
+                              key={header.id}
+                              colSpan={header.colSpan}
+                              style={{ width: header.getSize() }}
+                            >
                               {header.isPlaceholder ? null : (
                                 <>
                                   <div
@@ -480,9 +504,18 @@ function ProjectsTable(props) {
                         <tr key={row.id}>
                           {row.getVisibleCells().map((cell) => {
                             return (
+                              // <td
+                              //   key={cell.id}
+                              //   style={{
+                              //     padding: "5px 7px",
+                              //     borderRadius: "0px",
+                              //     border: "1px solid rgba(0, 0, 0, .02)",
+                              //   }}
+                              // >
                               <td
                                 key={cell.id}
                                 style={{
+                                  // width: cell.column.getSize(),
                                   padding: "5px 7px",
                                   borderRadius: "0px",
                                   border: "1px solid rgba(0, 0, 0, .02)",

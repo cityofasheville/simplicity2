@@ -54,34 +54,49 @@ const CategoryDetailsWrapper = (props) => {
         if (loading) return <LoadingAnimation />;
         if (error) return <Error message={error.message} />;
 
-        const actualTypes = props.types;
+        // const actualTypes = props.types;
         const actualCategories = props.categories;
         actualCategories.sort(
           (a, b) =>
             props.sortedCategories.indexOf(a) >
             props.sortedCategories.indexOf(b)
         );
-        const filteredProjects = filterProjects(
-          data.cip_projects,
-          actualCategories,
-          actualTypes,
-          props.location.query.mode
-        );
+        // const filteredProjects = filterProjects(
+        //   data.cip_projects,
+        //   actualCategories,
+        //   actualTypes,
+        //   props.location.query.mode
+        // );
 
-        const fundingDetails = getFundsAllocatedAndExpended(
-          filteredProjects,
-          actualCategories,
-          props.location.query.mode
-        );
+        // const fundingDetails = getFundsAllocatedAndExpended(
+        //   filteredProjects,
+        //   actualCategories,
+        //   props.location.query.mode
+        // );
+
+        //filtering categoies to remove dcref
+        let filteredCategories = props.categories.filter(category => category !== "DCREF");
+
+        // changing any misc categories to "Other"
+        let projectData = [];
+        for (let project of data.cip_projects) {
+          if (filteredCategories.includes(project.category)) {
+            projectData.push(project)
+          } else {
+            project.category = "Other";
+            projectData.push(project)
+          }
+        }
+
 
         return (
           <div>
             <CategoryDetails
               location={props.location}
-              categories={props.categories}
+              categories={filteredCategories}
               types={props.types}
-              sortedCategories={props.sortedCategories}
-              filteredProjects={data.cip_projects}
+              sortedCategories={filteredCategories}
+              data={projectData}
             />
           </div>
         );

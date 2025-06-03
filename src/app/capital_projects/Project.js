@@ -263,7 +263,7 @@ const Project = (props) => (
             }}
           >
             <h2 style={{ margin: 0 }}>Overview</h2>
-\            <Link to={pathname} class="btn btn-primary">Back to Dash</Link>
+            <Link to={pathname} class="btn btn-primary">Back to Dash</Link>
           </div>
           <p className="permit-description" style={{ marginTop: "16px" }}>
             {project.project_description}
@@ -392,9 +392,9 @@ const Project = (props) => (
                       verticalAlign: "middle",
                     }}
                   >
-                    {project.category === "DCREF"
+                    {/* {project.category === "DCREF"
                       ? "Entertainment Facilities"
-                      : project.category}
+                      : project.category} */}
                   </span>
                 </div>
               </div>

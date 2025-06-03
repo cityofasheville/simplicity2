@@ -21,6 +21,7 @@ import {
   IM_HAMMER,
 } from "../../shared/iconConstants";
 import { browserHistory, Link } from "react-router";
+import { iconDictionary } from "./CIPIcons";
 
 const getIcon = (category, isExpanded) => {
   switch (category) {
@@ -220,11 +221,18 @@ function ProjectsTable(props) {
         minSize: 100,
         cell: (cell) => (
           <span>
-            <span title={cell.row.original.category}>
-              {getIcon(
-                cell.row.original.category,
-                cell.row.original.isExpanded
-              )}
+            <span style={{marginTop: '6px'}} title={cell.row.original.category}>
+            <i
+            className={`bi ${iconDictionary[cell.row.original.category]}`}
+            style={{
+              fontSize: "1.5rem",
+              verticalAlign: "middle",              
+              color: "rgb(64, 119, 165)",
+              display: "inline-block",
+              marginRight: '1px'
+            }}
+          ></i>
+
             </span>
             {cell.row.original.type === "Bond" && (
               <span title={content.bond_project} style={{ marginLeft: "3px" }}>
@@ -353,12 +361,14 @@ function ProjectsTable(props) {
               border: "1px solid rgba(0, 0, 0, .02)",
               padding: "10px",
               width: "100%",
+              whiteSpace: "nowrap"
+
             }}
           >
             Under Contract
           </button>
         ),
-        size: 110,
+        size: 125,
         sortingFn: (a, b) => {
           const aVal = parseInt(a.original.encumbered, 10) || 0;
           const bVal = parseInt(b.original.encumbered, 10) || 0;

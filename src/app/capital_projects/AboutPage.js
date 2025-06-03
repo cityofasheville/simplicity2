@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getIcon } from "./cip_utilities";
+import { iconDictionary } from "./CIPIcons";
 
 function AboutPage() {
   const paragraphStyle = {
@@ -55,14 +56,61 @@ function AboutPage() {
             >
               Project Types:{" "}
             </span>
-            <span>{getIcon("Transportation & Infrastructure")}</span>{" "}
+            <span><i
+            className={`bi ${iconDictionary['Transportation & Infrastructure']}`}
+            style={{
+              transform: "rotate(135deg)",
+              fontSize: "1.25rem",
+              marginLeft: "6.5px",
+              color: "rgb(64, 119, 165)",
+            }}
+          ></i></span>{" "}
             Transportation & Infrastructure{" "}
-            <span>{getIcon("Housing Program")}</span> Housing Program{" "}
-            <span>{getIcon("Parks & Recreation")}</span> Parks & Recreation{" "}
-            <span>{getIcon("Water")}</span> Water{" "}
-            <span>{getIcon("Building Construction")}</span> Building
-            Construction <span>{getIcon("Entertainment Facilities")}</span>{" "}
-            Entertainment Facilities <span>{getIcon("Other")}</span> Other.
+            <span><i
+            className={`bi ${iconDictionary['Housing Program']}`}
+            style={{
+              transform: "rotate(135deg)",
+              fontSize: "1.25rem",
+              marginLeft: "6.5px",
+              color: "rgb(64, 119, 165)",
+            }}
+          ></i></span> Housing Program{" "}
+            <span><i
+            className={`bi ${iconDictionary['Parks & Recreation']}`}
+            style={{
+              transform: "rotate(135deg)",
+              fontSize: "1.25rem",
+              marginLeft: "6.5px",
+              color: "rgb(64, 119, 165)",
+            }}
+          ></i></span> Parks & Recreation{" "}
+            <span><i
+            className={`bi ${iconDictionary['Water']}`}
+            style={{
+              transform: "rotate(135deg)",
+              fontSize: "1.25rem",
+              marginLeft: "6.5px",
+              color: "rgb(64, 119, 165)",
+            }}
+          ></i></span> Water{" "}
+            <span><i
+            className={`bi ${iconDictionary['Building Construction']}`}
+            style={{
+              transform: "rotate(135deg)",
+              fontSize: "1.25rem",
+              marginLeft: "6.5px",
+              color: "rgb(64, 119, 165)",
+            }}
+          ></i></span> Building
+            Construction <span><i
+            className={`bi ${iconDictionary['Other']}`}
+            style={{
+              transform: "rotate(135deg)",
+              fontSize: "1.25rem",
+              marginLeft: "6.5px",
+              color: "rgb(64, 119, 165)",
+            }}
+          ></i></span> Other.
             Projects categorized as "Other" support facility upgrades and
             economic development initiatives.
           </p>

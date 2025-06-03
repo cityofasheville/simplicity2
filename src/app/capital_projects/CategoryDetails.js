@@ -17,6 +17,7 @@ import CIPMap from "./CIPMap";
 import CPCheckboxes from "./CPCheckboxes";
 import { browserHistory } from "react-router";
 import { iconDictionary } from "./CIPIcons";
+import { CIPcolors } from "./CIPColors";
 
 const getDollars = (value) => {
   let formatted;
@@ -50,8 +51,16 @@ function CategoryDetails(props) {
   let [totalBudget, setTotalBudget] = useState("");
   const allTypes = ["Bond 2016", "Bond 2024", "Operating Budget", "Helene"];
   let [types, setTypes] = useState([]);
-  let [categories, setCategories] = useState([]);
+  let [categories, setCategories] = useState([
+    "Transportation & Infrastructure",
+    "Housing Program",
+    "Parks & Recreation",
+    "Building Construction",
+    "Water",
+    "Other"
+  ]);
   let [dataFromTable, setDataFromTable] = useState([]);
+  console.log(props.categories)
 
   const prevLocationRef = useRef(props.location);
 
@@ -206,7 +215,7 @@ function CategoryDetails(props) {
   // const actualTypes = props.types;
   const actualTypes = allTypes;
 
-  const actualCategories = props.categories;
+  const actualCategories = categories;
   actualCategories.sort(
     (a, b) =>
       props.sortedCategories.indexOf(a) > props.sortedCategories.indexOf(b)
@@ -261,9 +270,9 @@ function CategoryDetails(props) {
   useEffect(() => {
     setSelected(getSelectedFromURL());
     const uniqueNames = [
-      ...new Set(props.filteredProjects.map((item) => item.type)),
+      ...new Set(props.data.map((item) => item.type)),
     ];
-  }, [props.filteredProjects]);
+  }, [props.data]);
 
   useEffect(() => {
     const arraysAreDifferent = (arr1, arr2) => {
@@ -276,7 +285,7 @@ function CategoryDetails(props) {
 
     setUpdatedData(
       filterProjects(
-        props.filteredProjects,
+        props.data,
         selected.categories,
         selected.types,
         props.location.query.mode

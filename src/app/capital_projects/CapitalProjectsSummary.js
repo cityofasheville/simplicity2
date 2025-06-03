@@ -55,6 +55,7 @@ const CapitalProjectsSummary = (props) => (
         .map((item) => item.category_name);
       allCats = allCats.map((cat) => cat.category_name);
 
+
       return (
         <div>
           <PageHeader h1={content.capital_projects}>

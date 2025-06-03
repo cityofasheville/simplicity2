@@ -14,7 +14,7 @@ const CPCheckboxes = (props) => {
   const content = props.language.language === "Spanish" ? spanish : english;
 
   const DISPLAY_NAMES = {
-    DCREF: "Entertainment Facilities",
+    // DCREF: "Entertainment Facilities",
     Helene: "Helene Recovery",
     "Operating Budget": "Capital Improvement Plan",
   };
@@ -83,7 +83,7 @@ const CPCheckboxes = (props) => {
               className={`bi ${iconDictionary[type]}`}
               style={{
                 fontSize: "1rem",
-                marginRight: "3px",
+                marginRight: "4px",
                 color: "rgb(64, 119, 165)",
               }}
             ></i>
@@ -92,7 +92,7 @@ const CPCheckboxes = (props) => {
               className={`bi bi-circle-fill`}
               style={{
                 fontSize: "1rem",
-                marginRight: "3px",
+                marginRight: "4px",
                 color: CIPcolors[type],
               }}
             ></i>

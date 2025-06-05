@@ -80,12 +80,15 @@ const CategoryDetailsWrapper = (props) => {
         // changing any misc categories to "Other"
         let projectData = [];
         for (let project of data.cip_projects) {
-          if (filteredCategories.includes(project.category)) {
-            projectData.push(project)
-          } else {
-            project.category = "Other";
-            projectData.push(project)
+          if(project.gis_id) {
+            if (filteredCategories.includes(project.category)) {
+              projectData.push(project)
+            } else {
+              project.category = "Other";
+              projectData.push(project)
+            }
           }
+ 
         }
 
 

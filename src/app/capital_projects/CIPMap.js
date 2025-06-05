@@ -81,7 +81,6 @@ const markerClusterOptions = {
 // };
 const CIPMap = (props) => {
   const markers = [];
-  console.log("DAAAT", props.data)
 
   // const iconDictionary = {
   //   "Transportation & Infrastructure": "bi-bus-front-fill",
@@ -120,8 +119,7 @@ const CIPMap = (props) => {
         height: "30px",
         borderRadius: "0 50% 50% 50%",
         background: CIPcolors[pt.type] || "#000",
-        transform: "rotate(-135deg)",
-        marginTop: "20px",}}>
+        transform: "rotate(-135deg)"}}>
         <div style={{ transform: "rotate(135deg)" }}>
           {" "}
           {/* Counter-rotate wrapper */}
@@ -141,7 +139,8 @@ const CIPMap = (props) => {
       html: iconMarkup,
       className: "",
       iconSize: [24, 24],
-      iconAnchor: [16, 50]
+      iconAnchor: [16, 50],
+      popupAnchor: [-0.5, -12]
     });
 
     markers.push({

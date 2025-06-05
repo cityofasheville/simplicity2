@@ -40,8 +40,6 @@ const getDollars = (value) => {
   ].join("");
 };
 
-
-
 function CategoryDetails(props) {
   let [targetProject, setTargetProject] = useState("");
   let [updatedData, setUpdatedData] = useState([]);
@@ -57,22 +55,18 @@ function CategoryDetails(props) {
     "Parks & Recreation",
     "Building Construction",
     "Water",
-    "Other"
+    "Other",
   ]);
   let [dataFromTable, setDataFromTable] = useState([]);
-  console.log(props.categories)
 
   const prevLocationRef = useRef(props.location);
 
   useEffect(() => {
     if (props.location !== prevLocationRef.current) {
-      console.log('Location changed to:', props.location.pathname);
       // Do something like re-fetch data
       prevLocationRef.current = props.location;
     }
   }, [props.location]);
-
-
 
   function processUpdatedData(data) {
     let formattedData = [];
@@ -98,14 +92,17 @@ function CategoryDetails(props) {
           Object.assign({}, d, {
             x: coord.x,
             y: coord.y,
-            color: '#004987',
-            popup: `<strong><a href="/capital_projects/${d.gis_id}">${d.display_name}</a></strong><br/>
-    <span>
-      <i
+            color: "#004987",
+            popup: `<strong><a href="/capital_projects/${d.gis_id}">${
+              d.display_name
+            }</a></strong><br/>
+    <span><i
         class="bi ${iconDictionary[d.category]}"
         style="font-size: .8rem; margin-right: 3px; color: rgb(64, 119, 165);"
       ></i>${d.category}</span><br/>
-    ${d.project_description ? d.project_description : ""}`,
+    <span>${
+      d.project_description ? d.project_description.replace(/\u00A0/g, " ") : ""
+    }</span>`,
           })
         );
       })
@@ -130,7 +127,6 @@ function CategoryDetails(props) {
     setTotalUnderCon(fundingDetails[0]["Under contract"]);
   }, [dataFromTable]);
 
-
   // set language
   let content;
   switch (props.language.language) {
@@ -141,80 +137,79 @@ function CategoryDetails(props) {
       content = english;
   }
 
-  const getBondText = (type) => {
-    switch (type) {
-      case "Transportation & Infrastructure":
-        return content.transportation_bond_info;
-      case "Parks & Recreation":
-        return content.parks_bond_info;
-      case "Housing Program":
-        return content.housing_bond_info;
-      default:
-        return "";
-    }
-  };
+  // const getBondText = (type) => {
+  //   switch (type) {
+  //     case "Transportation & Infrastructure":
+  //       return content.transportation_bond_info;
+  //     case "Parks & Recreation":
+  //       return content.parks_bond_info;
+  //     case "Housing Program":
+  //       return content.housing_bond_info;
+  //     default:
+  //       return "";
+  //   }
+  // };
 
-  function getKeyText(categories) {
-    <div>
-      <p>
-        <span>
-          {[
-            "Transportation & Infrastructure",
-            "Housing Program",
-            "Parks & Recreation",
-            "Water",
-            "Building Construction",
-            "Other",
-          ].map((cat, index) => {
-            if (categories.includes(cat)) {
-              return (
-                <span
-                  key={index}
-                  style={
-                    categories.indexOf(cat) !== 0
-                      ? { marginLeft: "10px", color: "#4077a5" }
-                      : { marginLeft: "0px", color: "#4077a5" }
-                  }
-                >
-                  {getIcon(cat)}&nbsp;<b>{cat}</b>
-                </span>
-              );
-            }
-            return null;
-          })}
-        </span>
-        <span style={{ marginLeft: "5px" }}>
-          {categories.slice(0, categories.length - 1).join(", ")}{" "}
-          {categories.length > 1 ? "and" : ""}{" "}
-          {categories[categories.length - 1]} {content.funding_info}
-        </span>
-        {categories.includes("Other") && (
-          <span>&nbsp;{content.other_category_note}</span>
-        )}
-      </p>
-      {[
-        "Transportation & Infrastructure",
-        "Housing Program",
-        "Parks & Recreation",
-      ].map((cat, index) => {
-        if (categories.includes(cat)) {
-          return (
-            <p key={index}>
-              <span style={{ color: "#4077a5" }}>
-                {getIcon(cat, true)}&nbsp;<b>{cat} Bond</b>
-              </span>
-              <span style={{ marginLeft: "5px" }}>{getBondText(cat)}</span>
-            </p>
-          );
-        }
-        return null;
-      })}
-    </div>;
-  }
+  // function getKeyText(categories) {
+  //   <div>
+  //     <p>
+  //       <span>
+  //         {[
+  //           "Transportation & Infrastructure",
+  //           "Housing Program",
+  //           "Parks & Recreation",
+  //           "Water",
+  //           "Building Construction",
+  //           "Other",
+  //         ].map((cat, index) => {
+  //           if (categories.includes(cat)) {
+  //             return (
+  //               <span
+  //                 key={index}
+  //                 style={
+  //                   categories.indexOf(cat) !== 0
+  //                     ? { marginLeft: "10px", color: "#4077a5" }
+  //                     : { marginLeft: "0px", color: "#4077a5" }
+  //                 }
+  //               >
+  //                 {getIcon(cat)}&nbsp;<b>{cat}</b>
+  //               </span>
+  //             );
+  //           }
+  //           return null;
+  //         })}
+  //       </span>
+  //       <span style={{ marginLeft: "5px" }}>
+  //         {categories.slice(0, categories.length - 1).join(", ")}{" "}
+  //         {categories.length > 1 ? "and" : ""}{" "}
+  //         {categories[categories.length - 1]} {content.funding_info}
+  //       </span>
+  //       {categories.includes("Other") && (
+  //         <span>&nbsp;{content.other_category_note}</span>
+  //       )}
+  //     </p>
+  //     {[
+  //       "Transportation & Infrastructure",
+  //       "Housing Program",
+  //       "Parks & Recreation",
+  //     ].map((cat, index) => {
+  //       if (categories.includes(cat)) {
+  //         return (
+  //           <p key={index}>
+  //             <span style={{ color: "#4077a5" }}>
+  //               {getIcon(cat, true)}&nbsp;<b>{cat} Bond</b>
+  //             </span>
+  //             <span style={{ marginLeft: "5px" }}>{getBondText(cat)}</span>
+  //           </p>
+  //         );
+  //       }
+  //       return null;
+  //     })}
+  //   </div>;
+  // }
 
   // const actualTypes = props.types;
   const actualTypes = allTypes;
-
   const actualCategories = categories;
   actualCategories.sort(
     (a, b) =>
@@ -269,20 +264,12 @@ function CategoryDetails(props) {
 
   useEffect(() => {
     setSelected(getSelectedFromURL());
-    const uniqueNames = [
-      ...new Set(props.data.map((item) => item.type)),
-    ];
+    // const uniqueNames = [
+    //   ...new Set(props.data.map((item) => item.type)),
+    // ];
   }, [props.data]);
 
   useEffect(() => {
-    const arraysAreDifferent = (arr1, arr2) => {
-      if (arr1.length !== arr2.length) return true;
-      for (let i = 0; i < arr1.length; i++) {
-        if (arr1[i] !== arr2[i]) return true;
-      }
-      return false;
-    };
-
     setUpdatedData(
       filterProjects(
         props.data,
@@ -294,24 +281,22 @@ function CategoryDetails(props) {
 
     setTypes(selected.types);
     setCategories(selected.categories);
-    //}
   }, [selected]);
-
-  useEffect(() => {
-  }, [updatedData]);
 
   function clearURLParams() {
     const baseUrl = location.pathname;
     browserHistory.replace(baseUrl);
   }
 
+
+
   return (
     <div>
-      <div className="row" style={{marginBottom: "10px"}}>
+      <div className="row" style={{ marginBottom: "10px" }}>
         <div className="col-sm-12">
-          <Icon path={IM_INFO} size={16} color="#4077a7" />
-          <a href="/capital_projects/about" style={{ marginLeft: "4px" }}>
-            Click here to learn more about Capital Projects
+        <i class="bi bi-info-circle" style={{color:"rgb(64, 119, 165)"}}></i>
+                  <a href="/capital_projects/about" style={{ marginLeft: "4px" }}>
+            Learn more about Capital Projects
           </a>
         </div>
       </div>
@@ -363,7 +348,7 @@ function CategoryDetails(props) {
                 backgroundColor: "rgb(64, 119, 165)",
                 color: "white",
                 outline: "#4579B3 3px solid",
-                padding: "2px 15px"
+                padding: "2px 15px",
               }}
             >
               <span>Filters</span>

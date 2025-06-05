@@ -15,7 +15,7 @@ import { getIcon } from "./cip_utilities";
 import SuggestSearchWrapper from "../search/SuggestSearchWrapper";
 import LinkButton from "../../shared/LinkButton";
 import { browserHistory, Link } from "react-router";
-
+import { iconDictionary } from "./CIPIcons";
 
 const getStageNumber = (stage) => {
   switch (stage) {
@@ -96,6 +96,7 @@ const dateFormatter = (inputDate) =>
   moment(new Date(inputDate)).format("MMMM DD, YYYY");
 
 const Project = (props) => (
+
   <Query
     query={GET_PROJECTS}
     variables={{
@@ -123,6 +124,7 @@ const Project = (props) => (
           </div>
         );
       }
+      
 
       if (
         data.cip_projects === undefined ||
@@ -251,6 +253,8 @@ const Project = (props) => (
       }
       console.log("PATHNAME", pathname);
 
+      
+
       return (
         <main className="container">
           <h1 className="title__text">{project.display_name}</h1>
@@ -263,7 +267,9 @@ const Project = (props) => (
             }}
           >
             <h2 style={{ margin: 0 }}>Overview</h2>
-            <Link to={pathname} class="btn btn-primary">Back to Dash</Link>
+            <Link to={pathname} class="btn btn-primary">
+              Back to Dashboard
+            </Link>
           </div>
           <p className="permit-description" style={{ marginTop: "16px" }}>
             {project.project_description}
@@ -276,7 +282,14 @@ const Project = (props) => (
                 <div style={{ marginTop: "16px", marginBottom: "16px" }}>
                   <a href={project.project_webpage_more_information}>
                     {" "}
-                    <span>{getIcon("Sphere")}</span> Project Website
+                    <span>
+                      <Icon
+                        path={IM_SPHERE3}
+                        size={20}
+                        color={"rgb(64, 119, 165)"}
+                      />
+                    </span>{" "}
+                    Project Website
                   </a>
                 </div>
               )}
@@ -384,7 +397,19 @@ const Project = (props) => (
               <div style={columnStyle} className={columnClass}>
                 <div style={titleStyle}>Category</div>
                 <div style={valueStyle}>
-                  <span>{getIcon(project.category, false, 20)}</span>
+                  <span>
+                    {" "}
+                    <i
+                      className={`bi ${iconDictionary[project.category]}`}
+                      style={{
+                        fontSize: "1.5rem",
+                        verticalAlign: "middle",
+                        color: "rgb(64, 119, 165)",
+                        display: "inline-block",
+                        marginRight: "1px",
+                      }}
+                    ></i>
+                  </span>
                   <span
                     style={{
                       whiteSpace: "normal",
@@ -392,9 +417,7 @@ const Project = (props) => (
                       verticalAlign: "middle",
                     }}
                   >
-                    {/* {project.category === "DCREF"
-                      ? "Entertainment Facilities"
-                      : project.category} */}
+                    {project.category}
                   </span>
                 </div>
               </div>
@@ -408,7 +431,7 @@ const Project = (props) => (
                 </div>
               </div>
             )}
-
+            {/* 
             {project.estimated_construction_duration && (
               <div style={columnStyle} className={columnClass}>
                 <div style={titleStyle}>Estimated construction timeframe</div>
@@ -416,20 +439,25 @@ const Project = (props) => (
                   <span>{project.estimated_construction_duration}</span>
                 </div>
               </div>
-            )}
+            )} */}
           </div>
 
           <div className="row permit-map-row" style={{ marginTop: "10.5px" }}>
-            <div
-              className="col-sm-12 col-md-6 permit-map-container"
-              style={{ marginTop: "62.5px" }}
-            >
-              <Map
-                data={getMyPoints(project)}
-                bounds={calculateBounds(getMyPoints(project))}
-                height="300px"
-              />
-            </div>
+            {showMap ? (
+              <div
+                className="col-sm-12 col-md-6 permit-map-container"
+                style={{ marginTop: "62.5px" }}
+              >
+                <Map
+                  data={getMyPoints(project)}
+                  bounds={calculateBounds(getMyPoints(project))}
+                  height="300px"
+                />{" "}
+              </div>
+            ) : (
+              ""
+            )}
+
             <div
               className={`col-sm-12 col-md-${
                 showMap ? 6 : 12

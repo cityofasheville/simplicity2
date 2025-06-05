@@ -11,125 +11,22 @@ import {
 } from "@tanstack/react-table";
 import Measure from "react-measure";
 import Icon from "../../shared/Icon";
-import {
-  IM_SHIELD3,
-  IM_TREE,
-  IM_HOME2,
-  IM_BUS,
-  LI_BOLD,
-  IM_DROPLET,
-  IM_HAMMER,
-} from "../../shared/iconConstants";
+import { LI_BOLD } from "../../shared/iconConstants";
 import { browserHistory, Link } from "react-router";
 import { iconDictionary } from "./CIPIcons";
 
-const getIcon = (category, isExpanded) => {
-  switch (category) {
-    case "Parks Program":
-      return (
-        <Icon
-          path={IM_TREE}
-          size={25}
-          color={isExpanded ? "#fff" : "#4077a5"}
-        />
-      );
-    case "Parks & Recreation":
-      return (
-        <Icon
-          path={IM_TREE}
-          size={25}
-          color={isExpanded ? "#fff" : "#4077a5"}
-        />
-      );
-    case "Transportation Program":
-      return (
-        <Icon path={IM_BUS} size={25} color={isExpanded ? "#fff" : "#4077a5"} />
-      );
-    case "Transportation & Infrastructure":
-      return (
-        <Icon path={IM_BUS} size={25} color={isExpanded ? "#fff" : "#4077a5"} />
-      );
-    case "Housing Program":
-      return (
-        <Icon
-          path={IM_HOME2}
-          size={25}
-          color={isExpanded ? "#fff" : "#4077a5"}
-        />
-      );
-    case "Affordable Housing":
-      return (
-        <Icon
-          path={IM_HOME2}
-          size={25}
-          color={isExpanded ? "#fff" : "#4077a5"}
-        />
-      );
-    case "Public Safety":
-      return (
-        <Icon
-          path={IM_SHIELD3}
-          size={25}
-          color={isExpanded ? "#fff" : "#4077a5"}
-        />
-      );
-    case "Water":
-      return (
-        <Icon
-          path={IM_DROPLET}
-          size={25}
-          color={isExpanded ? "#fff" : "#4077a5"}
-        />
-      );
-    case "Building Construction":
-      return (
-        <Icon
-          path={IM_HAMMER}
-          size={25}
-          color={isExpanded ? "#fff" : "#4077a5"}
-        />
-      );
-    default:
-      return (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          height="25px"
-          transform="translate(0,4)"
-          version="1.1"
-          viewBox="0 0 16 16"
-          width="25px"
-        >
-          <g
-            fill="none"
-            fillRule="evenodd"
-            id="Icons with numbers"
-            stroke="none"
-            strokeWidth="1"
-          >
-            <g
-              fill={isExpanded ? "#fff" : "#4077a5"}
-              id="Group"
-              transform="translate(-528.000000, -576.000000)"
-            >
-              <path
-                d="M536,592 C531.581722,592 528,588.418278 528,584 C528,579.581722 531.581722,576 536,576 C540.418278,576 544,579.581722 544,584 C544,588.418278 540.418278,592 536,592 Z M541,586 C542.10457,586 543,585.10457 543,584 C543,582.89543 542.10457,582 541,582 C539.89543,582 539,582.89543 539,584 C539,585.10457 539.89543,586 541,586 Z M531,586 C532.10457,586 533,585.10457 533,584 C533,582.89543 532.10457,582 531,582 C529.89543,582 529,582.89543 529,584 C529,585.10457 529.89543,586 531,586 Z M536,586 C537.10457,586 538,585.10457 538,584 C538,582.89543 537.10457,582 536,582 C534.89543,582 534,582.89543 534,584 C534,585.10457 534.89543,586 536,586 Z M536,586"
-                id="Oval 12 copy"
-              />
-            </g>
-          </g>
-        </svg>
-      );
-  }
-};
-
 function ProjectsTable(props) {
-  const rerender = React.useReducer(() => ({}), {})[1];
+  // const rerender = React.useReducer(() => ({}), {})[1];
   let [width, setWidth] = useState(0);
   const [columnVisibility, setColumnVisibility] = useState({});
   let [data, setData] = React.useState(() => props.data);
   let [nameColumnWidth, setNameColumnWidth] = useState(0);
-  const projectColumnWidth = width < 576 ? 100 : width < 768 ? 300 : 500;
-  // let location = 
+  const [inputValue, setInputValue] = useState(1);
+  // const projectColumnWidth = width < 576 ? 100 : width < 768 ? 300 : 500;
+  // const [pagination, setPagination] = useState({
+  //   pageIndex: 0,
+  //   pageSize: 25,
+  // });
 
   useEffect(() => {
     if (width < 576) {
@@ -144,60 +41,54 @@ function ProjectsTable(props) {
   function getInitialFiltersFromURL() {
     const params = new URLSearchParams(location.search);
     const filters = [];
-
     for (const [key, value] of params.entries()) {
       filters.push({ id: key, value });
     }
-
     return [...filters];
   }
-
-  useEffect(() => {
-    setData(props.data);
-  }, [props.data]);
-
 
   const [columnFilters, setColumnFilters] = useState(
     getInitialFiltersFromURL()
   );
 
   useEffect(() => {
-    setColumnFilters(getInitialFiltersFromURL());
-  }, [location.search]);
-
-
-  function updateURL(url, filters) {
-    const baseUrl = location.pathname;
-    const params = new URLSearchParams(url.split("?")[1]);
-
-    const allFilterIDs = [
-      "status",
-      "name",
-      "zip_code",
-      "total_project_funding_budget_document",
-      "encumbered",
-      "spent",
-    ];
-
-    const filterMap = Object.fromEntries(filters.map((f) => [f.id, f.value]));
-
-    for (let id of allFilterIDs) {
-      const value = filterMap[id];
-
-      if (value === undefined || value === "") {
-        params.delete(id);
-      } else {
-        params.set(id, value);
-      }
-    }
-
-    const updatedURL = `${baseUrl}?${params.toString()}`;
-    browserHistory.replace(updatedURL);
-  }
+    setData(props.data);
+  }, [props.data]);
 
   useEffect(() => {
-    updateURL(location.href, columnFilters);
-  }, [columnFilters]);
+    let initialFilters = getInitialFiltersFromURL();
+    const otherFilters = ["types", "categories", "size", "page"];
+    const filtered = initialFilters.filter(
+      (obj) => !otherFilters.includes(obj.id)
+    );
+    setColumnFilters(filtered);
+
+    // const page = initialFilters.find((obj) => obj.id === "page");
+    // const size = initialFilters.find((obj) => obj.id === "size");
+    // if (size?.value && size?.value > 0) {
+    //   table.setPageSize(Number(size?.value));
+    // }
+    // if (page?.value && page?.value > 0) {
+    //   table.setPageIndex(Number(page?.value-1));
+    // }
+  }, []); //set
+
+  useEffect(() => {
+    let initialFilters = getInitialFiltersFromURL();
+
+    const page = initialFilters.find((obj) => obj.id === "page");
+    const size = initialFilters.find((obj) => obj.id === "size");
+    if (size?.value && size?.value > 0) {
+      table.setPageSize(Number(size?.value));
+    }
+    if (page?.value && page?.value > 0) {
+      console.log("Page Value", page.value);
+      table.setPageIndex(Number(page?.value - 1));
+      setInputValue(Number(page?.value));
+    }
+  }, [location.search]); //set
+
+  //------------------------------------------
 
   const columns = React.useMemo(
     () => [
@@ -221,18 +112,20 @@ function ProjectsTable(props) {
         minSize: 100,
         cell: (cell) => (
           <span>
-            <span style={{marginTop: '6px'}} title={cell.row.original.category}>
-            <i
-            className={`bi ${iconDictionary[cell.row.original.category]}`}
-            style={{
-              fontSize: "1.5rem",
-              verticalAlign: "middle",              
-              color: "rgb(64, 119, 165)",
-              display: "inline-block",
-              marginRight: '1px'
-            }}
-          ></i>
-
+            <span
+              style={{ marginTop: "6px" }}
+              title={cell.row.original.category}
+            >
+              <i
+                className={`bi ${iconDictionary[cell.row.original.category]}`}
+                style={{
+                  fontSize: "1.5rem",
+                  verticalAlign: "middle",
+                  color: "rgb(64, 119, 165)",
+                  display: "inline-block",
+                  marginRight: "1px",
+                }}
+              ></i>
             </span>
             {cell.row.original.type === "Bond" && (
               <span title={content.bond_project} style={{ marginLeft: "3px" }}>
@@ -361,8 +254,7 @@ function ProjectsTable(props) {
               border: "1px solid rgba(0, 0, 0, .02)",
               padding: "10px",
               width: "100%",
-              whiteSpace: "nowrap"
-
+              whiteSpace: "nowrap",
             }}
           >
             Under Contract
@@ -404,14 +296,16 @@ function ProjectsTable(props) {
     []
   );
 
+  //------------------------------------------
+
   useEffect(() => {
     setColumnVisibility({
-      zip_code: width >= 720,
-      total_project_funding_budget_document: width >= 720,
-      encumbered: width >= 720,
-      spent: width >= 720,
-      status: true,
-      name: true,
+      // zip_code: width >= 720,
+      // total_project_funding_budget_document: width >= 720,
+      // encumbered: width >= 720,
+      // spent: width >= 720,
+      // status: true,
+      // name: true,
     });
   }, [width]);
 
@@ -427,16 +321,24 @@ function ProjectsTable(props) {
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    // onPaginationChange: setPagination,
+    autoResetPageIndex: false,
     onColumnFiltersChange: (newFilters) => {
       setColumnFilters(newFilters);
     },
     state: {
       columnVisibility,
       columnFilters,
+      // pagination
     },
     debugTable: true,
     debugHeaders: true,
     debugColumns: false,
+    initialState: {
+      pagination: {
+        pageSize: 25,
+      },
+    },
   });
 
   useEffect(() => {
@@ -444,6 +346,47 @@ function ProjectsTable(props) {
     const goodrows = filteredRows.map((item) => item.original);
     props.setDataFromTable(goodrows);
   }, [table.getFilteredRowModel().rows]);
+
+  function updateURL(url, filters, filterIds) {
+    const baseUrl = location.pathname;
+    const params = new URLSearchParams(url.split("?")[1]);
+
+    const filterMap = Object.fromEntries(filters.map((f) => [f.id, f.value]));
+
+    for (let id of filterIds) {
+      const value = filterMap[id];
+
+      if (value === undefined || value === "") {
+        params.delete(id);
+      } else {
+        params.set(id, value);
+      }
+    }
+
+    const updatedURL = `${baseUrl}?${params.toString()}`;
+    console.log("updatedurl", updatedURL, filters, filterIds);
+    browserHistory.replace(updatedURL);
+  }
+
+  useEffect(() => {
+    console.log("FILTErS", columnFilters);
+  }, [columnFilters]);
+
+  useEffect(() => {
+    console.log("table state", table.getState().pagination.pageIndex);
+  }, [table.getState().pagination.pageIndex]);
+
+  useEffect(() => {
+  const allFilterIDs = [
+    "status",
+    "name",
+    "zip_code",
+    "total_project_funding_budget_document",
+    "encumbered",
+    "spent",
+  ];
+  updateURL(location.href, columnFilters, allFilterIDs);
+}, [columnFilters]);
 
   return (
     <div className="row" style={{ marginTop: "10px" }}>
@@ -457,99 +400,117 @@ function ProjectsTable(props) {
           >
             {({ measureRef }) => (
               <div ref={measureRef}>
-                <table style={{ width: "100%", tableLayout: "fixed" }}>
-                  <thead
-                    style={{
-                      boxShadow: "0px 2px 15px 0px rgba(0, 0, 0, 0.15),",
-                    }}
-                  >
-                    {table.getHeaderGroups().map((headerGroup) => (
-                      <tr key={headerGroup.id}>
-                        {headerGroup.headers.map((header) => {
-                          return (
-                            // <th key={header.id} colSpan={header.colSpan}>
-                            <th
-                              key={header.id}
-                              colSpan={header.colSpan}
-                              style={{ width: header.getSize() }}
-                            >
-                              {header.isPlaceholder ? null : (
-                                <>
-                                  <div
-                                    {...{
-                                      onClick:
-                                        header.column.getToggleSortingHandler(),
-                                      style: {
-                                        boxShadow:
-                                          header.column.getIsSorted() === "asc"
-                                            ? "inset 0 4px 0 0 #4077a5"
-                                            : header.column.getIsSorted() ===
-                                              "desc"
-                                            ? "inset 0 -4px 0 0 #4077a5"
-                                            : "none",
-                                      },
-                                    }}
-                                  >
-                                    {flexRender(
-                                      header.column.columnDef.header,
-                                      header.getContext()
-                                    )}
-                                  </div>
-                                  {header.column.getCanFilter() ? (
-                                    <div>
-                                      <Filter column={header.column} />
-                                    </div>
-                                  ) : null}
-                                </>
-                              )}
-                            </th>
-                          );
-                        })}
-                      </tr>
-                    ))}
-                  </thead>
-                  <tbody>
-                    {table.getRowModel().rows.map((row) => {
-                      return (
-                        <tr key={row.id}>
-                          {row.getVisibleCells().map((cell) => {
+                <div style={{ maxHeight: "30rem", overflow: "auto" }}>
+                  <table style={{ width: "100%", tableLayout: "fixed" }}>
+                    <thead
+                      style={{
+                        boxShadow: "0px 2px 15px 0px rgba(0, 0, 0, 0.15),",
+                      }}
+                    >
+                      {table.getHeaderGroups().map((headerGroup) => (
+                        <tr key={headerGroup.id}>
+                          {headerGroup.headers.map((header) => {
                             return (
-                              // <td
-                              //   key={cell.id}
-                              //   style={{
-                              //     padding: "5px 7px",
-                              //     borderRadius: "0px",
-                              //     border: "1px solid rgba(0, 0, 0, .02)",
-                              //   }}
-                              // >
-                              <td
-                                key={cell.id}
-                                style={{
-                                  // width: cell.column.getSize(),
-                                  padding: "5px 7px",
-                                  borderRadius: "0px",
-                                  border: "1px solid rgba(0, 0, 0, .02)",
-                                }}
+                              // <th key={header.id} colSpan={header.colSpan}>
+                              <th
+                                key={header.id}
+                                colSpan={header.colSpan}
+                                style={{ width: header.getSize() }}
                               >
-                                {flexRender(
-                                  cell.column.columnDef.cell,
-                                  cell.getContext()
+                                {header.isPlaceholder ? null : (
+                                  <>
+                                    <div
+                                      {...{
+                                        onClick:
+                                          header.column.getToggleSortingHandler(),
+                                        style: {
+                                          boxShadow:
+                                            header.column.getIsSorted() ===
+                                            "asc"
+                                              ? "inset 0 4px 0 0 #4077a5"
+                                              : header.column.getIsSorted() ===
+                                                "desc"
+                                              ? "inset 0 -4px 0 0 #4077a5"
+                                              : "none",
+                                        },
+                                      }}
+                                    >
+                                      {flexRender(
+                                        header.column.columnDef.header,
+                                        header.getContext()
+                                      )}
+                                    </div>
+                                    {header.column.getCanFilter() ? (
+                                      <div>
+                                        <Filter column={header.column} />
+                                      </div>
+                                    ) : null}
+                                  </>
                                 )}
-                              </td>
+                              </th>
                             );
                           })}
                         </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
+                      ))}
+                    </thead>
+                    <tbody>
+                      {table.getRowModel().rows.map((row) => {
+                        return (
+                          <tr key={row.id}>
+                            {row.getVisibleCells().map((cell) => {
+                              return (
+                                // <td
+                                //   key={cell.id}
+                                //   style={{
+                                //     padding: "5px 7px",
+                                //     borderRadius: "0px",
+                                //     border: "1px solid rgba(0, 0, 0, .02)",
+                                //   }}
+                                // >
+                                <td
+                                  key={cell.id}
+                                  style={{
+                                    // width: cell.column.getSize(),
+                                    padding: "5px 7px",
+                                    borderRadius: "0px",
+                                    border: "1px solid rgba(0, 0, 0, .02)",
+                                  }}
+                                >
+                                  {flexRender(
+                                    cell.column.columnDef.cell,
+                                    cell.getContext()
+                                  )}
+                                </td>
+                              );
+                            })}
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>{" "}
+                </div>
                 <div className="pagination-bottom" />
                 <div className="-pagination">
                   <div class="-previous">
                     <button
                       type="button"
                       className="-btn"
-                      onClick={() => table.previousPage()}
+                      onClick={() =>
+                        // table.previousPage()
+                        {
+                          setInputValue(parseInt(inputValue) - 1);
+                          updateURL(
+                            location.href,
+                            [
+                              {
+                                id: "page",
+                                value: parseInt(inputValue) - 1,
+                              },
+                            ],
+                            ["page"]
+                          );
+                        }
+                      }
                       disabled={!table.getCanPreviousPage()}
                     >
                       Previous
@@ -563,14 +524,25 @@ function ProjectsTable(props) {
                           type="number"
                           min="1"
                           max={table.getPageCount()}
-                          defaultValue={
-                            table.getState().pagination.pageIndex + 1
-                          }
+                          value={inputValue}
                           onChange={(e) => {
-                            const page = e.target.value
-                              ? Number(e.target.value) - 1
-                              : 0;
-                            table.setPageIndex(page);
+                            const val = e.target.value;
+                            if (
+                              /^\d+$/.test(val) &&
+                              Number(val) >= 1 &&
+                              Number(val) <= table.getPageCount()
+                            ) {
+                              updateURL(
+                                location.href,
+                                [
+                                  {
+                                    id: "page",
+                                    value: String(e.target.value),
+                                  },
+                                ],
+                                ["page"]
+                              );
+                            }
                           }}
                           className="border p-1 rounded w-16"
                         />
@@ -580,14 +552,24 @@ function ProjectsTable(props) {
                         {table.getPageCount()}
                       </span>
                     </span>
-                    <span className="select-wrap -pageSizeOptions">
+                    <span className="select-wrap">
                       <select
                         value={table.getState().pagination.pageSize}
                         onChange={(e) => {
-                          table.setPageSize(Number(e.target.value));
+                          // table.setPageSize(Number(e.target.value));
+                          updateURL(
+                            location.href,
+                            [
+                              {
+                                id: "size",
+                                value: Number(e.target.value),
+                              },
+                            ],
+                            ["size"]
+                          );
                         }}
                       >
-                        {[5, 10, 25, 50, 100].map((pageSize) => (
+                        {[10, 25, 50, 100].map((pageSize) => (
                           <option key={pageSize} value={pageSize}>
                             {pageSize} rows
                           </option>
@@ -599,7 +581,22 @@ function ProjectsTable(props) {
                     <button
                       type="button"
                       className="-btn"
-                      onClick={() => table.nextPage()}
+                      onClick={() =>
+                        // table.nextPage()
+                        {
+                          setInputValue(parseInt(inputValue) + 1);
+                          updateURL(
+                            location.href,
+                            [
+                              {
+                                id: "page",
+                                value: parseInt(inputValue) + 1,
+                              },
+                            ],
+                            ["page"]
+                          );
+                        }
+                      }
                       disabled={!table.getCanNextPage()}
                     >
                       Next
@@ -666,3 +663,40 @@ const rootElement = document.getElementById("root");
 if (!rootElement) throw new Error("Failed to find the root element");
 
 export default ProjectsTable;
+
+// useEffect(() => {
+//   const allFilterIDs = [
+//     "status",
+//     "name",
+//     "zip_code",
+//     "total_project_funding_budget_document",
+//     "encumbered",
+//     "spent",
+//   ];
+//   updateURL(location.href, columnFilters, allFilterIDs);
+// }, [columnFilters]);
+
+// useEffect(() => {
+//   const allFilterIDs = ["size"];
+//   updateURL(
+//     location.href,
+//     [{ id: "size", value: table.getState().pagination.pageSize }],
+//     allFilterIDs
+//   );
+// }, [table.getState().pagination.pageSize]);
+// const pageIndex = table.getState().pagination.pageIndex;
+
+// useEffect(() => {
+//   updateURL(
+//     location.href,
+//     [
+//       {
+//         id: "page",
+//         value: String(table.getState().pagination.pageIndex + 1),
+//       },
+//     ],
+//     ["page"]
+//   );
+//   // setColumnFilters({...columnFilters, page: val})
+
+// }, [pageIndex]);

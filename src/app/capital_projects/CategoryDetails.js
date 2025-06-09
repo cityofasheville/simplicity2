@@ -341,7 +341,7 @@ function CategoryDetails(props) {
               </h2>
             </div>
           </div>
-          <p>Placehoder for budget info blurb</p>
+          <p>Placeholder for budget info blurb</p>
           <div style={{ marginTop: "5px" }}>
             <div
               style={{

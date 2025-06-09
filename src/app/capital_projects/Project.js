@@ -16,6 +16,7 @@ import SuggestSearchWrapper from "../search/SuggestSearchWrapper";
 import LinkButton from "../../shared/LinkButton";
 import { browserHistory, Link } from "react-router";
 import { iconDictionary } from "./CIPIcons";
+import { useEffect } from "react";
 
 const getStageNumber = (stage) => {
   switch (stage) {
@@ -95,8 +96,11 @@ const GET_PROJECTS = gql`
 const dateFormatter = (inputDate) =>
   moment(new Date(inputDate)).format("MMMM DD, YYYY");
 
-const Project = (props) => (
-
+function Project (props) {
+  useEffect(()=>{
+    window.scrollTo(0, 0);
+  },[])
+  return(
   <Query
     query={GET_PROJECTS}
     variables={{
@@ -306,7 +310,7 @@ const Project = (props) => (
           >
             <div className={columnClass} style={columnStyle}>
               <div className="" style={titleStyle}>
-                Phase
+                Status
               </div>
 
               {project.status !== null && (
@@ -535,8 +539,8 @@ const Project = (props) => (
         </main>
       );
     }}
-  </Query>
-);
+  </Query>)
+;}
 
 Project.propTypes = {
   routeParams: PropTypes.shape({

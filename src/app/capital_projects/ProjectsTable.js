@@ -75,16 +75,26 @@ function ProjectsTable(props) {
 
   useEffect(() => {
     let initialFilters = getInitialFiltersFromURL();
+    const otherFilters = ["types", "categories", "size", "page"];
+    const filtered = initialFilters.filter(
+      (obj) => !otherFilters.includes(obj.id)
+    );
+    setColumnFilters(filtered);
 
     const page = initialFilters.find((obj) => obj.id === "page");
     const size = initialFilters.find((obj) => obj.id === "size");
     if (size?.value && size?.value > 0) {
       table.setPageSize(Number(size?.value));
+    } else {
+      table.setPageSize(Number(25));
     }
     if (page?.value && page?.value > 0) {
       console.log("Page Value", page.value);
       table.setPageIndex(Number(page?.value - 1));
       setInputValue(Number(page?.value));
+    } else{
+      table.setPageIndex(0);
+      setInputValue(1);
     }
   }, [location.search]); //set
 
@@ -287,6 +297,16 @@ function ProjectsTable(props) {
         ),
         size: 100,
         sortingFn: (a, b) => {
+          // updateURL(
+          //   location.href,
+          //   [
+          //     {
+          //       id: "page",
+          //       value: "1",
+          //     },
+          //   ],
+          //   ["page"]
+          // );
           const aVal = parseInt(a.original.total_spent, 10) || 0;
           const bVal = parseInt(b.original.total_spent, 10) || 0;
           return bVal - aVal;
@@ -326,6 +346,18 @@ function ProjectsTable(props) {
     onColumnFiltersChange: (newFilters) => {
       setColumnFilters(newFilters);
     },
+  //   onSortingChange: (sortingUpdater) => {
+  //     updateURL(
+  //       location.href,
+  //       [
+  //         {
+  //           id: "page",
+  //           value: "1",
+  //         },
+  //       ],
+  //       ["page"]
+  //     );
+  //  },
     state: {
       columnVisibility,
       columnFilters,
@@ -377,16 +409,16 @@ function ProjectsTable(props) {
   }, [table.getState().pagination.pageIndex]);
 
   useEffect(() => {
-  const allFilterIDs = [
-    "status",
-    "name",
-    "zip_code",
-    "total_project_funding_budget_document",
-    "encumbered",
-    "spent",
-  ];
-  updateURL(location.href, columnFilters, allFilterIDs);
-}, [columnFilters]);
+    const allFilterIDs = [
+      "status",
+      "name",
+      "zip_code",
+      "total_project_funding_budget_document",
+      "encumbered",
+      "spent",
+    ];
+    updateURL(location.href, columnFilters, allFilterIDs);
+  }, [columnFilters]);
 
   return (
     <div className="row" style={{ marginTop: "10px" }}>
@@ -400,7 +432,13 @@ function ProjectsTable(props) {
           >
             {({ measureRef }) => (
               <div ref={measureRef}>
-                <div style={{ maxHeight: "30rem", overflow: "auto" }}>
+                <div
+                    style={{
+                      ...(width <= 768
+                        ? { maxHeight: "30rem", overflow: "auto" }
+                        : { overflow: "visible" }) // optional: explicitly set overflow for larger widths
+                    }}
+                >
                   <table style={{ width: "100%", tableLayout: "fixed" }}>
                     <thead
                       style={{
@@ -527,23 +565,24 @@ function ProjectsTable(props) {
                           value={inputValue}
                           onChange={(e) => {
                             const val = e.target.value;
-                            if (
-                              /^\d+$/.test(val) &&
-                              Number(val) >= 1 &&
-                              Number(val) <= table.getPageCount()
-                            ) {
-                              updateURL(
-                                location.href,
-                                [
-                                  {
-                                    id: "page",
-                                    value: String(e.target.value),
-                                  },
-                                ],
-                                ["page"]
-                              );
+                            if (val<=table.getPageCount()) {
+                              setInputValue(val);
                             }
-                          }}
+                        
+                            if (/^\d+$/.test(val)) {
+                              const pageNum = Number(val);
+                              if (pageNum >= 1 && pageNum <= table.getPageCount()) {
+                                updateURL(
+                                  location.href,
+                                  [
+                                    {
+                                      id: "page",
+                                      value: String(pageNum),
+                                    },
+                                  ],
+                                  ["page"]
+                                );
+                              }}}}
                           className="border p-1 rounded w-16"
                         />
                       </div>{" "}
@@ -566,6 +605,16 @@ function ProjectsTable(props) {
                               },
                             ],
                             ["size"]
+                          );
+                          updateURL(
+                            location.href,
+                            [
+                              {
+                                id: "page",
+                                value: "1",
+                              },
+                            ],
+                            ["page"]
                           );
                         }}
                       >

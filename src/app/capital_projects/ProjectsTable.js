@@ -31,7 +31,12 @@ function ProjectsTable(props) {
   //   ...new Set(props.data.map((item) => item.status)),
   // ];
   const uniqueStatuses = [
-    "All", "Proposed", "Planning", "Design", "Construction", "Completed"
+    "All",
+    "Proposed",
+    "Planning",
+    "Design",
+    "Construction",
+    "Completed",
   ];
   let [pageNum, setPageNum] = useState(1);
   const [sorting, setSorting] = useState([]);
@@ -75,7 +80,6 @@ function ProjectsTable(props) {
       (obj) => !otherFilters.includes(obj.id)
     );
     setColumnFilters(filtered);
-
   }, []); //set
 
   //------------------------------------------
@@ -403,16 +407,12 @@ function ProjectsTable(props) {
       setSorting(newSorting);
       setPageNum(1);
       setInputValue(1);
-      updateURL(
-        location.href,
-        [{ id: "page", value: "1" }],
-        ["page"]
-      );
+      updateURL(location.href, [{ id: "page", value: "1" }], ["page"]);
     },
     state: {
       columnVisibility,
       columnFilters,
-      sorting
+      sorting,
       // pagination
     },
     debugTable: true,
@@ -426,7 +426,7 @@ function ProjectsTable(props) {
   });
 
   useEffect(() => {
-    console.log("URL HAS BEEN LISTENED TO")
+    console.log("URL HAS BEEN LISTENED TO");
 
     let initialFilters = getInitialFiltersFromURL();
     const otherFilters = ["types", "categories", "size", "page"];
@@ -470,8 +470,6 @@ function ProjectsTable(props) {
     }
   }, [location.search]);
 
-
-
   // useEffect(() => {
   //   // listens to sorting, to set page to 1 when theres a change
   //   console.log("Table sorted:", table.getState().sorting);
@@ -513,7 +511,6 @@ function ProjectsTable(props) {
     props.setDataFromTable(goodrows);
   }, [table.getFilteredRowModel().rows]);
 
-
   function updateURL(url, filters, filterIds) {
     const baseUrl = location.pathname;
     const params = new URLSearchParams(url.split("?")[1]);
@@ -531,7 +528,6 @@ function ProjectsTable(props) {
     // console.log("updatedurl", updatedURL, filters, filterIds);
     browserHistory.replace(updatedURL);
   }
-
 
   useEffect(() => {
     // console.log("FILTErS", columnFilters);
@@ -616,8 +612,12 @@ function ProjectsTable(props) {
                                         header.column.id === "zip_code" ||
                                         header.column.id === "status" ? (
                                           <select
-                                          aria-label={`Select a ${header.column.id === "status" ? "status" : "zip code"}`}
-                                          value={
+                                            aria-label={`Select a ${
+                                              header.column.id === "status"
+                                                ? "status"
+                                                : "zip code"
+                                            }`}
+                                            value={
                                               header.column.getFilterValue() ??
                                               "All"
                                             }
@@ -633,14 +633,16 @@ function ProjectsTable(props) {
                                           >
                                             {" "}
                                             {header.column.id === "zip_code"
-                                              ? props.uniqueZipCodes.map((option) => (
-                                                  <option
-                                                    key={option}
-                                                    value={option}
-                                                  >
-                                                    {option}
-                                                  </option>
-                                                ))
+                                              ? props.uniqueZipCodes.map(
+                                                  (option) => (
+                                                    <option
+                                                      key={option}
+                                                      value={option}
+                                                    >
+                                                      {option}
+                                                    </option>
+                                                  )
+                                                )
                                               : uniqueStatuses.map((option) => (
                                                   <option
                                                     key={option}
@@ -706,6 +708,7 @@ function ProjectsTable(props) {
                   <div class="-previous">
                     <button
                       type="button"
+                      style={{ color: "black" }}
                       className="-btn"
                       onClick={() =>
                         // table.previousPage()
@@ -733,7 +736,7 @@ function ProjectsTable(props) {
                       Page{" "}
                       <div className="-pageJump">
                         <input
-                        aria-label="Page input"
+                          aria-label="Page input"
                           type="number"
                           min="1"
                           max={table.getPageCount()}
@@ -773,7 +776,7 @@ function ProjectsTable(props) {
                     </span>
                     <span className="select-wrap">
                       <select
-                      aria-label="Select the number of rows per page"
+                        aria-label="Select the number of rows per page"
                         value={table.getState().pagination.pageSize}
                         onChange={(e) => {
                           // table.setPageSize(Number(e.target.value));
@@ -809,6 +812,7 @@ function ProjectsTable(props) {
                   </div>
                   <div className="-next">
                     <button
+                      style={{ color: "black" }}
                       type="button"
                       className="-btn"
                       onClick={() =>

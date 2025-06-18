@@ -115,11 +115,16 @@ const CIPMap = (props) => {
       iconPic = iconDictionary["Other"];
     }
     const iconMarkup = renderToStaticMarkup(
-      <div style={{    width: "30px",
-        height: "30px",
-        borderRadius: "0 50% 50% 50%",
-        background: CIPcolors[pt.type] || "#000",
-        transform: "rotate(-135deg)"}}>
+      <div
+        aria-label={`map marker for a project with type ${pt.type} and category ${pt.category}`}
+        style={{
+          width: "30px",
+          height: "30px",
+          borderRadius: "0 50% 50% 50%",
+          background: CIPcolors[pt.type] || "#000",
+          transform: "rotate(-135deg)",
+        }}
+      >
         <div style={{ transform: "rotate(135deg)" }}>
           {" "}
           {/* Counter-rotate wrapper */}
@@ -140,7 +145,7 @@ const CIPMap = (props) => {
       className: "",
       iconSize: [24, 24],
       iconAnchor: [16, 50],
-      popupAnchor: [-0.5, -12]
+      popupAnchor: [-0.5, -45],
     });
 
     markers.push({

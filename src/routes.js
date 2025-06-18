@@ -50,6 +50,7 @@ import CategoryDetails from "./app/capital_projects/CategoryDetails";
 import CIPData from "./app/capital_projects/CIPData";
 import Project from "./app/capital_projects/Project";
 import AboutPage from "./app/capital_projects/AboutPage";
+import AboutBudgetPage from "./app/capital_projects/AboutBudgetPage";
 // Homelessness
 // import HomelessnessSummary from "./app/homelessness/HomelessnessSummary";
 // import HomelessnessCounts from "./app/homelessness/HomelessnessCounts";
@@ -138,6 +139,7 @@ const Routes = () => (
           </Route>
           <Route path="/capital_projects/dashboard" component={CapitalProjectsSummary}></Route>
           <Route path="/capital_projects/about" component={AboutPage}></Route>
+          <Route path="/capital_projects/about_budget" component={AboutBudgetPage}></Route>
           <Route path="/capital_projects/:id" component={Project}></Route>
           <Route path="crime">
             <IndexRoute component={CrimeSummary} />

@@ -1,8 +1,8 @@
 export const CIPcolors = {
-    "Bond 2016": "#2A579A",
-    "Bond": "#2A579A",
+    "Bond 2016": "#0247ae",
+    "Bond": "#0247ae",
     "Operating Budget": "#E67125",
-    "CIP": "#E67125",
-    "Bond 2024": "#9c2cb2",
-    Helene: "#A21E1E",
+    "CIP": "#e65300",
+    "Bond 2024": "#1597d5",
+    Helene: "#C78800",
   };

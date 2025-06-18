@@ -22,6 +22,19 @@ function ProjectsTable(props) {
   let [data, setData] = React.useState(() => props.data);
   let [nameColumnWidth, setNameColumnWidth] = useState(0);
   const [inputValue, setInputValue] = useState(1);
+  // const uniqueZipCodes = [
+  //   "All",
+  //   ...new Set(props.data.map((item) => item.zip_code)),
+  // ];
+  // const uniqueStatuses = [
+  //   "All",
+  //   ...new Set(props.data.map((item) => item.status)),
+  // ];
+  const uniqueStatuses = [
+    "All", "Proposed", "Planning", "Design", "Construction", "Completed"
+  ];
+  let [pageNum, setPageNum] = useState(1);
+  const [sorting, setSorting] = useState([]);
   // const projectColumnWidth = width < 576 ? 100 : width < 768 ? 300 : 500;
   // const [pagination, setPagination] = useState({
   //   pageIndex: 0,
@@ -63,40 +76,7 @@ function ProjectsTable(props) {
     );
     setColumnFilters(filtered);
 
-    // const page = initialFilters.find((obj) => obj.id === "page");
-    // const size = initialFilters.find((obj) => obj.id === "size");
-    // if (size?.value && size?.value > 0) {
-    //   table.setPageSize(Number(size?.value));
-    // }
-    // if (page?.value && page?.value > 0) {
-    //   table.setPageIndex(Number(page?.value-1));
-    // }
   }, []); //set
-
-  useEffect(() => {
-    let initialFilters = getInitialFiltersFromURL();
-    const otherFilters = ["types", "categories", "size", "page"];
-    const filtered = initialFilters.filter(
-      (obj) => !otherFilters.includes(obj.id)
-    );
-    setColumnFilters(filtered);
-
-    const page = initialFilters.find((obj) => obj.id === "page");
-    const size = initialFilters.find((obj) => obj.id === "size");
-    if (size?.value && size?.value > 0) {
-      table.setPageSize(Number(size?.value));
-    } else {
-      table.setPageSize(Number(25));
-    }
-    if (page?.value && page?.value > 0) {
-      console.log("Page Value", page.value);
-      table.setPageIndex(Number(page?.value - 1));
-      setInputValue(Number(page?.value));
-    } else{
-      table.setPageIndex(0);
-      setInputValue(1);
-    }
-  }, [location.search]); //set
 
   //------------------------------------------
 
@@ -105,20 +85,33 @@ function ProjectsTable(props) {
       {
         accessorKey: "display_name",
         id: "name",
-        header: (
-          <button
-            aria-label="sort by project name"
+        header: (header) => (
+          <div
+            aria-label="sort by amount spent"
             style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
               cursor: "pointer",
+              borderRadius: "0px",
+              border: "1px solid rgba(0, 0, 0, .02)",
               padding: "10px",
-              // width: 400,
-              // display: 'inline-block'
+              width: "100%",
             }}
           >
-            Project
-          </button>
+            <span>Project</span>
+            <i
+              className={
+                header.column.getIsSorted() === "asc"
+                  ? "bi bi-arrow-up"
+                  : header.column.getIsSorted() === "desc"
+                  ? "bi bi-arrow-down"
+                  : "bi bi-arrow-down-up"
+              }
+            ></i>
+          </div>
         ),
-        size: 400,
+        size: 300,
         minSize: 100,
         cell: (cell) => (
           <span>
@@ -137,31 +130,14 @@ function ProjectsTable(props) {
                 }}
               ></i>
             </span>
-            {cell.row.original.type === "Bond" && (
-              <span title={content.bond_project} style={{ marginLeft: "3px" }}>
-                <Icon
-                  path={LI_BOLD}
-                  size={16}
-                  color={cell.row.original.isExpanded ? "#fff" : "#4077a5"}
-                  viewBox="0 0 24 24"
-                />
-              </span>
-            )}
             <span style={{ marginLeft: "5px" }}>
-              {/* <Link to={`/capital_projects/${cell.row.original.gis_id}`} 
-            previousPath={location}
-            >{cell.row.original.display_name}</Link> */}
-              {/* <a href={`/capital_projects/${cell.row.original.gis_id}`}>
-                {cell.row.original.display_name}
-              </a> */}
-              {/* <Link to={{`/capital_projects/${cell.row.original.gis_id}`},  state: { previousPath: location }}>
-                          {cell.row.original.display_name}</Link> */}
               <Link
                 to={{
                   pathname: `/capital_projects/${cell.row.original.gis_id}`,
                   state: { previousPath: location.href },
                 }}
               >
+                {/* {console.log("previous path", location.href)} */}
                 {cell.row.original.display_name}
               </Link>
             </span>
@@ -171,19 +147,31 @@ function ProjectsTable(props) {
       {
         accessorKey: `status`,
         id: "status",
-        header: (
-          <button
-            aria-label="sort by status"
+        header: (header) => (
+          <div
+            aria-label="sort by amount spent"
             style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
               cursor: "pointer",
               borderRadius: "0px",
               border: "1px solid rgba(0, 0, 0, .02)",
               padding: "10px",
-              // width: "100%",
+              width: "100%",
             }}
           >
-            Status
-          </button>
+            <span>Status</span>
+            <i
+              className={
+                header.column.getIsSorted() === "asc"
+                  ? "bi bi-arrow-up"
+                  : header.column.getIsSorted() === "desc"
+                  ? "bi bi-arrow-down"
+                  : "bi bi-arrow-down-up"
+              }
+            ></i>
+          </div>
         ),
         size: 100,
         // maxWidth: 50,
@@ -194,36 +182,58 @@ function ProjectsTable(props) {
               : cell.row.original.status}
           </span>
         ),
+        filterFn: (row, columnId, filterValue) => {
+          if (filterValue === "All") return true;
+          return row.getValue(columnId) === filterValue;
+        },
       },
       {
         accessorKey: `zip_code`,
         id: "zip_code",
-        header: (
-          <button
-            aria-label="sort by zip code"
+        header: (header) => (
+          <div
+            aria-label="sort by amount spent"
             style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
               cursor: "pointer",
               borderRadius: "0px",
               border: "1px solid rgba(0, 0, 0, .02)",
               padding: "10px",
               width: "100%",
+              whiteSpace: "nowrap",
             }}
           >
-            Zip code
-          </button>
+            <span>Zip Code</span>
+            <i
+              className={
+                header.column.getIsSorted() === "asc"
+                  ? "bi bi-arrow-up"
+                  : header.column.getIsSorted() === "desc"
+                  ? "bi bi-arrow-down"
+                  : "bi bi-arrow-down-up"
+              }
+            ></i>
+          </div>
         ),
-        size: 100,
-
+        size: 120,
         maxWidth: 120,
-        // size: "5%",
+        filterFn: (row, columnId, filterValue) => {
+          if (filterValue === "All") return true;
+          return row.getValue(columnId) === filterValue;
+        },
       },
       {
         accessorKey: `total_project_funding_budget_document`,
         // id: 'budget',
-        header: (
-          <button
-            aria-label="sort by budget"
+        header: (header) => (
+          <div
+            aria-label="sort by amount spent"
             style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
               cursor: "pointer",
               borderRadius: "0px",
               border: "1px solid rgba(0, 0, 0, .02)",
@@ -231,10 +241,25 @@ function ProjectsTable(props) {
               width: "100%",
             }}
           >
-            Budget
-          </button>
+            <span>Budget</span>
+            <i
+              className={
+                header.column.getIsSorted() === "asc"
+                  ? "bi bi-arrow-up"
+                  : header.column.getIsSorted() === "desc"
+                  ? "bi bi-arrow-down"
+                  : "bi bi-arrow-down-up"
+              }
+            ></i>
+          </div>
+        ),
+        cell: (info) => (
+          <div style={{ textAlign: "right", width: "100%" }}>
+            {info.getValue()}
+          </div>
         ),
         size: 100,
+        enableColumnFilter: false,
         sortingFn: (a, b) => {
           const parseCurrency = (val) => {
             if (typeof val === "number") return val;
@@ -255,22 +280,39 @@ function ProjectsTable(props) {
         accessorFn: (project) =>
           ["$", parseInt(project.encumbered, 10).toLocaleString()].join(""),
         id: "encumbered",
-        header: (
-          <button
-            aria-label="sort by under contract amount"
+        header: (header) => (
+          <div
+            aria-label="sort by amount spent"
             style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
               cursor: "pointer",
               borderRadius: "0px",
               border: "1px solid rgba(0, 0, 0, .02)",
               padding: "10px",
               width: "100%",
-              whiteSpace: "nowrap",
             }}
           >
-            Under Contract
-          </button>
+            <span>Committed</span>
+            <i
+              className={
+                header.column.getIsSorted() === "asc"
+                  ? "bi bi-arrow-up"
+                  : header.column.getIsSorted() === "desc"
+                  ? "bi bi-arrow-down"
+                  : "bi bi-arrow-down-up"
+              }
+            ></i>
+          </div>
+        ),
+        cell: (info) => (
+          <div style={{ textAlign: "right", width: "100%" }}>
+            {info.getValue()}
+          </div>
         ),
         size: 125,
+        enableColumnFilter: false,
         sortingFn: (a, b) => {
           const aVal = parseInt(a.original.encumbered, 10) || 0;
           const bVal = parseInt(b.original.encumbered, 10) || 0;
@@ -281,10 +323,13 @@ function ProjectsTable(props) {
         accessorFn: (project) =>
           ["$", parseInt(project.total_spent, 10).toLocaleString()].join(""),
         id: "spent",
-        header: (
+        header: (header) => (
           <div
             aria-label="sort by amount spent"
             style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
               cursor: "pointer",
               borderRadius: "0px",
               border: "1px solid rgba(0, 0, 0, .02)",
@@ -292,21 +337,26 @@ function ProjectsTable(props) {
               width: "100%",
             }}
           >
-            Spent
+            <span>Spent</span>
+            <i
+              className={
+                header.column.getIsSorted() === "asc"
+                  ? "bi bi-arrow-up"
+                  : header.column.getIsSorted() === "desc"
+                  ? "bi bi-arrow-down"
+                  : "bi bi-arrow-down-up"
+              }
+            ></i>
+          </div>
+        ),
+        cell: (info) => (
+          <div style={{ textAlign: "right", width: "100%" }}>
+            {info.getValue()}
           </div>
         ),
         size: 100,
+        enableColumnFilter: false,
         sortingFn: (a, b) => {
-          // updateURL(
-          //   location.href,
-          //   [
-          //     {
-          //       id: "page",
-          //       value: "1",
-          //     },
-          //   ],
-          //   ["page"]
-          // );
           const aVal = parseInt(a.original.total_spent, 10) || 0;
           const bVal = parseInt(b.original.total_spent, 10) || 0;
           return bVal - aVal;
@@ -318,16 +368,16 @@ function ProjectsTable(props) {
 
   //------------------------------------------
 
-  useEffect(() => {
-    setColumnVisibility({
-      // zip_code: width >= 720,
-      // total_project_funding_budget_document: width >= 720,
-      // encumbered: width >= 720,
-      // spent: width >= 720,
-      // status: true,
-      // name: true,
-    });
-  }, [width]);
+  // useEffect(() => {
+  //   setColumnVisibility({
+  //     // zip_code: width >= 720,
+  //     // total_project_funding_budget_document: width >= 720,
+  //     // encumbered: width >= 720,
+  //     // spent: width >= 720,
+  //     // status: true,
+  //     // name: true,
+  //   });
+  // }, [width]);
 
   const table = useReactTable({
     data,
@@ -346,21 +396,23 @@ function ProjectsTable(props) {
     onColumnFiltersChange: (newFilters) => {
       setColumnFilters(newFilters);
     },
-  //   onSortingChange: (sortingUpdater) => {
-  //     updateURL(
-  //       location.href,
-  //       [
-  //         {
-  //           id: "page",
-  //           value: "1",
-  //         },
-  //       ],
-  //       ["page"]
-  //     );
-  //  },
+    // onSortingChange: setSorting,
+    onSortingChange: (newSorting) => {
+      table.setPageIndex(Number(0));
+
+      setSorting(newSorting);
+      setPageNum(1);
+      setInputValue(1);
+      updateURL(
+        location.href,
+        [{ id: "page", value: "1" }],
+        ["page"]
+      );
+    },
     state: {
       columnVisibility,
       columnFilters,
+      sorting
       // pagination
     },
     debugTable: true,
@@ -374,17 +426,98 @@ function ProjectsTable(props) {
   });
 
   useEffect(() => {
+    console.log("URL HAS BEEN LISTENED TO")
+
+    let initialFilters = getInitialFiltersFromURL();
+    const otherFilters = ["types", "categories", "size", "page"];
+    const filtered = initialFilters.filter(
+      (obj) => !otherFilters.includes(obj.id)
+    );
+    setColumnFilters(filtered);
+
+    const page = initialFilters.find((obj) => obj.id === "page");
+    const size = initialFilters.find((obj) => obj.id === "size");
+    if (size?.value && size?.value > 0) {
+      table.setPageSize(Number(size?.value));
+    } else {
+      table.setPageSize(Number(25));
+    }
+
+    //essentially "If page number has changed..."
+    if (page?.value && page?.value > 0 && page.value != pageNum) {
+      console.log("Page Value", page.value, "page", pageNum);
+      table.setPageIndex(Number(page?.value - 1));
+      setInputValue(Number(page?.value));
+      console.log("HIT");
+      setPageNum(page.value);
+    } else {
+      // if anything besides the page number changes, set page number to 1
+      console.log("NO HIT");
+      updateURL(
+        location.href,
+        [
+          {
+            id: "page",
+            value: "1",
+          },
+        ],
+        ["page"]
+      );
+      table.setPageIndex(0);
+
+      setPageNum(1);
+      setInputValue(1);
+    }
+  }, [location.search]);
+
+
+
+  // useEffect(() => {
+  //   // listens to sorting, to set page to 1 when theres a change
+  //   console.log("Table sorted:", table.getState().sorting);
+  //   updateURL(
+  //     location.href,
+  //     [
+  //       {
+  //         id: "page",
+  //         value: "1",
+  //       },
+  //     ],
+  //     ["page"]
+  //   );
+  //   setPageNum(1);
+  //   setInputValue(1);
+  // }, [table.getState().sorting]);
+
+  // useEffect(() => {
+  //   // listens to sorting, to set page to 1 when theres a change
+  //   console.log("Table sorted:", table.getState().sorting);
+  //   updateURL(
+  //     location.href,
+  //     [
+  //       {
+  //         id: "page",
+  //         value: "1",
+  //       },
+  //     ],
+  //     ["page"]
+  //   );
+  //   setPageNum(1);
+  //   setInputValue(1);
+  // }, [sorting]);
+
+  useEffect(() => {
+    // set data in parent, so map can use it
     const filteredRows = table.getFilteredRowModel().rows;
     const goodrows = filteredRows.map((item) => item.original);
     props.setDataFromTable(goodrows);
   }, [table.getFilteredRowModel().rows]);
 
+
   function updateURL(url, filters, filterIds) {
     const baseUrl = location.pathname;
     const params = new URLSearchParams(url.split("?")[1]);
-
     const filterMap = Object.fromEntries(filters.map((f) => [f.id, f.value]));
-
     for (let id of filterIds) {
       const value = filterMap[id];
 
@@ -394,14 +527,14 @@ function ProjectsTable(props) {
         params.set(id, value);
       }
     }
-
     const updatedURL = `${baseUrl}?${params.toString()}`;
-    console.log("updatedurl", updatedURL, filters, filterIds);
+    // console.log("updatedurl", updatedURL, filters, filterIds);
     browserHistory.replace(updatedURL);
   }
 
+
   useEffect(() => {
-    console.log("FILTErS", columnFilters);
+    // console.log("FILTErS", columnFilters);
   }, [columnFilters]);
 
   useEffect(() => {
@@ -409,6 +542,7 @@ function ProjectsTable(props) {
   }, [table.getState().pagination.pageIndex]);
 
   useEffect(() => {
+    // when filters in table change, update url
     const allFilterIDs = [
       "status",
       "name",
@@ -433,11 +567,11 @@ function ProjectsTable(props) {
             {({ measureRef }) => (
               <div ref={measureRef}>
                 <div
-                    style={{
-                      ...(width <= 768
-                        ? { maxHeight: "30rem", overflow: "auto" }
-                        : { overflow: "visible" }) // optional: explicitly set overflow for larger widths
-                    }}
+                  style={{
+                    ...(width <= 768
+                      ? { maxHeight: "30rem", overflow: "auto" }
+                      : { overflow: "visible" }), // optional: explicitly set overflow for larger widths
+                  }}
                 >
                   <table style={{ width: "100%", tableLayout: "fixed" }}>
                     <thead
@@ -449,7 +583,6 @@ function ProjectsTable(props) {
                         <tr key={headerGroup.id}>
                           {headerGroup.headers.map((header) => {
                             return (
-                              // <th key={header.id} colSpan={header.colSpan}>
                               <th
                                 key={header.id}
                                 colSpan={header.colSpan}
@@ -478,11 +611,61 @@ function ProjectsTable(props) {
                                         header.getContext()
                                       )}
                                     </div>
-                                    {header.column.getCanFilter() ? (
-                                      <div>
-                                        <Filter column={header.column} />
-                                      </div>
-                                    ) : null}
+                                    <div style={{ padding: "5px" }}>
+                                      {header.column.getCanFilter() ? (
+                                        header.column.id === "zip_code" ||
+                                        header.column.id === "status" ? (
+                                          <select
+                                          aria-label={`Select a ${header.column.id === "status" ? "status" : "zip code"}`}
+                                          value={
+                                              header.column.getFilterValue() ??
+                                              "All"
+                                            }
+                                            onChange={(e) =>
+                                              header.column.setFilterValue(
+                                                e.target.value
+                                              )
+                                            }
+                                            style={{
+                                              width: "100%",
+                                              boxSizing: "border-box",
+                                            }}
+                                          >
+                                            {" "}
+                                            {header.column.id === "zip_code"
+                                              ? props.uniqueZipCodes.map((option) => (
+                                                  <option
+                                                    key={option}
+                                                    value={option}
+                                                  >
+                                                    {option}
+                                                  </option>
+                                                ))
+                                              : uniqueStatuses.map((option) => (
+                                                  <option
+                                                    key={option}
+                                                    value={option}
+                                                  >
+                                                    {option}
+                                                  </option>
+                                                ))}
+                                          </select>
+                                        ) : (
+                                          <div>
+                                            <Filter column={header.column} />
+                                          </div>
+                                        )
+                                      ) : (
+                                        <div
+                                          style={{
+                                            width: "100%",
+                                            height: "27px",
+                                            boxSizing: "border-box",
+                                            margin: "4px",
+                                          }}
+                                        ></div>
+                                      )}
+                                    </div>
                                   </>
                                 )}
                               </th>
@@ -497,18 +680,9 @@ function ProjectsTable(props) {
                           <tr key={row.id}>
                             {row.getVisibleCells().map((cell) => {
                               return (
-                                // <td
-                                //   key={cell.id}
-                                //   style={{
-                                //     padding: "5px 7px",
-                                //     borderRadius: "0px",
-                                //     border: "1px solid rgba(0, 0, 0, .02)",
-                                //   }}
-                                // >
                                 <td
                                   key={cell.id}
                                   style={{
-                                    // width: cell.column.getSize(),
                                     padding: "5px 7px",
                                     borderRadius: "0px",
                                     border: "1px solid rgba(0, 0, 0, .02)",
@@ -559,19 +733,23 @@ function ProjectsTable(props) {
                       Page{" "}
                       <div className="-pageJump">
                         <input
+                        aria-label="Page input"
                           type="number"
                           min="1"
                           max={table.getPageCount()}
                           value={inputValue}
                           onChange={(e) => {
                             const val = e.target.value;
-                            if (val<=table.getPageCount()) {
+                            if (val <= table.getPageCount()) {
                               setInputValue(val);
                             }
-                        
+
                             if (/^\d+$/.test(val)) {
                               const pageNum = Number(val);
-                              if (pageNum >= 1 && pageNum <= table.getPageCount()) {
+                              if (
+                                pageNum >= 1 &&
+                                pageNum <= table.getPageCount()
+                              ) {
                                 updateURL(
                                   location.href,
                                   [
@@ -582,7 +760,9 @@ function ProjectsTable(props) {
                                   ],
                                   ["page"]
                                 );
-                              }}}}
+                              }
+                            }
+                          }}
                           className="border p-1 rounded w-16"
                         />
                       </div>{" "}
@@ -593,6 +773,7 @@ function ProjectsTable(props) {
                     </span>
                     <span className="select-wrap">
                       <select
+                      aria-label="Select the number of rows per page"
                         value={table.getState().pagination.pageSize}
                         onChange={(e) => {
                           // table.setPageSize(Number(e.target.value));
@@ -666,10 +847,10 @@ function Filter({ column }) {
   const { filterVariant } = column.columnDef.meta ?? {};
 
   return (
-    <div style={{ padding: "4px" }}>
+    <div style={{}}>
       <DebouncedInput
         className=""
-        style={{ width: "100%", boxSizing: "border-box", margin: "4px" }}
+        style={{ width: "100%", boxSizing: "border-box" }}
         onChange={(value) => column.setFilterValue(value)}
         placeholder={`Search...`}
         type="text"

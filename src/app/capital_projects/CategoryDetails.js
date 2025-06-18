@@ -1,23 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
-
-import Collapsible from "../../shared/Collapsible";
 import ProjectsTable from "./ProjectsTable";
-import {
-  getFundsAllocatedAndExpended,
-  filterProjects,
-  getIcon,
-} from "./cip_utilities";
-import Icon from "../../shared/Icon";
-import { IM_INFO } from "../../shared/iconConstants";
+import { getFundsAllocatedAndExpended, filterProjects } from "./cip_utilities";
 import { withLanguage } from "../../utilities/lang/LanguageContext";
 import { english } from "./english";
 import { spanish } from "./spanish";
-import ProjectMap from "../../shared/visualization/ProjectMap";
 import CIPMap from "./CIPMap";
 import CPCheckboxes from "./CPCheckboxes";
-import { browserHistory } from "react-router";
+import { browserHistory, Link } from "react-router";
 import { iconDictionary } from "./CIPIcons";
-import { CIPcolors } from "./CIPColors";
 
 const getDollars = (value) => {
   let formatted;
@@ -137,84 +127,18 @@ function CategoryDetails(props) {
       content = english;
   }
 
-  // const getBondText = (type) => {
-  //   switch (type) {
-  //     case "Transportation & Infrastructure":
-  //       return content.transportation_bond_info;
-  //     case "Parks & Recreation":
-  //       return content.parks_bond_info;
-  //     case "Housing Program":
-  //       return content.housing_bond_info;
-  //     default:
-  //       return "";
-  //   }
-  // };
-
-  // function getKeyText(categories) {
-  //   <div>
-  //     <p>
-  //       <span>
-  //         {[
-  //           "Transportation & Infrastructure",
-  //           "Housing Program",
-  //           "Parks & Recreation",
-  //           "Water",
-  //           "Building Construction",
-  //           "Other",
-  //         ].map((cat, index) => {
-  //           if (categories.includes(cat)) {
-  //             return (
-  //               <span
-  //                 key={index}
-  //                 style={
-  //                   categories.indexOf(cat) !== 0
-  //                     ? { marginLeft: "10px", color: "#4077a5" }
-  //                     : { marginLeft: "0px", color: "#4077a5" }
-  //                 }
-  //               >
-  //                 {getIcon(cat)}&nbsp;<b>{cat}</b>
-  //               </span>
-  //             );
-  //           }
-  //           return null;
-  //         })}
-  //       </span>
-  //       <span style={{ marginLeft: "5px" }}>
-  //         {categories.slice(0, categories.length - 1).join(", ")}{" "}
-  //         {categories.length > 1 ? "and" : ""}{" "}
-  //         {categories[categories.length - 1]} {content.funding_info}
-  //       </span>
-  //       {categories.includes("Other") && (
-  //         <span>&nbsp;{content.other_category_note}</span>
-  //       )}
-  //     </p>
-  //     {[
-  //       "Transportation & Infrastructure",
-  //       "Housing Program",
-  //       "Parks & Recreation",
-  //     ].map((cat, index) => {
-  //       if (categories.includes(cat)) {
-  //         return (
-  //           <p key={index}>
-  //             <span style={{ color: "#4077a5" }}>
-  //               {getIcon(cat, true)}&nbsp;<b>{cat} Bond</b>
-  //             </span>
-  //             <span style={{ marginLeft: "5px" }}>{getBondText(cat)}</span>
-  //           </p>
-  //         );
-  //       }
-  //       return null;
-  //     })}
-  //   </div>;
-  // }
-
-  // const actualTypes = props.types;
   const actualTypes = allTypes;
   const actualCategories = categories;
   actualCategories.sort(
     (a, b) =>
       props.sortedCategories.indexOf(a) > props.sortedCategories.indexOf(b)
   );
+
+  const uniqueZipCodes = [
+    "All",
+    ...new Set(props.data.map((item) => item.zip_code)),
+  ];
+  console.log(uniqueZipCodes)
 
   const handleMarkerClick = (id) => {
     setMarkers((prevMarkers) =>
@@ -288,16 +212,22 @@ function CategoryDetails(props) {
     browserHistory.replace(baseUrl);
   }
 
-
-
   return (
     <div>
       <div className="row" style={{ marginBottom: "10px" }}>
         <div className="col-sm-12">
-        <i class="bi bi-info-circle" style={{color:"rgb(64, 119, 165)"}}></i>
-                  <a href="/capital_projects/about" style={{ marginLeft: "4px" }}>
+          <Link
+            to={{
+              pathname: `/capital_projects/about`,
+              state: { previousPath: location.href },
+            }}
+          >
+            <i
+              class="bi bi-info-circle"
+              style={{ color: "rgb(64, 119, 165)", marginRight: "4px" }}
+            ></i>
             Learn more about Capital Projects
-          </a>
+          </Link>
         </div>
       </div>
       <div className="row">
@@ -321,28 +251,41 @@ function CategoryDetails(props) {
                 <span className="label-text">
                   <span
                     title={content.total_budget_note} // eslint-disable-line
-                    style={{ marginRight: "5px" }}
-                  ></span>
-                  {content.total_budget}:
+                    style={{ marginRight: "5px", color: "rgb(102, 102, 102)" }}
+                  >
+                    {" "}
+                    {content.total_budget}:
+                  </span>
                 </span>
                 <span className="amount">{getDollars(totalBudget)}</span>
               </h2>
             </div>
             <div className="col-sm-4 col-xs-4">
               <h2>
-                <span className="label-text">{content.under_contract}:</span>
+                <span className="label-text" style={{color:"rgb(102, 102, 102)"}}>{content.under_contract}:</span>
                 <span className="amount">{getDollars(totalUnderCon)}</span>
               </h2>
             </div>
             <div className="col-sm-4 col-xs-4">
               <h2>
-                <span className="label-text">{content.spent}:</span>
+                <span className="label-text" style={{color:"rgb(102, 102, 102)"}}>{content.spent}:</span>
                 <span className="amount">{getDollars(totalSpent)}</span>
               </h2>
             </div>
           </div>
-          <p>Placeholder for budget info blurb</p>
-          <div style={{ marginTop: "5px" }}>
+          <Link
+            to={{
+              pathname: `/capital_projects/about_budget`,
+              state: { previousPath: location.href },
+            }}
+          >
+            <i
+              class="bi bi-info-circle"
+              style={{ color: "rgb(64, 119, 165)", marginRight: "4px" }}
+            ></i>
+            Learn more about the budget
+          </Link>
+          <div style={{ marginTop: "10px" }}>
             <div
               style={{
                 backgroundColor: "rgb(64, 119, 165)",
@@ -412,8 +355,10 @@ function CategoryDetails(props) {
               language={{ language: "English" }}
               updateData={setUpdatedData}
               setDataFromTable={setDataFromTable}
+              uniqueZipCodes={uniqueZipCodes}
             />
           )}
+          <p>Data updated monthly</p>
         </div>
       </div>
     </div>

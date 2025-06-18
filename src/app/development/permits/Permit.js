@@ -234,6 +234,8 @@ const Permit = props => (
 
       formattedPermit.orderedDates.sort(compareValues());
       console.log('formattedPermit.orderedDates', formattedPermit);
+      console.log('formattedPermit', formattedPermit)
+      console.log('currentStatusItem', currentStatusItem)
 
       return (
         <main className="container">

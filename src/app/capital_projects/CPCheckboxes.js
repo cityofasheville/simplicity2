@@ -9,15 +9,7 @@ import { CIPcolors } from "./CIPColors";
 
 const CPCheckboxes = (props) => {
   const [newValues, updateNewValues] = useState([]);
-
-  // Set language
   const content = props.language.language === "Spanish" ? spanish : english;
-
-  const DISPLAY_NAMES = {
-    // DCREF: "Entertainment Facilities",
-    Helene: "Helene Recovery",
-    "Operating Budget": "Capital Improvement Plan",
-  };
 
   function updateURL(url, values) {
     const baseUrl = location.pathname;
@@ -69,8 +61,6 @@ const CPCheckboxes = (props) => {
     );
   };
 
- 
-
   return (
     <div>
       <div className="checkboxGroup">
@@ -78,7 +68,7 @@ const CPCheckboxes = (props) => {
           (type, index) => {
             let displayExtra;
             const isChecked = visibleSelection.includes(type);
-            const label = DISPLAY_NAMES[type] || type; // Use mapped label or default
+            const label = type; // Use mapped label or default
             if (props.variableString == "categories") {
                displayExtra = <i
               className={`bi ${iconDictionary[type]}`}

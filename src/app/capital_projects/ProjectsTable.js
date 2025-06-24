@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  Column,
-  SortingFn,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -10,26 +8,14 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import Measure from "react-measure";
-import Icon from "../../shared/Icon";
-import { LI_BOLD } from "../../shared/iconConstants";
 import { browserHistory, Link } from "react-router";
 import { iconDictionary } from "./CIPIcons";
 
 function ProjectsTable(props) {
-  // const rerender = React.useReducer(() => ({}), {})[1];
   let [width, setWidth] = useState(0);
   const [columnVisibility, setColumnVisibility] = useState({});
   let [data, setData] = React.useState(() => props.data);
-  let [nameColumnWidth, setNameColumnWidth] = useState(0);
   const [inputValue, setInputValue] = useState(1);
-  // const uniqueZipCodes = [
-  //   "All",
-  //   ...new Set(props.data.map((item) => item.zip_code)),
-  // ];
-  // const uniqueStatuses = [
-  //   "All",
-  //   ...new Set(props.data.map((item) => item.status)),
-  // ];
   const uniqueStatuses = [
     "All",
     "Proposed",
@@ -40,21 +26,6 @@ function ProjectsTable(props) {
   ];
   let [pageNum, setPageNum] = useState(1);
   const [sorting, setSorting] = useState([]);
-  // const projectColumnWidth = width < 576 ? 100 : width < 768 ? 300 : 500;
-  // const [pagination, setPagination] = useState({
-  //   pageIndex: 0,
-  //   pageSize: 25,
-  // });
-
-  useEffect(() => {
-    if (width < 576) {
-      setNameColumnWidth(100);
-    } else if (width < 768) {
-      setNameColumnWidth(300);
-    } else {
-      setNameColumnWidth(500);
-    }
-  }, [width]);
 
   function getInitialFiltersFromURL() {
     const params = new URLSearchParams(location.search);
@@ -178,7 +149,6 @@ function ProjectsTable(props) {
           </div>
         ),
         size: 100,
-        // maxWidth: 50,
         cell: (cell) => (
           <span>
             {cell.row.original.status === null
@@ -277,7 +247,7 @@ function ProjectsTable(props) {
             b.original.total_project_funding_budget_document
           );
 
-          return bVal - aVal; // descending
+          return aVal - bVal; // descending
         },
       },
       {
@@ -320,7 +290,7 @@ function ProjectsTable(props) {
         sortingFn: (a, b) => {
           const aVal = parseInt(a.original.encumbered, 10) || 0;
           const bVal = parseInt(b.original.encumbered, 10) || 0;
-          return bVal - aVal;
+          return aVal - bVal;
         },
       },
       {
@@ -363,7 +333,7 @@ function ProjectsTable(props) {
         sortingFn: (a, b) => {
           const aVal = parseInt(a.original.total_spent, 10) || 0;
           const bVal = parseInt(b.original.total_spent, 10) || 0;
-          return bVal - aVal;
+          return aVal - bVal;
         },
       },
     ],
@@ -386,34 +356,39 @@ function ProjectsTable(props) {
   const table = useReactTable({
     data,
     columns,
-    // defaultColumn: {
-    //   maxSize: 120,
-    // },
     filterFns: {},
     columnResizeMode: "onChange",
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    // onPaginationChange: setPagination,
     autoResetPageIndex: false,
     onColumnFiltersChange: (newFilters) => {
       setColumnFilters(newFilters);
     },
-    // onSortingChange: setSorting,
-    onSortingChange: (newSorting) => {
-      table.setPageIndex(Number(0));
-
-      setSorting(newSorting);
-      setPageNum(1);
-      setInputValue(1);
-      updateURL(location.href, [{ id: "page", value: "1" }], ["page"]);
+    onSortingChange: (updater) => {
+      const resolvedSorting =
+        typeof updater === "function" ? updater(table.getState().sorting) : updater;
+      console.log(updater)
+      if (resolvedSorting.length > 0) {
+        const { id, desc } = resolvedSorting[0];
+    
+        const sortDirection = desc ? "desc" : "asc";
+    
+        updateURL(location.href, [{ id: "sort_column", value: id }], ["sort_column"]);
+        updateURL(location.href, [{ id: "sort_order", value: sortDirection }], ["sort_order"]);
+      } else {
+        // Sorting is cleared (default)
+        updateURL(location.href, [{ id: "sort_column", value: "" }], ["sort_column"]);
+        updateURL(location.href, [{ id: "sort_order", value: "default" }], ["sort_order"]);
+      }
     },
+    
+    
     state: {
       columnVisibility,
       columnFilters,
       sorting,
-      // pagination
     },
     debugTable: true,
     debugHeaders: true,
@@ -426,10 +401,8 @@ function ProjectsTable(props) {
   });
 
   useEffect(() => {
-    console.log("URL HAS BEEN LISTENED TO");
-
     let initialFilters = getInitialFiltersFromURL();
-    const otherFilters = ["types", "categories", "size", "page"];
+    const otherFilters = ["types", "categories", "size", "page", "sort_order", "sort_column"];
     const filtered = initialFilters.filter(
       (obj) => !otherFilters.includes(obj.id)
     );
@@ -445,14 +418,11 @@ function ProjectsTable(props) {
 
     //essentially "If page number has changed..."
     if (page?.value && page?.value > 0 && page.value != pageNum) {
-      console.log("Page Value", page.value, "page", pageNum);
       table.setPageIndex(Number(page?.value - 1));
       setInputValue(Number(page?.value));
-      console.log("HIT");
       setPageNum(page.value);
     } else {
       // if anything besides the page number changes, set page number to 1
-      console.log("NO HIT");
       updateURL(
         location.href,
         [
@@ -468,41 +438,23 @@ function ProjectsTable(props) {
       setPageNum(1);
       setInputValue(1);
     }
+
+    const sortColumn = initialFilters.find((obj) => obj.id === "sort_column")?.value;
+    const sortOrder = initialFilters.find((obj) => obj.id === "sort_order")?.value;
+  
+    if (sortColumn && sortOrder) {
+      const newSorting = [{
+        id: sortColumn,
+        desc: sortOrder === "desc"
+      }];
+      setSorting(newSorting);
+      table.setSorting(newSorting);
+    } else {
+      // If nothing is in URL, clear sorting
+      setSorting([]);
+      table.setSorting([]);
+    }
   }, [location.search]);
-
-  // useEffect(() => {
-  //   // listens to sorting, to set page to 1 when theres a change
-  //   console.log("Table sorted:", table.getState().sorting);
-  //   updateURL(
-  //     location.href,
-  //     [
-  //       {
-  //         id: "page",
-  //         value: "1",
-  //       },
-  //     ],
-  //     ["page"]
-  //   );
-  //   setPageNum(1);
-  //   setInputValue(1);
-  // }, [table.getState().sorting]);
-
-  // useEffect(() => {
-  //   // listens to sorting, to set page to 1 when theres a change
-  //   console.log("Table sorted:", table.getState().sorting);
-  //   updateURL(
-  //     location.href,
-  //     [
-  //       {
-  //         id: "page",
-  //         value: "1",
-  //       },
-  //     ],
-  //     ["page"]
-  //   );
-  //   setPageNum(1);
-  //   setInputValue(1);
-  // }, [sorting]);
 
   useEffect(() => {
     // set data in parent, so map can use it
@@ -525,17 +477,8 @@ function ProjectsTable(props) {
       }
     }
     const updatedURL = `${baseUrl}?${params.toString()}`;
-    // console.log("updatedurl", updatedURL, filters, filterIds);
     browserHistory.replace(updatedURL);
   }
-
-  useEffect(() => {
-    // console.log("FILTErS", columnFilters);
-  }, [columnFilters]);
-
-  useEffect(() => {
-    console.log("table state", table.getState().pagination.pageIndex);
-  }, [table.getState().pagination.pageIndex]);
 
   useEffect(() => {
     // when filters in table change, update url
@@ -566,7 +509,7 @@ function ProjectsTable(props) {
                   style={{
                     ...(width <= 768
                       ? { maxHeight: "30rem", overflow: "auto" }
-                      : { overflow: "visible" }), // optional: explicitly set overflow for larger widths
+                      : { overflow: "visible" }), 
                   }}
                 >
                   <table style={{ width: "100%", tableLayout: "fixed" }}>
@@ -711,7 +654,6 @@ function ProjectsTable(props) {
                       style={{ color: "black" }}
                       className="-btn"
                       onClick={() =>
-                        // table.previousPage()
                         {
                           setInputValue(parseInt(inputValue) - 1);
                           updateURL(
@@ -779,7 +721,6 @@ function ProjectsTable(props) {
                         aria-label="Select the number of rows per page"
                         value={table.getState().pagination.pageSize}
                         onChange={(e) => {
-                          // table.setPageSize(Number(e.target.value));
                           updateURL(
                             location.href,
                             [
@@ -816,7 +757,6 @@ function ProjectsTable(props) {
                       type="button"
                       className="-btn"
                       onClick={() =>
-                        // table.nextPage()
                         {
                           setInputValue(parseInt(inputValue) + 1);
                           updateURL(
@@ -897,40 +837,3 @@ const rootElement = document.getElementById("root");
 if (!rootElement) throw new Error("Failed to find the root element");
 
 export default ProjectsTable;
-
-// useEffect(() => {
-//   const allFilterIDs = [
-//     "status",
-//     "name",
-//     "zip_code",
-//     "total_project_funding_budget_document",
-//     "encumbered",
-//     "spent",
-//   ];
-//   updateURL(location.href, columnFilters, allFilterIDs);
-// }, [columnFilters]);
-
-// useEffect(() => {
-//   const allFilterIDs = ["size"];
-//   updateURL(
-//     location.href,
-//     [{ id: "size", value: table.getState().pagination.pageSize }],
-//     allFilterIDs
-//   );
-// }, [table.getState().pagination.pageSize]);
-// const pageIndex = table.getState().pagination.pageIndex;
-
-// useEffect(() => {
-//   updateURL(
-//     location.href,
-//     [
-//       {
-//         id: "page",
-//         value: String(table.getState().pagination.pageIndex + 1),
-//       },
-//     ],
-//     ["page"]
-//   );
-//   // setColumnFilters({...columnFilters, page: val})
-
-// }, [pageIndex]);

@@ -30,15 +30,14 @@ const getDollars = (value) => {
   ].join("");
 };
 
-function CategoryDetails(props) {
-  let [targetProject, setTargetProject] = useState("");
+function CIPMainDashboard(props) {
   let [updatedData, setUpdatedData] = useState([]);
   let [mapData, setMapData] = useState([]);
   let [totalSpent, setTotalSpent] = useState("");
   let [totalUnderCon, setTotalUnderCon] = useState("");
   let [totalBudget, setTotalBudget] = useState("");
-  const allTypes = ["Bond 2016", "Bond 2024", "Operating Budget", "Helene"];
   let [types, setTypes] = useState([]);
+  let [dataFromTable, setDataFromTable] = useState([]);
   let [categories, setCategories] = useState([
     "Transportation & Infrastructure",
     "Housing Program",
@@ -47,16 +46,31 @@ function CategoryDetails(props) {
     "Water",
     "Other",
   ]);
-  let [dataFromTable, setDataFromTable] = useState([]);
 
-  const prevLocationRef = useRef(props.location);
+  const rawZipCodes = props.data.map((item) => item.zip_code);
+  const zipSet = new Set(rawZipCodes);
+  zipSet.delete("Citywide");
+  const sortedZips = [...zipSet].sort();
+  const uniqueZipCodes = ["All", "Citywide", ...sortedZips];
 
-  useEffect(() => {
-    if (props.location !== prevLocationRef.current) {
-      // Do something like re-fetch data
-      prevLocationRef.current = props.location;
+    // set language
+    let content;
+    switch (props.language.language) {
+      case "Spanish":
+        content = spanish;
+        break;
+      default:
+        content = english;
     }
-  }, [props.location]);
+  
+    const actualCategories = props.categories;
+    actualCategories.sort(
+      (a, b) =>
+        props.sortedCategories.indexOf(a) > props.sortedCategories.indexOf(b)
+    );
+  
+  
+
 
   function processUpdatedData(data) {
     let formattedData = [];
@@ -68,7 +82,7 @@ function CategoryDetails(props) {
         (d) =>
           (Array.isArray(d.longitude) ? d.longitude.length > 0 : d.longitude) &&
           (Array.isArray(d.latitude) ? d.latitude.length > 0 : d.latitude)
-      ) // Ensure latitude and longitude are valid
+      )
       .map((d) => {
         const coordinates =
           Array.isArray(d.longitude) && Array.isArray(d.latitude)
@@ -83,7 +97,9 @@ function CategoryDetails(props) {
             x: coord.x,
             y: coord.y,
             color: "#004987",
-            popup: `<strong><a href="/capital_projects/${d.gis_id}">${
+            name: d.display_name,
+            description: d.description,
+            popup: `<div tabIndex={0}><strong><a href="/capital_projects/${d.gis_id}">${
               d.display_name
             }</a></strong><br/>
     <span><i
@@ -92,7 +108,7 @@ function CategoryDetails(props) {
       ></i>${d.category}</span><br/>
     <span>${
       d.project_description ? d.project_description.replace(/\u00A0/g, " ") : ""
-    }</span>`,
+    }</span></div>`,
           })
         );
       })
@@ -100,6 +116,7 @@ function CategoryDetails(props) {
   }
 
   useEffect(() => {
+    //when the data from the table updates, the map and budget data are updated
     setMapData(processUpdatedData(dataFromTable));
 
     let formattedData = [];
@@ -117,39 +134,17 @@ function CategoryDetails(props) {
     setTotalUnderCon(fundingDetails[0]["Under contract"]);
   }, [dataFromTable]);
 
-  // set language
-  let content;
-  switch (props.language.language) {
-    case "Spanish":
-      content = spanish;
-      break;
-    default:
-      content = english;
-  }
 
-  const actualTypes = allTypes;
-  const actualCategories = categories;
-  actualCategories.sort(
-    (a, b) =>
-      props.sortedCategories.indexOf(a) > props.sortedCategories.indexOf(b)
-  );
 
-  const uniqueZipCodes = [
-    "All",
-    ...new Set(props.data.map((item) => item.zip_code)),
-  ];
-  console.log(uniqueZipCodes)
+  const handleMarkerClick = () => {
+    if (markerRef.current) {
+      markerRef.current.openPopup();
 
-  const handleMarkerClick = (id) => {
-    setMarkers((prevMarkers) =>
-      prevMarkers.map((marker) =>
-        marker.id === id
-          ? { ...marker, visible: true }
-          : marker.id === id
-          ? { ...marker, visible: false }
-          : marker
-      )
-    );
+      // Focus after popup has been rendered
+      setTimeout(() => {
+        popupDivRef.current?.focus();
+      }, 0);
+    }
   };
 
   const getSelectedFromURL = () => {
@@ -174,7 +169,7 @@ function CategoryDetails(props) {
       selected.types =
         params.get("types") === "" ? [] : params.get("types").split(",");
     } else {
-      selected.types = allTypes;
+      selected.types = props.types;
     }
 
     return selected;
@@ -184,14 +179,11 @@ function CategoryDetails(props) {
 
   useEffect(() => {
     setSelected(getSelectedFromURL());
-  }, [location.search]);
+  }, [location.search, props.data]);
 
-  useEffect(() => {
-    setSelected(getSelectedFromURL());
-    // const uniqueNames = [
-    //   ...new Set(props.data.map((item) => item.type)),
-    // ];
-  }, [props.data]);
+  // useEffect(() => {
+  //   setSelected(getSelectedFromURL());
+  // }, [props.data]);
 
   useEffect(() => {
     setUpdatedData(
@@ -216,7 +208,7 @@ function CategoryDetails(props) {
     <div>
       <div className="row" style={{ marginBottom: "10px" }}>
         <div className="col-sm-12">
-          <Link
+          {/* <Link
             to={{
               pathname: `/capital_projects/about`,
               state: { previousPath: location.href },
@@ -227,7 +219,7 @@ function CategoryDetails(props) {
               style={{ color: "rgb(64, 119, 165)", marginRight: "4px" }}
             ></i>
             Learn more about Capital Projects
-          </Link>
+          </Link> */}
         </div>
       </div>
       <div className="row">
@@ -245,9 +237,9 @@ function CategoryDetails(props) {
               eventHandlers={{ click: handleMarkerClick }}
             />
           </div>
-          <div className="funding-summary">
+          <div tabIndex={0} aria-label="funding summary" className="funding-summary">
             <div className="col-sm-4 col-xs-4">
-              <h2>
+              <h2 tabIndex="-1">
                 <span className="label-text">
                   <span
                     title={content.total_budget_note} // eslint-disable-line
@@ -261,30 +253,29 @@ function CategoryDetails(props) {
               </h2>
             </div>
             <div className="col-sm-4 col-xs-4">
-              <h2>
-                <span className="label-text" style={{color:"rgb(102, 102, 102)"}}>{content.under_contract}:</span>
+              <h2 tabIndex="-1">
+                <span
+                  className="label-text"
+                  style={{ color: "rgb(102, 102, 102)" }}
+                >
+                  {content.under_contract}:
+                </span>
                 <span className="amount">{getDollars(totalUnderCon)}</span>
               </h2>
             </div>
             <div className="col-sm-4 col-xs-4">
-              <h2>
-                <span className="label-text" style={{color:"rgb(102, 102, 102)"}}>{content.spent}:</span>
+              <h2 tabIndex="-1">
+                <span
+                  className="label-text"
+                  style={{ color: "rgb(102, 102, 102)" }}
+                >
+                  {content.spent}:
+                </span>
                 <span className="amount">{getDollars(totalSpent)}</span>
               </h2>
             </div>
           </div>
-          <Link
-            to={{
-              pathname: `/capital_projects/about_budget`,
-              state: { previousPath: location.href },
-            }}
-          >
-            <i
-              class="bi bi-info-circle"
-              style={{ color: "rgb(64, 119, 165)", marginRight: "4px" }}
-            ></i>
-            Learn more about the budget
-          </Link>
+
           <div style={{ marginTop: "10px" }}>
             <div
               style={{
@@ -299,10 +290,10 @@ function CategoryDetails(props) {
             <div
               style={{
                 outline: "#4579B3 3px solid",
-                padding: "10px 15px 5px",
+                padding: "10px 15px 10px",
               }}
             >
-              <div className="row" style={{ marginBottom: "16px" }}>
+              <div className="row" style={{ marginBottom: "10px" }}>
                 <button
                   style={{
                     backgroundColor: "rgb(64, 119, 165)",
@@ -335,12 +326,27 @@ function CategoryDetails(props) {
                   <CPCheckboxes
                     selected={selected.types}
                     location={props.location}
-                    filter_variable={allTypes}
+                    filter_variable={props.types}
                     variableString={"types"}
                   />
                 </div>
               </div>
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <Link 
+            to={{
+              pathname: `/capital_projects/about`,
+              state: { previousPath: location.href },
+            }}
+          >
+            <i
+              class="bi bi-info-circle"
+              style={{ color: "rgb(64, 119, 165)", marginRight: "4px" }}
+            ></i>
+            Learn more about the budget
+          </Link>
+          </div>
             </div>
+            
           </div>
           {updatedData === undefined ? (
             <div
@@ -365,4 +371,4 @@ function CategoryDetails(props) {
   );
 }
 
-export default withLanguage(CategoryDetails);
+export default withLanguage(CIPMainDashboard);

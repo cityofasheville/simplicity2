@@ -8,7 +8,7 @@ import Error from "../../shared/Error";
 import { withLanguage } from "../../utilities/lang/LanguageContext";
 import { english } from "./english";
 import { spanish } from "./spanish";
-import CategoryDetailsWrapper from "./CategoryDetailsWrapper";
+import ProjectDataWrapper from "./ProjectDataWrapper";
 
 const GET_CATEGORIES = gql`
   query cip_project_categories {
@@ -20,7 +20,7 @@ const GET_CATEGORIES = gql`
   }
 `;
 
-const CapitalProjectsSummary = (props) => (
+const CategoryDataWrapper = (props) => (
   <Query query={GET_CATEGORIES}>
     {({ loading, error, data }) => {
       if (loading) return <LoadingAnimation />;
@@ -35,8 +35,10 @@ const CapitalProjectsSummary = (props) => (
           content = english;
       }
 
-      const allTypes = ["Bond 2016", "Bond 2024", "Operating Budget", "Helene"];
+      // don't update type text here- we need this list to use in query in child
+      const allTypes = ["Bond", "Bond 2024", "CIP", "Helene"];
       let allCats = Array.from(data.cip_project_categories);
+
       allCats
         .sort((a, b) =>
           a.category_number > b.category_number
@@ -55,21 +57,10 @@ const CapitalProjectsSummary = (props) => (
         .map((item) => item.category_name);
       allCats = allCats.map((cat) => cat.category_name);
 
-
       return (
         <div>
-          <PageHeader h1={content.capital_projects}>
-            {/* <span> </span> */}
-            {/* <br></br>
-            <a
-              className=""
-              href="https://gis.ashevillenc.gov/arcgis/apps/experiencebuilder/experience/?id=1397c75f257248b5b030f6b420618e88"
-              target="_blank"
-            >
-              {content.try_project_map}
-            </a> */}
-          </PageHeader>
-          <CategoryDetailsWrapper
+          <PageHeader h1={content.capital_projects} />
+          <ProjectDataWrapper
             location={props.location}
             categories={allCats}
             types={allTypes}
@@ -81,4 +72,4 @@ const CapitalProjectsSummary = (props) => (
   </Query>
 );
 
-export default withLanguage(CapitalProjectsSummary);
+export default withLanguage(CategoryDataWrapper);

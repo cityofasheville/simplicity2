@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import PropTypes from "prop-types";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
@@ -116,7 +116,7 @@ const CIPMap = (props) => {
     }
     const iconMarkup = renderToStaticMarkup(
       <div
-        aria-label={`map marker for a project with type ${pt.type} and category ${pt.category}`}
+        aria-label={`map marker for the project ${pt.display_name} with type ${pt.type} and category ${pt.category}`}
         style={{
           width: "30px",
           height: "30px",
@@ -168,10 +168,18 @@ const CIPMap = (props) => {
     }
   }
 
-  // const iconMarkup = renderToStaticMarkup(<i className={location.serviceIcon} title={`${location.name} offering ${location.type}`} />);
-  //     const customMarkerIcon = divIcon({
-  //       html: iconMarkup,
-  //     });
+  const markerRef = useRef();
+  const popupDivRef = useRef();
+
+  const handleMarkerClick = () => {
+    if (markerRef.current) {
+      markerRef.current.openPopup();
+      
+      setTimeout(() => {
+        popupDivRef.current?.focus();
+      }, 50); 
+    }
+  };
 
   return (
     <div style={{ height: props.height, width: props.width }}>
@@ -283,19 +291,21 @@ const CIPMap = (props) => {
         >
           {markers.map((markerItem, index) => (
             <Marker
+              ref={markerRef}
+              key={index}
               position={markerItem.position}
-              popup={markerItem.popup}
               options={markerItem.options}
               icon={markerItem.icon}
-              // onClick={(marker) =>
-              //   markerItem.markerClicked(marker)
-              // }
+              eventHandlers={{ click: handleMarkerClick }}
             >
-              <Popup>
-                <div
-                  dangerouslySetInnerHTML={{ __html: markerItem.popup }}
-                ></div>
-              </Popup>
+              {markerItem.popup && (
+                <Popup>
+                  <div
+                    // ref={popupDivRef}
+                    tabIndex={-1}
+                    dangerouslySetInnerHTML={{ __html: markerItem.popup }} />
+                </Popup>
+              )}
             </Marker>
           ))}
         </MarkerClusterGroup>

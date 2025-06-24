@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { getIcon } from "./cip_utilities";
+import React from "react";
 import { iconDictionary } from "./CIPIcons";
-import { browserHistory, Link } from "react-router";
+import { Link } from "react-router";
 
 function AboutPage(props) {
   const paragraphStyle = {
@@ -65,11 +64,13 @@ function AboutPage(props) {
             </span>{" "}
             All projects within the City’s Capital Improvement Program (CIP) are
             funded with a mix of internal City resources and external resources
-            such as grants and partnerships. B Bond projects are projects that
-            are funded by the voter-approved 2024 and 2016 General Obligation
-            Bond Referendums. Helene recovery projects are funded primarily by
-            federal and state disaster recovery programs.{" "}
+            such as grants and partnerships.{" "}
           </p>
+          <ul>
+            <li><a href="https://www.ashevillenc.gov/department/finance/city-budget/"> City’s Capital Improvement Program (CIP)</a></li>
+            <li><a href="https://publicinput.com/ashevillebonds">Bond projects</a> are projects that are funded by the voter-approved 2016 and 2024 General Obligation Bond Referendums.</li>
+            <li><a href="https://publicinput.com/ashevillerecovers#tab-58846">Helene recovery projects</a> are funded primarily by federal and state disaster recovery programs.</li>
+          </ul>
 
           <p style={paragraphStyle}>
             <span

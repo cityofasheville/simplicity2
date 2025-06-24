@@ -1,21 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Toggle from 'react-toggle';
 import { CheckboxGroup } from 'accessible-react-checkbox-group';
-import { urlCategory } from './cip_utilities';
 import FilterCheckbox from '../../shared/FilterCheckbox';
-import { refreshLocation } from '../../utilities/generalUtilities';
 import { withLanguage } from '../../utilities/lang/LanguageContext';
 import { english } from './english';
 import { spanish } from './spanish';
-import Icon from '../../shared/Icon';
-import { IM_INFO } from '../../shared/iconConstants';
-import { useEffect, useState } from 'react';
 import { browserHistory } from 'react-router';
 
 
 const CIPFilter = (props) => {
-  let [newValues, updateNewValues] = useState([])
 
   // set language
   let content;

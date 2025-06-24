@@ -1,89 +1,20 @@
-import Map from "../../shared/visualization/Map";
 import React from "react";
 import PropTypes from "prop-types";
 import gql from "graphql-tag";
-import moment from "moment";
 import { Query } from "react-apollo";
 import LoadingAnimation from "../../shared/LoadingAnimation";
 import Icon from "../../shared/Icon";
 import {
-  IM_QUESTION,
   IM_SPHERE3,
-  IM_CIRCLE2,
 } from "../../shared/iconConstants";
-import { getIcon } from "./cip_utilities";
 import SuggestSearchWrapper from "../search/SuggestSearchWrapper";
-import LinkButton from "../../shared/LinkButton";
-import { browserHistory, Link } from "react-router";
-import { iconDictionary } from "./CIPIcons";
+import { Link } from "react-router";
 import { useEffect } from "react";
 import CIPTimeline from "./CIPTimeline";
+import CIPMap from "./CIPMap";
+import { CIPTextReplacements } from "./CIPTextReplacements";
 
-const getStageNumber = (stage) => {
-  switch (stage) {
-    case "Planning":
-      return 1;
-    case "Design":
-      return 2;
-    case "Construction":
-      return 3;
-    case "Completed":
-      return 4;
-    case "Ongoing":
-      return 5;
-    default:
-      return 0;
-  }
-};
 
-// const phaseColor = (phaseNumber, isText = false) => {
-//   switch (phaseNumber) {
-//     case 1:
-//       if (isText) {
-//         return "#86298a";
-//       }
-//       return "#f844ff";
-//     case 2:
-//       if (isText) {
-//         return "#17607a";
-//       }
-//       return "#44cdff";
-//     case 3:
-//       if (isText) {
-//         return "#a13210";
-//       }
-//       return "#FF5722";
-//     default:
-//       if (isText) {
-//         return "#317501";
-//       }
-//       return "#57d500";
-//   }
-// };
-const phaseColor = (phaseNumber, isText = false) => {
-  switch (phaseNumber) {
-    case 1:
-      if (isText) {
-        return "#317501";
-      }
-      return "#57d500";
-    case 2:
-      if (isText) {
-        return "#317501";
-      }
-      return "#57d500";
-    case 3:
-      if (isText) {
-        return "#317501";
-      }
-      return "#57d500";
-    default:
-      if (isText) {
-        return "#317501";
-      }
-      return "#57d500";
-  }
-};
 
 const GET_PROJECTS = gql`
   query cip_projects($categories: [String]) {
@@ -118,8 +49,7 @@ const GET_PROJECTS = gql`
     }
   }
 `;
-const dateFormatter = (inputDate) =>
-  moment(new Date(inputDate)).format("MMMM DD, YYYY");
+
 
 function Project(props) {
   useEffect(() => {
@@ -179,17 +109,21 @@ function Project(props) {
           );
         }
 
-        // console.log(data);
         const project = data.cip_projects.find(
           (obj) => obj.gis_id === props.routeParams.id
         );
-        console.log(
-          "project",
-          data.cip_projects === undefined ||
-            data.cip_projects.find(
-              (obj) => (obj.gis_id === props.routeParams.id) === undefined
-            )
-        );
+
+        if (CIPTextReplacements[project.type]) {
+          project.type = CIPTextReplacements[project.type];
+        }
+
+        // console.log(
+        //   "project",
+        //   data.cip_projects === undefined ||
+        //     data.cip_projects.find(
+        //       (obj) => (obj.gis_id === props.routeParams.id) === undefined
+        //     )
+        // );
 
         const showMap =
           project.latitude.length > 0 && project.longitude.length > 0;
@@ -203,6 +137,9 @@ function Project(props) {
                 x: project.longitude[index],
                 y,
                 name: project.display_name,
+                type: project.type,
+                category: project.category
+              
               }
             )
           );
@@ -288,6 +225,18 @@ function Project(props) {
           pathname = "/capital_projects";
         }
         console.log("PATHNAME", pathname);
+
+        const handleMarkerClick = (id) => {
+          setMarkers((prevMarkers) =>
+            prevMarkers.map((marker) =>
+              marker.id === id
+                ? { ...marker, visible: true }
+                : marker.id === id
+                ? { ...marker, visible: false }
+                : marker
+            )
+          );
+        };
 
         return (
           <main className="container">
@@ -487,11 +436,21 @@ function Project(props) {
                   className="col-sm-12 col-md-6 permit-map-container"
                   style={{ marginTop: "73px" }}
                 >
-                  <Map
+                  <CIPMap
+                    data={getMyPoints(project)}
+                    center={[35.5951, -82.5515]}
+                    height="100%"
+                    width="100%"
+                    zoom={12}
+                    bounds={calculateBounds(getMyPoints(project))}
+
+                    eventHandlers={{ click: handleMarkerClick }}
+                  />
+                  {/* <Map
                     data={getMyPoints(project)}
                     bounds={calculateBounds(getMyPoints(project))}
                     height="300px"
-                  />{" "}
+                  />{" "} */}
                 </div>
               ) : (
                 ""
@@ -500,64 +459,65 @@ function Project(props) {
               <div className={`col-sm-12 col-md-${6} permit-details-card`}>
                 <h2>Details</h2>
 
-                  <div className="permit-form-group">
-                    <div className="display-label">Zip Code</div>
-                    <div className="formatted-val">
-                      <span>{project.zip_code ? project.zip_code : "TBD"}</span>
-                    </div>
+                <div className="permit-form-group">
+                  <div className="display-label">Zip Code</div>
+                  <div className="formatted-val">
+                    <span>{project.zip_code ? project.zip_code : "TBD"}</span>
                   </div>
-                
+                </div>
 
-                  <div className="permit-form-group">
-                    <div className="display-label">Category</div>
-                    <div className="formatted-val">
-                      <span>{project.category ? project.category : "TBD"}</span>
-                    </div>
+                <div className="permit-form-group">
+                  <div className="display-label">Category</div>
+                  <div className="formatted-val">
+                    <span>{project.category ? project.category : "TBD"}</span>
                   </div>
-                
+                </div>
 
-                  <div className="permit-form-group">
-                    <div className="display-label">Funding Type</div>
-                    <div className="formatted-val">
-                      <span>{project.type ? project.type : "TBD"}</span>
-                    </div>
+                <div className="permit-form-group">
+                  <div className="display-label">Funding Type</div>
+                  <div className="formatted-val">
+                    <span>{project.type ? project.type : "TBD"}</span>
                   </div>
-                
+                </div>
 
-                  <div className="permit-form-group">
-                    <div className="display-label">Budget</div>
-                    <div className="formatted-val">
-                      <span>
-                        {project.total_project_funding_budget_document ? project.total_project_funding_budget_document : "TBD"}
-                      </span>
-                    </div>
+                <div className="permit-form-group">
+                  <div className="display-label">Budget</div>
+                  <div className="formatted-val">
+                    <span>
+                      {project.total_project_funding_budget_document
+                        ? project.total_project_funding_budget_document
+                        : "TBD"}
+                    </span>
                   </div>
+                </div>
 
-                  <div className="permit-form-group">
-                    <div className="display-label">Under Contract</div>
-                    <div className="formatted-val">
-                      <span>
-                        {project.encumbered ? [
-                          "$",
-                          parseInt(project.encumbered, 10).toLocaleString(),
-                        ].join("") : "TBD"}
-                      </span>
-                    </div>
+                <div className="permit-form-group">
+                  <div className="display-label">Under Contract</div>
+                  <div className="formatted-val">
+                    <span>
+                      {project.encumbered
+                        ? [
+                            "$",
+                            parseInt(project.encumbered, 10).toLocaleString(),
+                          ].join("")
+                        : "TBD"}
+                    </span>
                   </div>
-                
+                </div>
 
-                  <div className="permit-form-group">
-                    <div className="display-label">Spent</div>
-                    <div className="formatted-val">
-                      <span>
-                        {project.total_spent ? [
-                          "$",
-                          parseInt(project.total_spent, 10).toLocaleString(),
-                        ].join("") : "TBD"}
-                      </span>
-                    </div>
+                <div className="permit-form-group">
+                  <div className="display-label">Spent</div>
+                  <div className="formatted-val">
+                    <span>
+                      {project.total_spent
+                        ? [
+                            "$",
+                            parseInt(project.total_spent, 10).toLocaleString(),
+                          ].join("")
+                        : "TBD"}
+                    </span>
                   </div>
-                
+                </div>
               </div>
             </div>
             <div style={{ marginTop: "21px" }}>

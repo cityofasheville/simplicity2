@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
-import { getFundsAllocatedAndExpended, filterProjects } from "./cip_utilities";
 import LoadingAnimation from "../../shared/LoadingAnimation";
 import Error from "../../shared/Error";
-import CategoryDetails from "./CategoryDetails";
+import CIPMainDashboard from "./CIPMainDashboard";
+import { CIPTextReplacements } from "./CIPTextReplacements";
 
 const GET_PROJECTS = gql`
   query cip_projects($categories: [String]) {
@@ -40,8 +40,7 @@ const GET_PROJECTS = gql`
   }
 `;
 
-const CategoryDetailsWrapper = (props) => {
-
+const ProjectDataWrapper = (props) => {
   return (
     <Query
       query={GET_PROJECTS}
@@ -54,50 +53,49 @@ const CategoryDetailsWrapper = (props) => {
         if (loading) return <LoadingAnimation />;
         if (error) return <Error message={error.message} />;
 
-        // const actualTypes = props.types;
         const actualCategories = props.categories;
         actualCategories.sort(
           (a, b) =>
             props.sortedCategories.indexOf(a) >
             props.sortedCategories.indexOf(b)
         );
-        // const filteredProjects = filterProjects(
-        //   data.cip_projects,
-        //   actualCategories,
-        //   actualTypes,
-        //   props.location.query.mode
-        // );
-
-        // const fundingDetails = getFundsAllocatedAndExpended(
-        //   filteredProjects,
-        //   actualCategories,
-        //   props.location.query.mode
-        // );
 
         //filtering categoies to remove dcref
-        let filteredCategories = props.categories.filter(category => category !== "DCREF");
+        let filteredCategories = props.categories.filter(
+          (category) => category !== "DCREF"
+        );
 
         // changing any misc categories to "Other"
         let projectData = [];
         for (let project of data.cip_projects) {
-          if(project.gis_id) {
+          if (project.gis_id) {
             if (filteredCategories.includes(project.category)) {
-              projectData.push(project)
+              projectData.push(project);
             } else {
               project.category = "Other";
-              projectData.push(project)
+              projectData.push(project);
             }
           }
- 
+
+          if (CIPTextReplacements[project.type]) {
+            project.type = CIPTextReplacements[project.type];
+          }
         }
 
+        //types is used in query, which is why we wait until after query to update the text
+        let typesUpdated = [
+          "Bond 2016",
+          "Bond 2024",
+          "Capital Improvement Plan",
+          "Helene Recovery",
+        ];
 
         return (
           <div>
-            <CategoryDetails
+            <CIPMainDashboard
               location={props.location}
               categories={filteredCategories}
-              types={props.types}
+              types={typesUpdated}
               sortedCategories={filteredCategories}
               data={projectData}
             />
@@ -108,4 +106,4 @@ const CategoryDetailsWrapper = (props) => {
   );
 };
 
-export default CategoryDetailsWrapper;
+export default ProjectDataWrapper;

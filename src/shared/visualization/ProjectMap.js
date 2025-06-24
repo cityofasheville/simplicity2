@@ -218,10 +218,10 @@ const ProjectMap = (props) => {
           }}
         </Query>
         <MarkerClusterGroup  
-        {...markerClusterOptions}            
-            onClusterClick={cluster =>
-              console.log('Cluster Clicked')
-            }
+        // {...markerClusterOptions}            
+        //     onClusterClick={cluster =>
+        //       console.log('Cluster Clicked')
+        //     }
            >
 
         {markers.map((markerItem, index) => (

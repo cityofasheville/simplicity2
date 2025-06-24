@@ -342,7 +342,7 @@ function CIPMainDashboard(props) {
               class="bi bi-info-circle"
               style={{ color: "rgb(64, 119, 165)", marginRight: "4px" }}
             ></i>
-            Learn more about the budget
+            Learn more about Capital Projects and Funding
           </Link>
           </div>
             </div>

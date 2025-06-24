@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { iconDictionary } from "./CIPIcons";
 import { Link } from "react-router";
 
@@ -18,6 +18,10 @@ function AboutPage(props) {
     path = "/capital_projects";
   }
   console.log("PATHNAME", path);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div>

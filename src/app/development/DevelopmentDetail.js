@@ -35,7 +35,7 @@ const getContractorData = (contractors, licenses) => {
 
 const DevelopmentDetail = (props) => {
   console.log('Detail Data');
-  console.log(props.data);
+  // console.log(props.data);
 
   const contractorData = getContractorData(props.data.contractor_names, props.data.contractor_license_numbers);
   return (

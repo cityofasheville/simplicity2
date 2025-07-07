@@ -1,17 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Toggle from 'react-toggle';
 import { CheckboxGroup } from 'accessible-react-checkbox-group';
-import { urlCategory } from './cip_utilities';
 import FilterCheckbox from '../../shared/FilterCheckbox';
-import { refreshLocation } from '../../utilities/generalUtilities';
 import { withLanguage } from '../../utilities/lang/LanguageContext';
 import { english } from './english';
 import { spanish } from './spanish';
-import Icon from '../../shared/Icon';
-import { IM_INFO } from '../../shared/iconConstants';
+import { browserHistory } from 'react-router';
 
-const CIPFilter = (props) => {
+
+function CIPFilter (props){
+
   // set language
   let content;
   switch (props.language.language) {
@@ -22,89 +20,73 @@ const CIPFilter = (props) => {
       content = english;
   }
 
-  const toggleMode = () => (
-    {
-      mode: props.location.query.mode === 'bond' ? 'all' : 'bond',
-      selected: props.selected.map(cat => urlCategory(cat)),
-    }
-  );
+  function updateURL(url, values) {
+    const baseUrl = location.pathname;
+    const params = new URLSearchParams(url.split('?')[1]);
+    let serializedArray;
 
-  const getNewUrlParams = (selected) => {
-    const newSelected = selected.map(cat => urlCategory(cat));
-    return {
-      selected: newSelected.join(','),
-    };
-  };
+    if (values.length > 1) {
+      serializedArray = values.join(',');
+    } else {
+      serializedArray = values
+    }
+
+    if (props.variableString == 'categories') {
+      params.set('categories', serializedArray);
+    } else if (props.variableString == 'types') {
+      params.set('types', serializedArray);
+    }
+
+    const updatedURL = `${baseUrl}?${params.toString()}`;
+    browserHistory.replace(updatedURL)
+}
 
   const handleClick = (checkedValues) => {
+    if (event && event.preventDefault) {
+      event.preventDefault();
+    }
     let newValues = checkedValues;
     if (checkedValues.includes('All') && !visibleSelection.includes('All')) {
-      newValues = [...props.categories];
+      newValues = [...props.filter_variable];
     } else if (!checkedValues.includes('All') && visibleSelection.includes('All')) {
       newValues = [];
-    }
-    refreshLocation(getNewUrlParams(newValues.filter(e => e !== 'All')), props.location);
+    } 
+    updateURL(location.href, newValues.filter(e => e !== 'All'))
   };
-
-  const bondOnly = props.location.query.mode === 'bond';
-
+  
   const getVisibleSelection = () => {
     let { selected } = props;
-    if (bondOnly) {
-      selected = selected.filter(e => props.bond_categories.indexOf(e) !== -1);
+  
+    if (selected.length === props.filter_variable.length) {
+      return [...selected, 'All'];
     }
-    if (selected.length > 0) {
-      selected.push('All');
-    }
+  
     return selected;
   };
-
+  
   const visibleSelection = getVisibleSelection();
-  const realSelection = visibleSelection.filter(e => e !== 'All');
 
   return (
     <div>
       <div>
         <CheckboxGroup
           checkedValues={visibleSelection}
-          indeterminateValues={realSelection.length <
-            (bondOnly ? props.categories.length - 1 : props.categories.length) &&
-            realSelection.length > 0 ? ['All'] : []}
           onChange={handleClick}
           className="checkboxGroup"
         >
           <FilterCheckbox
             label="All"
             value="All"
-            // selected={visibleSelection.includes('All')}
           />
-          {props.categories.filter(e => e !== 'All').map((category, index) => (
+          {props.filter_variable.filter(e => e !== 'All').map((type, index) => (
             <FilterCheckbox
-              key={['SummaryCard', category, index].join('_')}
-              label={category}
-              value={category}
-              // selected={visibleSelection.includes(category)}
-              disabled={props.location.query.mode === 'bond' &&
-                !props.bond_categories.includes(category)}
+              key={['SummaryCard', type, index].join('_')}
+              label={type}
+              value={type}
+              selected={visibleSelection.includes(type)}
             />
           ))}
         </CheckboxGroup>
-        <div className="toggle toggle--table">
-          <div>
-            <label>
-              <span
-                title={content.bond_definition_note} // eslint-disable-line
-                style={{ marginRight: '5px' }}
-              ><Icon path={IM_INFO} size={16} color="#4077a7" />
-              </span>
-              <span>{content.include_only_bond_projects}</span>
-              <Toggle
-                defaultChecked={props.location.query.mode === 'bond'}
-                onChange={() => refreshLocation(toggleMode(), props.location)}
-              />
-            </label>
-          </div>
-        </div>
       </div>
     </div>
   );

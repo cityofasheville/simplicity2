@@ -44,6 +44,7 @@ class PermitTimeline extends React.Component {
           displayLabel: '',
         }]);
     }
+    console.log('dates', datesToUse)
     const timelineWidth = Math.max(datesToUse.length * 125, dimensions.width - padding);
     const midpointX = timelineWidth / 2;
     const eachWidth = (timelineWidth - (padding + padding * datesToUse.length)) / datesToUse.length;

@@ -1,11 +1,15 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Map from '../../shared/visualization/Map';
-import Icon from '../../shared/Icon';
-import { IM_QUESTION, IM_SPHERE3, IM_CIRCLE2 } from '../../shared/iconConstants';
-import { withLanguage } from '../../utilities/lang/LanguageContext';
-import { english } from './english';
-import { spanish } from './spanish';
+import React from "react";
+import PropTypes from "prop-types";
+import Map from "../../shared/visualization/Map";
+import Icon from "../../shared/Icon";
+import {
+  IM_QUESTION,
+  IM_SPHERE3,
+  IM_CIRCLE2,
+} from "../../shared/iconConstants";
+import { withLanguage } from "../../utilities/lang/LanguageContext";
+import { english } from "./english";
+import { spanish } from "./spanish";
 
 const getIcon = (category) => {
   switch (category) {
@@ -16,15 +20,15 @@ const getIcon = (category) => {
 
 const getStageNumber = (stage) => {
   switch (stage) {
-    case 'Planning':
+    case "Planning":
       return 1;
-    case 'Design':
+    case "Design":
       return 2;
-    case 'Construction':
+    case "Construction":
       return 3;
-    case 'Completed':
+    case "Completed":
       return 4;
-    case 'Ongoing':
+    case "Ongoing":
       return 5;
     default:
       return 0;
@@ -34,13 +38,13 @@ const getStageNumber = (stage) => {
 const phaseColor = (phaseNumber) => {
   switch (phaseNumber) {
     case 1:
-      return '#f844ff';
+      return "#f844ff";
     case 2:
-      return '#44cdff';
+      return "#44cdff";
     case 3:
-      return '#FF5722';
+      return "#FF5722";
     default:
-      return '#57d500';
+      return "#57d500";
   }
 };
 
@@ -73,21 +77,24 @@ const calculateBounds = (points) => {
 };
 
 function ProjectDetails(props) {
-  const getMyPoints = () => (
-    props.latitude.map((y, index) => (
-      Object.assign({}, {}, {
-        x: props.longitude[index],
-        y,
-        name: props.display_name,
-        popup: `<div><b>${props.display_name}</b><p>Latitude: ${y}</p><p>Longitude: ${props.longitude[index]}</p></div>`, // eslint-disable-line
-      })
-    ))
-  );
+  const getMyPoints = () =>
+    props.latitude.map((y, index) =>
+      Object.assign(
+        {},
+        {},
+        {
+          x: props.longitude[index],
+          y,
+          name: props.display_name,
+          popup: `<div><b>${props.display_name}</b><p>Latitude: ${y}</p><p>Longitude: ${props.longitude[index]}</p></div>`, // eslint-disable-line
+        }
+      )
+    );
 
   // set language
   let content;
   switch (props.language.language) {
-    case 'Spanish':
+    case "Spanish":
       content = spanish;
       break;
     default:
@@ -99,177 +106,221 @@ function ProjectDetails(props) {
       <div className="col-sm-12">
         <div className="row" hidden={props.hideTitle}>
           <div className="col-sm-12">
-            <h2>{getIcon()} {props.display_name}</h2>
+            <h2>
+              {getIcon()} {props.display_name}
+            </h2>
           </div>
         </div>
-        <div className="row" style={props.hideTitle ? { marginTop: '15px' } : null}>
+        <div
+          className="row"
+          style={props.hideTitle ? { marginTop: "15px" } : null}
+        >
           <div className="col-sm-7">
-            {/* {props.project_webpage_more_information !== null &&
-              <div className="row">
-                <div className="col-sm-12" style={{ marginTop: '5px' }}>
-                  <div
-                    className="pull-left"
-                    style={{
-                      marginRight: '10px',
-                      marginBottom: '20px',
-                    }}
-                  >
-                    <a
-                      title="View project web site"
-                      href={props.project_webpage_more_information}
-                      target="_blank"
-                    >
-                      <Icon path={IM_SPHERE3} size={20} />
-                      &nbsp;{content.project_website}
-                    </a>
-                  </div>
-                </div>
-              </div>
-            } */}
             <div className="capital-project__specs row">
               <div className="col-xs-5">
-                <div className="" style={{ marginBottom: '10px' }}>
-                  <div style={{ color: '#676873' }}>
-                    {content.budget}
-                  </div>
-                  <div>
-                    <strong>{props.total_project_funding_budget_document}</strong>
-                  </div>
-                </div>
-                <div className="" style={{ marginBottom: '10px' }}>
-                  <div style={{ color: '#676873' }}>
-                    {content.spent}
-                  </div>
+                <div className="" style={{ marginBottom: "10px" }}>
+                  <div style={{ color: "#676873" }}>{content.budget}</div>
                   <div>
                     <strong>
-                      {['$', parseInt(props.total_spent, 10).toLocaleString()].join('')}
+                      {props.total_project_funding_budget_document}
                     </strong>
                   </div>
                 </div>
-                <div className="" style={{ marginBottom: '10px' }}>
-                  <div style={{ color: '#676873' }}>
+                <div className="" style={{ marginBottom: "10px" }}>
+                  <div style={{ color: "#676873" }}>{content.spent}</div>
+                  <div>
+                    <strong>
+                      {[
+                        "$",
+                        parseInt(props.total_spent, 10).toLocaleString(),
+                      ].join("")}
+                    </strong>
+                  </div>
+                </div>
+                <div className="" style={{ marginBottom: "10px" }}>
+                  <div style={{ color: "#676873" }}>
                     {content.under_contract}
                   </div>
                   <div>
                     <strong>
-                      {['$', parseInt(props.encumbered, 10).toLocaleString()].join('')}
+                      {[
+                        "$",
+                        parseInt(props.encumbered, 10).toLocaleString(),
+                      ].join("")}
                     </strong>
                   </div>
                 </div>
               </div>
               <div className="col-xs-7">
-                <div className="" style={{ marginBottom: '10px' }}>
-                  <div style={{ color: '#676873' }}>
-                    {content.zip_code}
-                  </div>
-                  <div >
-                    <strong>{props.zip_code || '?'}</strong>
+                <div className="" style={{ marginBottom: "10px" }}>
+                  <div style={{ color: "#676873" }}>{content.zip_code}</div>
+                  <div>
+                    <strong>{props.zip_code || "?"}</strong>
                   </div>
                 </div>
-                <div className="" style={{ marginBottom: '20px' }}>
-                  <div style={{ color: '#676873' }}>
+                <div className="" style={{ marginBottom: "20px" }}>
+                  <div style={{ color: "#676873" }}>
                     {content.estimated_construction_timeframe}
                   </div>
                   <div>
-                    <strong>{props.status !== null && props.status.indexOf('Completed') > -1 ? ['Completed', props.actual_construction_end].join(' ') : props.target_construction_start === null ? props.target_construction_end : [props.target_construction_start, props.target_construction_end].join(' - ')}</strong>
+                    <strong>
+                      {props.status !== null &&
+                      props.status.indexOf("Completed") > -1
+                        ? ["Completed", props.actual_construction_end].join(" ")
+                        : props.target_construction_start === null
+                        ? props.target_construction_end
+                        : [
+                            props.target_construction_start,
+                            props.target_construction_end,
+                          ].join(" - ")}
+                    </strong>
                   </div>
                 </div>
               </div>
             </div>
-            { /*{props.Category.indexOf('Bond') > -1 &&
-              <div className="row">
-              <div className="col-sm-12">
-              <Icon path={IM_CERTIFICATE} size={25} color="#4077a5" />
-              <span>Bond funding: {props['GO Bond Funding']}</span>
-              </div>
-              </div>
-            }*/}
-            {props.status !== null &&
+            {props.status !== null && (
               <div className="capital-project__status">
-                <div className="header">
-                  {content.phase}
+                <div className="header">{content.phase}</div>
+                <div className="project-status">
+                  <Icon
+                    path={IM_CIRCLE2}
+                    size={25}
+                    color={
+                      getStageNumber(props.status) >= 1
+                        ? phaseColor(1)
+                        : "#ecf0f1"
+                    }
+                  />
                 </div>
                 <div className="project-status">
-                  <Icon path={IM_CIRCLE2} size={25} color={getStageNumber(props.status) >= 1 ? phaseColor(1) : '#ecf0f1'} />
+                  <Icon
+                    path={IM_CIRCLE2}
+                    size={25}
+                    color={
+                      getStageNumber(props.status) >= 2
+                        ? phaseColor(2)
+                        : "#ecf0f1"
+                    }
+                  />
                 </div>
                 <div className="project-status">
-                  <Icon path={IM_CIRCLE2} size={25} color={getStageNumber(props.status) >= 2 ? phaseColor(2) : '#ecf0f1'} />
+                  <Icon
+                    path={IM_CIRCLE2}
+                    size={25}
+                    color={
+                      props.status === "Ongoing"
+                        ? "#FFC107"
+                        : getStageNumber(props.status) >= 3
+                        ? phaseColor(3)
+                        : "#ecf0f1"
+                    }
+                  />
                 </div>
-                <div className="project-status">
-                  <Icon path={IM_CIRCLE2} size={25} color={props.status === 'Ongoing' ? '#FFC107' : getStageNumber(props.status) >= 3 ? phaseColor(3) : '#ecf0f1'} />
-                </div>
-                {props.status !== 'Ongoing' &&
+                {props.status !== "Ongoing" && (
                   <div className="project-status">
-                    <Icon path={IM_CIRCLE2} size={25} color={getStageNumber(props.status) >= 4 ? phaseColor(4) : '#ecf0f1'} />
+                    <Icon
+                      path={IM_CIRCLE2}
+                      size={25}
+                      color={
+                        getStageNumber(props.status) >= 4
+                          ? phaseColor(4)
+                          : "#ecf0f1"
+                      }
+                    />
                   </div>
-                }
-                <div style={{ color: props.status === 'Ongoing' ? '#FFC107' : phaseColor(getStageNumber(props.status)) }}>
+                )}
+                <div
+                  style={{
+                    color:
+                      props.status === "Ongoing"
+                        ? "#FFC107"
+                        : phaseColor(getStageNumber(props.status)),
+                  }}
+                >
                   {props.status}
                 </div>
               </div>
-            }
+            )}
             <div className="capital-project__description row">
               <div className="col-sm-12">
                 <hr />
                 <p>
-                <label htmlFor="description">Project Description</label><br />
+                  <label htmlFor="description">Project Description</label>
+                  <br />
                   {props.project_description}
                 </p>
                 {props.project_updates ? (
                   <div>
                     <hr />
                     <p>
-                    <label htmlFor="update">Project Update</label>
+                      <label htmlFor="update">Project Update</label>
                     </p>
                     {props.project_webpage_more_information !== null && (
-                      <>                     
+                      <>
                         <a
                           title="View project web site"
                           href={props.project_webpage_more_information}
                           target="_blank"
-                          style={{ display:"inline-block", marginBottom: '12px' }}
+                          style={{
+                            display: "inline-block",
+                            marginBottom: "12px",
+                          }}
                         >
                           <Icon path={IM_SPHERE3} size={20} />
                           &nbsp;{content.project_website}
                         </a>
                       </>
                     )}
-                    <p>
-                      {props.project_updates}
-                    </p>
+                    <p>{props.project_updates}</p>
                   </div>
                 ) : (
                   <span></span>
                 )}
                 <hr />
                 <div>
-                  <label htmlFor="contact">{content.project_contact}:&nbsp;</label><span name="contact">{props.coa_contact}</span>
+                  <label htmlFor="contact">
+                    {content.project_contact}:&nbsp;
+                  </label>
+                  <span name="contact">{props.coa_contact}</span>
                 </div>
                 <div>
-                  <label htmlFor="contact_phone">{content.contact_phone}:&nbsp;</label><span name="contact_phone">{props.phone_number}</span>
+                  <label htmlFor="contact_phone">
+                    {content.contact_phone}:&nbsp;
+                  </label>
+                  <span name="contact_phone">{props.phone_number}</span>
                 </div>
                 <div>
-                  <label htmlFor="contact_email">{content.contact_email}:&nbsp;</label><span name="contact_email">{props.email_address}</span>
+                  <label htmlFor="contact_email">
+                    {content.contact_email}:&nbsp;
+                  </label>
+                  <span name="contact_email">{props.email_address}</span>
                 </div>
               </div>
             </div>
           </div>
           <div className="col-sm-5">
             <div className="map-container">
-              <Map data={getMyPoints(props.project)} bounds={calculateBounds(getMyPoints(props.project))} height="300px"/>
+              <Map
+                data={getMyPoints(props.project)}
+                bounds={calculateBounds(getMyPoints(props.project))}
+                height="300px"
+              />
             </div>
             {props.photo_url && (
               <a href={props.photo_url} target="_blank">
-                <img alt={content.project} className="img-responsive" src={props.photo_url} />
+                <img
+                  alt={content.project}
+                  className="img-responsive"
+                  src={props.photo_url}
+                />
               </a>
             )}
-
           </div>
         </div>
       </div>
     </div>
   );
-};
+}
 
 ProjectDetails.propTypes = {
   description: PropTypes.string,
@@ -277,7 +328,8 @@ ProjectDetails.propTypes = {
 };
 
 ProjectDetails.defaultProps = {
-  description: 'This is a project description for a project. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text.',
+  description:
+    "This is a project description for a project. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder text.",
   hideTitle: false,
 };
 

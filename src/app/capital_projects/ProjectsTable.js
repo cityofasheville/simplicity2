@@ -1,233 +1,641 @@
-import React from 'react';
-import AccessibleReactTable from 'accessible-react-table';
-import Measure from 'react-measure';
-import ProjectDetails from './ProjectDetails';
-// import { mapProjectToCategory } from './cip_utilities';
-import Icon from '../../shared/Icon';
+import React, { useEffect, useState } from "react";
 import {
-  IM_SHIELD3,
-  IM_TREE,
-  IM_HOME2,
-  IM_BUS,
-  LI_BOLD,
-  IM_DROPLET,
-  IM_HAMMER,
-} from '../../shared/iconConstants';
-import expandingRows from '../../shared/react_table_hoc/ExpandingRows';
-import createFilterRenderer from '../../shared/FilterRenderer';
-import { withLanguage } from '../../utilities/lang/LanguageContext';
-import { english } from './english';
-import { spanish } from './spanish';
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import Measure from "react-measure";
+import { browserHistory, Link } from "react-router";
+import { columns } from "./projectsTableConfig";
 
-const getIcon = (category, isExpanded) => {
-  switch (category) {
-    case 'Parks Program':
-      return <Icon path={IM_TREE} size={25} color={isExpanded ? '#fff' : '#4077a5'} />;
-    case 'Parks & Recreation':
-      return <Icon path={IM_TREE} size={25} color={isExpanded ? '#fff' : '#4077a5'} />;
-    case 'Transportation Program':
-      return <Icon path={IM_BUS} size={25} color={isExpanded ? '#fff' : '#4077a5'} />;
-    case 'Transportation & Infrastructure':
-      return <Icon path={IM_BUS} size={25} color={isExpanded ? '#fff' : '#4077a5'} />;
-    case 'Housing Program':
-      return <Icon path={IM_HOME2} size={25} color={isExpanded ? '#fff' : '#4077a5'} />;
-    case 'Affordable Housing':
-      return <Icon path={IM_HOME2} size={25} color={isExpanded ? '#fff' : '#4077a5'} />;
-    case 'Public Safety':
-      return <Icon path={IM_SHIELD3} size={25} color={isExpanded ? '#fff' : '#4077a5'} />;
-    case 'Water':
-      return <Icon path={IM_DROPLET} size={25} color={isExpanded ? '#fff' : '#4077a5'} />;
-    case 'Building Construction':
-      return <Icon path={IM_HAMMER} size={25} color={isExpanded ? '#fff' : '#4077a5'} />;
-    default:
-      return <svg xmlns="http://www.w3.org/2000/svg" height="25px" transform="translate(0,4)" version="1.1" viewBox="0 0 16 16" width="25px"><g fill="none" fillRule="evenodd" id="Icons with numbers" stroke="none" strokeWidth="1"><g fill={isExpanded ? '#fff' : '#4077a5'} id="Group" transform="translate(-528.000000, -576.000000)"><path d="M536,592 C531.581722,592 528,588.418278 528,584 C528,579.581722 531.581722,576 536,576 C540.418278,576 544,579.581722 544,584 C544,588.418278 540.418278,592 536,592 Z M541,586 C542.10457,586 543,585.10457 543,584 C543,582.89543 542.10457,582 541,582 C539.89543,582 539,582.89543 539,584 C539,585.10457 539.89543,586 541,586 Z M531,586 C532.10457,586 533,585.10457 533,584 C533,582.89543 532.10457,582 531,582 C529.89543,582 529,582.89543 529,584 C529,585.10457 529.89543,586 531,586 Z M536,586 C537.10457,586 538,585.10457 538,584 C538,582.89543 537.10457,582 536,582 C534.89543,582 534,582.89543 534,584 C534,585.10457 534.89543,586 536,586 Z M536,586" id="Oval 12 copy" /></g></g></svg>;
-  }
-};
+function ProjectsTable(props) {
+  const [width, setWidth] = useState(0);
+  const [columnVisibility, setColumnVisibility] = useState({});
+  const [data, setData] = React.useState(() => props.data);
+  const [inputValue, setInputValue] = useState(1);
+  const uniqueStatuses = [
+    "All",
+    "Proposed",
+    "Planning",
+    "Design",
+    "Construction",
+    "Completed",
+  ];
+  const [pageNum, setPageNum] = useState(1);
+  const [sorting, setSorting] = useState([]);
+  const rowOptions = [10, 25, 50, 100];
+  const [columnFilters, setColumnFilters] = useState(
+    getInitialFiltersFromURL()
+  );
 
-const ExpandableAccessibleReactTable = expandingRows(AccessibleReactTable);
-
-class ProjectsTable extends React.Component {
-  constructor(props) {
-    super(props);
-    // set language
-    let content;
-    switch (props.language.language) {
-      case 'Spanish':
-        content = spanish;
-        break;
-      default:
-        content = english;
+  function getInitialFiltersFromURL() {
+    const params = new URLSearchParams(location.search);
+    const filters = [];
+    for (const [key, value] of params.entries()) {
+      filters.push({ id: key, value });
     }
-    this.state = {
-      content,
-    };
+    return [...filters];
   }
 
-  componentWillReceiveProps(nextProps) {
-    let content;
-    switch (nextProps.language.language) {
-      case 'Spanish':
-        content = spanish;
-        break;
-      default:
-        content = english;
+  useEffect(() => {
+    setData(props.data);
+  }, [props.data]);
+
+  useEffect(() => {
+    let initialFilters = getInitialFiltersFromURL();
+    const otherFilters = ["types", "categories", "size", "page"];
+
+    //verifying url params
+    const zipFilterIndex = initialFilters.findIndex((f) => f.id === "zip_code");
+    if (zipFilterIndex !== -1) {
+      const zip = initialFilters[zipFilterIndex].value.trim();
+      if (!props.uniqueZipCodes.includes(zip)) {
+        updateURL(
+          location.href,
+          [
+            {
+              id: "zip_code",
+              value: "All",
+            },
+          ],
+          ["zip_code"]
+        );
+      }
     }
-    this.setState({ content });
-  }
 
-  dataColumns = () => ([
-    {
-      Header: this.state.content.project,
-      accessor: 'display_name',
-      Cell: row => (
-        <span>
-          <span title={row.original.category}>{getIcon(row.original.category, row.isExpanded)}</span>
-          {row.original.type === 'Bond' &&
-          <span title={content.bond_project} style={{ marginLeft: '3px' }}><Icon path={LI_BOLD} size={16} color={row.isExpanded ? '#fff' : '#4077a5'} viewBox="0 0 24 24" /></span>
-          }
-          <span style={{ marginLeft: '5px' }}>{row.value}</span>
-        </span>
-      ),
-      Filter: createFilterRenderer(this.state.content.search),
-      getProps: () => ({
-        role: 'rowheader',
-      }),
-    },
-    {
-      Header: (<div>{this.state.content.zip_code}</div>),
-      accessor: 'zip_code',
-      maxWidth: 120,
-      show: this.state.width >= 940,
-      Filter: createFilterRenderer(this.state.content.search),
-    },
-    {
-      Header: (<div>{this.state.content.phase}</div>),
-      accessor: 'status',
-      Cell: row => (
-        <span>
-          {row.original.status === null ?
-            '--'
-            :
-            row.original.status
-          }
-        </span>
-      ),
-      maxWidth: 120,
-      Filter: createFilterRenderer(this.state.content.search),
-    },
-    {
-      Header: (<div>{this.state.content.budget}</div>),
-      accessor: 'total_project_funding_budget_document',
-      maxWidth: 120,
-      show: this.state.width >= 720,
-      Filter: createFilterRenderer(this.state.content.search),
-    },
-    {
-      Header: (<div>{this.state.content.under_contract}</div>),
-      id: 'encumbured',
-      accessor: project => ['$', parseInt(project.encumbered, 10).toLocaleString()].join(''),
-      maxWidth: 120,
-      show: this.state.width >= 720,
-      style: { textAlign: 'right' },
-      Filter: createFilterRenderer(this.state.content.search),
-    },
-    {
-      Header: (<div>{this.state.content.spent}</div>),
-      id: 'spent',
-      accessor: project => ['$', parseInt(project.total_spent, 10).toLocaleString()].join(''),
-      maxWidth: 120,
-      show: this.state.width >= 720,
-      Filter: createFilterRenderer(this.state.content.search),
-    },
-  ]);
+    const sizeIndex = initialFilters.findIndex((f) => f.id === "size");
+    if (sizeIndex !== -1) {
+      const size = parseInt(initialFilters[sizeIndex].value.trim(), 10);
 
-  getColumns = (type, subType) => {
-    if (type === 'Transportation') {
-      return [{
-        Header: subType,
-        columns: this.dataColumns(this.state),
-      }];
+      if (isNaN(size) || !rowOptions.includes(size)) {
+        updateURL(
+          location.href,
+          [
+            {
+              id: "size",
+              value: "25",
+            },
+          ],
+          ["size"]
+        );
+      }
     }
-    return [{
-      Header: type,
-      columns: this.dataColumns(this.state),
-    }];
-  };
 
-  render() {
-    return (
-      <div>
-        <div className="row">
-          <div className="col-sm-12">
-            <Measure
-              client
-              onResize={(contentRect) => {
-                this.setState({
-                  width: contentRect.client.width,
-                });
-              }}
-            >
-              {({ measureRef }) => (
-                <ExpandableAccessibleReactTable
-                  // ref={measureRef}
-                  tableId="projects"
-                  ariaLabel={this.state.content.capital_projects}
-                  data={this.props.data}
-                  columns={this.getColumns(this.props.type, this.props.subType)}
-                  showPagination
-                  defaultPageSize={20}
-                  filterable
-                  defaultFilterMethod={(filter, row) => {
-                    const id = filter.pivotId || filter.id;
-                    return row[id] !== undefined ?
-                      String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1
-                      :
-                      true;
+    const statusFilterIndex = initialFilters.findIndex(
+      (f) => f.id === "status"
+    );
+    if (statusFilterIndex !== -1) {
+      const status = initialFilters[statusFilterIndex].value.trim();
+      if (!props.uniqueZipCodes.includes(status)) {
+        updateURL(
+          location.href,
+          [
+            {
+              id: "status",
+              value: "All",
+            },
+          ],
+          ["status"]
+        );
+      }
+    }
+
+    const columnIds = table.getAllColumns().map((column) => column.id);
+    const sortIndex = initialFilters.findIndex((f) => f.id === "sort_column");
+    if (sortIndex !== -1) {
+      const sort = initialFilters[sortIndex].value.trim();
+      if (!columnIds.includes(sort)) {
+        const baseUrl = location.pathname;
+        const params = new URLSearchParams(location.href.split("?")[1]);
+        params.delete("sort_column");
+        params.delete("sort_order");
+        const updatedURL = `${baseUrl}?${params.toString()}`;
+        browserHistory.replace(updatedURL);
+      }
+    }
+
+    const filtered = initialFilters.filter(
+      (obj) => !otherFilters.includes(obj.id)
+    );
+    setColumnFilters(filtered);
+  }, []); 
+
+
+  
+
+  useEffect(() => {
+    let initialFilters = getInitialFiltersFromURL();
+    const otherFilters = [
+      "types",
+      "categories",
+      "size",
+      "page",
+      "sort_order",
+      "sort_column",
+    ];
+    const filtered = initialFilters.filter(
+      (obj) => !otherFilters.includes(obj.id)
+    );
+    setColumnFilters(filtered);
+
+    const page = initialFilters.find((obj) => obj.id === "page");
+    const size = initialFilters.find((obj) => obj.id === "size");
+    if (size?.value && size?.value > 0) {
+      table.setPageSize(Number(size?.value));
+    } else {
+      table.setPageSize(Number(25));
+    }
+
+    //essentially "If page number has changed..."
+    if (page?.value && page?.value > 0 && page.value != pageNum) {
+      table.setPageIndex(Number(page?.value - 1));
+      setInputValue(Number(page?.value));
+      setPageNum(page.value);
+    } else {
+      // if anything besides the page number changes, set page number to 1
+      updateURL(
+        location.href,
+        [
+          {
+            id: "page",
+            value: "1",
+          },
+        ],
+        ["page"]
+      );
+      table.setPageIndex(0);
+
+      setPageNum(1);
+      setInputValue(1);
+    }
+
+    const sortColumn = initialFilters.find(
+      (obj) => obj.id === "sort_column"
+    )?.value;
+    const sortOrder = initialFilters.find(
+      (obj) => obj.id === "sort_order"
+    )?.value;
+
+    if (sortColumn && sortOrder) {
+      const newSorting = [
+        {
+          id: sortColumn,
+          desc: sortOrder === "desc",
+        },
+      ];
+      setSorting(newSorting);
+      table.setSorting(newSorting);
+    } else {
+      // If nothing is in URL, clear sorting
+      setSorting([]);
+      table.setSorting([]);
+    }
+  }, [location.search]);
+
+  
+
+
+  useEffect(() => {
+    // when filters in table change, update url
+    const allFilterIDs = [
+      "status",
+      "name",
+      "zip_code",
+      "total_project_funding_budget_document",
+      "encumbered",
+      "spent",
+    ];
+    updateURL(location.href, columnFilters, allFilterIDs);
+  }, [columnFilters]);
+
+  const table = useReactTable({
+    data,
+    columns,
+    filterFns: {},
+    columnResizeMode: "onChange",
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    autoResetPageIndex: false,
+    onColumnFiltersChange: (newFilters) => {
+      setColumnFilters(newFilters);
+    },
+    onSortingChange: (updater) => {
+      const resolvedSorting =
+        typeof updater === "function"
+          ? updater(table.getState().sorting)
+          : updater;
+      if (resolvedSorting.length > 0) {
+        const { id, desc } = resolvedSorting[0];
+
+        const sortDirection = desc ? "desc" : "asc";
+
+        updateURL(
+          location.href,
+          [{ id: "sort_column", value: id }],
+          ["sort_column"]
+        );
+        updateURL(
+          location.href,
+          [{ id: "sort_order", value: sortDirection }],
+          ["sort_order"]
+        );
+      } else {
+        // Sorting is cleared (default)
+        updateURL(
+          location.href,
+          [{ id: "sort_column", value: "" }],
+          ["sort_column"]
+        );
+        updateURL(
+          location.href,
+          [{ id: "sort_order", value: "default" }],
+          ["sort_order"]
+        );
+      }
+    },
+
+    state: {
+      columnVisibility,
+      columnFilters,
+      sorting,
+    },
+    debugTable: true,
+    debugHeaders: true,
+    debugColumns: false,
+    initialState: {
+      pagination: {
+        pageSize: 25,
+      },
+    },
+  });
+
+  useEffect(() => {
+    // set data in parent, so map can use it
+    const filteredRows = table.getFilteredRowModel().rows;
+    const goodrows = filteredRows.map((item) => item.original);
+    props.setDataFromTable(goodrows);
+  }, [table.getFilteredRowModel().rows]);
+
+
+  return (
+    <div className="row" style={{ marginTop: "10px" }}>
+      <div className="col-sm-12">
+        <div className="p-2 ReactTable -striped">
+          <Measure
+            client
+            onResize={(contentRect) => {
+              setWidth(contentRect.client.width);
+            }}
+          >
+            {({ measureRef }) => (
+              <div ref={measureRef}>
+                <div
+                  style={{
+                    ...(width <= 768
+                      ? { maxHeight: "30rem", overflow: "auto" }
+                      : { overflow: "visible" }),
                   }}
-                  getTdProps={() => ({
-                    style: {
-                      whiteSpace: 'normal',
-                    },
-                  })}
-                  getTrProps={(state, rowInfo) => ({
-                    style: {
-                      cursor: 'pointer',
-                      background: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '#4077a5' : 'none',
-                      color: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '#fff' : '',
-                      fontWeight: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? 'bold' : 'normal',
-                      fontSize: rowInfo !== undefined && Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) && state.expanded[rowInfo.viewIndex] ? '1.2em' : '1em',
-                    },
-                  })}
-                  SubComponent={row => (
-                    <div style={{
-                      paddingLeft: '34px',
-                      paddingRight: '34px',
-                      paddingBottom: '15px',
-                      backgroundColor: '#f6fcff',
-                      borderRadius: '0px',
-                      border: '2px solid #4077a5',
-                    }}
-                    >
-                      <ProjectDetails {...row.original} hideTitle />
-                    </div>
-                  )}
                 >
-                  {(state, makeTable) => (
-                    <div
-                      ref={measureRef}
-                      alt={[this.state.content.table_of, this.props.type, this.props.subType || '', this.state.bond_project_statuses].join(' ')}
-                      style={{ marginTop: '10px' }}
+                  <table style={{ width: "100%", tableLayout: "fixed" }}>
+                    <thead
+                      style={{
+                        boxShadow: "0px 2px 15px 0px rgba(0, 0, 0, 0.15),",
+                      }}
                     >
-                      {makeTable()}
-                    </div>
-                  )}
-                </ExpandableAccessibleReactTable>
-              )}
-            </Measure>
-          </div>
+                      {table.getHeaderGroups().map((headerGroup) => (
+                        <tr key={headerGroup.id}>
+                          {headerGroup.headers.map((header) => {
+                            return (
+                              <th
+                                key={header.id}
+                                colSpan={header.colSpan}
+                                style={{ width: header.getSize() }}
+                              >
+                                {header.isPlaceholder ? null : (
+                                  <>
+                                    <div
+                                      {...{
+                                        onClick:
+                                          header.column.getToggleSortingHandler(),
+                                        style: {
+                                          boxShadow:
+                                            header.column.getIsSorted() ===
+                                            "asc"
+                                              ? "inset 0 4px 0 0 #4077a5"
+                                              : header.column.getIsSorted() ===
+                                                "desc"
+                                              ? "inset 0 -4px 0 0 #4077a5"
+                                              : "none",
+                                        },
+                                      }}
+                                    >
+                                      {flexRender(
+                                        header.column.columnDef.header,
+                                        header.getContext()
+                                      )}
+                                    </div>
+                                    <div style={{ padding: "5px" }}>
+                                      {header.column.getCanFilter() ? (
+                                        header.column.id === "zip_code" ||
+                                        header.column.id === "status" ? (
+                                          <select
+                                            aria-label={`Select a ${
+                                              header.column.id === "status"
+                                                ? "status"
+                                                : "zip code"
+                                            }`}
+                                            value={
+                                              header.column.getFilterValue() ??
+                                              "All"
+                                            }
+                                            onChange={(e) =>
+                                              header.column.setFilterValue(
+                                                e.target.value
+                                              )
+                                            }
+                                            style={{
+                                              width: "100%",
+                                              boxSizing: "border-box",
+                                            }}
+                                          >
+                                            {" "}
+                                            {header.column.id === "zip_code"
+                                              ? props.uniqueZipCodes.map(
+                                                  (option) => (
+                                                    <option
+                                                      key={option}
+                                                      value={option}
+                                                    >
+                                                      {option}
+                                                    </option>
+                                                  )
+                                                )
+                                              : uniqueStatuses.map((option) => (
+                                                  <option
+                                                    key={option}
+                                                    value={option}
+                                                  >
+                                                    {option}
+                                                  </option>
+                                                ))}
+                                          </select>
+                                        ) : (
+                                          <div>
+                                            <Filter column={header.column} />
+                                          </div>
+                                        )
+                                      ) : (
+                                        <div
+                                          style={{
+                                            width: "100%",
+                                            height: "27px",
+                                            boxSizing: "border-box",
+                                            margin: "4px",
+                                          }}
+                                        ></div>
+                                      )}
+                                    </div>
+                                  </>
+                                )}
+                              </th>
+                            );
+                          })}
+                        </tr>
+                      ))}
+                    </thead>
+                    <tbody>
+                      {table.getRowModel().rows.map((row) => {
+                        return (
+                          <tr key={row.id}>
+                            {row.getVisibleCells().map((cell) => {
+                              return (
+                                <td
+                                  key={cell.id}
+                                  style={{
+                                    padding: "5px 7px",
+                                    borderRadius: "0px",
+                                    border: "1px solid rgba(0, 0, 0, .02)",
+                                  }}
+                                >
+                                  {flexRender(
+                                    cell.column.columnDef.cell,
+                                    cell.getContext()
+                                  )}
+                                </td>
+                              );
+                            })}
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>{" "}
+                </div>
+                <div className="pagination-bottom" />
+                <div className="-pagination">
+                  <div className="-previous">
+                    <button
+                      type="button"
+                      style={{ color: "black" }}
+                      className="-btn"
+                      onClick={() => {
+                        setInputValue(parseInt(inputValue) - 1);
+                        updateURL(
+                          location.href,
+                          [
+                            {
+                              id: "page",
+                              value: parseInt(inputValue) - 1,
+                            },
+                          ],
+                          ["page"]
+                        );
+                      }}
+                      disabled={!table.getCanPreviousPage()}
+                    >
+                      Previous
+                    </button>
+                  </div>
+                  <div className="-center">
+                    <span className="-pageInfo">
+                      Page{" "}
+                      <div className="-pageJump">
+                        <input
+                          aria-label="Page input"
+                          type="number"
+                          min="1"
+                          max={table.getPageCount()}
+                          value={inputValue}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            if (val <= table.getPageCount()) {
+                              setInputValue(val);
+                            }
+
+                            if (/^\d+$/.test(val)) {
+                              const pageNum = Number(val);
+                              if (
+                                pageNum >= 1 &&
+                                pageNum <= table.getPageCount()
+                              ) {
+                                updateURL(
+                                  location.href,
+                                  [
+                                    {
+                                      id: "page",
+                                      value: String(pageNum),
+                                    },
+                                  ],
+                                  ["page"]
+                                );
+                              }
+                            }
+                          }}
+                          className="border p-1 rounded w-16"
+                        />
+                      </div>{" "}
+                      of{" "}
+                      <span className="-totalPages">
+                        {table.getPageCount()}
+                      </span>
+                    </span>
+                    <span className="select-wrap">
+                      <select
+                        aria-label="Select the number of rows per page"
+                        value={table.getState().pagination.pageSize}
+                        onChange={(e) => {
+                          updateURL(
+                            location.href,
+                            [
+                              {
+                                id: "size",
+                                value: Number(e.target.value),
+                              },
+                            ],
+                            ["size"]
+                          );
+                          updateURL(
+                            location.href,
+                            [
+                              {
+                                id: "page",
+                                value: "1",
+                              },
+                            ],
+                            ["page"]
+                          );
+                        }}
+                      >
+                        {rowOptions.map((pageSize) => (
+                          <option key={pageSize} value={pageSize}>
+                            {pageSize} rows
+                          </option>
+                        ))}
+                      </select>
+                    </span>
+                  </div>
+                  <div className="-next">
+                    <button
+                      style={{ color: "black" }}
+                      type="button"
+                      className="-btn"
+                      onClick={() => {
+                        setInputValue(parseInt(inputValue) + 1);
+                        updateURL(
+                          location.href,
+                          [
+                            {
+                              id: "page",
+                              value: parseInt(inputValue) + 1,
+                            },
+                          ],
+                          ["page"]
+                        );
+                      }}
+                      disabled={!table.getCanNextPage()}
+                    >
+                      Next
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </Measure>
         </div>
-      </div>);
-  }
+      </div>
+    </div>
+  );
 }
 
-export default withLanguage(ProjectsTable);
+function Filter({ column }) {
+  const columnFilterValue = column.getFilterValue();
+  const { filterVariant } = column.columnDef.meta ?? {};
+
+  return (
+    <div style={{}}>
+      <DebouncedInput
+        className=""
+        style={{ width: "100%", boxSizing: "border-box" }}
+        onChange={(value) => column.setFilterValue(value)}
+        placeholder={`Search...`}
+        type="text"
+        value={columnFilterValue || ""}
+      />
+    </div>
+  );
+}
+
+function DebouncedInput({
+  value: initialValue,
+  onChange,
+  debounce = 500,
+  ...props
+}) {
+  const [value, setValue] = React.useState(initialValue);
+
+  React.useEffect(() => {
+    setValue(initialValue);
+  }, [initialValue]);
+
+  React.useEffect(() => {
+    const timeout = setTimeout(() => {
+      onChange(value);
+    }, debounce);
+
+    return () => clearTimeout(timeout);
+  }, [value]);
+
+  return (
+    <input
+      {...props}
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
+    />
+  );
+}
+
+function updateURL(url, filters, filterIds) {
+  const baseUrl = location.pathname;
+  const params = new URLSearchParams(url.split("?")[1]);
+  const filterMap = Object.fromEntries(filters.map((f) => [f.id, f.value]));
+  for (let id of filterIds) {
+    const value = filterMap[id];
+
+    if (value === undefined || value === "") {
+      params.delete(id);
+    } else {
+      params.set(id, value);
+    }
+  }
+  const updatedURL = `${baseUrl}?${params.toString()}`;
+  browserHistory.replace(updatedURL);
+}
+
+const rootElement = document.getElementById("root");
+if (!rootElement) throw new Error("Failed to find the root element");
+
+export default ProjectsTable;

@@ -117,14 +117,6 @@ function Project(props) {
           project.type = CIPTextReplacements[project.type];
         }
 
-        // console.log(
-        //   "project",
-        //   data.cip_projects === undefined ||
-        //     data.cip_projects.find(
-        //       (obj) => (obj.gis_id === props.routeParams.id) === undefined
-        //     )
-        // );
-
         const showMap =
           project.latitude.length > 0 && project.longitude.length > 0;
 
@@ -165,10 +157,6 @@ function Project(props) {
                 yMaxIndex = i;
               }
             }
-            console.log("POINTs", [
-              [points[yMinIndex].y, points[xMinIndex].x],
-              [points[yMaxIndex].y, points[xMaxIndex].x],
-            ]);
             return [
               [points[yMinIndex].y, points[xMinIndex].x],
               [points[yMaxIndex].y, points[xMaxIndex].x],
@@ -177,46 +165,11 @@ function Project(props) {
           return null;
         };
 
-        const containerStyle = {
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "space-between",
-          border: "solid",
-        };
-
-        const columnStyle = {
-          background: "rgb(242, 242, 242)",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "120px",
-          border: "4px solid white",
-          textAlign: "center",
-        };
-
-        const titleStyle = {
-          fontWeight: "bold",
-          marginBottom: "5px",
-          // whiteSpace: "nowrap",
-        };
-
-        const valueStyle = {
-          color: "#333",
-          whiteSpace: "nowrap",
-        };
-
-        const columnClass = "col-xs-12 col-sm-6 col-md-4";
-
-        const iconSpanStyle = {
-          verticalAlign: "middle",
-        };
 
         let buttonText;
         let pathname;
         let previous =
           props.location?.state?.previousPath.split("/capital_projects")[1];
-        console.log("PREVIOUS", previous);
         if (previous) {
           buttonText = "Return to Dashboard";
           pathname = "/capital_projects" + previous;
@@ -224,24 +177,11 @@ function Project(props) {
           buttonText = "Go to Dashboard";
           pathname = "/capital_projects";
         }
-        console.log("PATHNAME", pathname);
 
-        const handleMarkerClick = (id) => {
-          setMarkers((prevMarkers) =>
-            prevMarkers.map((marker) =>
-              marker.id === id
-                ? { ...marker, visible: true }
-                : marker.id === id
-                ? { ...marker, visible: false }
-                : marker
-            )
-          );
-        };
 
         return (
           <main className="container">
             <h1 className="title__text">{project.display_name}</h1>
-            {console.log(props)}
             <div
               style={{
                 display: "flex",
@@ -258,7 +198,7 @@ function Project(props) {
               {project.project_description}
             </p>
 
-            {project.project_updates && (
+            {(project.project_updates || project.project_webpage_more_information) && (
               <div>
                 <h2>Updates</h2>
                 {project.project_webpage_more_information && (
@@ -292,142 +232,7 @@ function Project(props) {
                 padding: "11px",
               }}
             >
-              {/* <div className={columnClass} style={columnStyle}>
-              <div className="" style={titleStyle}>
-                Status
-              </div>
-
-              {project.status !== null && (
-                <div style={{ whiteSpace: "nowrap", textAlign: "center" }}>
-                  {project.status !== "Proposed" && (
-                    <div
-                      className="capital-project__status"
-                      style={{
-                        whiteSpace: "nowrap",
-                        textAlign: "center",
-                        marginBottom: "4px",
-                      }}
-                    >
-                      <span
-                        className="project-status"
-                        style={{ whiteSpace: "nowrap" }}
-                      >
-                        <Icon
-                          path={IM_CIRCLE2}
-                          size={25}
-                          color={
-                            getStageNumber(project.status) >= 1
-                              ? phaseColor(1)
-                              : "#ffffff"
-                          }
-                        />
-                      </span>
-                      <span className="project-status">
-                        <Icon
-                          path={IM_CIRCLE2}
-                          size={25}
-                          color={
-                            getStageNumber(project.status) >= 2
-                              ? phaseColor(2)
-                              : "#ffffff"
-                          }
-                        />
-                      </span>
-                      <span className="project-status">
-                        <Icon
-                          path={IM_CIRCLE2}
-                          size={25}
-                          color={
-                            project.status === "Ongoing"
-                              ? "#FFC107"
-                              : getStageNumber(project.status) >= 3
-                              ? phaseColor(3)
-                              : "#ffffff"
-                          }
-                        />
-                      </span>
-                      {project.status !== "Ongoing" && (
-                        <span className="project-status">
-                          <Icon
-                            path={IM_CIRCLE2}
-                            size={25}
-                            color={
-                              getStageNumber(project.status) >= 4
-                                ? phaseColor(4)
-                                : "#ffffff"
-                            }
-                          />
-                        </span>
-                      )}
-                      <span
-                        style={{
-                          color:
-                            project.status === "Ongoing"
-                              ? "#FFC107"
-                              : phaseColor(getStageNumber(project.status)),
-                        }}
-                      ></span>
-                    </div>
-                  )}
-                  <span
-                    style={{
-                      color: phaseColor(getStageNumber(project.status), true),
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {project.status}
-                  </span>
-                </div>
-              )}
-            </div> */}
-
-              {/* {project.category && (
-              <div style={columnStyle} className={columnClass}>
-                <div style={titleStyle}>Category</div>
-                <div style={valueStyle}>
-                  <span>
-                    {" "}
-                    <i
-                      className={`bi ${iconDictionary[project.category]}`}
-                      style={{
-                        fontSize: "1.5rem",
-                        verticalAlign: "middle",
-                        color: "rgb(64, 119, 165)",
-                        display: "inline-block",
-                        marginRight: "1px",
-                      }}
-                    ></i>
-                  </span>
-                  <span
-                    style={{
-                      whiteSpace: "normal",
-                      marginLeft: "4px",
-                      verticalAlign: "middle",
-                    }}
-                  >
-                    {project.category}
-                  </span>
-                </div>
-              </div>
-            )}
-
-            {project.zip_code && (
-              <div style={columnStyle} className={columnClass}>
-                <div style={titleStyle}>Zip Code</div>
-                <div style={valueStyle}>
-                  <span>{project.zip_code}</span>
-                </div>
-              </div>
-            )} */}
-              {/* 
-            {project.estimated_construction_duration && (
-              <div style={columnStyle} className={columnClass}>
-                <div style={titleStyle}>Estimated construction timeframe</div>
-                <div style={valueStyle}>
-                  <span>{project.estimated_construction_duration}</span>
-                </div>
-              </div>
-            )} */}
+ 
             </div>
 
             <div className="row permit-map-row" style={{ marginTop: "10.5px" }}>
@@ -443,8 +248,7 @@ function Project(props) {
                     width="100%"
                     zoom={12}
                     bounds={calculateBounds(getMyPoints(project))}
-
-                    eventHandlers={{ click: handleMarkerClick }}
+                    // eventHandlers={{ click: handleMarkerClick }}
                   />
                   {/* <Map
                     data={getMyPoints(project)}

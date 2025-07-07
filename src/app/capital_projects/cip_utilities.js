@@ -7,8 +7,6 @@ import {
   IM_DROPLET,
   IM_HAMMER,
   IM_CITY,
-  IM_USERS,
-  IM_LIBRARY2,
   IM_SPHERE3
 } from "../../shared/iconConstants";
 import Icon from "../../shared/Icon";
@@ -156,23 +154,6 @@ export const filterProjects = (projects, categories, types, mode) => {
   for (let project of projects) {
     const isCategoryMatch = categories.includes(project.category);
     let isTypeMatch = types.includes(project.type); 
-
-    if (project.type == 'Bond') {
-      if (types.includes('Bond 2016')) {
-        isTypeMatch = true
-      } else {
-        isTypeMatch = false
-      }
-    } 
-
-    if (project.type == 'CIP') {
-      if (types.includes('Operating Budget')) {
-        isTypeMatch = true
-      } else {
-        isTypeMatch = false
-      }
-    } 
-
     if (isCategoryMatch && isTypeMatch) {
       filteredProjects.push(project);
     }

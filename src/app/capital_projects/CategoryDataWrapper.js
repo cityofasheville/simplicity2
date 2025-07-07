@@ -20,7 +20,8 @@ const GET_CATEGORIES = gql`
   }
 `;
 
-const CategoryDataWrapper = (props) => (
+function CategoryDataWrapper (props) {
+  return (
   <Query query={GET_CATEGORIES}>
     {({ loading, error, data }) => {
       if (loading) return <LoadingAnimation />;
@@ -70,6 +71,7 @@ const CategoryDataWrapper = (props) => (
       );
     }}
   </Query>
-);
+  )
+};
 
 export default withLanguage(CategoryDataWrapper);

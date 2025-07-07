@@ -71,41 +71,9 @@ const markerClusterOptions = {
   iconCreateFunction: createClusterCustomIcon,
 };
 
-// We can just pass undefined instead
-// const getBounds = (center, within) => {
-//   const degToAdd = parseInt(within, 10) / 500000;
-//   return [
-//     [center[0] - degToAdd, center[1] - degToAdd],
-//     [center[0] + degToAdd, center[1] + degToAdd]
-//   ];
-// };
+
 const CIPMap = (props) => {
   const markers = [];
-
-  // const iconDictionary = {
-  //   "Transportation & Infrastructure": "bi-bus-front-fill",
-  //   "Housing Program": "bi-house-door-fill",
-  //   "Parks & Recreation": "bi-tree-fill",
-  //   Other: "bi-bookmark-fill",
-  //   Water: "bi-droplet-fill",
-  //   "Building Construction": "bi-hammer",
-  // };
-
-  // const iconColor = {
-  //   Bond: "#2A4D80",
-  //   CIP: "#00804B",
-  //   "Bond 2024": "#B22C33",
-  //   Helene: "#E67125",
-  // };
-
-  const markerStyle = {
-    width: "30px",
-    height: "30px",
-    borderRadius: "0 50% 50% 50%",
-    background: "red",
-    transform: "rotate(-135deg)",
-    marginTop: "20px",
-  };
 
   for (let pt of props.data) {
     let iconPic;
@@ -154,6 +122,7 @@ const CIPMap = (props) => {
       options: pt.options || {},
       icon: customMarkerIcon,
     });
+
   }
 
   let shouldZoomToNonCenter = false;
@@ -301,7 +270,7 @@ const CIPMap = (props) => {
               {markerItem.popup && (
                 <Popup>
                   <div
-                    // ref={popupDivRef}
+                    ref={popupDivRef}
                     tabIndex={-1}
                     dangerouslySetInnerHTML={{ __html: markerItem.popup }} />
                 </Popup>

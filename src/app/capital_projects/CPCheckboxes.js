@@ -9,7 +9,7 @@ import { CIPcolors } from "./CIPColors";
 
 const CPCheckboxes = (props) => {
   const [newValues, updateNewValues] = useState([]);
-  const content = props.language.language === "Spanish" ? spanish : english;
+  // const content = props.language.language === "Spanish" ? spanish : english;
 
   function updateURL(url, values) {
     const baseUrl = location.pathname;

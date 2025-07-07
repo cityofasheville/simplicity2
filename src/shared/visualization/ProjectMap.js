@@ -100,19 +100,6 @@ const ProjectMap = (props) => {
 
   }
 
-  // const handleMarkerClick = props.eventHandlers?.click;
-  const handleMarkerClick = () => {
-    console.log('Marker clicked');
-  };
-
-  // markers.on('click', function (a) {
-  //   console.log('marker ');
-  // });
-  
-  // markers.on('clusterclick', function (a) {
-  //   // a.layer is actually a cluster
-  //   console.log('cluster ' + a.layer.getAllChildMarkers().length);
-  // });
 
   return (
     <div style={{ height: props.height, width: props.width }}>
@@ -149,9 +136,9 @@ const ProjectMap = (props) => {
               iconAnchor: [12, 41],
               popupAnchor: [2, -22],
             })}
-            onClick={marker =>
-              console.warn('marker-click', marker, marker.target.getLatLng())
-            }
+            // onClick={marker =>
+            //   console.warn('marker-click', marker, marker.target.getLatLng())
+            // }
           >
             <Popup>
               <div>
@@ -217,21 +204,13 @@ const ProjectMap = (props) => {
             ));
           }}
         </Query>
-        <MarkerClusterGroup  
-        // {...markerClusterOptions}            
-        //     onClusterClick={cluster =>
-        //       console.log('Cluster Clicked')
-        //     }
-           >
+        <MarkerClusterGroup>
 
         {markers.map((markerItem, index) => (
         <Marker
           position={markerItem.position}
           popup={markerItem.popup}
           options= {markerItem.options}
-          // onClick={(marker) =>
-          //   markerItem.markerClicked(marker)
-          // }
         > 
         <Popup><div dangerouslySetInnerHTML={{__html:markerItem.popup}}></div></Popup>
         </Marker>

@@ -40,7 +40,7 @@ const GET_PROJECTS = gql`
   }
 `;
 
-const ProjectDataWrapper = (props) => {
+function ProjectDataWrapper (props) {
   return (
     <Query
       query={GET_PROJECTS}
@@ -52,20 +52,13 @@ const ProjectDataWrapper = (props) => {
       {({ loading, error, data }) => {
         if (loading) return <LoadingAnimation />;
         if (error) return <Error message={error.message} />;
-
-        const actualCategories = props.categories;
-        actualCategories.sort(
-          (a, b) =>
-            props.sortedCategories.indexOf(a) >
-            props.sortedCategories.indexOf(b)
-        );
-
-        //filtering categoies to remove dcref
+        
         let filteredCategories = props.categories.filter(
           (category) => category !== "DCREF"
         );
 
         // changing any misc categories to "Other"
+        // also filtering out projects that don't have a gis_id
         let projectData = [];
         for (let project of data.cip_projects) {
           if (project.gis_id) {
@@ -82,13 +75,16 @@ const ProjectDataWrapper = (props) => {
           }
         }
 
-        //types is used in query, which is why we wait until after query to update the text
-        let typesUpdated = [
-          "Bond 2016",
-          "Bond 2024",
-          "Capital Improvement Plan",
-          "Helene Recovery",
-        ];
+        let typesUpdated = [];
+        for (let type of props.types) {
+          if (CIPTextReplacements[type]) {
+            typesUpdated.push(CIPTextReplacements[type])
+          } else {
+            typesUpdated.push(type)
+          }
+        }
+
+        // const typesUpdated = props.types.map(val => CIPTextReplacements.hasOwnProperty(val) ? CIPTextReplacements[val] : val);
 
         return (
           <div>
@@ -96,7 +92,6 @@ const ProjectDataWrapper = (props) => {
               location={props.location}
               categories={filteredCategories}
               types={typesUpdated}
-              sortedCategories={filteredCategories}
               data={projectData}
             />
           </div>

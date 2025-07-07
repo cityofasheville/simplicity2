@@ -28,36 +28,20 @@ const CIPTimeline = ({ currentStatusItem, phase }) => {
     const padding = 15;
     const pointRadius = 8;
 
-    // let datesToUse = formattedPermit.orderedDates;
-    // if (currentStatusItem !== undefined && !currentStatusItem.closed) {
-    //   datesToUse = [
-    //     ...datesToUse,
-    //     {
-    //       accelaLabel: "dummy",
-    //       dateInput: null,
-    //       displayLabel: "",
-    //     },
-    //   ];
-    // }
-
     let datesToUse = [
       {
-        accelaLabel: "Pre-App Date",
         displayLabel: "Proposed",
         dateInput: "3/13/2025",
       },
       {
-        accelaLabel: "Neighborhood Meeting Date",
         displayLabel: "Planning",
         dateInput: "05/08/2025",
       },
       {
-        accelaLabel: "applied_date",
         displayLabel: "Design",
         dateInput: "2025-05-08 00:00:00",
       },
       {
-        accelaLabel: "Initial TRC Date 1",
         displayLabel: "Construction",
         dateInput: "05/08/2025",
       },
@@ -73,11 +57,9 @@ const CIPTimeline = ({ currentStatusItem, phase }) => {
       datesToUse.push({
         accelaLabel: "dummy",
         dateInput: null,
-        displayLabel: "",
+        displayLabel: "dummy",
       });
     }
-
-    let color = "#2b753f;";
 
     const timelineWidth = Math.max(
       datesToUse.length * 125,
@@ -92,12 +74,6 @@ const CIPTimeline = ({ currentStatusItem, phase }) => {
     const getX = (dateObj, i) =>
       midpointX +
       ((i % datesToUse.length) - midRowIndex) * (padding + eachWidth);
-
-    let strokeColors = ["#ff0000", "#00ff00", "#0000ff", "#ffa500"]; // as many as needed
-
-    if (phase == "Proposed") {
-      strokeColors = ["#216923", "#5c5c5c", "#5c5c5c", "#5c5c5c"];
-    }
 
     const labelOrder = [
       "Proposed",
@@ -129,7 +105,6 @@ const CIPTimeline = ({ currentStatusItem, phase }) => {
           const thisX = getX(d, i);
           const prevX = getX(datesArray[i - 1], i - 1);
           const circleY = padding + pointRadius;
-          console.log(d.accelaLabel, phase);
           if (d.displayLabel == phase) {
             newStrokeColor = "#a3a3a3";
           }
@@ -156,9 +131,9 @@ const CIPTimeline = ({ currentStatusItem, phase }) => {
           }
 
           return (
-            <g key={d.accelaLabel}>
+            <g key={d.displayLabel}>
               {/* circle */}
-              {d.accelaLabel !== "dummy" && (
+              {d.displayLabel !== "dummy" && (
                 <>
                   {/* Outline circle when selected */}
                   {d.displayLabel === phase && (
@@ -180,7 +155,7 @@ const CIPTimeline = ({ currentStatusItem, phase }) => {
                   />
                 </>
               )}
-              {d.accelaLabel === "dummy" && (
+              {d.displayLabel === "dummy" && (
                 // arrow
                 <path
                   d={`M${thisX},${circleY - pointRadius / 2} L${thisX},${

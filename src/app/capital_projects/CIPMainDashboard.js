@@ -31,101 +31,91 @@ const getDollars = (value) => {
 };
 
 function CIPMainDashboard(props) {
-  let [updatedData, setUpdatedData] = useState([]);
-  let [mapData, setMapData] = useState([]);
-  let [totalSpent, setTotalSpent] = useState("");
-  let [totalUnderCon, setTotalUnderCon] = useState("");
-  let [totalBudget, setTotalBudget] = useState("");
-  let [types, setTypes] = useState([]);
-  let [dataFromTable, setDataFromTable] = useState([]);
-  let [categories, setCategories] = useState([
-    "Transportation & Infrastructure",
-    "Housing Program",
-    "Parks & Recreation",
-    "Building Construction",
-    "Water",
-    "Other",
-  ]);
-
+  const [updatedData, setUpdatedData] = useState([]);
+  const [mapData, setMapData] = useState([]);
+  const [totalSpent, setTotalSpent] = useState("");
+  const [totalUnderCon, setTotalUnderCon] = useState("");
+  const [totalBudget, setTotalBudget] = useState("");
+  const [dataFromTable, setDataFromTable] = useState([]);
+  const [selectedFilters, setSelectedFilters] = useState(getSelectedFromURL());
+  const content = english;
   const rawZipCodes = props.data.map((item) => item.zip_code);
   const zipSet = new Set(rawZipCodes);
   zipSet.delete("Citywide");
   const sortedZips = [...zipSet].sort();
   const uniqueZipCodes = ["All", "Citywide", ...sortedZips];
+  const actualCategories = props.categories;  
 
-    // set language
-    let content;
-    switch (props.language.language) {
-      case "Spanish":
-        content = spanish;
-        break;
-      default:
-        content = english;
+  useEffect(() => {
+    const baseUrl = location.pathname;
+    const params = new URLSearchParams(location.href.split("?")[1]);
+    let selected = {
+      categories: [],
+      types: [],
+    };
+
+    if (params.has("categories")) {
+      const rawCategories = params.get("categories");
+      selected.categories =
+        rawCategories === ""
+          ? []
+          : rawCategories
+              .split(",")
+              .filter((cat) => props.categories.includes(cat));
+    } else {
+      selected.categories = props.categories;
     }
-  
-    const actualCategories = props.categories;
-    actualCategories.sort(
-      (a, b) =>
-        props.sortedCategories.indexOf(a) > props.sortedCategories.indexOf(b)
-    );
-  
-  
 
-
-  function processUpdatedData(data) {
-    let formattedData = [];
-    for (let i = 0; i < data.length; i++) {
-      formattedData.push(data[i]);
+    if (params.has("types")) {
+      const rawTypes = params.get("types");
+      selected.types =
+        rawTypes === ""
+          ? []
+          : rawTypes.split(",").filter((type) => props.types.includes(type));
+    } else {
+      selected.types = props.types;
     }
-    return formattedData
-      .filter(
-        (d) =>
-          (Array.isArray(d.longitude) ? d.longitude.length > 0 : d.longitude) &&
-          (Array.isArray(d.latitude) ? d.latitude.length > 0 : d.latitude)
+
+    const newParams = new URLSearchParams(location.search);
+
+    if (
+      params.has("categories") ||
+      selected.categories.length !== props.categories.length
+    ) {
+      newParams.set("categories", selected.categories.join(","));
+    }
+
+    if (params.has("types") || selected.types.length !== props.types.length) {
+      newParams.set("types", selected.types.join(","));
+    }
+
+    const updatedURL = `${baseUrl}?${newParams.toString()}`;
+    browserHistory.replace(updatedURL);
+  }, [location.search]);
+
+
+  useEffect(() => {
+    setSelectedFilters(getSelectedFromURL());
+  }, [location.search, props.data]);
+
+
+  useEffect(() => {
+    setUpdatedData(
+      filterProjects(
+        props.data,
+        selectedFilters.categories,
+        selectedFilters.types
       )
-      .map((d) => {
-        const coordinates =
-          Array.isArray(d.longitude) && Array.isArray(d.latitude)
-            ? d.longitude.map((lat, index) => ({
-                x: lat,
-                y: d.latitude[index],
-              }))
-            : [{ x: d.longitude, y: d.latitude }];
-
-        return coordinates.map((coord) =>
-          Object.assign({}, d, {
-            x: coord.x,
-            y: coord.y,
-            color: "#004987",
-            name: d.display_name,
-            description: d.description,
-            popup: `<div tabIndex={0}><strong><a href="/capital_projects/${d.gis_id}">${
-              d.display_name
-            }</a></strong><br/>
-    <span><i
-        class="bi ${iconDictionary[d.category]}"
-        style="font-size: .8rem; margin-right: 3px; color: rgb(64, 119, 165);"
-      ></i>${d.category}</span><br/>
-    <span>${
-      d.project_description ? d.project_description.replace(/\u00A0/g, " ") : ""
-    }</span></div>`,
-          })
-        );
-      })
-      .flat();
-  }
+    );
+  }, [selectedFilters]);
+  
 
   useEffect(() => {
     //when the data from the table updates, the map and budget data are updated
     setMapData(processUpdatedData(dataFromTable));
 
-    let formattedData = [];
-    for (let i = 0; i < dataFromTable.length; i++) {
-      formattedData.push(dataFromTable[i]);
-    }
-
     let fundingDetails = getFundsAllocatedAndExpended(
-      formattedData,
+      dataFromTable,
       actualCategories,
       props.location.query.mode
     );
@@ -133,71 +123,6 @@ function CIPMainDashboard(props) {
     setTotalSpent(fundingDetails[0]["Expended funds"]);
     setTotalUnderCon(fundingDetails[0]["Under contract"]);
   }, [dataFromTable]);
-
-
-
-  const handleMarkerClick = () => {
-    if (markerRef.current) {
-      markerRef.current.openPopup();
-
-      // Focus after popup has been rendered
-      setTimeout(() => {
-        popupDivRef.current?.focus();
-      }, 0);
-    }
-  };
-
-  const getSelectedFromURL = () => {
-    let url = window.location.href;
-    const params = new URLSearchParams(url.split("?")[1]);
-
-    let selected = {
-      categories: [],
-      types: [],
-    };
-
-    if (params.has("categories")) {
-      selected.categories =
-        params.get("categories") === ""
-          ? []
-          : params.get("categories").split(",");
-    } else {
-      selected.categories = props.sortedCategories;
-    }
-
-    if (params.has("types")) {
-      selected.types =
-        params.get("types") === "" ? [] : params.get("types").split(",");
-    } else {
-      selected.types = props.types;
-    }
-
-    return selected;
-  };
-
-  let [selected, setSelected] = useState(getSelectedFromURL());
-
-  useEffect(() => {
-    setSelected(getSelectedFromURL());
-  }, [location.search, props.data]);
-
-  // useEffect(() => {
-  //   setSelected(getSelectedFromURL());
-  // }, [props.data]);
-
-  useEffect(() => {
-    setUpdatedData(
-      filterProjects(
-        props.data,
-        selected.categories,
-        selected.types,
-        props.location.query.mode
-      )
-    );
-
-    setTypes(selected.types);
-    setCategories(selected.categories);
-  }, [selected]);
 
   function clearURLParams() {
     const baseUrl = location.pathname;
@@ -207,20 +132,7 @@ function CIPMainDashboard(props) {
   return (
     <div>
       <div className="row" style={{ marginBottom: "10px" }}>
-        <div className="col-sm-12">
-          {/* <Link
-            to={{
-              pathname: `/capital_projects/about`,
-              state: { previousPath: location.href },
-            }}
-          >
-            <i
-              class="bi bi-info-circle"
-              style={{ color: "rgb(64, 119, 165)", marginRight: "4px" }}
-            ></i>
-            Learn more about Capital Projects
-          </Link> */}
-        </div>
+        <div className="col-sm-12"></div>
       </div>
       <div className="row">
         <div className="col-sm-12">
@@ -234,10 +146,14 @@ function CIPMainDashboard(props) {
               height="100%"
               width="100%"
               zoom={12}
-              eventHandlers={{ click: handleMarkerClick }}
+              // eventHandlers={{ click: handleMarkerClick }}
             />
           </div>
-          <div tabIndex={0} aria-label="funding summary" className="funding-summary">
+          <div
+            tabIndex={0}
+            aria-label="funding summary"
+            className="funding-summary"
+          >
             <div className="col-sm-4 col-xs-4">
               <h2 tabIndex="-1">
                 <span className="label-text">
@@ -314,9 +230,9 @@ function CIPMainDashboard(props) {
                 <div className="col-md-6 col-xs-12">
                   <h4>Categories</h4>
                   <CPCheckboxes
-                    selected={selected.categories}
+                    selected={selectedFilters.categories}
                     location={props.location}
-                    filter_variable={props.sortedCategories}
+                    filter_variable={props.categories}
                     variableString={"categories"}
                   />
                 </div>
@@ -324,29 +240,28 @@ function CIPMainDashboard(props) {
                 <div className="col-md-6 col-xs-12">
                   <h4>Funding Types</h4>
                   <CPCheckboxes
-                    selected={selected.types}
+                    selected={selectedFilters.types}
                     location={props.location}
                     filter_variable={props.types}
                     variableString={"types"}
                   />
                 </div>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <Link 
-            to={{
-              pathname: `/capital_projects/about`,
-              state: { previousPath: location.href },
-            }}
-          >
-            <i
-              class="bi bi-info-circle"
-              style={{ color: "rgb(64, 119, 165)", marginRight: "4px" }}
-            ></i>
-            Learn more about Capital Projects and Funding
-          </Link>
-          </div>
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <Link
+                  to={{
+                    pathname: `/capital_projects/about`,
+                    state: { previousPath: location.href },
+                  }}
+                >
+                  <i
+                    className="bi bi-info-circle"
+                    style={{ color: "rgb(64, 119, 165)", marginRight: "4px" }}
+                  ></i>
+                  Learn more about Capital Projects and Funding
+                </Link>
+              </div>
             </div>
-            
           </div>
           {updatedData === undefined ? (
             <div
@@ -369,6 +284,77 @@ function CIPMainDashboard(props) {
       </div>
     </div>
   );
+
+  function getSelectedFromURL() {
+    let url = window.location.href;
+    const params = new URLSearchParams(url.split("?")[1]);
+
+    let selected = {
+      categories: [],
+      types: [],
+    };
+
+    if (params.has("categories")) {
+      selected.categories =
+        params.get("categories") === ""
+          ? []
+          : params.get("categories").split(",");
+    } else {
+      selected.categories = props.categories;
+    }
+
+    if (params.has("types")) {
+      selected.types =
+        params.get("types") === "" ? [] : params.get("types").split(",");
+    } else {
+      selected.types = props.types;
+    }
+
+    return selected;
+  }
+
+  function processUpdatedData(data) {
+    let formattedData = [];
+    for (let i = 0; i < data.length; i++) {
+      formattedData.push(data[i]);
+    }
+    return formattedData
+      .filter(
+        (d) =>
+          (Array.isArray(d.longitude) ? d.longitude.length > 0 : d.longitude) &&
+          (Array.isArray(d.latitude) ? d.latitude.length > 0 : d.latitude)
+      )
+      .map((d) => {
+        const coordinates =
+          Array.isArray(d.longitude) && Array.isArray(d.latitude)
+            ? d.longitude.map((lat, index) => ({
+                x: lat,
+                y: d.latitude[index],
+              }))
+            : [{ x: d.longitude, y: d.latitude }];
+
+        return coordinates.map((coord) =>
+          Object.assign({}, d, {
+            x: coord.x,
+            y: coord.y,
+            color: "#004987",
+            name: d.display_name,
+            description: d.description,
+            popup: `<div tabIndex={0}><strong><a href="/capital_projects/${
+              d.gis_id
+            }">${d.display_name}</a></strong><br/>
+    <span><i
+        className="bi ${iconDictionary[d.category]}"
+        style="font-size: .8rem; margin-right: 3px; color: rgb(64, 119, 165);"
+      ></i>${d.category}</span><br/>
+    <span>${
+      d.project_description ? d.project_description.replace(/\u00A0/g, " ") : ""
+    }</span></div>`,
+          })
+        );
+      })
+      .flat();
+  }
 }
 
 export default withLanguage(CIPMainDashboard);

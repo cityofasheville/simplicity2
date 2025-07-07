@@ -8,7 +8,7 @@ import { spanish } from './spanish';
 import { browserHistory } from 'react-router';
 
 
-const CIPFilter = (props) => {
+function CIPFilter (props){
 
   // set language
   let content;
@@ -21,7 +21,7 @@ const CIPFilter = (props) => {
   }
 
   function updateURL(url, values) {
-    let baseUrl = location.pathname;
+    const baseUrl = location.pathname;
     const params = new URLSearchParams(url.split('?')[1]);
     let serializedArray;
 

@@ -9,15 +9,13 @@ function AboutPage(props) {
   };
 
   let path;
-  let previous =
+  const previous =
     props.location?.state?.previousPath.split("/capital_projects")[1];
-  console.log("PREVIOUS", previous);
   if (previous) {
     path = "/capital_projects" + previous;
   } else {
     path = "/capital_projects";
   }
-  console.log("PATHNAME", path);
 
   useEffect(() => {
     window.scrollTo(0, 0);

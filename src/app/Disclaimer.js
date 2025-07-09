@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useEffect} from "react";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import "../styles/components/disclaimer.scss";
 import { useState } from "react";
 
 function Disclaimer({ onAccept }) {
-  const [isOpen, setIsOpen] = useState(true); // To control the modal visibility
+  const [isOpen, setIsOpen] = useState(true);
 
   const handleAccept = () => {
-    setIsOpen(false); // Close the modal when "Accept" is clicked
-    onAccept(); // Trigger the parent function (if necessary)
+    setIsOpen(false);
+    onAccept();
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <AlertDialog.Root open={isOpen} defaultOpen={true}>
@@ -17,7 +21,9 @@ function Disclaimer({ onAccept }) {
         <AlertDialog.Overlay className="AlertDialogOverlay" />
         <AlertDialog.Content
           className="AlertDialogContent"
-          style={{ overflowY: "auto", marginBottom: '10rem', transform: "translate(-50%, -55%)"}}
+          style={{ overflowY: "auto", 
+			maxHeight: "70vh"
+	}}
         >
           <AlertDialog.Title className="AlertDialogTitle">
             City of Asheville Geographic Information Systems (GIS) Disclaimer
@@ -54,3 +60,4 @@ function Disclaimer({ onAccept }) {
 }
 
 export default Disclaimer;
+

@@ -55,7 +55,7 @@ const CPCheckboxes = (props) => {
 
     updateNewValues(updatedSelection);
     updateURL(
-      location.href,
+      location.search,
       updatedSelection.filter((e) => e !== "All"),
       props.variableString
     );

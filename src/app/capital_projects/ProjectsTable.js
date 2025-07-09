@@ -619,7 +619,6 @@ function DebouncedInput({
 }
 
 function updateURL(url, filters, filterIds) {
-  // console.log("window", window.location)
   const baseUrl = location.pathname;
   const hash = location.hash;
   const params = new URLSearchParams(url.split("?")[1]);

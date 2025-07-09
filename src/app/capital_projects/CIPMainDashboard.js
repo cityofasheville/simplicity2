@@ -72,18 +72,6 @@ function CIPMainDashboard(props) {
       selected.categories = props.categories;
     }
 
-    // if (params.has("categories")) {
-    //   const rawCategories = params.get("categories");
-    //   selected.categories =
-    //     rawCategories === ""
-    //       ? []
-    //       : rawCategories
-    //           .split(",")
-    //           .filter((cat) => props.categories.includes(cat));
-    // } else {
-    //   selected.categories = props.categories;
-    // }
-
     if (params.has("types")) {
       const rawTypes = params.get("types");
       if (rawTypes === "") {
@@ -101,16 +89,6 @@ function CIPMainDashboard(props) {
     } else {
       selected.types = props.types;
     }
-
-    // if (params.has("types")) {
-    //   const rawTypes = params.get("types");
-    //   selected.types =
-    //     rawTypes === ""
-    //       ? []
-    //       : rawTypes.split(",").filter((type) => props.types.includes(type));
-    // } else {
-    //   selected.types = props.types;
-    // }
 
     const newParams = new URLSearchParams(location.search);
 

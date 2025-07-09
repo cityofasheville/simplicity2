@@ -620,7 +620,6 @@ function DebouncedInput({
 
 function updateURL(url, filters, filterIds) {
   const baseUrl = location.pathname;
-  const hash = location.hash;
   const params = new URLSearchParams(url.split("?")[1]);
   const filterMap = Object.fromEntries(filters.map((f) => [f.id, f.value]));
   for (let id of filterIds) {

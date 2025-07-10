@@ -51,7 +51,7 @@ function CIPFilter (props){
     } else if (!checkedValues.includes('All') && visibleSelection.includes('All')) {
       newValues = [];
     } 
-    updateURL(location.href, newValues.filter(e => e !== 'All'))
+    updateURL(location.search, newValues.filter(e => e !== 'All'))
   };
   
   const getVisibleSelection = () => {

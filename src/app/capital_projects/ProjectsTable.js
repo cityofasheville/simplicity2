@@ -54,7 +54,7 @@ function ProjectsTable(props) {
       const zip = initialFilters[zipFilterIndex].value.trim();
       if (!props.uniqueZipCodes.includes(zip)) {
         updateURL(
-          location.href,
+          location.search,
           [
             {
               id: "zip_code",
@@ -72,7 +72,7 @@ function ProjectsTable(props) {
 
       if (isNaN(size) || !rowOptions.includes(size)) {
         updateURL(
-          location.href,
+          location.search,
           [
             {
               id: "size",
@@ -91,7 +91,7 @@ function ProjectsTable(props) {
       const status = initialFilters[statusFilterIndex].value.trim();
       if (!props.uniqueZipCodes.includes(status)) {
         updateURL(
-          location.href,
+          location.search,
           [
             {
               id: "status",
@@ -109,7 +109,7 @@ function ProjectsTable(props) {
       const sort = initialFilters[sortIndex].value.trim();
       if (!columnIds.includes(sort)) {
         const baseUrl = location.pathname;
-        const params = new URLSearchParams(location.href.split("?")[1]);
+        const params = new URLSearchParams(location.search.split("?")[1]);
         params.delete("sort_column");
         params.delete("sort_order");
         const updatedURL = `${baseUrl}?${params.toString()}`;
@@ -157,7 +157,7 @@ function ProjectsTable(props) {
     } else {
       // if anything besides the page number changes, set page number to 1
       updateURL(
-        location.href,
+        location.search,
         [
           {
             id: "page",
@@ -208,7 +208,7 @@ function ProjectsTable(props) {
       "encumbered",
       "spent",
     ];
-    updateURL(location.href, columnFilters, allFilterIDs);
+    updateURL(location.search, columnFilters, allFilterIDs);
   }, [columnFilters]);
 
   const table = useReactTable({
@@ -235,24 +235,24 @@ function ProjectsTable(props) {
         const sortDirection = desc ? "desc" : "asc";
 
         updateURL(
-          location.href,
+          location.search,
           [{ id: "sort_column", value: id }],
           ["sort_column"]
         );
         updateURL(
-          location.href,
+          location.search,
           [{ id: "sort_order", value: sortDirection }],
           ["sort_order"]
         );
       } else {
         // Sorting is cleared (default)
         updateURL(
-          location.href,
+          location.search,
           [{ id: "sort_column", value: "" }],
           ["sort_column"]
         );
         updateURL(
-          location.href,
+          location.search,
           [{ id: "sort_order", value: "default" }],
           ["sort_order"]
         );
@@ -297,7 +297,7 @@ function ProjectsTable(props) {
                 <div
                   style={{
                     ...(width <= 768
-                      ? { maxHeight: "30rem", overflow: "auto" }
+                      ? {overflow: "auto" }
                       : { overflow: "visible" }),
                   }}
                 >
@@ -445,7 +445,7 @@ function ProjectsTable(props) {
                       onClick={() => {
                         setInputValue(parseInt(inputValue) - 1);
                         updateURL(
-                          location.href,
+                          location.search,
                           [
                             {
                               id: "page",
@@ -483,7 +483,7 @@ function ProjectsTable(props) {
                                 pageNum <= table.getPageCount()
                               ) {
                                 updateURL(
-                                  location.href,
+                                  location.search,
                                   [
                                     {
                                       id: "page",
@@ -509,7 +509,7 @@ function ProjectsTable(props) {
                         value={table.getState().pagination.pageSize}
                         onChange={(e) => {
                           updateURL(
-                            location.href,
+                            location.search,
                             [
                               {
                                 id: "size",
@@ -519,7 +519,7 @@ function ProjectsTable(props) {
                             ["size"]
                           );
                           updateURL(
-                            location.href,
+                            location.search,
                             [
                               {
                                 id: "page",
@@ -546,7 +546,7 @@ function ProjectsTable(props) {
                       onClick={() => {
                         setInputValue(parseInt(inputValue) + 1);
                         updateURL(
-                          location.href,
+                          location.search,
                           [
                             {
                               id: "page",
@@ -631,7 +631,7 @@ function updateURL(url, filters, filterIds) {
       params.set(id, value);
     }
   }
-  const updatedURL = `${baseUrl}?${params.toString()}`;
+  const updatedURL = `${baseUrl}?${params.toString()}${location.hash}`;
   browserHistory.replace(updatedURL);
 }
 

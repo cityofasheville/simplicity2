@@ -44,11 +44,11 @@ function CIPMainDashboard(props) {
   zipSet.delete("Citywide");
   const sortedZips = [...zipSet].sort();
   const uniqueZipCodes = ["All", "Citywide", ...sortedZips];
-  const actualCategories = props.categories;  
+  const actualCategories = props.categories;
 
   useEffect(() => {
     const baseUrl = location.pathname;
-    const params = new URLSearchParams(location.href.split("?")[1]);
+    const params = new URLSearchParams(location.search.split("?")[1]);
     let selected = {
       categories: [],
       types: [],
@@ -56,22 +56,36 @@ function CIPMainDashboard(props) {
 
     if (params.has("categories")) {
       const rawCategories = params.get("categories");
-      selected.categories =
-        rawCategories === ""
-          ? []
-          : rawCategories
-              .split(",")
-              .filter((cat) => props.categories.includes(cat));
+      if (rawCategories === "") {
+        selected.categories = [];
+      } else {
+        let cats = rawCategories
+          .split(",")
+          .filter((cat) => props.categories.includes(cat));
+        if (cats == "") {
+          selected.categories = props.categories;
+        } else {
+          selected.categories = cats;
+        }
+      }
     } else {
       selected.categories = props.categories;
     }
 
     if (params.has("types")) {
       const rawTypes = params.get("types");
-      selected.types =
-        rawTypes === ""
-          ? []
-          : rawTypes.split(",").filter((type) => props.types.includes(type));
+      if (rawTypes === "") {
+        selected.types = [];
+      } else {
+        let types = rawTypes
+          .split(",")
+          .filter((type) => props.types.includes(type));
+        if (types == "") {
+          selected.types = props.types;
+        } else {
+          selected.types = types;
+        }
+      }
     } else {
       selected.types = props.types;
     }
@@ -89,15 +103,13 @@ function CIPMainDashboard(props) {
       newParams.set("types", selected.types.join(","));
     }
 
-    const updatedURL = `${baseUrl}?${newParams.toString()}`;
+    const updatedURL = `${baseUrl}?${newParams.toString()}${location.hash}`;
     browserHistory.replace(updatedURL);
   }, [location.search]);
-
 
   useEffect(() => {
     setSelectedFilters(getSelectedFromURL());
   }, [location.search, props.data]);
-
 
   useEffect(() => {
     setUpdatedData(
@@ -108,7 +120,6 @@ function CIPMainDashboard(props) {
       )
     );
   }, [selectedFilters]);
-  
 
   useEffect(() => {
     //when the data from the table updates, the map and budget data are updated
@@ -286,7 +297,7 @@ function CIPMainDashboard(props) {
   );
 
   function getSelectedFromURL() {
-    let url = window.location.href;
+    let url = window.location.search;
     const params = new URLSearchParams(url.split("?")[1]);
 
     let selected = {

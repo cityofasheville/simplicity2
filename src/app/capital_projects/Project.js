@@ -17,8 +17,8 @@ import { CIPTextReplacements } from "./CIPTextReplacements";
 
 
 const GET_PROJECTS = gql`
-  query cip_projects($categories: [String]) {
-    cip_projects(categories: $categories) {
+  query cip_projects($categories: [String], $ids: [String]) {
+    cip_projects(categories: $categories, ids: $ids) {
       gis_id
       project
       display_name
@@ -59,8 +59,9 @@ function Project(props) {
     <Query
       query={GET_PROJECTS}
       variables={{
-        categories: props.categories,
-        types: props.types,
+        ids: [props.routeParams.id]
+        // categories: props.categories,
+        // types: props.types,
       }}
     >
       {({ loading, error, data }) => {

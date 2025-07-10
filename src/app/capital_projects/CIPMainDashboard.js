@@ -103,7 +103,7 @@ function CIPMainDashboard(props) {
       newParams.set("types", selected.types.join(","));
     }
 
-    const updatedURL = `${baseUrl}?${newParams.toString()}`;
+    const updatedURL = `${baseUrl}?${newParams.toString()}${location.hash}`;
     browserHistory.replace(updatedURL);
   }, [location.search]);
 

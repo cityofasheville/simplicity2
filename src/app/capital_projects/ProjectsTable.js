@@ -631,7 +631,7 @@ function updateURL(url, filters, filterIds) {
       params.set(id, value);
     }
   }
-  const updatedURL = `${baseUrl}?${params.toString()}`;
+  const updatedURL = `${baseUrl}?${params.toString()}${location.hash}`;
   browserHistory.replace(updatedURL);
 }
 

@@ -22,7 +22,7 @@ const CPCheckboxes = (props) => {
       params.set("types", serializedArray);
     }
 
-    const updatedURL = `${baseUrl}?${params.toString()}`;
+    const updatedURL = `${baseUrl}?${params.toString()}${location.hash}`;
     browserHistory.replace(updatedURL);
   }
 

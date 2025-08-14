@@ -29,11 +29,16 @@ export const permitFieldFormats = [
     displayGroup: 'environment details',
     displayLabel: null,
     formatFunc: (d) => {
-      let text = 'Floodplain located on this property';
-      if (d[0] === 'X') {
-        return null;
-      } else if (d === 'Floodway') {
+      // console.log('FP: ',d);
+      let text; 
+      if (d.trim().toLowerCase() === 'yes') {
+        text = 'Floodplain located on this property';
+        // return null;
+      } else if (d.trim().toLowerCase() === 'floodway') {
         text = 'Floodway and floodplain located on this property';
+      }
+      else {
+        return null
       }
       // If it isn't no
       return (

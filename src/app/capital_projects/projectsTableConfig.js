@@ -8,7 +8,7 @@ export const columns = [
         id: "name",
         header: (header) => (
           <div
-            aria-label="sort by amount spent"
+            aria-label="sort by name"
             style={{
               display: "flex",
               justifyContent: "space-between",
@@ -69,7 +69,7 @@ export const columns = [
         id: "status",
         header: (header) => (
           <div
-            aria-label="sort by amount spent"
+            aria-label="sort by amount status"
             style={{
               display: "flex",
               justifyContent: "space-between",
@@ -111,7 +111,7 @@ export const columns = [
         id: "zip_code",
         header: (header) => (
           <div
-            aria-label="sort by amount spent"
+            aria-label="sort by zip code"
             style={{
               display: "flex",
               justifyContent: "space-between",
@@ -148,7 +148,7 @@ export const columns = [
         // id: 'budget',
         header: (header) => (
           <div
-            aria-label="sort by amount spent"
+            aria-label="sort by amount budgeted"
             style={{
               display: "flex",
               justifyContent: "space-between",
@@ -201,7 +201,7 @@ export const columns = [
         id: "encumbered",
         header: (header) => (
           <div
-            aria-label="sort by amount spent"
+            aria-label="sort by amount committed"
             style={{
               display: "flex",
               justifyContent: "space-between",

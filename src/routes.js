@@ -83,7 +83,7 @@ let logPageView = () => {
 };
 
 if (window.location.href.indexOf("dashboards.ashevillenc.gov") > -1) {
-  ReactGA.initialize("G-91G5QF0KSC");
+  ReactGA.initialize("G-HXJE68WHRD");
 } else if (window.location.href.indexOf("simplicity.ashevillenc.gov") > -1) {
   ReactGA.initialize("G-HXJE68WHRD");
 } else {

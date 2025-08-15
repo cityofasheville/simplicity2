@@ -69,7 +69,7 @@ export const columns = [
         id: "status",
         header: (header) => (
           <div
-            aria-label="sort by amount status"
+            aria-label="sort by status"
             style={{
               display: "flex",
               justifyContent: "space-between",

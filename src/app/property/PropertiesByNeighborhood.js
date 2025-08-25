@@ -205,9 +205,7 @@ const PropertiesByNeighborhoodGQL = graphql(getPropertiesByNeighborhoodQuery, {
   options: ownProps => ({
     variables: {
       nbrhd_ids: [ownProps.location.query.id.trim()],
-    },
-    fetchPolicy: 'no-cache', 
-
+    }
   }),
 })(PropertiesByNeighborhood);
 

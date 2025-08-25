@@ -12,6 +12,7 @@ import Error from '../../shared/Error';
 import expandingRows from '../../shared/react_table_hoc/ExpandingRows';
 import createFilterRenderer from '../../shared/FilterRenderer';
 
+
 const FilterRenderer = createFilterRenderer('Search...');
 
 const dataColumns = [
@@ -131,36 +132,40 @@ PropertiesByNeighborhood.defaultProps = {
   query: { entity: 'address', label: '123 Main street' },
 };
 
+
+
+
+
 const getPropertiesByNeighborhoodQuery = gql`
   query getPropertiesByNeighborhoodQuery($nbrhd_ids: [String]) {
     properties_by_neighborhood (nbrhd_ids: $nbrhd_ids) {
       civic_address_ids
+      acreage
+      tax_exempt
+      building_value
+      property_card_link
+      deed_link
+      appraisal_area
+      owner_address
+      owner
+      market_value
+      tax_value
+      plat_link
+      appraised_value
+      land_value
+      zoning
+      appraisal_area
+      is_in_city
       property_civic_address_id
       pinnum
       address
       property_address
-      city
-      property_city
-      is_in_city
       zipcode
       property_zipcode
-      tax_exempt
       neighborhood
       appraisal_area
-      acreage
-      zoning
-      deed_link
-      property_card_link
-      plat_link
       latitude
       longitude
-      building_value
-      land_value
-      appraised_value
-      tax_value
-      market_value
-      owner
-      owner_address
       polygons {
         outer {
           points {
@@ -201,6 +206,8 @@ const PropertiesByNeighborhoodGQL = graphql(getPropertiesByNeighborhoodQuery, {
     variables: {
       nbrhd_ids: [ownProps.location.query.id.trim()],
     },
+    fetchPolicy: 'no-cache', 
+
   }),
 })(PropertiesByNeighborhood);
 

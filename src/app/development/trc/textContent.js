@@ -106,7 +106,7 @@ export const devDashSections = [
       <ul className="paragraphy-list">
         <li>
           <h3>Neighborhood meetings</h3>
-          <p>Developers planning to submit applications for development that must go through the Technical Review Committee (including projects of types Level II, Major Subdivision, Conditional Zoning, and Conditional Use Permit) must hold a public meeting before submitting the application.</p>
+          <p>Developers planning to submit applications for development that must go through the Technical Review Committee (including projects of types Level II, Major Subdivision, Conditional Zoning, and Special Use Permit) must hold a public meeting before submitting the application.</p>
           <p>Currently, developers are not required by law to notify the City of Asheville when those meetings take place.  Thus, the first record the city has of a proposed development is when the application is submitted, after the meeting.</p>
           <p>However, in order to help ensure that residents can find out about developer-neighborhood meetings in advance, the city has asked developers to voluntarily notify the city.  After those developers fill out an online form, those meeting dates are automatically added to <a target="_blank" rel="noopener noreferrer" href="https://calendar.google.com/calendar/embed?src=ashevillenc.gov_gk5l650n9mopts9m7sfemhcpd8%40group.calendar.google.com&ctz=America%2FNew_York">a calendar that shows all developer-neighborhood meetings about which the city has been notified</a>.</p>
         </li>
@@ -117,7 +117,7 @@ export const devDashSections = [
         </li>
         <li>
           <h3>Council meetings</h3>
-          <p>Projects of types Conditional Zoning and Conditional Use Permit are reveiwed in a public hearing before City Council.  Community members may speak as individuals for three minutes or on behalf of organizations for ten minutes (if three other people cede their speaking time) at a council meeting.</p>
+          <p>Projects of types Conditional Zoning and Special Use Permit are reveiwed in a public hearing before City Council.  Community members may speak as individuals for three minutes or on behalf of organizations for ten minutes (if three other people cede their speaking time) at a council meeting.</p>
           <p>Information about City Council as well as minutes and agendas for upcoming and past council meetings can be found on <a href="https://www.ashevillenc.gov/government/" rel="noopener noreferrer" target="_blank">the City of Asheville website</a>.</p>
         </li>
       </ul>
@@ -208,7 +208,7 @@ trcProjectTypes['Level I'] = {
   short: 'I',
   descriptors: {
     whyLevel: (<ul>
-      <li>Not located downtown and contains 3 to 19 residential units or 500 to 34,999 square feet of commercial space</li>
+      <li>Not located downtown and contains 5 to 19 residential units or 500 to 34,999 square feet of commercial space</li>
       <li>Located downtown and is 500 to 19,999 square feet</li>
     </ul>),
     participationOpp: 'There are no public participation opportunities for Level I projects.',
@@ -252,10 +252,12 @@ trcProjectTypes['Level II'] = {
   permit_subtype: 'Level II',
   short: 'II',
   descriptors: {
-    whyLevel: (<ul>
-      <li>Not located downtown and contains 20 to 49 residential units or is 35,000 to 99,999 square feet</li>
-      <li>Located downtown and is 20,000 to 99,999 square feet</li>
-    </ul>),
+    whyLevel: (
+      <ul>
+        <li>Generally, residential developments between 19-49 unit or commerical developments between 35,000 and 99,999 square feet</li>
+        <li>Incentives for affordable housing change the review level for certain projects that may lie outside of these thresholds</li>
+        <li><a href="https:codelibrary.amlegal.com/codes/ashevillenc/latest/asheville_nc/0-0-4236">Section 7-5-9 of the UDO</a> has more information on Level II thresholds and incentives</li>
+      </ul>),
     participationOpp: (
       <ul>
         <li>Downtown:
@@ -268,9 +270,9 @@ trcProjectTypes['Level II'] = {
       </ul>
     ),
     examples: (<ul>
+      <li>A 45-unit residential development</li>
       <li>A new grocery store</li>
       <li>A big box specialty retailer</li>
-      <li>A medium-sized apartment complex</li>
     </ul>),
     recentAppsLink: <a href="/development/major?permit_type=level%20II%20#data">Recently submitted Level II projects</a>,
   },
@@ -284,11 +286,10 @@ trcProjectTypes['Conditional Zoning'] = {
   short: 'CZ',
   descriptors: {
     whyLevel: (<ul>
-      <li>Requires a change in zoning</li>
-      <li>50 or more residential units</li>
-      <li>99,999 square feet or larger</li>
-      <li>Includes all projects previously designated as Level III</li>
-    </ul>),
+      <li>The development will have a significant impact upon public services and infrastructure</li>
+      <li>Approval requires a rezoning to one of the expansion zoning districts found in Article VIII of the UDO</li>
+      <li>Exact thresholds for Conditional Zoning are defined by <a href="https:codelibrary.amlegal.com/codes/ashevillenc/latest/asheville_nc/0-0-0-4236">Section 7-5-9 of the UDO</a></li>
+    </ul> ),
     participationOpp: (
       <ul>
         <li><a href="/development/major#participate">Neighborhood meeting</a></li>
@@ -298,20 +299,20 @@ trcProjectTypes['Conditional Zoning'] = {
         <li><a href="https://ashevillenc.gov/government" target="_blank" rel="noopener noreferrer">City Council</a> hearing</li>
       </ul>),
     examples: (<ul>
-      <li>A large apartment complex</li>
-      <li>A large office building</li>
-      <li>A large department store</li>
+      <li>250-unite apartment complex</li>
+      <li>Corporate or industrial campus</li>
+      <li>Mixed use development with large retail stores</li>
     </ul>),
     recentAppsLink: <a href="/development/major?permit_type=Conditional%20Zoning#data">Recently submitted Conditional Zoning projects</a>,
   },
   color: '#9B6681',
 };
-trcProjectTypes['Conditional Use Permit'] = {
-  id: 'Conditional Use Permit',
+trcProjectTypes['Special Use Permit'] = {
+  id: 'Special Use Permit',
   permit_group: 'Planning',
   permit_type: 'Development',
-  permit_subtype: 'Conditional Use',
-  short: 'CUP',
+  permit_subtype: 'Special Use',
+  short: 'SUP',
   descriptors: {
     whyLevel: <React.Fragment>This is highly specialized permit process for land uses with potential public impacts that require individual consideration of their location, design, configuration and operation.  These uses are defined by <a href="https://codelibrary.amlegal.com/codes/ashevillenc/latest/asheville_nc/0-0-0-9513#JD_7-16-2" target="_blank" rel="noopener noreferrer">Section 7-16-2 of the Unified Development Ordinance</a>.</React.Fragment>,
     participationOpp: (
@@ -320,7 +321,6 @@ trcProjectTypes['Conditional Use Permit'] = {
         <li>Design review (if downtown or on the river)</li>
         <li><a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/historic-resources-commission/" target="_blank" rel="noopener noreferrer">Historic Resources Commission meeting</a> (if in <a href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/historic-district-guidelines/" target="_blank" rel="noopener noreferrer">a historic district</a> or concerning a <a href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/landmarks/" target="_blank" rel="noopener noreferrer">historic landmark</a>)</li>
         <li><a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/planning-and-zoning-commission/" target="_blank" rel="noopener noreferrer">Planning and Zoning Commission</a></li>
-        <li><a href="https://ashevillenc.gov/government" target="_blank" rel="noopener noreferrer">City Council</a> hearing</li>
       </ul>
     ),
     examples: (<ul>
@@ -329,7 +329,7 @@ trcProjectTypes['Conditional Use Permit'] = {
       <li>Government buildings</li>
       <li>Group homes</li>
     </ul>),
-    recentAppsLink: <a href="/development/major?permit_type=conditional%20use%20#data">Recently submitted Conditional Use projects</a>,
+    recentAppsLink:(<div><span>Note: Special Use Permits are temporarily listed as "Conditional Use" within the data. </span> <a href="/development/major?permit_type=conditional%20use#data">Recently submitted Special Use Permits</a></div>),
   },
   color: '#073d49',
 };
@@ -400,7 +400,7 @@ export const dagreNodes = [
       'Level II',
       'Major Subdivision',
       'Conditional Zoning',
-      'Conditional Use Permit',
+      'Special Use Permit',
     ],
   },
   {
@@ -416,7 +416,7 @@ export const dagreNodes = [
       'Level II',
       'Major Subdivision',
       'Conditional Zoning',
-      'Conditional Use Permit',
+      'Special Use Permit',
     ],
   },
   {
@@ -451,7 +451,7 @@ export const dagreNodes = [
       'Level II',
       'Major Subdivision',
       'Conditional Zoning',
-      'Conditional Use Permit',
+      'Special Use Permit',
     ],
   },
   {
@@ -483,7 +483,7 @@ export const dagreNodes = [
       'Level II',
       'Major Subdivision',
       'Conditional Zoning',
-      'Conditional Use Permit',
+      'Special Use Permit',
     ],
   },
   {
@@ -497,7 +497,7 @@ export const dagreNodes = [
   {
     id: 'Planning and Zoning Commission',
     steps: {
-      what: <React.Fragment>For  Conditional Zoning, Conditional Use, and Level III projects, the <a href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/planning-and-zoning-commission/" target="_blank" rel="noopener noreferrer">Planning and Zoning Commission</a> holds a public hearing and makes a recommendation for action to City Council.  For downtown Level II projects, the Planning and Zoning Commission verifies technical compliance with the requirements of applicable ordinances and documents and takes final action.</React.Fragment>,
+      what: <React.Fragment>For  Conditional Zoning, Special Use, and Level III projects, the <a href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/planning-and-zoning-commission/" target="_blank" rel="noopener noreferrer">Planning and Zoning Commission</a> holds a public hearing and makes a recommendation for action to City Council.  For downtown Level II projects, the Planning and Zoning Commission verifies technical compliance with the requirements of applicable ordinances and documents and takes final action.</React.Fragment>,
       who: ['dev', 'staff', 'neighbors', 'council'],
       when: (<React.Fragment>Per <a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/planning-and-zoning-commission/">published schedule</a></React.Fragment>),
       where: <a href="https://goo.gl/maps/7GkCkb1pPjRaXbAc7" target="_blank" rel="noopener noreferrer">City Hall</a>,
@@ -505,7 +505,7 @@ export const dagreNodes = [
     typeIds: [
       'Level II',
       'Conditional Zoning',
-      'Conditional Use Permit',
+      'Special Use Permit',
     ],
   },
   {
@@ -526,7 +526,6 @@ export const dagreNodes = [
     },
     typeIds: [
       'Conditional Zoning',
-      'Conditional Use Permit',
     ],
   },
   {
@@ -534,7 +533,6 @@ export const dagreNodes = [
     decisionNode: true,
     typeIds: [
       'Conditional Zoning',
-      'Conditional Use Permit',
     ],
     maxWidth: decisionNodeMaxWidth,
   },
@@ -548,7 +546,7 @@ export const dagreLinks = [
       { id: 'Major Subdivision' },
       { id: 'Level II' },
       { id: 'Conditional Zoning' },
-      { id: 'Conditional Use Permit' },
+      { id: 'Special Use Permit' },
     ],
   },
   {
@@ -565,7 +563,7 @@ export const dagreLinks = [
       { id: 'Major Subdivision' },
       { id: 'Level II' },
       { id: 'Conditional Zoning' },
-      { id: 'Conditional Use Permit' },
+      { id: 'Special Use Permit' },
     ],
   },
   {
@@ -587,7 +585,7 @@ export const dagreLinks = [
     parallelEdges: [
       { id: 'Level II' },
       { id: 'Conditional Zoning' },
-      { id: 'Conditional Use Permit' },
+      { id: 'Special Use Permit' },
     ],
   },
   {
@@ -604,7 +602,7 @@ export const dagreLinks = [
       { id: 'Level II' },
       { id: 'Major Subdivision' },
       { id: 'Conditional Zoning' },
-      { id: 'Conditional Use Permit' },
+      { id: 'Special Use Permit' },
     ],
   },
   {
@@ -619,7 +617,6 @@ export const dagreLinks = [
     target: 'City Council',
     parallelEdges: [
       { id: 'Conditional Zoning' },
-      { id: 'Conditional Use Permit' },
     ],
   },
   {
@@ -627,7 +624,6 @@ export const dagreLinks = [
     target: 'City Council decision',
     parallelEdges: [
       { id: 'Conditional Zoning' },
-      { id: 'Conditional Use Permit' },
     ],
   },
 ];

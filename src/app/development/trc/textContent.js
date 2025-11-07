@@ -257,17 +257,7 @@ trcProjectTypes['Level II'] = {
         <li>Generally, residential developments between 19-49 unit or commerical developments between 35,000 and 99,999 square feet</li>
         <li>Incentives for affordable housing change the review level for certain projects that may lie outside of these thresholds</li>
         <li><a href="https:codelibrary.amlegal.com/codes/ashevillenc/latest/asheville_nc/0-0-4236">Section 7-5-9 of the UDO</a> has more information on Level II thresholds and incentives</li>
-      </ul>
-    // <p>This is the by-right review process for land uses compatible with underlying zoning 
-    //   districts. The thresholds for level II projects are generally understood to be residential developments 
-    //   between 19-49 units or between 35,000 and 99,999 square feet of commerical area. However, there are incentives 
-    //   for affordable housing that change the review level for certain projects. These incentivers and level II review 
-    //   thresholds are defined by <a href="https:codelibrary.amlegal.com/codes/ashevillenc/latest/asheville_nc/0-0-4236">Section 7-5-9 of the UDO.</a></p>
-      ),
-    // whyLevel: (<ul>
-    //   <li>Not located downtown and contains 20 to 49 residential units or is 35,000 to 99,999 square feet</li>
-    //   <li>Located downtown and is 20,000 to 99,999 square feet</li>
-    // </ul>),
+      </ul>),
     participationOpp: (
       <ul>
         <li>Downtown:
@@ -300,11 +290,6 @@ trcProjectTypes['Conditional Zoning'] = {
       <li>Approval requires a rezoning to one of the expansion zoning districts found in Article VIII of the UDO</li>
       <li>Exact thresholds for Conditional Zoning are defined by <a href="https:codelibrary.amlegal.com/codes/ashevillenc/latest/asheville_nc/0-0-0-4236">Section 7-5-9 of the UDO</a></li>
     </ul> ),
-      // <p>Due to their size and level of activity, Level III Developments are expected to have a significant 
-      //   impact upon public services and infrastructure and need to be managed for the benefit of the 
-      //   neighborhood or city as a whole. Approval for a Level II develoment requires a rezoning to one of the 
-      //   expansion zoning districts found in Article VIII of this chapter and must comply with the specific conditions
-      //   of that expansion district along with the development standards in the Unified Development Ordinance (UDO)</p>),
     participationOpp: (
       <ul>
         <li><a href="/development/major#participate">Neighborhood meeting</a></li>

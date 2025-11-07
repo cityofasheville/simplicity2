@@ -254,9 +254,9 @@ trcProjectTypes['Level II'] = {
   descriptors: {
     whyLevel: (
       <ul>
-        <li>Generally, residential developments between 19-49 unit or between 35,000 and 99,999 square feet of commerical use</li>
+        <li>Generally, residential developments between 19-49 unit or commerical developments between 35,000 and 99,999 square feet</li>
         <li>Incentives for affordable housing change the review level for certain projects that may lie outside of these thresholds</li>
-        <li>For more information on thresholds and incentives, check out <a href="https:codelibrary.amlegal.com/codes/ashevillenc/latest/asheville_nc/0-0-4236">Section 7-5-9 of the UDO</a></li>
+        <li><a href="https:codelibrary.amlegal.com/codes/ashevillenc/latest/asheville_nc/0-0-4236">Section 7-5-9 of the UDO</a> has more information on Level II thresholds and incentives</li>
       </ul>
     // <p>This is the by-right review process for land uses compatible with underlying zoning 
     //   districts. The thresholds for level II projects are generally understood to be residential developments 
@@ -296,9 +296,9 @@ trcProjectTypes['Conditional Zoning'] = {
   short: 'CZ',
   descriptors: {
     whyLevel: (<ul>
-      <li>Will have a significant impact upon public services and infrastructure</li>
+      <li>The development will have a significant impact upon public services and infrastructure</li>
       <li>Approval requires a rezoning to one of the expansion zoning districts found in Article VIII of the UDO</li>
-      <li>Exact thresholds are defined by <a href="https:codelibrary.amlegal.com/codes/ashevillenc/latest/asheville_nc/0-0-0-4236">Section 7-5-9 of the UDO</a></li>
+      <li>Exact thresholds for Conditional Zoning are defined by <a href="https:codelibrary.amlegal.com/codes/ashevillenc/latest/asheville_nc/0-0-0-4236">Section 7-5-9 of the UDO</a></li>
     </ul> ),
       // <p>Due to their size and level of activity, Level III Developments are expected to have a significant 
       //   impact upon public services and infrastructure and need to be managed for the benefit of the 
@@ -344,7 +344,7 @@ trcProjectTypes['Special Use Permit'] = {
       <li>Government buildings</li>
       <li>Group homes</li>
     </ul>),
-    recentAppsLink:(<div><span>Note: Special Use Permits are temporarily listed as "Conditional Use" within the data. </span> <a href="/development/major?permit_type=conditional%20use#data">Recently submitted Special Use projects</a></div>),
+    recentAppsLink:(<div><span>Note: Special Use Permits are temporarily listed as "Conditional Use" within the data. </span> <a href="/development/major?permit_type=conditional%20use#data">Recently submitted Special Use Permits</a></div>),
   },
   color: '#073d49',
 };

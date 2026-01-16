@@ -115,23 +115,23 @@ const TopicCard = props => {
 
   return (
 
-    <div className="topicCard p-1 flex flex-col items-stretch min-h-full">
+    <div className="topicCard bg-gray-lightest p-1 flex flex-col items-stretch min-h-full">
       <Link
-        className="topic-card m-0 p-0"
+        className="topic-card text-lg text-coa-medBlue m-0 p-0"
         to={{
           pathname: props.path || props.topic,
           query,
         }}
         target={target}
       >
-        <div className="h4 text-primary text-center mb-4 p-0">
+        <div className="text-primary text-center mb-4 p-0">
           {topics[0].replace(/_/g, ' ')}
         </div>
 
 
       </Link>
-      <div className="text-primary text-center mb-4" >{getTopicIcon(props.topic)}</div>
-      <div className="text-primary text-center mb-4" >
+      <div className="text-coa-medBlue text-center mb-4" >{getTopicIcon(props.topic)}</div>
+      <div className="text-coa-medBlue text-center mb-4" >
         {topics[1].replace(/_/g, ' ')}
       </div>
 

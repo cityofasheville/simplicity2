@@ -19,6 +19,7 @@ module.exports = {
             dark: '#222222',
             light: '#b4bcc2',
             lighter: '#ecf0f1',
+            lightest: '#0000002e'
           },
   
           brand: {

@@ -1,24 +1,23 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { graphql, compose, withApollo } from "react-apollo";
-import { updateUser } from "../utilities/auth/graphql/authMutations";
-import { getUser } from "../utilities/auth/graphql/authQueries";
-import Navbar from "./Navbar";
-import EnvBanner from "./EnvBanner";
-import Banner from "./Banner";
-import Footer from "./Footer";
-import ErrorBoundary from "../shared/ErrorBoundary";
-import CityInfoBar from "./CityInfoBar";
-import { defaultAuthState } from "../utilities/auth/graphql/authDefaultState";
-import LanguageProvider from "../utilities/lang/LanguageContext";
-import Disclaimer from "./Disclaimer";
-
+import React from 'react';
+import PropTypes from 'prop-types';
+import { graphql, compose, withApollo } from 'react-apollo';
+import { updateUser } from '../utilities/auth/graphql/authMutations';
+import { getUser } from '../utilities/auth/graphql/authQueries';
+import Navbar from './Navbar';
+import EnvBanner from './EnvBanner';
+import Banner from './Banner';
+import Footer from './Footer';
+import ErrorBoundary from '../shared/ErrorBoundary';
+import CityInfoBar from './CityInfoBar';
+import { defaultAuthState } from '../utilities/auth/graphql/authDefaultState';
+import LanguageProvider from '../utilities/lang/LanguageContext';
+import Disclaimer from './Disclaimer';
 
 const displayNavbar = (hideNavbar) => {
-  if (hideNavbar || window.location.pathname === "/mini_search") {
+  if (hideNavbar || window.location.pathname === '/mini_search') {
     return null;
   }
-  if (window.location.href.indexOf("dashboards.ashevillenc.gov") < 0) {
+  if (window.location.href.indexOf('dashboards.ashevillenc.gov') < 0) {
     return <Navbar />; // / Navbar is SimpliCity
   }
   // CityInfoBar is dashboards
@@ -60,28 +59,24 @@ class Main extends React.Component {
 
   //
 
-
   render() {
     const { disclaimerAccepted } = this.state;
 
     return (
       <>
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"></link>    
-      <div
-        className={
-          this.props.location.query.hideNavbar
-            ? "app-parent hidden-navbar"
-            : "app-parent"
-        }
-      >  
-        <LanguageProvider>
-          <a href="#content" className="skip-nav-link">
-            Skip to Main Content
-          </a>
-          {displayNavbar(this.props.location.query.hideNavbar)}
-          <div className="container" id="content">
-            <EnvBanner />
-            {/* <Banner color="orange" path="*">
+        <div
+          className={
+            this.props.location.query.hideNavbar ? 'app-parent hidden-navbar' : 'app-parent'
+          }
+        >
+          <LanguageProvider>
+            <a href="#content" className="skip-nav-link">
+              Skip to Main Content
+            </a>
+            {displayNavbar(this.props.location.query.hideNavbar)}
+            <div className="container" id="content">
+              <EnvBanner />
+              {/* <Banner color="orange" path="*">
               <>
                 <p style={{fontWeight: '500', fontSize: '1.25rem', textAlign: 'center' }}>
                   <em>IMPORTANT: Planned Maintenance Outage for All GIS Services</em>
@@ -89,17 +84,15 @@ class Main extends React.Component {
                 <p style={{textAlign: 'center', fontSize: '1.25rem', }}>Friday, February 28, 7 a.m. – 10 a.m.</p>
               </>
             </Banner> */}
-            <ErrorBoundary>{this.props.children}</ErrorBoundary>
-          </div>
-          {!this.props.location.query.hideNavbar && <Footer />}
-          {
-            // <AuthProviderModal />
-          }
-        </LanguageProvider>
+              <ErrorBoundary>{this.props.children}</ErrorBoundary>
+            </div>
+            {!this.props.location.query.hideNavbar && <Footer />}
+            {
+              // <AuthProviderModal />
+            }
+          </LanguageProvider>
         </div>
-          {!disclaimerAccepted && (
-              <Disclaimer onAccept={this.handleAcceptDisclaimer} />
-          )}   
+        {!disclaimerAccepted && <Disclaimer onAccept={this.handleAcceptDisclaimer} />}
       </>
     );
   }
@@ -116,7 +109,7 @@ Main.defaultProps = {
 };
 
 const App = compose(
-  graphql(updateUser, { name: "updateUser" }),
+  graphql(updateUser, { name: 'updateUser' }),
   graphql(getUser, {
     props: ({ data: { user } }) => ({
       user,

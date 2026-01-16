@@ -7,14 +7,13 @@ import CrimesByAddress from './CrimesByAddress';
 import CrimesByStreet from './CrimesByStreet';
 import CrimesByNeighborhood from './CrimesByNeighborhood';
 import Icon from '../../shared/Icon';
-import styles from '../spatial_event_topic_summary/spatialEventTopicFilters.css';
+// import styles from '../spatial_event_topic_summary/spatialEventTopicFilters.css';
 import SpatialEventTopicLocationInfo from '../spatial_event_topic_summary/SpatialEventTopicLocationInfo';
 import { IM_SHIELD3, IM_LIBRARY2 } from '../../shared/iconConstants';
 import { refreshLocation } from '../../utilities/generalUtilities';
 import { english } from './english';
 import { spanish } from './spanish';
 import { withLanguage } from '../../utilities/lang/LanguageContext';
-
 
 const CrimeSummary = (props) => {
   // set language
@@ -34,7 +33,7 @@ const CrimeSummary = (props) => {
     { display: content.last_5_years, value: '1825' },
     { display: content.all_time, value: 'all' },
   ];
-  
+
   const extentOptions = [
     { display: content.city_block, value: '330' },
     { display: content.couple_blocks, value: '660' },
@@ -43,24 +42,27 @@ const CrimeSummary = (props) => {
     { display: content.mile, value: '5280' },
   ];
 
-  const getNewUrlParams = () => (
-    {
-      within: document.getElementById('extent').value,
-      during: document.getElementById('time').value,
-    }
-  );
+  const getNewUrlParams = () => ({
+    within: document.getElementById('extent').value,
+    during: document.getElementById('time').value,
+  });
 
-  const duringURL = (props.location.query.during === '' ||
-    props.location.query.during === undefined) ?
-    '183' : props.location.query.during;
-  const withinURL = (props.location.query.within === '' ||
-    props.location.query.within === undefined) ?
-    '660' : props.location.query.within;
+  const duringURL =
+    props.location.query.during === '' || props.location.query.during === undefined
+      ? '183'
+      : props.location.query.during;
+  const withinURL =
+    props.location.query.within === '' || props.location.query.within === undefined
+      ? '660'
+      : props.location.query.within;
 
   const before = moment.utc().format('YYYY-MM-DD');
   let after = '1970-01-01'; // appears crime only goes back to 2013
   if (duringURL !== 'all') {
-    after = moment.utc().subtract((parseInt(duringURL, 10) + 1), 'd').format('YYYY-MM-DD');
+    after = moment
+      .utc()
+      .subtract(parseInt(duringURL, 10) + 1, 'd')
+      .format('YYYY-MM-DD');
   }
 
   return (
@@ -92,17 +94,19 @@ const CrimeSummary = (props) => {
             <div className="data-filters__inner">
               {/*<SpatialEventTopicCategoryFilters spatialEventTopic={props.spatialEventTopic} />*/}
               <div className="form-group col-md-2 col-sm-6 col-xs-4">
-                <label htmlFor="topicType" className="control-label">{content.view}:</label>
+                <label htmlFor="topicType" className="control-label">
+                  {content.view}:
+                </label>
                 <div>
-                  <div
-                    className="form-control-static"
-                    style={{ display: 'block' }}
-                  >{content.crimes.toLowerCase()}
+                  <div className="form-control-static" style={{ display: 'block' }}>
+                    {content.crimes.toLowerCase()}
                   </div>
                 </div>
               </div>
               <div className="form-group col-md-3 col-sm-6 col-xs-8">
-                <label htmlFor="time" className="control-label">{content.during}:</label>
+                <label htmlFor="time" className="control-label">
+                  {content.during}:
+                </label>
                 <div>
                   <select
                     value={duringURL}
@@ -116,7 +120,8 @@ const CrimeSummary = (props) => {
                         value={option.value}
                         key={['time', 'option', i].join('_')}
                         name="time"
-                      >{option.display}
+                      >
+                        {option.display}
                       </option>
                     ))}
                   </select>
@@ -124,10 +129,14 @@ const CrimeSummary = (props) => {
               </div>
               <div
                 className="form-group col-md-3 col-sm-6 col-xs-12"
-                hidden={props.location.query.entity === 'street' ||
-                props.location.query.entity === 'neighborhood'}
+                hidden={
+                  props.location.query.entity === 'street' ||
+                  props.location.query.entity === 'neighborhood'
+                }
               >
-                <label htmlFor="time" className="control-label">{content.within}:</label>
+                <label htmlFor="time" className="control-label">
+                  {content.within}:
+                </label>
                 <div>
                   <select
                     value={withinURL}
@@ -141,7 +150,8 @@ const CrimeSummary = (props) => {
                         value={option.value}
                         key={['extent', 'option', i].join('_')}
                         name="extent"
-                      >{option.display}
+                      >
+                        {option.display}
                       </option>
                     ))}
                   </select>
@@ -156,28 +166,18 @@ const CrimeSummary = (props) => {
           </div>
         </fieldset>
       </form>
-      {props.location.query.entity === 'address' ? // eslint-disable-line
+      {props.location.query.entity === 'address' ? ( // eslint-disable-line
         <CrimesByAddress
           before={before}
           after={after}
           radius={withinURL}
           location={props.location}
         />
-        :
-        props.location.query.entity === 'street' ?
-          <CrimesByStreet
-            before={before}
-            after={after}
-            radius={110}
-            location={props.location}
-          />
-          :
-          <CrimesByNeighborhood
-            before={before}
-            after={after}
-            location={props.location}
-          />
-      }
+      ) : props.location.query.entity === 'street' ? (
+        <CrimesByStreet before={before} after={after} radius={110} location={props.location} />
+      ) : (
+        <CrimesByNeighborhood before={before} after={after} location={props.location} />
+      )}
     </div>
   );
 };

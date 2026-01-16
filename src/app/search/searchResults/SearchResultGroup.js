@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import AccessibleReactTable, { CellFocusWrapper } from 'accessible-react-table';
 import Icon from '../../../shared/Icon';
-import styles from './searchResultGroup.css';
+// import styles from './searchResultGroup.css';
 import { getLink, getPlural, getIcon } from './searchResultsUtils';
 import { IM_GOOGLE } from '../../../shared/iconConstants';
 import * as poweredByGoogle from './powered_by_google_on_white.png';
@@ -12,38 +12,44 @@ import LinkFocusWrapper from '../../../shared/LinkFocusWrapper';
 import InCityMessage from '../../../shared/InCityMessage';
 
 const SearchResultGroup = (props) => {
-
   const searchMode = props.searchMode || 'main';
 
   const dataColumns = [
     {
       headerStyle: { boxShadow: 'none' },
-      Header: <h2 className="pull-left">
-        {getIcon(props.data.label)}
-        {getPlural(props.data.label)}
-        <span className="offscreen">Number of results</span>
-        <span className="badge" style={{margin: '0 8px'}}>{props.data.results.length}</span>
-        {props.data.label === 'place' &&
-          <img src={poweredByGoogle} alt="Powered by Google" style={{ marginLeft: '20px' }}></img>
-        }
-      </h2>,
+      Header: (
+        <h2 className="pull-left">
+          {getIcon(props.data.label)}
+          {getPlural(props.data.label)}
+          <span className="offscreen">Number of results</span>
+          <span className="badge" style={{ margin: '0 8px' }}>
+            {props.data.results.length}
+          </span>
+          {props.data.label === 'place' && (
+            <img src={poweredByGoogle} alt="Powered by Google" style={{ marginLeft: '20px' }}></img>
+          )}
+        </h2>
+      ),
       accessor: 'label',
       innerFocus: true,
-      Cell: row => (
+      Cell: (row) => (
         <CellFocusWrapper>
           {(focusRef, focusable) => (
-            <span className="search-results-group__row-inner" style={{justifyContent: 'space-between', alignItems: 'baseline', lineHeight: '1'}}>
+            <span
+              className="search-results-group__row-inner"
+              style={{ justifyContent: 'space-between', alignItems: 'baseline', lineHeight: '1' }}
+            >
               {/* This LinkFocusWrapper can be replaced by the innerRef prop on the Link component
                 in react-router ^4.2.0. Presently it serves as a work around for not having that
                 prop. */}
-              <span style={{border: '0px solid red'}}>
+              <span style={{ border: '0px solid red' }}>
                 <LinkFocusWrapper focusRef={focusRef}>
                   <Link
                     className="search-results-group__link"
                     tabIndex={focusable ? 0 : -1}
                     to={getLink(
                       row.original.type,
-                      row.original.id, 
+                      row.original.id,
                       props.searchText,
                       props.selectedEntities,
                       row.original.label,
@@ -51,7 +57,7 @@ const SearchResultGroup = (props) => {
                     )}
                     target={searchMode === 'mini' ? '_blank' : null}
                   >
-                    <span className="text-primary" >
+                    <span className="text-primary">
                       {getIcon(row.original.type === 'place' ? 'search' : row.original.type)}
                       {row.value}
                     </span>
@@ -59,16 +65,13 @@ const SearchResultGroup = (props) => {
                 </LinkFocusWrapper>
 
                 {props.data.label === 'address' && row.original.inCity !== undefined && (
-                  <span style={{ display: 'inline-block', fontSize: '0.85em', marginLeft: "20px"}}>
-                    <InCityMessage
-                      inTheCity={row.original.inCity}
-                      icon={false}
-                    />
+                  <span style={{ display: 'inline-block', fontSize: '0.85em', marginLeft: '20px' }}>
+                    <InCityMessage inTheCity={row.original.inCity} icon={false} />
                   </span>
                 )}
               </span>
 
-              {props.data.label === 'place' &&
+              {props.data.label === 'place' && (
                 <span className="text-primary">
                   <a
                     tabIndex="-1"
@@ -80,23 +83,26 @@ const SearchResultGroup = (props) => {
                   >
                     <span style={{ marginRight: '5px' }}>
                       <Icon path={IM_GOOGLE} size={26} />
-                    </span>{row.original.place_name}
+                    </span>
+                    {row.original.place_name}
                   </a>
                 </span>
-              }
+              )}
               {props.data.label === 'address' && searchMode !== 'mini' && (
-                <span style={{marginRight: '8px' }}>
-                  <Link to={
-                    `/DEVELOPMENT?view=list&` +
-                    `entities=undefined&` +
-                    `entity=address&` +
-                    `within=0&` +
-                    `id=${row.original.id}&` +
-                    `label=${row.original.label}&` +
-                    `search=${props.searchText}&` +
-                    `x=${row.original.x}&` +
-                    `y=${row.original.y}`
-                  }>
+                <span style={{ marginRight: '8px' }}>
+                  <Link
+                    to={
+                      `/DEVELOPMENT?view=list&` +
+                      `entities=undefined&` +
+                      `entity=address&` +
+                      `within=0&` +
+                      `id=${row.original.id}&` +
+                      `label=${row.original.label}&` +
+                      `search=${props.searchText}&` +
+                      `x=${row.original.x}&` +
+                      `y=${row.original.y}`
+                    }
+                  >
                     Permits
                   </Link>
                 </span>
@@ -105,15 +111,15 @@ const SearchResultGroup = (props) => {
           )}
         </CellFocusWrapper>
       ),
-      Filter: createFilterRenderer(
-        'Filter Results...',
-        { style: undefined, className: 'full-width' }
-      ),
+      Filter: createFilterRenderer('Filter Results...', {
+        style: undefined,
+        className: 'full-width',
+      }),
     },
   ];
 
   return (
-    <div className={styles.searchResultGroup + ' search-results-group' + ' search-results-group-'+props.data.label }>
+    <div className="">
       <AccessibleReactTable
         ariaLabel="Search Results"
         data={props.data.results}
@@ -124,7 +130,9 @@ const SearchResultGroup = (props) => {
         sortable={false}
         defaultFilterMethod={(filter, row) => {
           const id = filter.pivotId || filter.id;
-          return row[id] !== undefined ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
+          return row[id] !== undefined
+            ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1
+            : true;
         }}
       />
     </div>

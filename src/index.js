@@ -6,10 +6,10 @@ import 'babel-polyfill';
 import Routes from './routes';
 
 // Import styles
-require('./styles/styles.scss');
+// require('./styles/styles.scss');
 
 const container = document.getElementById('root');
-const root = createRoot(container); 
+const root = createRoot(container);
 root.render(<Routes />);
 
 // render(

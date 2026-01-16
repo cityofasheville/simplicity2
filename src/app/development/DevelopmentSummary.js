@@ -10,7 +10,7 @@ import DevelopmentByStreet from './DevelopmentByStreet';
 import DevelopmentByNeighborhood from './DevelopmentByNeighborhood';
 import Icon from '../../shared/Icon';
 import { IM_OFFICE } from '../../shared/iconConstants';
-import styles from '../spatial_event_topic_summary/spatialEventTopicFilters.css';
+// import styles from '../spatial_event_topic_summary/spatialEventTopicFilters.css';
 import SpatialEventTopicLocationInfo from '../spatial_event_topic_summary/SpatialEventTopicLocationInfo';
 import { refreshLocation, timeOptions, extentOptions } from '../../utilities/generalUtilities';
 import TopicCard from '../../shared/TopicCard';
@@ -18,39 +18,44 @@ import TopicCard from '../../shared/TopicCard';
 const DevelopmentSummary = (props) => {
   if (Object.keys(props.location.query).length === 0) {
     props.location.query = {
-      during: "30",
-      entities: "undefined",
-      entity: "address",
-      id: "9688",
-      label: "70 COURT PLZ, 28801",
-      search: "70 court plaza",
-      view: "map",
-      within: "5280",
-      x: "-82.54841807",
-      y: "35.59542839"
-    }
+      during: '30',
+      entities: 'undefined',
+      entity: 'address',
+      id: '9688',
+      label: '70 COURT PLZ, 28801',
+      search: '70 court plaza',
+      view: 'map',
+      within: '5280',
+      x: '-82.54841807',
+      y: '35.59542839',
+    };
   }
 
-  const getNewUrlParams = () => (
-    {
-      within: document.getElementById('extent').value,
-      during: document.getElementById('time').value,
-    }
-  );
+  const getNewUrlParams = () => ({
+    within: document.getElementById('extent').value,
+    during: document.getElementById('time').value,
+  });
 
-  const duringURL = (props.location.query.during === ''
-    || props.location.query.during === undefined) ? '183' : props.location.query.during;
-  const withinURL = (props.location.query.within === ''
-    || props.location.query.within === undefined) ? '660' : props.location.query.within;
+  const duringURL =
+    props.location.query.during === '' || props.location.query.during === undefined
+      ? '183'
+      : props.location.query.during;
+  const withinURL =
+    props.location.query.within === '' || props.location.query.within === undefined
+      ? '660'
+      : props.location.query.within;
 
   const before = moment.utc().format('YYYY-MM-DD');
   let after = '1970-01-01'; // appears crime only goes back to 2013
   if (duringURL !== 'all') {
-    after = moment.utc().subtract((parseInt(duringURL, 10) + 1), 'd').format('YYYY-MM-DD');
+    after = moment
+      .utc()
+      .subtract(parseInt(duringURL, 10) + 1, 'd')
+      .format('YYYY-MM-DD');
   }
 
   return (
-    <div className='container'>
+    <div className="container">
       {/*<Link to="/development/sla-dashboard">Development Services SLA Dashboard</Link>*/}
       <PageHeader h1="Development" icon={<Icon path={IM_OFFICE} size={35} />}>
         <ButtonGroup alignment="">
@@ -63,31 +68,65 @@ const DevelopmentSummary = (props) => {
             <div className="data-filters__inner">
               {/*<SpatialEventTopicCategoryFilters spatialEventTopic={props.spatialEventTopic} />*/}
               <div className="form-group col-md-2 col-sm-6 col-xs-12">
-                <label htmlFor="topicType" className="control-label">view:</label>
+                <label htmlFor="topicType" className="control-label">
+                  view:
+                </label>
                 <div className="">
-                  <div className="form-control-static" style={{ display: 'block' }}>development
+                  <div className="form-control-static" style={{ display: 'block' }}>
+                    development
                   </div>
                 </div>
               </div>
               <div className="form-group col-md-3 col-sm-6 col-xs-12">
-                <label htmlFor="time" className="control-label">during:</label>
+                <label htmlFor="time" className="control-label">
+                  during:
+                </label>
                 <div className="">
-                  <select value={duringURL} onChange={() => refreshLocation(getNewUrlParams(), props.location)} name="time" id="time" className="form-control">
+                  <select
+                    value={duringURL}
+                    onChange={() => refreshLocation(getNewUrlParams(), props.location)}
+                    name="time"
+                    id="time"
+                    className="form-control"
+                  >
                     {timeOptions.map((option, i) => (
-                      <option value={option.value} key={['time', 'option', i].join('_')} name="time">{option.display}</option>
+                      <option
+                        value={option.value}
+                        key={['time', 'option', i].join('_')}
+                        name="time"
+                      >
+                        {option.display}
+                      </option>
                     ))}
                   </select>
                 </div>
               </div>
               <div
                 className="form-group col-md-3 col-sm-6 col-xs-12"
-                hidden={props.location.query.entity === 'street' || props.location.query.entity === 'neighborhood'}
+                hidden={
+                  props.location.query.entity === 'street' ||
+                  props.location.query.entity === 'neighborhood'
+                }
               >
-                <label htmlFor="time" className="control-label">within:</label>
+                <label htmlFor="time" className="control-label">
+                  within:
+                </label>
                 <div className="">
-                  <select value={withinURL} onChange={() => refreshLocation(getNewUrlParams(), props.location)} name="extent" id="extent" className="form-control">
+                  <select
+                    value={withinURL}
+                    onChange={() => refreshLocation(getNewUrlParams(), props.location)}
+                    name="extent"
+                    id="extent"
+                    className="form-control"
+                  >
                     {extentOptions.map((option, i) => (
-                      <option value={option.value} key={['extent', 'option', i].join('_')} name="extent">{option.display}</option>
+                      <option
+                        value={option.value}
+                        key={['extent', 'option', i].join('_')}
+                        name="extent"
+                      >
+                        {option.display}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -101,44 +140,45 @@ const DevelopmentSummary = (props) => {
           </div>
         </fieldset>
       </form>
-      {props.location.query.entity === 'address' ?
+      {props.location.query.entity === 'address' ? (
         <DevelopmentByAddress
           before={before}
           after={after}
           radius={withinURL}
           location={props.location}
         />
-        :
-        props.location.query.entity === 'street' ?
-          <DevelopmentByStreet
-            before={before}
-            after={after}
-            radius={110}
-            location={props.location}
+      ) : props.location.query.entity === 'street' ? (
+        <DevelopmentByStreet before={before} after={after} radius={110} location={props.location} />
+      ) : (
+        <DevelopmentByNeighborhood before={before} after={after} location={props.location} />
+      )}
+      <div className="row aligned-row" style={{ padding: '15px 0' }}>
+        <div className="col-xs-12 col-md-4" style={{ padding: '15px' }}>
+          <TopicCard
+            topic="DEVELOPMENT_WEBSITE"
+            lang=""
+            view={null}
+            path="https://ashevillenc.gov/department/development-services/"
           />
-          :
-          <DevelopmentByNeighborhood
-            before={before}
-            after={after}
-            location={props.location}
+        </div>
+        <div className="col-xs-12 col-md-4" style={{ padding: '15px' }}>
+          <TopicCard topic="DEVELOPMENT_DASHBOARD" lang="" view={null} path="/development/major" />
+        </div>
+        <div className="col-xs-12 col-md-4" style={{ padding: '15px' }}>
+          <TopicCard
+            topic="DEVELOPMENT_NOTIFICATION"
+            lang=""
+            view={null}
+            path="https://notifications.ashevillenc.gov/"
           />
-      }
-      <div className="row aligned-row" style={{padding: '15px 0'}}>
-        <div className="col-xs-12 col-md-4" style={{padding: '15px'}}>
-          <TopicCard topic="DEVELOPMENT_WEBSITE" lang='' view={null} path='https://ashevillenc.gov/department/development-services/' />
-        </div>
-        <div className="col-xs-12 col-md-4" style={{padding: '15px'}}>
-          <TopicCard topic="DEVELOPMENT_DASHBOARD" lang='' view={null} path='/development/major' />
-        </div>
-        <div className="col-xs-12 col-md-4" style={{padding: '15px'}}>
-          <TopicCard topic="DEVELOPMENT_NOTIFICATION" lang='' view={null} path='https://notifications.ashevillenc.gov/' />
         </div>
       </div>
 
       <div className="row">
         <div className="col-sm-8">
           <p>
-            The map, list, and chart represent all development permit types, of which there are over 40.  Some permit types included are:
+            The map, list, and chart represent all development permit types, of which there are over
+            40. Some permit types included are:
           </p>
           <ul>
             <li>Residential</li>
@@ -150,7 +190,6 @@ const DevelopmentSummary = (props) => {
             <li>Large scale development</li>
             <li>Historical resource development</li>
           </ul>
-
         </div>
       </div>
     </div>

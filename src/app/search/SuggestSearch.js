@@ -2,11 +2,17 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 // import { Combobox } from '@headlessui/react';
 import * as DOMPurify from 'dompurify';
 import * as Ariakit from '@ariakit/react';
-import { homePageQuery, searchQuery, suggestionsQuery, formatSearchResults, getIcon } from './searchResults/searchResultsUtils';
+import {
+  homePageQuery,
+  searchQuery,
+  suggestionsQuery,
+  formatSearchResults,
+  getIcon,
+} from './searchResults/searchResultsUtils';
 import useDebounce from '../../hooks/useDebounce';
 import { ApiEnvironmentContext } from '../../routes';
 // import DebouncedInput from './DebouncedInput';
-import './styles.css';
+// import './styles.css';
 
 // This is a style object for the combobox popover. Seems to behave better when applied inline (as opposed to class)?
 const comboBoxStyle = {
@@ -29,9 +35,8 @@ function SuggestSearch({
   suggestWithSimplicity = true,
   simplicitySuggestValue = 'name',
   suggestionEntities = ['neighborhood', 'street', 'owner'],
-  patternsToExcludeFromSuggestions = [/^\d+$/,/^\d+-?\d*$/],
+  patternsToExcludeFromSuggestions = [/^\d+$/, /^\d+-?\d*$/],
 }) {
-
   const combobox = Ariakit.useComboboxStore();
 
   const [inputDisplayValue, setInputDisplayValue] = useState('');
@@ -70,17 +75,15 @@ function SuggestSearch({
   }, []);
 
   useEffect(() => {
-
     const geocoderController = new AbortController();
     const geocoderSignal = geocoderController.signal;
     const simplicityController = new AbortController();
     const simplicitySignal = simplicityController.signal;
 
     async function getSuggestions() {
-
       const encodedQuery = encodeURIComponent(debouncedInputValue);
       const geocoderEndpoint = `https://gis.ashevillenc.gov/server/rest/services/Geocoders/simplicity/GeocodeServer/suggest?text=${encodedQuery}&maxSuggestions=10&category=&countryCode=&searchExtent=&location=&distance=&f=pjson`;
-      const geocoderOptions = {signal: geocoderSignal};
+      const geocoderOptions = { signal: geocoderSignal };
 
       const simplicityEndpoint = apiEnvironment;
       const simplicityOptions = {
@@ -108,32 +111,35 @@ function SuggestSearch({
         const suggestionPromises = [];
 
         if (suggestWithGeocoder) {
-          suggestionPromises.push(fetch(geocoderEndpoint, geocoderOptions).then((response) => response.json()));
+          suggestionPromises.push(
+            fetch(geocoderEndpoint, geocoderOptions).then((response) => response.json())
+          );
         }
-        if (suggestWithSimplicity) { 
-          suggestionPromises.push(fetch(simplicityEndpoint, simplicityOptions).then((response) => response.json()));
+        if (suggestWithSimplicity) {
+          suggestionPromises.push(
+            fetch(simplicityEndpoint, simplicityOptions).then((response) => response.json())
+          );
         }
 
         // const suggestionResponses = await Promise.all(suggestionPromises);
         const suggestionResponses = await Promise.allSettled(suggestionPromises);
-        
+
         // console.log('suggestionResponses', suggestionResponses);
 
         if (suggestWithGeocoder) {
           geocoderData = suggestionResponses[0].value;
         } else {
-          geocoderData = {suggestions: []}
+          geocoderData = { suggestions: [] };
         }
 
-        if (suggestWithSimplicity) {  
+        if (suggestWithSimplicity) {
           simplicityData = suggestionResponses[suggestionResponses.length - 1].value;
         } else {
-          simplicityData = {data: {search: []}};
+          simplicityData = { data: { search: [] } };
         }
 
         // const t1 = performance.now();
         // console.log(`Suggestions took ${t1 - t0} milliseconds.`);
-          
       } catch (error) {
         setStatus('error');
       }
@@ -142,12 +148,13 @@ function SuggestSearch({
         newSuggestionSet = [
           ...newSuggestionSet,
           ...geocoderData?.suggestions?.map((suggestion) => {
-          return {
-            type: 'address',
-            value: suggestion.text,
-            ...suggestion,
-          };
-        })];
+            return {
+              type: 'address',
+              value: suggestion.text,
+              ...suggestion,
+            };
+          }),
+        ];
       }
 
       if (simplicityData?.data?.search) {
@@ -172,7 +179,10 @@ function SuggestSearch({
                 return {
                   type: resultSet.type,
                   text: result[nameProperty].trim(),
-                  value: simplicitySuggestValue === 'id' && idProperty !== '' ? result[idProperty].trim() : result[nameProperty].trim(),
+                  value:
+                    simplicitySuggestValue === 'id' && idProperty !== ''
+                      ? result[idProperty].trim()
+                      : result[nameProperty].trim(),
                   magicKey: `${index}${result[nameProperty]}`,
                 };
               }),
@@ -216,8 +226,7 @@ function SuggestSearch({
       // clean up any in-progress fetch requests
       geocoderController.abort();
       simplicityController.abort();
-    }
-    
+    };
   }, [debouncedInputValue]);
 
   function handleComboBoxChange(event) {
@@ -228,14 +237,19 @@ function SuggestSearch({
     // console.log(event.target.value, sanitizedInput);
     setStatus('pending');
     setInputValue(sanitizedInput);
-    setInputDisplayValue(sanitizedInput)
+    setInputDisplayValue(sanitizedInput);
   }
 
   function handleSelect(suggestion) {
     currentUrlParams.set('search', suggestion.value);
     if (history.pushState) {
-      const newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + `?${currentUrlParams}${window.location.hash}`;
-      window.history.pushState({path: newurl}, '', newurl);
+      const newurl =
+        window.location.protocol +
+        '//' +
+        window.location.host +
+        window.location.pathname +
+        `?${currentUrlParams}${window.location.hash}`;
+      window.history.pushState({ path: newurl }, '', newurl);
     }
     setInputValue(suggestion.value);
     setInputDisplayValue(suggestion.text);
@@ -247,8 +261,13 @@ function SuggestSearch({
   function handleClear() {
     currentUrlParams.delete('search');
     if (history.pushState) {
-      const newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + `?${currentUrlParams}${window.location.hash}`;
-      window.history.pushState({path: newurl}, '', newurl);
+      const newurl =
+        window.location.protocol +
+        '//' +
+        window.location.host +
+        window.location.pathname +
+        `?${currentUrlParams}${window.location.hash}`;
+      window.history.pushState({ path: newurl }, '', newurl);
     }
     setInputValue('');
     setInputDisplayValue('');
@@ -263,8 +282,13 @@ function SuggestSearch({
     if (sanitizedInput.length > 2) {
       currentUrlParams.set('search', sanitizedInput);
       if (history.pushState) {
-        const newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + `?${currentUrlParams}${window.location.hash}`;
-        window.history.pushState({path: newurl}, '', newurl);
+        const newurl =
+          window.location.protocol +
+          '//' +
+          window.location.host +
+          window.location.pathname +
+          `?${currentUrlParams}${window.location.hash}`;
+        window.history.pushState({ path: newurl }, '', newurl);
       }
       // console.log('form submission detected');
       submitButtonRef.current.focus();
@@ -277,8 +301,10 @@ function SuggestSearch({
   return (
     <div>
       <form ref={formRef} onSubmit={handleFormSubmission}>
-        <div className="input-group mb-3" style={{position: 'relative'}}>
-          <label htmlFor="searchBox" className="offscreen">Search terms</label>
+        <div className="input-group mb-3" style={{ position: 'relative' }}>
+          <label htmlFor="searchBox" className="offscreen">
+            Search terms
+          </label>
           <Ariakit.Combobox
             store={combobox}
             placeholder="e.g. 123 Main St"
@@ -290,10 +316,10 @@ function SuggestSearch({
             id="searchBox"
           />
           {suggestions.length > 0 && (
-            <Ariakit.ComboboxPopover 
-              store={combobox} 
-              gutter={4} 
-              sameWidth 
+            <Ariakit.ComboboxPopover
+              store={combobox}
+              gutter={4}
+              sameWidth
               style={{
                 ...comboBoxStyle,
                 // The below variable is supplied, inline, by the Ariakit.ComboboxPopover component
@@ -313,9 +339,11 @@ function SuggestSearch({
                       }
                     }}
                   >
-                    <div style={{display:'flex', alignItems: 'flex-end'}}>
+                    <div style={{ display: 'flex', alignItems: 'flex-end' }}>
                       <span className="offscreen">{suggestion.type}</span>
-                      <span className="suggestion-icon" aria-hidden="true">{getIcon(suggestion.type, 16)}</span>
+                      <span className="suggestion-icon" aria-hidden="true">
+                        {getIcon(suggestion.type, 16)}
+                      </span>
                       <span className="suggestion-text">{suggestion.text.toLowerCase()}</span>
                     </div>
                   </Ariakit.ComboboxItem>
@@ -323,7 +351,7 @@ function SuggestSearch({
               })}
             </Ariakit.ComboboxPopover>
           )}
-        
+
           <div className="input-group-btn">
             <button
               className="btn btn-primary"
@@ -331,11 +359,16 @@ function SuggestSearch({
               id="button-addon2"
               onClick={handleClear}
               ref={clearButtonRef}
-              style={{borderRight: '2px solid #ccc'}}
+              style={{ borderRight: '2px solid #ccc' }}
             >
               X
             </button>
-            <button ref={submitButtonRef} className="btn btn-primary" type="submit" id="button-addon2">
+            <button
+              ref={submitButtonRef}
+              className="btn btn-primary"
+              type="submit"
+              id="button-addon2"
+            >
               Search
             </button>
           </div>

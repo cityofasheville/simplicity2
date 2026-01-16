@@ -6,6 +6,7 @@ import 'babel-polyfill';
 import Routes from './routes';
 
 // Import styles
+require('./tw/tw-output.css');
 // require('./styles/styles.scss');
 
 const container = document.getElementById('root');

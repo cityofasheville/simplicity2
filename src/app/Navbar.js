@@ -1,16 +1,16 @@
-import React from "react";
-import { IndexLink, Link, browserHistory } from "react-router";
-import Icon from "../shared/Icon";
-import { IM_SEARCH } from "../shared/iconConstants";
-import LangSwitcher from "../utilities/lang/LangSwitcher";
+import React from 'react';
+import { IndexLink, Link, browserHistory } from 'react-router';
+import Icon from '../shared/Icon';
+import { IM_SEARCH } from '../shared/iconConstants';
+import LangSwitcher from '../utilities/lang/LangSwitcher';
 
 export default class Navbar extends React.Component {
   // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
     this.state = {
-      navbarCollapse: "collapse",
-      navbarDisplay: "block",
+      navbarCollapse: 'collapse',
+      navbarDisplay: 'block',
     };
 
     this.toggleNavbarCollapse = this.toggleNavbarCollapse.bind(this);
@@ -18,18 +18,18 @@ export default class Navbar extends React.Component {
   }
 
   setNavbarDisplay() {
-    if (window.location.pathname === "/search-results") {
-      this.setState({ navbarDisplay: "none" });
+    if (window.location.pathname === '/search-results') {
+      this.setState({ navbarDisplay: 'none' });
     } else {
-      this.setState({ navbarDisplay: "block" });
+      this.setState({ navbarDisplay: 'block' });
     }
   }
 
   toggleNavbarCollapse() {
-    if (this.state.navbarCollapse === "collapse") {
-      this.setState({ navbarCollapse: "collapsed" });
+    if (this.state.navbarCollapse === 'collapse') {
+      this.setState({ navbarCollapse: 'collapsed' });
     } else {
-      this.setState({ navbarCollapse: "collapse" });
+      this.setState({ navbarCollapse: 'collapse' });
     }
   }
 
@@ -54,8 +54,9 @@ export default class Navbar extends React.Component {
                 <IndexLink to="/">
                   <div className="logo">
                     <img
-                      src={require("../images/citylogo-flatblue.png")}
+                      src={require('../images/citylogo-flatblue.png')}
                       alt="City of Asheville logo"
+                      className="h-16 w-16"
                     ></img>
                     <span className="logo__text">
                       <h1>SimpliCity</h1>
@@ -66,11 +67,7 @@ export default class Navbar extends React.Component {
                 <br />
               </div>
             </div>
-            <div
-              className={[this.state.navbarCollapse, "navbar-collapse"].join(
-                " "
-              )}
-            >
+            <div className={[this.state.navbarCollapse, 'navbar-collapse'].join(' ')}>
               <ul className="nav navbar-nav navbar-right">
                 {/* <li><Link to="/my-simplicity" activeClassName="active">My SimpliCity</Link></li> */}
                 <li>
@@ -85,30 +82,28 @@ export default class Navbar extends React.Component {
                   <a
                     onClick={() => {
                       browserHistory.push(
-                        "/search?entities=address,property,neighborhood,street,owner"
+                        '/search?entities=address,property,neighborhood,street,owner'
                       );
                     }}
                   >
                     <Icon path={IM_SEARCH} size={16} />
                   </a>
                 </li>
-                {(window.location.href.indexOf("localhost") > -1 ||
-                  window.location.href.indexOf("dev-simplicity") > -1) && (
+                {(window.location.href.indexOf('localhost') > -1 ||
+                  window.location.href.indexOf('dev-simplicity') > -1) && (
                   <li>
                     <hr
                       style={{
-                        border: "none",
-                        borderLeft: "1px solid #4077a5",
-                        height: "20px",
-                        width: "1px",
+                        border: 'none',
+                        borderLeft: '1px solid #4077a5',
+                        height: '20px',
+                        width: '1px',
                       }}
                     />
                   </li>
                 )}
-                {(window.location.href.indexOf("localhost") > -1 ||
-                  window.location.href.indexOf("dev-simplicity") > -1) && (
-                  <LangSwitcher />
-                )}
+                {(window.location.href.indexOf('localhost') > -1 ||
+                  window.location.href.indexOf('dev-simplicity') > -1) && <LangSwitcher />}
               </ul>
             </div>
           </div>

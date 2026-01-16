@@ -8,21 +8,21 @@ import EnvBanner from './EnvBanner';
 import Banner from './Banner';
 import Footer from './Footer';
 import ErrorBoundary from '../shared/ErrorBoundary';
-import CityInfoBar from './CityInfoBar';
+// import CityInfoBar from './CityInfoBar';
 import { defaultAuthState } from '../utilities/auth/graphql/authDefaultState';
 import LanguageProvider from '../utilities/lang/LanguageContext';
 import Disclaimer from './Disclaimer';
 
-const displayNavbar = (hideNavbar) => {
-  if (hideNavbar || window.location.pathname === '/mini_search') {
-    return null;
-  }
-  if (window.location.href.indexOf('dashboards.ashevillenc.gov') < 0) {
-    return <Navbar />; // / Navbar is SimpliCity
-  }
-  // CityInfoBar is dashboards
-  return <CityInfoBar />;
-};
+// const displayNavbar = (hideNavbar) => {
+//   if (hideNavbar || window.location.pathname === '/mini_search') {
+//     return null;
+//   }
+//   if (window.location.href.indexOf('dashboards.ashevillenc.gov') < 0) {
+//     return <Navbar />; // / Navbar is SimpliCity
+//   }
+//   // CityInfoBar is dashboards
+//   return <CityInfoBar />;
+// };
 
 class Main extends React.Component {
   constructor(props) {
@@ -30,6 +30,7 @@ class Main extends React.Component {
     this.state = {
       disclaimerAccepted: false,
     };
+    this.hideNavbar = this.props.location.query.hideNavbar ? true : false;
 
     this.handleAcceptDisclaimer = this.handleAcceptDisclaimer.bind(this);
   }
@@ -64,17 +65,16 @@ class Main extends React.Component {
 
     return (
       <>
-        <div
-          className={
-            this.props.location.query.hideNavbar ? 'app-parent hidden-navbar' : 'app-parent'
-          }
-        >
+        <div className="relative min-h-screen flex flex-col">
           <LanguageProvider>
-            <a href="#content" className="skip-nav-link">
-              Skip to Main Content
+            <a
+              href="#content"
+              className="absolute -left-64 -top-64 z-[100] bg-primary px-6 py-3 text-white font-semibold shadow-lg focus:left-0 focus:top-0"
+            >
+              Skip to main content
             </a>
-            {displayNavbar(this.props.location.query.hideNavbar)}
-            <div className="container" id="content">
+            {!this.hideNavbar && <Navbar />}
+            <main className="w-full px-6 flex-grow" id="content">
               <EnvBanner />
               {/* <Banner color="orange" path="*">
               <>
@@ -85,8 +85,9 @@ class Main extends React.Component {
               </>
             </Banner> */}
               <ErrorBoundary>{this.props.children}</ErrorBoundary>
-            </div>
-            {!this.props.location.query.hideNavbar && <Footer />}
+            </main>
+
+            {!this.hideNavbar && <Footer />}
             {
               // <AuthProviderModal />
             }

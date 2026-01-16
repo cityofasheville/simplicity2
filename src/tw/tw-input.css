@@ -5,4 +5,8 @@
 
 @layer base {
 
+  html,
+  body {
+    @apply h-full w-full m-0 p-0;
+  }
 }

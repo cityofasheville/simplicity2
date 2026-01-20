@@ -12,17 +12,17 @@ module.exports = {
         info: '#3498db',
         warning: '#f39c12',
         danger: '#e74c3c',
-      },
-      coa: {
-        blue: {
-          dark: '#004987',
-          medium: '#4077a5',
-          light: '#a6bfd5',
-        },
-        green: {
-          dark: '#aaad00',
-          medium: '#bfc240',
-          light: '#e1e2a6',
+        coa: {
+          blue: {
+            dark: '#004987',
+            medium: '#4077a5',
+            light: '#a6bfd5',
+          },
+          green: {
+            dark: '#aaad00',
+            medium: '#bfc240',
+            light: '#e1e2a6',
+          },
         },
       },
     },

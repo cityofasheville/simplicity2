@@ -115,7 +115,7 @@ const TopicCard = props => {
 
   return (
 
-    <div className="topicCard bg-gray-lightest p-1 flex flex-col items-stretch min-h-full">
+    <div className="topicCard bg-gray-900 p-1 flex flex-col items-stretch min-h-full">
       <Link
         className="topic-card text-lg text-coa-medBlue m-0 p-0"
         to={{
@@ -130,8 +130,8 @@ const TopicCard = props => {
 
 
       </Link>
-      <div className="text-coa-medBlue text-center mb-4" >{getTopicIcon(props.topic)}</div>
-      <div className="text-coa-medBlue text-center mb-4" >
+      <div className="text-coa-blue-medium text-center mb-4" >{getTopicIcon(props.topic)}</div>
+      <div className="text-coa-blue-medium text-center mb-4" >
         {topics[1].replace(/_/g, ' ')}
       </div>
 

@@ -3,6 +3,15 @@ module.exports = {
   content: ['./src/**/*.{html,js,jsx}'],
   theme: {
     extend: {
+      fontFamily: {
+        sans: [
+          'Roboto',
+          '"Helvetica Neue"',
+          'Helvetica',
+          'Arial',
+          'sans-serif',
+        ],
+      },
       colors: {
         transparent: 'transparent',
         primary: '#4077a5',
@@ -25,7 +34,21 @@ module.exports = {
           },
         },
       },
+      hocus: ["&:hover", "&:focus"],
+    },
+    variants: {
+      extend: {
+        backgroundColor: ["hover", "focus", "group-hover", "hocus"],
+        textColor: ["hover", "focus", "group-hover", "hocus"],
+        fontSize: ["hover", "focus", "group-hover", "hocus"],
+        textDecoration: ["hover", "focus", "group-hover", "hocus"],
+        opacity: ["hover", "focus", "group-hover", "hocus"],
+      },
     },
   },
-  plugins: [],
+  plugins: [
+		function ({ addVariant }) {
+			addVariant("hocus", ["&:hover", "&:focus"]);
+		},
+	],
 };

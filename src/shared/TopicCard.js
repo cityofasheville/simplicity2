@@ -89,35 +89,35 @@ const TopicCard = props => {
   }
   const topics = translateTopic(props.topic, props.language.language);
 
-  const styles = {
-    card: {
-      padding: '1rem',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'stretch',
-      minHeight: '100%',
-    },
-    cardLink: {
-      margin: 0,
-      padding: 0,
-    },
-    cardHeading: {
-      marginBottom: '1rem',
-      padding:0
-    },
-    cardIcon: {
-      marginBottom: '1rem',
-    },
-    cardSubheading: {
-      marginBottom: '1rem',
-    }
-  }
+  // const styles = {
+  //   card: {
+  //     padding: '1rem',
+  //     display: 'flex',
+  //     flexDirection: 'column',
+  //     alignItems: 'stretch',
+  //     minHeight: '100%',
+  //   },
+  //   cardLink: {
+  //     margin: 0,
+  //     padding: 0,
+  //   },
+  //   cardHeading: {
+  //     marginBottom: '1rem',
+  //     padding:0
+  //   },
+  //   cardIcon: {
+  //     marginBottom: '1rem',
+  //   },
+  //   cardSubheading: {
+  //     marginBottom: '1rem',
+  //   }
+  // }
 
   return (
 
-    <div className="topicCard bg-gray-900 p-1 flex flex-col items-stretch min-h-full">
+    <div className="shadow rounded bg-gray-50 p-4 flex flex-col items-stretch min-h-full hocus:outline">
       <Link
-        className="topic-card text-lg text-coa-medBlue m-0 p-0"
+        className="topic-card text-lg text-coa-medBlue m-0 p-0 font-normal"
         to={{
           pathname: props.path || props.topic,
           query,
@@ -131,7 +131,7 @@ const TopicCard = props => {
 
       </Link>
       <div className="text-coa-blue-medium text-center mb-4" >{getTopicIcon(props.topic)}</div>
-      <div className="text-coa-blue-medium text-center mb-4" >
+      <div className="text-coa-blue-medium text-center" >
         {topics[1].replace(/_/g, ' ')}
       </div>
 

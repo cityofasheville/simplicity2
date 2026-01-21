@@ -8,15 +8,15 @@ import {
 import Icon from '../shared/Icon';
 
 const Topics = props => (
-  <div className="card-container">
-    <div className="row">
-      <div className="col-xs-12">
-        <h2>View citywide topic <strong>dashboards</strong> about your community.</h2>
+  <div className="pt-5">
+    <div>
+      <div>
+        <h2 className="text-3xl text-coa-blue-medium font-light pb-3">View citywide topic <strong>dashboards</strong> about your community.</h2>
       </div>
     </div>
-    <div className="row aligned-row">
+    <div className="grid grid-cols-1 md:grid-cols-3">
       {props.topics.map((topic, i) => (
-        <div className="col-xs-12 col-md-4" style={{padding: '15px'}} key={['topic', i].join('_')}>
+        <div className="p-4" key={['topic', i].join('_')}>
           <TopicCard topic={topic.name} lang={props.language.language} view={null} path={topic.path || topic.name} />
         </div>
       ))}

@@ -15,16 +15,16 @@ import { ApiEnvironmentContext } from '../../routes';
 // import './styles.css';
 
 // This is a style object for the combobox popover. Seems to behave better when applied inline (as opposed to class)?
-const comboBoxStyle = {
-  position: 'absolute',
-  backgroundColor: 'white',
-  border: '1px solid #ccc',
-  borderRadius: '4px',
-  listStyle: 'none',
-  width: '100%',
-  zIndex: 1000,
-  overflow: 'auto',
-};
+// const comboBoxStyle = {
+//   position: 'absolute',
+//   backgroundColor: 'white',
+//   border: '1px solid #ccc',
+//   borderRadius: '4px',
+//   listStyle: 'none',
+//   width: '100%',
+//   zIndex: 1000,
+//   overflow: 'auto',
+// };
 
 function SuggestSearch({
   setUserQuery,
@@ -297,18 +297,20 @@ function SuggestSearch({
       setUserQueryChecked(false);
     }
   }
+  // form-control combobox position-relative 
 
   return (
     <div>
       <form ref={formRef} onSubmit={handleFormSubmission}>
-        <div className="input-group mb-3" style={{ position: 'relative' }}>
-          <label htmlFor="searchBox" className="offscreen">
+        <div className="mb-3 relative">
+          <label htmlFor="searchBox" className="sr-only">
             Search terms
           </label>
+          <div className="flex w-full>">
           <Ariakit.Combobox
             store={combobox}
             placeholder="e.g. 123 Main St"
-            className="form-control combobox position-relative"
+            className="flex-1 border-2 border-blue-100 py-2 px-4"
             value={inputDisplayValue ? inputDisplayValue : ''}
             onChange={handleComboBoxChange}
             autoComplete="off"
@@ -320,16 +322,12 @@ function SuggestSearch({
               store={combobox}
               gutter={4}
               sameWidth
-              style={{
-                ...comboBoxStyle,
-                // The below variable is supplied, inline, by the Ariakit.ComboboxPopover component
-                maxHeight: 'var(--popover-available-height)',
-              }}
+              className="border-2 border-gray-100 border-1 rounded"
             >
               {suggestions.map((suggestion) => {
                 return (
                   <Ariakit.ComboboxItem
-                    className="combobox-item"
+                    className="p-2 focus:bg-coa-blue-light hover:bg-blue-50 bg-white"
                     key={suggestion.magicKey}
                     onClick={() => handleSelect(suggestion)}
                     value={suggestion.text}
@@ -339,9 +337,9 @@ function SuggestSearch({
                       }
                     }}
                   >
-                    <div style={{ display: 'flex', alignItems: 'flex-end' }}>
-                      <span className="offscreen">{suggestion.type}</span>
-                      <span className="suggestion-icon" aria-hidden="true">
+                    <div>
+                      <span className="sr-only">{suggestion.type}</span>
+                      <span className="text-coa-blue-medium" aria-hidden="true">
                         {getIcon(suggestion.type, 16)}
                       </span>
                       <span className="suggestion-text">{suggestion.text.toLowerCase()}</span>
@@ -352,25 +350,25 @@ function SuggestSearch({
             </Ariakit.ComboboxPopover>
           )}
 
-          <div className="input-group-btn">
+          <div className="flex">
             <button
-              className="btn btn-primary"
+              className="bg-coa-blue-medium text-white px-4 py-2"
               type="button"
               id="button-addon2"
               onClick={handleClear}
               ref={clearButtonRef}
-              style={{ borderRight: '2px solid #ccc' }}
             >
               X
             </button>
             <button
               ref={submitButtonRef}
-              className="btn btn-primary"
+              className="border-l border-white bg-coa-blue-medium text-white px-4 py-2 rounded-r"
               type="submit"
               id="button-addon2"
             >
               Search
             </button>
+          </div>
           </div>
         </div>
       </form>

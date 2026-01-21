@@ -14,7 +14,7 @@ function Homepage(props)  {
         <GetVersion />
         <SuggestSearchWrapper />
       </div>
-      <hr />
+      <hr className="my-5"/>
       <Topics />
     </div>
   );

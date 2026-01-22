@@ -94,9 +94,9 @@ const Map = (props) => {
   }
 
   return (
-    <div style={{ height: props.height, width: props.width }}>
-      <LeafletMap
-        className="markercluster-map"
+<div className={`${props.height} ${props.width} my-4 px-4`}>
+<LeafletMap
+        className="h-full w-full"
         center={shouldZoomToNonCenter ? zoomTo : props.center}
         zoom={props.zoom}
         maxZoom={18}

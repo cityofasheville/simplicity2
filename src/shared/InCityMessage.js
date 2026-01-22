@@ -23,16 +23,30 @@ const translate = (value, language) => {
   }
 };
 
-const InCityMessage = props => (
-  <div className={`city-indicator${(props.inTheCity ? ' in-city' : ' out-of-city')}`}>
-    <div className="inner">
+// const InCityMessage = props => (
+//   <div className={`city-indicator${(props.inTheCity ? ' in-city' : ' out-of-city')}`}>
+//     <div className="inner">
+//       {props.icon &&
+//         <Icon path={props.inTheCity ? IM_LIBRARY2 : IM_TARGET} size={33} />
+//       }
+//       <span>{translate(props.inTheCity ? 'in_city' : 'out_of_city', props.language.language)}</span>
+//     </div>
+//   </div>
+// );
+
+
+function InCityMessage(props) {
+  const colorClass = props.inTheCity ? "text-coa-blue-dark" : "text-coa-blue-medium";
+
+  return(
+  <div className={`flex items-end ml-4 ${colorClass}`}>
       {props.icon &&
         <Icon path={props.inTheCity ? IM_LIBRARY2 : IM_TARGET} size={33} />
       }
-      <span>{translate(props.inTheCity ? 'in_city' : 'out_of_city', props.language.language)}</span>
-    </div>
+      <span className="ml-1"><em>{translate(props.inTheCity ? 'in_city' : 'out_of_city', props.language.language)}</em></span>
   </div>
-);
+  );
+};
 
 InCityMessage.propTypes = {
   inTheCity: PropTypes.bool,

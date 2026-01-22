@@ -3,6 +3,9 @@ module.exports = {
   content: ['./src/**/*.{html,js,jsx}'],
   theme: {
     extend: {
+      fontWeight: {
+        lighter: '300',
+      },
       fontFamily: {
         sans: [
           'Roboto',
@@ -33,11 +36,7 @@ module.exports = {
             light: '#e1e2a6',
           },
         },
-      },
-      hocus: ["&:hover", "&:focus"],
-    },
-    variants: {
-      extend: {
+      },extend: {
         backgroundColor: ["hover", "focus", "group-hover", "hocus"],
         textColor: ["hover", "focus", "group-hover", "hocus"],
         fontSize: ["hover", "focus", "group-hover", "hocus"],
@@ -47,8 +46,19 @@ module.exports = {
     },
   },
   plugins: [
-		function ({ addVariant }) {
-			addVariant("hocus", ["&:hover", "&:focus"]);
-		},
-	],
-};
+    // hocus variant
+    function ({ addVariant }) {
+      addVariant('hocus', ['&:hover', '&:focus'])
+    },
+
+    // global base font styles
+    function ({ addBase, theme }) {
+      addBase({
+        html: {
+          fontFamily: theme('fontFamily.sans'),
+          fontWeight: theme('fontWeight.lighter'),
+        },
+      })
+    },
+  ],
+}

@@ -11,7 +11,7 @@ const Topics = props => (
   <div className="pt-5">
     <div>
       <div>
-        <h2 className="text-3xl text-coa-blue-medium font-light pb-3">View citywide topic <strong>dashboards</strong> about your community.</h2>
+        <h2 className="text-3xl text-coa-blue-medium pb-3">View citywide topic <strong>dashboards</strong> about your community.</h2>
       </div>
     </div>
     <div className="grid grid-cols-1 md:grid-cols-3">

@@ -323,11 +323,16 @@ function SuggestSearch({
               gutter={4}
               sameWidth
               className="border-2 border-gray-100 border-1 rounded"
+              style={{
+                ...comboBoxStyle,
+                // The below variable is supplied, inline, by the Ariakit.ComboboxPopover component
+                maxHeight: 'var(--popover-available-height)',
+              }}
             >
               {suggestions.map((suggestion) => {
                 return (
                   <Ariakit.ComboboxItem
-                    className="p-2 focus:bg-coa-blue-light hover:bg-blue-50 bg-white"
+                    className="combobox-item p-2 focus:bg-coa-blue-light hover:bg-blue-50 bg-white"
                     key={suggestion.magicKey}
                     onClick={() => handleSelect(suggestion)}
                     value={suggestion.text}
@@ -364,7 +369,7 @@ function SuggestSearch({
               ref={submitButtonRef}
               className="border-l border-white bg-coa-blue-medium text-white px-4 py-2 rounded-r"
               type="submit"
-              id="button-addon2"
+              id="button-addon3"
             >
               Search
             </button>

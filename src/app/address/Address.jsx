@@ -210,14 +210,14 @@ const Address = props => (
       )];
 
       return (
-        <div className="address">
+        <div className="">
           <PageHeader
             h1={`${addressData.address}, ${addressData.zipcode}`}
             dataType={content.data_type}
             h2={content.about_this_address}
             icon={<Icon path={IM_LOCATION} size={50} />}
           >
-            <ButtonGroup alignment="">
+            <ButtonGroup className="">
               <LinkButton
                 pathname="/search"
                 positionInGroup={props.location.query.placeSearch ? 'left' : ''}
@@ -245,21 +245,21 @@ const Address = props => (
               }
             </ButtonGroup>
           </PageHeader>
-          <div className="row">
+          <div className="bg-gray-50">
             <div className="col-sm-12">
-              <fieldset className="detailsFieldset">
+              <fieldset className="pt-4">
                 <InCityMessage inTheCity={addressData.is_in_city} />
-                <div className="map-container">
+                <div className="">
                   <Map
                     data={mapData}
                     center={[addressData.y, addressData.x]}
-                    height="100%"
-                    width="100%"
+                    height="h-[250px]"
+                    width="w-full"
                   />
                 </div>
                 {addressData.is_in_city &&
                   // <div className="col-sm-12">
-                  <div className="row small-padding">
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 px-4">
                     {['CRIME', 'DEVELOPMENT'].map((topic, i) => (
                       <div className="col-xs-6" key={['topic', i]}>
                         <TopicCard

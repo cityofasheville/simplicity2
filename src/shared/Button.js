@@ -1,15 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+// const getButtonClass = (size, type, active) => {
+//   const typeStr = [' btn', type].join('-');
+//   switch (size) {
+//     case 'sm':
+//       return ['btn', ' btn-sm', typeStr, active ? ' active' : ''].join('');
+//     case 'xs':
+//       return ['btn', ' btn-xs', typeStr, active ? ' active' : ''].join('');
+//     default:
+//       return ['btn', typeStr, active ? ' active' : ''].join('');
+//   }
+// };
+
 const getButtonClass = (size, type, active) => {
   const typeStr = [' btn', type].join('-');
+  let general = "bg-coa-blue-medium"
   switch (size) {
     case 'sm':
-      return ['btn', ' btn-sm', typeStr, active ? ' active' : ''].join('');
+      return ['btn', ' py-1 px-2 bg-coa-blue-medium', typeStr, active ? ' active' : ''].join('');
     case 'xs':
-      return ['btn', ' btn-xs', typeStr, active ? ' active' : ''].join('');
+      return ['btn', ' py-1 px-1', typeStr, active ? ' active' : ''].join('');
     default:
-      return ['btn', typeStr, active ? ' active' : ''].join('');
+      return ['py-1 px-2 bg-coa-blue-medium', typeStr, active ? ' active' : ''].join('');
   }
 };
 

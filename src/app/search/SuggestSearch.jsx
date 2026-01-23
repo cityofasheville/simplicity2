@@ -12,19 +12,19 @@ import {
 import useDebounce from '../../hooks/useDebounce';
 import { ApiEnvironmentContext } from '../../routes';
 // import DebouncedInput from './DebouncedInput';
-// import './styles.css';
+import './styles.css';
 
 // This is a style object for the combobox popover. Seems to behave better when applied inline (as opposed to class)?
-// const comboBoxStyle = {
-//   position: 'absolute',
-//   backgroundColor: 'white',
-//   border: '1px solid #ccc',
-//   borderRadius: '4px',
-//   listStyle: 'none',
-//   width: '100%',
-//   zIndex: 1000,
-//   overflow: 'auto',
-// };
+const comboBoxStyle = {
+  position: 'absolute',
+  backgroundColor: 'white',
+  border: '1px solid #ccc',
+  borderRadius: '4px',
+  listStyle: 'none',
+  width: '100%',
+  zIndex: 1000,
+  overflow: 'auto',
+};
 
 function SuggestSearch({
   setUserQuery,
@@ -112,12 +112,12 @@ function SuggestSearch({
 
         if (suggestWithGeocoder) {
           suggestionPromises.push(
-            fetch(geocoderEndpoint, geocoderOptions).then((response) => response.json())
+            fetch(geocoderEndpoint, geocoderOptions).then((response) => response.json()),
           );
         }
         if (suggestWithSimplicity) {
           suggestionPromises.push(
-            fetch(simplicityEndpoint, simplicityOptions).then((response) => response.json())
+            fetch(simplicityEndpoint, simplicityOptions).then((response) => response.json()),
           );
         }
 
@@ -297,7 +297,7 @@ function SuggestSearch({
       setUserQueryChecked(false);
     }
   }
-  // form-control combobox position-relative 
+  // form-control combobox position-relative
 
   return (
     <div>
@@ -307,73 +307,73 @@ function SuggestSearch({
             Search terms
           </label>
           <div className="flex w-full>">
-          <Ariakit.Combobox
-            store={combobox}
-            placeholder="e.g. 123 Main St"
-            className="flex-1 border-2 border-blue-100 py-2 px-4"
-            value={inputDisplayValue ? inputDisplayValue : ''}
-            onChange={handleComboBoxChange}
-            autoComplete="off"
-            ref={inputRef}
-            id="searchBox"
-          />
-          {suggestions.length > 0 && (
-            <Ariakit.ComboboxPopover
+            <Ariakit.Combobox
               store={combobox}
-              gutter={4}
-              sameWidth
-              className="border-2 border-gray-100 border-1 rounded"
-              style={{
-                ...comboBoxStyle,
-                // The below variable is supplied, inline, by the Ariakit.ComboboxPopover component
-                maxHeight: 'var(--popover-available-height)',
-              }}
-            >
-              {suggestions.map((suggestion) => {
-                return (
-                  <Ariakit.ComboboxItem
-                    className="combobox-item p-2 focus:bg-coa-blue-light hover:bg-blue-50 bg-white"
-                    key={suggestion.magicKey}
-                    onClick={() => handleSelect(suggestion)}
-                    value={suggestion.text}
-                    onKeyDown={(event) => {
-                      if (event.key === 'Tab') {
-                        setInputValue(suggestion.value);
-                      }
-                    }}
-                  >
-                    <div>
-                      <span className="sr-only">{suggestion.type}</span>
-                      <span className="text-coa-blue-medium" aria-hidden="true">
-                        {getIcon(suggestion.type, 16)}
-                      </span>
-                      <span className="suggestion-text">{suggestion.text.toLowerCase()}</span>
-                    </div>
-                  </Ariakit.ComboboxItem>
-                );
-              })}
-            </Ariakit.ComboboxPopover>
-          )}
+              placeholder="e.g. 123 Main St"
+              className="flex-1 border-2 border-blue-100 py-2 px-4"
+              value={inputDisplayValue ? inputDisplayValue : ''}
+              onChange={handleComboBoxChange}
+              autoComplete="off"
+              ref={inputRef}
+              id="searchBox"
+            />
+            {suggestions.length > 0 && (
+              <Ariakit.ComboboxPopover
+                store={combobox}
+                gutter={4}
+                sameWidth
+                className="border-2 border-gray-100 border-1 rounded"
+                style={{
+                  ...comboBoxStyle,
+                  // The below variable is supplied, inline, by the Ariakit.ComboboxPopover component
+                  maxHeight: 'var(--popover-available-height)',
+                }}
+              >
+                {suggestions.map((suggestion) => {
+                  return (
+                    <Ariakit.ComboboxItem
+                      className="combobox-item p-2 focus:bg-coa-blue-light hover:bg-blue-50 bg-white"
+                      key={suggestion.magicKey}
+                      onClick={() => handleSelect(suggestion)}
+                      value={suggestion.text}
+                      onKeyDown={(event) => {
+                        if (event.key === 'Tab') {
+                          setInputValue(suggestion.value);
+                        }
+                      }}
+                    >
+                      <div>
+                        <span className="sr-only">{suggestion.type}</span>
+                        <span className="text-coa-blue-medium" aria-hidden="true">
+                          {getIcon(suggestion.type, 16)}
+                        </span>
+                        <span className="suggestion-text">{suggestion.text.toLowerCase()}</span>
+                      </div>
+                    </Ariakit.ComboboxItem>
+                  );
+                })}
+              </Ariakit.ComboboxPopover>
+            )}
 
-          <div className="flex">
-            <button
-              className="bg-coa-blue-medium text-white px-4 py-2"
-              type="button"
-              id="button-addon2"
-              onClick={handleClear}
-              ref={clearButtonRef}
-            >
-              X
-            </button>
-            <button
-              ref={submitButtonRef}
-              className="border-l border-white bg-coa-blue-medium text-white px-4 py-2 rounded-r"
-              type="submit"
-              id="button-addon3"
-            >
-              Search
-            </button>
-          </div>
+            <div className="flex">
+              <button
+                className="bg-coa-blue-medium text-white px-4 py-2"
+                type="button"
+                id="button-addon2"
+                onClick={handleClear}
+                ref={clearButtonRef}
+              >
+                X
+              </button>
+              <button
+                ref={submitButtonRef}
+                className="border-l border-white bg-coa-blue-medium text-white px-4 py-2 rounded-r"
+                type="submit"
+                id="button-addon3"
+              >
+                Search
+              </button>
+            </div>
           </div>
         </div>
       </form>

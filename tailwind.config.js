@@ -2,18 +2,20 @@
 module.exports = {
   content: ['./src/**/*.{html,js,jsx}'],
   theme: {
+    screens: {
+      xs: '480px',
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px',
+      xxl: '1536px',
+    },
     extend: {
       fontWeight: {
         lighter: '300',
       },
       fontFamily: {
-        sans: [
-          'Roboto',
-          '"Helvetica Neue"',
-          'Helvetica',
-          'Arial',
-          'sans-serif',
-        ],
+        sans: ['Roboto', '"Helvetica Neue"', 'Helvetica', 'Arial', 'sans-serif'],
       },
       colors: {
         transparent: 'transparent',
@@ -36,19 +38,20 @@ module.exports = {
             light: '#e1e2a6',
           },
         },
-      },extend: {
-        backgroundColor: ["hover", "focus", "group-hover", "hocus"],
-        textColor: ["hover", "focus", "group-hover", "hocus"],
-        fontSize: ["hover", "focus", "group-hover", "hocus"],
-        textDecoration: ["hover", "focus", "group-hover", "hocus"],
-        opacity: ["hover", "focus", "group-hover", "hocus"],
+      },
+      extend: {
+        backgroundColor: ['hover', 'focus', 'group-hover', 'hocus'],
+        textColor: ['hover', 'focus', 'group-hover', 'hocus'],
+        fontSize: ['hover', 'focus', 'group-hover', 'hocus'],
+        textDecoration: ['hover', 'focus', 'group-hover', 'hocus'],
+        opacity: ['hover', 'focus', 'group-hover', 'hocus'],
       },
     },
   },
   plugins: [
     // hocus variant
     function ({ addVariant }) {
-      addVariant('hocus', ['&:hover', '&:focus'])
+      addVariant('hocus', ['&:hover', '&:focus', '&:focus-within']);
     },
 
     // global base font styles
@@ -58,7 +61,7 @@ module.exports = {
           fontFamily: theme('fontFamily.sans'),
           fontWeight: theme('fontWeight.lighter'),
         },
-      })
+      });
     },
   ],
-}
+};

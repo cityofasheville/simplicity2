@@ -9,4 +9,26 @@
   body {
     @apply h-full w-full m-0 p-0;
   }
+
+  a {
+    @apply text-coa-blue-dark no-underline hocus:underline;
+  }
+
+  /** Toggle icons for dropdowns and hamburger menu **/
+
+  .dropdown-toggle[aria-expanded="false"] i.bi-dash {
+    display: none;
+  }
+
+  .dropdown-toggle[aria-expanded="true"] i.bi-plus {
+    display: none;
+  }
+
+  #hamburger[aria-expanded="false"] i.bi-x-lg {
+    display: none;
+  }
+
+  #hamburger[aria-expanded="true"] i.bi-list {
+    display: none;
+  }
 }

@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
 // const getButtonClass = (size, type, active) => {
 //   const typeStr = [' btn', type].join('-');
@@ -13,61 +13,76 @@ import PropTypes from 'prop-types';
 //   }
 // };
 
+// let buttonStyle = {
+//   sm: 'py-1 px-2',
+//   xs: 'py-[1px] px-1',
+//   default: 'py-3 px-4',
+//   primary: 'bg-coa-blue-medium text-white hover:bg-coa-blue-dark',
+//   warning:
+// }
+
 const getButtonClass = (size, type, active) => {
-  const typeStr = [' btn', type].join('-');
-  let general = "bg-coa-blue-medium"
-  switch (size) {
-    case 'sm':
-      return ['btn', ' py-1 px-2 bg-coa-blue-medium', typeStr, active ? ' active' : ''].join('');
-    case 'xs':
-      return ['btn', ' py-1 px-1', typeStr, active ? ' active' : ''].join('');
-    default:
-      return ['py-1 px-2 bg-coa-blue-medium', typeStr, active ? ' active' : ''].join('');
-  }
+	const typeStr = [" bg", type].join("-");
+	const styles = "text-white rounded";
+	switch (size) {
+		case "sm":
+			return [styles, " py-1 px-2 bg-coa-blue-medium", typeStr, active ? " active" : ""].join("");
+		case "xs":
+			return [styles, " py-1 px-1", typeStr, active ? " active" : ""].join("");
+		default:
+			return [styles, " py-1 px-2 bg-coa-blue-medium", typeStr, active ? " active" : ""].join("");
+	}
 };
 
 const getButtonStyle = (positionInGroup, extraStyle) => {
-  switch (positionInGroup) {
-    case 'left':
-      return { borderTopRightRadius: '0px', borderBottomRightRadius: '0px', ...extraStyle };
-    case 'right':
-      return { borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px', ...extraStyle };
-    case 'middle':
-      return { borderTopRightRadius: '0px', borderBottomRightRadius: '0px', borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px', ...extraStyle };
-    default:
-      return extraStyle;
-  }
+	switch (positionInGroup) {
+		case "left":
+			return { borderTopRightRadius: "0px", borderBottomRightRadius: "0px", ...extraStyle };
+		case "right":
+			return { borderTopLeftRadius: "0px", borderBottomLeftRadius: "0px", ...extraStyle };
+		case "middle":
+			return {
+				borderTopRightRadius: "0px",
+				borderBottomRightRadius: "0px",
+				borderTopLeftRadius: "0px",
+				borderBottomLeftRadius: "0px",
+				...extraStyle,
+			};
+		default:
+			return extraStyle;
+	}
 };
 
-const Button = props => (
-  <button className={getButtonClass(props.size, props.type, props.active)} 
-    style={getButtonStyle(props.positionInGroup, props.style)} 
-    onClick={props.onClick} 
-    disabled={props.disabled}
-  >
-    {props.children}
-  </button>
+const Button = (props) => (
+	<button
+		className={getButtonClass(props.size, props.type, props.active)}
+		style={getButtonStyle(props.positionInGroup, props.style)}
+		onClick={props.onClick}
+		disabled={props.disabled}
+	>
+		{props.children}
+	</button>
 );
 
 Button.propTypes = {
-  size: PropTypes.string,
-  type: PropTypes.string,
-  style: PropTypes.object,
-  children: PropTypes.node,
-  onClick: PropTypes.func,
-  active: PropTypes.bool,
-  positionInGroup: PropTypes.string,
+	size: PropTypes.string,
+	type: PropTypes.string,
+	style: PropTypes.object,
+	children: PropTypes.node,
+	onClick: PropTypes.func,
+	active: PropTypes.bool,
+	positionInGroup: PropTypes.string,
 };
 
 Button.defaultProps = {
-  size: 'regular',
-  type: 'primary',
-  active: false,
-  disabled: false,
-  positionInGroup: null, // left, middle, right
-  onClick: null,
-  style: {},
-  children: undefined,
+	size: "regular",
+	type: "primary",
+	active: false,
+	disabled: false,
+	positionInGroup: null, // left, middle, right
+	onClick: null,
+	style: {},
+	children: undefined,
 };
 
 export default Button;

@@ -5,16 +5,16 @@ import Search from './search/Search';
 import SuggestSearch from './search/SuggestSearch';
 import SuggestSearchWrapper from './search/SuggestSearchWrapper';
 import Topics from './Topics';
-import GetVersion from '../shared/GetVersion'
+import GetVersion from '../shared/GetVersion';
 
-function Homepage(props)  {
+function Homepage(props) {
   return (
-    <div className="template__home">
+    <div className="">
       <div>
         <GetVersion />
         <SuggestSearchWrapper />
       </div>
-      <hr className="my-5"/>
+      <hr className="my-5" />
       <Topics />
     </div>
   );

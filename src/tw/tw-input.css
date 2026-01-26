@@ -11,7 +11,27 @@
   }
 
   a {
-    @apply text-coa-blue-dark no-underline hocus:underline;
+    @apply text-coa-blue-dark no-underline hocus:underline underline-offset-4;
+  }
+
+  .btn {
+    @apply px-6 py-2 border border-transparent rounded-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
+  }
+
+  .btn-primary {
+    @apply text-white bg-coa-blue-medium hocus:bg-coa-blue-dark
+  }
+
+  .btn-sm {
+    @apply px-3 py-1 text-sm;
+  }
+
+  .input {
+    @apply border-2 border-slate-200 rounded-sm p-2
+  }
+
+  .input-sm {
+    @apply text-sm p-1;
   }
 
   /** Toggle icons for dropdowns and hamburger menu **/
@@ -31,4 +51,15 @@
   #hamburger[aria-expanded="true"] i.bi-list {
     display: none;
   }
+
+  /** TimeSlider Component **/
+
+  .brushedChart rect.selection {
+    @apply stroke-cyan-500 fill-cyan-200;
+  }
+
+  .brushedChart rect.handle {
+    @apply fill-cyan-700;
+  }
+
 }

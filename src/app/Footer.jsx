@@ -3,7 +3,7 @@ import Icon from '../shared/Icon';
 import { IM_GITHUB } from '../shared/iconConstants';
 
 const Footer = () => (
-  <footer className="bg-blue-50 border-t border-blue-dark py-4 mt-8">
+  <footer className="bg-blue-50 border-t border-blue-dark px-6 py-4 mt-8">
     <div className="col-sm-12">
       <div className="text-center">
         We strive for full accessibility. Report issues with this website through our

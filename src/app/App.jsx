@@ -74,7 +74,7 @@ class Main extends React.Component {
               Skip to main content
             </a>
             {!this.hideNavbar && <Navbar />}
-            <main className="w-full px-6 flex-grow" id="content">
+            <main className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" id="content">
               <EnvBanner />
               {/* <Banner color="orange" path="*">
               <>
@@ -115,7 +115,7 @@ const App = compose(
     props: ({ data: { user } }) => ({
       user,
     }),
-  })
+  }),
 )(Main);
 
 export default withApollo(App);

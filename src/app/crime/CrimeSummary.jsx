@@ -85,52 +85,57 @@ const CrimeSummary = (props) => {
 				</ButtonGroup>
 			</div>
 			<form className="border p-4 rounded">
-				<fieldset className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-					<label htmlFor="topicType" className="font-normal">
-						{content.view}:
-					</label>
-					<div className="form-control-static" style={{ display: "block" }}>
-						{content.crimes.toLowerCase()}
+				<fieldset className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+					<div className=" flex flex-col">
+						<label htmlFor="topicType" className="font-normal">
+							{content.view}:
+						</label>
+						<div className="form-control-static" style={{ display: "block" }}>
+							{content.crimes.toLowerCase()}
+						</div>
 					</div>
-					<label htmlFor="time" className="font-normal">
-						{content.during}:
-					</label>
-					<select
-						value={duringURL}
-						onChange={() => refreshLocation(getNewUrlParams(), props.location)}
-						name="time"
-						id="time"
-						className="border-2 rounded px-4 py-3"
-					>
-						{timeOptions.map((option, i) => (
-							<option value={option.value} key={["time", "option", i].join("_")} name="time">
-								{option.display}
-							</option>
-						))}
-					</select>
+
+					<div className="w-full flex flex-col">
+						<label htmlFor="time" className="font-normal">
+							{content.during}:
+						</label>
+						<select
+							value={duringURL}
+							onChange={() => refreshLocation(getNewUrlParams(), props.location)}
+							name="time"
+							id="time"
+							className="border-2 rounded px-4 py-3"
+						>
+							{timeOptions.map((option, i) => (
+								<option value={option.value} key={["time", "option", i].join("_")} name="time">
+									{option.display}
+								</option>
+							))}
+						</select>
+					</div>
+
 					<div
-						className=""
+						className="w-full flex flex-col"
 						hidden={props.location.query.entity === "street" || props.location.query.entity === "neighborhood"}
 					>
 						<label htmlFor="time" className="font-normal">
 							{content.within}:
 						</label>
-						<div>
-							<select
-								value={withinURL}
-								onChange={() => refreshLocation(getNewUrlParams(), props.location)}
-								name="extent"
-								id="extent"
-								className="border-2 rounded px-4 py-3"
-							>
-								{extentOptions.map((option, i) => (
-									<option value={option.value} key={["extent", "option", i].join("_")} name="extent">
-										{option.display}
-									</option>
-								))}
-							</select>
-						</div>
+						<select
+							value={withinURL}
+							onChange={() => refreshLocation(getNewUrlParams(), props.location)}
+							name="extent"
+							id="extent"
+							className="border-2 rounded px-4 py-3"
+						>
+							{extentOptions.map((option, i) => (
+								<option value={option.value} key={["extent", "option", i].join("_")} name="extent">
+									{option.display}
+								</option>
+							))}
+						</select>
 					</div>
+
 					<SpatialEventTopicLocationInfo
 						columnClasses="col-md-4 col-sm-6 col-xs-12"
 						spatialType={props.location.query.entity}

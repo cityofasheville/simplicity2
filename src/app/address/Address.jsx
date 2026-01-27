@@ -213,9 +213,9 @@ const Address = (props) => (
 			return (
 				<div>
 					<PageHeader
-						h2={`${addressData.address}, ${addressData.zipcode}`}
+						h1={`${addressData.address}, ${addressData.zipcode}`}
 						dataType={content.data_type}
-						h3={content.about_this_address}
+						h2={content.about_this_address}
 						icon={<Icon path={IM_LOCATION} size={50} />}
 					>
 						<ButtonGroup>

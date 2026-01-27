@@ -42,9 +42,9 @@ function Neighborhood(props) {
 	return (
 		<div>
 			<PageHeader
-				h2={props.location.query.label}
+				h1={props.location.query.label}
 				dataType="Neighborhood"
-				h3="About this neighborhood"
+				h2="About this neighborhood"
 				icon={<Icon path={IM_USERS} size={50} />}
 			>
 				<ButtonGroup alignment="">

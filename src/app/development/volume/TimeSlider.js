@@ -14,7 +14,7 @@ class TimeSlider extends React.Component {
       ${moment.utc(this.props.spanUpperLimit).format('MMM DD, YYYY')}. Maximum range for a single query is
       ${this.props.maxDaysAllowedToQuery} days.`;
     this.defaultMessageColor = '#222';
-    this.errorMessageColor = '#f00';
+    this.errorMessageColor = '#b00020';
     this.today = timeDay.floor(new Date()).getTime();
 
     this.state = {
@@ -327,21 +327,28 @@ class TimeSlider extends React.Component {
         <ErrorBoundary>
           <div>
             <div
-              className={`small`}
+              id="form_feedback_message"
+              className={`small my-4 ml-0 mr-2`}
               style={{
                 borderLeft: `1px solid ${this.state.messageColor}`,
                 paddingLeft: '.5rem',
-                margin: '0 .5rem .5rem .5rem',
                 color: this.state.messageColor,
               }}
+              aria-live="polite"
             >
               {this.state.message}
             </div>
             <form
               onSubmit={this.handleSubmit}
-              className="timepicker-dropdown w-full flex flex-wrap items-center mb-4 gap-1 px-2"
-              aria-label="Select date range"
+              className="timepicker-dropdown w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-2 px-2"
+              aria-label="Provide a date range"
             >
+              {/* <fieldset>
+                <legend className="sr-only">Manually adjust the existing date range</legend>
+                <div className=''>
+
+                </div>
+              </fieldset> */}
               <div className="timepicker-input-item grow flex items-center">
                 <label htmlFor="startdate" style={{ marginBottom: '0', padding: '0 0.25em 0 0' }}>
                   From
@@ -351,6 +358,7 @@ class TimeSlider extends React.Component {
                   id="startdate"
                   name="startdate"
                   className="input input-sm grow"
+                  aria-describedby="form_feedback_message"
                   // style={{ display: 'inline-block', width: '11em' }}
                   value={moment
                     .utc(new Date(parseInt(this.state.firstInputVal)))
@@ -381,6 +389,7 @@ class TimeSlider extends React.Component {
                   id="enddate"
                   name="enddate"
                   className="input input-sm grow"
+                  aria-describedby="form_feedback_message"
                   value={moment
                     .utc(new Date(parseInt(this.state.secondInputVal)))
                     .format('YYYY-MM-DD')}
@@ -405,14 +414,15 @@ class TimeSlider extends React.Component {
                 type="submit"
                 value="Set Dates"
                 title="Set the date range to the values in the input fields."
-                className="btn btn-primary btn-sm mr-1 grow"
+                className="btn btn-primary btn-sm grow"
                 disabled={
                   this.state.firstInputVal === this.state.brushExtent[0] &&
                   this.state.secondInputVal === this.state.brushExtent[1]
                 }
               />
-              <div className="timepicker-input-item">
-                <div className="flex" role="group" aria-label="...">
+              <div className="timepicker-input-item w-full">
+                <fieldset className="flex w-full">
+                  <legend className="sr-only">Choose a preset timespan</legend>
                   <button
                     type="button"
                     className="btn btn-primary btn-sm rounded-tr-none rounded-br-none"
@@ -425,17 +435,22 @@ class TimeSlider extends React.Component {
                       this.handleTimespanSelection(currentTimespan, 'backward');
                     }}
                   >
-                    <span aria-hidden="true">&laquo;</span>
+                    {/* <span aria-hidden="true">&laquo;</span> */}
+                    <i className="bi bi-caret-left" aria-hidden="true"></i>
                     {/* <span className="sr-only">Move current timespan earlier</span> */}
                   </button>
-                  <div>
+                  <div className="grow">
+                    <label className="sr-only" htmlFor="timespan_select">
+                      Choose a preset timespan
+                    </label>
                     <select
+                      id="timespan_select"
                       value={
                         this.state.brushExtent[1] === this.props.spanUpperLimit
                           ? this.state.selectedTimespan
                           : 0
                       }
-                      className="h-[30px] form-control input-sm"
+                      className="w-full h-[30px] form-control input-sm px-4"
                       style={{ borderColor: '#ccc', borderWidth: 'revert', borderRadius: 'revert' }}
                       onChange={(e) => {
                         this.handleTimespanSelection(e.currentTarget.value);
@@ -474,10 +489,12 @@ class TimeSlider extends React.Component {
                       this.handleTimespanSelection(currentTimespan, 'forward');
                     }}
                   >
-                    <span aria-hidden="true">&raquo;</span>
+                    {/* <span aria-hidden="true">&raquo;</span> */}
+                    <i className="bi bi-caret-right" aria-hidden="true"></i>
+
                     {/* <span className="sr-only">Move current timespan later</span> */}
                   </button>
-                </div>
+                </fieldset>
               </div>
             </form>
           </div>

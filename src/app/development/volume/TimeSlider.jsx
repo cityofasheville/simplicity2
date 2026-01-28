@@ -368,16 +368,15 @@ class TimeSlider extends React.Component {
         <ErrorBoundary>
           <div>
             <div
-              // id="form_feedback_message"
+              id="form_feedback_message"
               name="Date range guidance"
               className="small ml-0 pl-2 mr-2 mb-4"
               style={{
                 borderLeft: `1px solid ${this.state.messageColor}`,
                 color: this.state.messageColor,
               }}
-              // aria-live="polite"
             >
-              <span id="form_feedback_message" aria-live="polite">
+              <span aria-live="polite">
                 {this.state.message.trim() ? `${this.state.message} ${this.defaultMessage}` : ''}
               </span>
               {this.state.message.trim() ? '' : this.defaultMessage}

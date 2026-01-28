@@ -9,17 +9,17 @@ import PermitsTable from './PermitsTable';
 
 const GET_PROJECTS = gql`
   query getPermitsQuery(
-    $date_field: String!,
-    $after: String,
-    $before: String,
-    $permit_groups: [String],
+    $date_field: String!
+    $after: String
+    $before: String
+    $permit_groups: [String]
     $trc: Boolean
   ) {
     permits(
-      date_field: $date_field,
-      after: $after,
-      before: $before,
-      permit_groups: $permit_groups,
+      date_field: $date_field
+      after: $after
+      before: $before
+      permit_groups: $permit_groups
       trc: $trc
     ) {
       application_name
@@ -35,7 +35,6 @@ const GET_PROJECTS = gql`
     }
   }
 `;
-
 
 function PermitsTableWrapper(props) {
   return (
@@ -55,9 +54,9 @@ function PermitsTableWrapper(props) {
           console.log(error);
           return <div>Error :( </div>;
         }
-  
-        let filteredData = data.permits.filter(d => d.permit_number.indexOf('TMP') === -1);
-  
+
+        let filteredData = data.permits.filter((d) => d.permit_number.indexOf('TMP') === -1);
+
         if (props.projectTypes) {
           filteredData = data.permits.filter((d) => {
             let typeOfInterest = false;
@@ -70,46 +69,46 @@ function PermitsTableWrapper(props) {
             return typeOfInterest;
           });
         }
-  
-        return (<div className="col-sm-12">
-          <div>
-            <div className="map-container" style={{ height: '350px', width: '100%' }}>
-              <a
-                style={{ top: '-60px' }}
-                href="#permitsDataTable"
-                className="skip-nav-link"
-                onClick={() => { document.getElementById('permitsDataTable').focus(); }}
-              >
-                This map contains information which is also represented in the table below.  Press enter to skip to the table or tab to continue to the map.
-              </a>
-              <PermitsMap
-                permitData={filteredData.filter(d => d.x && d.y).map(d => Object.assign(
-                  {},
-                  d,
-                  {
-                    popup: `<a href="/permits/${d.permit_number}">
+
+        return (
+          <div className="col-sm-12">
+            <div>
+              <div className="relative w-full h-72 sm:h-96 md:h-128">
+                <a
+                  href="#permitsDataTable"
+                  className="skip-nav-link"
+                  onClick={() => {
+                    document.getElementById('permitsDataTable').focus();
+                  }}
+                >
+                  This map contains information which is also represented in the table below. Press
+                  enter to skip to the table or tab to continue to the map.
+                </a>
+                <PermitsMap
+                  permitData={filteredData
+                    .filter((d) => d.x && d.y)
+                    .map((d) =>
+                      Object.assign({}, d, {
+                        popup: `<a href="/permits/${d.permit_number}">
                       ${d.application_name ? d.application_name : d.permit_number}</a><br/>
                       ${d.address ? d.address + '<br/>' : ''}
                       ${d.permit_description ? d.permit_description : ''}`,
-                  },
-                ))}
-                zoom={12}
-                centerCoords={[35.5951, -82.5515]}
-              />
+                      }),
+                    )}
+                  zoom={12}
+                  centerCoords={[35.5951, -82.5515]}
+                />
+              </div>
+            </div>
+            <div id="permitsDataTable" style={{ overflowX: 'scroll' }}>
+              <PermitsTable data={filteredData} ignoredParams={props.ignoredParams} {...props} />
             </div>
           </div>
-          <div id="permitsDataTable" style={{ overflowX: 'scroll' }}>
-            <PermitsTable 
-              data={filteredData} 
-              ignoredParams={props.ignoredParams}
-              {...props} 
-            />
-          </div>
-        </div>);
+        );
       }}
     </Query>
   );
-} 
+}
 
 PermitsTableWrapper.propTypes = {
   date_field: PropTypes.string,

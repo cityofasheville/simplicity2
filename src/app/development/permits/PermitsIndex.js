@@ -4,9 +4,7 @@ import PermitsTableWrapper from './PermitsTableWrapper';
 import TimeSlider from '../volume/TimeSlider';
 import ErrorBoundary from '../../../shared/ErrorBoundary';
 
-
 class PermitsIndex extends React.Component {
-
   constructor(props) {
     super(props);
 
@@ -14,45 +12,38 @@ class PermitsIndex extends React.Component {
     let currentUrlParams = new URLSearchParams(window.location.search);
 
     if (currentUrlParams.has('rangeFrom') && currentUrlParams.has('rangeThrough')) {
-
       if (isNaN(currentUrlParams.get('rangeFrom')) || isNaN(currentUrlParams.get('rangeThrough'))) {
-        defaultExtent = [
-          this.props.initialBrushExtent[0],
-          this.props.initialBrushExtent[1],
-        ];  
-
+        defaultExtent = [this.props.initialBrushExtent[0], this.props.initialBrushExtent[1]];
       } else {
-
         // measure the amount of available valid date range input (in days) after selected end date and before selected start date
-        const rangeOverhead = timeDay.count(currentUrlParams.get('rangeThrough'), this.props.spanUpperLimit);
-        const rangeUnderhead = timeDay.count(this.props.spanLowerLimit, currentUrlParams.get('rangeFrom'));
+        const rangeOverhead = timeDay.count(
+          currentUrlParams.get('rangeThrough'),
+          this.props.spanUpperLimit,
+        );
+        const rangeUnderhead = timeDay.count(
+          this.props.spanLowerLimit,
+          currentUrlParams.get('rangeFrom'),
+        );
 
         // if either value is negative, then input is out of range; revert to default values
         if (rangeOverhead < 0 || rangeUnderhead < 0) {
-          defaultExtent = [
-            this.props.initialBrushExtent[0],
-            this.props.initialBrushExtent[1],
-          ];  
+          defaultExtent = [this.props.initialBrushExtent[0], this.props.initialBrushExtent[1]];
         } else {
-          defaultExtent = [
-            currentUrlParams.get('rangeFrom'),
-            currentUrlParams.get('rangeThrough'),
-          ];  
+          defaultExtent = [currentUrlParams.get('rangeFrom'), currentUrlParams.get('rangeThrough')];
         }
       }
 
-    // Use this block for defining "date range shortcuts" (e.g. requested by DSD)
-    } else if (currentUrlParams.has('range') && currentUrlParams.get('range').toLowerCase() === 'oneyearback') {
+      // Use this block for defining "date range shortcuts" (e.g. requested by DSD)
+    } else if (
+      currentUrlParams.has('range') &&
+      currentUrlParams.get('range').toLowerCase() === 'oneyearback'
+    ) {
       defaultExtent = [
         timeMonth.offset(timeDay.floor(new Date()), -12).getTime(),
         timeDay.floor(new Date()).getTime(),
       ];
-
     } else {
-      defaultExtent = [
-        this.props.initialBrushExtent[0],
-        this.props.initialBrushExtent[1],
-      ];
+      defaultExtent = [this.props.initialBrushExtent[0], this.props.initialBrushExtent[1]];
     }
 
     currentUrlParams.set('rangeFrom', defaultExtent[0]);
@@ -60,8 +51,13 @@ class PermitsIndex extends React.Component {
     currentUrlParams.delete('range');
 
     if (history.pushState) {
-      let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + `?${currentUrlParams}${window.location.hash}`;
-      window.history.pushState({path: newurl}, '', newurl);
+      let newurl =
+        window.location.protocol +
+        '//' +
+        window.location.host +
+        window.location.pathname +
+        `?${currentUrlParams}${window.location.hash}`;
+      window.history.pushState({ path: newurl }, '', newurl);
     }
 
     this.state = {
@@ -79,8 +75,13 @@ class PermitsIndex extends React.Component {
     currentUrlParams.set('rangeThrough', newExtent[1]);
 
     if (history.pushState) {
-      let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + `?${currentUrlParams}`;
-      window.history.pushState({path: newurl}, '', newurl);
+      let newurl =
+        window.location.protocol +
+        '//' +
+        window.location.host +
+        window.location.pathname +
+        `?${currentUrlParams}`;
+      window.history.pushState({ path: newurl }, '', newurl);
     }
 
     this.setState({
@@ -90,13 +91,20 @@ class PermitsIndex extends React.Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="">
         <h1>All Permit Applications</h1>
         <hr />
-        <h2 style={{marginTop: "32px"}}>Filter Permits by Date Applied</h2>
+        <h2 className="mt-8">Filter Permits by Date Applied</h2>
         <p>
-          If you require access to the full permits dataset (i.e. more than is available with a single query on this page), please visit the City of Asheville's {' '}
-          <a href="https://data-avl.opendata.arcgis.com/datasets/b8fdb63db30b42d0875afb617e1551f4_2/explore?location=35.604370%2C-82.530822%2C11.13&showTable=true" target='_blank'>Open Data Portal</a>.
+          If you require access to the full permits dataset (i.e. more than is available with a
+          single query on this page), please visit the City of Asheville's{' '}
+          <a
+            href="https://data-avl.opendata.arcgis.com/datasets/b8fdb63db30b42d0875afb617e1551f4_2/explore?location=35.604370%2C-82.530822%2C11.13&showTable=true"
+            target="_blank"
+          >
+            Open Data Portal
+          </a>
+          .
         </p>
 
         <ErrorBoundary>
@@ -116,11 +124,7 @@ class PermitsIndex extends React.Component {
             before={this.state.timeSpan[1]}
             permit_groups={['Permits', 'Planning']}
             // PermitsTable will mutate some query params, we want it to ignore our date range params
-            ignoredParams={[
-              'range',
-              'rangeFrom',
-              'rangeThrough'
-            ]}
+            ignoredParams={['range', 'rangeFrom', 'rangeThrough']}
           />
         </ErrorBoundary>
       </div>
@@ -132,7 +136,7 @@ PermitsIndex.defaultProps = {
   initialBrushExtent: [
     timeMonth.offset(timeDay.floor(new Date()), -1).getTime(),
     timeDay.floor(new Date()).getTime(),
-  ], 
+  ],
   spanUpperLimit: timeDay.floor(new Date()).getTime(),
   spanLowerLimit: timeDay.floor(new Date(Date.UTC(1999, 0, 1))).getTime(),
 };

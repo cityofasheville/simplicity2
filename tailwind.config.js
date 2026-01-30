@@ -11,6 +11,9 @@ module.exports = {
       xxl: '1536px',
     },
     extend: {
+      spacing: {
+        128: '32rem',
+      },
       fontWeight: {
         lighter: '300',
       },

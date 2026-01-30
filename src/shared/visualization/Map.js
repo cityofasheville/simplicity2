@@ -1,8 +1,8 @@
-import React from "react";
-import PropTypes from "prop-types";
-import gql from "graphql-tag";
-import { Query } from "react-apollo";
-import L from "leaflet";
+import React from 'react';
+import PropTypes from 'prop-types';
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
+import L from 'leaflet';
 import {
   Map as LeafletMap,
   Marker,
@@ -12,13 +12,13 @@ import {
   Polyline,
   Polygon,
   LayersControl,
-} from "react-leaflet";
-import { GoogleLayer } from "react-leaflet-google";
-import MarkerClusterGroup from "react-leaflet-markercluster";
-import MapLegendControl from "./MapLegendControl";
-import Icon from "../Icon";
-import { IM_LIST2 } from "../iconConstants";
-import { convertPolygonsToLatLngArrays } from "../../utilities/mapUtilities";
+} from 'react-leaflet';
+import { GoogleLayer } from 'react-leaflet-google';
+import MarkerClusterGroup from 'react-leaflet-markercluster';
+import MapLegendControl from './MapLegendControl';
+import Icon from '../Icon';
+import { IM_LIST2 } from '../iconConstants';
+import { convertPolygonsToLatLngArrays } from '../../utilities/mapUtilities';
 
 // using open street map for now because that way can use the clusters, etc.
 
@@ -44,12 +44,12 @@ const GET_MUNICIPALITIES = gql`
   }
 `;
 
-const mapKey = "AIzaSyAO8R1pXvBhpRoTFJ4d81MA8D8QBD0mPe0"; // restrict your referrers in cloud console
+const mapKey = 'AIzaSyAO8R1pXvBhpRoTFJ4d81MA8D8QBD0mPe0'; // restrict your referrers in cloud console
 const { BaseLayer } = LayersControl;
-const satellite = "SATELLITE";
+const satellite = 'SATELLITE';
 
 function markerClusterKeyDown(e) {
-  if (e.originalEvent.key === "Enter") {
+  if (e.originalEvent.key === 'Enter') {
     e.originalEvent.target.click();
   }
 }
@@ -57,7 +57,7 @@ function markerClusterKeyDown(e) {
 const createClusterCustomIcon = function (cluster) {
   return L.divIcon({
     html: `<div><span aria-label="${cluster.getChildCount()} projects">${cluster.getChildCount()}</span></div>`,
-    className: "marker-cluster-custom marker-cluster marker-cluster-small",
+    className: 'marker-cluster-custom marker-cluster marker-cluster-small',
     iconSize: L.point(40, 40, true),
   });
 };
@@ -87,15 +87,15 @@ const Map = (props) => {
 
   let shouldZoomToNonCenter = false;
   let zoomTo = null;
-  if (props.zoomToPoint !== null && props.zoomToPoint !== "") {
+  if (props.zoomToPoint !== null && props.zoomToPoint !== '') {
     shouldZoomToNonCenter = true;
-    zoomTo = props.zoomToPoint.split(",");
+    zoomTo = props.zoomToPoint.split(',');
     zoomTo = [parseFloat(zoomTo[0]), parseFloat(zoomTo[1])];
   }
 
   return (
-<div className={`${props.height} ${props.width} my-4 px-4`}>
-<LeafletMap
+    <div className={`h-full w-full my-4 px-4`}>
+      <LeafletMap
         className="h-full w-full"
         center={shouldZoomToNonCenter ? zoomTo : props.center}
         zoom={props.zoom}
@@ -110,11 +110,7 @@ const Map = (props) => {
         />
 
         {props.drawCircle && (
-          <Circle
-            center={props.center}
-            radius={props.radius}
-            fillOpacity={0.22}
-          />
+          <Circle center={props.center} radius={props.radius} fillOpacity={0.22} />
         )}
         {shouldZoomToNonCenter && (
           <Circle center={zoomTo} radius={15} fillOpacity={0.15} color="red" />
@@ -123,7 +119,7 @@ const Map = (props) => {
           <Marker
             position={props.center}
             icon={L.icon({
-              iconUrl: require("../../images/marker-icon-2.png"),
+              iconUrl: require('../../images/marker-icon-2.png'),
               iconSize: [25, 41],
               iconAnchor: [12, 41],
               popupAnchor: [2, -22],
@@ -139,7 +135,7 @@ const Map = (props) => {
         {props.drawStreet &&
           props.streetData.map((line, index) => (
             <Polyline
-              key={["street_line", index].join("_")}
+              key={['street_line', index].join('_')}
               positions={line}
               weight={5}
               className="noPointer"
@@ -148,7 +144,7 @@ const Map = (props) => {
         {props.drawMaintenance &&
           props.maintenanceData.map((line, index) => (
             <Polyline
-              key={["maintenance_line", index].join("_")}
+              key={['maintenance_line', index].join('_')}
               positions={line.line}
               weight={10}
               opacity={0.8}
@@ -160,7 +156,7 @@ const Map = (props) => {
         {props.drawPolygon &&
           props.polygonData.map((poly, index) => (
             <Polygon
-              key={["polygon", index].join("_")}
+              key={['polygon', index].join('_')}
               positions={poly.polygons}
               color={props.color}
               opacity={props.opacity}
@@ -203,19 +199,19 @@ const Map = (props) => {
             <div
               className="legend"
               style={{
-                maxHeight: parseInt(props.height.split("px")[0], 10) / 2,
+                maxHeight: parseInt(props.height.split('px')[0], 10) / 2,
               }}
             >
               <div
                 className="closeLegend"
                 style={{
-                  fontWeight: "bold",
-                  fontSize: "14px",
-                  color: "#979797",
+                  fontWeight: 'bold',
+                  fontSize: '14px',
+                  color: '#979797',
                 }}
                 onClick={(e) => {
-                  if (e.target.parentNode.style.display === "block") {
-                    e.target.parentNode.style.display = "none";
+                  if (e.target.parentNode.style.display === 'block') {
+                    e.target.parentNode.style.display = 'none';
                   }
                 }}
               >
@@ -263,25 +259,25 @@ Map.defaultProps = {
   center: [35.5951, -82.5515],
   centerLabel: null,
   data: [],
-  height: "600px",
+  height: '600px',
   drawCircle: false,
   drawStreet: false,
   drawPolygon: false,
   drawMaintenance: false,
   maintenanceData: null,
-  municipalities: ["Asheville Corporate Limits"],
-  name: "",
+  municipalities: ['Asheville Corporate Limits'],
+  name: '',
   polygonData: null,
   radius: 83,
   showCenter: false,
   streetData: null,
-  width: "100%",
+  width: '100%',
   within: 1320,
   zoomToPoint: null,
   zoom: 16,
-  fillColor: "#58a2ff",
+  fillColor: '#58a2ff',
   fillOpacity: 0.35,
-  color: "#004987",
+  color: '#004987',
   opacity: 1,
   weight: 1.5,
 };

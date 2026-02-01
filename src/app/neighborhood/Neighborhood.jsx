@@ -60,42 +60,42 @@ function Neighborhood(props) {
 					</LinkButton>
 				</ButtonGroup>
 			</PageHeader>
-			<section className="bg-gray-50 px-1 py-3">
-				<Map
-					height="h-[250px]"
-					width="w-full"
-					drawPolygon
-					polygonData={combinePolygonsFromNeighborhoodList([props.data.neighborhoods[0]])}
-					bounds={getBoundsFromPolygonData([props.data.neighborhoods[0].polygon])}
-				/>
-				<DetailsIconLinkFormGroup
-					label="Address & Owner Mailing Lists"
-					icon={<Icon path={IM_ENVELOP3} size={24} />}
-					href={`address/addressList${detailsURLBase}`}
-					title="Address & Owner Mailing Lists"
-					inWindow
-				/>
-				<DetailsIconLinkFormGroup
-					label="Properties"
-					icon={<Icon path={IM_HOME2} size={24} />}
-					href={`property/properties${detailsURLBase}`}
-					title="Properties"
-					inWindow
-				/>
-			</section>
-			<section className="grid grid-cols-1 md:grid-cols-2 px-4 gap-4">
-				{["CRIME", "DEVELOPMENT"].map((topic, i) => (
-					<div key={["topic", i].join("_")}>
-						<TopicCard
-							topic={topic}
-							entity="neighborhood"
-							id={props.location.query.id}
-							label={props.location.query.label}
-							entities={props.location.query.entities}
-							search={props.location.query.search}
-						/>
-					</div>
-				))}
+			<section className="bg-gray-50 p-4 ">
+				<div className="w-full h-[600px] flex mb-4">
+					<Map
+						drawPolygon
+						polygonData={combinePolygonsFromNeighborhoodList([props.data.neighborhoods[0]])}
+						bounds={getBoundsFromPolygonData([props.data.neighborhoods[0].polygon])}
+					/>
+				</div>
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+					<DetailsIconLinkFormGroup
+						label="Address & Owner Mailing Lists"
+						icon={<Icon path={IM_ENVELOP3} size={24} />}
+						href={`address/addressList${detailsURLBase}`}
+						title="Address & Owner Mailing Lists"
+						inWindow
+					/>
+					<DetailsIconLinkFormGroup
+						label="Properties"
+						icon={<Icon path={IM_HOME2} size={24} />}
+						href={`property/properties${detailsURLBase}`}
+						title="Properties"
+						inWindow
+					/>
+					{["CRIME", "DEVELOPMENT"].map((topic, i) => (
+						<div key={["topic", i].join("_")}>
+							<TopicCard
+								topic={topic}
+								entity="neighborhood"
+								id={props.location.query.id}
+								label={props.location.query.label}
+								entities={props.location.query.entities}
+								search={props.location.query.search}
+							/>
+						</div>
+					))}
+				</div>
 			</section>
 		</div>
 	);

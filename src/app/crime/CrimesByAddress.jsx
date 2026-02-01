@@ -218,55 +218,55 @@ function CrimesByAddress(props) {
 				});
 
 				return (
-					<div className="crimes-template__data">
-						<div className="row template-header">
-							<div className="flex">
-								<div className="ml-auto">
-									<EmailDownload downloadData={data.crimes_by_address} fileName={content.crimes_by_address_filename} />
-								</div>
-								<ButtonGroup alignment="">
-									<Button
-										onClick={() => refreshLocation(getNewUrlParams("map"), props.location)}
-										active={props.location.query.view === "map"}
-										positionInGroup="left"
-									>
-										{content.map_view}
-									</Button>
-									<Button
-										onClick={() => refreshLocation(getNewUrlParams("list"), props.location)}
-										active={props.location.query.view === "list"}
-										positionInGroup="middle"
-									>
-										{content.list_view}
-									</Button>
-									<Button
-										onClick={() => refreshLocation(getNewUrlParams("summary"), props.location)}
-										positionInGroup="right"
-										active={props.location.query.view === "summary"}
-									>
-										{content.chart_view}
-									</Button>
-								</ButtonGroup>
+					<div>
+						<div className="flex my-4 items-center">
+							<div className="mr-auto">
+								<EmailDownload downloadData={data.crimes_by_address} fileName={content.crimes_by_address_filename} />
 							</div>
+							<ButtonGroup>
+								<Button
+									onClick={() => refreshLocation(getNewUrlParams("map"), props.location)}
+									active={props.location.query.view === "map"}
+									positionInGroup="left"
+								>
+									{content.map_view}
+								</Button>
+								<Button
+									onClick={() => refreshLocation(getNewUrlParams("list"), props.location)}
+									active={props.location.query.view === "list"}
+									positionInGroup="middle"
+								>
+									{content.list_view}
+								</Button>
+								<Button
+									onClick={() => refreshLocation(getNewUrlParams("summary"), props.location)}
+									positionInGroup="right"
+									active={props.location.query.view === "summary"}
+								>
+									{content.chart_view}
+								</Button>
+							</ButtonGroup>
+						</div>
+						<div
+							id="summaryView"
+							className={`w-full h-full ${props.location.query.view === "summary" ? "flex" : "hidden"}`}
+						>
+							{pieData.length > 0 ? (
+								<PieChart data={pieData} altText={content.crime_pie_chart} className="mx-auto" />
+							) : (
+								<div>{content.no_results_found}</div>
+							)}
 						</div>
 
-						<div className="row">
-							<div id="summaryView" className="col-xs-12" hidden={props.location.query.view !== "summary"}>
-								{pieData.length > 0 ? (
-									<PieChart data={pieData} altText={content.crime_pie_chart} />
-								) : (
-									<div className="alert alert-info">{content.no_results_found}</div>
-								)}
-							</div>
+						<div id="listView" className={`${props.location.query.view === "list" ? "flex" : "hidden"}`}>
+							<CrimeTable data={data.crimes_by_address} location={props.location} />
+						</div>
 
-							<div id="listView" hidden={props.location.query.view !== "list"}>
-								<CrimeTable data={data.crimes_by_address} location={props.location} />
-							</div>
-
-							<div id="mapView" className="col-xs-12" hidden={props.location.query.view !== "map"}>
-								{data.crimes_by_address.length === 0 || props.location.query.view !== "map" ? (
-									<div className="alert alert-info">{content.no_results_found}</div>
-								) : (
+						<div id="mapView" className={`${props.location.query.view === "map" ? "flex" : "hidden"}`}>
+							{data.crimes_by_address.length === 0 || props.location.query.view !== "map" ? (
+								<div> {content.no_results_found}</div>
+							) : (
+								<div className="w-full h-[600px] flex">
 									<Map
 										data={mapData}
 										showCenter
@@ -293,9 +293,9 @@ function CrimesByAddress(props) {
 												? props.location.query.zoomToPoint
 												: null
 										}
-									/>
-								)}
-							</div>
+									/>{" "}
+								</div>
+							)}
 						</div>
 					</div>
 				);

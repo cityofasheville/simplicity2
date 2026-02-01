@@ -68,7 +68,7 @@ const CrimeSummary = (props) => {
 	return (
 		<div className="">
 			<div className="mb-8 mt-5 px-2 flex items-center">
-				<span className="text-coa-blue-medium pr-2">{<Icon path={IM_SHIELD3} size={35} />}</span>
+				<span className="text-coa-blue-medium pr-2">{<Icon aria-hidden="true" path={IM_SHIELD3} size={35} />}</span>
 				<h1 className="text-coa-blue-medium">
 					<span className="text-4xl">{content.crime}</span>
 				</h1>
@@ -77,7 +77,7 @@ const CrimeSummary = (props) => {
 					href="https://ashevillepd.policetocitizen.com/Home"
 					target="_blank"
 				>
-					{<Icon path={IM_LIBRARY2} size={16} />}
+					{<Icon aria-hidden="true" path={IM_LIBRARY2} size={16} />}
 					<span className="pl-2">{content.view_apd_reports}</span>
 				</a>
 				<ButtonGroup alignment="right">
@@ -118,7 +118,7 @@ const CrimeSummary = (props) => {
 						className="w-full flex flex-col"
 						hidden={props.location.query.entity === "street" || props.location.query.entity === "neighborhood"}
 					>
-						<label htmlFor="time" className="font-normal">
+						<label htmlFor="extent" className="font-normal">
 							{content.within}:
 						</label>
 						<select

@@ -13,14 +13,12 @@ function PageHeader(props) {
 			<div className="text-coa-blue-medium flex items-start gap-2  mt-5 mb-4">
 				{props.icon && <span aria-hidden="true">{props.icon}</span>}
 				<h1 className="flex flex-col text-left">
-					<span className="text-3xl">{props.h2}</span>
+					<span className="text-3xl">{props.h1}</span>
 					{props.dataType && <span className="text-base text-gray-500">{props.dataType}</span>}
 				</h1>
 			</div>
 
 			<div className="flex px-4 pb-4 pt-2">
-				<div>{props.children}</div>
-
 				{/* {(props.externalLink || props.dataLinkPath) && (
 					<div className="template-header__subnav">
 						{props.externalLink && (
@@ -37,9 +35,12 @@ function PageHeader(props) {
 						)}
 					</div>
 				)} */}
-				{props.h2 !== null && <h3 className="text-3xl text-coa-blue-medium ml-auto">{props.h3}</h3>}
-				{props.h3 !== null && <h4>{props.h4}</h4>}
+				{props.h2 !== null && <h2 className="text-3xl text-coa-blue-medium">{props.h2}</h2>}
+				{props.h3 !== null && <h3>{props.h3}</h3>}
+				{props.h4 !== null && <h4>{props.h4}</h4>}
+
 				{props.subheading !== null && props.subheading}
+				<div className="ml-auto">{props.children}</div>
 			</div>
 		</section>
 	);

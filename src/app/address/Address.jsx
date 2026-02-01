@@ -246,11 +246,13 @@ const Address = (props) => (
 							)}
 						</ButtonGroup>
 					</PageHeader>
-					<section className="bg-gray-50 pt-4">
+					<section className="bg-gray-50 p-4">
 						<InCityMessage inTheCity={addressData.is_in_city} />
-						<Map data={mapData} center={[addressData.y, addressData.x]} height="h-[250px]" width="w-full" />
+						<div className="h-[250px] w-full my-4">
+							<Map data={mapData} center={[addressData.y, addressData.x]} height="h-[250px]" width="w-full" />
+						</div>
 						{addressData.is_in_city && (
-							<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 px-4">
+							<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 gap-4">
 								{["CRIME", "DEVELOPMENT"].map((topic, i) => (
 									<div className="col-xs-6" key={["topic", i]}>
 										<TopicCard
@@ -267,7 +269,7 @@ const Address = (props) => (
 								))}
 							</div>
 						)}
-						<div className="pt-2 grid grid-cols-1 md:grid-cols-2">
+						<div className="my-4 grid grid-cols-1 md:grid-cols-2 gap-4">
 							<DetailsFormGroup
 								label={content.trash_collection}
 								name="trash"

@@ -34,10 +34,12 @@ const SpatialEventTopicLocationInfo = (props) => {
 
 	return (
 		<div className={`form-group ${props.columnClasses}`}>
-			<label htmlFor="extent" className="font-normal">
+			<label htmlFor="location" className="font-normal">
 				{label}:{" "}
 			</label>
-			<div className="form-control-static">{props.spatialDescription}</div>
+			<div id="location" className="form-control-static">
+				{props.spatialDescription}
+			</div>
 		</div>
 	);
 };

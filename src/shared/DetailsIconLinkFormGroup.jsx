@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import { Link } from "react-router";
 
 const DetailsIconLinkFormGroup = (props) => (
-	<div className="mx-4">
+	<div>
 		{props.inWindow ? (
 			<Link
-				className="p-1 text-white bg-primary my-3 py-3 block w-full rounded text-center"
+				className="p-1 text-white bg-primary py-3 block w-full rounded text-center"
 				to={props.href}
 				title={props.title}
 			>
@@ -16,7 +16,7 @@ const DetailsIconLinkFormGroup = (props) => (
 			</Link>
 		) : (
 			<a
-				className="p-1 text-white bg-primary my-3 py-3 block w-full rounded text-center"
+				className="p-1 text-white bg-primary py-3 block w-full rounded text-center"
 				href={props.href}
 				title={props.title}
 				target="_blank"

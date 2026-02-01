@@ -45,20 +45,20 @@ function Street(props) {
 					</LinkButton>
 				</ButtonGroup>
 			</PageHeader>
-			<fieldset className="bg-gray-50 px-1 py-3">
-				<Map
-					height="h-[250px]"
-					width="w-full"
-					legend={createMaintenanceLegend(formatMaintenanceData(props.data.streets))}
-					maintenanceData={formatMaintenanceData(props.data.streets)}
-					drawMaintenance
-					bounds={
-						(props.location.query.bounds !== undefined) & (props.location.query.bounds !== "")
-							? JSON.parse(props.location.query.bounds)
-							: getBoundsFromStreetData(props.data.streets)
-					}
-				/>
-				<div className="grid grid-cols-1 md:grid-cols-2 px-4 gap-4">
+			<div className="bg-gray-50 p-4">
+				<div className="h-[250px] w-full">
+					<Map
+						legend={createMaintenanceLegend(formatMaintenanceData(props.data.streets))}
+						maintenanceData={formatMaintenanceData(props.data.streets)}
+						drawMaintenance
+						bounds={
+							(props.location.query.bounds !== undefined) & (props.location.query.bounds !== "")
+								? JSON.parse(props.location.query.bounds)
+								: getBoundsFromStreetData(props.data.streets)
+						}
+					/>
+				</div>
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
 					{props.topics.map((topic, i) => (
 						<div key={["topic", i].join("_")}>
 							<TopicCard
@@ -70,74 +70,74 @@ function Street(props) {
 							/>
 						</div>
 					))}
+					<DetailsIconLinkFormGroup
+						label="Address & Owner Mailing Lists"
+						icon={<Icon path={IM_ENVELOP3} size={24} />}
+						href={[
+							"address/addressList",
+							"?entity=",
+							props.location.query.entity,
+							"&entities=",
+							props.location.query.entities,
+							"&id=",
+							props.location.query.id,
+							"&label=",
+							props.location.query.label,
+							"&search=",
+							props.location.query.search,
+							"&hideNavbar=",
+							props.location.query.hideNavbar,
+							"&view=list",
+						].join("")}
+						title="Address & Owner Mailing Lists"
+						inWindow
+					/>
+					<DetailsIconLinkFormGroup
+						label="Properties"
+						icon={<Icon path={IM_HOME2} size={24} />}
+						href={[
+							"property/properties",
+							"?entity=",
+							props.location.query.entity,
+							"&entities=",
+							props.location.query.entities,
+							"&id=",
+							props.location.query.id,
+							"&search=",
+							props.location.query.search,
+							"&label=",
+							props.location.query.label,
+							"&hideNavbar=",
+							props.location.query.hideNavbar,
+							"&view=list",
+						].join("")}
+						title="Properties"
+						inWindow
+					/>
+					<DetailsIconLinkFormGroup
+						label="Maintenance"
+						icon={<Icon path={IM_TRAFFIC_CONE} size={24} />}
+						href={[
+							"maintenance",
+							"?entity=",
+							props.location.query.entity,
+							"&entities=",
+							props.location.query.entities,
+							"&search=",
+							props.location.query.search,
+							"&id=",
+							props.location.query.id,
+							"&label=",
+							props.location.query.label,
+							"&hideNavbar=",
+							props.location.query.hideNavbar,
+							"&view=map",
+						].join("")}
+						title="Maintenance"
+						inWindow
+					/>
 				</div>
-				<DetailsIconLinkFormGroup
-					label="Address & Owner Mailing Lists"
-					icon={<Icon path={IM_ENVELOP3} size={24} />}
-					href={[
-						"address/addressList",
-						"?entity=",
-						props.location.query.entity,
-						"&entities=",
-						props.location.query.entities,
-						"&id=",
-						props.location.query.id,
-						"&label=",
-						props.location.query.label,
-						"&search=",
-						props.location.query.search,
-						"&hideNavbar=",
-						props.location.query.hideNavbar,
-						"&view=list",
-					].join("")}
-					title="Address & Owner Mailing Lists"
-					inWindow
-				/>
-				<DetailsIconLinkFormGroup
-					label="Properties"
-					icon={<Icon path={IM_HOME2} size={24} />}
-					href={[
-						"property/properties",
-						"?entity=",
-						props.location.query.entity,
-						"&entities=",
-						props.location.query.entities,
-						"&id=",
-						props.location.query.id,
-						"&search=",
-						props.location.query.search,
-						"&label=",
-						props.location.query.label,
-						"&hideNavbar=",
-						props.location.query.hideNavbar,
-						"&view=list",
-					].join("")}
-					title="Properties"
-					inWindow
-				/>
-				<DetailsIconLinkFormGroup
-					label="Maintenance"
-					icon={<Icon path={IM_TRAFFIC_CONE} size={24} />}
-					href={[
-						"maintenance",
-						"?entity=",
-						props.location.query.entity,
-						"&entities=",
-						props.location.query.entities,
-						"&search=",
-						props.location.query.search,
-						"&id=",
-						props.location.query.id,
-						"&label=",
-						props.location.query.label,
-						"&hideNavbar=",
-						props.location.query.hideNavbar,
-						"&view=map",
-					].join("")}
-					title="Maintenance"
-					inWindow
-				/>
-			</fieldset>
+			</div>
 		</div>
 	);
 }

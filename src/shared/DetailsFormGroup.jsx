@@ -5,7 +5,7 @@ const DetailsFormGroup = (props) => (
 	// <div className={props.icon ?
 	//   'form-group form-group--has-content form-group--has-icon' :
 	//   (props.fullWidth ? 'form-group form-group--has-content full-width-card' : 'form-group form-group--has-content')}>
-	<div className="px-4 pb-4">
+	<div className="">
 		<div className="p-4 bg-gray-200 h-full">
 			<h4 className="pb-4 mb-2 border-b-2 border-gray-300 flex items-baseline">
 				{props.icon !== null && (

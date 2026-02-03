@@ -47,8 +47,9 @@ function Neighborhood(props) {
 				h2="About this neighborhood"
 				icon={<Icon path={IM_USERS} size={50} />}
 			>
-				<ButtonGroup alignment="">
+				<div className="btn-group ml-auto">
 					<LinkButton
+						className="btn btn-primary btn-sm"
 						pathname="/search"
 						query={{
 							entities: props.location.query.entities,
@@ -58,7 +59,7 @@ function Neighborhood(props) {
 					>
 						Back to search
 					</LinkButton>
-				</ButtonGroup>
+				</div>
 			</PageHeader>
 			<section className="bg-gray-50 p-4 ">
 				<div className="w-full h-[600px] flex mb-4">

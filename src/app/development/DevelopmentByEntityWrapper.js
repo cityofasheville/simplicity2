@@ -146,29 +146,28 @@ function DevelopmentByEntityWrapper(props) {
 	return (
 		<div>
 			<PageHeader h1="Development" subheading={pageSubHeading} icon={<Icon path={IM_OFFICE} size={35} />}>
-				<ButtonGroup alignment="right">
+				<div className="btn-group ml-auto">
 					{props.location.query.search && (
-						<Button
-							className="btn btn-primary btn-sm"
-							positionInGroup={props.location.query.entity === "address" && props.location.query.id ? "left" : ""}
+						<button
+							className="btn btn-primary"
 							onClick={() => {
 								browserHistory.replace(`/?search=${props.location.query.search}`);
 							}}
 						>
 							Back to Search
-						</Button>
+						</button>
 					)}
 					{props.location.query.entity === "address" && props.location.query.id && (
-						<Button
-							positionInGroup="right"
+						<button
+							className="btn btn-primary"
 							onClick={() => {
 								browserHistory.replace(`/address?id=${props.location.query.id}&search=${props.location.query.search}`);
 							}}
 						>
 							Back to Address
-						</Button>
+						</button>
 					)}
-				</ButtonGroup>
+				</div>
 			</PageHeader>
 
 			<div className="row">

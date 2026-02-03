@@ -165,14 +165,18 @@ const Address = (props) => (
 					return (
 						<div>
 							<span>
-								<a href="http://www.ashevillenc.gov/departments/street_services/maintenance.htm" target="_blank">
+								<a
+									className="block mb-1"
+									href="http://www.ashevillenc.gov/departments/street_services/maintenance.htm"
+									target="_blank"
+								>
 									{entity}
 								</a>
 							</span>
 							<a
 								href="https://iframe.publicstuff.com/#?client_id=819"
 								target="_blank"
-								className="block w-full text-white rounded text-center py-[1px] px-1 bg-warning"
+								className="btn btn-small btn-warning inline-block w-auto"
 							>
 								{content.report_with_the_asheville_app}
 							</a>
@@ -218,10 +222,10 @@ const Address = (props) => (
 						h2={content.about_this_address}
 						icon={<Icon path={IM_LOCATION} size={50} />}
 					>
-						<ButtonGroup>
+						<div className="btn-group ml-auto">
 							<LinkButton
+								className="btn btn-primary btn-sm"
 								pathname="/search"
-								positionInGroup={props.location.query.placeSearch ? "left" : ""}
 								query={{
 									entities: props.location.query.entities,
 									search: props.location.query.search,
@@ -232,7 +236,7 @@ const Address = (props) => (
 							</LinkButton>
 							{props.location.query.placeSearch && (
 								<LinkButton
-									positionInGroup="right"
+									className="btn btn-primary btn-sm"
 									pathname="/search/googlePlaceMatches"
 									query={{
 										entities: props.location.query.entities,
@@ -244,7 +248,7 @@ const Address = (props) => (
 									{content.back_to_place_matches}
 								</LinkButton>
 							)}
-						</ButtonGroup>
+						</div>
 					</PageHeader>
 					<section className="bg-gray-50 p-4">
 						<InCityMessage inTheCity={addressData.is_in_city} />

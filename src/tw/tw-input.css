@@ -19,11 +19,19 @@
   }
 
   .btn {
-    @apply px-4 py-2 border border-transparent rounded shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
+    @apply flex items-center px-4 py-2 border border-transparent rounded shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
   }
 
   .btn-primary {
     @apply text-white bg-coa-blue-medium hocus:bg-coa-blue-dark
+  }
+
+  .btn-warning {
+    @apply text-white bg-warning hocus:bg-yellow-600
+  }
+
+  .btn-success {
+    @apply text-white bg-success hocus:bg-coa-blue-dark
   }
 
   .btn-sm {

@@ -227,21 +227,21 @@ function CrimesByAddress(props) {
 								<button
 									onClick={() => refreshLocation(getNewUrlParams("map"), props.location)}
 									active={props.location.query.view === "map"}
-									className="btn btn-sm btn-primary"
+									className="btn btn-primary"
 								>
 									{content.map_view}
 								</button>
 								<button
 									onClick={() => refreshLocation(getNewUrlParams("list"), props.location)}
 									active={props.location.query.view === "list"}
-									className="btn btn-sm btn-primary"
+									className="btn btn-primary"
 								>
 									{content.list_view}
 								</button>
 								<button
 									onClick={() => refreshLocation(getNewUrlParams("summary"), props.location)}
 									active={props.location.query.view === "summary"}
-									className="btn btn-sm btn-primary"
+									className="btn btn-primary"
 								>
 									{content.chart_view}
 								</button>

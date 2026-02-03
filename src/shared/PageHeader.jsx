@@ -7,7 +7,12 @@ function PageHeader(props) {
 	return (
 		<section>
 			{props.image && (
-				<img alt={props.imageAlt} src={props.image} style={{ width: "100px", float: "left", marginRight: "10px" }} />
+				<img
+					className="w-[100px] mr-10px"
+					alt={props.imageAlt}
+					src={props.image}
+					style={{ width: "100px", float: "left", marginRight: "10px" }}
+				/>
 			)}
 
 			<div className="text-coa-blue-medium flex items-start gap-2  mt-5 mb-4">
@@ -18,7 +23,7 @@ function PageHeader(props) {
 				</h1>
 			</div>
 
-			<div className="flex px-4 pb-4 pt-2">
+			<div className="flex pb-4 pt-2">
 				{/* {(props.externalLink || props.dataLinkPath) && (
 					<div className="template-header__subnav">
 						{props.externalLink && (
@@ -40,7 +45,8 @@ function PageHeader(props) {
 				{props.h4 !== null && <h4>{props.h4}</h4>}
 
 				{props.subheading !== null && props.subheading}
-				<div className="ml-auto">{props.children}</div>
+				{/* <div className="ml-auto">{props.children}</div> */}
+				{props.children}
 			</div>
 		</section>
 	);

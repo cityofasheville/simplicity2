@@ -5,22 +5,13 @@ import { Link } from "react-router";
 const DetailsIconLinkFormGroup = (props) => (
 	<div>
 		{props.inWindow ? (
-			<Link
-				className="p-1 text-white bg-primary py-3 block w-full rounded text-center"
-				to={props.href}
-				title={props.title}
-			>
+			<Link className="btn btn-primary btn-small block text-center" to={props.href} title={props.title}>
 				<span>
 					{props.icon}&nbsp;{props.label}
 				</span>
 			</Link>
 		) : (
-			<a
-				className="p-1 text-white bg-primary py-3 block w-full rounded text-center"
-				href={props.href}
-				title={props.title}
-				target="_blank"
-			>
+			<a className="btn btn-primary btn-small block text-center" href={props.href} title={props.title} target="_blank">
 				<span>
 					{props.icon}&nbsp;{props.label}
 				</span>

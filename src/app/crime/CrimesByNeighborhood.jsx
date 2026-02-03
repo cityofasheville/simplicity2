@@ -234,37 +234,35 @@ function CrimesByNeighborhood(props) {
 				});
 
 				return (
-					<div className="crimes-template__data">
-						<div className="flex mt-4">
-							<div className="mr-auto">
-								<EmailDownload
-									downloadData={data.crimes_by_neighborhood}
-									fileName={content.crimes_by_neighborhood_filename}
-								/>
-							</div>
-							<ButtonGroup>
-								<Button
+					<div>
+						<div className="flex my-4 items-end">
+							<EmailDownload
+								downloadData={data.crimes_by_neighborhood}
+								fileName={content.crimes_by_neighborhood_filename}
+							/>
+							<div className="btn-group ml-auto">
+								<button
 									onClick={() => refreshLocation(getNewUrlParams("map"), props.location)}
 									active={props.location.query.view === "map"}
-									positionInGroup="left"
+									className="btn btn-primary"
 								>
 									{content.map_view}
-								</Button>
-								<Button
+								</button>
+								<button
 									onClick={() => refreshLocation(getNewUrlParams("list"), props.location)}
 									active={props.location.query.view === "list"}
-									positionInGroup="middle"
+									className="btn btn-primary"
 								>
 									{content.list_view}
-								</Button>
-								<Button
+								</button>
+								<button
 									onClick={() => refreshLocation(getNewUrlParams("summary"), props.location)}
-									positionInGroup="right"
+									className="btn btn-primary"
 									active={props.location.query.view === "summary"}
 								>
 									{content.chart_view}
-								</Button>
-							</ButtonGroup>
+								</button>
+							</div>
 						</div>
 						<div className="row data-view-container">
 							<div

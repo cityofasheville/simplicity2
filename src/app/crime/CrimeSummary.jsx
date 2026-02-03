@@ -80,9 +80,9 @@ const CrimeSummary = (props) => {
 					{<Icon aria-hidden="true" path={IM_LIBRARY2} size={16} />}
 					<span className="pl-2">{content.view_apd_reports}</span>
 				</a>
-				<ButtonGroup alignment="right">
-					<Button onClick={browserHistory.goBack}>{content.back}</Button>
-				</ButtonGroup>
+				<button className="btn btn-primary ml-auto" onClick={browserHistory.goBack}>
+					{content.back}
+				</button>
 			</div>
 			<form className="border p-4 rounded">
 				<fieldset className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -137,7 +137,6 @@ const CrimeSummary = (props) => {
 					</div>
 
 					<SpatialEventTopicLocationInfo
-						columnClasses="col-md-4 col-sm-6 col-xs-12"
 						spatialType={props.location.query.entity}
 						spatialDescription={props.location.query.label}
 					/>

@@ -670,6 +670,8 @@ a:focus-within {
 }
 
 .btn {
+  display: flex;
+  align-items: center;
   border-radius: 0.25rem;
   border-width: 1px;
   border-color: transparent;
@@ -711,6 +713,50 @@ a:focus-within {
 }
 
 .btn-primary:focus-within {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 73 135 / var(--tw-bg-opacity, 1));
+}
+
+.btn-warning {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 156 18 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+
+.btn-warning:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(202 138 4 / var(--tw-bg-opacity, 1));
+}
+
+.btn-warning:focus {
+  --tw-bg-opacity: 1;
+  background-color: rgb(202 138 4 / var(--tw-bg-opacity, 1));
+}
+
+.btn-warning:focus-within {
+  --tw-bg-opacity: 1;
+  background-color: rgb(202 138 4 / var(--tw-bg-opacity, 1));
+}
+
+.btn-success {
+  --tw-bg-opacity: 1;
+  background-color: rgb(17 134 111 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+
+.btn-success:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 73 135 / var(--tw-bg-opacity, 1));
+}
+
+.btn-success:focus {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 73 135 / var(--tw-bg-opacity, 1));
+}
+
+.btn-success:focus-within {
   --tw-bg-opacity: 1;
   background-color: rgb(0 73 135 / var(--tw-bg-opacity, 1));
 }
@@ -883,6 +929,10 @@ a:focus-within {
   margin: 0px;
 }
 
+.m-4 {
+  margin: 1rem;
+}
+
 .mx-2 {
   margin-left: 0.5rem;
   margin-right: 0.5rem;
@@ -911,6 +961,10 @@ a:focus-within {
 .my-6 {
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
+}
+
+.mb-1 {
+  margin-bottom: 0.25rem;
 }
 
 .mb-2 {
@@ -1059,6 +1113,14 @@ a:focus-within {
 
 .w-16 {
   width: 4rem;
+}
+
+.w-\[100px\] {
+  width: 100px;
+}
+
+.w-auto {
+  width: auto;
 }
 
 .w-full {
@@ -1257,11 +1319,6 @@ a:focus-within {
 .bg-sky-100 {
   --tw-bg-opacity: 1;
   background-color: rgb(224 242 254 / var(--tw-bg-opacity, 1));
-}
-
-.bg-success {
-  --tw-bg-opacity: 1;
-  background-color: rgb(17 134 111 / var(--tw-bg-opacity, 1));
 }
 
 .bg-warning {
@@ -1547,6 +1604,11 @@ a:focus-within {
 .hover\:bg-coa-blue-dark:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(0 73 135 / var(--tw-bg-opacity, 1));
+}
+
+.hover\:underline:hover {
+  -webkit-text-decoration-line: underline;
+          text-decoration-line: underline;
 }
 
 .focus\:left-0:focus {

@@ -14,6 +14,8 @@ import LinkButton from "../../shared/LinkButton";
 import { zoningLinks } from "../address/zoning";
 import Map from "../../shared/visualization/Map";
 import { Link } from "react-router";
+import Table from "../../shared/Table/Table";
+import PropertyTableConfig from "./PropertyTableConfig";
 
 import { getBoundsFromPropertyPolygons, combinePolygonsFromPropertyList } from "../../utilities/mapUtilities";
 import Icon from "../../shared/Icon";
@@ -130,33 +132,39 @@ const Property = (props) => {
 					dataType="Property"
 					icon={<Icon path={IM_HOME2} size={50} />}
 				>
-					<ButtonGroup alignment="">
+					<div className="btn-group  ml-auto">
 						{props.location.query.fromAddress && (
-							<LinkButton
-								pathname="/address"
-								query={{
-									entities: props.location.query.entities,
-									search: props.location.query.search,
-									id: props.location.query.fromAddress,
-									hideNavbar: props.location.query.hideNavbar,
+							<Link
+								className="btn btn-primary"
+								to={{
+									pathname: "/address",
+									query: {
+										entities: props.location.query.entities,
+										search: props.location.query.search,
+										id: props.location.query.fromAddress,
+										hideNavbar: props.location.query.hideNavbar,
+									},
 								}}
-								positionInGroup="left"
+								onClick={props.onClick}
 							>
 								Back to address
-							</LinkButton>
+							</Link>
 						)}
-						<LinkButton
-							pathname="/search"
-							query={{
-								entities: props.location.query.entities,
-								search: props.location.query.search,
-								hideNavbar: props.location.query.hideNavbar,
+						<Link
+							className="btn btn-primary"
+							to={{
+								pathname: "/search",
+								query: {
+									entities: props.location.query.entities,
+									search: props.location.query.search,
+									hideNavbar: props.location.query.hideNavbar,
+								},
 							}}
-							positionInGroup={props.location.query.fromAddress ? "right" : ""}
+							onClick={props.onClick}
 						>
 							Back to search
-						</LinkButton>
-					</ButtonGroup>
+						</Link>
+					</div>
 				</PageHeader>
 			)}
 			<section className="bg-gray-50 p-4">

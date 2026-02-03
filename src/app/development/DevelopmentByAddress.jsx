@@ -140,29 +140,29 @@ const DevelopmentByAddress = (props) => {
 				<div className="mr-auto">
 					<EmailDownload downloadData={props.data.permits_by_address} fileName="permits_by_address.csv" />
 				</div>
-				<ButtonGroup className="ml-auto">
-					<Button
+				<div className="btn-group ml-auto">
+					<button
+						className="btn btn-primary"
 						onClick={() => refreshLocation(getNewUrlParams("map"), props.location)}
 						active={props.location.query.view === "map"}
-						positionInGroup="left"
 					>
 						Map view
-					</Button>
-					<Button
+					</button>
+					<button
+						className="btn btn-primary"
 						onClick={() => refreshLocation(getNewUrlParams("list"), props.location)}
 						active={props.location.query.view === "list"}
-						positionInGroup="middle"
 					>
 						List view
-					</Button>
-					<Button
+					</button>
+					<button
+						className="btn btn-primary"
 						onClick={() => refreshLocation(getNewUrlParams("summary"), props.location)}
-						positionInGroup="right"
 						active={props.location.query.view === "summary"}
 					>
 						Chart
-					</Button>
-				</ButtonGroup>
+					</button>
+				</div>
 			</div>
 
 			<div id="summaryView" className={`w-full h-full ${props.location.query.view === "summary" ? "flex" : "hidden"}`}>

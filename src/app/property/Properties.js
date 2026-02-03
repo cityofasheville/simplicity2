@@ -40,8 +40,22 @@ function Properties(props) {
 				h2={getSubtitle(searchParams.get("entity"))}
 				icon={<Icon path={IM_HOME2} size={50} />}
 			>
-				<ButtonGroup>
-					<LinkButton
+				<div className="btn-group ml-auto">
+					<Link
+						className="btn btn-primary"
+						to={{
+							pathname: searchParams.get("entity") === "neighborhood" ? "/neighborhood" : "/street",
+							query: {
+								entities: props.location.query.entities,
+								search: props.location.query.search,
+								hideNavbar: props.location.query.hideNavbar,
+								entity: props.location.query.entity,
+								id: props.location.query.id,
+								label: props.location.query.label,
+							},
+						}}
+						onClick={props.onClick}
+						disabled={props.disabled}
 						pathname={searchParams.get("entity") === "neighborhood" ? "/neighborhood" : "/street"}
 						query={{
 							entities: props.location.query.entities,
@@ -53,12 +67,12 @@ function Properties(props) {
 						}}
 					>
 						Back to {searchParams.get("entity")}
-					</LinkButton>
-				</ButtonGroup>
+					</Link>
+				</div>
 			</PageHeader>
 			<div className="flex">
 				<div className="ml-auto">
-					<ButtonGroup>
+					<div className="btn-group">
 						<Link
 							className={`btn btn-primary ${currentView !== "map" ? "active" : ""}`}
 							to={window.location.pathname + "?" + searchParamsList}
@@ -71,7 +85,7 @@ function Properties(props) {
 						>
 							Map view
 						</Link>
-					</ButtonGroup>
+					</div>
 				</div>
 			</div>
 			{searchParams.get("entity") === "street" ? (

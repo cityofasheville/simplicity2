@@ -233,33 +233,36 @@ function CrimesByStreet(props) {
 
 				return (
 					<div>
-						<div className="flex mt-4">
+						<div className="flex my-4 items-center">
 							<div className="mr-auto">
 								<EmailDownload downloadData={data.crimes_by_street} fileName={content.crimes_by_street_filename} />
 							</div>
-							<ButtonGroup>
-								<Button
+							<div className="btn-group ml-auto">
+								<button
+									className="btn btn-primary"
 									onClick={() => refreshLocation(getNewUrlParams("map"), props.location)}
 									active={props.location.query.view === "map"}
 									positionInGroup="left"
 								>
 									{content.map_view}
-								</Button>
-								<Button
+								</button>{" "}
+								<button
+									className="btn btn-primary"
 									onClick={() => refreshLocation(getNewUrlParams("list"), props.location)}
 									active={props.location.query.view === "list"}
 									positionInGroup="middle"
 								>
 									{content.list_view}
-								</Button>
-								<Button
+								</button>
+								<button
+									className="btn btn-primary"
 									onClick={() => refreshLocation(getNewUrlParams("summary"), props.location)}
 									positionInGroup="right"
 									active={props.location.query.view === "summary"}
 								>
 									{content.chart_view}
-								</Button>
-							</ButtonGroup>
+								</button>
+							</div>
 						</div>
 						<div
 							id="summaryView"

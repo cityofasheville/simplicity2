@@ -143,29 +143,32 @@ const DevelopmentByNeighborhood = (props) => {
 					<EmailDownload downloadData={props.data.permits_by_neighborhood} fileName="permits_by_neighborhood.csv" />
 				</div>
 				<div className="ml-auto">
-					<ButtonGroup alignment="left">
-						<Button
+					<div className="btn-group ml-auto">
+						<button
+							className="btn btn-primary"
 							onClick={() => refreshLocation(getNewUrlParams("map"), props.location)}
 							active={props.location.query.view === "map"}
 							positionInGroup="left"
 						>
 							Map view
-						</Button>
-						<Button
+						</button>
+						<button
+							className="btn btn-primary"
 							onClick={() => refreshLocation(getNewUrlParams("list"), props.location)}
 							active={props.location.query.view === "list"}
 							positionInGroup="middle"
 						>
 							List view
-						</Button>
-						<Button
+						</button>
+						<button
+							className="btn btn-primary"
 							onClick={() => refreshLocation(getNewUrlParams("summary"), props.location)}
 							positionInGroup="right"
 							active={props.location.query.view === "summary"}
 						>
 							Chart
-						</Button>
-					</ButtonGroup>
+						</button>
+					</div>
 				</div>
 			</div>
 

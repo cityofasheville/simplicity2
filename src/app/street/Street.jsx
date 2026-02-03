@@ -32,8 +32,9 @@ function Street(props) {
 				h2="About this street"
 				icon={<Icon path={IM_ROAD} size={50} />}
 			>
-				<ButtonGroup>
+				<div className="btn-group ml-auto">
 					<LinkButton
+						className="btn btn-primary btn-sm "
 						pathname="/search"
 						query={{
 							entities: props.location.query.entities,
@@ -43,7 +44,7 @@ function Street(props) {
 					>
 						Back to search
 					</LinkButton>
-				</ButtonGroup>
+				</div>
 			</PageHeader>
 			<div className="bg-gray-50 p-4">
 				<div className="h-[250px] w-full">

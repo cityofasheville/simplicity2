@@ -38,7 +38,7 @@ function InCityMessage(props) {
 	const colorClass = props.inTheCity ? "text-coa-blue-dark" : "text-coa-blue-medium";
 
 	return (
-		<div className={`flex items-end ml-4 ${colorClass}`}>
+		<div className={`flex items-end ${colorClass}`}>
 			{props.icon && <Icon path={props.inTheCity ? IM_LIBRARY2 : IM_TARGET} size={33} />}
 			<span className="ml-1">
 				<em>{translate(props.inTheCity ? "in_city" : "out_of_city", props.language.language)}</em>

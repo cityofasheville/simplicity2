@@ -223,29 +223,29 @@ function CrimesByAddress(props) {
 							<div className="mr-auto">
 								<EmailDownload downloadData={data.crimes_by_address} fileName={content.crimes_by_address_filename} />
 							</div>
-							<ButtonGroup>
-								<Button
+							<div className="btn-group">
+								<button
 									onClick={() => refreshLocation(getNewUrlParams("map"), props.location)}
 									active={props.location.query.view === "map"}
-									positionInGroup="left"
+									className="btn btn-sm btn-primary"
 								>
 									{content.map_view}
-								</Button>
-								<Button
+								</button>
+								<button
 									onClick={() => refreshLocation(getNewUrlParams("list"), props.location)}
 									active={props.location.query.view === "list"}
-									positionInGroup="middle"
+									className="btn btn-sm btn-primary"
 								>
 									{content.list_view}
-								</Button>
-								<Button
+								</button>
+								<button
 									onClick={() => refreshLocation(getNewUrlParams("summary"), props.location)}
-									positionInGroup="right"
 									active={props.location.query.view === "summary"}
+									className="btn btn-sm btn-primary"
 								>
 									{content.chart_view}
-								</Button>
-							</ButtonGroup>
+								</button>
+							</div>
 						</div>
 						<div
 							id="summaryView"

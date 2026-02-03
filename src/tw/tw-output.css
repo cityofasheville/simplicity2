@@ -724,6 +724,30 @@ a:focus-within {
   line-height: 1.25rem;
 }
 
+.btn-group {
+  display: inline-flex;
+}
+
+.btn-group > * {
+  border-radius: 0px;
+}
+
+.btn-group > *:first-child {
+  border-top-left-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+}
+
+.btn-group > *:last-child {
+  border-top-right-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+}
+
+.btn-group > *:not(:first-child) {
+  border-left-width: 1px;
+  --tw-border-opacity: 1;
+  border-left-color: rgb(0 73 135 / var(--tw-border-opacity, 1));
+}
+
 .input {
   border-radius: 0.25rem;
   border-width: 2px;
@@ -859,18 +883,9 @@ a:focus-within {
   margin: 0px;
 }
 
-.m-4 {
-  margin: 1rem;
-}
-
 .mx-2 {
   margin-left: 0.5rem;
   margin-right: 0.5rem;
-}
-
-.mx-4 {
-  margin-left: 1rem;
-  margin-right: 1rem;
 }
 
 .mx-auto {
@@ -896,11 +911,6 @@ a:focus-within {
 .my-6 {
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
-}
-
-.my-2 {
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
 }
 
 .mb-2 {
@@ -931,10 +941,6 @@ a:focus-within {
   margin-left: 0.5rem;
 }
 
-.ml-4 {
-  margin-left: 1rem;
-}
-
 .ml-5 {
   margin-left: 1.25rem;
 }
@@ -951,6 +957,10 @@ a:focus-within {
   margin-right: auto;
 }
 
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
 .mt-4 {
   margin-top: 1rem;
 }
@@ -961,10 +971,6 @@ a:focus-within {
 
 .mt-8 {
   margin-top: 2rem;
-}
-
-.mt-2 {
-  margin-top: 0.5rem;
 }
 
 .block {
@@ -1280,10 +1286,6 @@ a:focus-within {
   padding: 0.5rem;
 }
 
-.p-3 {
-  padding: 0.75rem;
-}
-
 .p-4 {
   padding: 1rem;
 }
@@ -1343,11 +1345,6 @@ a:focus-within {
   padding-bottom: 1px;
 }
 
-.py-6 {
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
-}
-
 .pb-3 {
   padding-bottom: 0.75rem;
 }
@@ -1366,10 +1363,6 @@ a:focus-within {
 
 .pt-2 {
   padding-top: 0.5rem;
-}
-
-.pt-4 {
-  padding-top: 1rem;
 }
 
 .pt-5 {

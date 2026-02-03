@@ -30,6 +30,27 @@
     @apply px-3 py-1 text-sm;
   }
 
+  .btn-group {
+    @apply inline-flex;
+  }
+
+  .btn-group > * {
+    @apply rounded-none;
+  }
+
+  .btn-group > *:first-child {
+    @apply rounded-l;
+  }
+
+  .btn-group > *:last-child {
+    @apply rounded-r;
+  }
+
+  .btn-group > *:not(:first-child){
+    @apply border-l border-l-coa-blue-dark
+    ;
+  }
+
   .input {
     @apply border-2 border-slate-200 rounded p-2
   }

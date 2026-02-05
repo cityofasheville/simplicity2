@@ -12,7 +12,7 @@ function GlobalFilter({ globalFilter, setGlobalFilter }) {
 	}, 200);
 
 	return (
-		<div className="form-control form-control-lg">
+		<div className="my-4">
 			<label htmlFor="search">Search Table: </label>
 			<input
 				type="text"
@@ -21,13 +21,8 @@ function GlobalFilter({ globalFilter, setGlobalFilter }) {
 					setValue(e.target.value);
 					onChange(e.target.value);
 				}}
-				placeholder=" Enter value "
-				className="w-25"
-				style={{
-					fontSize: "1.1rem",
-					margin: "15px",
-					display: "inline",
-				}}
+				placeholder="Enter value "
+				className=""
 			/>
 		</div>
 	);

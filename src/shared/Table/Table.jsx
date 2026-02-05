@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import GlobalFilter from "./GlobalFilter";
 import TableControls from "./TableControls/TableControls";
-import PaginatioNavButtons from "./PaginationNavButtons";
+import PaginationNavButtons from "./PaginationNavButtons/PaginationNavButtons";
 
 import {
 	useReactTable,
@@ -14,7 +14,16 @@ import {
 	getExpandedRowModel,
 } from "@tanstack/react-table";
 
-export default function Table({ columns, data, navRender, filterRender, filterOptions = [] }) {
+export default function Table({
+	columns,
+	data,
+	navRender,
+	filterRender,
+	filterOptions = [],
+	width = 200,
+	minWidth = 50,
+	maxWidth = 800,
+}) {
 	const [sorting, setSorting] = React.useState([]);
 	const [globalFilter, setGlobalFilter] = React.useState("");
 	const [columnFilter, setColumnFilter] = React.useState(filterOptions);
@@ -27,9 +36,9 @@ export default function Table({ columns, data, navRender, filterRender, filterOp
 			globalFilter,
 		},
 		defaultColumn: {
-			size: 200,
-			minSize: 50,
-			maxSize: 500,
+			size: width,
+			minSize: minWidth,
+			maxSize: maxWidth,
 		},
 		initialState: {
 			pagination: {
@@ -84,7 +93,7 @@ export default function Table({ columns, data, navRender, filterRender, filterOp
 				}}
 			/>
 
-			<table className="table table-striped table-bordered table-hover w-100">
+			<table className="w-full">
 				<thead>
 					{table.getHeaderGroups().map((headerGroup) => (
 						<tr key={headerGroup.id}>
@@ -94,7 +103,12 @@ export default function Table({ columns, data, navRender, filterRender, filterOp
 									headerMatch = filterOptions.find((option) => option.accessor === header.id);
 								}
 								return (
-									<th key={header.id} colSpan={header.colSpan} style={{ width: `${header.getSize()}px` }}>
+									<th
+										className="border p-2"
+										key={header.id}
+										colSpan={header.colSpan}
+										style={{ width: `${header.getSize()}px` }}
+									>
 										{header.isPlaceholder ? null : (
 											<div
 												{...{
@@ -140,9 +154,13 @@ export default function Table({ columns, data, navRender, filterRender, filterOp
 				<tbody>
 					{table.getRowModel().rows.map((row) => {
 						return (
-							<tr key={row.id}>
+							<tr className="odd:bg-white even:bg-gray-50" key={row.id}>
 								{row.getVisibleCells().map((cell) => {
-									return <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>;
+									return (
+										<td className="border  p-1" key={cell.id}>
+											{flexRender(cell.column.columnDef.cell, cell.getContext())}
+										</td>
+									);
 								})}
 							</tr>
 						);
@@ -150,7 +168,7 @@ export default function Table({ columns, data, navRender, filterRender, filterOp
 				</tbody>
 			</table>
 			{navRender.paginationButtonsRender && (
-				<PaginatioNavButtons
+				<PaginationNavButtons
 					pageCount={table.getPageCount()}
 					gotoPage={(page) => {
 						table.setPageIndex(page);

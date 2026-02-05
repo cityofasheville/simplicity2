@@ -1,0 +1,16 @@
+:root {
+    --pagination-color-light: #4077a5;
+    --pagination-hover-color-light: #004987;
+    --pagination-bg-light: #4077a5;
+--pagination-bg-dark: #004987;
+    /* etc */
+  }
+
+  .rrp-page {
+    color: #4077a5;
+  }
+  
+  .rrp-page:hover {
+    color: #004987;
+  }
+  

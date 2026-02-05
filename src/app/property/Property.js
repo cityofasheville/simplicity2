@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { graphql } from "react-apollo";
 import AccessibleReactTable, { CellFocusWrapper } from "accessible-react-table";
 import gql from "graphql-tag";
@@ -15,7 +15,6 @@ import { zoningLinks } from "../address/zoning";
 import Map from "../../shared/visualization/Map";
 import { Link } from "react-router";
 import Table from "../../shared/Table/Table";
-import PropertyTableConfig from "./PropertyTableConfig";
 
 import { getBoundsFromPropertyPolygons, combinePolygonsFromPropertyList } from "../../utilities/mapUtilities";
 import Icon from "../../shared/Icon";
@@ -28,9 +27,73 @@ import {
 	IM_LIBRARY,
 	IM_FLAG7,
 } from "../../shared/iconConstants";
-import createFilterRenderer from "../../shared/FilterRenderer";
+// import createFilterRenderer from "../../shared/FilterRenderer";
 import SteepSlope from "./SteepSlope";
 import ClimateJustice from "../../shared/ClimateJustice";
+
+const PropertyTableConfig = {
+	columns: [
+		{
+			accessorKey: "civic_address_id",
+			cell: ({ row }) => (
+				<Link
+					to={{
+						pathname: "/Property/" + `${row.original.civic_address_id}`,
+						state: { data: row },
+					}}
+				>
+					<span className="hover:underline">{row.original.civic_address_id}</span>
+				</Link>
+			),
+
+			header: () => <span>Civic address ID(s)</span>,
+			footer: (props) => props.column.id,
+		},
+		{
+			accessorKey: "address",
+			enableColumnFilter: true,
+			cell: (info) => info.getValue(),
+			header: () => <span>Address(es)</span>,
+			footer: (props) => props.column.id,
+		},
+	],
+	navigationRender: {
+		paginationButtonsRender: true,
+		goToPageRender: true,
+		itemsPerPageRender: true,
+		itemsPerPage: 20,
+	},
+	filterRender: {
+		globalFilterRender: true,
+	},
+};
+
+const SummaryTableConfig = {
+	columns: [
+		{
+			accessorKey: "value_type",
+			cell: ({ row }) => <span>{row.original.value_type}</span>,
+			header: () => <span>Property / Tax Value</span>,
+			footer: (props) => props.column.id,
+		},
+		{
+			accessorKey: "amount",
+			enableColumnFilter: true,
+			cell: (info) => info.getValue(),
+			header: () => <span>Amount</span>,
+			footer: (props) => props.column.id,
+		},
+	],
+	navigationRender: {
+		paginationButtonsRender: true,
+		goToPageRender: true,
+		itemsPerPageRender: true,
+		itemsPerPage: 20,
+	},
+	filterRender: {
+		globalFilterRender: true,
+	},
+};
 
 const getSteepSlope = (pinValue, callback) => {
 	let steepSlopeUrl = "https://mapwnc.org/api/slopebypin/" + pinValue;
@@ -57,17 +120,21 @@ const getDollars = (value) => {
 	return [initialSymbols, Math.abs(value).toLocaleString()].join("");
 };
 
-const FilterRenderer = createFilterRenderer("Search...");
+// const FilterRenderer = createFilterRenderer("Search...");
 
 const Property = (props) => {
+	const navRender = PropertyTableConfig.navigationRender;
+	const filterRender = PropertyTableConfig.filterRender;
+	const propertyTableColumns = useMemo(() => PropertyTableConfig.columns);
+	const summaryTableColumns = useMemo(() => SummaryTableConfig.columns);
+	const [isSlopeDataShown, setSlopeData] = useState(false);
+
 	if (props.data.loading) {
 		return <LoadingAnimation />;
 	}
 	if (props.data.error) {
 		return <Error message={props.data.error.message} />;
 	}
-
-	const [isSlopeDataShown, setSlopeData] = useState(false);
 
 	const propertyData = props.inTable ? props.data : props.data.properties[0];
 	const dataForAddressesTable = [];
@@ -79,49 +146,41 @@ const Property = (props) => {
 		});
 	}
 
-	const dataColumns = [
+	const summaryData = [
 		{
-			Header: "Civic address ID(s)",
-			accessor: "civic_address_id",
-			width: 150,
-			Filter: FilterRenderer,
-			filterMethod: (filter, row) => {
-				const joinedInfo = row._original.pinnum;
-				return row._original !== undefined ? joinedInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
-			},
+			value_type: "Building value",
+			amount: getDollars(propertyData.building_value),
 		},
 		{
-			Header: "Address(es)",
-			accessor: "Address",
-			innerFocus: true,
-			Cell: (row) => (
-				<CellFocusWrapper>
-					{(focusRef, focusable) => (
-						<span>
-							{props.inTable ? (
-								<span>
-									{row.original.address}, {row.original.zipcode}
-								</span>
-							) : (
-								<a
-									href={`/address?search=${props.location.query.search}&id=${row.original.civic_address_id}&entities=${props.location.query.entities}&entity=address`}
-									tabIndex={focusable ? 0 : -1}
-									ref={focusRef}
-								>
-									{row.original.address}, {row.original.zipcode}
-								</a>
-							)}
-						</span>
-					)}
-				</CellFocusWrapper>
-			),
-			Filter: FilterRenderer,
-			filterMethod: (filter, row) => {
-				const joinedInfo = [row._original.address, row._original.zipcode].join(", ");
-				return row._original !== undefined ? joinedInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
-			},
+			value_type: "Land value",
+			amount: getDollars(propertyData.land_value),
+		},
+		{
+			value_type: "Appraised value",
+			amount: getDollars(propertyData.appraised_value),
+		},
+		{
+			value_type: "Tax value",
+			amount: getDollars(propertyData.tax_value),
+		},
+		{
+			value_type: "Total market value",
+			amount: getDollars(propertyData.market_value),
 		},
 	];
+
+	// const summaryData = [
+	// 	{
+	// 		accessor: "value_type",
+	// 		values: data.map((row) => row.value_type),
+	// 	},
+	// 	{
+	// 		accessor: "amount",
+	// 		values: data.map((row) => row.amount),
+	// 	},
+	// ];
+
+	console.log("Property Data:", dataForAddressesTable);
 
 	return (
 		<div>
@@ -208,138 +267,113 @@ const Property = (props) => {
 						icon={<Icon path={IM_GOOGLE} size={20} />}
 					/>
 				</div>
-				<div className="col-xs-12">
-					<DetailsTable
-						data={[
-							{
-								value_type: "Building value",
-								amount: getDollars(propertyData.building_value),
-							},
-							{
-								value_type: "Land value",
-								amount: getDollars(propertyData.land_value),
-							},
-							{
-								value_type: "Appraised value",
-								amount: getDollars(propertyData.appraised_value),
-							},
-							{
-								value_type: "Tax value",
-								amount: getDollars(propertyData.tax_value),
-							},
-							{
-								value_type: "Total market value",
-								amount: getDollars(propertyData.market_value),
-							},
-						]}
+				<div className="flex justify-center">
+					<Table
+						ariaLabel="PropertyDetails"
+						navRender={false}
+						data={summaryData}
+						filterRender={false}
+						columns={summaryTableColumns}
+						defaultPageSize={props.data.length}
+						showPagination={false}
+						className="w-full items-center"
+						width="300"
+						minWidth="50"
+						maxWidth="800"
 					/>
-					<div className="my-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-						<DetailsFormGroup
-							label="Owner"
-							name="owner"
-							value={
-								<div>
-									<div>{propertyData.owner}</div>
-									<div>{propertyData.owner_address}</div>
-								</div>
-							}
-							hasLabel
-						/>
-						<DetailsFormGroup label="Acreage" name="acreage" value={propertyData.acreage} hasLabel />
-						<DetailsFormGroup label="Neighborhood" name="neighborhood" value={propertyData.neighborhood} hasLabel />
-						<DetailsFormGroup label="Pin #" name="pinnum" value={propertyData.pinnum} hasLabel />
-						<DetailsFormGroup
-							label="Tax exempt"
-							name="tax_exempt"
-							value={propertyData.tax_exempt ? "Yes" : "No"}
-							hasLabel
-						/>
-						<DetailsFormGroup
-							label="Appraisal area"
-							name="appraisal_area"
-							value={propertyData.appraisal_area}
-							hasLabel
-						/>
-						<DetailsFormGroup
-							label="Zoning"
-							name="zoning"
-							value={
-								<div>
-									{propertyData.zoning.split(",").map((zone, index) => (
-										<span key={`zone_${index}`}>
-											{propertyData.zoning_links ? (
-												<a href={propertyData.zoning_links.split(",")[index]} target="_blank">
-													{propertyData.zoning.split(",")[index]}
-												</a>
-											) : (
-												propertyData.zoning.split(",")[index]
-											)}
+				</div>
 
-											{propertyData.zoning.split(",").length > index + 1 ? ", " : ""}
-										</span>
-									))}
+				<div className="my-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+					<DetailsFormGroup
+						label="Owner"
+						name="owner"
+						value={
+							<div>
+								<div>{propertyData.owner}</div>
+								<div>{propertyData.owner_address}</div>
+							</div>
+						}
+						hasLabel
+					/>
+					<DetailsFormGroup label="Acreage" name="acreage" value={propertyData.acreage} hasLabel />
+					<DetailsFormGroup label="Neighborhood" name="neighborhood" value={propertyData.neighborhood} hasLabel />
+					<DetailsFormGroup label="Pin #" name="pinnum" value={propertyData.pinnum} hasLabel />
+					<DetailsFormGroup
+						label="Tax exempt"
+						name="tax_exempt"
+						value={propertyData.tax_exempt ? "Yes" : "No"}
+						hasLabel
+					/>
+					<DetailsFormGroup label="Appraisal area" name="appraisal_area" value={propertyData.appraisal_area} hasLabel />
+					<DetailsFormGroup
+						label="Zoning"
+						name="zoning"
+						value={
+							<div>
+								{propertyData.zoning.split(",").map((zone, index) => (
+									<span key={`zone_${index}`}>
+										{propertyData.zoning_links ? (
+											<a href={propertyData.zoning_links.split(",")[index]} target="_blank">
+												{propertyData.zoning.split(",")[index]}
+											</a>
+										) : (
+											propertyData.zoning.split(",")[index]
+										)}
+
+										{propertyData.zoning.split(",").length > index + 1 ? ", " : ""}
+									</span>
+								))}
+							</div>
+						}
+						hasLabel
+					/>
+					{propertyData.local_landmark && (
+						<DetailsFormGroup
+							label="Local Landmark"
+							name="local_landmark"
+							value={
+								<div>
+									<div>{propertyData.local_landmark}</div>
 								</div>
 							}
 							hasLabel
+							icon={<Icon path={IM_FLAG7} size={20} />}
 						/>
-						{propertyData.local_landmark && (
-							<DetailsFormGroup
-								label="Local Landmark"
-								name="local_landmark"
-								value={
-									<div>
-										<div>{propertyData.local_landmark}</div>
-									</div>
-								}
-								hasLabel
-								icon={<Icon path={IM_FLAG7} size={20} />}
-							/>
-						)}
-						{propertyData.historic_district && (
-							<DetailsFormGroup
-								label="Historic District"
-								name="historic_district"
-								value={
-									<div>
-										<div>{propertyData.historic_district}</div>
-									</div>
-								}
-								hasLabel
-								icon={<Icon path={IM_LIBRARY} size={20} />}
-							/>
-						)}
+					)}
+					{propertyData.historic_district && (
 						<DetailsFormGroup
-							label="Steep Slope"
-							name="steepslope"
-							value={<SteepSlope pinnum={propertyData.pinnum} />}
+							label="Historic District"
+							name="historic_district"
+							value={
+								<div>
+									<div>{propertyData.historic_district}</div>
+								</div>
+							}
 							hasLabel
+							icon={<Icon path={IM_LIBRARY} size={20} />}
 						/>
-					</div>
+					)}
+					<DetailsFormGroup
+						label="Steep Slope"
+						name="steepslope"
+						value={<SteepSlope pinnum={propertyData.pinnum} />}
+						hasLabel
+					/>
 				</div>
 
 				{dataForAddressesTable.length && (
-					<div className="">
+					<div className="w-full">
 						<h4 className="text-lg">Associated Addresses</h4>
-						<table className="">
-							<thead>
-								<tr>
-									<th>Address</th>
-									<th>Civic Address ID</th>
-								</tr>
-							</thead>
-							<tbody>
-								{dataForAddressesTable.map((addressEntity, index) => {
-									return (
-										<tr key={index}>
-											<td>
-												<Link to={`/address?id=${addressEntity.civic_address_id}`}>{addressEntity.address}</Link>
-											</td>
-											<td>{addressEntity.civic_address_id}</td>
-										</tr>
-									);
-								})}
-							</tbody>
-						</table>
+						<Table
+							columns={propertyTableColumns}
+							data={dataForAddressesTable}
+							navRender={navRender}
+							filterRender={false}
+							className=""
+							width="300"
+							minWidth="50"
+							maxWidth="600"
+						/>
 					</div>
 				)}
 

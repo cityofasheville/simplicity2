@@ -2,7 +2,7 @@ export default function ItemsPerPage({ pageSize, setPageSize }) {
 	return (
 		<div className="">
 			<select
-				class="btn"
+				className="btn"
 				value={pageSize}
 				onChange={(e) => {
 					setPageSize(Number(e.target.value));

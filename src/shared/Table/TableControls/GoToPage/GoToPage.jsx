@@ -5,7 +5,7 @@ export default function GoToPage({ gotoPage, pageIndex, pageCount }) {
 		<div className="flex items-baseline">
 			Go to page{" "}
 			<select
-				class="btn ml-2"
+				className="btn ml-2"
 				value={pageIndex + 1}
 				onChange={(e) => {
 					gotoPage(Number(e.target.value) - 1);

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import GlobalFilter from "./GlobalFilter";
-import TableControls from "./TableControls/TableControls";
-import PaginationNavButtons from "./PaginationNavButtons/PaginationNavButtons";
+import GlobalFilter from "../../../shared/Table/GlobalFilter.jsx";
+import TableControls from "../../../shared/Table/TableControls/TableControls";
+import PaginationNavButtons from "../../../shared/Table/PaginationNavButtons/PaginationNavButtons";
 
 import {
 	useReactTable,
@@ -14,7 +14,7 @@ import {
 	getExpandedRowModel,
 } from "@tanstack/react-table";
 
-export default function Table({
+export default function SearchResultsTable({
 	columns,
 	data,
 	navRender,

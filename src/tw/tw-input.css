@@ -67,11 +67,7 @@
     @apply text-sm p-1;
   }
 
-  :root {
-    --pagination-color-light: bg-coa-blue-medium;
-    --pagination-hover-color-light: bg-coa-blue-dark;
-    /* etc */
-  }
+ 
 
   /** Toggle icons for dropdowns and hamburger menu **/
 

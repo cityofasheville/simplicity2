@@ -1,17 +1,12 @@
 import React, { useState, useMemo } from "react";
 import { graphql } from "react-apollo";
-import AccessibleReactTable, { CellFocusWrapper } from "accessible-react-table";
 import gql from "graphql-tag";
-import DetailsTable from "../../shared/DetailsTable";
 import DetailsFormGroup from "../../shared/DetailsFormGroup";
 import DetailsIconLinkFormGroup from "../../shared/DetailsIconLinkFormGroup";
 import LoadingAnimation from "../../shared/LoadingAnimation";
 import Error from "../../shared/Error";
 import InCityMessage from "../../shared/InCityMessage";
 import PageHeader from "../../shared/PageHeader";
-import ButtonGroup from "../../shared/ButtonGroup";
-import LinkButton from "../../shared/LinkButton";
-import { zoningLinks } from "../address/zoning";
 import Map from "../../shared/visualization/Map";
 import { Link } from "react-router";
 import Table from "../../shared/Table/Table";
@@ -51,7 +46,6 @@ const PropertyTableConfig = {
 		},
 		{
 			accessorKey: "address",
-			enableColumnFilter: true,
 			cell: (info) => info.getValue(),
 			header: () => <span>Address(es)</span>,
 			footer: (props) => props.column.id,
@@ -277,9 +271,6 @@ const Property = (props) => {
 						defaultPageSize={props.data.length}
 						showPagination={false}
 						className="w-full items-center"
-						width="300"
-						minWidth="50"
-						maxWidth="800"
 					/>
 				</div>
 

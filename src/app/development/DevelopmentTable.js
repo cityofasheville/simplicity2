@@ -1,161 +1,195 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import moment from 'moment';
-import AccessibleReactTable, { CellFocusWrapper } from 'accessible-react-table';
-import expandingRows from '../../shared/react_table_hoc/ExpandingRows';
-import DevelopmentDetail from './DevelopmentDetail';
-import Icon from '../../shared/Icon';
-import { IM_HOME2, IM_MAP5, IM_OFFICE, IM_DIRECTION, IM_LIBRARY2, IM_FIRE, IM_USERS4, IM_COOK, IM_CITY, LI_WALKING, IM_MUG } from '../../shared/iconConstants';
-import createFilterRenderer from '../../shared/FilterRenderer';
+import React, { useMemo } from "react";
+import PropTypes from "prop-types";
+import moment from "moment";
+import AccessibleReactTable, { CellFocusWrapper } from "accessible-react-table";
+import expandingRows from "../../shared/react_table_hoc/ExpandingRows";
+import DevelopmentDetail from "./DevelopmentDetail";
+import Icon from "../../shared/Icon";
+import {
+	IM_HOME2,
+	IM_MAP5,
+	IM_OFFICE,
+	IM_DIRECTION,
+	IM_LIBRARY2,
+	IM_FIRE,
+	IM_USERS4,
+	IM_COOK,
+	IM_CITY,
+	LI_WALKING,
+	IM_MUG,
+} from "../../shared/iconConstants";
+import createFilterRenderer from "../../shared/FilterRenderer";
+import Table from "../../shared/Table/Table";
 
 const getIcon = (type, isExpanded) => {
-  switch (type) {
-    case 'Commercial':
-      return <Icon path={IM_OFFICE} size={25} color={isExpanded ? '#fff' : '#4077a5'} />;
-    case 'Residential':
-      return <Icon path={IM_HOME2} size={25} color={isExpanded ? '#fff' : '#4077a5'} />;
-    case 'Sign':
-      return <Icon path={IM_DIRECTION} size={25} color={isExpanded ? '#fff' : '#4077a5'} />;
-    case 'Historical':
-      return <Icon path={IM_LIBRARY2} size={25} color={isExpanded ? '#fff' : '#4077a5'} />;
-    case 'Fire':
-      return <Icon path={IM_FIRE} size={25} color={isExpanded ? '#fff' : '#4077a5'} />;
-    case 'Event-Temporary Use':
-      return <Icon path={IM_USERS4} size={25} viewBox="0 0 24 24" color={isExpanded ? '#fff' : '#4077a5'} />;
-    case 'Outdoor Vendor':
-      return <Icon path={IM_COOK} size={25} color={isExpanded ? '#fff' : '#4077a5'} />;
-    case 'Development':
-      return <Icon path={IM_CITY} size={25} color={isExpanded ? '#fff' : '#4077a5'} />;
-    case 'Right of Way':
-      return <Icon path={LI_WALKING} size={25} viewBox="0 0 24 24" color={isExpanded ? '#fff' : '#4077a5'} />;
-    case 'Over The Counter':
-      return <Icon path={IM_MUG} size={25} color={isExpanded ? '#fff' : '#4077a5'} />;
-    default:
-      return <svg xmlns="http://www.w3.org/2000/svg" height="25px" transform="translate(0,4)" version="1.1" viewBox="0 0 16 16" width="25px"><g fill="none" fillRule="evenodd" id="Icons with numbers" stroke="none" strokeWidth="1"><g fill={isExpanded ? '#fff' : '#4077a5'} id="Group" transform="translate(-528.000000, -576.000000)"><path d="M536,592 C531.581722,592 528,588.418278 528,584 C528,579.581722 531.581722,576 536,576 C540.418278,576 544,579.581722 544,584 C544,588.418278 540.418278,592 536,592 Z M541,586 C542.10457,586 543,585.10457 543,584 C543,582.89543 542.10457,582 541,582 C539.89543,582 539,582.89543 539,584 C539,585.10457 539.89543,586 541,586 Z M531,586 C532.10457,586 533,585.10457 533,584 C533,582.89543 532.10457,582 531,582 C529.89543,582 529,582.89543 529,584 C529,585.10457 529.89543,586 531,586 Z M536,586 C537.10457,586 538,585.10457 538,584 C538,582.89543 537.10457,582 536,582 C534.89543,582 534,582.89543 534,584 C534,585.10457 534.89543,586 536,586 Z M536,586" id="Oval 12 copy" /></g></g></svg>;
-  }
+	switch (type) {
+		case "Commercial":
+			return <Icon path={IM_OFFICE} size={25} color={isExpanded ? "#fff" : "#4077a5"} />;
+		case "Residential":
+			return <Icon path={IM_HOME2} size={25} color={isExpanded ? "#fff" : "#4077a5"} />;
+		case "Sign":
+			return <Icon path={IM_DIRECTION} size={25} color={isExpanded ? "#fff" : "#4077a5"} />;
+		case "Historical":
+			return <Icon path={IM_LIBRARY2} size={25} color={isExpanded ? "#fff" : "#4077a5"} />;
+		case "Fire":
+			return <Icon path={IM_FIRE} size={25} color={isExpanded ? "#fff" : "#4077a5"} />;
+		case "Event-Temporary Use":
+			return <Icon path={IM_USERS4} size={25} viewBox="0 0 24 24" color={isExpanded ? "#fff" : "#4077a5"} />;
+		case "Outdoor Vendor":
+			return <Icon path={IM_COOK} size={25} color={isExpanded ? "#fff" : "#4077a5"} />;
+		case "Development":
+			return <Icon path={IM_CITY} size={25} color={isExpanded ? "#fff" : "#4077a5"} />;
+		case "Right of Way":
+			return <Icon path={LI_WALKING} size={25} viewBox="0 0 24 24" color={isExpanded ? "#fff" : "#4077a5"} />;
+		case "Over The Counter":
+			return <Icon path={IM_MUG} size={25} color={isExpanded ? "#fff" : "#4077a5"} />;
+		default:
+			return (
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					height="25px"
+					transform="translate(0,4)"
+					version="1.1"
+					viewBox="0 0 16 16"
+					width="25px"
+				>
+					<g fill="none" fillRule="evenodd" id="Icons with numbers" stroke="none" strokeWidth="1">
+						<g fill={isExpanded ? "#fff" : "#4077a5"} id="Group" transform="translate(-528.000000, -576.000000)">
+							<path
+								d="M536,592 C531.581722,592 528,588.418278 528,584 C528,579.581722 531.581722,576 536,576 C540.418278,576 544,579.581722 544,584 C544,588.418278 540.418278,592 536,592 Z M541,586 C542.10457,586 543,585.10457 543,584 C543,582.89543 542.10457,582 541,582 C539.89543,582 539,582.89543 539,584 C539,585.10457 539.89543,586 541,586 Z M531,586 C532.10457,586 533,585.10457 533,584 C533,582.89543 532.10457,582 531,582 C529.89543,582 529,582.89543 529,584 C529,585.10457 529.89543,586 531,586 Z M536,586 C537.10457,586 538,585.10457 538,584 C538,582.89543 537.10457,582 536,582 C534.89543,582 534,582.89543 534,584 C534,585.10457 534.89543,586 536,586 Z M536,586"
+								id="Oval 12 copy"
+							/>
+						</g>
+					</g>
+				</svg>
+			);
+	}
 };
 
-const FilterRenderer = createFilterRenderer('Search...');
+const DevelopmentTable = (props) => {
+	// let content;
+	// switch (props.language.language) {
+	// 	case "Spanish":
+	// 		content = spanish;
+	// 		break;
+	// 	default:
+	// 		content = english;
+	// }
 
-class DevelopmentTable extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      urlString: '',
-    };
-  }
+	const permitTableConfig = {
+		columns: [
+			{
+				header: () => <span>Project</span>,
+				accessorKey: "application_name",
+				cell: ({ getValue, row }) => {
+					const value = getValue();
 
-  componentDidMount() {
-    this.setState({
-      urlString: [
-        this.props.location.pathname, 
-        '?entity=', 
-        this.props.location.query.entity, 
-        '&id=', 
-        this.props.location.query.id, 
-        '&entities=', 
-        this.props.location.query.entities, 
-        '&label=', 
-        this.props.location.query.label, 
-        '&within=', 
-        // document.getElementById('extent').value,
-        this.props.location.query.within, 
-        '&during=', 
-        // document.getElementById('time').value, 
-        this.props.location.query.during, 
-        '&hideNavbar=', 
-        this.props.location.query.hideNavbar, 
-        '&search=', 
-        this.props.location.query.search, 
-        '&view=map', 
-        '&x=', 
-        this.props.location.query.x, 
-        '&y=', 
-        this.props.location.query.y].join('')
-    })
-  }
+					return (
+						<span className="flex">
+							<span title={row.original.crime}>{getIcon(value, row.getIsExpanded())}</span>
+							<span style={{ marginLeft: "5px" }}>{value}</span>
+						</span>
+					);
+				},
+				enableColumnFilter: true,
+				size: 350,
+			},
+			{
+				accessorKey: "permit_type",
+				enableColumnFilter: true,
+				cell: ({ getValue, row }) => {
+					const value = getValue();
 
-  render() {
-    const ExpandableAccessibleReactTable = expandingRows(AccessibleReactTable);
+					return (
+						<span className="flex">
+							<span title={row.original.crime}>{getIcon(value, row.getIsExpanded())}</span>
+							<span style={{ marginLeft: "5px" }}>{value}</span>
+						</span>
+					);
+				},
+				header: () => <span>Type</span>,
+				footer: (props) => props.column.id,
+				enableColumnFilter: true,
+				size: 300,
+			},
+			{
+				accessorKey: "contractor_names",
+				enableColumnFilter: true,
+				cell: (info) => {
+					const names = info.getValue();
 
-    const dataColumns = [
-      {
-        Header: 'Project',
-        accessor: 'application_name',
-        minWidth: 250,
-        innerFocus: true,
-        Cell: row => (
-          <CellFocusWrapper>
-            {(focusRef, focusable) => (
-              <span>
-                <span>
-                  {/*<a
-                    title="Click to show permit in map"
-                    href={[
-                      this.state.urlString,
-                      '&zoomToPoint=',
-                      [row.original.y, row.original.x].join(','),
-                    ].join('')}
-                    style={{ color: row.isExpanded ? 'white' : '#4077a5' }}
-                    tabIndex={focusable ? 0 : -1}
-                    ref={focusRef}
-                    onClick={e => e.stopPropagation()}
-                  >*/}
-                    <Icon path={IM_MAP5} size={23} />
-                    <span style={{ marginLeft: '5px' }}>{row.value}</span>
-                  {/*</a>*/}
-                </span>
-              </span>
-            )}
-          </CellFocusWrapper>
-        ),
-        Filter: FilterRenderer,
-      },
-      {
-        Header: 'Type',
-        accessor: 'permit_type',
-        minWidth: 150,
-        Cell: row => (
-          <span>
-            <span title={row.original.permit_type}>{getIcon(row.value, row.isExpanded)}</span>
-            <span style={{ marginLeft: '5px' }}>{row.value}</span>
-          </span>
-        ),
-        Filter: FilterRenderer,
-      },
-      {
-        Header: 'Contractor',
-        accessor: 'contractor_name',
-        minWidth: 150,
-        Filter: FilterRenderer,
-      },
-      {
-        Header: 'Applied Date',
-        id: 'applied_date',
-        accessor: permit => (<span>{moment.utc(permit.applied_date).format('M/DD/YYYY')}</span>),
-        width: 110,
-        Filter: FilterRenderer,
-        filterMethod: (filter, row) => {
-          const id = filter.pivotId || filter.id;
-          return row[id] !== undefined ? String(row[id].props.children).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
-        },
-      },
-      {
-        Header: 'Permit #',
-        accessor: 'permit_number',
-        width: 115,
-        Filter: FilterRenderer,
-      },
-    ];
+					return <span>{Array.isArray(names) && names.length > 0 ? names.join(", ") : ""}</span>;
+				},
+				header: () => <span>Contractor</span>,
+				footer: (props) => props.column.id,
+				enableColumnFilter: true,
+				size: 400,
+			},
+			{
+				accessorKey: "applied_date",
+				cell: (info) => {
+					const crime = info.getValue();
 
-    return (
-      <div>
-        <div className="col-sm-12">
-          {this.props.data.length < 1 ?
-            <div className="alert alert-info">No results found</div>
-          :
-            <div style={{ marginTop: '10px' }}>
-              <ExpandableAccessibleReactTable
+					return (
+						<span>
+							{crime.indexOf("-") === -1
+								? moment.unix(crime / 1000).format("M/DD/YYYY")
+								: moment.utc(crime).format("M/DD/YYYY")}
+						</span>
+					);
+				},
+				header: () => <span>Applied Date</span>,
+				footer: (props) => props.column.id,
+				enableColumnFilter: true,
+				size: 100,
+			},
+			{
+				accessorKey: "permit_number",
+				enableColumnFilter: true,
+				cell: (info) => info.getValue(),
+				header: () => <span>Permit Number</span>,
+				footer: (props) => props.column.id,
+				enableColumnFilter: true,
+				size: 115,
+				filterFn: "includesString",
+			},
+		],
+		navigationRender: {
+			paginationButtonsRender: true,
+			goToPageRender: true,
+			itemsPerPageRender: true,
+			itemsPerPage: 20,
+		},
+		filterRender: {
+			globalFilterRender: true,
+		},
+	};
+	const crimeTableColumns = useMemo(() => permitTableConfig.columns);
+	const navRender = permitTableConfig.navigationRender;
+	const filterRender = permitTableConfig.filterRender;
+
+	return (
+		<div className="col-sm-12">
+			{props.data.length < 1 ? (
+				<div className="alert alert-info">No results found</div>
+			) : (
+				<div style={{ marginTop: "10px" }}>
+					<Table
+						data={props.data}
+						columns={crimeTableColumns}
+						showPagination={true}
+						className="w-full items-center"
+						navRender={navRender}
+						filterRender={filterRender}
+						filterOptions={[
+							{ accessor: "offense_long_description" },
+							{ accessor: "address" },
+							{ accessor: "case_number" },
+							{ accessor: "date_occurred" },
+							{ accessor: "geo_beat" },
+						]}
+					/>
+					{/* <ExpandableAccessibleReactTable
                 ariaLabel="Development"
                 data={this.props.data}
                 columns={dataColumns}
@@ -197,17 +231,11 @@ class DevelopmentTable extends React.Component {
                     <DevelopmentDetail data={row.original} standalone={false} />
                   </div>
                 )}
-              />
-            </div>
-          }
-        </div>
-      </div>
-    );
-  }
-}
-
-DevelopmentTable.propTypes = {
-  data: PropTypes.array, // eslint-disable-line
+              /> */}
+				</div>
+			)}
+		</div>
+	);
 };
 
 export default DevelopmentTable;

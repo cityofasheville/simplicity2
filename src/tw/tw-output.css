@@ -808,12 +808,6 @@ a:focus-within {
   line-height: 1.25rem;
 }
 
-:root {
-  --pagination-color-light: bg-coa-blue-medium;
-  --pagination-hover-color-light: bg-coa-blue-dark;
-  /* etc */
-}
-
 /** Toggle icons for dropdowns and hamburger menu **/
 
 .dropdown-toggle[aria-expanded="false"] i.bi-dash {
@@ -1027,6 +1021,10 @@ a:focus-within {
 
 .mt-8 {
   margin-top: 2rem;
+}
+
+.mt-1 {
+  margin-top: 0.25rem;
 }
 
 .block {
@@ -1477,6 +1475,11 @@ a:focus-within {
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
 }
 
 .font-light {

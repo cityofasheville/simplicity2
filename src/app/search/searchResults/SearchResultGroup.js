@@ -19,7 +19,7 @@ const SearchResultGroup = (props) => {
 		{
 			headerStyle: { boxShadow: "none" },
 			Header: (
-				<h2 className="border-2 border-blue-100 text-4xl items-center text-coa-medium-blue w-full inline-flex py-5 px-1">
+				<h2 className=" text-4xl items-center text-red-700 w-full inline-flex py-5 px-1">
 					{getIcon(props.data.label)}
 					{getPlural(props.data.label)}
 					<span className="sr-only">Number of results</span>
@@ -118,7 +118,7 @@ const SearchResultGroup = (props) => {
 		columns: [
 			{
 				header: () => (
-					<h2 className="border-2 border-blue-100 text-4xl items-center text-coa-medium-blue w-full inline-flex py-5 px-1">
+					<h2 className="text-coa-blue-medium font-lighter text-4xl items-center w-full inline-flex py-5 px-1">
 						{getIcon(props.data.label)}
 						{getPlural(props.data.label)}
 						<span className="sr-only">Number of results</span>
@@ -134,14 +134,7 @@ const SearchResultGroup = (props) => {
 					const value = info.getValue();
 
 					return (
-						<span
-							className="search-results-group__row-inner"
-							style={{
-								justifyContent: "space-between",
-								alignItems: "baseline",
-								lineHeight: "1",
-							}}
-						>
+						<span className=" px-2 py-1 flex justify-between items-baseline leading-none">
 							<span>
 								<Link
 									className="search-results-group__link"
@@ -216,71 +209,15 @@ const SearchResultGroup = (props) => {
 				enableColumnFilter: true,
 				size: 350,
 			},
-			// {
-			// 	accessorKey: "permit_type",
-			// 	enableColumnFilter: true,
-			// 	cell: ({ getValue, row }) => {
-			// 		const value = getValue();
-			// 		return (
-			// 			<span className="flex">
-			// 				<span title={row.original.crime}>{getIcon(value, row.getIsExpanded())}</span>
-			// 				<span style={{ marginLeft: "5px" }}>{value}</span>
-			// 			</span>
-			// 		);
-			// 	},
-			// 	header: () => <span>Type</span>,
-			// 	footer: (props) => props.column.id,
-			// 	enableColumnFilter: true,
-			// 	size: 300,
-			// },
-			// {
-			// 	accessorKey: "contractor_names",
-			// 	enableColumnFilter: true,
-			// 	cell: (info) => {
-			// 		const names = info.getValue();
-			// 		return <span>{Array.isArray(names) && names.length > 0 ? names.join(", ") : ""}</span>;
-			// 	},
-			// 	header: () => <span>Contractor</span>,
-			// 	footer: (props) => props.column.id,
-			// 	enableColumnFilter: true,
-			// 	size: 400,
-			// },
-			// {
-			// 	accessorKey: "applied_date",
-			// 	cell: (info) => {
-			// 		const crime = info.getValue();
-			// 		return (
-			// 			<span>
-			// 				{crime.indexOf("-") === -1
-			// 					? moment.unix(crime / 1000).format("M/DD/YYYY")
-			// 					: moment.utc(crime).format("M/DD/YYYY")}
-			// 			</span>
-			// 		);
-			// 	},
-			// 	header: () => <span>Applied Date</span>,
-			// 	footer: (props) => props.column.id,
-			// 	enableColumnFilter: true,
-			// 	size: 100,
-			// },
-			// {
-			// 	accessorKey: "permit_number",
-			// 	enableColumnFilter: true,
-			// 	cell: (info) => info.getValue(),
-			// 	header: () => <span>Permit Number</span>,
-			// 	footer: (props) => props.column.id,
-			// 	enableColumnFilter: true,
-			// 	size: 115,
-			// 	filterFn: "includesString",
-			// },
 		],
 		navigationRender: {
 			paginationButtonsRender: true,
-			goToPageRender: true,
-			itemsPerPageRender: true,
+			goToPageRender: false,
+			itemsPerPageRender: false,
 			itemsPerPage: 20,
 		},
 		filterRender: {
-			globalFilterRender: true,
+			globalFilterRender: false,
 		},
 	};
 	const searchResultsTableColumns = useMemo(() => searchResultsTableConfig.columns);
@@ -289,33 +226,14 @@ const SearchResultGroup = (props) => {
 
 	return (
 		<div className="">
-			{/* <AccessibleReactTable
-				ariaLabel="Search Results"
-				data={props.data.results}
-				columns={dataColumns}
-				showPagination={props.data.results.length > 5}
-				defaultPageSize={props.data.results.length < 5 ? props.data.results.length : 5}
-				filterable={props.data.results.length > 5}
-				sortable={false}
-				defaultFilterMethod={(filter, row) => {
-					const id = filter.pivotId || filter.id;
-					return row[id] !== undefined ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
-				}}
-			/> */}
 			<SearchResultsTable
 				data={props.data.results}
 				columns={searchResultsTableColumns}
 				showPagination={false}
 				className="w-full items-center"
-				navRender={false}
-				filterRender={false}
-				filterOptions={[
-					{ accessor: "offense_long_description" },
-					{ accessor: "address" },
-					{ accessor: "case_number" },
-					{ accessor: "date_occurred" },
-					{ accessor: "geo_beat" },
-				]}
+				navRender={navRender}
+				filterRender={filterRender}
+				filterOptions={[{ accessor: "label" }]}
 			/>
 		</div>
 	);

@@ -12,6 +12,7 @@ import { english } from "./english";
 import { spanish } from "./spanish";
 import { withLanguage } from "../../utilities/lang/LanguageContext";
 import createFilterRenderer from "../../shared/FilterRenderer";
+import Table from "../../shared/Table/Table";
 
 const GET_ADDRESSES_BY_STREET = gql`
 	query addresses_by_street($centerline_ids: [Float]) {
@@ -45,7 +46,60 @@ const GET_ADDRESSES_BY_STREET = gql`
 	}
 `;
 
+const streetTableConfig = {
+	columns: [
+		{
+			id: "address",
+
+			header: <span>Address</span>,
+			accessorFn: (row) =>
+				`${row.street_number || ""} ${row.street_prefix || ""} ${row.street_name || ""} ${row.street_type || ""}`,
+			cell: ({ row }) => (
+				<div>
+					<div>
+						{row.original.street_number} {row.original.street_prefix} {row.original.street_name}{" "}
+						{row.original.street_type} {row.original.unit ? `#${row.original.unit}` : ""}
+					</div>
+					<div>
+						{row.original.city}, NC {row.original.zipcode}
+					</div>
+				</div>
+			),
+			enableColumnFilter: true,
+			size: 400,
+		},
+		{
+			accessorKey: "date_occurred",
+			cell: ({ row }) => (
+				<div>
+					<div>{row.original.owner_name}</div>
+					<div>{row.original.owner_address}</div>
+					<div>
+						{row.original.owner_cityname}, {row.original.owner_state} {row.original.owner_zipcode}
+					</div>
+				</div>
+			),
+			header: <span>Owner</span>,
+			footer: (props) => props.column.id,
+			enableColumnFilter: true,
+			size: 400,
+		},
+	],
+	navigationRender: {
+		paginationButtonsRender: true,
+		goToPageRender: true,
+		itemsPerPageRender: true,
+		itemsPerPage: 20,
+	},
+	filterRender: {
+		globalFilterRender: true,
+	},
+};
+
 function AddressesByStreet(props) {
+	const addressTableColumns = streetTableConfig.columns;
+	const navRender = streetTableConfig.navigationRender;
+	const filterRender = streetTableConfig.filterRender;
 	return (
 		<Query
 			query={GET_ADDRESSES_BY_STREET}
@@ -68,55 +122,6 @@ function AddressesByStreet(props) {
 					default:
 						content = english;
 				}
-
-				const dataColumns = [
-					{
-						Header: content.address,
-						accessor: "Address",
-						Cell: (row) => (
-							<div>
-								<div>
-									{row.original.street_number} {row.original.street_prefix} {row.original.street_name}{" "}
-									{row.original.street_type} {row.original.unit ? `#${row.original.unit}` : ""}
-								</div>
-								<div>
-									{row.original.city}, NC {row.original.zipcode}
-								</div>
-							</div>
-						),
-						Filter: createFilterRenderer(content.placeholder),
-						filterMethod: (filter, row) => {
-							const joinedAddressInfo = `${row._original.street_number} ${row._original.street_prefix} ${
-								row._original.street_name
-							} ${row._original.street_type} ${row._original.unit ? "#" : ""} ${row._original.unit} ${
-								row._original.city
-							}, NC ${row._original.zipcode}`; // eslint-disable-line
-							return row._original !== undefined
-								? joinedAddressInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1
-								: true; // eslint-disable-line
-						},
-					},
-					{
-						Header: "Owner",
-						accessor: "Owner",
-						Cell: (row) => (
-							<div>
-								<div>{row.original.owner_name}</div>
-								<div>{row.original.owner_address}</div>
-								<div>
-									{row.original.owner_cityname}, {row.original.owner_state} {row.original.owner_zipcode}
-								</div>
-							</div>
-						),
-						Filter: createFilterRenderer(content.placeholder),
-						filterMethod: (filter, row) => {
-							const joinedOwnerInfo = `${row._original.owner_name} ${row._original.owner_address} ${row._original.owner_cityname} ,${row._original.owner_state} ${row._original.owner_zipcode}`; // eslint-disable-line
-							return row._original !== undefined
-								? joinedOwnerInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1
-								: true; // eslint-disable-line
-						},
-					},
-				];
 
 				const mapData = data.addresses_by_street.map((item) => {
 					return Object.assign({}, item, {
@@ -141,18 +146,14 @@ function AddressesByStreet(props) {
 								<div className="alert alert-info">No results found</div>
 							) : (
 								<div>
-									<AccessibleReactTable
+									<Table
 										data={data.addresses_by_street}
-										ariaLabel="Street Addresses"
-										columns={dataColumns}
-										showPagination={data.addresses_by_street.length > 20}
-										defaultPageSize={data.addresses_by_street.length <= 20 ? data.addresses_by_street.length : 20}
-										getTdProps={() => ({
-											style: {
-												whiteSpace: "normal",
-											},
-										})}
-										filterable
+										columns={addressTableColumns}
+										showPagination={true}
+										className="w-full items-center"
+										navRender={navRender}
+										filterRender={filterRender}
+										filterOptions={[{ accessor: "address" }, { accessor: "owner" }]}
 									/>
 								</div>
 							)}

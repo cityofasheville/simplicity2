@@ -7,14 +7,14 @@ const DetailsFormGroup = (props) => (
 	//   (props.fullWidth ? 'form-group form-group--has-content full-width-card' : 'form-group form-group--has-content')}>
 	<div className="">
 		<div className="p-4 bg-gray-200 h-full">
-			<h4 className="pb-4 mb-2 border-b-2 border-gray-300 flex items-baseline">
+			<h3 className="pb-4 mb-2 border-b-2 border-gray-300 flex items-baseline">
 				{props.icon !== null && (
 					<span className="mr-2" aria-hidden="true">
 						{props.icon}
 					</span>
 				)}
 				{props.hasLabel && <span htmlFor={props.name}>{props.label}</span>}
-			</h4>
+			</h3>
 			<div className="font-normal" name={props.name}>
 				{props.value}
 			</div>

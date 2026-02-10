@@ -1,6 +1,5 @@
 import React, { useMemo } from "react";
 import PropTypes from "prop-types";
-import AccessibleReactTable, { CellFocusWrapper } from "accessible-react-table";
 import moment from "moment";
 import Icon from "../../shared/Icon";
 import {
@@ -275,46 +274,27 @@ const CrimeTable = (props) => {
 	return (
 		<div>
 			<div className="col-sm-12">
-				{/* {props.data.length < 1 ? (
+				{props.data.length < 1 ? (
 					<div className="alert alert-info">{content.no_results_found}</div>
-				) : ( */}
-				<div style={{ marginTop: "10px" }}>
-					<Table
-						data={props.data}
-						columns={crimeTableColumns}
-						showPagination={true}
-						className="w-full items-center"
-						navRender={navRender}
-						filterRender={filterRender}
-						filterOptions={[
-							{ accessor: "offense_long_description" },
-							{ accessor: "address" },
-							{ accessor: "case_number" },
-							{ accessor: "date_occurred" },
-							{ accessor: "geo_beat" },
-						]}
-					/>
-					{/* <AccessibleReactTable
-              data={props.data}
-              ariaLabel={content.crimes}
-              columns={dataColumns}
-              showPagination={props.data.length > 20}
-              defaultPageSize={props.data.length <= 20 ? props.data.length : 20}
-              getTdProps={() => {
-                return {
-                  style: {
-                    whiteSpace: 'normal',
-                  },
-                };
-              }}
-              filterable
-              defaultFilterMethod={(filter, row) => {
-                const id = filter.pivotId || filter.id;
-                return row[id] !== undefined ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
-              }}
-            /> */}
-				</div>
-				{/* )} */}
+				) : (
+					<div style={{ marginTop: "10px" }}>
+						<Table
+							data={props.data}
+							columns={crimeTableColumns}
+							showPagination={true}
+							className="w-full items-center"
+							navRender={navRender}
+							filterRender={filterRender}
+							filterOptions={[
+								{ accessor: "offense_long_description" },
+								{ accessor: "address" },
+								{ accessor: "case_number" },
+								{ accessor: "date_occurred" },
+								{ accessor: "geo_beat" },
+							]}
+						/>
+					</div>
+				)}
 			</div>
 		</div>
 	);

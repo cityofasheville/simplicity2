@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import AccessibleReactTable from "accessible-react-table";
 import PropTypes from "prop-types";
 import gql from "graphql-tag";
@@ -12,6 +12,7 @@ import { english } from "./english";
 import { spanish } from "./spanish";
 import { withLanguage } from "../../utilities/lang/LanguageContext";
 import createFilterRenderer from "../../shared/FilterRenderer";
+import Table from "../../shared/Table/Table";
 
 const GET_ADDRESSES_BY_NEIGHBORHOOD = gql`
 	query addresses_by_neighborhood($nbrhd_ids: [String]) {
@@ -53,7 +54,59 @@ const GET_ADDRESSES_BY_NEIGHBORHOOD = gql`
 	}
 `;
 
+const addressTableConfig = {
+	columns: [
+		{
+			id: "address",
+			header: <span>Address</span>,
+			accessorFn: (row) =>
+				`${row.street_number || ""} ${row.street_prefix || ""} ${row.street_name || ""} ${row.street_type || ""}`,
+			cell: ({ row }) => (
+				<div>
+					<div>
+						{row.original.street_number} {row.original.street_prefix} {row.original.street_name}{" "}
+						{row.original.street_type} {row.original.unit ? `#${row.original.unit}` : ""}
+					</div>
+					<div>
+						{row.original.city}, NC {row.original.zipcode}
+					</div>
+				</div>
+			),
+			enableColumnFilter: true,
+			size: 400,
+		},
+		{
+			accessorKey: "owner",
+			cell: ({ row }) => (
+				<div>
+					<div>{row.original.owner_name}</div>
+					<div>{row.original.owner_address}</div>
+					<div>
+						{row.original.owner_cityname}, {row.original.owner_state} {row.original.owner_zipcode}
+					</div>
+				</div>
+			),
+			header: <span>Owner</span>,
+			footer: (props) => props.column.id,
+			enableColumnFilter: true,
+			size: 400,
+		},
+	],
+	navigationRender: {
+		paginationButtonsRender: true,
+		goToPageRender: true,
+		itemsPerPageRender: true,
+		itemsPerPage: 20,
+	},
+	filterRender: {
+		globalFilterRender: true,
+	},
+};
+
 function AddressesByNeighborhood(props) {
+	const addressTableColumns = addressTableConfig.columns;
+	const navRender = addressTableConfig.navigationRender;
+	const filterRender = addressTableConfig.filterRender;
 	return (
 		<Query
 			query={GET_ADDRESSES_BY_NEIGHBORHOOD}
@@ -73,60 +126,6 @@ function AddressesByNeighborhood(props) {
 					default:
 						content = english;
 				}
-				const dataColumns = [
-					{
-						Header: content.address,
-						accessor: "Address",
-						Cell: (row) => (
-							<div>
-								<div>
-									{row.original.street_number} {row.original.street_prefix} {row.original.street_name}{" "}
-									{row.original.street_type} {row.original.unit ? `#${row.original.unit}` : ""}
-								</div>
-								<div>
-									{row.original.city}, NC {row.original.zipcode}
-								</div>
-							</div>
-						),
-						Filter: createFilterRenderer(content.placeholder),
-						filterMethod: (filter, row) => {
-							const joinedAddressInfo = `${row._original.street_number} ${row._original.street_prefix} ${
-								row._original.street_name
-							} ${row._original.street_type} ${row._original.unit ? "#" : ""} ${row._original.unit} ${
-								row._original.city
-							}, NC ${row._original.zipcode}`;
-							return row._original !== undefined
-								? joinedAddressInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1
-								: true; // eslint-disable-line
-						},
-					},
-					{
-						Header: content.owner,
-						accessor: "Owner",
-						Cell: (row) => (
-							<div>
-								<div>{row.original.owner_name}</div>
-								<div>{row.original.owner_address}</div>
-								<div>
-									{row.original.owner_cityname}, {row.original.owner_state} {row.original.owner_zipcode}
-								</div>
-							</div>
-						),
-						Filter: createFilterRenderer(content.placeholder),
-						filterMethod: (filter, row) => {
-							const joinedOwnerInfo = [
-								row._original.owner_name,
-								row._original.owner_address,
-								row._original.owner_cityname,
-								[",", row._original.owner_state].join(""),
-								row._original.owner_zipcode,
-							].join(" "); // eslint-disable-line
-							return row._original !== undefined // eslint-disable-line
-								? joinedOwnerInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1
-								: true;
-						},
-					},
-				];
 
 				const mapData = data.addresses_by_neighborhood.map((item) => {
 					return Object.assign(
@@ -158,20 +157,14 @@ function AddressesByNeighborhood(props) {
 								<div className="alert alert-info">{content.no_results_found}</div>
 							) : (
 								<div style={{ marginTop: "10px" }}>
-									<AccessibleReactTable
+									<Table
 										data={data.addresses_by_neighborhood}
-										arialLabel="Neighborhood Addresses"
-										columns={dataColumns}
-										showPagination={data.addresses_by_neighborhood.length > 20}
-										defaultPageSize={
-											data.addresses_by_neighborhood.length <= 20 ? data.addresses_by_neighborhood.length : 20
-										}
-										getTdProps={() => ({
-											style: {
-												whiteSpace: "normal",
-											},
-										})}
-										filterable
+										columns={addressTableColumns}
+										showPagination={true}
+										className="w-full items-center"
+										navRender={navRender}
+										filterRender={filterRender}
+										filterOptions={[{ accessor: "address" }, { accessor: "owner" }]}
 									/>
 								</div>
 							)}

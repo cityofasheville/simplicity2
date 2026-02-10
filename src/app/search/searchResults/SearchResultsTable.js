@@ -128,7 +128,7 @@ export default function SearchResultsTable({
 												) : null}
 											</div>
 										)}
-										{headerMatch && (
+										{headerMatch && table.getPageCount() > 1 && (
 											<div className="mt-1">
 												<input
 													type="text"
@@ -162,7 +162,7 @@ export default function SearchResultsTable({
 					})}
 				</tbody>
 			</table>
-			{navRender.paginationButtonsRender && (
+			{navRender.paginationButtonsRender && table.getPageCount() > 1 && (
 				<PaginationNavButtons
 					pageCount={table.getPageCount()}
 					gotoPage={(page) => {

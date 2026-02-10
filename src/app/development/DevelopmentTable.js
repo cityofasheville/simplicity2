@@ -20,6 +20,7 @@ import {
 } from "../../shared/iconConstants";
 import createFilterRenderer from "../../shared/FilterRenderer";
 import Table from "../../shared/Table/Table";
+import Link from "react-router/lib/Link";
 
 const getIcon = (type, isExpanded) => {
 	switch (type) {
@@ -146,7 +147,8 @@ const DevelopmentTable = (props) => {
 			{
 				accessorKey: "permit_number",
 				enableColumnFilter: true,
-				cell: (info) => info.getValue(),
+
+				cell: (info) => <Link to={"/permits/" + info.getValue()}>{info.getValue()}</Link>,
 				header: () => <span>Permit Number</span>,
 				footer: (props) => props.column.id,
 				enableColumnFilter: true,
@@ -156,12 +158,12 @@ const DevelopmentTable = (props) => {
 		],
 		navigationRender: {
 			paginationButtonsRender: true,
-			goToPageRender: true,
-			itemsPerPageRender: true,
+			goToPageRender: false,
+			itemsPerPageRender: false,
 			itemsPerPage: 20,
 		},
 		filterRender: {
-			globalFilterRender: true,
+			globalFilterRender: false,
 		},
 	};
 	const crimeTableColumns = useMemo(() => permitTableConfig.columns);
@@ -182,11 +184,11 @@ const DevelopmentTable = (props) => {
 						navRender={navRender}
 						filterRender={filterRender}
 						filterOptions={[
-							{ accessor: "offense_long_description" },
-							{ accessor: "address" },
-							{ accessor: "case_number" },
-							{ accessor: "date_occurred" },
-							{ accessor: "geo_beat" },
+							{ accessor: "application_name" },
+							{ accessor: "permit_type" },
+							{ accessor: "contractor_names" },
+							{ accessor: "applied_date" },
+							{ accessor: "permit_number" },
 						]}
 					/>
 					{/* <ExpandableAccessibleReactTable

@@ -18,7 +18,6 @@ import {
 	IM_LIBRARY,
 } from "../../shared/iconConstants";
 import PageHeader from "../../shared/PageHeader";
-import ButtonGroup from "../../shared/ButtonGroup";
 import LinkButton from "../../shared/LinkButton";
 import DetailsFormGroup from "../../shared/DetailsFormGroup";
 import DetailsIconLinkFormGroup from "../../shared/DetailsIconLinkFormGroup";
@@ -30,7 +29,6 @@ import Map from "../../shared/visualization/Map";
 import { withLanguage } from "../../utilities/lang/LanguageContext";
 import { english } from "./english";
 import { spanish } from "./spanish";
-import ClimateJustice from "../../shared/ClimateJustice";
 
 const GET_ADDRESSES = gql`
 	query addresses($civicaddress_ids: [String]!) {
@@ -122,7 +120,7 @@ const Address = (props) => (
 						return (
 							<span>
 								{content.sometime_this_week}
-								<span title={content.place_on_curb_by_7am_monday} style={{ marginLeft: "4px" }}>
+								<span title={content.place_on_curb_by_7am_monday} className="ml-1">
 									<Icon path={IM_INFO} size={16} />
 								</span>
 								<br />
@@ -133,7 +131,7 @@ const Address = (props) => (
 					return (
 						<span>
 							{content.sometime_next_week}
-							<span title={content.place_on_curb_by_7am_monday} style={{ marginLeft: "4px" }}>
+							<span title={content.place_on_curb_by_7am_monday} className="ml-1">
 								<Icon path={IM_INFO} size={16} />
 							</span>
 							<br />
@@ -256,7 +254,7 @@ const Address = (props) => (
 							<Map data={mapData} center={[addressData.y, addressData.x]} height="h-[250px]" width="w-full" />
 						</div>
 						{addressData.is_in_city && (
-							<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 gap-4">
+							<div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
 								{["CRIME", "DEVELOPMENT"].map((topic, i) => (
 									<div className="col-xs-6" key={["topic", i]}>
 										<TopicCard

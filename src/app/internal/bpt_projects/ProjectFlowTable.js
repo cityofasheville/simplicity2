@@ -1,12 +1,12 @@
-import React from 'react';
-import AccessibleReactTable from 'accessible-react-table';
-import moment from 'moment';
-import createFilterRenderer from '../../../shared/FilterRenderer';
+import React from "react";
+import AccessibleReactTable from "accessible-react-table";
+import moment from "moment";
+import createFilterRenderer from "../../../shared/FilterRenderer";
 
 //const parseNotes = (notes) => {
-  // this function could be improved for matching with the 'Eastern Standard Time' string -
-  // now if anyone writes a date in their comment itself it will separate it to a new line
-  // also other parsing
+// this function could be improved for matching with the 'Eastern Standard Time' string -
+// now if anyone writes a date in their comment itself it will separate it to a new line
+// also other parsing
 //   const re = /(\d+)(\/)(\d+)(?:\/)(?:(\d+)\s+(\d+):(\d+)(?::(\d+))?(?:\.(\d+))?)?/g;
 //   const indices = [];
 //   let result;
@@ -28,54 +28,54 @@ import createFilterRenderer from '../../../shared/FilterRenderer';
 //   return parsedNotes;
 // };
 
-const FilterRenderer = createFilterRenderer('Search');
+const FilterRenderer = createFilterRenderer("Search");
 
 const dataColumns = [
-  {
-    Header: 'ID',
-    accessor: 'ID',
-    width: 100,
-    Filter: FilterRenderer,
-  },
-  {
-    Header: 'Summary',
-    accessor: 'Summary',
-    minWidth: 250,
-    Filter: FilterRenderer,
-  },
-  {
-    Header: 'Requested Date',
-    id: 'RequestedDate',
-    accessor: item => (<span>{moment.utc(item.RequestedDate).format('M/DD/YYYY')}</span>),
-    width: 115,
-    Filter: FilterRenderer,
-  },
-  {
-    Header: 'Requestor',
-    accessor: 'Requestor',
-    Filter: FilterRenderer,
-  },
-  {
-    Header: 'Priority',
-    accessor: 'Priority',
-    Filter: FilterRenderer,
-  },
-  {
-    Header: 'Status',
-    accessor: 'CurrentStatus',
-    Filter: FilterRenderer,
-  },
+	{
+		Header: "ID",
+		accessor: "ID",
+		width: 100,
+		Filter: FilterRenderer,
+	},
+	{
+		Header: "Summary",
+		accessor: "Summary",
+		minWidth: 250,
+		Filter: FilterRenderer,
+	},
+	{
+		Header: "Requested Date",
+		id: "RequestedDate",
+		accessor: (item) => <span>{moment.utc(item.RequestedDate).format("M/DD/YYYY")}</span>,
+		width: 115,
+		Filter: FilterRenderer,
+	},
+	{
+		Header: "Requestor",
+		accessor: "Requestor",
+		Filter: FilterRenderer,
+	},
+	{
+		Header: "Priority",
+		accessor: "Priority",
+		Filter: FilterRenderer,
+	},
+	{
+		Header: "Status",
+		accessor: "CurrentStatus",
+		Filter: FilterRenderer,
+	},
 ];
 
-const ProjectFlowTable = props => {
-  return (
-    <div>
-      <div className="col-sm-12">
-        {props.data.length < 1 ?
-          <div className="alert alert-info">No results found</div>
-        :
-          <div style={{ marginTop: '10px' }} id={props.id}>
-            <AccessibleReactTable
+const ProjectFlowTable = (props) => {
+	return (
+		<div>
+			<div className="col-sm-12">
+				{props.data.length < 1 ? (
+					<div className="alert alert-info">No results found</div>
+				) : (
+					<div style={{ marginTop: "10px" }} id={props.id}>
+						{/* <AccessibleReactTable
               ariaLabel="Projects"
               data={props.data}
               columns={dataColumns}
@@ -93,12 +93,12 @@ const ProjectFlowTable = props => {
                   },
                 };
               }}
-            />
-          </div>
-        }
-      </div>
-    </div>
-  );
+            /> */}
+					</div>
+				)}
+			</div>
+		</div>
+	);
 };
 
 export default ProjectFlowTable;

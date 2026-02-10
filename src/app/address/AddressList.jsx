@@ -42,7 +42,8 @@ function AddressList(props) {
 				h2={content.address_and_owner_mailing_lists}
 				icon={<Icon path={IM_ENVELOP3} size={50} />}
 			>
-				<LinkButton
+				<Link
+					className="btn btn-primary ml-auto"
 					pathname={searchParams.get("entity") === "neighborhood" ? "/neighborhood" : "/street"}
 					query={{
 						entities: props.location.query.entities,
@@ -54,7 +55,7 @@ function AddressList(props) {
 					}}
 				>
 					{searchParams.get("entity") === "street" ? content.back_to_street : content.back_to_neighborhood}
-				</LinkButton>
+				</Link>
 			</PageHeader>
 			<div className="flex">
 				<div className="btn-group ml-auto">

@@ -22,7 +22,7 @@ export default function Table({
 	filterOptions = [],
 	width = 300,
 	minWidth = 50,
-	maxWidth = 300,
+	maxWidth = 500,
 }) {
 	const [sorting, setSorting] = React.useState([]);
 	const [globalFilter, setGlobalFilter] = React.useState("");

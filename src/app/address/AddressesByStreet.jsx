@@ -66,10 +66,10 @@ const streetTableConfig = {
 				</div>
 			),
 			enableColumnFilter: true,
-			size: 400,
+			size: 500,
 		},
 		{
-			accessorKey: "date_occurred",
+			accessorKey: "owner",
 			cell: ({ row }) => (
 				<div>
 					<div>{row.original.owner_name}</div>
@@ -82,7 +82,7 @@ const streetTableConfig = {
 			header: <span>Owner</span>,
 			footer: (props) => props.column.id,
 			enableColumnFilter: true,
-			size: 400,
+			size: 500,
 		},
 	],
 	navigationRender: {
@@ -139,13 +139,13 @@ function AddressesByStreet(props) {
 				}); // eslint-disable-line
 
 				return (
-					<div>
+					<section>
 						<EmailDownload downloadData={data.addresses_by_street} fileName={content.addresses_by_street_filename} />
 						<div id="listView" className={`mt-4 ${props.location.query.view === "map" ? "hidden" : "flex"}`}>
 							{data.addresses_by_street.length < 1 ? (
 								<div className="alert alert-info">No results found</div>
 							) : (
-								<div>
+								<div className="max-w-[1000px]">
 									<Table
 										data={data.addresses_by_street}
 										columns={addressTableColumns}
@@ -173,7 +173,7 @@ function AddressesByStreet(props) {
 								</div>
 							)}
 						</div>
-					</div>
+					</section>
 				);
 			}}
 		</Query>

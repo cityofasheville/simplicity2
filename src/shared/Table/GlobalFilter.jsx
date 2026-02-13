@@ -13,16 +13,17 @@ function GlobalFilter({ globalFilter, setGlobalFilter }) {
 
 	return (
 		<div className="my-4">
-			<label htmlFor="search">Search Table: </label>
+			<label htmlFor="tablesearch">Search Table: </label>
 			<input
+				id="tablesearch"
 				type="text"
 				value={value || ""}
 				onChange={(e) => {
 					setValue(e.target.value);
 					onChange(e.target.value);
 				}}
-				placeholder="Enter value "
-				className=""
+				placeholder="Search..."
+				className=" border rounded px-2 py-1 font-normal text-sm"
 			/>
 		</div>
 	);

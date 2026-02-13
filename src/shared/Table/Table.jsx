@@ -22,7 +22,7 @@ export default function Table({
 	filterOptions = [],
 	width = 300,
 	minWidth = 50,
-	maxWidth = 500,
+	maxWidth = 800,
 }) {
 	const [sorting, setSorting] = React.useState([]);
 	const [globalFilter, setGlobalFilter] = React.useState("");
@@ -130,12 +130,16 @@ export default function Table({
 										)}
 										{headerMatch && (
 											<div className="mt-1">
+												<label htmlFor={`column-${header.id}`} className="sr-only">
+													Search column
+												</label>
 												<input
+													id={`column-${header.id}`}
 													type="text"
 													value={header.column.getFilterValue() ?? ""}
 													onChange={(e) => header.column.setFilterValue(e.target.value)}
 													placeholder={`Search...`}
-													className="w-full border rounded px-2 py-1 text-sm"
+													className="w-full border rounded px-2 py-1 text-sm font-normal"
 													onClick={(e) => e.stopPropagation()} // prevents sort toggle
 												/>
 											</div>

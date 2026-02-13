@@ -35,6 +35,10 @@ function AddressList(props) {
 	searchParams.set("view", "list");
 	const searchParamsList = searchParams.toString();
 
+	const streetPathname = searchParams.get("entity") === "neighborhood" ? "/neighborhood" : "/street";
+
+	const streetSearch = new URLSearchParams(props.location.query).toString();
+
 	return (
 		<div>
 			<PageHeader
@@ -42,18 +46,7 @@ function AddressList(props) {
 				h2={content.address_and_owner_mailing_lists}
 				icon={<Icon path={IM_ENVELOP3} size={50} />}
 			>
-				<Link
-					className="btn btn-primary ml-auto"
-					pathname={searchParams.get("entity") === "neighborhood" ? "/neighborhood" : "/street"}
-					query={{
-						entities: props.location.query.entities,
-						search: props.location.query.search,
-						hideNavbar: props.location.query.hideNavbar,
-						entity: props.location.query.entity,
-						id: props.location.query.id,
-						label: props.location.query.label,
-					}}
-				>
+				<Link className="btn btn-primary ml-auto" to={`${streetPathname}?${streetSearch}`}>
 					{searchParams.get("entity") === "street" ? content.back_to_street : content.back_to_neighborhood}
 				</Link>
 			</PageHeader>

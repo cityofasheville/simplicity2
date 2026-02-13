@@ -73,7 +73,7 @@ const addressTableConfig = {
 				</div>
 			),
 			enableColumnFilter: true,
-			size: 400,
+			size: 700,
 		},
 		{
 			accessorKey: "owner",
@@ -89,7 +89,7 @@ const addressTableConfig = {
 			header: <span>Owner</span>,
 			footer: (props) => props.column.id,
 			enableColumnFilter: true,
-			size: 400,
+			size: 700,
 		},
 	],
 	navigationRender: {
@@ -99,7 +99,7 @@ const addressTableConfig = {
 		itemsPerPage: 20,
 	},
 	filterRender: {
-		globalFilterRender: true,
+		globalFilterRender: false,
 	},
 };
 
@@ -147,16 +147,16 @@ function AddressesByNeighborhood(props) {
 				});
 
 				return (
-					<div>
+					<section>
 						<EmailDownload
 							downloadData={data.addresses_by_neighborhood}
 							fileName={content.addresses_by_neighborhood_filename}
 						/>
-						<div id="listView" className={`mt-4 ${props.location.query.view === "map" ? "hidden" : "flex"}`}>
+						<div id="listView" className={` ${props.location.query.view === "map" ? "hidden" : "flex"}`}>
 							{data.addresses_by_neighborhood.length < 1 ? (
 								<div className="alert alert-info">{content.no_results_found}</div>
 							) : (
-								<div style={{ marginTop: "10px" }}>
+								<div className="mt-2">
 									<Table
 										data={data.addresses_by_neighborhood}
 										columns={addressTableColumns}
@@ -184,7 +184,7 @@ function AddressesByNeighborhood(props) {
 								</div>
 							)}
 						</div>
-					</div>
+					</section>
 				);
 			}}
 		</Query>

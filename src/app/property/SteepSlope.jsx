@@ -43,23 +43,19 @@ const SteepSlope = (props) => {
 				</button>
 			)}
 			<div id="ssData" className={(isSlopeDataShown && dataLoaded) || isSlopeDataError ? "flex" : "hidden"}>
-				<div
-					id="successData"
-					className={!isSlopeDataError && isSlopeDataShown && dataLoaded ? "ss-container" : "ss-container hide-elem"}
-					aria-label="Slope Steep Data"
-				>
-					<div>
-						<p className="tag">Jurisdiction:</p>
-						<p className="info">{showSSData.jurisdiction ? showSSData.jurisdiction : "--"}</p>
+				<div id="successData" aria-label="Slope Steep Data">
+					<div className="flex flex-row">
+						<p className="mr-1 font-light">Jurisdiction:</p>
+						<p>{showSSData.jurisdiction ? showSSData.jurisdiction : "--"}</p>
 					</div>
-					{/* <div><p className="tag">Acres: </p> <p className="info">{showSSData.acres  ? showSSData.acres : '--'}</p></div> */}
-					<div>
-						<p className="tag">Maximum Elevation:</p>
-						<p className="info">{showSSData.maxElevation ? showSSData.maxElevation : "--"}</p>
+					{/* <div><p className="tag">Acres: </p> <p>{showSSData.acres  ? showSSData.acres : '--'}</p></div> */}
+					<div className="flex flex-row">
+						<p className="mr-1 font-light">Maximum Elevation:</p>
+						<p>{showSSData.maxElevation ? showSSData.maxElevation : "--"}</p>
 					</div>
-					<div>
-						<p className="tag">Percent Slope:</p>
-						<p className="info">{showSSData.percentSlope ? showSSData.percentSlope : "--"}</p>
+					<div className="flex flex-row">
+						<p className="mr-1 font-light">Percent Slope:</p>
+						<p>{showSSData.percentSlope ? showSSData.percentSlope : "--"}</p>
 					</div>
 				</div>
 				<div id="slopeError" aria-label="Server Error" className={!isSlopeDataError ? "hidden" : "flex"}>

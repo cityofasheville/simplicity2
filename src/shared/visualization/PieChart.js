@@ -22,7 +22,7 @@ class PieChart extends React.Component {
 
 		return (
 			<div tabIndex={0} aria-label={this.props.altText} className="h-[500px] mx-auto mt-4">
-				<HorizontalLegend formattedData={thisData} style={{ width: "65%", margin: "0 auto", paddingBottom: "10px" }} />
+				<HorizontalLegend formattedData={thisData} className="w-[65%] my-auto pb-10" />
 				<div>
 					<div style={{ height: this.props.height, width: this.props.height, margin: "0 auto" }}>
 						<ResponsiveOrdinalFrame

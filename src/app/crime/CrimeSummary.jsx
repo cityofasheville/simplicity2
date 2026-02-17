@@ -66,7 +66,7 @@ const CrimeSummary = (props) => {
 	}
 
 	return (
-		<div className="">
+		<div>
 			<div className="mb-8 mt-5 px-2 flex items-center">
 				<span className="text-coa-blue-medium pr-2">{<Icon aria-hidden="true" path={IM_SHIELD3} size={35} />}</span>
 				<h1 className="text-coa-blue-medium">

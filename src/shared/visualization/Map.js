@@ -180,9 +180,11 @@ const Map = (props) => {
 						</div>
 						<div
 							className="legend"
-							style={{
-								maxHeight: parseInt(props.height.split("px")[0], 10) / 2,
-							}}
+							style={
+								{
+									// maxHeight: parseInt(props.height.split("px")[0], 10) / 2,
+								}
+							}
 						>
 							<div
 								className="closeLegend"

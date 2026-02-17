@@ -94,9 +94,9 @@ const createLegend = (crimeData) => {
 		}
 	}
 	return (
-		<div style={{ width: "160px" }}>
+		<div className="w-[160pc]">
 			{crimeTypes.map((type) => (
-				<div key={`legendItem-${type}`} style={{ width: "160px", marginBottom: "5px" }}>
+				<div key={`legendItem-${type}`} className="w-[160pc] mb-1">
 					<img
 						alt="legendItem"
 						src={getMarker(type)}

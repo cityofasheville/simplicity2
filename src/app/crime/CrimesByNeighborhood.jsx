@@ -158,27 +158,11 @@ const createLegend = (crimeData) => {
 		}
 	}
 	return (
-		<div style={{ width: "160px" }}>
+		<div className="w-[160px] h-[600px] bg-white p-2 pb-10">
 			{crimeTypes.map((type) => (
-				<div key={`legendItem-${type}`} style={{ width: "160px", marginBottom: "5px" }}>
-					<img
-						src={getMarker(type)}
-						alt="legendItem"
-						style={{
-							display: "inline-block",
-							width: "25px",
-							verticalAlign: "top",
-						}}
-					/>
-					<span
-						style={{
-							marginLeft: "5px",
-							display: "inline-block",
-							width: "130px",
-						}}
-					>
-						{type}
-					</span>
+				<div key={`legendItem-${type}`} className="w-[160px]">
+					<img src={getMarker(type)} alt="legendItem" className="inline-block w-[25px] align-top" />
+					<span className="ml-1 inline-block w-[130px]">{type}</span>
 				</div>
 			))}
 		</div>
@@ -210,14 +194,16 @@ function CrimesByNeighborhood(props) {
 				const pieData = convertToPieData(data.crimes_by_neighborhood);
 				const mapData = data.crimes_by_neighborhood.map((item) =>
 					Object.assign({}, item, {
-						popup: `<div style="padding: 8px 0;">
-              <p style="margin: 6px 0; text-transform: capitalize;"><b>Location</b>: ${item.address.toLowerCase()}</p><p style="margin: 6px 0;"><b>Date</b>: ${
-							item.date_occurred.indexOf("-") === -1
-								? moment.unix(item.date_occurred / 1000).format("M/DD/YYYY")
-								: moment.utc(item.date_occurred).format("M/DD/YYYY")
-						}</p><p style="margin: 6px 0; text-transform: capitalize;"><b>Type</b>: ${item.offense_long_description.toLowerCase()}</p>
-            <p style="margin: 6px 0;"><b>Case number</b>: ${item.case_number}</p>
-            </div>`, // eslint-disable-line
+						popup: `<div>
+  <p class="capitalize"><span class="font-bold">Location</span>: ${item.address.toLowerCase()}</p>
+  <p class=""><span class="font-bold">Date</span>: ${
+		item.date_occurred.indexOf("-") === -1
+			? moment.unix(item.date_occurred / 1000).format("M/DD/YYYY")
+			: moment.utc(item.date_occurred).format("M/DD/YYYY")
+	}</p>
+  <p class="capitalize"><span class="font-bold">Type</span>: ${item.offense_long_description.toLowerCase()}</p>
+  <p><span class="font-bold">Case number</span>: ${item.case_number}</p>
+</div>`,
 						options: {
 							icon: L.icon({
 								iconUrl: getMarker(item.offense_long_description),
@@ -264,7 +250,7 @@ function CrimesByNeighborhood(props) {
 								</button>
 							</div>
 						</div>
-						<div className="row data-view-container">
+						<div>
 							<div
 								id="summaryView"
 								className={`w-full h-full ${props.location.query.view === "summary" ? "flex" : "hidden"}`}

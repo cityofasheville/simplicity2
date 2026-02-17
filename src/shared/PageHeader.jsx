@@ -24,7 +24,7 @@ function PageHeader(props) {
 			</div>
 
 			<div className="flex pb-4 pt-2">
-				{/* {(props.externalLink || props.dataLinkPath) && (
+				{(props.externalLink || props.dataLinkPath) && (
 					<div className="template-header__subnav">
 						{props.externalLink && (
 							<div>
@@ -39,7 +39,7 @@ function PageHeader(props) {
 							</div>
 						)}
 					</div>
-				)} */}
+				)}
 				{props.h2 !== null && <h2 className="text-3xl text-coa-blue-medium">{props.h2}</h2>}
 				{props.h3 !== null && <h3>{props.h3}</h3>}
 				{props.h4 !== null && <h4>{props.h4}</h4>}

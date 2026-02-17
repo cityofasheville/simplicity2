@@ -11,42 +11,53 @@ import LoadingAnimation from "../../shared/LoadingAnimation";
 import Error from "../../shared/Error";
 import expandingRows from "../../shared/react_table_hoc/ExpandingRows";
 import createFilterRenderer from "../../shared/FilterRenderer";
+import Table from "../../shared/Table/Table";
 
 const FilterRenderer = createFilterRenderer("Search...");
 
-const dataColumns = [
-	{
-		Header: "Pin #",
-		accessor: "pinnum",
-		width: 175,
-		Cell: (row) => <span>{row.original.pinnum}</span>,
-		Filter: FilterRenderer,
-		filterMethod: (filter, row) => {
-			const joinedInfo = row._original.pinnum;
-			return row._original !== undefined ? joinedInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
+const propertyTableConfig = {
+	columns: [
+		{
+			accessorKey: "pinnum",
+			enableColumnFilter: true,
+
+			cell: ({ row }) => <span>{row.original.pinnum}</span>,
+			header: () => <span>Pin #</span>,
+			footer: (props) => props.column.id,
+			width: 175,
 		},
-	},
-	{
-		Header: "Civic Address ID",
-		accessor: "property_civic_address_id",
-		width: 150,
-		Filter: FilterRenderer,
-	},
-	{
-		Header: "Address",
-		accessor: "Address",
-		Cell: (row) => (
-			<span>
-				{row.original.property_address}, {row.original.property_zipcode}
-			</span>
-		),
-		Filter: FilterRenderer,
-		filterMethod: (filter, row) => {
-			const joinedInfo = [row._original.address, row._original.zipcode].join(", ");
-			return row._original !== undefined ? joinedInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
+		{
+			accessorKey: "property_civic_address_id",
+			enableColumnFilter: true,
+
+			cell: (info) => info.getValue(),
+			header: () => <span>Civic Address ID</span>,
+			footer: (props) => props.column.id,
 		},
+		{
+			accessorKey: "address",
+			enableColumnFilter: true,
+
+			cell: ({ row }) => (
+				<span>
+					{row.original.property_address}, {row.original.property_zipcode}
+				</span>
+			),
+			header: () => <span>Address</span>,
+			footer: (props) => props.column.id,
+			width: 175,
+		},
+	],
+	navigationRender: {
+		paginationButtonsRender: true,
+		goToPageRender: true,
+		itemsPerPageRender: true,
+		itemsPerPage: 20,
 	},
-];
+	filterRender: {
+		globalFilterRender: false,
+	},
+};
 
 const PropertiesByNeighborhood = (props) => {
 	if (props.data.loading) {
@@ -58,7 +69,9 @@ const PropertiesByNeighborhood = (props) => {
 		return <Error message={props.data.error.message} />; // eslint-disable-line react/prop-types
 	}
 
-	const ExpandableAccessibleReactTable = expandingRows(AccessibleReactTable);
+	const propertyTableColumns = propertyTableConfig.columns;
+	const navRender = propertyTableConfig.navigationRender;
+	const filterRender = propertyTableConfig.filterRender;
 
 	return (
 		<div>
@@ -68,74 +81,21 @@ const PropertiesByNeighborhood = (props) => {
 					{props.data.properties_by_neighborhood.length < 1 ? (
 						<div className="alert alert-info">No results found</div>
 					) : (
-						<div style={{ marginTop: "10px" }}>
-							<ExpandableAccessibleReactTable
-								ariaLabel="Neighborhood Properties"
+						<div className="mt-3">
+							<Table
+								ariaLabel="PropertyDetails"
+								navRender={navRender}
 								data={props.data.properties_by_neighborhood}
-								columns={dataColumns}
-								showPagination={props.data.properties_by_neighborhood.length > 20}
-								defaultPageSize={
-									props.data.properties_by_neighborhood.length <= 20 ? props.data.properties_by_neighborhood.length : 20
-								}
-								filterable
-								defaultFilterMethod={(filter, row) => {
-									const id = filter.pivotId || filter.id;
-									return row[id] !== undefined
-										? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1
-										: true;
-								}}
-								getTdProps={() => {
-									return {
-										style: {
-											whiteSpace: "normal",
-										},
-									};
-								}}
-								getTrProps={(state, rowInfo) => {
-									return {
-										style: {
-											cursor: "pointer",
-											background:
-												rowInfo !== undefined &&
-												Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) &&
-												state.expanded[rowInfo.viewIndex]
-													? "#4077a5"
-													: "none",
-											color:
-												rowInfo !== undefined &&
-												Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) &&
-												state.expanded[rowInfo.viewIndex]
-													? "#fff"
-													: "",
-											fontWeight:
-												rowInfo !== undefined &&
-												Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) &&
-												state.expanded[rowInfo.viewIndex]
-													? "bold"
-													: "normal",
-											fontSize:
-												rowInfo !== undefined &&
-												Object.keys(state.expanded).includes(rowInfo.viewIndex.toString()) &&
-												state.expanded[rowInfo.viewIndex]
-													? "1.2em"
-													: "1em",
-										},
-									};
-								}}
-								SubComponent={(row) => (
-									<div
-										style={{
-											paddingLeft: "34px",
-											paddingRight: "34px",
-											paddingBottom: "15px",
-											backgroundColor: "#f6fcff",
-											borderRadius: "0px",
-											border: "2px solid #4077a5",
-										}}
-									>
-										<Property data={row.original} hideHeader={true} inTable />
-									</div>
-								)}
+								filterRender={filterRender}
+								columns={propertyTableColumns}
+								defaultPageSize={props.data.length}
+								showPagination={true}
+								className="w-full items-center"
+								filterOptions={[
+									{ accessor: "property_civic_address_id" },
+									{ accessor: "address" },
+									{ accessor: "pinnum" },
+								]}
 							/>
 						</div>
 					)}

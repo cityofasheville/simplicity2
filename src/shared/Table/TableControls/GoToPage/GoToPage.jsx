@@ -3,7 +3,7 @@ export default function GoToPage({ gotoPage, pageIndex, pageCount }) {
 
 	return (
 		<div className="flex items-baseline">
-			<label for="gotoPage">Go to page </label>
+			<label htmlFor="gotoPage">Go to page </label>
 			<select
 				id="gotoPage"
 				className="btn ml-2"

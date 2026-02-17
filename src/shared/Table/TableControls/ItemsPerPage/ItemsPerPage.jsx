@@ -1,7 +1,7 @@
 export default function ItemsPerPage({ pageSize, setPageSize }) {
 	return (
 		<div className="">
-			<label className="sr-only" for="itemsPerPage">
+			<label className="sr-only" htmlFor="itemsPerPage">
 				Items per page:{" "}
 			</label>
 			<select

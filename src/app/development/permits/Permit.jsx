@@ -13,6 +13,7 @@ import { permitFieldFormats } from "./utils";
 import { orderedDates } from "../trc/textContent";
 import { getTRCTypeFromPermit } from "../trc/utils";
 import { statusTranslation } from "../utils";
+import Table from "../../../shared/Table/Table";
 
 const GET_PERMIT = gql`
 	query getPermitsQuery($permit_numbers: [String]) {
@@ -229,9 +230,46 @@ const Permit = (props) => (
 			// console.log('formattedPermit.orderedDates', formattedPermit);
 			// console.log('formattedPermit', formattedPermit)
 			// console.log('currentStatusItem', currentStatusItem)
+			console.log(data.permits[0].comments);
+
+			const commentTableConfig = {
+				columns: [
+					{
+						accessorKey: "comment_date",
+						enableColumnFilter: true,
+
+						cell: ({ row }) => <span>{row.original.comment_date}</span>,
+						header: () => <span>Date</span>,
+						footer: (props) => props.column.id,
+						width: 100,
+					},
+					{
+						accessorKey: "comments",
+						enableColumnFilter: true,
+
+						cell: (info) => info.getValue(),
+						header: () => <span>Comment</span>,
+						footer: (props) => props.column.id,
+						width: 600,
+					},
+				],
+				navigationRender: {
+					paginationButtonsRender: false,
+					goToPageRender: false,
+					itemsPerPageRender: false,
+					itemsPerPage: 20,
+				},
+				filterRender: {
+					globalFilterRender: false,
+				},
+			};
+
+			const commentTableColumns = commentTableConfig.columns;
+			const navRender = commentTableConfig.navigationRender;
+			const filterRender = commentTableConfig.filterRender;
 
 			return (
-				<main>
+				<div>
 					<h1 className="text-4xl text-coa-blue-medium my-5">Permit Details</h1>
 					<h2 className="text-3xl text-coa-blue-medium my-4">{formattedPermit.application_name}</h2>
 					<p className="my-2">{formattedPermit.permit_description}</p>
@@ -363,20 +401,33 @@ const Permit = (props) => (
 									</li>
 								</ul>
 							</div>
-
-							{trcType !== undefined && (
-								<div style={{ display: "flex", marginTop: "1rem" }}>
-									<p>
-										<em>
-											This is an application made for development or permitting by a private individual that is being
-											reviewed by the City of Asheville.
-											<a href="/development/major">Learn more</a> about the development review process in Asheville.
-										</em>
-									</p>
-								</div>
-							)}
 						</div>
 					</div>
+					<div>
+						<h3 className="text-2xl text-coa-blue-medium my-5">Comments</h3>
+						<Table
+							ariaLabel="Permit comments"
+							navRender={navRender}
+							data={data.permits[0].comments}
+							filterRender={filterRender}
+							columns={commentTableColumns}
+							defaultPageSize={20}
+							showPagination={true}
+							className="w-full items-center"
+							filterOptions={[]}
+						/>
+					</div>
+					{trcType !== undefined && (
+						<div className="flex my-6">
+							<p>
+								<em>
+									This is an application made for development or permitting by a private individual that is being
+									reviewed by the City of Asheville.
+									<a href="/development/major">Learn more</a> about the development review process in Asheville.
+								</em>
+							</p>
+						</div>
+					)}
 
 					<hr />
 					<div className="row" style={{ marginBottom: "32px" }}>
@@ -385,7 +436,7 @@ const Permit = (props) => (
 							<SuggestSearchWrapper searchMode="permit" autoFocusInput={false} />
 						</div>
 					</div>
-				</main>
+				</div>
 			);
 		}}
 	</Query>

@@ -2,16 +2,12 @@ import React, { useState, useEffect } from "react";
 import { browserHistory } from "react-router";
 import moment from "moment";
 import PageHeader from "../../shared/PageHeader";
-import ButtonGroup from "../../shared/ButtonGroup";
-import Button from "../../shared/Button";
 import DevelopmentByAddress from "./DevelopmentByAddress";
 import DevelopmentByStreet from "./DevelopmentByStreet";
 import DevelopmentByNeighborhood from "./DevelopmentByNeighborhood";
 import Icon from "../../shared/Icon";
 import { IM_OFFICE } from "../../shared/iconConstants";
-// import styles from '../spatial_event_topic_summary/spatialEventTopicFilters.css';
-import SpatialEventTopicLocationInfo from "../spatial_event_topic_summary/SpatialEventTopicLocationInfo";
-import { refreshLocation, timeOptions, extentOptions } from "../../utilities/generalUtilities";
+import { extentOptions } from "../../utilities/generalUtilities";
 import TopicCard from "../../shared/TopicCard";
 import TimeSlider from "./volume/TimeSlider";
 import { timeDay, timeWeek, timeMonth } from "d3-time";
@@ -114,13 +110,13 @@ function DevelopmentByEntityWrapper(props) {
 	let pageSubHeading;
 	if (props.location.query.entity !== "address") {
 		pageSubHeading = (
-			<div className="h4" style={{ fontWeight: "300" }}>
+			<div className="h4">
 				{props.location.query.label} ({props.location.query.entity})
 			</div>
 		);
 	} else if (props.location.query.entity === "address") {
 		pageSubHeading = (
-			<div className="h4" style={{ fontWeight: "300" }}>
+			<div className="h4">
 				{props.location.query.label}
 				{" (address) "}
 				<select
@@ -128,8 +124,7 @@ function DevelopmentByEntityWrapper(props) {
 					onChange={(event) => onRadiusChange(event.target.value)}
 					name="extent"
 					id="extent"
-					className="form-control input-sm"
-					style={{ width: "auto", display: "inline", margin: "0 5px" }}
+					className="w-auto inline mx-1"
 				>
 					{extentOptionsWithAt.map((option, i) => (
 						<option value={option.value} key={["extent", "option", i].join("_")} name="extent">
@@ -174,7 +169,7 @@ function DevelopmentByEntityWrapper(props) {
 				{((props.location.query.entity === "address" && radius !== "0") ||
 					props.location.query.entity === "street" ||
 					props.location.query.entity === "neighborhood") && (
-					<div className="col-xs-12" style={{ margin: "1rem 0" }}>
+					<div className="my-1">
 						<TimeSlider
 							onBrushEnd={(newExtent) => {
 								onDateRangeChange(newExtent);

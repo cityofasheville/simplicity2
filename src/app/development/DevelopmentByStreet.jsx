@@ -56,11 +56,11 @@ const createLegend = (permitData) => {
 		}
 	}
 	return (
-		<div style={{ width: "160px" }}>
+		<div className="w-[160px]">
 			{permitTypes.map((type) => (
-				<div key={`legendItem-${type}`} style={{ width: "160px", marginBottom: "5px" }}>
-					<img src={getMarker(type)} style={{ display: "inline-block", width: "25px", verticalAlign: "top" }}></img>
-					<span style={{ marginLeft: "5px", display: "inline-block", width: "130px" }}>{type}</span>
+				<div key={`legendItem-${type}`} className="w-[160px] mb-1">
+					<img src={getMarker(type)} className="inline-block w-6 align-top"></img>
+					<span className="ml-1 inline-block w-[130px]">{type}</span>
 				</div>
 			))}
 		</div>

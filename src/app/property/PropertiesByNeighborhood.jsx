@@ -12,6 +12,7 @@ import Error from "../../shared/Error";
 import expandingRows from "../../shared/react_table_hoc/ExpandingRows";
 import createFilterRenderer from "../../shared/FilterRenderer";
 import Table from "../../shared/Table/Table";
+import { Link } from "react-router";
 
 const FilterRenderer = createFilterRenderer("Search...");
 
@@ -20,8 +21,7 @@ const propertyTableConfig = {
 		{
 			accessorKey: "pinnum",
 			enableColumnFilter: true,
-
-			cell: ({ row }) => <span>{row.original.pinnum}</span>,
+			cell: ({ row }) => <Link to={"/property/?id=" + row.original.pinnum}>{row.original.pinnum}</Link>,
 			header: () => <span>Pin #</span>,
 			footer: (props) => props.column.id,
 			width: 175,
@@ -39,9 +39,9 @@ const propertyTableConfig = {
 			enableColumnFilter: true,
 
 			cell: ({ row }) => (
-				<span>
+				<Link to={"/address?id=" + row.original.property_civic_address_id}>
 					{row.original.property_address}, {row.original.property_zipcode}
-				</span>
+				</Link>
 			),
 			header: () => <span>Address</span>,
 			footer: (props) => props.column.id,

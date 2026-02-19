@@ -173,7 +173,7 @@ const Map = (props) => {
 				</Query>
 				<MarkerClusterGroup markers={markers} {...markerClusterOptions} />
 
-				{props.legend && (
+				{/* {props.legend && (
 					<MapLegendControl>
 						<div className="legendIcon">
 							<Icon path={IM_LIST2} size={24} color="#828282" />
@@ -204,7 +204,7 @@ const Map = (props) => {
 							{props.legend}
 						</div>
 					</MapLegendControl>
-				)}
+				)} */}
 			</LeafletMap>
 		</div>
 	);

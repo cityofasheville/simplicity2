@@ -13,23 +13,23 @@ import MySimpliCity from "./app/MySimpliCity";
 // import Search from "./app/search/Search";
 import SuggestSearchWrapper from "./app/search/SuggestSearchWrapper";
 // Locations
-import Locations from './app/Locations';
-import Address from './app/address/Address';
-import AddressList from './app/address/AddressList';
-import Property from './app/property/Property';
-import Properties from './app/property/Properties';
-import Street from './app/street/Street';
-import Neighborhood from './app/neighborhood/Neighborhood';
-import Climate from './app/climate/climate';
-import Owner from './app/owner/Owner';
-import GooglePlaceResults from './app/search/searchResults/GooglePlaceResults';
+import Locations from "./app/Locations";
+import Address from "./app/address/Address";
+import AddressList from "./app/address/AddressList";
+import Property from "./app/property/Property";
+import Properties from "./app/property/Properties";
+import Street from "./app/street/Street";
+import Neighborhood from "./app/neighborhood/Neighborhood";
+import Climate from "./app/climate/climate";
+import Owner from "./app/owner/Owner";
+import GooglePlaceResults from "./app/search/searchResults/GooglePlaceResults";
 // Topics
 import Topics from "./app/Topics";
 //Development endpoints
-import DevelopmentSummary from "./app/development/DevelopmentSummary";
+// import DevelopmentSummary from "./app/development/DevelopmentSummary";
 import DevelopmentByEntityWrapper from "./app/development/DevelopmentByEntityWrapper";
 import DevelopmentDetail from "./app/development/DevelopmentDetail";
-import DevelopmentSLADashboard from "./app/development/sla_dashboard/SLADashboard";
+// import DevelopmentSLADashboard from "./app/development/sla_dashboard/SLADashboard";
 import DevelopmentDashIndex from "./app/development/DevelopmentDashIndex";
 // import TrcTimeline from './app/development/trc/TrcTimeline';
 import MajorDevelopmentDashboard from "./app/development/trc/MajorDevelopmentDashboard";
@@ -46,8 +46,8 @@ import CrimeSummary from "./app/crime/CrimeSummary";
 import Maintenance from "./app/maintenance/Maintenance";
 // Capital Projects
 import CapitalProjectsSummary from "./app/capital_projects/CategoryDataWrapper";
-import CIPMainDashboard from "./app/capital_projects/CIPMainDashboard";
-import CIPData from "./app/capital_projects/CIPData";
+// import CIPMainDashboard from "./app/capital_projects/CIPMainDashboard";
+// import CIPData from "./app/capital_projects/CIPData";
 import Project from "./app/capital_projects/Project";
 import AboutPage from "./app/capital_projects/AboutPage";
 // Homelessness
@@ -64,8 +64,8 @@ import AboutPage from "./app/capital_projects/AboutPage";
 // MiniSearch
 import MiniSearch from "./app/mini_search/MiniSearch";
 // Finance
-import PCardCompliance from "./app/internal/pcard_compliance/PCardCompliance";
-import PCardComplianceReceipts from "./app/internal/pcard_compliance/PCardComplianceReceipts";
+// import PCardCompliance from "./app/internal/pcard_compliance/PCardCompliance";
+// import PCardComplianceReceipts from "./app/internal/pcard_compliance/PCardComplianceReceipts";
 // General
 import NotFound from "./shared/NotFound";
 import Disclaimer from "./app/Disclaimer";
@@ -74,105 +74,95 @@ import Disclaimer from "./app/Disclaimer";
 // const ReactGA = require('react-ga');
 
 let logPageView = () => {
-  ReactGA.set({ page: window.location.pathname });
-  ReactGA.send({
-    hitType: "pageview",
-    page: window.location.pathname + window.location.search,
-  });
-  // ReactGA.pageview(window.location.pathname + window.location.search);
+	ReactGA.set({ page: window.location.pathname });
+	ReactGA.send({
+		hitType: "pageview",
+		page: window.location.pathname + window.location.search,
+	});
+	// ReactGA.pageview(window.location.pathname + window.location.search);
 };
 
 if (window.location.href.indexOf("dashboards.ashevillenc.gov") > -1) {
-  ReactGA.initialize("G-HXJE68WHRD");
+	ReactGA.initialize("G-HXJE68WHRD");
 } else if (window.location.href.indexOf("simplicity.ashevillenc.gov") > -1) {
-  ReactGA.initialize("G-HXJE68WHRD");
+	ReactGA.initialize("G-HXJE68WHRD");
 } else {
-  logPageView = null;
+	logPageView = null;
 }
 
 export const ApiEnvironmentContext = React.createContext();
 
-let SERVER_URL = 'https://data-api1.ashevillenc.gov/graphql';
-if (process.env.REACT_APP_USE_DEV_API === true || process.env.REACT_APP_USE_DEV_API === 'true') {
-  SERVER_URL = 'https://dev-data-api2.ashevillenc.gov/graphql';
+let SERVER_URL = "https://data-api1.ashevillenc.gov/graphql";
+if (process.env.REACT_APP_USE_DEV_API === true || process.env.REACT_APP_USE_DEV_API === "true") {
+	SERVER_URL = "https://dev-data-api2.ashevillenc.gov/graphql";
 }
-if (process.env.REACT_APP_USE_LOCAL_API === true || process.env.REACT_APP_USE_LOCAL_API === 'true') {
-  SERVER_URL = 'http://localhost:8080/graphql';
+if (process.env.REACT_APP_USE_LOCAL_API === true || process.env.REACT_APP_USE_LOCAL_API === "true") {
+	SERVER_URL = "http://localhost:8080/graphql";
 }
 
 const Routes = () => (
-  <ApolloProvider client={client}>
-    <ApiEnvironmentContext.Provider value={SERVER_URL}>
-      <Router
-        history={browserHistory}
-        onUpdate={logPageView === null ? null : () => logPageView()}
-      >
-        <Route path="/" component={App}>
-          <IndexRoute component={Home} />
-          <Route path="search">
-            <IndexRoute component={SuggestSearchWrapper} />
-            <Route
-              path="googlePlaceMatches"
-              component={GooglePlaceResults}
-            ></Route>
-          </Route>
-          <Route path="my-simplicity" component={MySimpliCity}></Route>
-          <Route path="locations" component={Locations} />
-          <Route path="address">
-            <IndexRoute component={Address} />
-            <Route path="addressList" component={AddressList}></Route>
-          </Route>
-          <Route path="property">
-            <IndexRoute component={Property} />
-            <Route path="properties" component={Properties}></Route>
-          </Route>
-          <Route path="street" component={Street}></Route>
-          <Route path="neighborhood" component={Neighborhood}></Route>
-          <Route path="climate" component={Climate}></Route>
-          <Route path="owner" component={Owner}></Route>
-          <Route path="dashboards" component={Topics} />
-          <Route path="capital_projects">
-            <IndexRoute component={CapitalProjectsSummary} />
-            {/* <Route path="details" component={CategoryDetails}></Route> */}
-            {/* <Route path="data" component={CIPData}></Route> */}
-          </Route>
-          <Route path="/capital_projects/dashboard" component={CapitalProjectsSummary}></Route>
-          <Route path="/capital_projects/about" component={AboutPage}></Route>
-          <Route path="/capital_projects/:id" component={Project}></Route>
-          <Route path="crime">
-            <IndexRoute component={CrimeSummary} />
-          </Route>
-          <Route path="bpt_projects">
-            <IndexRoute component={ProjectFlowDashboard} />
-          </Route>
-          <Route path="pcard_compliance">
+	<ApolloProvider client={client}>
+		<ApiEnvironmentContext.Provider value={SERVER_URL}>
+			<Router history={browserHistory} onUpdate={logPageView === null ? null : () => logPageView()}>
+				<Route path="/" component={App}>
+					<IndexRoute component={Home} />
+					<Route path="search">
+						<IndexRoute component={SuggestSearchWrapper} />
+						<Route path="googlePlaceMatches" component={GooglePlaceResults}></Route>
+					</Route>
+					<Route path="my-simplicity" component={MySimpliCity}></Route>
+					<Route path="locations" component={Locations} />
+					<Route path="address">
+						<IndexRoute component={Address} />
+						<Route path="addressList" component={AddressList}></Route>
+					</Route>
+					<Route path="property">
+						<IndexRoute component={Property} />
+						<Route path="properties" component={Properties}></Route>
+					</Route>
+					<Route path="street" component={Street}></Route>
+					<Route path="neighborhood" component={Neighborhood}></Route>
+					<Route path="climate" component={Climate}></Route>
+					<Route path="owner" component={Owner}></Route>
+					<Route path="dashboards" component={Topics} />
+					<Route path="capital_projects">
+						<IndexRoute component={CapitalProjectsSummary} />
+						{/* <Route path="details" component={CategoryDetails}></Route> */}
+						{/* <Route path="data" component={CIPData}></Route> */}
+					</Route>
+					<Route path="/capital_projects/dashboard" component={CapitalProjectsSummary}></Route>
+					<Route path="/capital_projects/about" component={AboutPage}></Route>
+					<Route path="/capital_projects/:id" component={Project}></Route>
+					<Route path="crime">
+						<IndexRoute component={CrimeSummary} />
+					</Route>
+					<Route path="bpt_projects">
+						<IndexRoute component={ProjectFlowDashboard} />
+					</Route>
+					{/* <Route path="pcard_compliance">
             <IndexRoute component={PCardCompliance} />
             <Route path="receipts" component={PCardComplianceReceipts} />
-          </Route>
-          <Route path="permits">
-            <IndexRoute component={PermitsIndex} />
-            <Route
-              exact
-              path="/permits/search"
-              component={() => <SuggestSearchWrapper searchMode="permit" />}
-            ></Route>
-            <Route path="/permits/:id" component={Permit}></Route>
-          </Route>
-          <Route path="development">
-            <IndexRoute component={DevelopmentByEntityWrapper} />
-            <Route path="detail" component={DevelopmentDetail}></Route>
-            {/* The rest of these are dashboards */}
-            <Route path="dashboards" component={DevelopmentDashIndex}></Route>
-            <Route path="data" component={DevelopmentDashIndex}></Route>
-            <Route
+          </Route> */}
+					<Route path="permits">
+						<IndexRoute component={PermitsIndex} />
+						<Route exact path="/permits/search" component={() => <SuggestSearchWrapper searchMode="permit" />}></Route>
+						<Route path="/permits/:id" component={Permit}></Route>
+					</Route>
+					<Route path="development">
+						<IndexRoute component={DevelopmentByEntityWrapper} />
+						<Route path="detail" component={DevelopmentDetail}></Route>
+						{/* The rest of these are dashboards */}
+						<Route path="dashboards" component={DevelopmentDashIndex}></Route>
+						<Route path="data" component={DevelopmentDashIndex}></Route>
+						{/* <Route
               path="sla-dashboard"
               component={DevelopmentSLADashboard}
-            ></Route>
-            <Route path="major" component={MajorDevelopmentDashboard}></Route>
-            <Route path="granular_volume" component={PermitVolume}></Route>
-            <Route path="status_volume" component={PermitVolume}></Route>
-          </Route>
-          {/* <Route path="homelessness">
+            ></Route> */}
+						<Route path="major" component={MajorDevelopmentDashboard}></Route>
+						<Route path="granular_volume" component={PermitVolume}></Route>
+						<Route path="status_volume" component={PermitVolume}></Route>
+					</Route>
+					{/* <Route path="homelessness">
             <IndexRoute component={HomelessnessSummary} />
             <Route path="veterans" component={HomelessnessVeterans}></Route>
             <Route path="data" component={HomelessnessData}></Route>
@@ -199,19 +189,18 @@ const Routes = () => (
             ></Route>
             <Route path="enrollments" component={HomelessnessEnrollment}></Route>
           </Route> */}
-          <Route path="maintenance">
-            <IndexRoute component={Maintenance} />
-          </Route>
-          <Route path="mini_search">
-            {/* <IndexRoute component={MiniSearch} /> */}
-            <IndexRoute component={() => <SuggestSearchWrapper searchMode="mini" />} />
-          </Route>
-          <Route path="*" component={NotFound} />
-        </Route>
-      </Router>
-    </ApiEnvironmentContext.Provider>
-
-  </ApolloProvider>
+					<Route path="maintenance">
+						<IndexRoute component={Maintenance} />
+					</Route>
+					<Route path="mini_search">
+						{/* <IndexRoute component={MiniSearch} /> */}
+						<IndexRoute component={() => <SuggestSearchWrapper searchMode="mini" />} />
+					</Route>
+					<Route path="*" component={NotFound} />
+				</Route>
+			</Router>
+		</ApiEnvironmentContext.Provider>
+	</ApolloProvider>
 );
 
 export default Routes;

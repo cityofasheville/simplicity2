@@ -14,6 +14,7 @@ import EmailDownload from "../../shared/EmailDownload";
 import ButtonGroup from "../../shared/ButtonGroup";
 import Button from "../../shared/Button";
 import { refreshLocation } from "../../utilities/generalUtilities";
+import MapLegend from "../../shared/MapLegend";
 
 const getMarker = (type) => {
 	switch (type) {
@@ -154,24 +155,24 @@ const DevelopmentByStreet = (props) => {
 					>
 						List view
 					</button>
-					<button
+					{/* <button
 						className="btn btn-primary"
 						onClick={() => refreshLocation(getNewUrlParams("summary"), props.location)}
 						positionInGroup="right"
 						active={props.location.query.view === "summary"}
 					>
 						Chart
-					</button>
+					</button> */}
 				</div>
 			</div>
 
-			<div id="summaryView" className={`w-full h-full ${props.location.query.view === "summary" ? "flex" : "hidden"}`}>
+			{/* <div id="summaryView" className={`w-full h-full ${props.location.query.view === "summary" ? "flex" : "hidden"}`}>
 				{props.data.permits_by_street.length === 0 ? (
 					<div className="alert alert-info">No results found</div>
 				) : (
 					<PieChart data={convertToPieData(props.data.permits_by_street)} altText="Development pie chart" />
 				)}
-			</div>
+			</div> */}
 
 			<div id="listView" className={`${props.location.query.view === "list" ? "flex" : "hidden"}`}>
 				<DevelopmentTable data={props.data.permits_by_street} location={props.location} />
@@ -181,20 +182,23 @@ const DevelopmentByStreet = (props) => {
 				{props.data.permits_by_street.length === 0 || props.location.query.view !== "map" ? (
 					<div className="alert alert-info">No results found</div>
 				) : (
-					<div className="w-full h-[600px] flex">
-						<Map
-							data={mapData}
-							legend={createLegend(props.data.permits_by_street)}
-							within={props.location.query.within}
-							bounds={getBoundsFromStreetData(props.data.streets)}
-							drawStreet
-							streetData={convertStreetLinesToLatLngArrays(props.data.streets)}
-							zoomToPoint={
-								props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== ""
-									? props.location.query.zoomToPoint
-									: null
-							}
-						/>
+					<div className="w-full">
+						<div className="w-full h-[600px] flex">
+							<Map
+								data={mapData}
+								legend={createLegend(props.data.permits_by_street)}
+								within={props.location.query.within}
+								bounds={getBoundsFromStreetData(props.data.streets)}
+								drawStreet
+								streetData={convertStreetLinesToLatLngArrays(props.data.streets)}
+								zoomToPoint={
+									props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== ""
+										? props.location.query.zoomToPoint
+										: null
+								}
+							/>
+						</div>
+						<MapLegend type="development" />
 					</div>
 				)}
 			</div>

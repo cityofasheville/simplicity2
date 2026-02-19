@@ -1,15 +1,15 @@
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import 'babel-polyfill';
+import React from "react";
+import { createRoot } from "react-dom/client";
+import "babel-polyfill";
 
 // Import Routes
-import Routes from './routes';
+import Routes from "./routes";
 
 // Import styles
-require('./tw/tw-output.css');
-// require('./styles/styles.scss');
+require("./tw/tw-output.css");
+// require("./styles/styles.scss");
 
-const container = document.getElementById('root');
+const container = document.getElementById("root");
 const root = createRoot(container);
 root.render(<Routes />);
 

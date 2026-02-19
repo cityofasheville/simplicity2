@@ -14,6 +14,7 @@ import ButtonGroup from "../../shared/ButtonGroup";
 import Button from "../../shared/Button";
 import { getBoundsFromPolygonData, combinePolygonsFromNeighborhoodList } from "../../utilities/mapUtilities";
 import { refreshLocation } from "../../utilities/generalUtilities";
+import MapLegend from "../../shared/MapLegend";
 
 const getMarker = (type) => {
 	switch (type) {
@@ -160,25 +161,25 @@ const DevelopmentByNeighborhood = (props) => {
 						>
 							List view
 						</button>
-						<button
+						{/* <button
 							className="btn btn-primary"
 							onClick={() => refreshLocation(getNewUrlParams("summary"), props.location)}
 							positionInGroup="right"
 							active={props.location.query.view === "summary"}
 						>
 							Chart
-						</button>
+						</button> */}
 					</div>
 				</div>
 			</div>
 
-			<div id="summaryView" className={`w-full h-full ${props.location.query.view === "summary" ? "flex" : "hidden"}`}>
+			{/* <div id="summaryView" className={`w-full h-full ${props.location.query.view === "summary" ? "flex" : "hidden"}`}>
 				{pieData.length > 0 ? (
 					<PieChart data={pieData} altText="Crime pie chart" />
 				) : (
 					<div className="alert alert-info">No results found</div>
 				)}
-			</div>
+			</div> */}
 
 			<div id="listView" className={`${props.location.query.view === "list" ? "flex" : "hidden"}`}>
 				<DevelopmentTable data={props.data.permits_by_neighborhood} location={props.location} />
@@ -188,24 +189,27 @@ const DevelopmentByNeighborhood = (props) => {
 				{props.data.permits_by_neighborhood.length === 0 || props.location.query.view !== "map" ? (
 					<div className="alert alert-info">No results found</div>
 				) : (
-					<div className="w-full h-[600px] flex">
-						<Map
-							data={mapData}
-							drawPolygon
-							legend={createLegend(props.data.permits_by_neighborhood)}
-							polygonData={combinePolygonsFromNeighborhoodList([props.data.neighborhoods[0]])}
-							bounds={
-								(props.location.query.zoomToPoint !== undefined) & (props.location.query.zoomToPoint !== "")
-									? null
-									: getBoundsFromPolygonData([props.data.neighborhoods[0].polygon])
-							}
-							within={parseInt(props.location.query.within, 10)}
-							zoomToPoint={
-								props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== ""
-									? props.location.query.zoomToPoint
-									: null
-							}
-						/>
+					<div className="w-full">
+						<div className="w-full h-[600px] flex">
+							<Map
+								data={mapData}
+								drawPolygon
+								legend={createLegend(props.data.permits_by_neighborhood)}
+								polygonData={combinePolygonsFromNeighborhoodList([props.data.neighborhoods[0]])}
+								bounds={
+									(props.location.query.zoomToPoint !== undefined) & (props.location.query.zoomToPoint !== "")
+										? null
+										: getBoundsFromPolygonData([props.data.neighborhoods[0].polygon])
+								}
+								within={parseInt(props.location.query.within, 10)}
+								zoomToPoint={
+									props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== ""
+										? props.location.query.zoomToPoint
+										: null
+								}
+							/>
+						</div>
+						<MapLegend type="development" />
 					</div>
 				)}
 			</div>

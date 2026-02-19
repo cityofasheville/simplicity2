@@ -119,7 +119,7 @@ TopicCard.propTypes = {
 };
 
 TopicCard.defaultProps = {
-	view: "map",
+	view: "list",
 	// topic: 'CRIME',
 	// entity: 'city',
 	// search: null,

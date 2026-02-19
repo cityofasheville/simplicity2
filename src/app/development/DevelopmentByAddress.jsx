@@ -10,9 +10,8 @@ import Error from "../../shared/Error";
 import PieChart from "../../shared/visualization/PieChart";
 import DevelopmentTable from "./DevelopmentTable";
 import EmailDownload from "../../shared/EmailDownload";
-import ButtonGroup from "../../shared/ButtonGroup";
-import Button from "../../shared/Button";
 import { refreshLocation } from "../../utilities/generalUtilities";
+import MapLegend from "../../shared/MapLegend";
 
 const getMarker = (type) => {
 	switch (type) {
@@ -155,23 +154,23 @@ const DevelopmentByAddress = (props) => {
 					>
 						List view
 					</button>
-					<button
+					{/* <button
 						className="btn btn-primary"
 						onClick={() => refreshLocation(getNewUrlParams("summary"), props.location)}
 						active={props.location.query.view === "summary"}
 					>
 						Chart
-					</button>
+					</button> */}
 				</div>
 			</div>
 
-			<div id="summaryView" className={`w-full h-full ${props.location.query.view === "summary" ? "flex" : "hidden"}`}>
+			{/* <div id="summaryView" className={`w-full h-full ${props.location.query.view === "summary" ? "flex" : "hidden"}`}>
 				{props.data.permits_by_address.length === 0 ? (
 					<div className="alert alert-info">No results found</div>
 				) : (
 					<PieChart data={convertToPieData(props.data.permits_by_address)} altText="Development pie chart" />
 				)}
-			</div>
+			</div> */}
 
 			<div id="listView" className={`${props.location.query.view === "list" ? "flex" : "hidden"}`}>
 				<DevelopmentTable data={props.data.permits_by_address} location={props.location} />
@@ -181,28 +180,31 @@ const DevelopmentByAddress = (props) => {
 				{props.data.permits_by_address.length === 0 || props.location.query.view !== "map" ? (
 					<div className="alert alert-info">No results found</div>
 				) : (
-					<div className="w-full h-[600px] flex">
-						<Map
-							data={mapData}
-							showCenter
-							legend={createLegend(props.data.permits_by_address)}
-							center={
-								props.location.query.y !== ""
-									? [parseFloat(props.location.query.y), parseFloat(props.location.query.x)]
-									: null
-							}
-							centerLabel={props.location.query.label}
-							drawCircle
-							radius={props.radius ? parseInt(props.radius, 10) / 3 : 215}
-							within={props.radius ? parseInt(props.radius, 10) : 660}
-							zoom={parseInt(props.radius, 10) > 2640 ? 14 : parseInt(props.radius, 10) > 1320 ? 15 : 16}
-							// within={(props.location.query.within === undefined || props.location.query.within === '') ? 660 : parseInt(props.location.query.within, 10)}
-							zoomToPoint={
-								props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== ""
-									? props.location.query.zoomToPoint
-									: null
-							}
-						/>
+					<div className="w-full">
+						<div className="w-full h-[600px] flex">
+							<Map
+								data={mapData}
+								showCenter
+								legend={createLegend(props.data.permits_by_address)}
+								center={
+									props.location.query.y !== ""
+										? [parseFloat(props.location.query.y), parseFloat(props.location.query.x)]
+										: null
+								}
+								centerLabel={props.location.query.label}
+								drawCircle
+								radius={props.radius ? parseInt(props.radius, 10) / 3 : 215}
+								within={props.radius ? parseInt(props.radius, 10) : 660}
+								zoom={parseInt(props.radius, 10) > 2640 ? 14 : parseInt(props.radius, 10) > 1320 ? 15 : 16}
+								// within={(props.location.query.within === undefined || props.location.query.within === '') ? 660 : parseInt(props.location.query.within, 10)}
+								zoomToPoint={
+									props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== ""
+										? props.location.query.zoomToPoint
+										: null
+								}
+							/>
+						</div>
+						<MapLegend type="development" />
 					</div>
 				)}
 			</div>

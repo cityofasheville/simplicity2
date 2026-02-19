@@ -58,9 +58,9 @@ export default function Table({
 
 	const { pageSize, pageIndex } = table.getState().pagination;
 
-	useEffect(() => {
-		window.scrollTo(0, 0);
-	}, [pageIndex]);
+	// useEffect(() => {
+	// 	window.scrollTo(0, 0);
+	// }, [pageIndex]);
 
 	function handleFilterChange(event) {
 		// console.log('Filter Changed', event.target);

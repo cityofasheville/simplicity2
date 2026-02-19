@@ -16,6 +16,7 @@ import { refreshLocation } from "../../utilities/generalUtilities";
 import { english } from "./english";
 import { spanish } from "./spanish";
 import { withLanguage } from "../../utilities/lang/LanguageContext";
+import MapLegend from "../../shared/MapLegend";
 
 const getMarker = (type) => {
 	switch (type) {
@@ -238,16 +239,16 @@ function CrimesByAddress(props) {
 								>
 									{content.list_view}
 								</button>
-								<button
+								{/* <button
 									onClick={() => refreshLocation(getNewUrlParams("summary"), props.location)}
 									active={props.location.query.view === "summary"}
 									className="btn btn-primary"
 								>
 									{content.chart_view}
-								</button>
+								</button> */}
 							</div>
 						</div>
-						<div
+						{/* <div
 							id="summaryView"
 							className={`w-full h-full ${props.location.query.view === "summary" ? "flex" : "hidden"}`}
 						>
@@ -256,7 +257,7 @@ function CrimesByAddress(props) {
 							) : (
 								<div>{content.no_results_found}</div>
 							)}
-						</div>
+						</div> */}
 
 						<div id="listView" className={`${props.location.query.view === "list" ? "flex" : "hidden"}`}>
 							<CrimeTable data={data.crimes_by_address} location={props.location} />
@@ -266,34 +267,37 @@ function CrimesByAddress(props) {
 							{data.crimes_by_address.length === 0 || props.location.query.view !== "map" ? (
 								<div> {content.no_results_found}</div>
 							) : (
-								<div className="w-full h-[600px] flex">
-									<Map
-										data={mapData}
-										showCenter
-										legend={createLegend(data.crimes_by_address)}
-										center={
-											props.location.query.x !== ""
-												? [parseFloat(props.location.query.y), parseFloat(props.location.query.x)]
-												: null
-										}
-										centerLabel={props.location.query.label}
-										drawCircle
-										radius={
-											props.location.query.within === undefined || props.location.query.within === ""
-												? 215
-												: parseInt(props.location.query.within, 10) / 3
-										}
-										within={
-											props.location.query.within === undefined || props.location.query.within === ""
-												? 660
-												: parseInt(props.location.query.within, 10)
-										}
-										zoomToPoint={
-											props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== ""
-												? props.location.query.zoomToPoint
-												: null
-										}
-									/>{" "}
+								<div className="w-full">
+									<div className=" h-[600px] flex flex-col">
+										<Map
+											data={mapData}
+											showCenter
+											legend={createLegend(data.crimes_by_address)}
+											center={
+												props.location.query.x !== ""
+													? [parseFloat(props.location.query.y), parseFloat(props.location.query.x)]
+													: null
+											}
+											centerLabel={props.location.query.label}
+											drawCircle
+											radius={
+												props.location.query.within === undefined || props.location.query.within === ""
+													? 215
+													: parseInt(props.location.query.within, 10) / 3
+											}
+											within={
+												props.location.query.within === undefined || props.location.query.within === ""
+													? 660
+													: parseInt(props.location.query.within, 10)
+											}
+											zoomToPoint={
+												props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== ""
+													? props.location.query.zoomToPoint
+													: null
+											}
+										/>{" "}
+									</div>
+									<MapLegend type="crime" />
 								</div>
 							)}
 						</div>

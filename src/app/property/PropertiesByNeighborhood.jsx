@@ -73,6 +73,11 @@ const PropertiesByNeighborhood = (props) => {
 	const navRender = propertyTableConfig.navigationRender;
 	const filterRender = propertyTableConfig.filterRender;
 
+	// filtering out data that don't have any civic address ids. These break the property page and show up weird
+	// const filteredData = props.data.properties_by_street.filter(
+	// 	(item) => Array.isArray(item.civic_address_ids) && item.civic_address_ids.length > 0
+	// );
+
 	return (
 		<div>
 			<EmailDownload downloadData={props.data.properties_by_neighborhood} fileName="properties_by_neighborhodd.csv" />
@@ -86,6 +91,7 @@ const PropertiesByNeighborhood = (props) => {
 								ariaLabel="PropertyDetails"
 								navRender={navRender}
 								data={props.data.properties_by_neighborhood}
+								// data={filteredData}
 								filterRender={filterRender}
 								columns={propertyTableColumns}
 								defaultPageSize={props.data.length}

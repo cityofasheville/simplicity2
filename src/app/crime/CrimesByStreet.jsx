@@ -11,12 +11,11 @@ import Map from "../../shared/visualization/Map";
 import { getBoundsFromStreetData, convertStreetLinesToLatLngArrays } from "../../utilities/mapUtilities";
 import CrimeTable from "../crime/CrimeTable";
 import EmailDownload from "../../shared/EmailDownload";
-import ButtonGroup from "../../shared/ButtonGroup";
-import Button from "../../shared/Button";
 import { refreshLocation } from "../../utilities/generalUtilities";
 import { english } from "./english";
 import { spanish } from "./spanish";
 import { withLanguage } from "../../utilities/lang/LanguageContext";
+import MapLegend from "../../shared/MapLegend";
 
 const getMarker = (type) => {
 	switch (type) {
@@ -254,17 +253,17 @@ function CrimesByStreet(props) {
 								>
 									{content.list_view}
 								</button>
-								<button
+								{/* <button
 									className="btn btn-primary"
 									onClick={() => refreshLocation(getNewUrlParams("summary"), props.location)}
 									positionInGroup="right"
 									active={props.location.query.view === "summary"}
 								>
 									{content.chart_view}
-								</button>
+								</button> */}
 							</div>
 						</div>
-						<div
+						{/* <div
 							id="summaryView"
 							className={`w-full h-full ${props.location.query.view === "summary" ? "flex" : "hidden"}`}
 						>
@@ -273,7 +272,7 @@ function CrimesByStreet(props) {
 							) : (
 								<div>{content.no_results_found}</div>
 							)}
-						</div>
+						</div> */}
 
 						<div id="listView" className={`${props.location.query.view === "list" ? "flex" : "hidden"}`}>
 							<CrimeTable data={data.crimes_by_street} location={props.location} />
@@ -283,19 +282,22 @@ function CrimesByStreet(props) {
 							{data.crimes_by_street.length === 0 || props.location.query.view !== "map" ? (
 								<div>{content.no_results_found}</div>
 							) : (
-								<div className="w-full h-[600px] flex">
-									<Map
-										data={mapData}
-										legend={createLegend(data.crimes_by_street)}
-										bounds={getBoundsFromStreetData(data.streets)}
-										drawStreet
-										streetData={convertStreetLinesToLatLngArrays(data.streets)}
-										zoomToPoint={
-											props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== ""
-												? props.location.query.zoomToPoint
-												: null
-										}
-									/>
+								<div className="w-full">
+									<div className="w-full h-[600px] flex">
+										<Map
+											data={mapData}
+											legend={createLegend(data.crimes_by_street)}
+											bounds={getBoundsFromStreetData(data.streets)}
+											drawStreet
+											streetData={convertStreetLinesToLatLngArrays(data.streets)}
+											zoomToPoint={
+												props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== ""
+													? props.location.query.zoomToPoint
+													: null
+											}
+										/>
+									</div>
+									<MapLegend type="crime" />
 								</div>
 							)}
 						</div>

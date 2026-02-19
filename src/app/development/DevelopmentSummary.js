@@ -24,7 +24,7 @@ const DevelopmentSummary = (props) => {
 			id: "9688",
 			label: "70 COURT PLZ, 28801",
 			search: "70 court plaza",
-			view: "map",
+			view: "list",
 			within: "5280",
 			x: "-82.54841807",
 			y: "35.59542839",

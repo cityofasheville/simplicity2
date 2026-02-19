@@ -10,13 +10,12 @@ import PieChart from "../../shared/visualization/PieChart";
 import Map from "../../shared/visualization/Map";
 import CrimeTable from "../crime/CrimeTable";
 import EmailDownload from "../../shared/EmailDownload";
-import ButtonGroup from "../../shared/ButtonGroup";
-import Button from "../../shared/Button";
 import { getBoundsFromPolygonData, combinePolygonsFromNeighborhoodList } from "../../utilities/mapUtilities";
 import { refreshLocation } from "../../utilities/generalUtilities";
 import { english } from "./english";
 import { spanish } from "./spanish";
 import { withLanguage } from "../../utilities/lang/LanguageContext";
+import MapLegend from "../../shared/MapLegend";
 
 const getMarker = (type) => {
 	switch (type) {
@@ -241,17 +240,17 @@ function CrimesByNeighborhood(props) {
 								>
 									{content.list_view}
 								</button>
-								<button
+								{/* <button
 									onClick={() => refreshLocation(getNewUrlParams("summary"), props.location)}
 									className="btn btn-primary"
 									active={props.location.query.view === "summary"}
 								>
 									{content.chart_view}
-								</button>
+								</button> */}
 							</div>
 						</div>
 						<div>
-							<div
+							{/* <div
 								id="summaryView"
 								className={`w-full h-full ${props.location.query.view === "summary" ? "flex" : "hidden"}`}
 								hidden={props.location.query.view !== "summary"}
@@ -261,7 +260,7 @@ function CrimesByNeighborhood(props) {
 								) : (
 									<div>{content.no_results_found}</div>
 								)}
-							</div>
+							</div> */}
 							<div id="listView" className={`${props.location.query.view === "list" ? "flex" : "hidden"}`}>
 								<CrimeTable data={data.crimes_by_neighborhood} location={props.location} />
 							</div>
@@ -269,24 +268,27 @@ function CrimesByNeighborhood(props) {
 								{data.crimes_by_neighborhood.length === 0 || props.location.query.view !== "map" ? (
 									<div className="alert alert-info">{content.no_results_found}</div>
 								) : (
-									<div className="w-full h-[600px] flex">
-										<Map
-											data={mapData}
-											legend={createLegend(data.crimes_by_neighborhood)}
-											drawPolygon
-											polygonData={combinePolygonsFromNeighborhoodList([data.neighborhoods[0]])}
-											bounds={
-												props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== ""
-													? null
-													: getBoundsFromPolygonData([data.neighborhoods[0].polygon])
-											}
-											within={parseInt(props.location.query.within, 10)}
-											zoomToPoint={
-												props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== ""
-													? props.location.query.zoomToPoint
-													: null
-											}
-										/>
+									<div className="w-full">
+										<div className="w-full h-[600px] flex">
+											<Map
+												data={mapData}
+												legend={createLegend(data.crimes_by_neighborhood)}
+												drawPolygon
+												polygonData={combinePolygonsFromNeighborhoodList([data.neighborhoods[0]])}
+												bounds={
+													props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== ""
+														? null
+														: getBoundsFromPolygonData([data.neighborhoods[0].polygon])
+												}
+												within={parseInt(props.location.query.within, 10)}
+												zoomToPoint={
+													props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== ""
+														? props.location.query.zoomToPoint
+														: null
+												}
+											/>
+										</div>
+										<MapLegend type="crime" />
 									</div>
 								)}
 							</div>

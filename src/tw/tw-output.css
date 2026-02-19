@@ -774,21 +774,21 @@ a:focus-within {
   display: inline-flex;
 }
 
-.btn-group > * {
+.btn-group>* {
   border-radius: 0px;
 }
 
-.btn-group > *:first-child {
+.btn-group>*:first-child {
   border-top-left-radius: 0.25rem;
   border-bottom-left-radius: 0.25rem;
 }
 
-.btn-group > *:last-child {
+.btn-group>*:last-child {
   border-top-right-radius: 0.25rem;
   border-bottom-right-radius: 0.25rem;
 }
 
-.btn-group > *:not(:first-child) {
+.btn-group>*:not(:first-child) {
   border-left-width: 1px;
   --tw-border-opacity: 1;
   border-left-color: rgb(0 73 135 / var(--tw-border-opacity, 1));
@@ -806,6 +806,14 @@ a:focus-within {
   padding: 0.25rem;
   font-size: 0.875rem;
   line-height: 1.25rem;
+}
+
+/* ACCORDIONS */
+
+details[open] summary span.bi {
+  --tw-rotate: 180deg;
+  -webkit-transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+          transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
 /** Toggle icons for dropdowns and hamburger menu **/
@@ -929,20 +937,12 @@ a:focus-within {
   bottom: 0px;
 }
 
-.left-0 {
-  left: 0px;
-}
-
 .left-1\/2 {
   left: 50%;
 }
 
 .top-1\/2 {
   top: 50%;
-}
-
-.top-\[97px\] {
-  top: 97px;
 }
 
 .z-\[100\] {
@@ -969,6 +969,11 @@ a:focus-within {
   margin: 2px;
 }
 
+.mx-1 {
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+}
+
 .mx-2 {
   margin-left: 0.5rem;
   margin-right: 0.5rem;
@@ -982,6 +987,11 @@ a:focus-within {
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
+}
+
+.my-1 {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
 }
 
 .my-10 {
@@ -1027,16 +1037,6 @@ a:focus-within {
 .my-auto {
   margin-top: auto;
   margin-bottom: auto;
-}
-
-.mx-1 {
-  margin-left: 0.25rem;
-  margin-right: 0.25rem;
-}
-
-.my-1 {
-  margin-top: 0.25rem;
-  margin-bottom: 0.25rem;
 }
 
 .mb-1 {
@@ -1109,6 +1109,10 @@ a:focus-within {
 
 .mr-2 {
   margin-right: 0.5rem;
+}
+
+.mr-4 {
+  margin-right: 1rem;
 }
 
 .mr-\[1px\] {
@@ -1303,10 +1307,6 @@ a:focus-within {
   width: 100px;
 }
 
-.w-\[12\.5vw\] {
-  width: 12.5vw;
-}
-
 .w-\[120px\] {
   width: 120px;
 }
@@ -1353,10 +1353,6 @@ a:focus-within {
 
 .min-w-6 {
   min-width: 1.5rem;
-}
-
-.min-w-\[200px\] {
-  min-width: 200px;
 }
 
 .max-w-7xl {
@@ -1444,6 +1440,10 @@ a:focus-within {
   list-style-type: disc;
 }
 
+.list-none {
+  list-style-type: none;
+}
+
 .grid-cols-1 {
   grid-template-columns: repeat(1, minmax(0, 1fr));
 }
@@ -1458,6 +1458,10 @@ a:focus-within {
 
 .flex-col {
   flex-direction: column;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
 }
 
 .items-start {
@@ -1504,6 +1508,10 @@ a:focus-within {
   gap: 0.5rem;
 }
 
+.gap-3 {
+  gap: 0.75rem;
+}
+
 .gap-4 {
   gap: 1rem;
 }
@@ -1518,8 +1526,20 @@ a:focus-within {
   margin-bottom: calc(1rem * var(--tw-space-y-reverse));
 }
 
+.justify-self-end {
+  justify-self: end;
+}
+
 .overflow-hidden {
   overflow: hidden;
+}
+
+.overflow-x-auto {
+  overflow-x: auto;
+}
+
+.text-nowrap {
+  text-wrap: nowrap;
 }
 
 .rounded {
@@ -1588,10 +1608,6 @@ a:focus-within {
   border-left-width: 2px;
 }
 
-.border-r {
-  border-right-width: 1px;
-}
-
 .border-t {
   border-top-width: 1px;
 }
@@ -1635,11 +1651,6 @@ a:focus-within {
   background-color: rgb(0 0 0 / 0.1);
 }
 
-.bg-blue-50 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(239 246 255 / var(--tw-bg-opacity, 1));
-}
-
 .bg-coa-blue-medium {
   --tw-bg-opacity: 1;
   background-color: rgb(64 119 165 / var(--tw-bg-opacity, 1));
@@ -1665,14 +1676,14 @@ a:focus-within {
   background-color: rgb(0 73 135 / var(--tw-bg-opacity, 1));
 }
 
+.bg-light {
+  --tw-bg-opacity: 1;
+  background-color: rgb(246 252 255 / var(--tw-bg-opacity, 1));
+}
+
 .bg-primary {
   --tw-bg-opacity: 1;
   background-color: rgb(64 119 165 / var(--tw-bg-opacity, 1));
-}
-
-.bg-sky-100 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(224 242 254 / var(--tw-bg-opacity, 1));
 }
 
 .bg-transparent {
@@ -1739,6 +1750,11 @@ a:focus-within {
 .px-4 {
   padding-left: 1rem;
   padding-right: 1rem;
+}
+
+.px-5 {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
 }
 
 .px-6 {
@@ -2218,8 +2234,16 @@ a:focus-within {
 }
 
 @media (min-width: 640px) {
+  .sm\:ml-2 {
+    margin-left: 0.5rem;
+  }
+
   .sm\:block {
     display: block;
+  }
+
+  .sm\:inline {
+    display: inline;
   }
 
   .sm\:h-96 {

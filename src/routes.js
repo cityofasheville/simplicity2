@@ -1,17 +1,17 @@
-import React from "react";
-import { Router, Route, IndexRoute, browserHistory } from "react-router";
-import { ApolloProvider } from "react-apollo";
-import ReactGA from "react-ga4";
+import React from 'react';
+import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+import { ApolloProvider } from 'react-apollo';
+import ReactGA from 'react-ga4';
 
 // GraphQL Client
-import { client } from "./gqlClient";
+import { client } from './gqlClient';
 
 // Routed components
-import App from "./app/App";
-import Home from "./app/Home";
-import MySimpliCity from "./app/MySimpliCity";
+import App from './app/App';
+import Home from './app/Home';
+import MySimpliCity from './app/MySimpliCity';
 // import Search from "./app/search/Search";
-import SuggestSearchWrapper from "./app/search/SuggestSearchWrapper";
+import SuggestSearchWrapper from './app/search/SuggestSearchWrapper';
 // Locations
 import Locations from './app/Locations';
 import Address from './app/address/Address';
@@ -24,32 +24,39 @@ import Climate from './app/climate/climate';
 import Owner from './app/owner/Owner';
 import GooglePlaceResults from './app/search/searchResults/GooglePlaceResults';
 // Topics
-import Topics from "./app/Topics";
+import Topics from './app/Topics';
 //Development endpoints
-import DevelopmentSummary from "./app/development/DevelopmentSummary";
-import DevelopmentByEntityWrapper from "./app/development/DevelopmentByEntityWrapper";
-import DevelopmentDetail from "./app/development/DevelopmentDetail";
-import DevelopmentSLADashboard from "./app/development/sla_dashboard/SLADashboard";
-import DevelopmentDashIndex from "./app/development/DevelopmentDashIndex";
+import DevelopmentSummary from './app/development/DevelopmentSummary';
+import DevelopmentByEntityWrapper from './app/development/DevelopmentByEntityWrapper';
+import DevelopmentDetail from './app/development/DevelopmentDetail';
+import DevelopmentSLADashboard from './app/development/sla_dashboard/SLADashboard';
+import DevelopmentDashIndex from './app/development/DevelopmentDashIndex';
 // import TrcTimeline from './app/development/trc/TrcTimeline';
-import MajorDevelopmentDashboard from "./app/development/trc/MajorDevelopmentDashboard";
+import MajorDevelopmentDashboard from './app/development/trc/MajorDevelopmentDashboard';
+import MajorDevOverview from './app/development/trc/MajorDevOverview';
+import MajorDevFaq from './app/development/trc/MajorDevFaq';
+import MajorDevTypes from './app/development/trc/MajorDevTypes';
+import MajorDevProcess from './app/development/trc/MajorDevProcess';
+import MajorDevEngage from './app/development/trc/MajorDevEngage';
+import MajorDevDetails from './app/development/trc/MajorDevDetails';
+import MajorDevSearch from './app/development/trc/MajorDevSearch';
 // import SurveyResults from './app/development/trc/SurveyResults';
-import PermitVolume from "./app/development/volume/PermitVolume";
-import PermitsIndex from "./app/development/permits/PermitsIndex";
-import Permit from "./app/development/permits/Permit";
+import PermitVolume from './app/development/volume/PermitVolume';
+import PermitsIndex from './app/development/permits/PermitsIndex';
+import Permit from './app/development/permits/Permit';
 // import PermitSearchIndex from "./app/development/permits/PermitSearchIndex";
 // import PermitSearchWrapper from "./app/development/permits/PermitSearchWrapper";
 // import WorkflowContainer from './app/development/workflows/WorkflowContainer';
 //
-import ProjectFlowDashboard from "./app/internal/bpt_projects/ProjectFlow";
-import CrimeSummary from "./app/crime/CrimeSummary";
-import Maintenance from "./app/maintenance/Maintenance";
+import ProjectFlowDashboard from './app/internal/bpt_projects/ProjectFlow';
+import CrimeSummary from './app/crime/CrimeSummary';
+import Maintenance from './app/maintenance/Maintenance';
 // Capital Projects
-import CapitalProjectsSummary from "./app/capital_projects/CategoryDataWrapper";
-import CIPMainDashboard from "./app/capital_projects/CIPMainDashboard";
-import CIPData from "./app/capital_projects/CIPData";
-import Project from "./app/capital_projects/Project";
-import AboutPage from "./app/capital_projects/AboutPage";
+import CapitalProjectsSummary from './app/capital_projects/CategoryDataWrapper';
+import CIPMainDashboard from './app/capital_projects/CIPMainDashboard';
+import CIPData from './app/capital_projects/CIPData';
+import Project from './app/capital_projects/Project';
+import AboutPage from './app/capital_projects/AboutPage';
 // Homelessness
 // import HomelessnessSummary from "./app/homelessness/HomelessnessSummary";
 // import HomelessnessCounts from "./app/homelessness/HomelessnessCounts";
@@ -62,13 +69,13 @@ import AboutPage from "./app/capital_projects/AboutPage";
 // import HomelessnessEnrollment from "./app/homelessness/HomelessnessEnrollment";
 // import HomelessnessData from "./app/homelessness/HomelessnessData";
 // MiniSearch
-import MiniSearch from "./app/mini_search/MiniSearch";
+import MiniSearch from './app/mini_search/MiniSearch';
 // Finance
-import PCardCompliance from "./app/internal/pcard_compliance/PCardCompliance";
-import PCardComplianceReceipts from "./app/internal/pcard_compliance/PCardComplianceReceipts";
+import PCardCompliance from './app/internal/pcard_compliance/PCardCompliance';
+import PCardComplianceReceipts from './app/internal/pcard_compliance/PCardComplianceReceipts';
 // General
-import NotFound from "./shared/NotFound";
-import Disclaimer from "./app/Disclaimer";
+import NotFound from './shared/NotFound';
+import Disclaimer from './app/Disclaimer';
 
 // Google Analytics
 // const ReactGA = require('react-ga');
@@ -76,16 +83,16 @@ import Disclaimer from "./app/Disclaimer";
 let logPageView = () => {
   ReactGA.set({ page: window.location.pathname });
   ReactGA.send({
-    hitType: "pageview",
+    hitType: 'pageview',
     page: window.location.pathname + window.location.search,
   });
   // ReactGA.pageview(window.location.pathname + window.location.search);
 };
 
-if (window.location.href.indexOf("dashboards.ashevillenc.gov") > -1) {
-  ReactGA.initialize("G-HXJE68WHRD");
-} else if (window.location.href.indexOf("simplicity.ashevillenc.gov") > -1) {
-  ReactGA.initialize("G-HXJE68WHRD");
+if (window.location.href.indexOf('dashboards.ashevillenc.gov') > -1) {
+  ReactGA.initialize('G-HXJE68WHRD');
+} else if (window.location.href.indexOf('simplicity.ashevillenc.gov') > -1) {
+  ReactGA.initialize('G-HXJE68WHRD');
 } else {
   logPageView = null;
 }
@@ -96,25 +103,22 @@ let SERVER_URL = 'https://data-api1.ashevillenc.gov/graphql';
 if (process.env.REACT_APP_USE_DEV_API === true || process.env.REACT_APP_USE_DEV_API === 'true') {
   SERVER_URL = 'https://dev-data-api2.ashevillenc.gov/graphql';
 }
-if (process.env.REACT_APP_USE_LOCAL_API === true || process.env.REACT_APP_USE_LOCAL_API === 'true') {
+if (
+  process.env.REACT_APP_USE_LOCAL_API === true ||
+  process.env.REACT_APP_USE_LOCAL_API === 'true'
+) {
   SERVER_URL = 'http://localhost:8080/graphql';
 }
 
 const Routes = () => (
   <ApolloProvider client={client}>
     <ApiEnvironmentContext.Provider value={SERVER_URL}>
-      <Router
-        history={browserHistory}
-        onUpdate={logPageView === null ? null : () => logPageView()}
-      >
+      <Router history={browserHistory} onUpdate={logPageView === null ? null : () => logPageView()}>
         <Route path="/" component={App}>
           <IndexRoute component={Home} />
           <Route path="search">
             <IndexRoute component={SuggestSearchWrapper} />
-            <Route
-              path="googlePlaceMatches"
-              component={GooglePlaceResults}
-            ></Route>
+            <Route path="googlePlaceMatches" component={GooglePlaceResults}></Route>
           </Route>
           <Route path="my-simplicity" component={MySimpliCity}></Route>
           <Route path="locations" component={Locations} />
@@ -164,14 +168,20 @@ const Routes = () => (
             {/* The rest of these are dashboards */}
             <Route path="dashboards" component={DevelopmentDashIndex}></Route>
             <Route path="data" component={DevelopmentDashIndex}></Route>
-            <Route
-              path="sla-dashboard"
-              component={DevelopmentSLADashboard}
-            ></Route>
-            <Route path="major" component={MajorDevelopmentDashboard}></Route>
+            <Route path="sla-dashboard" component={DevelopmentSLADashboard}></Route>
+            <Route path="major" component={MajorDevelopmentDashboard}>
+              <IndexRoute component={MajorDevOverview} />
+              <Route path="faq" component={MajorDevFaq}></Route>
+              <Route path="types" component={MajorDevTypes}></Route>
+              <Route path="process" component={MajorDevProcess}></Route>
+              <Route path="engage" component={MajorDevEngage}></Route>
+              <Route path="details" component={MajorDevDetails}></Route>
+              <Route path="search" component={MajorDevSearch}></Route>
+            </Route>
             <Route path="granular_volume" component={PermitVolume}></Route>
             <Route path="status_volume" component={PermitVolume}></Route>
           </Route>
+
           {/* <Route path="homelessness">
             <IndexRoute component={HomelessnessSummary} />
             <Route path="veterans" component={HomelessnessVeterans}></Route>
@@ -210,7 +220,6 @@ const Routes = () => (
         </Route>
       </Router>
     </ApiEnvironmentContext.Provider>
-
   </ApolloProvider>
 );
 

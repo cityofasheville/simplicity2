@@ -11,6 +11,8 @@ import {
 } from './searchResults/searchResultsUtils';
 import useDebounce from '../../hooks/useDebounce';
 import { ApiEnvironmentContext } from '../../routes';
+import { IM_SEARCH } from '../../shared/iconConstants';
+import Icon from '../../shared/Icon';
 // import DebouncedInput from './DebouncedInput';
 import './styles.css';
 
@@ -29,7 +31,7 @@ const comboBoxStyle = {
 function SuggestSearch({
   setUserQuery,
   setUserQueryChecked,
-  autoFocusInput = true,
+  // autoFocusInput = false,
   debounceInterval = 500,
   suggestWithGeocoder = true,
   suggestWithSimplicity = true,
@@ -62,9 +64,9 @@ function SuggestSearch({
   const apiEnvironment = React.useContext(ApiEnvironmentContext);
 
   useEffect(() => {
-    if (inputRef.current && autoFocusInput) {
-      inputRef.current.focus();
-    }
+    // if (inputRef.current && autoFocusInput) {
+    //   inputRef.current.focus();
+    // }
     if (urlQuery.length > 2) {
       setInputValue(urlQuery);
       setInputDisplayValue(urlQuery);
@@ -310,7 +312,7 @@ function SuggestSearch({
             <Ariakit.Combobox
               store={combobox}
               placeholder="e.g. 123 Main St"
-              className="flex-1 border-2 border-blue-100 py-2 px-4"
+              className="flex-1 border-2 border-blue-100 p-1"
               value={inputDisplayValue ? inputDisplayValue : ''}
               onChange={handleComboBoxChange}
               autoComplete="off"
@@ -367,11 +369,13 @@ function SuggestSearch({
               </button>
               <button
                 ref={submitButtonRef}
-                className="border-l border-white bg-coa-blue-medium text-white px-4 py-2 rounded-r"
+                className="flex justify-center items-center border-l border-white bg-coa-blue-medium text-white px-4 py-2 rounded-r"
                 type="submit"
                 id="button-addon3"
               >
-                Search
+                <Icon path={IM_SEARCH} size={16} />
+                <span className="sr-only">Submit search</span>
+                <span className="hidden sm:inline sm:ml-2">Search</span>
               </button>
             </div>
           </div>

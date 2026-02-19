@@ -1,71 +1,72 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-	content: ["./src/**/*.{html,js,jsx}"],
-	theme: {
-		screens: {
-			xs: "480px",
-			sm: "640px",
-			md: "768px",
-			lg: "1024px",
-			xl: "1280px",
-			xxl: "1536px",
-		},
-		extend: {
-			spacing: {
-				128: "32rem",
-			},
-			fontWeight: {
-				lighter: "300",
-			},
-			fontFamily: {
-				sans: ["Roboto", '"Helvetica Neue"', "Helvetica", "Arial", "sans-serif"],
-			},
-			colors: {
-				transparent: "transparent",
-				primary: "#4077a5",
-				secondary: "#335f84",
-				tertiary: "#4986b8",
-				success: "#11866f",
-				info: "#004987",
-				// info: '#3498db',
-				warning: "#f39c12",
-				danger: "#e74c3c",
-				coa: {
-					blue: {
-						dark: "#004987",
-						medium: "#4077a5",
-						light: "#a6bfd5",
-					},
-					green: {
-						dark: "#aaad00",
-						medium: "#bfc240",
-						light: "#e1e2a6",
-					},
-				},
-			},
-			extend: {
-				backgroundColor: ["hover", "focus", "group-hover", "hocus"],
-				textColor: ["hover", "focus", "group-hover", "hocus"],
-				fontSize: ["hover", "focus", "group-hover", "hocus"],
-				textDecoration: ["hover", "focus", "group-hover", "hocus"],
-				opacity: ["hover", "focus", "group-hover", "hocus"],
-			},
-		},
-	},
-	plugins: [
-		// hocus variant
-		function ({ addVariant }) {
-			addVariant("hocus", ["&:hover", "&:focus", "&:focus-within"]);
-		},
+  content: ['./src/**/*.{html,js,jsx}'],
+  theme: {
+    screens: {
+      xs: '480px',
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px',
+      xxl: '1536px',
+    },
+    extend: {
+      spacing: {
+        128: '32rem',
+      },
+      fontWeight: {
+        lighter: '300',
+      },
+      fontFamily: {
+        sans: ['Roboto', '"Helvetica Neue"', 'Helvetica', 'Arial', 'sans-serif'],
+      },
+      colors: {
+        transparent: 'transparent',
+        primary: '#4077a5',
+        secondary: '#335f84',
+        tertiary: '#4986b8',
+        success: '#11866f',
+        info: '#004987',
+        // info: '#3498db',
+        warning: '#f39c12',
+        danger: '#e74c3c',
+        light: '#f6fcff',
+        coa: {
+          blue: {
+            dark: '#004987',
+            medium: '#4077a5',
+            light: '#a6bfd5',
+          },
+          green: {
+            dark: '#aaad00',
+            medium: '#bfc240',
+            light: '#e1e2a6',
+          },
+        },
+      },
+      extend: {
+        backgroundColor: ['hover', 'focus', 'group-hover', 'hocus'],
+        textColor: ['hover', 'focus', 'group-hover', 'hocus'],
+        fontSize: ['hover', 'focus', 'group-hover', 'hocus'],
+        textDecoration: ['hover', 'focus', 'group-hover', 'hocus'],
+        opacity: ['hover', 'focus', 'group-hover', 'hocus'],
+      },
+    },
+  },
+  plugins: [
+    // hocus variant
+    function ({ addVariant }) {
+      addVariant('hocus', ['&:hover', '&:focus', '&:focus-within']);
+    },
 
-		// global base font styles
-		function ({ addBase, theme }) {
-			addBase({
-				html: {
-					fontFamily: theme("fontFamily.sans"),
-					fontWeight: theme("fontWeight.lighter"),
-				},
-			});
-		},
-	],
+    // global base font styles
+    function ({ addBase, theme }) {
+      addBase({
+        html: {
+          fontFamily: theme('fontFamily.sans'),
+          fontWeight: theme('fontWeight.lighter'),
+        },
+      });
+    },
+  ],
 };

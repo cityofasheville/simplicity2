@@ -2,7 +2,7 @@ import React from 'react';
 import PermitTypeCard from './PermitTypeCard';
 import { trcProjectTypes } from './textContent';
 
-const PermitTypeCards = () => {
+function PermitTypeCards() {
   let cardWidth = '40%';
   if (window.innerWidth < 500) {
     cardWidth = '90%';
@@ -16,7 +16,7 @@ const PermitTypeCards = () => {
         flexWrap: 'wrap',
       }}
     >
-      {Object.keys(trcProjectTypes).map(type => (
+      {Object.keys(trcProjectTypes).map((type) => (
         <div
           style={{
             width: cardWidth,
@@ -32,6 +32,6 @@ const PermitTypeCards = () => {
       ))}
     </div>
   );
-};
+}
 
 export default PermitTypeCards;

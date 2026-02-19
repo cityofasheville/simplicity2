@@ -42,21 +42,20 @@
     @apply inline-flex;
   }
 
-  .btn-group > * {
+  .btn-group>* {
     @apply rounded-none;
   }
 
-  .btn-group > *:first-child {
+  .btn-group>*:first-child {
     @apply rounded-l;
   }
 
-  .btn-group > *:last-child {
+  .btn-group>*:last-child {
     @apply rounded-r;
   }
 
-  .btn-group > *:not(:first-child){
-    @apply border-l border-l-coa-blue-dark
-    ;
+  .btn-group>*:not(:first-child) {
+    @apply border-l border-l-coa-blue-dark;
   }
 
   .input {
@@ -67,7 +66,13 @@
     @apply text-sm p-1;
   }
 
- 
+
+  /* ACCORDIONS */
+
+  details[open] summary span.bi {
+    @apply rotate-180;
+  }
+
 
   /** Toggle icons for dropdowns and hamburger menu **/
 

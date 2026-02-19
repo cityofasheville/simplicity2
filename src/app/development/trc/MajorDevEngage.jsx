@@ -1,0 +1,126 @@
+function MajorDevEngage() {
+  return (
+    <div className="">
+      <h1 className="text-4xl text-coa-blue-medium mb-4">Major Development - Get Involved</h1>
+      <div className="mb-6">
+        <p className="mb-4">
+          Depending on the type of project, there are a few different ways for community members to
+          get involved in the development process.
+        </p>
+
+        <h2 className="mt-6 mb-4 text-3xl text-coa-blue-dark">Sign up for notifications</h2>
+        <p className="mb-4">
+          You can receive an email notification when a developer submits an application for a new
+          large-scale development. Visit{' '}
+          <a href="https://notifications.ashevillenc.gov" target="_blank" rel="noopener noreferrer">
+            notifications.ashevillenc.gov
+          </a>{' '}
+          to sign up or change your notification settings.
+        </p>
+
+        <h2 className="mt-6 mb-4 text-3xl text-coa-blue-dark">Neighborhood meetings</h2>
+        <p className="mb-4">
+          Developers planning to submit applications for development that must go through the
+          Technical Review Committee (including projects of types Level II, Major Subdivision,
+          Conditional Zoning, and Special Use Permit) must hold a public meeting before submitting
+          the application.
+        </p>
+        <p className="mb-4">
+          Currently, developers are not required by law to notify the City of Asheville when those
+          meetings take place. Thus, the first record the city has of a proposed development is when
+          the application is submitted, after the meeting.
+        </p>
+        <p className="mb-4">
+          However, in order to help ensure that residents can find out about developer-neighborhood
+          meetings in advance, the city has asked developers to voluntarily notify the city. After
+          those developers fill out an online form, those meeting dates are automatically added to{' '}
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://calendar.google.com/calendar/embed?src=ashevillenc.gov_gk5l650n9mopts9m7sfemhcpd8%40group.calendar.google.com&ctz=America%2FNew_York"
+          >
+            a calendar that shows all developer-neighborhood meetings about which the city has been
+            notified
+          </a>
+          .
+        </p>
+
+        <h2 className="mt-6 mb-4 text-3xl text-coa-blue-dark">Committee and commission meetings</h2>
+        <p className="mb-4">
+          As described above, there are several committees and commissions that participate in the
+          major development review processs. Depending on the size, type, and location of proposed
+          development, it may go through the{' '}
+          <a
+            href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/technical-review-committee/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Technical Review Committee
+          </a>
+          , the{' '}
+          <a
+            href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/planning-and-zoning-commission/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Planning and Zoning Commission
+          </a>
+          , the{' '}
+          <a
+            href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/historic-resources-commission/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Historic Resources Commission
+          </a>
+          , the{' '}
+          <a
+            href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/downtown-commission/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Asheville Downtown Commission
+          </a>
+          , or the{' '}
+          <a
+            href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/asheville-area-riverfront-redevelopment-commission/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Asheville Area Riverfront Redevelopment Commission
+          </a>
+          .
+        </p>
+        <p className="mb-4">
+          Visit{' '}
+          <a href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/">
+            AshevilleNC.gov
+          </a>{' '}
+          to learn more about city boards, commissions, and committees.
+        </p>
+
+        <h2 className="mt-6 mb-4 text-3xl text-coa-blue-dark">Council meetings</h2>
+        <p className="mb-4">
+          Projects of types Conditional Zoning and Special Use Permit are reveiwed in a public
+          hearing before City Council. Community members may speak as individuals for three minutes
+          or on behalf of organizations for ten minutes (if three other people cede their speaking
+          time) at a council meeting.
+        </p>
+        <p className="mb-4">
+          Information about City Council as well as minutes and agendas for upcoming and past
+          council meetings can be found on{' '}
+          <a
+            href="https://www.ashevillenc.gov/government/"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            the City of Asheville website
+          </a>
+          .
+        </p>
+      </div>
+    </div>
+  );
+}
+
+export default MajorDevEngage;

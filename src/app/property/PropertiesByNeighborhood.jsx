@@ -74,9 +74,9 @@ const PropertiesByNeighborhood = (props) => {
 	const filterRender = propertyTableConfig.filterRender;
 
 	// filtering out data that don't have any civic address ids. These break the property page and show up weird
-	// const filteredData = props.data.properties_by_street.filter(
-	// 	(item) => Array.isArray(item.civic_address_ids) && item.civic_address_ids.length > 0
-	// );
+	const filteredData = props.data.properties_by_neighborhood.filter(
+		(item) => Array.isArray(item.civic_address_ids) && item.civic_address_ids.length > 0
+	);
 
 	return (
 		<div>
@@ -90,8 +90,8 @@ const PropertiesByNeighborhood = (props) => {
 							<Table
 								ariaLabel="PropertyDetails"
 								navRender={navRender}
-								data={props.data.properties_by_neighborhood}
-								// data={filteredData}
+								// data={props.data.properties_by_neighborhood}
+								data={filteredData}
 								filterRender={filterRender}
 								columns={propertyTableColumns}
 								defaultPageSize={props.data.length}
@@ -115,7 +115,8 @@ const PropertiesByNeighborhood = (props) => {
 							<Map
 								bounds={getBoundsFromPolygonData([props.data.neighborhoods[0].polygon])}
 								drawPolygon
-								polygonData={combinePolygonsFromPropertyList(props.data.properties_by_neighborhood)}
+								// polygonData={combinePolygonsFromPropertyList(props.data.properties_by_neighborhood)}
+								polygonData={combinePolygonsFromPropertyList(filteredData)}
 							/>
 						</div>
 					)}

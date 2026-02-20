@@ -125,11 +125,11 @@ class PermitsTable extends React.Component {
 				itemsPerPage: 20,
 			},
 			filterRender: {
-				globalFilterRender: true,
+				globalFilterRender: false,
 			},
 		};
 
-		const crimeTableColumns = permitTableConfig.columns;
+		const permitTableColumns = permitTableConfig.columns;
 		const navRender = permitTableConfig.navigationRender;
 		const filterRender = permitTableConfig.filterRender;
 
@@ -137,7 +137,7 @@ class PermitsTable extends React.Component {
 			<section title="Table of all permits, filtered by date">
 				<Table
 					data={this.props.data}
-					columns={crimeTableColumns}
+					columns={permitTableColumns}
 					showPagination={true}
 					className="w-full items-center"
 					navRender={navRender}

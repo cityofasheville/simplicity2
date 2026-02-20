@@ -1,0 +1,122 @@
+import React from "react";
+import PropTypes from "prop-types";
+import gql from "graphql-tag";
+import { Query } from "react-apollo";
+import moment from "moment";
+import LoadingAnimation from "../../../shared/LoadingAnimation";
+import PermitsMap from "./PermitsMap";
+import PermitsTable from "./PermitsTable";
+
+const GET_PROJECTS = gql`
+	query getPermitsQuery(
+		$date_field: String!
+		$after: String
+		$before: String
+		$permit_groups: [String]
+		$trc: Boolean
+	) {
+		permits(date_field: $date_field, after: $after, before: $before, permit_groups: $permit_groups, trc: $trc) {
+			application_name
+			applied_date
+			permit_category
+			permit_group
+			permit_number
+			permit_subtype
+			permit_type
+			address
+			x
+			y
+		}
+	}
+`;
+
+function PermitsTableWrapper(props) {
+	return (
+		<Query
+			query={GET_PROJECTS}
+			variables={{
+				date_field: "applied_date",
+				after: moment(parseInt(props.after)).subtract(1, "hours").format("YYYY-MM-DD hh:mm:ss GMT"),
+				before: moment(parseInt(props.before)).format("YYYY-MM-DD hh:mm:ss GMT"),
+				permit_groups: props.permit_groups,
+				trc: props.trc,
+			}}
+		>
+			{({ loading, error, data }) => {
+				if (loading) return <LoadingAnimation />;
+				if (error) {
+					console.log(error);
+					return <div>Error :( </div>;
+				}
+
+				let filteredData = data.permits.filter((d) => d.permit_number.indexOf("TMP") === -1);
+
+				if (props.projectTypes) {
+					filteredData = data.permits.filter((d) => {
+						let typeOfInterest = false;
+						Object.values(props.projectTypes).forEach((type) => {
+							// ASSUMING THEY ARE ALL PLANNING
+							if (d.permit_type === type.permit_type && d.permit_subtype === type.permit_subtype) {
+								typeOfInterest = typeOfInterest || true;
+							}
+						});
+						return typeOfInterest;
+					});
+				}
+
+				return (
+					<div className="col-sm-12">
+						<div>
+							<div className="relative w-full h-72 sm:h-96 md:h-128">
+								<a
+									href="#permitsDataTable"
+									className="skip-nav-link"
+									onClick={() => {
+										document.getElementById("permitsDataTable").focus();
+									}}
+								>
+									This map contains information which is also represented in the table below. Press enter to skip to the
+									table or tab to continue to the map.
+								</a>
+								<PermitsMap
+									permitData={filteredData
+										.filter((d) => d.x && d.y)
+										.map((d) =>
+											Object.assign({}, d, {
+												popup: `<a href="/permits/${d.permit_number}">
+                      ${d.application_name ? d.application_name : d.permit_number}</a><br/>
+                      ${d.address ? d.address + "<br/>" : ""}
+                      ${d.permit_description ? d.permit_description : ""}`,
+											})
+										)}
+									zoom={12}
+									centerCoords={[35.5951, -82.5515]}
+								/>
+							</div>
+						</div>
+						<div id="permitsDataTable" style={{ overflowX: "scroll" }}>
+							<PermitsTable data={filteredData} ignoredParams={props.ignoredParams} {...props} />
+						</div>
+					</div>
+				);
+			}}
+		</Query>
+	);
+}
+
+PermitsTableWrapper.propTypes = {
+	date_field: PropTypes.string,
+	//  TODO: AFTER AND BEFORE AND PROJECTTYPES
+	permit_groups: PropTypes.arrayOf(PropTypes.string),
+};
+
+PermitsTableWrapper.defaultProps = {
+	date_field: "applied_date",
+	after: moment.utc().subtract(30, "days").format("YYYY-MM-DD"),
+	before: moment.utc().format("YYYY-MM-DD"),
+	permit_groups: ["Permits", "Planning", "Services"],
+	ignoredParams: [],
+	trc: false,
+};
+
+export default PermitsTableWrapper;

@@ -404,18 +404,22 @@ const Permit = (props) => (
 						</div>
 					</div>
 					<div>
-						<h3 className="text-2xl text-coa-blue-medium my-5">Comments</h3>
-						<Table
-							ariaLabel="Permit comments"
-							navRender={navRender}
-							data={data.permits[0].comments}
-							filterRender={filterRender}
-							columns={commentTableColumns}
-							defaultPageSize={20}
-							showPagination={true}
-							className="w-full items-center"
-							filterOptions={[]}
-						/>
+						{data.permits[0].comments.length > 0 && (
+							<div>
+								<h3 className="text-2xl text-coa-blue-medium my-5">Comments</h3>
+								<Table
+									ariaLabel="Permit comments"
+									navRender={navRender}
+									data={data.permits[0].comments}
+									filterRender={filterRender}
+									columns={commentTableColumns}
+									defaultPageSize={20}
+									showPagination={true}
+									className="w-full items-center"
+									filterOptions={[]}
+								/>
+							</div>
+						)}
 					</div>
 					{trcType !== undefined && (
 						<div className="flex my-6">
@@ -430,11 +434,9 @@ const Permit = (props) => (
 					)}
 
 					<hr />
-					<div className="row" style={{ marginBottom: "32px" }}>
-						<div className="col-xs-12">
-							<h2 className="text-3xl text-coa-blue-medium mb-5 mt-6">Look Up Another Application</h2>
-							<SuggestSearchWrapper searchMode="permit" autoFocusInput={false} />
-						</div>
+					<div className=" mb-8">
+						<h2 className="text-3xl text-coa-blue-medium mb-5 mt-6">Look Up Another Application</h2>
+						<SuggestSearchWrapper searchMode="permit" autoFocusInput={false} />
 					</div>
 				</div>
 			);

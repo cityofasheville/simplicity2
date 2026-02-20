@@ -103,7 +103,7 @@ const MaintenanceByStreet = (props) => {
 									ref={focusRef}
 								>
 									<Icon path={IM_MAP5} size={23} />
-									<span style={{ marginLeft: "5px" }}>{parseInt(row.value, 10)}</span>
+									<span className="ml-1">{parseInt(row.value, 10)}</span>
 								</a>
 							</span>
 						</span>
@@ -150,7 +150,7 @@ const MaintenanceByStreet = (props) => {
 						href={[urlString, "&bounds=", JSON.stringify(getBounds(info.row.original.line))].join("")}
 					>
 						<Icon path={IM_MAP5} size={23} />
-						<span style={{ marginLeft: "5px" }}>{parseInt(info.getValue(), 10)}</span>
+						<span className="ml-1">{parseInt(info.getValue(), 10)}</span>
 					</a>
 				),
 				filterFn: "includesString",
@@ -188,7 +188,7 @@ const MaintenanceByStreet = (props) => {
 			itemsPerPage: 20,
 		},
 		filterRender: {
-			globalFilterRender: true,
+			globalFilterRender: false,
 		},
 	};
 
@@ -198,11 +198,11 @@ const MaintenanceByStreet = (props) => {
 
 	return (
 		<div className="row">
-			<div className="col-sm-12">
+			<div>
 				<EmailDownload downloadData={props.data.streets} fileName="maintenance_by_street.csv" />
 			</div>
-			<div className="col-sm-12">
-				<div id="listView" hidden={props.location.query.view !== "list"} style={{ marginTop: "10px" }}>
+			<div className="my-4">
+				<div id="listView" hidden={props.location.query.view !== "list"} className="mt-3">
 					<Table
 						data={props.data.streets}
 						columns={maintenanceTableColumns}
@@ -245,16 +245,18 @@ const MaintenanceByStreet = (props) => {
 					{props.data.streets.length === 0 || props.location.query.view === "list" ? (
 						<div className="alert alert-info">No results found</div>
 					) : (
-						<Map
-							legend={createMaintenanceLegend(formatMaintenanceData(props.data.streets))}
-							maintenanceData={formatMaintenanceData(props.data.streets)}
-							drawMaintenance
-							bounds={
-								(props.location.query.bounds !== undefined) & (props.location.query.bounds !== "")
-									? JSON.parse(props.location.query.bounds)
-									: getBoundsFromStreetData(props.data.streets)
-							}
-						/>
+						<div className="w-full h-[600px] flex">
+							<Map
+								legend={createMaintenanceLegend(formatMaintenanceData(props.data.streets))}
+								maintenanceData={formatMaintenanceData(props.data.streets)}
+								drawMaintenance
+								bounds={
+									(props.location.query.bounds !== undefined) & (props.location.query.bounds !== "")
+										? JSON.parse(props.location.query.bounds)
+										: getBoundsFromStreetData(props.data.streets)
+								}
+							/>
+						</div>
 					)}
 				</div>
 			</div>

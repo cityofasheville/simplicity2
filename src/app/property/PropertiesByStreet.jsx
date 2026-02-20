@@ -113,9 +113,9 @@ const PropertiesByStreet = (props) => {
 	const filterRender = propertyTableConfig.filterRender;
 
 	// filtering out data that don't have any civic address ids. These break the property page and show up weird
-	// const filteredData = props.data.properties_by_street.filter(
-	// 	(item) => Array.isArray(item.civic_address_ids) && item.civic_address_ids.length > 0
-	// );
+	const filteredData = props.data.properties_by_street.filter(
+		(item) => Array.isArray(item.civic_address_ids) && item.civic_address_ids.length > 0
+	);
 	return (
 		<div>
 			<EmailDownload downloadData={props.data.properties_by_street} fileName="properties_by_street.csv" />
@@ -155,8 +155,8 @@ const PropertiesByStreet = (props) => {
 								drawStreet
 								streetData={convertStreetLinesToLatLngArrays(props.data.streets)}
 								drawPolygon
-								polygonData={combinePolygonsFromPropertyList(props.data.properties_by_street)}
-								// polygonData={combinePolygonsFromPropertyList(filteredData)}
+								// polygonData={combinePolygonsFromPropertyList(props.data.properties_by_street)}
+								polygonData={combinePolygonsFromPropertyList(filteredData)}
 							/>
 						</div>
 					)}

@@ -1807,6 +1807,11 @@ details[open] summary span.bi {
   padding-bottom: 1.25rem;
 }
 
+.py-6 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
 .py-8 {
   padding-top: 2rem;
   padding-bottom: 2rem;
@@ -2117,8 +2122,49 @@ details[open] summary span.bi {
   transition-duration: 150ms;
 }
 
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
 .duration-200 {
   transition-duration: 200ms;
+}
+
+.duration-300 {
+  transition-duration: 300ms;
+}
+
+.layout-grid {
+  display: grid;
+  grid-template-columns: 1fr min(100%, 80rem) 1fr;
+}
+
+/* .layout-grid>*:not(.layout-full) { */
+
+.layout-grid>* {
+  grid-column: 2;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .layout-grid>* {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .layout-grid>* {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+.layout-grid>.layout-full {
+  grid-column: 1 / -1;
 }
 
 @media (min-width: 1024px) {
@@ -2257,8 +2303,16 @@ details[open] summary span.bi {
     display: block;
   }
 
+  .sm\:inline-block {
+    display: inline-block;
+  }
+
   .sm\:inline {
     display: inline;
+  }
+
+  .sm\:hidden {
+    display: none;
   }
 
   .sm\:h-96 {
@@ -2271,6 +2325,10 @@ details[open] summary span.bi {
 
   .sm\:grid-cols-4 {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .sm\:flex-row {
+    flex-direction: row;
   }
 
   .sm\:px-6 {
@@ -2287,6 +2345,14 @@ details[open] summary span.bi {
 @media (min-width: 768px) {
   .md\:block {
     display: block;
+  }
+
+  .md\:inline-block {
+    display: inline-block;
+  }
+
+  .md\:flex {
+    display: flex;
   }
 
   .md\:hidden {
@@ -2340,6 +2406,18 @@ details[open] summary span.bi {
 }
 
 @media (min-width: 1024px) {
+  .lg\:inline-block {
+    display: inline-block;
+  }
+
+  .lg\:flex {
+    display: flex;
+  }
+
+  .lg\:hidden {
+    display: none;
+  }
+
   .lg\:h-\[30px\] {
     height: 30px;
   }
@@ -2352,6 +2430,18 @@ details[open] summary span.bi {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
+  .lg\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .lg\:flex-row {
+    flex-direction: row;
+  }
+
+  .lg\:items-center {
+    align-items: center;
+  }
+
   .lg\:gap-2 {
     gap: 0.5rem;
   }
@@ -2359,5 +2449,19 @@ details[open] summary span.bi {
   .lg\:px-8 {
     padding-left: 2rem;
     padding-right: 2rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .xl\:inline-block {
+    display: inline-block;
+  }
+
+  .xl\:hidden {
+    display: none;
+  }
+
+  .xl\:flex-row {
+    flex-direction: row;
   }
 }

@@ -103,3 +103,20 @@
   }
 
 }
+
+@layer utilities {
+  .layout-grid {
+    display: grid;
+    grid-template-columns: 1fr min(100%, 80rem) 1fr;
+  }
+
+  /* .layout-grid>*:not(.layout-full) { */
+  .layout-grid>* {
+    grid-column: 2;
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+
+  .layout-grid>.layout-full {
+    grid-column: 1 / -1;
+  }
+}

@@ -1,7 +1,7 @@
 function MajorDevOverview() {
   return (
     <div className="pb-8">
-      <h1 className="text-4xl text-coa-blue-medium my-5">Large-Scale Development in Asheville</h1>
+      <h1 className="text-4xl text-coa-blue-medium mb-6">Large-Scale Development in Asheville</h1>
       <p className="mb-2">
         There is a lot of private land development happening in Asheville. This tool can help you:
       </p>

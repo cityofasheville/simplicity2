@@ -83,7 +83,7 @@ function MajorDevFaq() {
 
   return (
     <div className="">
-      <h1 className="text-4xl text-coa-blue-medium my-5">Major Development FAQ</h1>
+      <h1 className="text-4xl text-coa-blue-medium mb-6">Major Development FAQ</h1>
 
       <AccordionGroup>
         {faqs.map((faq, index) => (

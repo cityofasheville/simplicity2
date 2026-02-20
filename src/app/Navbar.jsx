@@ -55,18 +55,28 @@ function Navbar() {
           id="menu-container"
           className={`${navbarOpen ? 'block w-full' : 'hidden'} w-full md:w-auto md:block`}
         >
-          <ul className="flex flex-col md:flex-row md:gap-6 md:items-center text-coa-blue-dark text-lg px-6">
+          <ul className="flex flex-col md:flex-row md:gap-6 md:items-center font-normal text-coa-blue-medium text-lg px-6">
             <li className="py-2 md:py-0">
-              <Link to="/dashboards" activeClassName="active">
-                Dashboards
+              <Link className="" to="/" activeClassName="active">
+                Main Search
               </Link>
             </li>
             <li className="py-2 md:py-0">
+              <Link className="" to="/capital_projects" activeClassName="active">
+                Capital Projects
+              </Link>
+            </li>
+            <li className="py-2 md:py-0">
+              <Link to="/development/major" activeClassName="active">
+                Major Development
+              </Link>
+            </li>
+            {/* <li className="py-2 md:py-0">
               <Link to="/search?entities=address,property,neighborhood,street,owner">
                 <Icon path={IM_SEARCH} size={16} />
                 <span className="sr-only">Search</span>
               </Link>
-            </li>
+            </li> */}
           </ul>
         </div>
       </nav>

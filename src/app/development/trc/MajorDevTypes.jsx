@@ -4,7 +4,7 @@ import PermitTypeCards from './PermitTypeCards';
 function MajorDevTypes() {
   return (
     <div>
-      <h1 className="text-4xl text-coa-blue-medium mb-4">Major Development Types</h1>
+      <h1 className="text-4xl text-coa-blue-medium mb-6">Major Development Types</h1>
       <p className="mb-6">
         The types of large-scale development are defined by{' '}
         <a

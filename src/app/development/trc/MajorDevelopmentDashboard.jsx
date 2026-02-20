@@ -1,52 +1,27 @@
 import { Link } from 'react-router';
+import SubNavbar from '../../SubNavbar';
 
 function MajorDevelopmentDashboard(props) {
+  const nav_items = [
+    { name: 'Overview', path: '/development/major/' },
+    { name: 'Project Types', path: '/development/major/types' },
+    { name: 'Process', path: '/development/major/process' },
+    { name: 'Development & Permit Search', path: '/development/major/search' },
+    { name: 'Project Details', path: '/development/major/details' },
+    { name: 'Get Involved', path: '/development/major/engage' },
+    { name: 'FAQ', path: '/development/major/faq' },
+    { name: 'City Website', path: 'https://www.ashevillenc.gov' },
+  ];
   return (
-    <div id="" className="container-fluid h-100">
-      <nav
-        className="my-4 py-4 w-full overflow-x-auto"
-        aria-label="Development dashboard navigation"
-      >
-        <ul className="flex gap-3 text-coa-blue-dark font-normal">
-          <li>
-            <Link to="/development/major/" className="px-2 py-1 text-nowrap">
-              Overview
-            </Link>
-          </li>
-          <li>
-            <Link to="/development/major/types" className="px-2 py-1 text-nowrap">
-              Project Types
-            </Link>
-          </li>
-          <li>
-            <Link to="/development/major/process" className="px-2 py-1 text-nowrap">
-              Process
-            </Link>
-          </li>
-          <li>
-            <Link to="/development/major/search" className="px-2 py-1 text-nowrap">
-              Development &amp; Permit Search
-            </Link>
-          </li>
-          <li>
-            <Link to="/development/major/details" className="px-2 py-1 text-nowrap">
-              Project Details
-            </Link>
-          </li>
-          <li>
-            <Link to="/development/major/engage" className="px-2 py-1 text-nowrap">
-              Get Involved
-            </Link>
-          </li>
-          <li>
-            <Link to="/development/major/faq" className="px-2 py-1 text-nowrap">
-              FAQ
-            </Link>
-          </li>
-        </ul>
-      </nav>
-      <div>{props.children}</div>
-    </div>
+    <>
+      <SubNavbar
+        navTitle="Major Development navigation"
+        navItems={nav_items}
+        burgerName="Major Development Menu"
+        mobileBreakpoint="lg"
+      />
+      <div className="py-6">{props.children}</div>
+    </>
   );
 }
 

@@ -3,7 +3,7 @@ import TRCDataTable from './TRCDataTable';
 function MajorDevDetails() {
   return (
     <div className="">
-      <h1 className="text-4xl text-coa-blue-medium my-5">Major Development Details</h1>
+      <h1 className="text-4xl text-coa-blue-medium">Major Development Details</h1>
       <div>
         <div className="my-6">
           <ul className="flex flex-wrap gap-4">

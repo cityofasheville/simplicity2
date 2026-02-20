@@ -3,7 +3,7 @@ import FlowDiagram from './FlowDiagram';
 function MajorDevProcess() {
   return (
     <div className="">
-      <h1 className="text-4xl text-coa-blue-medium mb-4">Major Development Process</h1>
+      <h1 className="text-4xl text-coa-blue-medium mb-6">Major Development Process</h1>
       <div>
         <p className="mb-6">
           After the developer submits an application, it goes through a decision-making process that

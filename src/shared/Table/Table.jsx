@@ -131,11 +131,12 @@ export default function Table({
 										{headerMatch && (
 											<div className="mt-1">
 												<label htmlFor={`column-${header.id}`} className="sr-only">
-													Search column
+													{`Search column ${header.column.columnDef.meta?.simpleName ?? header.column.id}`}
 												</label>
 												<input
 													id={`column-${header.id}`}
 													type="text"
+													aria-label={`Search column ${header.column.columnDef.meta?.simpleName}`}
 													value={header.column.getFilterValue() ?? ""}
 													onChange={(e) => header.column.setFilterValue(e.target.value)}
 													placeholder={`Search...`}

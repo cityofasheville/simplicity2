@@ -1518,10 +1518,6 @@ details[open] summary span.bi {
   gap: 0.5rem;
 }
 
-.gap-3 {
-  gap: 0.75rem;
-}
-
 .gap-4 {
   gap: 1rem;
 }
@@ -1542,10 +1538,6 @@ details[open] summary span.bi {
 
 .overflow-hidden {
   overflow: hidden;
-}
-
-.overflow-x-auto {
-  overflow-x: auto;
 }
 
 .text-nowrap {
@@ -2122,18 +2114,8 @@ details[open] summary span.bi {
   transition-duration: 150ms;
 }
 
-.transition-all {
-  transition-property: all;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
-}
-
 .duration-200 {
   transition-duration: 200ms;
-}
-
-.duration-300 {
-  transition-duration: 300ms;
 }
 
 .layout-grid {
@@ -2303,10 +2285,6 @@ details[open] summary span.bi {
     display: block;
   }
 
-  .sm\:inline-block {
-    display: inline-block;
-  }
-
   .sm\:inline {
     display: inline;
   }
@@ -2327,10 +2305,6 @@ details[open] summary span.bi {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
-  .sm\:flex-row {
-    flex-direction: row;
-  }
-
   .sm\:px-6 {
     padding-left: 1.5rem;
     padding-right: 1.5rem;
@@ -2345,14 +2319,6 @@ details[open] summary span.bi {
 @media (min-width: 768px) {
   .md\:block {
     display: block;
-  }
-
-  .md\:inline-block {
-    display: inline-block;
-  }
-
-  .md\:flex {
-    display: flex;
   }
 
   .md\:hidden {
@@ -2406,14 +2372,6 @@ details[open] summary span.bi {
 }
 
 @media (min-width: 1024px) {
-  .lg\:inline-block {
-    display: inline-block;
-  }
-
-  .lg\:flex {
-    display: flex;
-  }
-
   .lg\:hidden {
     display: none;
   }
@@ -2426,20 +2384,12 @@ details[open] summary span.bi {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .lg\:grid-cols-4 {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
   .lg\:grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .lg\:flex-row {
-    flex-direction: row;
-  }
-
-  .lg\:items-center {
-    align-items: center;
+  .lg\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   .lg\:gap-2 {
@@ -2453,15 +2403,7 @@ details[open] summary span.bi {
 }
 
 @media (min-width: 1280px) {
-  .xl\:inline-block {
-    display: inline-block;
-  }
-
   .xl\:hidden {
     display: none;
-  }
-
-  .xl\:flex-row {
-    flex-direction: row;
   }
 }

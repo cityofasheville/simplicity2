@@ -30,17 +30,23 @@ const propertyTableConfig = {
 			header: () => <span>Pin #</span>,
 			footer: (props) => props.column.id,
 			width: 175,
+			meta: {
+				simpleName: "Pin number",
+			},
 		},
 		{
 			accessorKey: "property_civic_address_id",
 			enableColumnFilter: true,
-
 			cell: (info) => info.getValue(),
 			header: () => <span>Civic Address ID</span>,
 			footer: (props) => props.column.id,
+			meta: {
+				simpleName: "Civic Address ID",
+			},
 		},
 		{
-			accessorKey: "address",
+			id: "address",
+			accessorFn: (row) => [row.property_address, row.property_zipcode].join(" "),
 			enableColumnFilter: true,
 
 			cell: ({ row }) => (
@@ -51,6 +57,9 @@ const propertyTableConfig = {
 			header: () => <span>Address</span>,
 			footer: (props) => props.column.id,
 			width: 175,
+			meta: {
+				simpleName: "Address",
+			},
 		},
 	],
 	navigationRender: {
@@ -64,39 +73,32 @@ const propertyTableConfig = {
 	},
 };
 
-const dataColumns = [
-	{
-		Header: "Pin #",
-		accessor: "pinnum",
-		width: 175,
-		Cell: (row) => <span>{row.original.pinnum}</span>,
-		Filter: FilterRenderer,
-		filterMethod: (filter, row) => {
-			const joinedInfo = row._original.pinnum;
-			return row._original !== undefined ? joinedInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
-		},
-	},
-	{
-		Header: "Civic Address ID",
-		accessor: "property_civic_address_id",
-		width: 150,
-		Filter: FilterRenderer,
-	},
-	{
-		Header: "Address",
-		accessor: "Address",
-		Cell: (row) => (
-			<span>
-				{row.original.property_address}, {row.original.property_zipcode}
-			</span>
-		),
-		Filter: FilterRenderer,
-		filterMethod: (filter, row) => {
-			const joinedInfo = [row._original.address, row._original.zipcode].join(", ");
-			return row._original !== undefined ? joinedInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
-		},
-	},
-];
+// const dataColumns = [
+// 	{
+// 		Header: "Pin #",
+// 		accessor: "pinnum",
+// 		width: 175,
+// 		Cell: (row) => <span>{row.original.pinnum}</span>,
+// 		Filter: FilterRenderer,
+// 		filterFn: "includesString",
+// 	},
+// 	{
+// 		Header: "Civic Address ID",
+// 		accessor: "property_civic_address_id",
+// 		width: 150,
+// 		Filter: FilterRenderer,
+// 	},
+// 	{
+// 		id: "address",
+// 		Header: "Address",
+// 		Cell: (row) => (
+// 			<span>
+// 				{row.original.property_address}, {row.original.property_zipcode}
+// 			</span>
+// 		),
+// 		Filter: FilterRenderer,
+// 	},
+// ];
 
 const PropertiesByStreet = (props) => {
 	if (props.data.loading) {
@@ -128,8 +130,8 @@ const PropertiesByStreet = (props) => {
 							<Table
 								ariaLabel="PropertyDetails"
 								navRender={navRender}
-								// data={filteredData}
-								data={props.data.properties_by_street}
+								data={filteredData}
+								// data={props.data.properties_by_street}
 								filterRender={filterRender}
 								columns={propertyTableColumns}
 								defaultPageSize={props.data.length}

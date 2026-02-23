@@ -60,7 +60,19 @@ const addressTableConfig = {
 			id: "address",
 			header: <span>Address</span>,
 			accessorFn: (row) =>
-				`${row.street_number || ""} ${row.street_prefix || ""} ${row.street_name || ""} ${row.street_type || ""}`,
+				[
+					row.street_number,
+					row.street_prefix,
+					row.street_name,
+					row.street_type,
+					row.unit && `#${row.unit}`,
+					row.city,
+					"NC",
+					row.zipcode,
+				]
+					.filter(Boolean)
+					.join(" ")
+					.toLowerCase(),
 			cell: ({ row }) => (
 				<div>
 					<div>
@@ -74,6 +86,10 @@ const addressTableConfig = {
 			),
 			enableColumnFilter: true,
 			size: 700,
+			meta: {
+				simpleName: "Address",
+			},
+			filterFn: "includesString",
 		},
 		{
 			accessorKey: "owner",
@@ -86,10 +102,15 @@ const addressTableConfig = {
 					</div>
 				</div>
 			),
+			accessorFn: (row) =>
+				[row.owner_name, row.owner_address, row.owner_cityname, row.owner_state, row.owner_zipcode].join(" "),
 			header: <span>Owner</span>,
 			footer: (props) => props.column.id,
 			enableColumnFilter: true,
 			size: 700,
+			meta: {
+				simpleName: "Owner",
+			},
 		},
 	],
 	navigationRender: {

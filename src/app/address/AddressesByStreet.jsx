@@ -53,7 +53,15 @@ const streetTableConfig = {
 
 			header: <span>Address</span>,
 			accessorFn: (row) =>
-				`${row.street_number || ""} ${row.street_prefix || ""} ${row.street_name || ""} ${row.street_type || ""}`,
+				`
+				${row.street_number || ""}
+				${row.street_prefix || ""}
+				${row.street_name || ""}
+				${row.street_type || ""}
+				${row.unit || ""}
+				${row.city || ""}
+				${row.zipcode || ""}
+				`.trim(),
 			cell: ({ row }) => (
 				<div>
 					<div>
@@ -67,9 +75,16 @@ const streetTableConfig = {
 			),
 			enableColumnFilter: true,
 			size: 500,
+			meta: {
+				simpleName: "Address",
+			},
 		},
 		{
-			accessorKey: "owner",
+			id: "owner",
+			accessorFn: (row) =>
+				`${row.owner_name || ""} ${row.owner_address || ""} ${row.owner_cityname || ""} ${row.owner_state || ""} ${
+					row.owner_zipcode || ""
+				}`,
 			cell: ({ row }) => (
 				<div>
 					<div>{row.original.owner_name}</div>
@@ -83,6 +98,9 @@ const streetTableConfig = {
 			footer: (props) => props.column.id,
 			enableColumnFilter: true,
 			size: 500,
+			meta: {
+				simpleName: "Owner",
+			},
 		},
 	],
 	navigationRender: {

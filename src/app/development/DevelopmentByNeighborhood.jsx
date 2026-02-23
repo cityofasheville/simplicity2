@@ -149,7 +149,6 @@ const DevelopmentByNeighborhood = (props) => {
 							className="btn btn-primary"
 							onClick={() => refreshLocation(getNewUrlParams("map"), props.location)}
 							active={props.location.query.view === "map"}
-							positionInGroup="left"
 						>
 							Map view
 						</button>
@@ -157,14 +156,12 @@ const DevelopmentByNeighborhood = (props) => {
 							className="btn btn-primary"
 							onClick={() => refreshLocation(getNewUrlParams("list"), props.location)}
 							active={props.location.query.view === "list"}
-							positionInGroup="middle"
 						>
 							List view
 						</button>
 						{/* <button
 							className="btn btn-primary"
 							onClick={() => refreshLocation(getNewUrlParams("summary"), props.location)}
-							positionInGroup="right"
 							active={props.location.query.view === "summary"}
 						>
 							Chart

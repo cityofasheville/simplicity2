@@ -1,8 +1,6 @@
 import React from "react";
 import { browserHistory } from "react-router";
 import moment from "moment";
-import ButtonGroup from "../../shared/ButtonGroup";
-import Button from "../../shared/Button";
 import CrimesByAddress from "./CrimesByAddress";
 import CrimesByStreet from "./CrimesByStreet";
 import CrimesByNeighborhood from "./CrimesByNeighborhood";

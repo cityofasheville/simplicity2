@@ -111,6 +111,9 @@ const MaintenanceByStreet = (props) => {
 				</CellFocusWrapper>
 			),
 			Filter: FilterRenderer,
+			meta: {
+				simpleName: "Centerline ID",
+			},
 		},
 		{
 			Header: "Maintenance Entities",
@@ -132,6 +135,9 @@ const MaintenanceByStreet = (props) => {
 			filterMethod: (filter, row) => {
 				const joinedInfo = row._original.maintenance_entities.join("");
 				return row._original !== undefined ? joinedInfo.toLowerCase().indexOf(filter.value.toLowerCase()) > -1 : true;
+			},
+			meta: {
+				simpleName: "Maintenance Entities",
 			},
 		},
 	];

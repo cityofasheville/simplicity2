@@ -16,66 +16,7 @@ import { english } from "./english";
 import { spanish } from "./spanish";
 import { withLanguage } from "../../utilities/lang/LanguageContext";
 import MapLegend from "../../shared/MapLegend";
-
-const getMarker = (type) => {
-	switch (type) {
-		case "MISSING PERSON REPORT":
-		case "RUNAWAY JUVENILE":
-			return require("../../images/User.png");
-		case "DAMAGE TO PERSONAL PROPERTY":
-		case "VANDALISM":
-			return require("../../images/Hammer.png");
-		case "ASSAULT - SIMPLE":
-		case "ASSAULT ON FEMALE":
-		case "ASSAULT W/DEADLY WEAPON":
-			return require("../../images/Ambulance.png");
-		case "COMMUNICATING THREAT":
-			return require("../../images/Bubble.png");
-		case "INTIMIDATING STATE WITNESS":
-		case "PERJURY":
-		case "OBSTRUCTION OF JUSTICE":
-			return require("../../images/Library2.png");
-		case "FRAUD":
-		case "FRAUD-CREDIT CARD":
-		case "FALSE PRETENSE - OBTAIN PROPERTY BY":
-		case "IMPERSONATE":
-			return require("../../images/Profile.png");
-		case "CARRYING CONCEALED WEAPON":
-			return require("../../images/Gun.png");
-		case "RESIST, DELAY, OBSTRUCT OFFICER":
-		case "CIT INCIDENT":
-		case "DV ASSISTANCE OTHER":
-		case "VICTIM ASSISTANCE OTHER":
-		case "ASSAULT ON GOVERNMENT OFFICIAL":
-			return require("../../images/Shield3.png");
-		case "DWI":
-		case "UNAUTHORIZED USE OF MOTOR VEHICLE":
-			return require("../../images/Car.png");
-		case "LARCENY OF MV OTHER":
-		case "LARCENY OF MV AUTO":
-		case "LARCENY OF MV TRUCK":
-			return require("../../images/Car.png");
-		case "TRESPASS":
-			return require("../../images/Fence.png");
-		case "INFORMATION ONLY":
-			return require("../../images/Pencil7.png");
-		case "DRUG PARAPHERNALIA POSSESS":
-		case "DRUG OFFENSE - FELONY":
-		case "DRUG OFFENSE - MISDEMEANOR":
-		case "DRUG PARAPHERNALIA OTHER":
-			return require("../../images/AidKit2.png");
-		case "COUNTERFEITING-BUYING/RECEIVING":
-			return require("../../images/BillDollar.png");
-		case "LARCENY ALL OTHER":
-		case "LARCENY FROM BUILDING":
-		case "LARCENY FROM MOTOR VEHICLE":
-		case "ROBBERY - COMMON LAW":
-		case "ROBBERY - ARMED - KNIFE":
-			return require("../../images/Dollar.png");
-		default:
-			return require("../../images/Ellipsis.png");
-	}
-};
+import GetCrimeMarker from "./GetCrimeMarker";
 
 const GET_CRIMES_BY_NEIGHBORHOOD = gql`
 	query getCrimesQuery($nbrhd_ids: [String], $before: String, $after: String) {
@@ -160,7 +101,11 @@ const createLegend = (crimeData) => {
 		<div className="w-[160px] h-[600px] bg-white p-2 pb-10">
 			{crimeTypes.map((type) => (
 				<div key={`legendItem-${type}`} className="w-[160px]">
-					<img src={getMarker(type)} alt="legendItem" className="inline-block w-[25px] align-top" />
+					<img
+						src={GetCrimeMarker(type.trim().toUpperCase())}
+						alt="legendItem"
+						className="inline-block w-[25px] align-top"
+					/>
 					<span className="ml-1 inline-block w-[130px]">{type}</span>
 				</div>
 			))}
@@ -205,7 +150,7 @@ function CrimesByNeighborhood(props) {
 </div>`,
 						options: {
 							icon: L.icon({
-								iconUrl: getMarker(item.offense_long_description),
+								iconUrl: GetCrimeMarker(item.offense_long_description.trim().toUpperCase()),
 								iconSize: [25, 41],
 								iconAnchor: [12, 41],
 								popupAnchor: [2, -22],

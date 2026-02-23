@@ -17,66 +17,7 @@ import { english } from "./english";
 import { spanish } from "./spanish";
 import { withLanguage } from "../../utilities/lang/LanguageContext";
 import MapLegend from "../../shared/MapLegend";
-
-const getMarker = (type) => {
-	switch (type) {
-		case "MISSING PERSON REPORT":
-		case "RUNAWAY JUVENILE":
-			return require("../../images/User.png"); // eslint-disable-line
-		case "DAMAGE TO PERSONAL PROPERTY":
-		case "VANDALISM":
-			return require("../../images/Hammer.png"); // eslint-disable-line
-		case "ASSAULT - SIMPLE":
-		case "ASSAULT ON FEMALE":
-		case "ASSAULT W/DEADLY WEAPON":
-			return require("../../images/Ambulance.png"); // eslint-disable-line
-		case "COMMUNICATING THREAT":
-			return require("../../images/Bubble.png"); // eslint-disable-line
-		case "INTIMIDATING STATE WITNESS":
-		case "PERJURY":
-		case "OBSTRUCTION OF JUSTICE":
-			return require("../../images/Library2.png"); // eslint-disable-line
-		case "FRAUD":
-		case "FRAUD-CREDIT CARD":
-		case "FALSE PRETENSE - OBTAIN PROPERTY BY":
-		case "IMPERSONATE":
-			return require("../../images/Profile.png"); // eslint-disable-line
-		case "CARRYING CONCEALED WEAPON":
-			return require("../../images/Gun.png"); // eslint-disable-line
-		case "RESIST, DELAY, OBSTRUCT OFFICER":
-		case "CIT INCIDENT":
-		case "DV ASSISTANCE OTHER":
-		case "VICTIM ASSISTANCE OTHER":
-		case "ASSAULT ON GOVERNMENT OFFICIAL":
-			return require("../../images/Shield3.png"); // eslint-disable-line
-		case "DWI":
-		case "UNAUTHORIZED USE OF MOTOR VEHICLE":
-			return require("../../images/Car.png"); // eslint-disable-line
-		case "LARCENY OF MV OTHER":
-		case "LARCENY OF MV AUTO":
-		case "LARCENY OF MV TRUCK":
-			return require("../../images/Car.png"); // eslint-disable-line
-		case "TRESPASS":
-			return require("../../images/Fence.png"); // eslint-disable-line
-		case "INFORMATION ONLY":
-			return require("../../images/Pencil7.png"); // eslint-disable-line
-		case "DRUG PARAPHERNALIA POSSESS":
-		case "DRUG OFFENSE - FELONY":
-		case "DRUG OFFENSE - MISDEMEANOR":
-		case "DRUG PARAPHERNALIA OTHER":
-			return require("../../images/AidKit2.png"); // eslint-disable-line
-		case "COUNTERFEITING-BUYING/RECEIVING":
-			return require("../../images/BillDollar.png"); // eslint-disable-line
-		case "LARCENY ALL OTHER":
-		case "LARCENY FROM BUILDING":
-		case "LARCENY FROM MOTOR VEHICLE":
-		case "ROBBERY - COMMON LAW":
-		case "ROBBERY - ARMED - KNIFE":
-			return require("../../images/Dollar.png"); // eslint-disable-line
-		default:
-			return require("../../images/Ellipsis.png"); // eslint-disable-line
-	}
-};
+import GetCrimeMarker from "./GetCrimeMarker";
 
 const createLegend = (crimeData) => {
 	const crimeTypes = [];
@@ -99,7 +40,7 @@ const createLegend = (crimeData) => {
 				<div key={`legendItem-${type}`} style={{ width: "160px", marginBottom: "5px" }}>
 					<img
 						alt="crime icon"
-						src={getMarker(type)}
+						src={GetCrimeMarker(type.trim().toUpperCase())}
 						style={{
 							display: "inline-block",
 							width: "25px",
@@ -205,7 +146,7 @@ function CrimesByAddress(props) {
             </div>`, // eslint-disable-line
 						options: {
 							icon: L.icon({
-								iconUrl: getMarker(item.offense_long_description),
+								iconUrl: GetCrimeMarker(item.offense_long_description.trim().toUpperCase()),
 								iconSize: [25, 41],
 								iconAnchor: [12, 41],
 								popupAnchor: [2, -22],

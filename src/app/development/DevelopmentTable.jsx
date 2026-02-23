@@ -1,7 +1,5 @@
 import React, { useMemo } from "react";
-import PropTypes from "prop-types";
 import moment from "moment";
-import AccessibleReactTable, { CellFocusWrapper } from "accessible-react-table";
 import expandingRows from "../../shared/react_table_hoc/ExpandingRows";
 import DevelopmentDetail from "./DevelopmentDetail";
 import Icon from "../../shared/Icon";
@@ -93,6 +91,9 @@ const DevelopmentTable = (props) => {
 				},
 				enableColumnFilter: true,
 				size: 350,
+				meta: {
+					simpleName: "Project Name",
+				},
 			},
 			{
 				accessorKey: "permit_type",
@@ -102,7 +103,7 @@ const DevelopmentTable = (props) => {
 
 					return (
 						<span className="flex">
-							<span title={row.original.crime}>{getIcon(value, row.getIsExpanded())}</span>
+							<span title={value}>{getIcon(value, row.getIsExpanded())}</span>
 							<span className="ml-1">{value}</span>
 						</span>
 					);
@@ -111,6 +112,9 @@ const DevelopmentTable = (props) => {
 				footer: (props) => props.column.id,
 				enableColumnFilter: true,
 				size: 300,
+				meta: {
+					simpleName: "Permit Type",
+				},
 			},
 			{
 				accessorKey: "contractor_names",
@@ -124,6 +128,9 @@ const DevelopmentTable = (props) => {
 				footer: (props) => props.column.id,
 				enableColumnFilter: true,
 				size: 400,
+				meta: {
+					simpleName: "Contractor Name",
+				},
 			},
 			{
 				accessorKey: "applied_date",
@@ -142,6 +149,19 @@ const DevelopmentTable = (props) => {
 				footer: (props) => props.column.id,
 				enableColumnFilter: true,
 				size: 100,
+				meta: {
+					simpleName: "Date applied",
+				},
+				filterFn: (row, columnId, filterValue) => {
+					const value = row.getValue(columnId);
+
+					const formatted =
+						value.indexOf("-") === -1
+							? moment.unix(value / 1000).format("M/DD/YYYY")
+							: moment.utc(value).format("M/DD/YYYY");
+
+					return formatted.toLowerCase().includes(filterValue.toLowerCase());
+				},
 			},
 			{
 				accessorKey: "permit_number",
@@ -153,6 +173,9 @@ const DevelopmentTable = (props) => {
 				enableColumnFilter: true,
 				size: 115,
 				filterFn: "includesString",
+				meta: {
+					simpleName: "Permit number",
+				},
 			},
 		],
 		navigationRender: {

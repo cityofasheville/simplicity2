@@ -6,7 +6,7 @@ import moment from "moment";
 import gql from "graphql-tag";
 import LoadingAnimation from "../../shared/LoadingAnimation";
 import Error from "../../shared/Error";
-import PieChart from "../../shared/visualization/PieChart";
+// import PieChart from "../../shared/visualization/PieChart";
 import Map from "../../shared/visualization/Map";
 import { getBoundsFromStreetData, convertStreetLinesToLatLngArrays } from "../../utilities/mapUtilities";
 import CrimeTable from "../crime/CrimeTable";
@@ -16,66 +16,7 @@ import { english } from "./english";
 import { spanish } from "./spanish";
 import { withLanguage } from "../../utilities/lang/LanguageContext";
 import MapLegend from "../../shared/MapLegend";
-
-const getMarker = (type) => {
-	switch (type) {
-		case "MISSING PERSON REPORT":
-		case "RUNAWAY JUVENILE":
-			return require("../../images/User.png");
-		case "DAMAGE TO PERSONAL PROPERTY":
-		case "VANDALISM":
-			return require("../../images/Hammer.png");
-		case "ASSAULT - SIMPLE":
-		case "ASSAULT ON FEMALE":
-		case "ASSAULT W/DEADLY WEAPON":
-			return require("../../images/Ambulance.png");
-		case "COMMUNICATING THREAT":
-			return require("../../images/Bubble.png");
-		case "INTIMIDATING STATE WITNESS":
-		case "PERJURY":
-		case "OBSTRUCTION OF JUSTICE":
-			return require("../../images/Library2.png");
-		case "FRAUD":
-		case "FRAUD-CREDIT CARD":
-		case "FALSE PRETENSE - OBTAIN PROPERTY BY":
-		case "IMPERSONATE":
-			return require("../../images/Profile.png");
-		case "CARRYING CONCEALED WEAPON":
-			return require("../../images/Gun.png");
-		case "RESIST, DELAY, OBSTRUCT OFFICER":
-		case "CIT INCIDENT":
-		case "DV ASSISTANCE OTHER":
-		case "VICTIM ASSISTANCE OTHER":
-		case "ASSAULT ON GOVERNMENT OFFICIAL":
-			return require("../../images/Shield3.png");
-		case "DWI":
-		case "UNAUTHORIZED USE OF MOTOR VEHICLE":
-			return require("../../images/Car.png");
-		case "LARCENY OF MV OTHER":
-		case "LARCENY OF MV AUTO":
-		case "LARCENY OF MV TRUCK":
-			return require("../../images/Car.png");
-		case "TRESPASS":
-			return require("../../images/Fence.png");
-		case "INFORMATION ONLY":
-			return require("../../images/Pencil7.png");
-		case "DRUG PARAPHERNALIA POSSESS":
-		case "DRUG OFFENSE - FELONY":
-		case "DRUG OFFENSE - MISDEMEANOR":
-		case "DRUG PARAPHERNALIA OTHER":
-			return require("../../images/AidKit2.png");
-		case "COUNTERFEITING-BUYING/RECEIVING":
-			return require("../../images/BillDollar.png");
-		case "LARCENY ALL OTHER":
-		case "LARCENY FROM BUILDING":
-		case "LARCENY FROM MOTOR VEHICLE":
-		case "ROBBERY - COMMON LAW":
-		case "ROBBERY - ARMED - KNIFE":
-			return require("../../images/Dollar.png");
-		default:
-			return require("../../images/Ellipsis.png");
-	}
-};
+import GetCrimeMarker from "./GetCrimeMarker";
 
 const createLegend = (crimeData) => {
 	const crimeTypes = [];
@@ -98,7 +39,7 @@ const createLegend = (crimeData) => {
 				<div key={`legendItem-${type}`} className="w-[160pc] mb-1">
 					<img
 						alt="legendItem"
-						src={getMarker(type)}
+						src={GetCrimeMarker(type.trim().toUpperCase())}
 						style={{
 							display: "inline-block",
 							width: "25px",
@@ -217,7 +158,7 @@ function CrimesByStreet(props) {
             </div>`, // eslint-disable-line
 						options: {
 							icon: L.icon({
-								iconUrl: getMarker(item.offense_long_description),
+								iconUrl: GetCrimeMarker(item.offense_long_description.trim().toUpperCase()),
 								iconSize: [25, 41],
 								iconAnchor: [12, 41],
 								popupAnchor: [2, -22],

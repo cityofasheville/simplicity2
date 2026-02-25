@@ -6,7 +6,8 @@ function MajorDevelopmentDashboard(props) {
     { name: 'Overview', path: '/development/major/' },
     { name: 'Project Types', path: '/development/major/types' },
     { name: 'Process', path: '/development/major/process' },
-    { name: 'Development & Permit Search', path: '/development/major/search' },
+    { name: 'Permit Search', path: '/development/major/search' },
+    { name: 'All Permits', path: '/permits' },
     { name: 'Project Details', path: '/development/major/details' },
     { name: 'Get Involved', path: '/development/major/engage' },
     { name: 'FAQ', path: '/development/major/faq' },
@@ -15,9 +16,9 @@ function MajorDevelopmentDashboard(props) {
   return (
     <>
       <SubNavbar
-        navTitle="Major Development navigation"
+        navTitle="Development Services navigation"
         navItems={nav_items}
-        burgerName="Major Development Menu"
+        burgerName="Development Services Menu"
         mobileBreakpoint="lg"
       />
       <div className="py-6">{props.children}</div>

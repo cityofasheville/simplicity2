@@ -20,7 +20,7 @@ function Navbar() {
       >
         <div className="border-b md:border-0 border-coa-blue-light min-h-20 px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <div className="">
-            <IndexLink to="/">
+            <IndexLink to="/" className="hover:no-underline">
               <div className="flex items-center gap-4 logo">
                 <img
                   src={require('../images/citylogo-flatblue.png')}
@@ -55,7 +55,7 @@ function Navbar() {
           id="menu-container"
           className={`${navbarOpen ? 'block w-full' : 'hidden'} w-full md:w-auto md:block`}
         >
-          <ul className="flex flex-col md:flex-row md:gap-6 md:items-center font-normal text-coa-blue-medium text-lg px-6">
+          <ul className="flex flex-col md:flex-row md:gap-6 md:items-center font-light text-coa-blue-medium text-lg px-6">
             <li className="py-2 md:py-0">
               <Link className="" to="/" activeClassName="active">
                 Main Search
@@ -68,7 +68,7 @@ function Navbar() {
             </li>
             <li className="py-2 md:py-0">
               <Link to="/development/major" activeClassName="active">
-                Major Development
+                Development Services
               </Link>
             </li>
             {/* <li className="py-2 md:py-0">

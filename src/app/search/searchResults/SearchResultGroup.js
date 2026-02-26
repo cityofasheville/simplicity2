@@ -15,104 +15,104 @@ import SearchResultsTable from "./SearchResultsTable";
 const SearchResultGroup = (props) => {
 	const searchMode = props.searchMode || "main";
 
-	const dataColumns = [
-		{
-			headerStyle: { boxShadow: "none" },
-			Header: (
-				<h2 className=" text-4xl items-center text-red-700 w-full inline-flex py-5 px-1">
-					{getIcon(props.data.label)}
-					{getPlural(props.data.label)}
-					<span className="sr-only">Number of results</span>
-					<span className="flex items-center justify-center h-6 ml-2 min-w-6 inline-block min-w-3 px-2 py-1 text-xs font-medium text-white align-middle text-center bg-coa-blue-medium rounded-full">
-						{props.data.results.length}
-					</span>
-					{props.data.label === "place" && <img src={poweredByGoogle} alt="Powered by Google" className="ml-5"></img>}
-				</h2>
-			),
-			accessor: "label",
-			innerFocus: true,
-			Cell: (row) => (
-				<CellFocusWrapper>
-					{(focusRef, focusable) => (
-						<span
-							className="search-results-group__row-inner"
-							style={{ justifyContent: "space-between", alignItems: "baseline", lineHeight: "1" }}
-						>
-							{/* This LinkFocusWrapper can be replaced by the innerRef prop on the Link component
-                in react-router ^4.2.0. Presently it serves as a work around for not having that
-                prop. */}
-							<span style={{ border: "0px solid red" }}>
-								<LinkFocusWrapper focusRef={focusRef}>
-									<Link
-										className="search-results-group__link"
-										tabIndex={focusable ? 0 : -1}
-										to={getLink(
-											row.original.type,
-											row.original.id,
-											props.searchText,
-											props.selectedEntities,
-											row.original.label,
-											props.originalSearch
-										)}
-										target={searchMode === "mini" ? "_blank" : null}
-									>
-										<span className="text-primary">
-											{getIcon(row.original.type === "place" ? "search" : row.original.type)}
-											{row.value}
-										</span>
-									</Link>
-								</LinkFocusWrapper>
+	// const dataColumns = [
+	// 	{
+	// 		headerStyle: { boxShadow: "none" },
+	// 		Header: (
+	// 			<h2 className=" text-4xl items-center text-red-700 w-full inline-flex py-5 px-1">
+	// 				{getIcon(props.data.label)}
+	// 				{getPlural(props.data.label)}
+	// 				<span className="sr-only">Number of results</span>
+	// 				<span className="flex items-center justify-center h-6 ml-2 min-w-6 inline-block min-w-3 px-2 py-1 text-xs font-medium text-white align-middle text-center bg-coa-blue-medium rounded-full">
+	// 					{props.data.results.length}
+	// 				</span>
+	// 				{props.data.label === "place" && <img src={poweredByGoogle} alt="Powered by Google" className="ml-5"></img>}
+	// 			</h2>
+	// 		),
+	// 		accessor: "label",
+	// 		innerFocus: true,
+	// 		Cell: (row) => (
+	// 			<CellFocusWrapper>
+	// 				{(focusRef, focusable) => (
+	// 					<span
+	// 						className="search-results-group__row-inner"
+	// 						style={{ justifyContent: "space-between", alignItems: "baseline", lineHeight: "1" }}
+	// 					>
+	// 						{/* This LinkFocusWrapper can be replaced by the innerRef prop on the Link component
+	//             in react-router ^4.2.0. Presently it serves as a work around for not having that
+	//             prop. */}
+	// 						<span style={{ border: "0px solid red" }}>
+	// 							<LinkFocusWrapper focusRef={focusRef}>
+	// 								<Link
+	// 									className="search-results-group__link"
+	// 									tabIndex={focusable ? 0 : -1}
+	// 									to={getLink(
+	// 										row.original.type,
+	// 										row.original.id,
+	// 										props.searchText,
+	// 										props.selectedEntities,
+	// 										row.original.label,
+	// 										props.originalSearch
+	// 									)}
+	// 									target={searchMode === "mini" ? "_blank" : null}
+	// 								>
+	// 									<span className="text-primary">
+	// 										{getIcon(row.original.type === "place" ? "search" : row.original.type)}
+	// 										{row.value}
+	// 									</span>
+	// 								</Link>
+	// 							</LinkFocusWrapper>
 
-								{props.data.label === "address" && row.original.inCity !== undefined && (
-									<span style={{ display: "inline-block", fontSize: "0.85em", marginLeft: "20px" }}>
-										<InCityMessage inTheCity={row.original.inCity} icon={false} />
-									</span>
-								)}
-							</span>
+	// 							{props.data.label === "address" && row.original.inCity !== undefined && (
+	// 								<span style={{ display: "inline-block", fontSize: "0.85em", marginLeft: "20px" }}>
+	// 									<InCityMessage inTheCity={row.original.inCity} icon={false} />
+	// 								</span>
+	// 							)}
+	// 						</span>
 
-							{props.data.label === "place" && (
-								<span className="text-primary">
-									<a
-										tabIndex="-1"
-										href={["https://www.google.com/maps/place/?q=place_id:", row.original.place_id].join("")}
-										target="_blank"
-									>
-										<span style={{ marginRight: "5px" }}>
-											<Icon path={IM_GOOGLE} size={26} />
-										</span>
-										{row.original.place_name}
-									</a>
-								</span>
-							)}
-							{props.data.label === "address" && searchMode !== "mini" && (
-								<span style={{ marginRight: "8px" }}>
-									<Link
-										to={
-											`/DEVELOPMENT?view=list&` +
-											`entities=undefined&` +
-											`entity=address&` +
-											`within=0&` +
-											`id=${row.original.id}&` +
-											`label=${row.original.label}&` +
-											`search=${props.searchText}&` +
-											`x=${row.original.x}&` +
-											`y=${row.original.y}`
-										}
-									>
-										Permits
-									</Link>
-								</span>
-							)}
-						</span>
-					)}
-				</CellFocusWrapper>
-			),
-			Filter: createFilterRenderer("Filter Results...", {
-				style: undefined,
-				className: "full-width",
-			}),
-		},
-	];
+	// 						{props.data.label === "place" && (
+	// 							<span className="text-primary">
+	// 								<a
+	// 									tabIndex="-1"
+	// 									href={["https://www.google.com/maps/place/?q=place_id:", row.original.place_id].join("")}
+	// 									target="_blank"
+	// 								>
+	// 									<span style={{ marginRight: "5px" }}>
+	// 										<Icon path={IM_GOOGLE} size={26} />
+	// 									</span>
+	// 									{row.original.place_name}
+	// 								</a>
+	// 							</span>
+	// 						)}
+	// 						{props.data.label === "address" && searchMode !== "mini" && (
+	// 							<span style={{ marginRight: "8px" }}>
+	// 								<Link
+	// 									to={
+	// 										`/DEVELOPMENT?view=list&` +
+	// 										`entities=undefined&` +
+	// 										`entity=address&` +
+	// 										`within=0&` +
+	// 										`id=${row.original.id}&` +
+	// 										`label=${row.original.label}&` +
+	// 										`search=${props.searchText}&` +
+	// 										`x=${row.original.x}&` +
+	// 										`y=${row.original.y}`
+	// 									}
+	// 								>
+	// 									Permits
+	// 								</Link>
+	// 							</span>
+	// 						)}
+	// 					</span>
+	// 				)}
+	// 			</CellFocusWrapper>
+	// 		),
+	// 		Filter: createFilterRenderer("Filter Results...", {
+	// 			style: undefined,
+	// 			className: "full-width",
+	// 		}),
+	// 	},
+	// ];
 
 	const searchResultsTableConfig = {
 		columns: [
@@ -135,7 +135,7 @@ const SearchResultGroup = (props) => {
 
 					return (
 						<span className=" px-2 py-1 flex justify-between items-baseline leading-none">
-							<span>
+							<span className="flex flex-col">
 								<Link
 									className="search-results-group__link"
 									to={getLink(
@@ -155,13 +155,7 @@ const SearchResultGroup = (props) => {
 								</Link>
 
 								{props.data.label === "address" && row.inCity !== undefined && (
-									<span
-										style={{
-											display: "inline-block",
-											fontSize: "0.85em",
-											marginLeft: "20px",
-										}}
-									>
+									<span className="ml-8 text-sm">
 										<InCityMessage inTheCity={row.inCity} icon={false} />
 									</span>
 								)}
@@ -225,7 +219,7 @@ const SearchResultGroup = (props) => {
 	const filterRender = searchResultsTableConfig.filterRender;
 
 	return (
-		<div className="">
+		<div className="mb-6">
 			<SearchResultsTable
 				data={props.data.results}
 				columns={searchResultsTableColumns}

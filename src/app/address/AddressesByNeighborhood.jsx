@@ -69,10 +69,7 @@ const addressTableConfig = {
 					row.city,
 					"NC",
 					row.zipcode,
-				]
-					.filter(Boolean)
-					.join(" ")
-					.toLowerCase(),
+				].join(" "),
 			cell: ({ row }) => (
 				<div>
 					<div>

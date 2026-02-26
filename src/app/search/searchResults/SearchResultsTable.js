@@ -117,11 +117,7 @@ export default function SearchResultsTable({
 										style={{ width: `${header.getSize()}px` }}
 									>
 										{header.isPlaceholder ? null : (
-											<div
-												{...{
-													onClick: header.column.getToggleSortingHandler(),
-												}}
-											>
+											<div>
 												{flexRender(header.column.columnDef.header, header.getContext())}
 												{header.column.getIsSorted() !== null && header.column.getIsSorted() != false ? (
 													<span>{header.column.getIsSorted() === "asc" ? " 🔼" : " 🔽"}</span>

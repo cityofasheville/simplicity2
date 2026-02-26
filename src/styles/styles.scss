@@ -19,6 +19,15 @@ html {
   font-weight: lighter;
 }
 
+@layer components {
+  .leaflet-control-attribution {
+    @apply bg-black/60 text-red-900 text-xs px-2 py-1 rounded-md;
+  }
+
+  .leaflet-control-attribution a {
+    @apply text-sky-400 hover:text-sky-300 underline;
+  }
+}
 
 
 @media (min-width: $mobile-max) {

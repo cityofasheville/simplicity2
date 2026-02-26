@@ -120,3 +120,27 @@
     grid-column: 1 / -1;
   }
 }
+
+.leaflet-container .leaflet-control-attribution {
+  background-color: rgb(0 0 0 / 0.6);
+  color: white;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+  display: flex;
+  gap: 0.25rem;
+
+}
+
+.leaflet-container .leaflet-control-attribution a {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: rgb(56 189 248);
+  text-decoration: underline;
+}
+
+.leaflet-container .leaflet-control-attribution a:hover {
+  color: rgb(125 211 252);
+}
+

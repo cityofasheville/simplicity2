@@ -15,7 +15,7 @@
   }
 
   a {
-    @apply text-coa-blue-dark no-underline hocus:underline underline-offset-4;
+    @apply text-coa-blue-dark no-underline hover:underline underline-offset-4;
   }
 
   .btn {

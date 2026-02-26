@@ -659,16 +659,6 @@ a:hover {
           text-decoration-line: underline;
 }
 
-a:focus {
-  -webkit-text-decoration-line: underline;
-          text-decoration-line: underline;
-}
-
-a:focus-within {
-  -webkit-text-decoration-line: underline;
-          text-decoration-line: underline;
-}
-
 .btn {
   display: flex;
   align-items: center;
@@ -1594,6 +1584,10 @@ details[open] summary span.bi {
   border-width: 1px;
 }
 
+.border-0 {
+  border-width: 0px;
+}
+
 .border-2 {
   border-width: 2px;
 }
@@ -1621,6 +1615,11 @@ details[open] summary span.bi {
 .border-blue-100 {
   --tw-border-opacity: 1;
   border-color: rgb(219 234 254 / var(--tw-border-opacity, 1));
+}
+
+.border-coa-blue-dark {
+  --tw-border-opacity: 1;
+  border-color: rgb(0 73 135 / var(--tw-border-opacity, 1));
 }
 
 .border-coa-blue-light {
@@ -2227,6 +2226,11 @@ details[open] summary span.bi {
           text-decoration-line: underline;
 }
 
+.hover\:no-underline:hover {
+  -webkit-text-decoration-line: none;
+          text-decoration-line: none;
+}
+
 .focus\:left-0:focus {
   left: 0px;
 }
@@ -2303,6 +2307,10 @@ details[open] summary span.bi {
 }
 
 @media (min-width: 640px) {
+  .sm\:mb-0 {
+    margin-bottom: 0px;
+  }
+
   .sm\:ml-2 {
     margin-left: 0.5rem;
   }
@@ -2313,6 +2321,10 @@ details[open] summary span.bi {
 
   .sm\:inline {
     display: inline;
+  }
+
+  .sm\:flex {
+    display: flex;
   }
 
   .sm\:hidden {
@@ -2331,9 +2343,35 @@ details[open] summary span.bi {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
+  .sm\:flex-row {
+    flex-direction: row;
+  }
+
+  .sm\:items-center {
+    align-items: center;
+  }
+
+  .sm\:border-0 {
+    border-width: 0px;
+  }
+
+  .sm\:border-t-2 {
+    border-top-width: 2px;
+  }
+
   .sm\:px-6 {
     padding-left: 1.5rem;
     padding-right: 1.5rem;
+  }
+
+  .sm\:py-0 {
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+
+  .sm\:py-4 {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
   }
 
   .sm\:text-base {
@@ -2343,8 +2381,16 @@ details[open] summary span.bi {
 }
 
 @media (min-width: 768px) {
+  .md\:mb-0 {
+    margin-bottom: 0px;
+  }
+
   .md\:block {
     display: block;
+  }
+
+  .md\:flex {
+    display: flex;
   }
 
   .md\:hidden {
@@ -2391,13 +2437,30 @@ details[open] summary span.bi {
     border-width: 0px;
   }
 
+  .md\:border-t-2 {
+    border-top-width: 2px;
+  }
+
   .md\:py-0 {
     padding-top: 0px;
     padding-bottom: 0px;
   }
+
+  .md\:py-4 {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
 }
 
 @media (min-width: 1024px) {
+  .lg\:mb-0 {
+    margin-bottom: 0px;
+  }
+
+  .lg\:flex {
+    display: flex;
+  }
+
   .lg\:hidden {
     display: none;
   }
@@ -2418,19 +2481,79 @@ details[open] summary span.bi {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
+  .lg\:flex-row {
+    flex-direction: row;
+  }
+
+  .lg\:items-center {
+    align-items: center;
+  }
+
   .lg\:gap-2 {
     gap: 0.5rem;
+  }
+
+  .lg\:border-0 {
+    border-width: 0px;
+  }
+
+  .lg\:border-t-2 {
+    border-top-width: 2px;
   }
 
   .lg\:px-8 {
     padding-left: 2rem;
     padding-right: 2rem;
   }
+
+  .lg\:py-0 {
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+
+  .lg\:py-4 {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
 }
 
 @media (min-width: 1280px) {
+  .xl\:mb-0 {
+    margin-bottom: 0px;
+  }
+
+  .xl\:flex {
+    display: flex;
+  }
+
   .xl\:hidden {
     display: none;
+  }
+
+  .xl\:flex-row {
+    flex-direction: row;
+  }
+
+  .xl\:items-center {
+    align-items: center;
+  }
+
+  .xl\:border-0 {
+    border-width: 0px;
+  }
+
+  .xl\:border-t-2 {
+    border-top-width: 2px;
+  }
+
+  .xl\:py-0 {
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+
+  .xl\:py-4 {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
   }
 }
 

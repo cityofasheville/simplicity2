@@ -15,11 +15,11 @@ function SubNavbar({
 
   return (
     <>
-      <nav className="layout-full py-4 border-b border-coa-blue-light" aria-label={navTitle}>
+      <nav className="layout-full border-b border-coa-blue-light" aria-label={navTitle}>
         <button
           id="hamburger"
           type="button"
-          className={`block ${mobileBreakpoint}:hidden navbar-toggle text-lg text-coa-blue-dark`}
+          className={`block ${mobileBreakpoint}:hidden navbar-toggle py-2 text-lg text-coa-blue-dark`}
           onClick={toggleNavbar}
           aria-expanded={navbarOpen}
           aria-controls="menu-container"
@@ -30,25 +30,44 @@ function SubNavbar({
         </button>
         <ul
           className={`${
-            navbarOpen ? 'flex flex-col py-2 w-full' : 'hidden'
-          } ${mobileBreakpoint}:flex ${mobileBreakpoint}:flex-row ${mobileBreakpoint}:items-center gap-2 ${mobileBreakpoint}:py-0`}
+            navbarOpen ? `flex` : `hidden ${mobileBreakpoint}:flex  `
+          } flex-col ${mobileBreakpoint}:flex-row w-full ${mobileBreakpoint}:items-center gap-2 mb-4 ${mobileBreakpoint}:mb-0 `}
         >
-          {navItems.map((item, index) => (
-            <li className="" key={index}>
-              {item.path.includes('https://') ? (
-                <a href={item.path} className={`px-2 py-1 text-nowrap`}>
-                  {item.name}
-                </a>
-              ) : (
-                <Link to={item.path} className={`px-2 py-1 text-nowrap`}>
-                  {item.name}
-                </Link>
-              )}
-            </li>
-          ))}
+          {navItems.map((item, index) => {
+            let isActive = false;
+            if (!item.path.includes('https://')) {
+              isActive = window.location.pathname === item.path;
+            }
+            return (
+              <li className="" key={index}>
+                {item.path.includes('https://') ? (
+                  <a href={item.path} className={`px-2 py-1 text-nowrap`}>
+                    {item.name}
+                  </a>
+                ) : isActive ? (
+                  <Link
+                    to={item.path}
+                    aria-describedby="current"
+                    className={`inline-block px-2 py-1 ${mobileBreakpoint}:py-4 text-nowrap border-l-2 ${mobileBreakpoint}:border-0 ${mobileBreakpoint}:border-t-2 border-coa-blue-dark`}
+                  >
+                    {item.name}
+                  </Link>
+                ) : (
+                  <Link
+                    to={item.path}
+                    className={`inline-block px-2 py-1 ${mobileBreakpoint}:py-4 text-nowrap border-0 border-coa-blue-dark`}
+                  >
+                    {item.name}
+                  </Link>
+                )}
+              </li>
+            );
+          })}
         </ul>
+        <span className="hidden" id="current">
+          current page
+        </span>
       </nav>
-      <span className="sm:hidden md:hidden lg:hidden xl:hidden"></span>
     </>
   );
 }

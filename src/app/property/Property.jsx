@@ -174,8 +174,6 @@ const Property = (props) => {
 	// 	},
 	// ];
 
-	console.log("Property Data:", dataForAddressesTable);
-
 	return (
 		<div>
 			{props.inTable !== true && (
@@ -183,7 +181,7 @@ const Property = (props) => {
 					h1={propertyData.pinnum}
 					h2="About this property"
 					dataType="Property"
-					icon={<Icon path={IM_HOME2} size={50} />}
+					icon={<Icon ariaHidden={true} path={IM_HOME2} size={50} />}
 				>
 					<div className="btn-group  ml-auto">
 						{props.location.query.fromAddress && (
@@ -237,28 +235,28 @@ const Property = (props) => {
 							label="Deed"
 							title="Deed"
 							href={propertyData.deed_link}
-							icon={<Icon path={IM_CERTIFICATE} size={20} />}
+							icon={<Icon ariaHidden={true} path={IM_CERTIFICATE} size={20} />}
 						/>
 					)}
 					<DetailsIconLinkFormGroup
 						label="Property card"
 						title="property_card"
 						href={propertyData.property_card_link}
-						icon={<Icon path={IM_PROFILE} size={20} />}
+						icon={<Icon ariaHidden={true} path={IM_PROFILE} size={20} />}
 					/>
 					{propertyData.plat_link && (
 						<DetailsIconLinkFormGroup
 							label="Plat"
 							title="Plat"
 							href={propertyData.plat_link}
-							icon={<Icon path={IM_CHECKBOX_PARTIAL2} size={20} />}
+							icon={<Icon ariaHidden={true} path={IM_CHECKBOX_PARTIAL2} size={20} />}
 						/>
 					)}
 					<DetailsIconLinkFormGroup
 						label="Google map directions"
 						title="Google map directions"
 						href={["https://www.google.com/maps?daddr=", propertyData.latitude, ",", propertyData.longitude].join("")}
-						icon={<Icon path={IM_GOOGLE} size={20} />}
+						icon={<Icon ariaHidden={true} path={IM_GOOGLE} size={20} />}
 					/>
 				</div>
 				<div className="flex justify-center">
@@ -328,7 +326,7 @@ const Property = (props) => {
 								</div>
 							}
 							hasLabel
-							icon={<Icon path={IM_FLAG7} size={20} />}
+							icon={<Icon ariaHidden={true} path={IM_FLAG7} size={20} />}
 						/>
 					)}
 					{propertyData.historic_district && (
@@ -341,7 +339,7 @@ const Property = (props) => {
 								</div>
 							}
 							hasLabel
-							icon={<Icon path={IM_LIBRARY} size={20} />}
+							icon={<Icon ariaHidden={true} path={IM_LIBRARY} size={20} />}
 						/>
 					)}
 					<DetailsFormGroup
@@ -354,7 +352,7 @@ const Property = (props) => {
 
 				{dataForAddressesTable.length && (
 					<div className="w-full">
-						<h4 className="text-lg">Associated Addresses</h4>
+						<h4 className="text-xl text-coa-blue-medium">Associated Addresses</h4>
 						<Table
 							columns={propertyTableColumns}
 							data={dataForAddressesTable}

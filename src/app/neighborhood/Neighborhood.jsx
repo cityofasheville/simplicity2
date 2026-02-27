@@ -45,7 +45,7 @@ function Neighborhood(props) {
 				h1={props.location.query.label}
 				dataType="Neighborhood"
 				h2="About this neighborhood"
-				icon={<Icon path={IM_USERS} size={50} />}
+				icon={<Icon ariaHidden={true} path={IM_USERS} size={50} />}
 			>
 				<div className="btn-group ml-auto">
 					<LinkButton
@@ -72,14 +72,14 @@ function Neighborhood(props) {
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<DetailsIconLinkFormGroup
 						label="Address & Owner Mailing Lists"
-						icon={<Icon path={IM_ENVELOP3} size={24} />}
+						icon={<Icon ariaHidden={true} path={IM_ENVELOP3} size={24} />}
 						href={`address/addressList${detailsURLBase}`}
 						title="Address & Owner Mailing Lists"
 						inWindow
 					/>
 					<DetailsIconLinkFormGroup
 						label="Properties"
-						icon={<Icon path={IM_HOME2} size={24} />}
+						icon={<Icon ariaHidden={true} path={IM_HOME2} size={24} />}
 						href={`property/properties${detailsURLBase}`}
 						title="Properties"
 						inWindow

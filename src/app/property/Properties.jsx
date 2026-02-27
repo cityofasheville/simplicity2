@@ -38,7 +38,7 @@ function Properties(props) {
 			<PageHeader
 				h1={searchParams.get("label")}
 				h2={getSubtitle(searchParams.get("entity"))}
-				icon={<Icon path={IM_HOME2} size={50} />}
+				icon={<Icon ariaHidden={true} path={IM_HOME2} size={50} />}
 			>
 				<div className="btn-group ml-auto">
 					<Link

@@ -21,7 +21,7 @@ function Banner({ children, message = "Default banner message", path = "*" }) {
 	}
 
 	return (
-		<div role={"alert"} className="bg-warning mt-8 p-3">
+		<div role={"alert"} className="bg-warning mt-8 p-4 text-black border border-slate rounded">
 			<>{children}</>
 		</div>
 	);

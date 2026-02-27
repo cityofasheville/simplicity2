@@ -16,7 +16,7 @@ function PageHeader(props) {
 			)}
 
 			<div className="text-coa-blue-medium flex items-start gap-2  mt-5 mb-4">
-				{props.icon && <span aria-hidden="true">{props.icon}</span>}
+				{props.icon && <span>{props.icon}</span>}
 				<h1 className="flex flex-col text-left">
 					<span className="text-3xl">{props.h1}</span>
 					{props.dataType && <span className="text-base text-gray-500">{props.dataType}</span>}

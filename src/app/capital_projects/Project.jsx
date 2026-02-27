@@ -178,7 +178,7 @@ function Project(props) {
 										<a href={project.project_webpage_more_information}>
 											{" "}
 											<span>
-												<Icon path={IM_SPHERE3} size={20} color={"rgb(64, 119, 165)"} />
+												<Icon ariaHidden={true} path={IM_SPHERE3} size={20} color={"rgb(64, 119, 165)"} />
 											</span>{" "}
 											Project Website
 										</a>

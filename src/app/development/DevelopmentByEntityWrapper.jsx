@@ -119,6 +119,9 @@ function DevelopmentByEntityWrapper(props) {
 			<div className="h4">
 				{props.location.query.label}
 				{" (address) "}
+				<label className="sr-only" htmlFor="extent">
+					Choose search extent
+				</label>
 				<select
 					value={radius}
 					onChange={(event) => onRadiusChange(event.target.value)}
@@ -140,7 +143,11 @@ function DevelopmentByEntityWrapper(props) {
 	// compare to map view list view chart view
 	return (
 		<div>
-			<PageHeader h1="Development" subheading={pageSubHeading} icon={<Icon path={IM_OFFICE} size={35} />}>
+			<PageHeader
+				h1="Development"
+				subheading={pageSubHeading}
+				icon={<Icon ariaHidden={true} path={IM_OFFICE} size={35} />}
+			>
 				<div className="btn-group ml-auto">
 					{props.location.query.search && (
 						<button

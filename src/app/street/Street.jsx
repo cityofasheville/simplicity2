@@ -30,7 +30,7 @@ function Street(props) {
 				h1={props.location.query.label}
 				dataType="Street"
 				h2="About this street"
-				icon={<Icon path={IM_ROAD} size={50} />}
+				icon={<Icon ariaHidden={true} path={IM_ROAD} size={50} />}
 			>
 				<div className="btn-group ml-auto">
 					<LinkButton
@@ -73,7 +73,7 @@ function Street(props) {
 					))}
 					<DetailsIconLinkFormGroup
 						label="Address & Owner Mailing Lists"
-						icon={<Icon path={IM_ENVELOP3} size={24} />}
+						icon={<Icon ariaHidden={true} path={IM_ENVELOP3} size={24} />}
 						href={[
 							"address/addressList",
 							"?entity=",
@@ -95,7 +95,7 @@ function Street(props) {
 					/>
 					<DetailsIconLinkFormGroup
 						label="Properties"
-						icon={<Icon path={IM_HOME2} size={24} />}
+						icon={<Icon ariaHidden={true} path={IM_HOME2} size={24} />}
 						href={[
 							"property/properties",
 							"?entity=",
@@ -117,7 +117,7 @@ function Street(props) {
 					/>
 					<DetailsIconLinkFormGroup
 						label="Maintenance"
-						icon={<Icon path={IM_TRAFFIC_CONE} size={24} />}
+						icon={<Icon ariaHidden={true} path={IM_TRAFFIC_CONE} size={24} />}
 						href={[
 							"maintenance",
 							"?entity=",

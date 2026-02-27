@@ -23,25 +23,41 @@ import Link from "react-router/lib/Link";
 const getIcon = (type, isExpanded) => {
 	switch (type) {
 		case "Commercial":
-			return <Icon path={IM_OFFICE} size={25} color={isExpanded ? "#fff" : "#4077a5"} />;
+			return <Icon ariaHidden={true} path={IM_OFFICE} size={25} color={isExpanded ? "#fff" : "#4077a5"} />;
 		case "Residential":
-			return <Icon path={IM_HOME2} size={25} color={isExpanded ? "#fff" : "#4077a5"} />;
+			return <Icon ariaHidden={true} path={IM_HOME2} size={25} color={isExpanded ? "#fff" : "#4077a5"} />;
 		case "Sign":
-			return <Icon path={IM_DIRECTION} size={25} color={isExpanded ? "#fff" : "#4077a5"} />;
+			return <Icon ariaHidden={true} path={IM_DIRECTION} size={25} color={isExpanded ? "#fff" : "#4077a5"} />;
 		case "Historical":
-			return <Icon path={IM_LIBRARY2} size={25} color={isExpanded ? "#fff" : "#4077a5"} />;
+			return <Icon ariaHidden={true} path={IM_LIBRARY2} size={25} color={isExpanded ? "#fff" : "#4077a5"} />;
 		case "Fire":
-			return <Icon path={IM_FIRE} size={25} color={isExpanded ? "#fff" : "#4077a5"} />;
+			return <Icon ariaHidden={true} path={IM_FIRE} size={25} color={isExpanded ? "#fff" : "#4077a5"} />;
 		case "Event-Temporary Use":
-			return <Icon path={IM_USERS4} size={25} viewBox="0 0 24 24" color={isExpanded ? "#fff" : "#4077a5"} />;
+			return (
+				<Icon
+					ariaHidden={true}
+					path={IM_USERS4}
+					size={25}
+					viewBox="0 0 24 24"
+					color={isExpanded ? "#fff" : "#4077a5"}
+				/>
+			);
 		case "Outdoor Vendor":
-			return <Icon path={IM_COOK} size={25} color={isExpanded ? "#fff" : "#4077a5"} />;
+			return <Icon ariaHidden={true} path={IM_COOK} size={25} color={isExpanded ? "#fff" : "#4077a5"} />;
 		case "Development":
-			return <Icon path={IM_CITY} size={25} color={isExpanded ? "#fff" : "#4077a5"} />;
+			return <Icon ariaHidden={true} path={IM_CITY} size={25} color={isExpanded ? "#fff" : "#4077a5"} />;
 		case "Right of Way":
-			return <Icon path={LI_WALKING} size={25} viewBox="0 0 24 24" color={isExpanded ? "#fff" : "#4077a5"} />;
+			return (
+				<Icon
+					ariaHidden={true}
+					path={LI_WALKING}
+					size={25}
+					viewBox="0 0 24 24"
+					color={isExpanded ? "#fff" : "#4077a5"}
+				/>
+			);
 		case "Over The Counter":
-			return <Icon path={IM_MUG} size={25} color={isExpanded ? "#fff" : "#4077a5"} />;
+			return <Icon ariaHidden={true} path={IM_MUG} size={25} color={isExpanded ? "#fff" : "#4077a5"} />;
 		default:
 			return (
 				<svg

@@ -20,54 +20,70 @@ function GetCrimeIcon(type, isExpanded) {
 	switch (type) {
 		case "MISSING PERSON REPORT":
 		case "RUNAWAY JUVENILE":
-			return <Icon path={IM_USER} size={24} color={isExpanded ? "#fff" : "#4077a5"} />;
+			return <Icon ariaHidden={true} path={IM_USER} size={24} color={isExpanded ? "#fff" : "#4077a5"} />;
 		case "DAMAGE TO PERSONAL PROPERTY":
 		case "DAMAGE TO PERSONAL PROPER":
 		case "VANDALISM":
-			return <Icon path={IM_HAMMER} size={24} color={isExpanded ? "#fff" : "#4077a5"} />;
+			return <Icon ariaHidden={true} path={IM_HAMMER} size={24} color={isExpanded ? "#fff" : "#4077a5"} />;
 		case "ASSAULT - SIMPLE":
 		case "ASSAULT ON FEMALE":
 		case "ASSAULT W/DEADLY WEAPON":
 		case "ASSAULT BY STRANGULATION":
-			return <Icon path={LI_AMBULANCE} size={24} viewBox="0 0 24 24" color={isExpanded ? "#fff" : "#4077a5"} />;
+			return (
+				<Icon
+					ariaHidden={true}
+					path={LI_AMBULANCE}
+					size={24}
+					viewBox="0 0 24 24"
+					color={isExpanded ? "#fff" : "#4077a5"}
+				/>
+			);
 		case "COMMUNICATING THREAT":
-			return <Icon path={IM_BUBBLE9} size={24} color={isExpanded ? "#fff" : "#4077a5"} />;
+			return <Icon ariaHidden={true} path={IM_BUBBLE9} size={24} color={isExpanded ? "#fff" : "#4077a5"} />;
 		case "INTIMIDATING STATE WITNESS":
 		case "PERJURY":
 		case "OBSTRUCTION OF JUSTICE":
-			return <Icon path={IM_LIBRARY2} size={24} color={isExpanded ? "#fff" : "#4077a5"} />;
+			return <Icon ariaHidden={true} path={IM_LIBRARY2} size={24} color={isExpanded ? "#fff" : "#4077a5"} />;
 		case "FRAUD":
 		case "FRAUD-CREDIT CARD":
 		case "FALSE PRETENSE - OBTAIN PROPERTY BY":
 		case "IMPERSONATE":
-			return <Icon path={IM_PROFILE} size={24} color={isExpanded ? "#fff" : "#4077a5"} />;
+			return <Icon ariaHidden={true} path={IM_PROFILE} size={24} color={isExpanded ? "#fff" : "#4077a5"} />;
 		case "CARRYING CONCEALED WEAPON":
-			return <Icon path={IM_GUN_FORBIDDEN} size={24} color={isExpanded ? "#fff" : "#4077a5"} />;
+			return <Icon ariaHidden={true} path={IM_GUN_FORBIDDEN} size={24} color={isExpanded ? "#fff" : "#4077a5"} />;
 		case "RESIST, DELAY, OBSTRUCT OFFICER":
 		case "CIT INCIDENT":
 		case "DV ASSISTANCE OTHER":
 		case "VICTIM ASSISTANCE OTHER":
 		case "ASSAULT ON GOVERNMENT OFFICIAL":
-			return <Icon path={IM_SHIELD3} size={24} color={isExpanded ? "#fff" : "#4077a5"} />;
+			return <Icon ariaHidden={true} path={IM_SHIELD3} size={24} color={isExpanded ? "#fff" : "#4077a5"} />;
 		case "DWI":
 		case "UNAUTHORIZED USE OF MOTOR VEHICLE":
 		case "TRAFFIC OFFENSES - ALL OT":
-			return <Icon path={IM_CAR} size={24} color={isExpanded ? "#fff" : "#4077a5"} />;
+			return <Icon ariaHidden={true} path={IM_CAR} size={24} color={isExpanded ? "#fff" : "#4077a5"} />;
 		case "LARCENY OF MV OTHER":
 		case "LARCENY OF MV AUTO":
 		case "LARCENY OF MV TRUCK":
-			return <Icon path={IM_CAR} size={24} color={isExpanded ? "#fff" : "#4077a5"} />;
+			return <Icon ariaHidden={true} path={IM_CAR} size={24} color={isExpanded ? "#fff" : "#4077a5"} />;
 		case "TRESPASS":
-			return <Icon path={IM_FENCE} size={24} color={isExpanded ? "#fff" : "#4077a5"} />;
+			return <Icon ariaHidden={true} path={IM_FENCE} size={24} color={isExpanded ? "#fff" : "#4077a5"} />;
 		case "INFORMATION ONLY":
-			return <Icon path={IM_PENCIL7} size={24} color={isExpanded ? "#fff" : "#4077a5"} />;
+			return <Icon ariaHidden={true} path={IM_PENCIL7} size={24} color={isExpanded ? "#fff" : "#4077a5"} />;
 		case "DRUG PARAPHERNALIA POSSESS":
 		case "DRUG OFFENSE - FELONY":
 		case "DRUG OFFENSE - MISDEMEANOR":
 		case "DRUG PARAPHERNALIA OTHER":
-			return <Icon path={IM_AID_KIT2} size={24} color={isExpanded ? "#fff" : "#4077a5"} />;
+			return <Icon ariaHidden={true} path={IM_AID_KIT2} size={24} color={isExpanded ? "#fff" : "#4077a5"} />;
 		case "COUNTERFEITING-BUYING/RECEIVING":
-			return <Icon path={LI_BILL_DOLLAR} viewBox="0 0 24 24" size={24} color={isExpanded ? "#fff" : "#4077a5"} />;
+			return (
+				<Icon
+					ariaHidden={true}
+					path={LI_BILL_DOLLAR}
+					viewBox="0 0 24 24"
+					size={24}
+					color={isExpanded ? "#fff" : "#4077a5"}
+				/>
+			);
 		case "LARCENY ALL OTHER":
 		case "LARCENY SHOPLIFTING":
 		case "LARCENY FROM BUILDING":
@@ -75,7 +91,7 @@ function GetCrimeIcon(type, isExpanded) {
 		case "LARCENY FROM MOTOR VEHICL":
 		case "ROBBERY - COMMON LAW":
 		case "ROBBERY - ARMED - KNIFE":
-			return <Icon path={IM_COIN_DOLLAR} size={24} color={isExpanded ? "#fff" : "#4077a5"} />;
+			return <Icon ariaHidden={true} path={IM_COIN_DOLLAR} size={24} color={isExpanded ? "#fff" : "#4077a5"} />;
 		default:
 			return (
 				<svg
@@ -85,6 +101,7 @@ function GetCrimeIcon(type, isExpanded) {
 					version="1.1"
 					viewBox="0 0 16 16"
 					width="24px"
+					aria-hidden={true}
 				>
 					<g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
 						<g fill={isExpanded ? "#fff" : "#4077a5"} transform="translate(-528.000000, -576.000000)">

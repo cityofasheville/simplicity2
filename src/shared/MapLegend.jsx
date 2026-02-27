@@ -88,7 +88,7 @@ function MapLegend({ type }) {
 					{Object.entries(legendGroups).map(([iconName, types]) => (
 						<div key={`legendItem-${iconName}`} className="flex flex-row items-start break-inside-avoid my-1">
 							<img
-								alt="crime icon"
+								alt={`${iconName} Icon`}
 								src={iconName === "Other" ? require("../images/Ellipsis.png") : require(`../images/${iconName}.png`)}
 								className=" w-6 align-top mr-2"
 							/>

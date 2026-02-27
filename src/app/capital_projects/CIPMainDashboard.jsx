@@ -161,7 +161,7 @@ function CIPMainDashboard(props) {
 							Reset Filters
 						</button>
 
-						<div>
+						<div role="group">
 							<h3>Categories</h3>
 							<CPCheckboxes
 								selected={selectedFilters.categories}
@@ -171,7 +171,7 @@ function CIPMainDashboard(props) {
 							/>
 						</div>
 
-						<div>
+						<div role="group">
 							<h3>Funding Types</h3>
 							<CPCheckboxes
 								selected={selectedFilters.types}

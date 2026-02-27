@@ -40,9 +40,7 @@ const CrimeTable = (props) => {
 
 					return (
 						<span className="inline-flex items-baseline gap-1.5">
-							<span aria-hidden="true" title={row.original.crime}>
-								{GetCrimeIcon(value, row.getIsExpanded())}
-							</span>
+							<span title={row.original.crime}>{GetCrimeIcon(value, row.getIsExpanded())}</span>
 							<span className="ml-1">{value}</span>
 						</span>
 					);

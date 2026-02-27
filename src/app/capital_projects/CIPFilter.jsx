@@ -71,17 +71,19 @@ function CIPFilter(props) {
 		<div>
 			<div>
 				<CheckboxGroup checkedValues={visibleSelection} onChange={handleClick} className="checkboxGroup">
-					<FilterCheckbox label="All" value="All" />
-					{props.filter_variable
-						.filter((e) => e !== "All")
-						.map((type, index) => (
-							<FilterCheckbox
-								key={["SummaryCard", type, index].join("_")}
-								label={type}
-								value={type}
-								selected={visibleSelection.includes(type)}
-							/>
-						))}
+					<fieldset>
+						<FilterCheckbox label="All" value="All" />
+						{props.filter_variable
+							.filter((e) => e !== "All")
+							.map((type, index) => (
+								<FilterCheckbox
+									key={["SummaryCard", type, index].join("_")}
+									label={type}
+									value={type}
+									selected={visibleSelection.includes(type)}
+								/>
+							))}
+					</fieldset>
 				</CheckboxGroup>
 			</div>
 		</div>

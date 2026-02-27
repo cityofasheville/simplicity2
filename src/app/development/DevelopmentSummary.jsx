@@ -57,7 +57,7 @@ const DevelopmentSummary = (props) => {
 	return (
 		<div className="container">
 			{/*<Link to="/development/sla-dashboard">Development Services SLA Dashboard</Link>*/}
-			<PageHeader h1="Development" icon={<Icon path={IM_OFFICE} size={35} />}>
+			<PageHeader h1="Development" icon={<Icon ariaHidden={true} path={IM_OFFICE} size={35} />}>
 				<ButtonGroup>
 					<Button onClick={browserHistory.goBack}>Back</Button>
 				</ButtonGroup>

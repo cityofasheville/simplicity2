@@ -62,45 +62,43 @@ const CPCheckboxes = (props) => {
 	};
 
 	return (
-		<div>
-			<div className="checkboxGroup">
-				{["All", ...props.filter_variable.filter((type) => type !== "All")].map((type, index) => {
-					let displayExtra;
-					const isChecked = visibleSelection.includes(type);
-					const label = type; // Use mapped label or default
-					if (props.variableString == "categories") {
-						displayExtra = <i className={`bi ${iconDictionary[type]} mr-1 text-coa-blue-medium text-base`}></i>;
-					} else if (props.variableString == "types" && label != "All") {
-						displayExtra = (
-							<i
-								className={`bi bi-circle-fill mr-1 text-base`}
-								style={{
-									color: CIPcolors[type],
-								}}
-							></i>
-						);
-					}
-
-					return (
-						<label
-							key={`checkbox_${type}_${index}`}
-							className={`inline-block py-[2px] px-[5px] m-[2px] rounded-[4px] cursor-pointer text-[14px] ${
-								isChecked ? "bg-[#d0ebff]" : "bg-transparent"
-							}`}
-						>
-							<input
-								className="mr-[2px] bg-coa-blue-medium accent-coa-blue-medium w-5 h-5 align-text-bottom mt-[2px]"
-								type="checkbox"
-								value={type}
-								checked={isChecked}
-								onChange={() => handleCheckboxChange(type)}
-							/>
-							{displayExtra}
-							{label}
-						</label>
+		<div className="checkboxGroup">
+			{["All", ...props.filter_variable.filter((type) => type !== "All")].map((type, index) => {
+				let displayExtra;
+				const isChecked = visibleSelection.includes(type);
+				const label = type; // Use mapped label or default
+				if (props.variableString == "categories") {
+					displayExtra = <i className={`bi ${iconDictionary[type]} mr-1 text-coa-blue-medium text-base`}></i>;
+				} else if (props.variableString == "types" && label != "All") {
+					displayExtra = (
+						<i
+							className={`bi bi-circle-fill mr-1 text-base`}
+							style={{
+								color: CIPcolors[type],
+							}}
+						></i>
 					);
-				})}
-			</div>
+				}
+
+				return (
+					<label
+						key={`checkbox_${type}_${index}`}
+						className={`inline-block py-[2px] px-[5px] m-[2px] rounded-[4px] cursor-pointer text-[14px] ${
+							isChecked ? "bg-[#d0ebff]" : "bg-transparent"
+						}`}
+					>
+						<input
+							className="mr-[2px] bg-coa-blue-medium accent-coa-blue-medium w-5 h-5 align-text-bottom mt-[2px]"
+							type="checkbox"
+							value={type}
+							checked={isChecked}
+							onChange={() => handleCheckboxChange(type)}
+						/>
+						{displayExtra}
+						{label}
+					</label>
+				);
+			})}
 		</div>
 	);
 };

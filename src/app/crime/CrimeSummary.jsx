@@ -66,7 +66,7 @@ const CrimeSummary = (props) => {
 	return (
 		<div>
 			<div className="mb-8 mt-5 px-2 flex items-center">
-				<span className="text-coa-blue-medium pr-2">{<Icon aria-hidden="true" path={IM_SHIELD3} size={35} />}</span>
+				<span className="text-coa-blue-medium pr-2">{<Icon ariaHidden={true} path={IM_SHIELD3} size={35} />}</span>
 				<h1 className="text-coa-blue-medium">
 					<span className="text-4xl">{content.crime}</span>
 				</h1>
@@ -75,7 +75,7 @@ const CrimeSummary = (props) => {
 					href="https://ashevillepd.policetocitizen.com/Home"
 					target="_blank"
 				>
-					{<Icon aria-hidden="true" path={IM_LIBRARY2} size={16} />}
+					{<Icon ariaHidden={true} path={IM_LIBRARY2} size={16} />}
 					<span className="pl-2">{content.view_apd_reports}</span>
 				</a>
 				<button className="btn btn-primary ml-auto" onClick={browserHistory.goBack}>
@@ -88,9 +88,7 @@ const CrimeSummary = (props) => {
 						<label htmlFor="topicType" className="font-normal">
 							{content.view}:
 						</label>
-						<div className="form-control-static" style={{ display: "block" }}>
-							{content.crimes.toLowerCase()}
-						</div>
+						<div className="block">{content.crimes.toLowerCase()}</div>
 					</div>
 
 					<div className="w-full flex flex-col">

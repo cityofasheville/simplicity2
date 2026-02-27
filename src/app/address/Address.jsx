@@ -121,7 +121,8 @@ const Address = (props) => (
 							<span>
 								{content.sometime_this_week}
 								<span title={content.place_on_curb_by_7am_monday} className="ml-1">
-									<Icon path={IM_INFO} size={16} />
+									<span className="sr-only">{content.place_on_curb_by_7am_monday}</span>
+									<Icon ariaHidden={true} path={IM_INFO} size={16} />
 								</span>
 								<br />
 								{`(${content.brush_week} ${week})`}
@@ -132,7 +133,8 @@ const Address = (props) => (
 						<span>
 							{content.sometime_next_week}
 							<span title={content.place_on_curb_by_7am_monday} className="ml-1">
-								<Icon path={IM_INFO} size={16} />
+								<span className="sr-only">{content.place_on_curb_by_7am_monday}</span>
+								<Icon ariaHidden={true} path={IM_INFO} size={16} />
 							</span>
 							<br />
 							{`(${content.brush_week} ${week})`}
@@ -218,7 +220,7 @@ const Address = (props) => (
 						h1={`${addressData.address}, ${addressData.zipcode}`}
 						dataType={content.data_type}
 						h2={content.about_this_address}
-						icon={<Icon path={IM_LOCATION} size={50} />}
+						icon={<Icon ariaHidden={true} path={IM_LOCATION} size={50} />}
 					>
 						<div className="btn-group ml-auto">
 							<LinkButton
@@ -277,7 +279,7 @@ const Address = (props) => (
 								name="trash"
 								value={calculateTrash(addressData.trash_day, addressData.is_in_city)}
 								hasLabel
-								icon={<Icon path={IM_BIN} size={20} />}
+								icon={<Icon ariaHidden={true} path={IM_BIN} size={20} />}
 							/>
 							<DetailsFormGroup
 								label={content.recycling_collection}
@@ -288,7 +290,7 @@ const Address = (props) => (
 									addressData.recycling_pickup_district
 								)}
 								hasLabel
-								icon={<Icon path={LI_RECYCLE2} size={20} viewBox="0 0 24 24" />}
+								icon={<Icon ariaHidden={true} path={LI_RECYCLE2} size={20} viewBox="0 0 24 24" />}
 							/>
 							<DetailsFormGroup
 								label={content.brush_collection}
@@ -299,14 +301,14 @@ const Address = (props) => (
 									addressData.brushweek
 								)}
 								hasLabel
-								icon={<Icon path={IM_LEAF} size={20} />}
+								icon={<Icon ariaHidden={true} path={IM_LEAF} size={20} />}
 							/>
 							<DetailsFormGroup
 								label={content.street_maintenance}
 								name="street_maintenance"
 								value={getMaintenanceInfo(addressData.street_maintenance)}
 								hasLabel
-								icon={<Icon path={IM_TRAFFIC_CONE} size={20} />}
+								icon={<Icon ariaHidden={true} path={IM_TRAFFIC_CONE} size={20} />}
 							/>
 							{addressData.is_in_city && (
 								<DetailsFormGroup
@@ -314,7 +316,7 @@ const Address = (props) => (
 									name="neighborhood"
 									value={addressData.neighborhood === null ? content.no_neighborhood_name : addressData.neighborhood}
 									hasLabel
-									icon={<Icon path={IM_USERS} size={20} />}
+									icon={<Icon ariaHidden={true} path={IM_USERS} size={20} />}
 								/>
 							)}
 							<DetailsFormGroup
@@ -338,7 +340,7 @@ const Address = (props) => (
 									)
 								}
 								hasLabel
-								icon={<Icon path={IM_USERS} size={20} />}
+								icon={<Icon ariaHidden={true} path={IM_USERS} size={20} />}
 							/>
 							<DetailsFormGroup
 								label={content.owner}
@@ -350,7 +352,7 @@ const Address = (props) => (
 									</div>
 								}
 								hasLabel
-								icon={<Icon path={IM_USER} size={20} />}
+								icon={<Icon ariaHidden={true} path={IM_USER} size={20} />}
 							/>
 							<DetailsFormGroup
 								label={content.zoning}
@@ -380,7 +382,7 @@ const Address = (props) => (
 													</div>
 												}
 												hasLabel
-												icon={<Icon path={IM_FLAG7} size={20} />}
+												icon={<Icon ariaHidden={true} path={IM_FLAG7} size={20} />}
 											/>
 										)}
 										{addressData.historic_district && (
@@ -393,19 +395,19 @@ const Address = (props) => (
 													</div>
 												}
 												hasLabel
-												icon={<Icon path={IM_LIBRARY} size={20} />}
+												icon={<Icon ariaHidden={true} path={IM_LIBRARY} size={20} />}
 											/>
 										)}
 									</div>
 								}
 								hasLabel
-								icon={<Icon path={IM_LOCATION2} size={20} />}
+								icon={<Icon ariaHidden={true} path={IM_LOCATION2} size={20} />}
 							/>
 							<DetailsIconLinkFormGroup
 								label={content.property_information}
 								title={content.property_information}
 								href={`/property/?fromAddress=${props.location.query.id}&search=${props.location.query.search}&id=${addressData.pinnum}&entities=${props.location.query.entities}`} // eslint-disable-line
-								icon={<Icon path={IM_HOME2} size={20} />}
+								icon={<Icon ariaHidden={true} path={IM_HOME2} size={20} />}
 								inWindow
 							/>
 						</div>

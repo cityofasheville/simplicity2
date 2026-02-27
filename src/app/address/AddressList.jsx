@@ -44,7 +44,7 @@ function AddressList(props) {
 			<PageHeader
 				h1={searchParams.get("label")}
 				h2={content.address_and_owner_mailing_lists}
-				icon={<Icon path={IM_ENVELOP3} size={50} />}
+				icon={<Icon ariaHidden={true} path={IM_ENVELOP3} size={50} />}
 			>
 				<Link className="btn btn-primary ml-auto" to={`${streetPathname}?${streetSearch}`}>
 					{searchParams.get("entity") === "street" ? content.back_to_street : content.back_to_neighborhood}

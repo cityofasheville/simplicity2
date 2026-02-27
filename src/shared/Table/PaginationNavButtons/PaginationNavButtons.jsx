@@ -12,7 +12,12 @@ export default function PaginatioNavButtons({ pageCount, gotoPage, pageIndex }) 
 	// and current has to be pageIndex + 1 in order to display correctly
 	return (
 		<div className="my-4">
-			<ResponsivePagination total={pageCount} current={pageIndex + 1} onPageChange={(page) => gotoPage(page - 1)} />
+			<ResponsivePagination
+				maxWidth={350}
+				total={pageCount}
+				current={pageIndex + 1}
+				onPageChange={(page) => gotoPage(page - 1)}
+			/>
 			{/* {console.log(`Nav page index is ${pageIndex}`)} */}
 		</div>
 	);

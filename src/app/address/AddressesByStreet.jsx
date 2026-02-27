@@ -110,7 +110,7 @@ const streetTableConfig = {
 		itemsPerPage: 20,
 	},
 	filterRender: {
-		globalFilterRender: true,
+		globalFilterRender: false,
 	},
 };
 

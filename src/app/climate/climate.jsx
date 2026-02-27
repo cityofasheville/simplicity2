@@ -186,7 +186,7 @@ const Climate = (props) => {
 				h1={`Climate Resilience: ${props.data.blockgroups[0].name.slice(0, -33)}`}
 				dataType="Census Block Group in Buncombe County, North Carolina"
 				// h2={"About this Block Group"}
-				icon={<Icon path={IM_USERS} size={50} />}
+				icon={<Icon ariaHidden={true} path={IM_USERS} size={50} />}
 				externalLink="https://www.census.gov/programs-surveys/geography/about/glossary.html#par_textimage_4"
 				externalLinkText="What is a Block Group? (census.gov)"
 			>

@@ -25,6 +25,9 @@ const propertyTableConfig = {
 			header: () => <span>Pin #</span>,
 			footer: (props) => props.column.id,
 			width: 175,
+			meta: {
+				simpleName: "Pin number",
+			},
 		},
 		{
 			accessorKey: "property_civic_address_id",
@@ -33,6 +36,9 @@ const propertyTableConfig = {
 			cell: (info) => info.getValue(),
 			header: () => <span>Civic Address ID</span>,
 			footer: (props) => props.column.id,
+			meta: {
+				simpleName: "Civic Address ID",
+			},
 		},
 		{
 			accessorKey: "address",
@@ -46,6 +52,9 @@ const propertyTableConfig = {
 			header: () => <span>Address</span>,
 			footer: (props) => props.column.id,
 			width: 175,
+			meta: {
+				simpleName: "Address",
+			},
 		},
 	],
 	navigationRender: {

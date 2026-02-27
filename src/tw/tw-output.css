@@ -1886,6 +1886,10 @@ details[open] summary span.bi {
   vertical-align: middle;
 }
 
+.align-bottom {
+  vertical-align: bottom;
+}
+
 .align-text-bottom {
   vertical-align: text-bottom;
 }

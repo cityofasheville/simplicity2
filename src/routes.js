@@ -44,6 +44,7 @@ import MajorDevSearch from './app/development/trc/MajorDevSearch';
 import PermitVolume from './app/development/volume/PermitVolume';
 import PermitsIndex from './app/development/permits/PermitsIndex';
 import Permit from './app/development/permits/Permit';
+import PermitsHome from './app/development/permits/PermitsHome';
 // import PermitSearchIndex from "./app/development/permits/PermitSearchIndex";
 // import PermitSearchWrapper from "./app/development/permits/PermitSearchWrapper";
 // import WorkflowContainer from './app/development/workflows/WorkflowContainer';
@@ -153,7 +154,7 @@ const Routes = () => (
             <IndexRoute component={PCardCompliance} />
             <Route path="receipts" component={PCardComplianceReceipts} />
           </Route> */}
-          <Route path="permits">
+          <Route path="permits" component={PermitsHome}>
             <IndexRoute component={PermitsIndex} />
             <Route
               exact

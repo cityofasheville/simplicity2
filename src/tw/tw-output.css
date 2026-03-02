@@ -1285,10 +1285,6 @@ details[open] summary span.bi {
   min-height: 100vh;
 }
 
-.min-h-\[120px\] {
-  min-height: 120px;
-}
-
 .w-16 {
   width: 4rem;
 }
@@ -1989,11 +1985,6 @@ details[open] summary span.bi {
 .text-black {
   --tw-text-opacity: 1;
   color: rgb(0 0 0 / var(--tw-text-opacity, 1));
-}
-
-.text-blue-600 {
-  --tw-text-opacity: 1;
-  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
 }
 
 .text-coa-blue-dark {

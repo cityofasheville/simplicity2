@@ -284,24 +284,24 @@ const Climate = (props) => {
 				)}
 			</div>
 			<aside id="Climate Data" className="p-4 border border-gray-200 rounded bg-gray-100 my-10">
-				<h3 className="text-3xl text-coa-blue-medium my-5">Climate Justice Resources</h3>
+				<h3 className="text-3xl text-coa-blue-medium my-5">Climate Vulnerability Resources</h3>
 				<p className="my-5">
 					Our neighborhood, household, and personal risk is defined not only by weather and climate events, but also by
 					health, age, community and historical factors. To better understand how climate events affect different
 					Asheville communities differently, the &nbsp;
 					<a href="https://avl.maps.arcgis.com/apps/instant/lookup/index.html?appid=10e2c4ae45614b92ad4efaa61342b249%2F">
-						Citywide Climate Justice Index Map
+						Citywide Climate Vulnerability Index Map
 					</a>
 					&nbsp; visualizes the climate risks outlined above alongside additional factors that can intensify impact and
-					influence a community's ability to bounce back after disruption. Details about how these Climate Justice
+					influence a community's ability to bounce back after disruption. Details about how these Climate Vulnerability
 					factors show up in your census block group are scored and outlined below. Here are additional resources to
-					better understand Climate Justice, Equity and Resilience in our community.
+					better understand Climate Vulnerability and Resilience in our community.
 				</p>
 
 				<div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
 					<ClickableTile
 						image={IMG_CJI_MAP}
-						text="Citywide Climate Justice Index Map"
+						text="Community Climate Vulnerability Map"
 						url="https://avl.maps.arcgis.com/apps/instant/lookup/index.html?appid=10e2c4ae45614b92ad4efaa61342b249%2F"
 					/>
 					<ClickableTile
@@ -311,20 +311,20 @@ const Climate = (props) => {
 					/>
 					<ClickableTile
 						image={IMG_CJI_STORYMAP}
-						text="City of Asheville Climate Justice Initiative Webpage "
+						text="City of Asheville Climate Vulnerability Initiative Webpage "
 						url="https://www.ashevillenc.gov/department/sustainability/climate-initiatives/climate-justice-initiative"
 					/>
-					<ClickableTile
+					{/* <ClickableTile
 						image={IMG_CJI_WEB}
 						text="Climate Justice Initiative Story Map"
 						url="https://storymaps.arcgis.com/stories/1d90d45f3e71482397a944e8d6786df4"
-					/>
+					/> */}
 				</div>
 			</aside>
 
 			<div className="my-6 border"></div>
 			<h3 className="text-3xl text-coa-blue-medium mb-5 mt-7">
-				Climate Justice Index Score:{" "}
+				Climate Vulnerability Score:{" "}
 				<span
 					className="font-semibold px-3 "
 					style={{
@@ -340,9 +340,9 @@ const Climate = (props) => {
 			<p>
 				This overall score gives a snapshot of cumulative Climate and non-climate risks in this census block group.
 				Higher scores indicate higher vulnerability on average across the block group area. Risk factor data outlined
-				below are scaled from 1 to 5, and summed up to calculate the overall Climate Justice Index Score. Climate
-				vulnerability is heavily dependent on where you live, this data and the displayed Climate Justice Index Score
-				show this census block group relative to others in our area.
+				below are scaled from 1 to 5, and summed up to calculate the overall Climate Vulnerability Score Score. Climate
+				vulnerability is heavily dependent on where you live, this data and the displayed Climate Vulnerability Score
+				Score show this census block group relative to others in our area.
 			</p>
 			<p>
 				Below you'll find a score assigned to the climate threats detailed above (Heat, Flood, Landslide, Wildfire) as
@@ -370,7 +370,7 @@ const Climate = (props) => {
 						>
 							Center for Disease Control Social Vulnerability
 						</a>{" "}
-						CJ Map Score: {props.data.blockgroups[0].cdc_score}
+						Map Score: {props.data.blockgroups[0].cdc_score}
 					</h4>
 					<ul>
 						<li>
@@ -382,7 +382,7 @@ const Climate = (props) => {
 						<li>Possible scores range from 0 (lowest vulnerability) to 1 (highest vulnerability).</li>
 						<li>
 							2018 Overall Score: <b>{props.data.blockgroups[0].rpl_themes}</b> This score is then scaled to fit into
-							the Climate Justice Data Map 1-5 scoring.
+							the Climate Vulnerability Data Map 1-5 scoring.
 						</li>
 					</ul>
 				</li>
@@ -414,7 +414,7 @@ const Climate = (props) => {
 						</li>
 						<li>
 							Possible scores range from 0 (lowest vulnerability) to 3 (highest vulnerability), this score is then
-							scaled to fit into the Climate Justice Data Map 1-5 scoring.
+							scaled to fit into the Climate Vulnerability Data Map 1-5 scoring.
 						</li>
 					</ul>
 				</li>

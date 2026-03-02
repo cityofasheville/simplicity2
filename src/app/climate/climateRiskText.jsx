@@ -86,49 +86,49 @@ overall vulnerability,
 <a
   href="#Climate Data"
 >
- learn more about Climate Justice information and data for Asheville below. 
+ learn more about Climate Vulnerability information and data for Asheville below. 
 </a>
 </p>
 `;
 
 export const riskMitigationSteps = {
-  allRisks: [
-    "Be informed",
-    "Make a plan and build a kit",
-    "Sign up for hazard alerts",
-    "Post emergency contact information",
-  ],
-  heat: [
-    "Create shade",
-    "Cool the air",
-    "Be a good neighbor",
-    "Check the back seat",
-    "Recognize the signs of heat-related illness",
-    "Know where you can go to get cool",
-  ],
-  flood: [
-    "Purchase/review flood insurance",
-    "Floodproofing (emergency)",
-    "Floodproofing (permanent)",
-    "Remove or secure toxic materials",
-    "Elevate critical equipment and important personal property",
-    "Elevate your home or building",
-    "Reduce runoff and redirect stormwater",
-    "Install “green” infrastructure and store rainwater",
-    "Clear stormwater drains",
-    "Maintain natural vegetation",
-    "Protect stream buffers",
-  ],
-  wildfire: [
-    "Purchase/review insurance coverage",
-    "Use fire-resistant building materials",
-    "Consider neighborhood strategies",
-    "Manage vegetation and fuels",
-  ],
-  landslide: [
-    "Be aware of surface water runoff and keep ditches and culverts clear",
-    "Recognize the signs of slope instability",
-    "Maintain natural vegetation to prevent erosion",
-    "Stabilize slopes as needed",
-  ],
+	allRisks: [
+		"Be informed",
+		"Make a plan and build a kit",
+		"Sign up for hazard alerts",
+		"Post emergency contact information",
+	],
+	heat: [
+		"Create shade",
+		"Cool the air",
+		"Be a good neighbor",
+		"Check the back seat",
+		"Recognize the signs of heat-related illness",
+		"Know where you can go to get cool",
+	],
+	flood: [
+		"Purchase/review flood insurance",
+		"Floodproofing (emergency)",
+		"Floodproofing (permanent)",
+		"Remove or secure toxic materials",
+		"Elevate critical equipment and important personal property",
+		"Elevate your home or building",
+		"Reduce runoff and redirect stormwater",
+		"Install “green” infrastructure and store rainwater",
+		"Clear stormwater drains",
+		"Maintain natural vegetation",
+		"Protect stream buffers",
+	],
+	wildfire: [
+		"Purchase/review insurance coverage",
+		"Use fire-resistant building materials",
+		"Consider neighborhood strategies",
+		"Manage vegetation and fuels",
+	],
+	landslide: [
+		"Be aware of surface water runoff and keep ditches and culverts clear",
+		"Recognize the signs of slope instability",
+		"Maintain natural vegetation to prevent erosion",
+		"Stabilize slopes as needed",
+	],
 };

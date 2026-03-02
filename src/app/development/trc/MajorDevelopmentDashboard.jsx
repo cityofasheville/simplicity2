@@ -16,9 +16,9 @@ function MajorDevelopmentDashboard(props) {
   return (
     <>
       <SubNavbar
-        navTitle="Development Services navigation"
+        navTitle="Major Development navigation"
         navItems={nav_items}
-        burgerName="Development Services Menu"
+        burgerName="Major Development Menu"
         mobileBreakpoint="lg"
       />
       <div className="py-6">{props.children}</div>

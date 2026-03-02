@@ -68,7 +68,12 @@ function Navbar() {
             </li>
             <li className="py-2 md:py-0">
               <Link to="/development/major" activeClassName="active">
-                Development Services
+                Major Development
+              </Link>
+            </li>
+            <li className="py-2 md:py-0">
+              <Link to="/permits" activeClassName="active">
+                Permits
               </Link>
             </li>
             {/* <li className="py-2 md:py-0">

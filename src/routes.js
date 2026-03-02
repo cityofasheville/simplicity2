@@ -176,11 +176,11 @@ const Routes = () => (
             <Route path="major" component={MajorDevelopmentDashboard}>
               <IndexRoute component={MajorDevOverview} />
               <Route path="faq" component={MajorDevFaq}></Route>
-              <Route path="types" component={MajorDevTypes}></Route>
+              {/* <Route path="types" component={MajorDevTypes}></Route> */}
               <Route path="process" component={MajorDevProcess}></Route>
               <Route path="engage" component={MajorDevEngage}></Route>
               <Route path="details" component={MajorDevDetails}></Route>
-              <Route path="search" component={MajorDevSearch}></Route>
+              {/* <Route path="search" component={MajorDevSearch}></Route> */}
             </Route>
             <Route path="granular_volume" component={PermitVolume}></Route>
             <Route path="status_volume" component={PermitVolume}></Route>

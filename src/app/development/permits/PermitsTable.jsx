@@ -80,42 +80,31 @@ class PermitsTable extends React.Component {
 	}
 
 	render() {
+		console.log(this.props.tableHeaders);
+
 		console.log(this.props.data);
 		const permitTableConfig = {
 			columns: [
 				{
 					header: "Permits",
-					columns: this.props.tableHeaders.map((headerObj) => {
-						const isPermitNumber = headerObj.field === "permit_number";
-
-						return {
-							header: headerObj.display,
-							id: headerObj.field,
-
-							accessorFn: (row) => row[headerObj.field],
-
-							cell: ({ getValue }) => {
-								const value = getValue();
-
-								if (isPermitNumber) {
-									return value ? (
-										<a href={`/permits/${value}`} className="text-blue-600 underline">
-											{value}
-										</a>
-									) : null;
-								}
-
-								return value ?? "";
-							},
-
-							sortingFn: headerObj.sortMethod,
-							enableColumnFilter: true,
-
-							meta: {
-								filterPlaceholder: `Search ${headerObj.display}`,
-							},
-						};
-					}),
+					columns: this.props.tableHeaders.map((headerObj) => ({
+						id: headerObj.field,
+						header: headerObj.display,
+						accessorFn: (row) => row[headerObj.field],
+						cell: (info) => (headerObj.formatFunc ? headerObj.formatFunc(info.row.original) : info.getValue()),
+						sortingFn: headerObj.sortMethod ?? "auto",
+						filterFn: (row, columnId, filterValue) => {
+							const values = String(filterValue).split(",");
+							const cellValue = row.getValue(columnId);
+							const compareText = cellValue != null ? String(cellValue) : "";
+							return values.some((val) => compareText.toLowerCase().includes(val.trim().toLowerCase()));
+						},
+						enableSorting: true,
+						enableColumnFilter: true,
+						meta: {
+							simpleName: headerObj.display,
+						},
+					})),
 				},
 			],
 			navigationRender: {

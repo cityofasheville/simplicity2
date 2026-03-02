@@ -102,7 +102,7 @@ const MaintenanceByStreet = (props) => {
 									tabIndex={focusable ? 0 : -1}
 									ref={focusRef}
 								>
-									<Icon path={IM_MAP5} size={23} />
+									<Icon ariaHidden={true} path={IM_MAP5} size={23} />
 									<span className="ml-1">{parseInt(row.value, 10)}</span>
 								</a>
 							</span>
@@ -155,7 +155,7 @@ const MaintenanceByStreet = (props) => {
 						title="Click to centerline in map"
 						href={[urlString, "&bounds=", JSON.stringify(getBounds(info.row.original.line))].join("")}
 					>
-						<Icon path={IM_MAP5} size={23} />
+						<Icon ariaHidden={true} path={IM_MAP5} size={23} />
 						<span className="ml-1">{parseInt(info.getValue(), 10)}</span>
 					</a>
 				),
@@ -223,27 +223,6 @@ const MaintenanceByStreet = (props) => {
 							{ accessor: "date_occurred" },
 							{ accessor: "geo_beat" },
 						]}
-					/>
-					<AccessibleReactTable
-						ariaLabel="Street Maintenance"
-						data={props.data.streets}
-						columns={dataColumns}
-						showPagination={props.data.streets.length > 20}
-						defaultPageSize={props.data.streets.length <= 20 ? props.data.streets.length : 20}
-						filterable
-						defaultFilterMethod={(filter, row) => {
-							const id = filter.pivotId || filter.id;
-							return row[id] !== undefined
-								? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) > -1
-								: true;
-						}}
-						getTdProps={(state, rowInfo) => {
-							return {
-								style: {
-									whiteSpace: "normal",
-								},
-							};
-						}}
 					/>
 				</div>
 

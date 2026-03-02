@@ -35,18 +35,20 @@ function Maintenance(props) {
 			<PageHeader
 				h1={searchParams.get("label")}
 				h2={getSubtitle(searchParams.get("entity"))}
-				icon={<Icon path={IM_TRAFFIC_CONE} size={50} />}
+				icon={<Icon ariaHidden={true} path={IM_TRAFFIC_CONE} size={50} />}
 			>
 				<Link
 					className="btn btn-primary ml-auto"
-					pathname="/street"
-					query={{
-						entities: props.location.query.entities,
-						search: props.location.query.search,
-						hideNavbar: props.location.query.hideNavbar,
-						entity: props.location.query.entity,
-						id: props.location.query.id,
-						label: props.location.query.label,
+					to={{
+						pathname: "/street",
+						query: {
+							entities: props.location.query.entities,
+							search: props.location.query.search,
+							hideNavbar: props.location.query.hideNavbar,
+							entity: props.location.query.entity,
+							id: props.location.query.id,
+							label: props.location.query.label,
+						},
 					}}
 				>
 					Back to {props.location.query.entity}
@@ -54,18 +56,22 @@ function Maintenance(props) {
 			</PageHeader>
 			<div className="flex">
 				<div className="btn-group ml-auto">
-					<Link
-						className={`btn btn-primary ${currentView !== "map" ? "active" : ""}`}
-						to={window.location.pathname + "?" + searchParamsList}
-					>
-						List view
-					</Link>
-					<Link
-						className={`btn btn-primary ${currentView === "map" ? "active" : ""}`}
-						to={window.location.pathname + "?" + searchParamsMap}
+					<button
+						className="btn btn-primary"
+						onClick={() => refreshLocation(getNewUrlParams("map"), props.location)}
+						active={props.location.query.view === "map"}
+						aria-selected={props.location.query.view === "map"}
 					>
 						Map view
-					</Link>
+					</button>
+					<button
+						className="btn btn-primary"
+						onClick={() => refreshLocation(getNewUrlParams("list"), props.location)}
+						active={props.location.query.view === "list"}
+						aria-selected={props.location.query.view === "list"}
+					>
+						List view
+					</button>
 					{/* <Button 
               onClick={() => refreshLocation(getNewUrlParams('map'), props.location)} active={props.location.query.view !== 'list'} positionInGroup="left">Map view</Button>
             <Button onClick={() => refreshLocation(getNewUrlParams('list'), props.location)} active={props.location.query.view === 'list'} positionInGroup="right">List view</Button> */}

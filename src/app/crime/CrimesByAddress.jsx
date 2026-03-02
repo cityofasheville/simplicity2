@@ -169,6 +169,7 @@ function CrimesByAddress(props) {
 								<button
 									onClick={() => refreshLocation(getNewUrlParams("map"), props.location)}
 									active={props.location.query.view === "map"}
+									aria-selected={props.location.query.view === "map"}
 									className="btn btn-primary"
 								>
 									{content.map_view}
@@ -176,6 +177,7 @@ function CrimesByAddress(props) {
 								<button
 									onClick={() => refreshLocation(getNewUrlParams("list"), props.location)}
 									active={props.location.query.view === "list"}
+									aria-selected={props.location.query.view === "list"}
 									className="btn btn-primary"
 								>
 									{content.list_view}

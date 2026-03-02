@@ -52,18 +52,24 @@ function AddressList(props) {
 			</PageHeader>
 			<div className="flex">
 				<div className="btn-group ml-auto">
-					<Link
-						className={`btn btn-primary ${currentView !== "map" ? "active" : ""}`}
-						to={window.location.pathname + "?" + searchParamsList}
-					>
-						List view
-					</Link>
-					<Link
-						className={`btn btn-primary ${currentView === "map" ? "active" : ""}`}
-						to={window.location.pathname + "?" + searchParamsMap}
+					<button
+						className="btn btn-primary"
+						onClick={() => refreshLocation(getNewUrlParams("map"), props.location)}
+						active={props.location.query.view === "map"}
+						aria-selected={props.location.query.view === "map"}
+						positionInGroup="left"
 					>
 						Map view
-					</Link>
+					</button>{" "}
+					<button
+						className="btn btn-primary"
+						onClick={() => refreshLocation(getNewUrlParams("list"), props.location)}
+						active={props.location.query.view === "list"}
+						aria-selected={props.location.query.view === "list"}
+						positionInGroup="middle"
+					>
+						List View
+					</button>
 				</div>
 			</div>
 			{searchParams.get("entity") === "street" ? (

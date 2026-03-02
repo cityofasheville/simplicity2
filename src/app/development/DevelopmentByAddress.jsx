@@ -144,6 +144,7 @@ const DevelopmentByAddress = (props) => {
 						className="btn btn-primary"
 						onClick={() => refreshLocation(getNewUrlParams("map"), props.location)}
 						active={props.location.query.view === "map"}
+						aria-selected={props.location.query.view === "map"}
 					>
 						Map view
 					</button>
@@ -151,6 +152,7 @@ const DevelopmentByAddress = (props) => {
 						className="btn btn-primary"
 						onClick={() => refreshLocation(getNewUrlParams("list"), props.location)}
 						active={props.location.query.view === "list"}
+						aria-selected={props.location.query.view === "list"}
 					>
 						List view
 					</button>

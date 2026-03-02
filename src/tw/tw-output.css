@@ -1285,6 +1285,10 @@ details[open] summary span.bi {
   min-height: 100vh;
 }
 
+.min-h-\[120px\] {
+  min-height: 120px;
+}
+
 .w-16 {
   width: 4rem;
 }
@@ -1884,10 +1888,6 @@ details[open] summary span.bi {
 
 .align-middle {
   vertical-align: middle;
-}
-
-.align-bottom {
-  vertical-align: bottom;
 }
 
 .align-text-bottom {

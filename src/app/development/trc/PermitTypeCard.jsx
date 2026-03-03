@@ -14,22 +14,14 @@ const PermitTypeCard = ({ type }) => {
         height: '100%',
       }}
     >
-      <div style={{ textAlign: 'center', paddingBottom: '10px' }}>
-        <TypePuck
-          typeObject={projectType}
-          hover={false}
-          size={40}
-        />
-        <span style={{ fontSize: '2rem', verticalAlign: 'top', padding: '0 0 0 1rem' }}>
-          {type}
-        </span>
+      <div className="flex items-center justify-center mb-4">
+        <TypePuck typeObject={projectType} hover={false} size={40} />
+        <h3 style={{ fontSize: '2rem', verticalAlign: 'top', padding: '0 0 0 1rem' }}>{type}</h3>
       </div>
       <div>
-        {Object.keys(projectType.descriptors).map(key => (
+        {Object.keys(projectType.descriptors).map((key) => (
           <div key={`descriptors-${type}-${key}`} style={{ padding: '0 0 0.5rem' }}>
-            <div style={{ fontWeight: '400' }}>
-              {descriptorTitles[key]}
-            </div>
+            <div style={{ fontWeight: '400' }}>{descriptorTitles[key]}</div>
             {projectType.descriptors[key]}
           </div>
         ))}

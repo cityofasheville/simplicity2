@@ -1085,6 +1085,10 @@ details[open] summary span.bi {
   margin-left: 1.25rem;
 }
 
+.ml-6 {
+  margin-left: 1.5rem;
+}
+
 .ml-8 {
   margin-left: 2rem;
 }
@@ -1488,6 +1492,10 @@ details[open] summary span.bi {
   align-items: stretch;
 }
 
+.justify-start {
+  justify-content: flex-start;
+}
+
 .justify-end {
   justify-content: flex-end;
 }
@@ -1710,6 +1718,31 @@ details[open] summary span.bi {
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
 }
 
+.bg-\[\#2d93ad\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(45 147 173 / var(--tw-bg-opacity, 1));
+}
+
+.bg-\[\#749B5F\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(116 155 95 / var(--tw-bg-opacity, 1));
+}
+
+.bg-\[\#073d49\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(7 61 73 / var(--tw-bg-opacity, 1));
+}
+
+.bg-\[\#9B6681\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(155 102 129 / var(--tw-bg-opacity, 1));
+}
+
+.bg-\[\#FF3A3A\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 58 58 / var(--tw-bg-opacity, 1));
+}
+
 .bg-opacity-85 {
   --tw-bg-opacity: 0.85;
 }
@@ -1864,6 +1897,10 @@ details[open] summary span.bi {
 
 .pt-5 {
   padding-top: 1.25rem;
+}
+
+.pb-2 {
+  padding-bottom: 0.5rem;
 }
 
 .text-left {

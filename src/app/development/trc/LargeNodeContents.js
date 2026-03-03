@@ -15,9 +15,9 @@ const LargeNodeContents = ({ node, edgeStroke, modalCloseFunc = null }) => {
   if (node.subNodes) {
     content = (
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
-        {node.subNodes.map((sub, subIndex, subNodeArray) =>
+        {node.subNodes.map((sub, subIndex, subNodeArray) => (
           <SubNode node={sub} lastNode={subIndex === subNodeArray.length - 1} key={sub.id} />
-        )}
+        ))}
       </div>
     );
   } else if (node.decisionNode) {
@@ -35,13 +35,7 @@ const LargeNodeContents = ({ node, edgeStroke, modalCloseFunc = null }) => {
         borderRadius: '6px',
       }}
     >
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          padding: '0 0 0.25rem',
-        }}
-      >
+      <div className="flex items-center justify-between px-1 pb-2 mb-2 border-b">
         <div
           style={{
             fontWeight: 400,
@@ -51,18 +45,19 @@ const LargeNodeContents = ({ node, edgeStroke, modalCloseFunc = null }) => {
         >
           {node.id}
         </div>
-        <div>
-          {node.typeIds.map(id =>
-            (<TypePuck
+        <div className="flex gap-1 flex-wrap">
+          {node.typeIds.map((id) => (
+            <TypePuck
               key={`${node.id}-puck-${id}`}
               typeObject={trcProjectTypes[id]}
-              size={25}
-            />))
-          }
+              size={35}
+              textClass="text-sm"
+            />
+          ))}
         </div>
       </div>
       {content}
-      {modalCloseFunc &&
+      {modalCloseFunc && (
         <button
           style={{
             borderRadius: '6px',
@@ -75,7 +70,7 @@ const LargeNodeContents = ({ node, edgeStroke, modalCloseFunc = null }) => {
         >
           Close
         </button>
-      }
+      )}
     </div>
   );
 };

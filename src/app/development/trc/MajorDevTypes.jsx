@@ -9,19 +9,22 @@ function MajorDevTypes() {
         The types of large-scale development are defined by{' '}
         <a
           href="https://codelibrary.amlegal.com/codes/ashevillenc/latest/asheville_nc/0-0-0-2930"
-          target="_blank"
-          rel="noopener noreferrer"
+          rel=" noreferrer"
         >
-          the City of Asheville's Unified Development Ordinance.
-        </a>{' '}
-        Projects located downtown are{' '}
+          the City of Asheville's Unified Development Ordinance{' '}
+          <i className="bi bi-box-arrow-up-right text-sm" aria-hidden="true"></i>
+          <span className="sr-only">(external site)</span>
+        </a>
+        . Projects located downtown are{' '}
         <a
           href="https://codelibrary.amlegal.com/codes/ashevillenc/latest/asheville_nc/0-0-0-14740#JD_7-5-9.1"
-          target="_blank"
-          rel="noopener noreferrer"
+          rel=" noreferrer"
         >
-          defined slightly differently in the ordinance.
+          defined slightly differently in the ordinance{' '}
+          <i className="bi bi-box-arrow-up-right text-sm" aria-hidden="true"></i>
+          <span className="sr-only">(external site)</span>
         </a>
+        .
       </p>
       <PermitTypeCards />
     </div>

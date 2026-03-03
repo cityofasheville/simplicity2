@@ -8,13 +8,10 @@ const SmallNode = ({ node, yOffset, edgeStroke, clickAction }) => {
     content = (
       <div>
         {node.subNodes.map((sub, subIndex) => (
-          <div
-            style={{ padding: subIndex > 0 ? '1rem 0 0' : 0 }}
-            key={sub.id}
-          >
+          <div style={{ padding: subIndex > 0 ? '1rem 0 0' : 0 }} key={sub.id}>
             {sub.id}: {sub.steps.what}
-          </div>))
-        }
+          </div>
+        ))}
       </div>
     );
   } else if (node.decisionNode) {
@@ -25,7 +22,7 @@ const SmallNode = ({ node, yOffset, edgeStroke, clickAction }) => {
 
   return (
     <foreignObject
-      x={node.x - (node.wrap / 2)}
+      x={node.x - node.wrap / 2}
       y={node.y - yOffset}
       width={node.wrap}
       height={node.height}
@@ -40,14 +37,15 @@ const SmallNode = ({ node, yOffset, edgeStroke, clickAction }) => {
           borderRadius: '6px',
         }}
       >
-        <div style={{ textAlign: 'center' }}>
-          {node.typeIds.map(id =>
-            (<TypePuck
+        <div className="flex flex-wrap items-center justify-center gap-1 my-2">
+          {node.typeIds.map((id) => (
+            <TypePuck
               key={`${node.id}-puck-${id}`}
               typeObject={trcProjectTypes[id]}
-              size={20}
-            />)
-          )}
+              size={30}
+              textClass="text-xs"
+            />
+          ))}
         </div>
         <div
           style={{
@@ -75,7 +73,7 @@ const SmallNode = ({ node, yOffset, edgeStroke, clickAction }) => {
                 border: '1px solid transparent',
                 width: '100%',
               }}
-              onClick={e => clickAction(e, node)}
+              onClick={(e) => clickAction(e, node)}
             >
               ...more details
             </button>

@@ -14,12 +14,10 @@ function MajorDevOverview() {
           </li>
           <li>Understand your role in the process and how your voice can be heard</li>
           <li>
-            <a
-              href="https://notifications.ashevillenc.gov"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Sign up to be notified
+            <a href="https://notifications.ashevillenc.gov" rel=" noreferrer">
+              Sign up to be notified{' '}
+              <i className="bi bi-box-arrow-up-right text-sm" aria-hidden="true"></i>
+              <span className="sr-only">(external site)</span>
             </a>{' '}
             when someone applies for a permit to build something near you
           </li>
@@ -27,8 +25,10 @@ function MajorDevOverview() {
         <p>
           Do you have ideas for how this tool could be updated or refined to better serve our
           community? If so, please{' '}
-          <a href="https://forms.gle/kSRTZidJUtNdZ8Rz7" target="_blank" rel="noopener noreferrer">
-            send us your feedback
+          <a href="https://forms.gle/kSRTZidJUtNdZ8Rz7" rel=" noreferrer">
+            send us your feedback{' '}
+            <i className="bi bi-box-arrow-up-right text-sm" aria-hidden="true"></i>
+            <span className="sr-only">(external site)</span>
           </a>
           !
         </p>

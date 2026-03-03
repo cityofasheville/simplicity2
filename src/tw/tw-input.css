@@ -122,11 +122,11 @@
 }
 
 .leaflet-container .leaflet-control-attribution {
-  background-color: rgb(0 0 0 / 0.6);
-  color: white;
+  background-color: white;
+  color: black;
   font-size: 0.75rem;
   padding: 0.25rem 0.5rem;
-  border-radius: 0.375rem;
+  /* border-radius: 0.375rem; */
   display: flex;
   gap: 0.25rem;
 
@@ -136,7 +136,7 @@
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  color: rgb(56 189 248);
+  color: '#4077a5';
   text-decoration: underline;
 }
 

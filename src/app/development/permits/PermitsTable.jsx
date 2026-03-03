@@ -5,6 +5,9 @@ import createFilterRenderer from "../../../shared/FilterRenderer";
 import { defaultTableHeaders } from "../utils";
 import { filter } from "d3-array";
 import Table from "../../../shared/Table/Table";
+import { getTRCTypeFromPermit } from "../trc/utils";
+import moment from "moment";
+import TypePuck from "../trc/TypePuck";
 
 function extractTextFromReactComponents(component) {
 	if (component === null || component === undefined) {
@@ -118,9 +121,163 @@ class PermitsTable extends React.Component {
 			},
 		};
 
-		const permitTableColumns = permitTableConfig.columns;
-		const navRender = permitTableConfig.navigationRender;
-		const filterRender = permitTableConfig.filterRender;
+		const getPermitTypeDisplay = (permit) => {
+			const trcType = getTRCTypeFromPermit(permit);
+
+			if (!trcType) {
+				let returnString = permit.permit_type;
+
+				if (permit.permit_subtype !== "NA") {
+					returnString += `: ${permit.permit_subtype}`;
+				}
+
+				if (permit.permit_category !== "NA") {
+					returnString += `: ${permit.permit_category}`;
+				}
+
+				return returnString;
+			}
+
+			return trcType.id;
+		};
+
+		const majorDevTableConfig = {
+			columns: [
+				{
+					header: "Permits",
+					columns: [
+						{
+							id: "applied_date",
+							header: "Date Applied",
+
+							// Return a REAL Date object
+							accessorFn: (row) => (row.applied_date ? new Date(row.applied_date) : null),
+
+							// Format only for display
+							cell: (info) => {
+								const value = info.getValue();
+								if (!value) return "";
+
+								return moment.utc(value).format("MMM DD, YYYY");
+							},
+
+							sortingFn: "datetime",
+
+							enableSorting: true,
+							enableColumnFilter: true,
+							meta: { simpleName: "Date Applied" },
+						},
+						{
+							id: "address",
+							header: "Address",
+							accessorFn: (row) => row.address,
+							cell: (info) => info.getValue(),
+							sortingFn: "auto",
+							filterFn: (row, columnId, filterValue) => {
+								const values = String(filterValue).split(",");
+								const cellValue = row.getValue(columnId);
+								const compareText = cellValue != null ? String(cellValue) : "";
+								return values.some((val) => compareText.toLowerCase().includes(val.trim().toLowerCase()));
+							},
+							enableSorting: true,
+							enableColumnFilter: true,
+							meta: { simpleName: "Address" },
+						},
+						{
+							id: "permit_type",
+							header: "Type",
+
+							accessorFn: (row) => getPermitTypeDisplay(row),
+
+							cell: (info) => {
+								const permit = info.row.original;
+								const trcType = getTRCTypeFromPermit(permit);
+
+								if (!trcType) {
+									return getPermitTypeDisplay(permit);
+								}
+
+								return (
+									<div>
+										<span style={{ marginRight: "1em" }}>{trcType.id}</span>
+										<div
+											style={{
+												verticalAlign: "middle",
+												display: "inline-block",
+												float: "right",
+											}}
+										>
+											<TypePuck typeObject={trcType} size={30} hover={false} />
+										</div>
+									</div>
+								);
+							},
+
+							sortingFn: "auto",
+							filterFn: (row, columnId, filterValue) => {
+								const values = String(filterValue).split(",");
+								const cellValue = row.getValue(columnId);
+								const compareText = cellValue != null ? String(cellValue) : "";
+
+								return values.some((val) => compareText.toLowerCase().includes(val.trim().toLowerCase()));
+							},
+
+							enableSorting: true,
+							enableColumnFilter: true,
+							meta: { simpleName: "Type" },
+						},
+						{
+							id: "application_name",
+							header: "Project",
+							accessorFn: (row) => row.application_name,
+							cell: (info) => info.getValue(),
+							sortingFn: "auto",
+							filterFn: (row, columnId, filterValue) => {
+								const values = String(filterValue).split(",");
+								const cellValue = row.getValue(columnId);
+								const compareText = cellValue != null ? String(cellValue) : "";
+								return values.some((val) => compareText.toLowerCase().includes(val.trim().toLowerCase()));
+							},
+							enableSorting: true,
+							enableColumnFilter: true,
+							meta: { simpleName: "Project" },
+						},
+						{
+							id: "permit_number",
+							header: "Record Link",
+							accessorFn: (row) => row.permit_number,
+							cell: (info) => (
+								<a href={`/permits/${info.row.original.permit_number}`}>{info.row.original.permit_number}</a>
+							),
+							sortingFn: "auto",
+							filterFn: (row, columnId, filterValue) => {
+								const values = String(filterValue).split(",");
+								const cellValue = row.getValue(columnId);
+								const compareText = cellValue != null ? String(cellValue) : "";
+								return values.some((val) => compareText.toLowerCase().includes(val.trim().toLowerCase()));
+							},
+							enableSorting: true,
+							enableColumnFilter: true,
+							meta: { simpleName: "Record Link" },
+						},
+					],
+				},
+			],
+			navigationRender: {
+				paginationButtonsRender: true,
+				goToPageRender: true,
+				itemsPerPageRender: true,
+				itemsPerPage: 20,
+			},
+			filterRender: {
+				globalFilterRender: false,
+			},
+		};
+		const permitTableColumns = majorDevTableConfig.columns;
+		console.log("COlUMNS", permitTableColumns);
+
+		const navRender = majorDevTableConfig.navigationRender;
+		const filterRender = majorDevTableConfig.filterRender;
 
 		return (
 			<section title="Table of all permits, filtered by date">
@@ -134,8 +291,6 @@ class PermitsTable extends React.Component {
 					filterOptions={[
 						{ accessor: "permit_type" },
 						{ accessor: "address" },
-						{ accessor: "applied_date" },
-						{ accessor: "date_occurred" },
 						{ accessor: "application_name" },
 						{ accessor: "permit_number" },
 					]}

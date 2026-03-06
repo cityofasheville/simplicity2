@@ -84,11 +84,11 @@
     display: none;
   }
 
-  #hamburger[aria-expanded="false"] i.bi-x-lg {
+  .hamburger[aria-expanded="false"] i.bi-x-lg {
     display: none;
   }
 
-  #hamburger[aria-expanded="true"] i.bi-list {
+  .hamburger[aria-expanded="true"] i.bi-list {
     display: none;
   }
 
@@ -143,4 +143,3 @@
 .leaflet-container .leaflet-control-attribution a:hover {
   color: rgb(125 211 252);
 }
-

@@ -8,6 +8,7 @@ function SubNavbar({
   mobileBreakpoint = 'md',
 }) {
   const [navbarOpen, setNavBarOpen] = React.useState(false);
+  const menu_id = `menu-container-${burgerName.replace(/\s+/g, '-').toLowerCase()}`;
 
   function toggleNavbar() {
     setNavBarOpen(!navbarOpen);
@@ -17,18 +18,19 @@ function SubNavbar({
     <>
       <nav className="layout-full border-b border-coa-blue-light" aria-label={navTitle}>
         <button
-          id="hamburger"
+          id={`hamburger-sub-nav-${menu_id}`}
           type="button"
-          className={`block ${mobileBreakpoint}:hidden navbar-toggle py-2 text-lg text-coa-blue-dark`}
+          className={`block hamburger ${mobileBreakpoint}:hidden navbar-toggle py-2 text-lg text-coa-blue-dark`}
           onClick={toggleNavbar}
           aria-expanded={navbarOpen}
-          aria-controls="menu-container"
+          aria-controls={`menu-container-${menu_id}`}
         >
           <i className="bi bi-list" aria-hidden="true"></i>
           <i className="bi bi-x-lg" aria-hidden="true"></i>
           <span className="ml-2">{burgerName}</span>
         </button>
         <ul
+          id={`menu-container-${menu_id}`}
           className={`${
             navbarOpen ? `flex` : `hidden ${mobileBreakpoint}:flex  `
           } flex-col ${mobileBreakpoint}:flex-row w-full ${mobileBreakpoint}:items-center gap-2 mb-4 ${mobileBreakpoint}:mb-0 `}

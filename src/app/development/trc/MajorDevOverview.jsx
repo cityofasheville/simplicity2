@@ -22,7 +22,7 @@ function MajorDevOverview() {
             when someone applies for a permit to build something near you
           </li>
         </ul>
-        <p>
+        <p className="mb-6">
           Do you have ideas for how this tool could be updated or refined to better serve our
           community? If so, please{' '}
           <a href="https://forms.gle/kSRTZidJUtNdZ8Rz7" rel=" noreferrer">
@@ -31,6 +31,15 @@ function MajorDevOverview() {
             <span className="sr-only">(external site)</span>
           </a>
           !
+        </p>
+        <h2 className="text-3xl text-coa-blue-medium mb-4">Sign up for notifications</h2>
+        <p>
+          You can receive an email notification when a developer submits an application for a new
+          large-scale development. Visit{' '}
+          <a href="https://notifications.ashevillenc.gov" rel=" noreferrer">
+            notifications.ashevillenc.gov
+          </a>{' '}
+          to sign up or change your notification settings.
         </p>
       </div>
       <MajorDevTypes />

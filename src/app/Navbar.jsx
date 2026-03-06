@@ -39,16 +39,19 @@ function Navbar() {
             </IndexLink>
           </div>
           <button
-            id="hamburger"
+            id="hamburger-main-nav"
             type="button"
-            className="block md:hidden navbar-toggle text-2xl text-coa-blue-dark"
+            className="hamburger flex items-center justify-center gap-2 md:hidden navbar-toggle text-2xl text-coa-blue-dark"
             onClick={toggleNavbar}
             aria-expanded={navbarOpen}
             aria-controls="menu-container"
           >
+            <span className="text-lg sm:text-xl">Main Menu</span>
             <span className="sr-only">Toggle navigation</span>
-            <i className="bi bi-list" aria-hidden="true"></i>
-            <i className="bi bi-x-lg" aria-hidden="true"></i>
+            <span className="text-lg sm:text-xl">
+              <i className="bi bi-list" aria-hidden="true"></i>
+              <i className="bi bi-x-lg" aria-hidden="true"></i>
+            </span>
           </button>
         </div>
         <div

@@ -2,7 +2,7 @@ import React from 'react';
 import TypePuck from './TypePuck';
 import { decisionIconHeader, trcProjectTypes } from './textContent';
 
-const SmallNode = ({ node, yOffset, edgeStroke, clickAction }) => {
+function SmallNode({ node, yOffset, edgeStroke, clickAction }) {
   let content;
   if (node.subNodes) {
     content = (
@@ -30,40 +30,36 @@ const SmallNode = ({ node, yOffset, edgeStroke, clickAction }) => {
       style={{ overflow: 'visible' }}
     >
       <div
+        className=""
         style={{
           border: `${edgeStroke}px solid #e6e6e6`,
           backgroundColor: 'white',
-          padding: '0.15rem',
           borderRadius: '6px',
         }}
       >
-        <div className="flex flex-wrap items-center justify-center gap-1 my-2">
-          {node.typeIds.map((id) => (
-            <TypePuck
-              key={`${node.id}-puck-${id}`}
-              typeObject={trcProjectTypes[id]}
-              size={30}
-              textClass="text-xs"
-            />
-          ))}
+        <div class="px-2">
+          <ul
+            className="flex gap-1 flex-wrap mt-2 mb-1"
+            aria-label={`Relevant permit types for step: ${node.id}`}
+          >
+            {node.typeIds.map((id) => (
+              <li key={`${node.id}-puck-${id}`}>
+                <TypePuck typeObject={trcProjectTypes[id]} size={30} textClass="text-sm" />
+              </li>
+            ))}
+          </ul>
+          <h2 className="text-lg font-normal border-b mb-2">{node.id}</h2>
+          <div
+            className="pb-2"
+            style={{
+              maxHeight: '100px',
+              overflow: 'hidden',
+            }}
+          >
+            {content}
+          </div>
         </div>
-        <div
-          style={{
-            fontWeight: 400,
-            textAlign: 'center',
-            padding: '0 0 0.25rem',
-          }}
-        >
-          {node.id}
-        </div>
-        <div
-          style={{
-            maxHeight: '100px',
-            overflow: 'hidden',
-          }}
-        >
-          {content}
-        </div>
+
         {!node.decisionNode && (
           <div style={{ textAlign: 'center' }}>
             <button
@@ -82,6 +78,6 @@ const SmallNode = ({ node, yOffset, edgeStroke, clickAction }) => {
       </div>
     </foreignObject>
   );
-};
+}
 
 export default SmallNode;

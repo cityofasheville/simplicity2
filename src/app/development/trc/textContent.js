@@ -164,8 +164,8 @@ trcProjectTypes['Major Subdivision'] = {
     //   </a>
     // ),
   },
-  color: '#749B5F',
-  tw: 'bg-[#749B5F] text-white',
+  color: '#5B7B4C',
+  tw: 'bg-[#5B7B4C] text-white',
 };
 trcProjectTypes['Level II'] = {
   id: 'Level II',
@@ -271,8 +271,8 @@ trcProjectTypes['Level II'] = {
     //   </a>
     // ),
   },
-  color: '#2d93ad',
-  tw: 'bg-[#2d93ad] text-white',
+  color: '#24798F',
+  tw: 'bg-[#24798F] text-white',
 };
 trcProjectTypes['Conditional Zoning'] = {
   id: 'Conditional Zoning',
@@ -511,9 +511,11 @@ const decisionNodeMaxWidth = 400;
 export const dagreNodes = [
   {
     id: 'Before the application is submitted',
+    htmlId: 'before-application',
     subNodes: [
       {
         id: 'Pre-application meeting',
+        htmlId: 'pre-application-meeting',
         steps: {
           what: 'Developers and city staff meet to look at initial sketches, discuss process and schedule, and identify applicable regulations.',
           who: ['dev', 'staff'],
@@ -527,6 +529,7 @@ export const dagreNodes = [
       },
       {
         id: 'Neighborhood meeting',
+        htmlId: 'neighborhood-meeting',
         steps: {
           what: 'Developers must notify all property owners within 200 feet of the proposed development site.  Neighbors meet with developers to collaborate on neighborhood needs and opportunities.',
           who: ['dev', 'neighbors'],
@@ -539,6 +542,7 @@ export const dagreNodes = [
   },
   {
     id: 'Permit application',
+    htmlId: 'permit-application',
     steps: {
       what: (
         <React.Fragment>
@@ -571,6 +575,7 @@ export const dagreNodes = [
   },
   {
     id: 'Staff review',
+    htmlId: 'staff-review',
     steps: {
       what: 'A staff member reviews plans for compliance with applicable ordinances and documents and creates a report.',
       who: ['staff'],
@@ -587,12 +592,14 @@ export const dagreNodes = [
   },
   {
     id: 'Level I decision',
+    htmlId: 'level-1-decision',
     decisionNode: true,
     typeIds: ['Level I'],
     maxWidth: decisionNodeMaxWidth,
   },
   {
     id: 'Technical Review Committee',
+    htmlId: 'technical-review-committee',
     steps: {
       what: (
         <React.Fragment>
@@ -622,12 +629,14 @@ export const dagreNodes = [
   },
   {
     id: 'Major Subdivision and Level II decision (not downtown)',
+    htmlId: 'major-subdivision-level-2-decision',
     decisionNode: true,
     typeIds: ['Level II', 'Major Subdivision'],
     maxWidth: decisionNodeMaxWidth,
   },
   {
     id: 'Design review',
+    htmlId: 'design-review',
     steps: {
       what: (
         <div>
@@ -702,12 +711,14 @@ export const dagreNodes = [
   },
   {
     id: 'Major Subdivision decision (downtown)',
+    htmlId: 'major-subdivision-decision-downtown',
     decisionNode: true,
     typeIds: ['Major Subdivision'],
     maxWidth: decisionNodeMaxWidth,
   },
   {
     id: 'Planning and Zoning Commission',
+    htmlId: 'planning-and-zoning-commission',
     steps: {
       what: (
         <React.Fragment>
@@ -745,6 +756,7 @@ export const dagreNodes = [
   },
   {
     id: 'Level II decision (downtown)',
+    htmlId: 'level-2-decision-downtown',
     decisionNode: true,
     typeIds: ['Level II'],
     maxWidth: decisionNodeMaxWidth,
@@ -776,6 +788,7 @@ export const dagreNodes = [
   },
   {
     id: 'City Council decision',
+    htmlId: 'city-council-decision',
     decisionNode: true,
     typeIds: ['Conditional Zoning'],
     maxWidth: decisionNodeMaxWidth,
@@ -812,6 +825,7 @@ export const dagreLinks = [
     source: 'Staff review',
     target: 'Level I decision',
     id: 'Level I',
+    parallelEdges: [{ id: 'Level I' }],
   },
   {
     source: 'Technical Review Committee',

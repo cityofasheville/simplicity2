@@ -649,12 +649,25 @@ html,
 a {
   --tw-text-opacity: 1;
   color: rgb(0 73 135 / var(--tw-text-opacity, 1));
+  -webkit-text-decoration-line: underline;
+          text-decoration-line: underline;
+  text-underline-offset: 4px;
+}
+
+a:hover {
+  -webkit-text-decoration-line: none;
+          text-decoration-line: none;
+}
+
+nav a {
+  --tw-text-opacity: 1;
+  color: rgb(0 73 135 / var(--tw-text-opacity, 1));
   -webkit-text-decoration-line: none;
           text-decoration-line: none;
   text-underline-offset: 4px;
 }
 
-a:hover {
+nav a:hover {
   -webkit-text-decoration-line: underline;
           text-decoration-line: underline;
 }
@@ -919,8 +932,16 @@ details[open] summary span.bi {
   left: -16rem;
 }
 
+.-left-\[999px\] {
+  left: -999px;
+}
+
 .-top-64 {
   top: -16rem;
+}
+
+.-top-\[-999px\] {
+  top: 999px;
 }
 
 .bottom-0 {
@@ -933,14 +954,6 @@ details[open] summary span.bi {
 
 .top-1\/2 {
   top: 50%;
-}
-
-.-left-\[999px\] {
-  left: -999px;
-}
-
-.-top-\[-999px\] {
-  top: 999px;
 }
 
 .z-\[100\] {
@@ -1359,6 +1372,10 @@ details[open] summary span.bi {
 
 .min-w-6 {
   min-width: 1.5rem;
+}
+
+.max-w-3xl {
+  max-width: 48rem;
 }
 
 .max-w-7xl {

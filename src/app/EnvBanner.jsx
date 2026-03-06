@@ -32,21 +32,26 @@ const EnvBanner = (props) => {
     }
 
     bannerContent = (
-      <div role={'alert'} className="bg-warning p-4 text-black border border-slate rounded">
-        <p className="text-2xl font-semibold text-center">
-          <em>Attention!</em>
-        </p>{' '}
-        <p>
-          This is an experimental version of SimpliCity, and may produce unexpected results. Unless
-          you understand how you've ended up here, we recommend{' '}
-          <a
-            href={`https://simplicity.ashevillenc.gov${productionPathAddons}`}
-            className="text-black"
-          >
-            visiting this page in the production version of SimpliCity
-          </a>{' '}
-          instead.{' '}
-        </p>
+      <div
+        role={'alert'}
+        className="layout-full bg-warning p-4 text-black border border-slate rounded"
+      >
+        <div className="max-w-3xl mx-auto">
+          <p className="text-2xl font-semibold text-center">
+            <em>Attention!</em>
+          </p>{' '}
+          <p>
+            This is an experimental version of SimpliCity, and may produce unexpected results.
+            Unless you understand how you've ended up here, we recommend{' '}
+            <a
+              href={`https://simplicity.ashevillenc.gov${productionPathAddons}`}
+              className="text-black"
+            >
+              visiting this page in the production version of SimpliCity
+            </a>{' '}
+            instead.{' '}
+          </p>
+        </div>
       </div>
     );
   }

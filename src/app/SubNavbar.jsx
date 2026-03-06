@@ -6,6 +6,7 @@ function SubNavbar({
   navItems = [],
   burgerName = 'Submenu',
   mobileBreakpoint = 'md',
+  children,
 }) {
   const [navbarOpen, setNavBarOpen] = React.useState(false);
   const menu_id = `menu-container-${burgerName.replace(/\s+/g, '-').toLowerCase()}`;
@@ -16,7 +17,8 @@ function SubNavbar({
 
   return (
     <>
-      <nav className="layout-full border-b border-coa-blue-light" aria-label={navTitle}>
+      <nav className="relative layout-full border-b border-coa-blue-light" aria-label={navTitle}>
+        {children}
         <button
           id={`hamburger-sub-nav-${menu_id}`}
           type="button"
@@ -45,6 +47,8 @@ function SubNavbar({
                 {item.path.includes('https://') ? (
                   <a href={item.path} className={`px-2 py-1 text-nowrap`}>
                     {item.name}
+                    <i className="bi bi-box-arrow-up-right ml-2" aria-hidden="true"></i>{' '}
+                    <span className="sr-only">(external site)</span>
                   </a>
                 ) : isActive ? (
                   <Link

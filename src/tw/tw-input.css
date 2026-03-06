@@ -15,6 +15,10 @@
   }
 
   a {
+    @apply text-coa-blue-dark underline hover:no-underline underline-offset-4;
+  }
+
+  nav a {
     @apply text-coa-blue-dark no-underline hover:underline underline-offset-4;
   }
 

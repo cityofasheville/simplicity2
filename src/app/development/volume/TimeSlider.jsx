@@ -1,576 +1,574 @@
-import React from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { ResponsiveXYFrame } from 'semiotic';
 import moment from 'moment';
 import { timeDay, timeWeek, timeMonth, timeYear } from 'd3-time';
 import ErrorBoundary from '../../../shared/ErrorBoundary';
 
-class TimeSlider extends React.Component {
-  constructor(props) {
-    super(props);
+function TimeSlider(props) {
+  const {
+    defaultBrushExtent,
+    spanLowerLimit,
+    spanUpperLimit,
+    spanEnd,
+    maxDaysAllowedToQuery,
+    onBrushEnd,
+    xSpan: xSpanYears,
+    tickMeasure,
+    minimumTickWidth,
+    initialTickGap,
+  } = props;
 
-    this.defaultMessage = `Set a date range between
-      ${moment.utc(this.props.spanLowerLimit).format('MMM DD, YYYY')} and
-      ${moment.utc(this.props.spanUpperLimit).format('MMM DD, YYYY')}. Maximum range for a single query is
-      ${this.props.maxDaysAllowedToQuery} days.`;
-    this.defaultMessageColor = '#222';
-    this.errorMessageColor = '#b00020';
-    this.today = timeDay.floor(new Date()).getTime();
-    this.startDateInputRef = React.createRef();
-    this.endDateInputRef = React.createRef();
+  const defaultMessage = useMemo(() => {
+    return `Set a date range between
+      ${moment.utc(spanLowerLimit).format('MMM DD, YYYY')} and
+      ${moment.utc(spanUpperLimit).format('MMM DD, YYYY')}. Maximum range for a single query is
+      ${maxDaysAllowedToQuery} days.`;
+  }, [spanLowerLimit, spanUpperLimit, maxDaysAllowedToQuery]);
 
-    this.state = {
-      brushExtent: this.props.defaultBrushExtent,
-      firstInputVal: this.props.defaultBrushExtent[0],
-      secondInputVal: this.props.defaultBrushExtent[1],
-      selectedTimespan: 0,
-      xSpan: [
-        timeYear.offset(this.props.spanEnd, -1 * this.props.xSpan).getTime(),
-        this.props.spanEnd,
-      ],
-      initialParamsChecked: false,
-      sliderWidth: window.innerWidth,
-      message: '',
-      messageColor: this.defaultMessageColor,
-    };
+  const defaultMessageColor = '#222';
+  const errorMessageColor = '#b00020';
 
-    this.determineNewExtent = this.determineNewExtent.bind(this);
-    this.brushDuring = this.brushDuring.bind(this);
-    this.brushEnd = this.brushEnd.bind(this);
-    this.handleTimespanSelection = this.handleTimespanSelection.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.updateWindowWidth = this.updateWindowWidth.bind(this);
-  }
+  const today = useMemo(() => {
+    return timeDay.floor(new Date()).getTime();
+  }, []);
 
-  determineNewExtent(proposedExtent, snap = false) {
-    let newExtent = proposedExtent;
-    let newSpan = this.state.xSpan;
-    let message = '';
-    let messageColor = this.defaultMessageColor;
+  // Refs
+  const startDateInputRef = useRef(null);
+  const endDateInputRef = useRef(null);
 
-    // If someone just clicked on the timeline there might not be an e
-    if (proposedExtent) {
-      // When brushing stops (brushEnd invokes with snap=true), snap to "whole time" (drop the decimal part)
-      if (snap) {
-        const timeFunc = timeDay;
-        newExtent = [
-          timeFunc.ceil(proposedExtent[0]).getTime(),
-          timeFunc.ceil(proposedExtent[1]).getTime(),
-        ];
-      }
+  // State
+  const [brushExtent, setBrushExtent] = useState(defaultBrushExtent);
+  const [firstInputVal, setFirstInputVal] = useState(defaultBrushExtent[0]);
+  const [secondInputVal, setSecondInputVal] = useState(defaultBrushExtent[1]);
+  const [selectedTimespan, setSelectedTimespan] = useState(0);
+  const [xSpan, setXSpan] = useState([
+    timeYear.offset(spanEnd, -1 * xSpanYears).getTime(),
+    spanEnd,
+  ]);
+  const [initialParamsChecked, setInitialParamsChecked] = useState(false);
+  const [sliderWidth, setSliderWidth] = useState(window.innerWidth);
+  const [message, setMessage] = useState('');
+  const [messageColor, setMessageColor] = useState(defaultMessageColor);
 
-      let selectedRange = timeDay.count(newExtent[0], newExtent[1]);
-      let spanRange = timeDay.count(this.state.xSpan[0], this.state.xSpan[1]);
-      let rangeDiff = spanRange - selectedRange;
-      let newExtentHuman = `${moment.utc(newExtent[0]).format('MMM DD, YYYY')} - ${moment.utc(newExtent[1]).format('MMM DD, YYYY')}`;
+  const determineNewExtent = useCallback(
+    (proposedExtent, snap = false) => {
+      let newExtent = proposedExtent;
+      let newSpan = xSpan;
+      let message = '';
+      let messageColor = defaultMessageColor;
 
-      // measure the amount of available valid date range input (in days) after selected end date and before selected start date
-      let rangeOverhead = timeDay.count(newExtent[1], parseInt(this.props.spanUpperLimit));
-      let rangeUnderhead = timeDay.count(this.props.spanLowerLimit, newExtent[0]);
-
-      // if either value is negative, then input is out of range; revert to default values
-      if (rangeOverhead < 0 || rangeUnderhead < 0) {
-        message = `${newExtentHuman} is invalid.`;
-
-        if (rangeOverhead < 0) {
-          if (this.endDateInputRef.current) {
-            this.endDateInputRef.current.focus();
-          }
-        } else if (rangeUnderhead < 0) {
-          if (this.startDateInputRef.current) {
-            this.startDateInputRef.current.focus();
-          }
-        }
-
-        messageColor = this.errorMessageColor;
-
-        return {
-          extent: this.state.brushExtent,
-          span: newSpan,
-          message: message,
-          messageColor: messageColor,
-        };
-      }
-
-      // Don't allow ranges bigger or smaller (i.e. negative) than allowed, just reset to "last good" value
-      if (
-        (+selectedRange > +this.props.maxDaysAllowedToQuery || +newExtent[0] >= +newExtent[1]) &&
-        selectedRange !== 0
-      ) {
-        message = `The range ${newExtentHuman} is ${selectedRange < 0 ? 'invalid' : 'too big (' + selectedRange + ' days)'}.`;
-        messageColor = this.errorMessageColor;
-        newExtent = this.state.brushExtent;
-
-        if (this.startDateInputRef.current) {
-          this.startDateInputRef.current.focus();
-        }
-
-        // no need to change the existing span
-      }
-
-      // Don't allow dates before or after defined limits
-      else if (
-        +newExtent[0] < +this.props.spanLowerLimit ||
-        +newExtent[1] > +this.props.spanUpperLimit
-      ) {
-        message = `One or both of the dates (${newExtentHuman}) are outside the allowed range.`;
-        messageColor = this.errorMessageColor;
-        newExtent = this.state.brushExtent;
-
-        if (+newExtent[0] < +this.props.spanLowerLimit) {
-          if (this.startDateInputRef.current) {
-            this.startDateInputRef.current.focus();
-          }
-        } else if (+newExtent[1] > +this.props.spanUpperLimit) {
-          if (this.endDateInputRef.current) {
-            this.endDateInputRef.current.focus();
-          }
-        }
-
-        // no need to change the existing span
-      }
-
-      // Don't allow date ranges starting before AND ending after the current span (i.e. longer than the span)
-      // Set the start and end dates to match the start and end of the span
-      // NOTE: if this.props.maxDaysAllowedToQuery >= this.state.xSpan, this condition will never happen (the first condition will fire instead)
-      else if (+newExtent[0] < +this.state.xSpan[0] && +newExtent[1] > +this.state.xSpan[1]) {
-        message = `Date range too big or small..`;
-        messageColor = this.errorMessageColor;
-        newExtent = this.state.brushExtent;
-
-        if (this.startDateInputRef.current) {
-          this.startDateInputRef.current.focus();
-        }
-
-        // no need to change the existing span
-      }
-
-      // If only the end date is outside span limit
-      else if (+newExtent[0] > +this.state.xSpan[0] && +newExtent[1] > +this.state.xSpan[1]) {
-        message = `${moment.utc(newExtent[1]).format('MMM DD, YYYY')} is outside the allowed range.`;
-        messageColor = this.errorMessageColor;
-
-        if (this.endDateInputRef.current) {
-          this.endDateInputRef.current.focus();
-        }
-
-        if (+newExtent[1] > +this.props.spanUpperLimit) {
-          newExtent[1] = this.props.spanUpperLimit;
-          newSpan = [
-            timeYear.offset(this.props.spanUpperLimit, -1 * this.props.xSpan).getTime(),
-            this.props.spanUpperLimit,
+      // If someone just clicked on the timeline there might not be an e
+      if (proposedExtent) {
+        // When brushing stops (brushEnd invokes with snap=true), snap to "whole time" (drop the decimal part)
+        if (snap) {
+          const timeFunc = timeDay;
+          newExtent = [
+            timeFunc.ceil(proposedExtent[0]).getTime(),
+            timeFunc.ceil(proposedExtent[1]).getTime(),
           ];
-        } else {
-          if (rangeDiff / 2 <= rangeOverhead) {
-            newSpan = [
-              timeDay.offset(newExtent[0], -1 * (rangeDiff / 2)).getTime(),
-              timeDay.offset(newExtent[1], rangeDiff / 2).getTime(),
-            ];
+        }
+
+        let selectedRange = timeDay.count(newExtent[0], newExtent[1]);
+        let spanRange = timeDay.count(xSpan[0], xSpan[1]);
+        let rangeDiff = spanRange - selectedRange;
+        let newExtentHuman = `${moment.utc(newExtent[0]).format('MMM DD, YYYY')} - ${moment.utc(newExtent[1]).format('MMM DD, YYYY')}`;
+
+        // measure the amount of available valid date range input (in days) after selected end date and before selected start date
+        let rangeOverhead = timeDay.count(newExtent[1], parseInt(spanUpperLimit));
+        let rangeUnderhead = timeDay.count(spanLowerLimit, newExtent[0]);
+
+        // if either value is negative, then input is out of range; revert to default values
+        if (rangeOverhead < 0 || rangeUnderhead < 0) {
+          message = `${newExtentHuman} is invalid.`;
+
+          if (rangeOverhead < 0) {
+            if (endDateInputRef.current) {
+              endDateInputRef.current.focus();
+            }
+          } else if (rangeUnderhead < 0) {
+            if (startDateInputRef.current) {
+              startDateInputRef.current.focus();
+            }
+          }
+
+          messageColor = errorMessageColor;
+
+          return {
+            extent: brushExtent,
+            span: newSpan,
+            message: message,
+            messageColor: messageColor,
+          };
+        }
+
+        // Don't allow ranges bigger or smaller (i.e. negative) than allowed, just reset to "last good" value
+        if (
+          (+selectedRange > +maxDaysAllowedToQuery || +newExtent[0] >= +newExtent[1]) &&
+          selectedRange !== 0
+        ) {
+          message = `The range ${newExtentHuman} is ${selectedRange < 0 ? 'invalid' : 'too big (' + selectedRange + ' days)'}.`;
+          messageColor = errorMessageColor;
+          newExtent = brushExtent;
+
+          if (startDateInputRef.current) {
+            startDateInputRef.current.focus();
+          }
+
+          // no need to change the existing span
+        }
+
+        // Don't allow dates before or after defined limits
+        else if (+newExtent[0] < +spanLowerLimit || +newExtent[1] > +spanUpperLimit) {
+          message = `One or both of the dates (${newExtentHuman}) are outside the allowed range.`;
+          messageColor = errorMessageColor;
+          newExtent = brushExtent;
+
+          if (+newExtent[0] < +spanLowerLimit) {
+            if (startDateInputRef.current) {
+              startDateInputRef.current.focus();
+            }
+          } else if (+newExtent[1] > +spanUpperLimit) {
+            if (endDateInputRef.current) {
+              endDateInputRef.current.focus();
+            }
+          }
+
+          // no need to change the existing span
+        }
+
+        // Don't allow date ranges starting before AND ending after the current span (i.e. longer than the span)
+        // Set the start and end dates to match the start and end of the span
+        // NOTE: if maxDaysAllowedToQuery >= xSpan, this condition will never happen (the first condition will fire instead)
+        else if (+newExtent[0] < +xSpan[0] && +newExtent[1] > +xSpan[1]) {
+          message = `Date range too big or small..`;
+          messageColor = errorMessageColor;
+          newExtent = brushExtent;
+
+          if (startDateInputRef.current) {
+            startDateInputRef.current.focus();
+          }
+
+          // no need to change the existing span
+        }
+
+        // If only the end date is outside span limit
+        else if (+newExtent[0] > +xSpan[0] && +newExtent[1] > +xSpan[1]) {
+          message = `${moment.utc(newExtent[1]).format('MMM DD, YYYY')} is outside the allowed range.`;
+          messageColor = errorMessageColor;
+
+          if (endDateInputRef.current) {
+            endDateInputRef.current.focus();
+          }
+
+          if (+newExtent[1] > +spanUpperLimit) {
+            newExtent[1] = spanUpperLimit;
+            newSpan = [timeYear.offset(spanUpperLimit, -1 * xSpanYears).getTime(), spanUpperLimit];
           } else {
-            newSpan = [
-              timeDay.offset(newExtent[0], -1 * (rangeDiff - rangeOverhead)).getTime(),
-              timeDay.offset(newExtent[1], rangeOverhead).getTime(),
-            ];
+            if (rangeDiff / 2 <= rangeOverhead) {
+              newSpan = [
+                timeDay.offset(newExtent[0], -1 * (rangeDiff / 2)).getTime(),
+                timeDay.offset(newExtent[1], rangeDiff / 2).getTime(),
+              ];
+            } else {
+              newSpan = [
+                timeDay.offset(newExtent[0], -1 * (rangeDiff - rangeOverhead)).getTime(),
+                timeDay.offset(newExtent[1], rangeOverhead).getTime(),
+              ];
+            }
           }
         }
-      }
 
-      // If only the start date is outside span limit
-      else if (+newExtent[0] < +this.state.xSpan[0] && +newExtent[1] < +this.state.xSpan[1]) {
-        if (this.startDateInputRef.current) {
-          this.startDateInputRef.current.focus();
-        }
+        // If only the start date is outside span limit
+        else if (+newExtent[0] < +xSpan[0] && +newExtent[1] < +xSpan[1]) {
+          if (startDateInputRef.current) {
+            startDateInputRef.current.focus();
+          }
 
-        if (+newExtent[0] < +this.props.spanLowerLimit) {
-          message = `The start date is outside the allowed range.`;
-          messageColor = this.errorMessageColor;
+          if (+newExtent[0] < +spanLowerLimit) {
+            message = `The start date is outside the allowed range.`;
+            messageColor = errorMessageColor;
 
-          newExtent[0] = this.props.spanLowerLimit;
-          newSpan = [
-            this.props.spanLowerLimit,
-            timeYear.offset(this.props.spanLowerLimit, this.props.xSpan).getTime(),
-          ];
-        } else {
-          if (rangeDiff / 2 <= rangeUnderhead) {
-            newSpan = [
-              timeDay.offset(newExtent[0], -1 * (rangeDiff / 2)).getTime(),
-              timeDay.offset(newExtent[1], rangeDiff / 2).getTime(),
-            ];
+            newExtent[0] = spanLowerLimit;
+            newSpan = [spanLowerLimit, timeYear.offset(spanLowerLimit, xSpanYears).getTime()];
           } else {
-            newSpan = [
-              timeDay.offset(newExtent[0], -1 * rangeUnderhead).getTime(),
-              timeDay.offset(newExtent[1], rangeDiff - rangeUnderhead).getTime(),
-            ];
+            if (rangeDiff / 2 <= rangeUnderhead) {
+              newSpan = [
+                timeDay.offset(newExtent[0], -1 * (rangeDiff / 2)).getTime(),
+                timeDay.offset(newExtent[1], rangeDiff / 2).getTime(),
+              ];
+            } else {
+              newSpan = [
+                timeDay.offset(newExtent[0], -1 * rangeUnderhead).getTime(),
+                timeDay.offset(newExtent[1], rangeDiff - rangeUnderhead).getTime(),
+              ];
+            }
           }
         }
-      }
 
-      // If there isn't an e value
-    } else {
-      newExtent = this.state.brushExtent;
-    }
-
-    return {
-      extent: newExtent,
-      span: newSpan,
-      message: message,
-      messageColor: messageColor,
-    };
-  }
-
-  brushDuring(proposedExtent) {
-    const newRanges = this.determineNewExtent(proposedExtent, false);
-    this.setState({
-      brushExtent: newRanges.extent,
-      firstInputVal: newRanges.extent[0],
-      secondInputVal: newRanges.extent[1],
-    });
-  }
-
-  brushEnd(proposedExtent, snap = true) {
-    const newRanges = this.determineNewExtent(proposedExtent, snap);
-    let selectedRange = timeDay.count(newRanges.extent[0], newRanges.extent[1]);
-
-    this.props.onBrushEnd(newRanges.extent);
-    this.setState({
-      brushExtent: newRanges.extent,
-      firstInputVal: newRanges.extent[0],
-      secondInputVal: newRanges.extent[1],
-      xSpan: newRanges.span,
-      selectedTimespan: selectedRange,
-      message: newRanges.message,
-      messageColor: newRanges.messageColor,
-    });
-  }
-
-  handleTimespanSelection(daySpan, requestedRange = 'today') {
-    // check if calculation should be relative to the current span or the current end date
-    let relativeDate;
-    let proposedExtent;
-
-    if (+daySpan === 0) {
-      this.setState({
-        selectedTimespan: 0,
-      });
-      return;
-    } else {
-      if (requestedRange === 'forward') {
-        let daysOverhead = timeDay.count(this.state.brushExtent[1], this.props.spanUpperLimit);
-        let daySpanToUse = daysOverhead < this.state.selectedTimespan ? daysOverhead : daySpan;
-        relativeDate = this.state.brushExtent[1];
-        proposedExtent = [relativeDate, timeDay.offset(relativeDate, 1 * daySpanToUse).getTime()];
-      } else if (requestedRange === 'backward') {
-        let daysUnderhead = timeDay.count(this.props.spanLowerLimit, this.state.brushExtent[0]);
-        let daySpanToUse = daysUnderhead < this.state.selectedTimespan ? daysUnderhead : daySpan;
-        relativeDate = this.state.brushExtent[0];
-        proposedExtent = [timeDay.offset(relativeDate, -1 * daySpanToUse).getTime(), relativeDate];
+        // If there isn't an e value
       } else {
-        // count back from end of available span
-        relativeDate = this.props.spanUpperLimit;
-        proposedExtent = [timeDay.offset(relativeDate, -1 * daySpan).getTime(), relativeDate];
+        newExtent = brushExtent;
       }
-      const newRanges = this.determineNewExtent(proposedExtent, true);
-      this.setState({
-        brushExtent: newRanges.extent,
-        firstInputVal: newRanges.extent[0],
-        secondInputVal: newRanges.extent[1],
-        xSpan: newRanges.span,
-        selectedTimespan: daySpan,
-        message: newRanges.message,
-        messageColor: newRanges.messageColor,
-      });
-    }
-  }
 
-  handleSubmit(e = false) {
-    // Can also trigger handle submit manually
-    if (e) {
-      e.preventDefault();
-    }
-    this.brushEnd([this.state.firstInputVal, this.state.secondInputVal], true);
-  }
+      return {
+        extent: newExtent,
+        span: newSpan,
+        message: message,
+        messageColor: messageColor,
+      };
+    },
+    [
+      xSpan,
+      brushExtent,
+      spanUpperLimit,
+      spanLowerLimit,
+      maxDaysAllowedToQuery,
+      xSpanYears,
+      defaultMessageColor,
+      errorMessageColor,
+    ],
+  );
 
-  updateWindowWidth() {
+  // brushDuring handler
+  const brushDuring = useCallback(
+    (proposedExtent) => {
+      const newRanges = determineNewExtent(proposedExtent, false);
+      setBrushExtent(newRanges.extent);
+      setFirstInputVal(newRanges.extent[0]);
+      setSecondInputVal(newRanges.extent[1]);
+    },
+    [determineNewExtent],
+  );
+
+  // brushEnd handler
+  const brushEnd = useCallback(
+    (proposedExtent, snap = true) => {
+      const newRanges = determineNewExtent(proposedExtent, snap);
+      let selectedRange = timeDay.count(newRanges.extent[0], newRanges.extent[1]);
+
+      onBrushEnd(newRanges.extent);
+      setBrushExtent(newRanges.extent);
+      setFirstInputVal(newRanges.extent[0]);
+      setSecondInputVal(newRanges.extent[1]);
+      setXSpan(newRanges.span);
+      setSelectedTimespan(selectedRange);
+      setMessage(newRanges.message);
+      setMessageColor(newRanges.messageColor);
+    },
+    [determineNewExtent, onBrushEnd],
+  );
+
+  // handleTimespanSelection
+  const handleTimespanSelection = useCallback(
+    (daySpan, requestedRange = 'today') => {
+      // check if calculation should be relative to the current span or the current end date
+      let relativeDate;
+      let proposedExtent;
+
+      if (+daySpan === 0) {
+        setSelectedTimespan(0);
+        return;
+      } else {
+        if (requestedRange === 'forward') {
+          let daysOverhead = timeDay.count(brushExtent[1], spanUpperLimit);
+          let daySpanToUse = daysOverhead < selectedTimespan ? daysOverhead : daySpan;
+          relativeDate = brushExtent[1];
+          proposedExtent = [relativeDate, timeDay.offset(relativeDate, 1 * daySpanToUse).getTime()];
+        } else if (requestedRange === 'backward') {
+          let daysUnderhead = timeDay.count(spanLowerLimit, brushExtent[0]);
+          let daySpanToUse = daysUnderhead < selectedTimespan ? daysUnderhead : daySpan;
+          relativeDate = brushExtent[0];
+          proposedExtent = [
+            timeDay.offset(relativeDate, -1 * daySpanToUse).getTime(),
+            relativeDate,
+          ];
+        } else {
+          // count back from end of available span
+          relativeDate = spanUpperLimit;
+          proposedExtent = [timeDay.offset(relativeDate, -1 * daySpan).getTime(), relativeDate];
+        }
+        const newRanges = determineNewExtent(proposedExtent, true);
+        setBrushExtent(newRanges.extent);
+        setFirstInputVal(newRanges.extent[0]);
+        setSecondInputVal(newRanges.extent[1]);
+        setXSpan(newRanges.span);
+        setSelectedTimespan(daySpan);
+        setMessage(newRanges.message);
+        setMessageColor(newRanges.messageColor);
+      }
+    },
+    [brushExtent, selectedTimespan, spanUpperLimit, spanLowerLimit, determineNewExtent],
+  );
+
+  // handleSubmit
+  const handleSubmit = useCallback(
+    (e = false) => {
+      // Can also trigger handle submit manually
+      if (e) {
+        e.preventDefault();
+      }
+      brushEnd([firstInputVal, secondInputVal], true);
+    },
+    [firstInputVal, secondInputVal, brushEnd],
+  );
+
+  // updateWindowWidth
+  const updateWindowWidth = useCallback(() => {
     const timelineContainer = document.getElementById('timeline-container');
-    this.setState({
-      sliderWidth: timelineContainer.offsetWidth,
-    });
-  }
-
-  componentDidMount() {
-    window.addEventListener('resize', this.updateWindowWidth);
-    this.updateWindowWidth();
-    if (!this.state.initialParamsChecked) {
-      const initialParams = this.determineNewExtent(this.state.defaultBrushExtent, false);
-      this.setState({
-        brushExtent: initialParams.extent,
-        firstInputVal: initialParams.extent[0],
-        secondInputVal: initialParams.extent[1],
-        xSpan: initialParams.span,
-        initialParamsChecked: true,
-      });
+    if (timelineContainer) {
+      setSliderWidth(timelineContainer.offsetWidth);
     }
-  }
+  }, []);
 
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.updateWindowWidth);
-  }
+  // componentDidMount equivalent
+  useEffect(() => {
+    window.addEventListener('resize', updateWindowWidth);
+    updateWindowWidth();
 
-  render() {
+    return () => {
+      window.removeEventListener('resize', updateWindowWidth);
+    };
+  }, [updateWindowWidth]);
+
+  // Initial params check (componentDidMount equivalent)
+  useEffect(() => {
+    if (!initialParamsChecked) {
+      const initialParams = determineNewExtent(defaultBrushExtent, false);
+      setBrushExtent(initialParams.extent);
+      setFirstInputVal(initialParams.extent[0]);
+      setSecondInputVal(initialParams.extent[1]);
+      setXSpan(initialParams.span);
+      setInitialParamsChecked(true);
+    }
+  }, [initialParamsChecked, defaultBrushExtent, determineNewExtent]);
+
+  // Calculate ticks and tick formatting
+  const { ticks, tickFormat } = useMemo(() => {
     let timeFunc = timeYear;
-    if (this.props.tickMeasure === 'month') {
+    if (tickMeasure === 'month') {
       timeFunc = timeMonth;
-    } else if (this.props.tickMeasure === 'week') {
+    } else if (tickMeasure === 'week') {
       timeFunc = timeWeek;
     }
-    let tickGap = this.props.initialTickGap;
-    let ticks = timeFunc.range(
-      timeFunc.ceil(this.state.xSpan[0]),
-      timeFunc.ceil(this.state.xSpan[1]),
-      tickGap,
-    );
+    let tickGap = initialTickGap;
+    let ticks = timeFunc.range(timeFunc.ceil(xSpan[0]), timeFunc.ceil(xSpan[1]), tickGap);
 
     let tickCount = ticks.length;
 
     // Figure out how many pixels each tick mark would get
-    let tickRatio = this.state.sliderWidth / tickCount;
+    let tickRatio = sliderWidth / tickCount;
 
     // if each tick mark lacks adequate pixel width, we'll increase the tick interval (tickGap)
-    if (tickRatio < this.props.minimumTickWidth) {
+    if (tickRatio < minimumTickWidth) {
       // If we double the current tick interval, we'll halve the number of tick marks in our tick array
       let newTickCount = tickCount / 2;
-      let newTickRatio = this.state.sliderWidth / newTickCount;
+      let newTickRatio = sliderWidth / newTickCount;
       tickGap++;
 
       // Figure out which tick interval would yield an adequate gap betweek tick marks, then rebuild the tick array using the new gap
-      while (newTickRatio < this.props.minimumTickWidth) {
+      while (newTickRatio < minimumTickWidth) {
         newTickCount = newTickCount / 2;
-        newTickRatio = this.state.sliderWidth / newTickCount;
+        newTickRatio = sliderWidth / newTickCount;
         tickGap++;
       }
 
-      ticks = timeFunc.range(
-        timeFunc.ceil(this.state.xSpan[0]),
-        timeFunc.ceil(this.state.xSpan[1]),
-        tickGap,
-      );
+      ticks = timeFunc.range(timeFunc.ceil(xSpan[0]), timeFunc.ceil(xSpan[1]), tickGap);
     }
 
     let tickFormat = 'yyyy';
-    if (this.props.tickMeasure === 'month') {
+    if (tickMeasure === 'month') {
       tickFormat = 'MMM yyyy';
-    } else if (this.props.tickMeasure === 'week') {
+    } else if (tickMeasure === 'week') {
       tickFormat = 'MMM dd';
     }
 
-    return (
-      <div className="w-full my-6">
-        <ErrorBoundary>
-          <div>
-            <div
-              id="form_feedback_message"
-              name="Date range guidance"
-              className="small ml-0 pl-2 mr-2 mb-4"
-              style={{
-                borderLeft: `1px solid ${this.state.messageColor}`,
-                color: this.state.messageColor,
-              }}
-            >
-              <span aria-live="polite">
-                {this.state.message.trim() ? `${this.state.message} ${this.defaultMessage}` : ''}
-              </span>
-              {this.state.message.trim() ? '' : this.defaultMessage}
-            </div>
-            <form
-              onSubmit={this.handleSubmit}
-              className="w-full grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-2 px-2"
-              aria-label="Provide a date range"
-            >
-              <fieldset>
-                <legend className="sr-only">Manually adjust the existing date range</legend>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-2">
-                  <div className="grow flex items-center">
-                    <label
-                      htmlFor="startdate"
-                      style={{ marginBottom: '0', padding: '0 0.25em 0 0' }}
-                    >
-                      From
-                    </label>
-                    <input
-                      type="date"
-                      id="startdate"
-                      ref={this.startDateInputRef}
-                      name="startdate"
-                      className="input lg:input-sm grow"
-                      aria-describedby="form_feedback_message"
-                      // style={{ display: 'inline-block', width: '11em' }}
-                      value={moment
-                        .utc(new Date(parseInt(this.state.firstInputVal)))
-                        .format('YYYY-MM-DD')}
-                      onChange={(e) => {
-                        if (!moment(new Date(e.target.value)).isValid()) {
-                          return;
-                        }
-                        const date = moment
-                          .utc(new Date(e.target.value))
-                          .hour(0)
-                          .minute(0)
-                          .seconds(1)
-                          .valueOf();
+    return { ticks, tickFormat };
+  }, [tickMeasure, xSpan, sliderWidth, minimumTickWidth, initialTickGap]);
 
-                        this.setState({
-                          firstInputVal: date,
-                        });
-                      }}
-                    />
-                  </div>
-                  <div className="grow flex items-center">
-                    <label htmlFor="enddate" style={{ marginBottom: '0', padding: '0 0.25em 0 0' }}>
-                      Through
-                    </label>
-                    <input
-                      type="date"
-                      id="enddate"
-                      ref={this.endDateInputRef}
-                      name="enddate"
-                      className="input lg:input-sm grow"
-                      aria-describedby="form_feedback_message"
-                      value={moment
-                        .utc(new Date(parseInt(this.state.secondInputVal)))
-                        .format('YYYY-MM-DD')}
-                      onChange={(e) => {
-                        if (!moment(new Date(e.target.value)).isValid()) {
-                          return;
-                        }
-                        const date = moment
-                          .utc(new Date(e.target.value))
-                          .hour(0)
-                          .minute(0)
-                          .seconds(1)
-                          .valueOf();
-
-                        this.setState({
-                          secondInputVal: date,
-                        });
-                      }}
-                    />
-                  </div>
-                </div>
-              </fieldset>
-
+  return (
+    <div className="w-full my-6">
+      <ErrorBoundary>
+        <div>
+          <div
+            id="form_feedback_message"
+            name="Date range guidance"
+            className="small ml-0 pl-2 mr-2 mb-4"
+            style={{
+              borderLeft: `1px solid ${messageColor}`,
+              color: messageColor,
+            }}
+          >
+            <span aria-live="polite">{message.trim() ? `${message} ${defaultMessage}` : ''}</span>
+            {message.trim() ? '' : defaultMessage}
+          </div>
+          <form
+            onSubmit={handleSubmit}
+            className="w-full grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-2 px-2"
+            aria-label="Provide a date range"
+          >
+            <fieldset>
+              <legend className="sr-only">Manually adjust the existing date range</legend>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-2">
-                <input
-                  type="submit"
-                  value="Set Dates"
-                  title="Set the date range to the values in the input fields."
-                  className="btn btn-primary lg:btn-sm grow"
-                  disabled={
-                    this.state.firstInputVal === this.state.brushExtent[0] &&
-                    this.state.secondInputVal === this.state.brushExtent[1]
-                  }
-                />
-                <div className="flex-1">
-                  <fieldset className="flex w-full">
-                    <legend className="sr-only">Choose a preset timespan</legend>
-                    <button
-                      type="button"
-                      className="btn btn-primary lg:btn-sm rounded-tr-none rounded-br-none"
-                      disabled={
-                        timeDay.count(this.props.spanLowerLimit, this.state.brushExtent[0]) === 0
+                <div className="grow flex items-center">
+                  <label htmlFor="startdate" style={{ marginBottom: '0', padding: '0 0.25em 0 0' }}>
+                    From
+                  </label>
+                  <input
+                    type="date"
+                    id="startdate"
+                    ref={startDateInputRef}
+                    name="startdate"
+                    className="input lg:input-sm grow"
+                    aria-describedby="form_feedback_message"
+                    value={moment.utc(new Date(parseInt(firstInputVal))).format('YYYY-MM-DD')}
+                    onChange={(e) => {
+                      if (!moment(new Date(e.target.value)).isValid()) {
+                        return;
                       }
-                      title="Move current timespan earlier"
-                      onClick={() => {
-                        const currentTimespan = this.state.selectedTimespan;
-                        this.handleTimespanSelection(currentTimespan, 'backward');
-                      }}
-                    >
-                      {/* <span aria-hidden="true">&laquo;</span> */}
-                      <i className="bi bi-caret-left" aria-hidden="true"></i>
-                      <span className="sr-only">Move current timespan earlier</span>
-                    </button>
-                    <div className="grow">
-                      <label className="sr-only" htmlFor="timespan_select">
-                        Choose a preset timespan
-                      </label>
-                      <select
-                        id="timespan_select"
-                        value={
-                          this.state.brushExtent[1] === this.props.spanUpperLimit
-                            ? this.state.selectedTimespan
-                            : 0
-                        }
-                        className="w-full h-[42px] lg:h-[30px] form-control input-sm px-4 bg-white"
-                        style={{
-                          borderColor: '#ccc',
-                          borderWidth: 'revert',
-                          borderRadius: 'revert',
-                        }}
-                        onChange={(e) => {
-                          this.handleTimespanSelection(e.currentTarget.value);
-                        }}
-                      >
-                        <option value={0}>Choose timespan</option>
-                        {[
-                          { days: 30, label: 'month' },
-                          { days: 90, label: '3 months' },
-                          { days: 180, label: '6 months' },
-                          { days: 365, label: 'year' },
-                          { days: 730, label: '2 years' },
-                          { days: 1825, label: '5 years' },
-                        ]
-                          .filter((timeSpan) => {
-                            return timeSpan.days <= this.props.maxDaysAllowedToQuery;
-                          })
-                          .map((timeSpan, i) => {
-                            return (
-                              <option
-                                key={['timespan', 'option', i].join('_')}
-                                value={timeSpan.days}
-                              >
-                                {`Last ${timeSpan.label}`}
-                              </option>
-                            );
-                          })}
-                      </select>
-                    </div>
-                    <button
-                      type="button"
-                      className="btn btn-primary lg:btn-sm rounded-tl-none rounded-bl-none"
-                      disabled={
-                        timeDay.count(this.state.brushExtent[1], this.props.spanUpperLimit) === 0
+                      const date = moment
+                        .utc(new Date(e.target.value))
+                        .hour(0)
+                        .minute(0)
+                        .seconds(1)
+                        .valueOf();
+
+                      setFirstInputVal(date);
+                    }}
+                  />
+                </div>
+                <div className="grow flex items-center">
+                  <label htmlFor="enddate" style={{ marginBottom: '0', padding: '0 0.25em 0 0' }}>
+                    Through
+                  </label>
+                  <input
+                    type="date"
+                    id="enddate"
+                    ref={endDateInputRef}
+                    name="enddate"
+                    className="input lg:input-sm grow"
+                    aria-describedby="form_feedback_message"
+                    value={moment.utc(new Date(parseInt(secondInputVal))).format('YYYY-MM-DD')}
+                    onChange={(e) => {
+                      if (!moment(new Date(e.target.value)).isValid()) {
+                        return;
                       }
-                      title="Move current timespan later"
-                      onClick={() => {
-                        const currentTimespan = this.state.selectedTimespan;
-                        this.handleTimespanSelection(currentTimespan, 'forward');
-                      }}
-                    >
-                      {/* <span aria-hidden="true">&raquo;</span> */}
-                      <i className="bi bi-caret-right" aria-hidden="true"></i>
-                      <span className="sr-only">Move current timespan later</span>
-                    </button>
-                  </fieldset>
+                      const date = moment
+                        .utc(new Date(e.target.value))
+                        .hour(0)
+                        .minute(0)
+                        .seconds(1)
+                        .valueOf();
+
+                      setSecondInputVal(date);
+                    }}
+                  />
                 </div>
               </div>
-            </form>
-          </div>
-          <div className="brushedChart" id="timeline-container" aria-hidden="true">
-            <ResponsiveXYFrame
-              responsiveWidth
-              margin={{
-                top: 20,
-                right: 10,
-                bottom: 50,
-                left: 25,
-              }}
-              size={[1000, 75]}
-              xAccessor={(d) => d}
-              yAccessor={() => 0}
-              xExtent={this.state.xSpan}
-              axes={[
-                {
-                  orient: 'bottom',
-                  tickFormat: (d) => (
+            </fieldset>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-2">
+              <input
+                type="submit"
+                value="Set Dates"
+                title="Set the date range to the values in the input fields."
+                className="btn btn-primary lg:btn-sm grow"
+                disabled={firstInputVal === brushExtent[0] && secondInputVal === brushExtent[1]}
+              />
+              <div className="flex-1">
+                <fieldset className="flex w-full">
+                  <legend className="sr-only">Choose a preset timespan</legend>
+                  <button
+                    type="button"
+                    className="btn btn-primary lg:btn-sm rounded-tr-none rounded-br-none"
+                    disabled={timeDay.count(spanLowerLimit, brushExtent[0]) === 0}
+                    title="Move current timespan earlier"
+                    onClick={() => {
+                      const currentTimespan = selectedTimespan;
+                      handleTimespanSelection(currentTimespan, 'backward');
+                    }}
+                  >
+                    <i className="bi bi-caret-left" aria-hidden="true"></i>
+                    <span className="sr-only">Move current timespan earlier</span>
+                  </button>
+                  <div className="grow">
+                    <label className="sr-only" htmlFor="timespan_select">
+                      Choose a preset timespan
+                    </label>
+                    <select
+                      id="timespan_select"
+                      value={brushExtent[1] === spanUpperLimit ? selectedTimespan : 0}
+                      className="w-full h-[42px] lg:h-[30px] form-control input-sm px-4 bg-white"
+                      style={{
+                        borderColor: '#ccc',
+                        borderWidth: 'revert',
+                        borderRadius: 'revert',
+                      }}
+                      onChange={(e) => {
+                        handleTimespanSelection(e.currentTarget.value);
+                      }}
+                    >
+                      <option value={0}>Choose timespan</option>
+                      {[
+                        { days: 30, label: 'month' },
+                        { days: 90, label: '3 months' },
+                        { days: 180, label: '6 months' },
+                        { days: 365, label: 'year' },
+                        { days: 730, label: '2 years' },
+                        { days: 1825, label: '5 years' },
+                      ]
+                        .filter((timeSpan) => {
+                          return timeSpan.days <= maxDaysAllowedToQuery;
+                        })
+                        .map((timeSpan, i) => {
+                          return (
+                            <option key={['timespan', 'option', i].join('_')} value={timeSpan.days}>
+                              {`Last ${timeSpan.label}`}
+                            </option>
+                          );
+                        })}
+                    </select>
+                  </div>
+                  <button
+                    type="button"
+                    className="btn btn-primary lg:btn-sm rounded-tl-none rounded-bl-none"
+                    disabled={timeDay.count(brushExtent[1], spanUpperLimit) === 0}
+                    title="Move current timespan later"
+                    onClick={() => {
+                      const currentTimespan = selectedTimespan;
+                      handleTimespanSelection(currentTimespan, 'forward');
+                    }}
+                  >
+                    <i className="bi bi-caret-right" aria-hidden="true"></i>
+                    <span className="sr-only">Move current timespan later</span>
+                  </button>
+                </fieldset>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div className="brushedChart" id="timeline-container" aria-hidden="true">
+          <ResponsiveXYFrame
+            responsiveWidth
+            margin={{
+              top: 20,
+              right: 10,
+              bottom: 50,
+              left: 25,
+            }}
+            size={[1000, 75]}
+            xAccessor={(d) => {
+              return d;
+            }}
+            yAccessor={() => {
+              return 0;
+            }}
+            xExtent={xSpan}
+            axes={[
+              {
+                orient: 'bottom',
+                tickFormat: (d) => {
+                  return (
                     <text
                       textAnchor="middle"
                       style={{ fontSize: '0.70em', left: '-14px' }}
@@ -578,28 +576,35 @@ class TimeSlider extends React.Component {
                     >
                       {moment.utc(d).format(tickFormat)}
                     </text>
-                  ),
-                  tickValues: ticks,
+                  );
                 },
-              ]}
-              interaction={{
-                during: this.brushDuring,
-                end: this.brushEnd,
-                brush: 'xBrush',
-                extent: this.state.brushExtent,
-              }}
-            />
-          </div>
-        </ErrorBoundary>
-      </div>
-    );
-  }
+                tickValues: ticks,
+              },
+            ]}
+            interaction={{
+              during: brushDuring,
+              end: brushEnd,
+              brush: 'xBrush',
+              extent: brushExtent,
+            }}
+          />
+        </div>
+      </ErrorBoundary>
+    </div>
+  );
 }
 
 TimeSlider.propTypes = {
-  // defaultBrushExtent: PropTypes.arrayOf(PropTypes.number),
+  defaultBrushExtent: PropTypes.arrayOf(PropTypes.number),
   onBrushEnd: PropTypes.func,
   xSpan: PropTypes.number,
+  spanEnd: PropTypes.number,
+  spanUpperLimit: PropTypes.number,
+  spanLowerLimit: PropTypes.number,
+  maxDaysAllowedToQuery: PropTypes.number,
+  minimumTickWidth: PropTypes.number,
+  initialTickGap: PropTypes.number,
+  tickMeasure: PropTypes.string,
 };
 
 TimeSlider.defaultProps = {
@@ -607,7 +612,9 @@ TimeSlider.defaultProps = {
     timeWeek.offset(timeDay.floor(new Date()), -1).getTime(),
     timeDay.floor(new Date()).getTime(),
   ],
-  onBrushEnd: (newExtent) => console.log(newExtent),
+  onBrushEnd: (newExtent) => {
+    console.log(newExtent);
+  },
   spanEnd: timeDay.floor(new Date()).getTime(),
   spanUpperLimit: timeDay.floor(new Date()).getTime(),
   spanLowerLimit: timeDay.floor(new Date(Date.UTC(1999, 0, 1))).getTime(),

@@ -1,46 +1,53 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import PropTypes from 'prop-types';
 import { ResponsiveXYFrame } from 'semiotic';
 import moment from 'moment';
 import { timeDay, timeWeek, timeMonth, timeYear } from 'd3-time';
+import { format, isValid, parse, getYear } from 'date-fns';
 import ErrorBoundary from '../../../shared/ErrorBoundary';
 
-function TimeSlider(props) {
-  const {
-    defaultBrushExtent,
-    spanLowerLimit,
-    spanUpperLimit,
-    spanEnd,
-    maxDaysAllowedToQuery,
-    onBrushEnd,
-    xSpan: xSpanYears,
-    tickMeasure,
-    minimumTickWidth,
-    initialTickGap,
-  } = props;
-
+function TimeSlider({
+  defaultBrushExtent = [
+    timeWeek.offset(timeDay.floor(new Date()), -1).getTime(),
+    timeDay.floor(new Date()).getTime(),
+  ],
+  spanLowerLimit = timeDay.floor(new Date(Date.UTC(1999, 0, 1))).getTime(),
+  spanUpperLimit = timeDay.floor(new Date()).getTime(),
+  spanEnd = timeDay.floor(new Date()).getTime(),
+  maxDaysAllowedToQuery = 730,
+  onBrushEnd = (newExtent) => {
+    console.log(newExtent);
+  },
+  xSpan: xSpanYears = 2,
+  tickMeasure = 'month',
+  minimumTickWidth = 25,
+  initialTickGap = 1,
+}) {
   const defaultMessage = useMemo(() => {
     return `Set a date range between
       ${moment.utc(spanLowerLimit).format('MMM DD, YYYY')} and
       ${moment.utc(spanUpperLimit).format('MMM DD, YYYY')}. Maximum range for a single query is
-      ${maxDaysAllowedToQuery} days.`;
+      ${maxDaysAllowedToQuery} days. Dates must be in the format MM/DD/YYYY.`;
   }, [spanLowerLimit, spanUpperLimit, maxDaysAllowedToQuery]);
 
   const defaultMessageColor = '#222';
   const errorMessageColor = '#b00020';
 
-  const today = useMemo(() => {
-    return timeDay.floor(new Date()).getTime();
-  }, []);
+  // const today = useMemo(() => {
+  //   return timeDay.floor(new Date()).getTime();
+  // }, []);
 
-  // Refs
   const startDateInputRef = useRef(null);
   const endDateInputRef = useRef(null);
 
-  // State
   const [brushExtent, setBrushExtent] = useState(defaultBrushExtent);
-  const [firstInputVal, setFirstInputVal] = useState(defaultBrushExtent[0]);
-  const [secondInputVal, setSecondInputVal] = useState(defaultBrushExtent[1]);
+
+  const [firstInputValue, setFirstInputValue] = useState(
+    format(new Date(parseInt(defaultBrushExtent[0])), 'MM/dd/yyyy'),
+  );
+  const [secondInputValue, setSecondInputValue] = useState(
+    format(new Date(parseInt(defaultBrushExtent[1])), 'MM/dd/yyyy'),
+  );
+
   const [selectedTimespan, setSelectedTimespan] = useState(0);
   const [xSpan, setXSpan] = useState([
     timeYear.offset(spanEnd, -1 * xSpanYears).getTime(),
@@ -51,6 +58,21 @@ function TimeSlider(props) {
   const [message, setMessage] = useState('');
   const [messageColor, setMessageColor] = useState(defaultMessageColor);
 
+  const buttonDisabled = useMemo(() => {
+    const firstParsed = parse(firstInputValue, 'MM/dd/yyyy', new Date());
+    const secondParsed = parse(secondInputValue, 'MM/dd/yyyy', new Date());
+
+    if (firstParsed.getTime() === brushExtent[0] && secondParsed.getTime() === brushExtent[1]) {
+      return true;
+    }
+
+    if (!Number.isInteger(brushExtent[0]) || !Number.isInteger(brushExtent[1])) {
+      return true;
+    }
+
+    return false;
+  }, [firstInputValue, secondInputValue, brushExtent]);
+
   const determineNewExtent = useCallback(
     (proposedExtent, snap = false) => {
       let newExtent = proposedExtent;
@@ -58,14 +80,13 @@ function TimeSlider(props) {
       let message = '';
       let messageColor = defaultMessageColor;
 
-      // If someone just clicked on the timeline there might not be an e
       if (proposedExtent) {
-        // When brushing stops (brushEnd invokes with snap=true), snap to "whole time" (drop the decimal part)
+        // When brushing stops (brushEnd invokes with snap=true), snap to "whole time" (drop the decimal part, use floor func so it doesn't round up to "tomorrow")
         if (snap) {
           const timeFunc = timeDay;
           newExtent = [
-            timeFunc.ceil(proposedExtent[0]).getTime(),
-            timeFunc.ceil(proposedExtent[1]).getTime(),
+            timeFunc.floor(proposedExtent[0]).getTime(),
+            timeFunc.floor(proposedExtent[1]).getTime(),
           ];
         }
 
@@ -102,7 +123,7 @@ function TimeSlider(props) {
           };
         }
 
-        // Don't allow ranges bigger or smaller (i.e. negative) than allowed, just reset to "last good" value
+        // Don't allow ranges bigger or smaller than allowed (i.e. negative), just reset to "last good" value
         if (
           (+selectedRange > +maxDaysAllowedToQuery || +newExtent[0] >= +newExtent[1]) &&
           selectedRange !== 0
@@ -205,8 +226,6 @@ function TimeSlider(props) {
             }
           }
         }
-
-        // If there isn't an e value
       } else {
         newExtent = brushExtent;
       }
@@ -230,18 +249,16 @@ function TimeSlider(props) {
     ],
   );
 
-  // brushDuring handler
   const brushDuring = useCallback(
     (proposedExtent) => {
       const newRanges = determineNewExtent(proposedExtent, false);
       setBrushExtent(newRanges.extent);
-      setFirstInputVal(newRanges.extent[0]);
-      setSecondInputVal(newRanges.extent[1]);
+      setFirstInputValue(format(new Date(parseInt(newRanges.extent[0])), 'MM/dd/yyyy'));
+      setSecondInputValue(format(new Date(parseInt(newRanges.extent[1])), 'MM/dd/yyyy'));
     },
     [determineNewExtent],
   );
 
-  // brushEnd handler
   const brushEnd = useCallback(
     (proposedExtent, snap = true) => {
       const newRanges = determineNewExtent(proposedExtent, snap);
@@ -249,8 +266,8 @@ function TimeSlider(props) {
 
       onBrushEnd(newRanges.extent);
       setBrushExtent(newRanges.extent);
-      setFirstInputVal(newRanges.extent[0]);
-      setSecondInputVal(newRanges.extent[1]);
+      setFirstInputValue(format(new Date(parseInt(newRanges.extent[0])), 'MM/dd/yyyy'));
+      setSecondInputValue(format(new Date(parseInt(newRanges.extent[1])), 'MM/dd/yyyy'));
       setXSpan(newRanges.span);
       setSelectedTimespan(selectedRange);
       setMessage(newRanges.message);
@@ -259,7 +276,6 @@ function TimeSlider(props) {
     [determineNewExtent, onBrushEnd],
   );
 
-  // handleTimespanSelection
   const handleTimespanSelection = useCallback(
     (daySpan, requestedRange = 'today') => {
       // check if calculation should be relative to the current span or the current end date
@@ -290,8 +306,8 @@ function TimeSlider(props) {
         }
         const newRanges = determineNewExtent(proposedExtent, true);
         setBrushExtent(newRanges.extent);
-        setFirstInputVal(newRanges.extent[0]);
-        setSecondInputVal(newRanges.extent[1]);
+        setFirstInputValue(format(new Date(parseInt(newRanges.extent[0])), 'MM/dd/yyyy'));
+        setSecondInputValue(format(new Date(parseInt(newRanges.extent[1])), 'MM/dd/yyyy'));
         setXSpan(newRanges.span);
         setSelectedTimespan(daySpan);
         setMessage(newRanges.message);
@@ -301,27 +317,84 @@ function TimeSlider(props) {
     [brushExtent, selectedTimespan, spanUpperLimit, spanLowerLimit, determineNewExtent],
   );
 
-  // handleSubmit
+  const trimAndSetFirst = useCallback((e) => {
+    const input = e.target.value.trim();
+    setFirstInputValue(input);
+  }, []);
+
+  const trimAndSetSecond = useCallback((e) => {
+    const input = e.target.value.trim();
+    setSecondInputValue(input);
+  }, []);
+
+  const validateAndSubmitDates = useCallback(() => {
+    const firstParsedDate = parse(firstInputValue, 'MM/dd/yyyy', new Date());
+    const secondParsedDate = parse(secondInputValue, 'MM/dd/yyyy', new Date());
+
+    const isFirstValid = isValid(firstParsedDate) && getYear(firstParsedDate) >= 1000;
+    const isSecondValid = isValid(secondParsedDate) && getYear(secondParsedDate) >= 1000;
+
+    let dateValid = true;
+    let validationMessage = '';
+
+    if (!isFirstValid || firstInputValue.length < 10) {
+      validationMessage += 'Start date is invalid. ';
+      dateValid = false;
+      if (startDateInputRef.current) {
+        startDateInputRef.current.focus();
+      }
+    }
+
+    if (!isSecondValid || secondInputValue.length < 10) {
+      validationMessage += 'End date is invalid. ';
+      dateValid = false;
+      if (!validationMessage.includes('Start') && endDateInputRef.current) {
+        endDateInputRef.current.focus();
+      }
+    }
+
+    if (!dateValid) {
+      setMessageColor(errorMessageColor);
+      setMessage(validationMessage + 'Dates must be in the format MM/DD/YYYY.');
+      return false;
+    }
+
+    const newFromDate = firstParsedDate.getTime();
+    const throughDate = secondParsedDate.getTime();
+
+    if (newFromDate > throughDate) {
+      setMessageColor(errorMessageColor);
+      setMessage('Start date must be before the end date.');
+      if (startDateInputRef.current) {
+        startDateInputRef.current.focus();
+      }
+      return false;
+    }
+
+    setMessageColor(defaultMessageColor);
+    setMessage('');
+    brushEnd([newFromDate, throughDate], true);
+    return true;
+  }, [firstInputValue, secondInputValue, brushEnd, errorMessageColor, defaultMessageColor]);
+
   const handleSubmit = useCallback(
     (e = false) => {
-      // Can also trigger handle submit manually
       if (e) {
         e.preventDefault();
       }
-      brushEnd([firstInputVal, secondInputVal], true);
+      validateAndSubmitDates();
     },
-    [firstInputVal, secondInputVal, brushEnd],
+    [validateAndSubmitDates],
   );
 
-  // updateWindowWidth
   const updateWindowWidth = useCallback(() => {
     const timelineContainer = document.getElementById('timeline-container');
+
     if (timelineContainer) {
       setSliderWidth(timelineContainer.offsetWidth);
     }
   }, []);
 
-  // componentDidMount equivalent
   useEffect(() => {
     window.addEventListener('resize', updateWindowWidth);
     updateWindowWidth();
@@ -331,19 +404,17 @@ function TimeSlider(props) {
     };
   }, [updateWindowWidth]);
 
-  // Initial params check (componentDidMount equivalent)
   useEffect(() => {
     if (!initialParamsChecked) {
       const initialParams = determineNewExtent(defaultBrushExtent, false);
       setBrushExtent(initialParams.extent);
-      setFirstInputVal(initialParams.extent[0]);
-      setSecondInputVal(initialParams.extent[1]);
+      setFirstInputValue(format(new Date(parseInt(initialParams.extent[0])), 'MM/dd/yyyy'));
+      setSecondInputValue(format(new Date(parseInt(initialParams.extent[1])), 'MM/dd/yyyy'));
       setXSpan(initialParams.span);
       setInitialParamsChecked(true);
     }
   }, [initialParamsChecked, defaultBrushExtent, determineNewExtent]);
 
-  // Calculate ticks and tick formatting
   const { ticks, tickFormat } = useMemo(() => {
     let timeFunc = timeYear;
     if (tickMeasure === 'month') {
@@ -415,26 +486,15 @@ function TimeSlider(props) {
                     From
                   </label>
                   <input
-                    type="date"
+                    type="text"
                     id="startdate"
                     ref={startDateInputRef}
                     name="startdate"
                     className="input lg:input-sm grow"
                     aria-describedby="form_feedback_message"
-                    value={moment.utc(new Date(parseInt(firstInputVal))).format('YYYY-MM-DD')}
-                    onChange={(e) => {
-                      if (!moment(new Date(e.target.value)).isValid()) {
-                        return;
-                      }
-                      const date = moment
-                        .utc(new Date(e.target.value))
-                        .hour(0)
-                        .minute(0)
-                        .seconds(1)
-                        .valueOf();
-
-                      setFirstInputVal(date);
-                    }}
+                    placeholder="MM/DD/YYYY"
+                    value={firstInputValue}
+                    onChange={trimAndSetFirst}
                   />
                 </div>
                 <div className="grow flex items-center">
@@ -442,26 +502,15 @@ function TimeSlider(props) {
                     Through
                   </label>
                   <input
-                    type="date"
+                    type="text"
                     id="enddate"
                     ref={endDateInputRef}
                     name="enddate"
                     className="input lg:input-sm grow"
                     aria-describedby="form_feedback_message"
-                    value={moment.utc(new Date(parseInt(secondInputVal))).format('YYYY-MM-DD')}
-                    onChange={(e) => {
-                      if (!moment(new Date(e.target.value)).isValid()) {
-                        return;
-                      }
-                      const date = moment
-                        .utc(new Date(e.target.value))
-                        .hour(0)
-                        .minute(0)
-                        .seconds(1)
-                        .valueOf();
-
-                      setSecondInputVal(date);
-                    }}
+                    placeholder="MM/DD/YYYY"
+                    value={secondInputValue}
+                    onChange={trimAndSetSecond}
                   />
                 </div>
               </div>
@@ -473,7 +522,7 @@ function TimeSlider(props) {
                 value="Set Dates"
                 title="Set the date range to the values in the input fields."
                 className="btn btn-primary lg:btn-sm grow"
-                disabled={firstInputVal === brushExtent[0] && secondInputVal === brushExtent[1]}
+                disabled={buttonDisabled}
               />
               <div className="flex-1">
                 <fieldset className="flex w-full">
@@ -593,36 +642,5 @@ function TimeSlider(props) {
     </div>
   );
 }
-
-TimeSlider.propTypes = {
-  defaultBrushExtent: PropTypes.arrayOf(PropTypes.number),
-  onBrushEnd: PropTypes.func,
-  xSpan: PropTypes.number,
-  spanEnd: PropTypes.number,
-  spanUpperLimit: PropTypes.number,
-  spanLowerLimit: PropTypes.number,
-  maxDaysAllowedToQuery: PropTypes.number,
-  minimumTickWidth: PropTypes.number,
-  initialTickGap: PropTypes.number,
-  tickMeasure: PropTypes.string,
-};
-
-TimeSlider.defaultProps = {
-  defaultBrushExtent: [
-    timeWeek.offset(timeDay.floor(new Date()), -1).getTime(),
-    timeDay.floor(new Date()).getTime(),
-  ],
-  onBrushEnd: (newExtent) => {
-    console.log(newExtent);
-  },
-  spanEnd: timeDay.floor(new Date()).getTime(),
-  spanUpperLimit: timeDay.floor(new Date()).getTime(),
-  spanLowerLimit: timeDay.floor(new Date(Date.UTC(1999, 0, 1))).getTime(),
-  maxDaysAllowedToQuery: 730,
-  minimumTickWidth: 25,
-  initialTickGap: 1,
-  tickMeasure: 'month',
-  xSpan: 2, // in years
-};
 
 export default TimeSlider;

@@ -225,6 +225,79 @@ function ProjectsTable(props) {
 
 	return (
 		<div className="mt-6">
+			<div className="flex pb-4">
+				<span className="whitespace-nowrap mr-4">
+					Page{" "}
+					<span className="-pageJump">
+						<input
+							aria-label="Page input"
+							type="number"
+							min="1"
+							max={table.getPageCount()}
+							value={inputValue}
+							onChange={(e) => {
+								const val = e.target.value;
+								if (val <= table.getPageCount()) {
+									setInputValue(val);
+								}
+
+								if (/^\d+$/.test(val)) {
+									const pageNum = Number(val);
+									if (pageNum >= 1 && pageNum <= table.getPageCount()) {
+										updateURL(
+											location.search,
+											[
+												{
+													id: "page",
+													value: String(pageNum),
+												},
+											],
+											["page"]
+										);
+									}
+								}
+							}}
+							className="border p-1 rounded w-16"
+						/>
+					</span>{" "}
+					of <span className="-totalPages">{table.getPageCount()}</span>
+				</span>
+				<span className="border p-1 rounded">
+					<select
+						className=""
+						aria-label="Select the number of rows per page"
+						value={table.getState().pagination.pageSize}
+						onChange={(e) => {
+							updateURL(
+								location.search,
+								[
+									{
+										id: "size",
+										value: Number(e.target.value),
+									},
+								],
+								["size"]
+							);
+							updateURL(
+								location.search,
+								[
+									{
+										id: "page",
+										value: "1",
+									},
+								],
+								["page"]
+							);
+						}}
+					>
+						{rowOptions.map((pageSize) => (
+							<option key={pageSize} value={pageSize}>
+								{pageSize} rows
+							</option>
+						))}
+					</select>
+				</span>
+			</div>
 			<Measure
 				client
 				onResize={(contentRect) => {
@@ -238,7 +311,7 @@ function ProjectsTable(props) {
 								...(width <= 768 ? { overflow: "auto" } : { overflow: "visible" }),
 							}}
 						>
-							<table className="table-fixed w-full shadow-md">
+							<table id="CIPDataTable" className="table-fixed w-full shadow-md">
 								<thead className="border">
 									{table.getHeaderGroups().map((headerGroup) => (
 										<tr key={headerGroup.id}>
@@ -318,11 +391,11 @@ function ProjectsTable(props) {
 								</tbody>
 							</table>{" "}
 						</div>
-						<div className="grid grid-cols-4 bg-white ">
-							<div className="p-[2px] w-full">
+						<div className=" bg-white flex items-center justify-center my-4">
+							<div className="p-[2px]">
 								<button
-									type="button text-black items-center"
-									className="flex items-center justify-center btn bg-gray-100 w-full"
+									type="button"
+									className="flex items-center justify-center btn btn-primary w-24"
 									onClick={() => {
 										setInputValue(parseInt(inputValue) - 1);
 										updateURL(
@@ -341,81 +414,11 @@ function ProjectsTable(props) {
 									Previous
 								</button>
 							</div>
-							<span className="flex items-center justify-center gap-2 p-[2px] w-full">
-								Page{" "}
-								<div className="-pageJump">
-									<input
-										aria-label="Page input"
-										type="number"
-										min="1"
-										max={table.getPageCount()}
-										value={inputValue}
-										onChange={(e) => {
-											const val = e.target.value;
-											if (val <= table.getPageCount()) {
-												setInputValue(val);
-											}
 
-											if (/^\d+$/.test(val)) {
-												const pageNum = Number(val);
-												if (pageNum >= 1 && pageNum <= table.getPageCount()) {
-													updateURL(
-														location.search,
-														[
-															{
-																id: "page",
-																value: String(pageNum),
-															},
-														],
-														["page"]
-													);
-												}
-											}
-										}}
-										className="border p-1 rounded w-16"
-									/>
-								</div>{" "}
-								of <span className="-totalPages">{table.getPageCount()}</span>
-							</span>
-							<span className="flex items-center justify-center gap-2 p-[2px] w-full">
-								<select
-									className="flex items-center justify-center"
-									aria-label="Select the number of rows per page"
-									value={table.getState().pagination.pageSize}
-									onChange={(e) => {
-										updateURL(
-											location.search,
-											[
-												{
-													id: "size",
-													value: Number(e.target.value),
-												},
-											],
-											["size"]
-										);
-										updateURL(
-											location.search,
-											[
-												{
-													id: "page",
-													value: "1",
-												},
-											],
-											["page"]
-										);
-									}}
-								>
-									{rowOptions.map((pageSize) => (
-										<option key={pageSize} value={pageSize}>
-											{pageSize} rows
-										</option>
-									))}
-								</select>
-							</span>
-							<div className="-next text-black p-[2px] w-full">
+							<div className="p-[2px]">
 								<button
 									type="button"
-									className="flex items-center justify-center btn bg-gray-100 w-full"
+									className="flex items-center justify-center btn btn-primary w-24"
 									onClick={() => {
 										setInputValue(parseInt(inputValue) + 1);
 										updateURL(

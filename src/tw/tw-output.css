@@ -835,6 +835,11 @@ details[open] summary span.bi {
   fill: #0e7490;
 }
 
+[aria-selected="true"] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 73 135 / var(--tw-bg-opacity, 1));
+}
+
 .container {
   width: 100%;
 }
@@ -1269,6 +1274,18 @@ details[open] summary span.bi {
   height: 100%;
 }
 
+.h-10 {
+  height: 2.5rem;
+}
+
+.h-12 {
+  height: 3rem;
+}
+
+.h-14 {
+  height: 3.5rem;
+}
+
 .max-h-\[85vh\] {
   max-height: 85vh;
 }
@@ -1339,6 +1356,34 @@ details[open] summary span.bi {
 
 .w-full {
   width: 100%;
+}
+
+.w-10 {
+  width: 2.5rem;
+}
+
+.w-12 {
+  width: 3rem;
+}
+
+.w-14 {
+  width: 3.5rem;
+}
+
+.w-20 {
+  width: 5rem;
+}
+
+.w-0 {
+  width: 0px;
+}
+
+.w-\[50px\] {
+  width: 50px;
+}
+
+.w-24 {
+  width: 6rem;
 }
 
 .min-w-3 {
@@ -1420,6 +1465,25 @@ details[open] summary span.bi {
 .transform {
   -webkit-transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
           transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+@-webkit-keyframes spin {
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  -webkit-animation: spin 1s linear infinite;
+          animation: spin 1s linear infinite;
 }
 
 .cursor-pointer {
@@ -1534,6 +1598,10 @@ details[open] summary span.bi {
   overflow: hidden;
 }
 
+.whitespace-nowrap {
+  white-space: nowrap;
+}
+
 .text-nowrap {
   text-wrap: nowrap;
 }
@@ -1612,6 +1680,10 @@ details[open] summary span.bi {
   border-top-width: 1px;
 }
 
+.border-b-4 {
+  border-bottom-width: 4px;
+}
+
 .border-blue-100 {
   --tw-border-opacity: 1;
   border-color: rgb(219 234 254 / var(--tw-border-opacity, 1));
@@ -1650,6 +1722,10 @@ details[open] summary span.bi {
 .border-white {
   --tw-border-opacity: 1;
   border-color: rgb(255 255 255 / var(--tw-border-opacity, 1));
+}
+
+.border-current {
+  border-color: currentColor;
 }
 
 .bg-\[\#d0ebff\] {
@@ -1708,6 +1784,11 @@ details[open] summary span.bi {
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+
+.bg-coa-blue-dark {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 73 135 / var(--tw-bg-opacity, 1));
 }
 
 .bg-opacity-85 {
@@ -1866,6 +1947,10 @@ details[open] summary span.bi {
   padding-top: 1.25rem;
 }
 
+.pt-8 {
+  padding-top: 2rem;
+}
+
 .text-left {
   text-align: left;
 }
@@ -1876,6 +1961,10 @@ details[open] summary span.bi {
 
 .text-right {
   text-align: right;
+}
+
+.align-baseline {
+  vertical-align: baseline;
 }
 
 .align-top {

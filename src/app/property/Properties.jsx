@@ -8,7 +8,7 @@ import PropertiesByStreet from "./PropertiesByStreet";
 import PropertiesByNeighborhood from "./PropertiesByNeighborhood";
 import Icon from "../../shared/Icon";
 import { IM_HOME2 } from "../../shared/iconConstants";
-// import { refreshLocation } from '../../utilities/generalUtilities';
+import { refreshLocation } from "../../utilities/generalUtilities";
 
 const getSubtitle = (entity) => {
 	switch (entity) {
@@ -71,21 +71,23 @@ function Properties(props) {
 				</div>
 			</PageHeader>
 			<div className="flex">
-				<div className="ml-auto">
-					<div className="btn-group">
-						<Link
-							className={`btn btn-primary ${currentView !== "map" ? "active" : ""}`}
-							to={window.location.pathname + "?" + searchParamsList}
-						>
-							List view
-						</Link>
-						<Link
-							className={`btn btn-primary ${currentView === "map" ? "active" : ""}`}
-							to={window.location.pathname + "?" + searchParamsMap}
-						>
-							Map view
-						</Link>
-					</div>
+				<div className="btn-group ml-auto">
+					<button
+						className="btn btn-primary"
+						onClick={() => refreshLocation(getNewUrlParams("map"), props.location)}
+						active={props.location.query.view === "map"}
+						aria-selected={props.location.query.view === "map"}
+					>
+						Map view
+					</button>
+					<button
+						className="btn btn-primary"
+						onClick={() => refreshLocation(getNewUrlParams("list"), props.location)}
+						active={props.location.query.view === "list"}
+						aria-selected={props.location.query.view === "list"}
+					>
+						List view
+					</button>
 				</div>
 			</div>
 			{searchParams.get("entity") === "street" ? (

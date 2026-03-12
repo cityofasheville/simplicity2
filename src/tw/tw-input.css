@@ -121,6 +121,12 @@
   }
 }
 
+@layer base {
+  [aria-selected="true"] {
+    @apply bg-coa-blue-dark;
+  }
+}
+
 .leaflet-container .leaflet-control-attribution {
   background-color: white;
   color: black;

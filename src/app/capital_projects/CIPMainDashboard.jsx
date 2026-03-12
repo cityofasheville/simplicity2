@@ -119,6 +119,16 @@ function CIPMainDashboard(props) {
 	return (
 		<div>
 			<div className="h-[500px] w-full">
+				<a
+					href="#CIPDataTable"
+					className="skip-nav-link"
+					onClick={() => {
+						document.getElementById("CIPDataTable").focus();
+					}}
+				>
+					This map contains information which is also represented in the table below. Press enter to skip to the table
+					or tab to continue to the map.
+				</a>
 				<CIPMap
 					data={mapData}
 					center={[35.5951, -82.5515]}

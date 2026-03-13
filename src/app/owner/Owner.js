@@ -20,7 +20,6 @@ import createFilterRenderer from "../../shared/FilterRenderer";
 import { Link } from "react-router";
 import Table from "../../shared/Table/Table";
 import { browserHistory } from "react-router";
-
 const FilterRenderer = createFilterRenderer("Search...");
 
 const dataColumns = [
@@ -182,7 +181,7 @@ const Owner = (props) => {
 
 			<div id="mapView" className={`${props.location.query.view === "map" ? "flex" : "hidden"} mt-5`}>
 				{props.data.properties === 0 || props.location.query.view !== "map" ? (
-					<div> {content.no_results_found}</div>
+					<div> No results found. </div>
 				) : (
 					<div className="w-full">
 						<div className=" h-[600px] flex flex-col">

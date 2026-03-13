@@ -675,6 +675,7 @@ nav a:hover {
 .btn {
   display: flex;
   align-items: center;
+  justify-content: center;
   border-radius: 0.25rem;
   border-width: 1px;
   border-color: transparent;
@@ -1298,6 +1299,10 @@ details[open] summary span.bi {
   max-height: 85vh;
 }
 
+.max-h-32 {
+  max-height: 8rem;
+}
+
 .min-h-20 {
   min-height: 5rem;
 }
@@ -1388,6 +1393,10 @@ details[open] summary span.bi {
 
 .max-w-\[500px\] {
   max-width: 500px;
+}
+
+.max-w-lg {
+  max-width: 32rem;
 }
 
 .flex-1 {
@@ -1571,6 +1580,14 @@ details[open] summary span.bi {
   overflow: hidden;
 }
 
+.overflow-y-auto {
+  overflow-y: auto;
+}
+
+.text-ellipsis {
+  text-overflow: ellipsis;
+}
+
 .text-nowrap {
   text-wrap: nowrap;
 }
@@ -1589,6 +1606,10 @@ details[open] summary span.bi {
 
 .rounded-full {
   border-radius: 9999px;
+}
+
+.rounded-sm {
+  border-radius: 0.125rem;
 }
 
 .rounded-l {
@@ -1719,6 +1740,11 @@ details[open] summary span.bi {
   background-color: rgb(208 235 255 / var(--tw-bg-opacity, 1));
 }
 
+.bg-black {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity, 1));
+}
+
 .bg-black\/10 {
   background-color: rgb(0 0 0 / 0.1);
 }
@@ -1758,6 +1784,11 @@ details[open] summary span.bi {
   background-color: rgb(64 119 165 / var(--tw-bg-opacity, 1));
 }
 
+.bg-slate-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(226 232 240 / var(--tw-bg-opacity, 1));
+}
+
 .bg-transparent {
   background-color: transparent;
 }
@@ -1770,6 +1801,10 @@ details[open] summary span.bi {
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+
+.bg-opacity-70 {
+  --tw-bg-opacity: 0.7;
 }
 
 .bg-opacity-85 {
@@ -1882,6 +1917,11 @@ details[open] summary span.bi {
 .py-\[2px\] {
   padding-top: 2px;
   padding-bottom: 2px;
+}
+
+.py-0 {
+  padding-top: 0px;
+  padding-bottom: 0px;
 }
 
 .pb-10 {
@@ -2133,6 +2173,12 @@ details[open] summary span.bi {
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
+.shadow-sm {
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
 .outline {
   outline-style: solid;
 }
@@ -2235,6 +2281,16 @@ details[open] summary span.bi {
   color: rgb(125 211 252);
 }
 
+dialog::-webkit-backdrop {
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity, 1));
+  --tw-bg-opacity: 0.7;
+}
+
+dialog::backdrop {
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity, 1));
+  --tw-bg-opacity: 0.7;
+}
+
 @media (min-width: 1024px) {
   .lg\:btn-sm {
     padding-left: 0.75rem;
@@ -2282,6 +2338,11 @@ details[open] summary span.bi {
   background-color: rgb(0 73 135 / var(--tw-bg-opacity, 1));
 }
 
+.hover\:bg-gray-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 246 / var(--tw-bg-opacity, 1));
+}
+
 .hover\:underline:hover {
   -webkit-text-decoration-line: underline;
           text-decoration-line: underline;
@@ -2308,6 +2369,21 @@ details[open] summary span.bi {
 .focus\:outline-none:focus {
   outline: 2px solid transparent;
   outline-offset: 2px;
+}
+
+.focus\:ring-2:focus {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+
+.focus\:ring-blue-500:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(59 130 246 / var(--tw-ring-opacity, 1));
+}
+
+.focus\:ring-offset-2:focus {
+  --tw-ring-offset-width: 2px;
 }
 
 .hocus\:underline:hover {
@@ -2515,6 +2591,11 @@ details[open] summary span.bi {
   .md\:py-4 {
     padding-top: 1rem;
     padding-bottom: 1rem;
+  }
+
+  .md\:text-lg {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
   }
 }
 

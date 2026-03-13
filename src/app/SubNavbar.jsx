@@ -45,7 +45,10 @@ function SubNavbar({
             return (
               <li className="" key={index}>
                 {item.path.includes('https://') ? (
-                  <a href={item.path} className={`px-2 py-1 text-nowrap`}>
+                  <a
+                    href={item.path}
+                    className={`inline-block px-2 py-1 ${mobileBreakpoint}:py-4 text-nowrap border-0 border-coa-blue-dark`}
+                  >
                     {item.name}
                     <i className="bi bi-box-arrow-up-right ml-2" aria-hidden="true"></i>{' '}
                     <span className="sr-only">(external site)</span>

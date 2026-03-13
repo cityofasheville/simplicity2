@@ -491,20 +491,20 @@ export const whoIcons = {
 };
 
 export const decisionIconHeader = (
-  <div className="px-4">
-    <div className="flex items-center justify-start gap-1">
+  <ul className="px-4" aria-label="List of possible decisions for this step">
+    <li className="flex items-center justify-start gap-1">
       <i className="bi bi-check2" aria-hidden="true"></i>
       <span>Approved</span>
-    </div>
-    <div className="flex items-center justify-start gap-1">
+    </li>
+    <li className="flex items-center justify-start gap-1">
       <i className="bi bi-x-lg" aria-hidden="true"></i>
       <span>Denied</span>
-    </div>
-    <div className="flex items-center justify-start gap-1">
+    </li>
+    <li className="flex items-center justify-start gap-1">
       <i className="bi bi-arrow-clockwise" aria-hidden="true"></i>
       <span>Revise</span>
-    </div>
-  </div>
+    </li>
+  </ul>
 );
 
 const decisionNodeMaxWidth = 400;

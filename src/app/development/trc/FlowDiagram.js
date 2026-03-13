@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ArrowDefs from './ArrowDefs';
-import LargeNodeContents from './LargeNodeContents';
 import LargeNodeWrapper from './LargeNodeWrapper';
 import SmallNode from './SmallNode';
 import { trcProjectTypes, dagreNodes, dagreLinks } from './textContent';
@@ -31,13 +30,9 @@ class FlowDiagram extends React.Component {
     // const multiRow = Object.values(yValCounts).filter(v => v > maxPerRow).length;
 
     this.updateDimensions = this.updateDimensions.bind(this);
-    this.showModal = this.showModal.bind(this);
-    this.hideModal = this.hideModal.bind(this);
 
     this.state = {
       dimensions: null,
-      modalNode: null,
-      modalY: 0,
     };
   }
 
@@ -62,23 +57,11 @@ class FlowDiagram extends React.Component {
     window.removeEventListener('resize', this.updateDimensions);
   }
 
-  showModal(e, node) {
-    // For tablet and mobile-- show all of the information (as LargeNodeContents) in a modal when a user clicks "see more information" or whatever
-    this.setState({
-      modalNode: node,
-      modalY: e.target.getBoundingClientRect().y + window.scrollY,
-    });
-  }
-
-  hideModal() {
-    this.setState({ modalNode: null });
-  }
-
   renderContent() {
     const { dimensions } = this.state;
-    const height = dimensions.width < 768 ? 3200 : 5000;
+    const height = dimensions.width < 992 ? 3200 : 5800;
     const nodePadding = 5;
-    const edgeStroke = dimensions.width < 768 ? 3 : 4;
+    const edgeStroke = dimensions.width < 992 ? 3 : 4;
     const arrowWidth = edgeStroke * 1.5;
     const edgePadding = arrowWidth * 4;
     const nodeHeight = (height - nodePadding * (this.numLevels + 4)) / this.numLevels;
@@ -89,14 +72,7 @@ class FlowDiagram extends React.Component {
     const links = getLinks(dagreLinks, nodes, edgePadding, edgeStroke);
 
     return (
-      <div
-        className={`text-xs sm:text-base w-full ${this.state.modalNode ? 'opacity-50' : 'opacity-100'}`}
-        // style={{
-        // 	width: "100%",
-        // 	fontSize: dimensions.width < 500 ? "0.75rem" : "1em",
-        // 	opacity: this.state.modalNode ? "0.5" : "1",
-        // }}
-      >
+      <div className={`text-xs sm:text-base w-full `}>
         <svg
           height={height}
           width={dimensions.width}
@@ -138,41 +114,14 @@ class FlowDiagram extends React.Component {
           </g>
           <g>
             {nodes.map((d) =>
-              dimensions.width > 767 ? (
+              dimensions.width > 991 ? (
                 <LargeNodeWrapper node={d} yOffset={yOffset} edgeStroke={edgeStroke} key={d.id} />
               ) : (
-                <SmallNode
-                  node={d}
-                  yOffset={yOffset}
-                  edgeStroke={edgeStroke}
-                  key={d.id}
-                  clickAction={this.showModal}
-                />
+                <SmallNode node={d} yOffset={yOffset} edgeStroke={edgeStroke} key={d.id} />
               ),
             )}
           </g>
         </svg>
-        {this.state.modalNode &&
-          ReactDOM.createPortal(
-            <div
-              role="status"
-              style={{
-                position: 'absolute',
-                top: this.state.modalY,
-                left: '5vw',
-                zIndex: 99,
-                width: '90vw',
-              }}
-            >
-              <LargeNodeContents
-                node={this.state.modalNode}
-                yOffset={yOffset}
-                edgeStroke={edgeStroke}
-                modalCloseFunc={this.hideModal}
-              />
-            </div>,
-            document.body,
-          )}
       </div>
     );
   }

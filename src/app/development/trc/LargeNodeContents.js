@@ -11,7 +11,7 @@ Also used to render modal after a users clicks "more details" link on a node on 
 
 See ./textContent for the nodes themselves.
 */
-function LargeNodeContents({ node, edgeStroke, modalCloseFunc = null }) {
+function LargeNodeContents({ node, edgeStroke, modalCloseFunc = null, modalOpen = false }) {
   let content;
   let nodeLinks = dagreLinks.filter((link) => link.source === node.id);
   let nodeTypeTargets = nodeLinks.reduce((acc, link) => {
@@ -36,7 +36,7 @@ function LargeNodeContents({ node, edgeStroke, modalCloseFunc = null }) {
           let thisHtmlId = dagreNodes.find((n) => n.id === targetId)?.htmlId;
           return (
             <li className="my-1" key={`${node.id}-link-${thisHtmlId}`}>
-              <span aria-describedby={thisHtmlId}>{targetId}</span>
+              <span aria-details={thisHtmlId}>{targetId}</span>
               {nodeTypeTargets[targetId] && nodeTypeTargets[targetId].length > 0 && (
                 <ul
                   className="flex gap-1 flex-wrap ml-4"
@@ -85,6 +85,7 @@ function LargeNodeContents({ node, edgeStroke, modalCloseFunc = null }) {
 
   return (
     <div
+      id={`${node.htmlId}`}
       style={{
         border: `${edgeStroke}px solid #e6e6e6`,
         backgroundColor: 'white',
@@ -94,7 +95,6 @@ function LargeNodeContents({ node, edgeStroke, modalCloseFunc = null }) {
     >
       <div className="flex items-center justify-between px-1 pb-2 mb-2 border-b">
         <h2
-          id={`${node.htmlId}`}
           style={{
             fontWeight: 400,
             textAlign: 'left',
@@ -115,20 +115,6 @@ function LargeNodeContents({ node, edgeStroke, modalCloseFunc = null }) {
         </ul>
       </div>
       {content}
-      {modalCloseFunc && (
-        <button
-          style={{
-            borderRadius: '6px',
-            textDecoration: 'underline',
-            backgroundColor: 'transparent',
-            border: '1px solid transparent',
-            width: '100%',
-          }}
-          onClick={modalCloseFunc}
-        >
-          Close
-        </button>
-      )}
     </div>
   );
 }

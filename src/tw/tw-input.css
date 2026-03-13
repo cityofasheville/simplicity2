@@ -23,7 +23,7 @@
   }
 
   .btn {
-    @apply flex items-center px-4 py-2 border border-transparent rounded shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
+    @apply flex items-center justify-center px-4 py-2 border border-transparent rounded shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
   }
 
   .btn-primary {
@@ -152,4 +152,8 @@
 
 .leaflet-container .leaflet-control-attribution a:hover {
   color: rgb(125 211 252);
+}
+
+dialog::backdrop {
+  @apply bg-black bg-opacity-70;
 }

@@ -144,8 +144,10 @@ const Owner = (props) => {
 				<div className="mt-3 mb-4">
 					<EmailDownload downloadData={props.data.properties} fileName="properties_by_owner.csv" text="Download CSV" />
 				</div>
-				<div className="btn-group ml-auto">
+				<div className="btn-group ml-auto" role="tablist">
 					<button
+						role="tab"
+						aria-controls="view-container"
 						className="btn btn-primary"
 						onClick={() => refreshLocation(getNewUrlParams("map"), props.location)}
 						active={props.location.query.view === "map"}
@@ -154,6 +156,8 @@ const Owner = (props) => {
 						Map view
 					</button>
 					<button
+						role="tab"
+						aria-controls="view-container"
 						className="btn btn-primary"
 						onClick={() => refreshLocation(getNewUrlParams("list"), props.location)}
 						active={props.location.query.view === "list"}
@@ -164,35 +168,37 @@ const Owner = (props) => {
 				</div>
 			</div>
 
-			<div id="listView" className={`${props.location.query.view === "list" ? "flex" : "hidden"}`}>
-				<Table
-					ariaLabel="Property Details"
-					navRender={navRender}
-					data={filteredData}
-					// data={props.data.properties_by_street}
-					filterRender={filterRender}
-					columns={propertyTableColumns}
-					defaultPageSize={props.data.length}
-					showPagination={true}
-					className="w-full items-center"
-					filterOptions={[{ accessor: "property_civic_address_id" }, { accessor: "address" }, { accessor: "pinnum" }]}
-				/>{" "}
-			</div>
+			<div id="view-container">
+				<div id="listView" className={`${props.location.query.view === "list" ? "flex" : "hidden"}`}>
+					<Table
+						ariaLabel="Property Details"
+						navRender={navRender}
+						data={filteredData}
+						// data={props.data.properties_by_street}
+						filterRender={filterRender}
+						columns={propertyTableColumns}
+						defaultPageSize={props.data.length}
+						showPagination={true}
+						className="w-full items-center"
+						filterOptions={[{ accessor: "property_civic_address_id" }, { accessor: "address" }, { accessor: "pinnum" }]}
+					/>{" "}
+				</div>
 
-			<div id="mapView" className={`${props.location.query.view === "map" ? "flex" : "hidden"} mt-5`}>
-				{props.data.properties === 0 || props.location.query.view !== "map" ? (
-					<div> No results found. </div>
-				) : (
-					<div className="w-full">
-						<div className=" h-[600px] flex flex-col">
-							<Map
-								bounds={getBoundsFromPropertyList(polygons)}
-								drawPolygon
-								polygonData={combinePolygonsFromPropertyList(props.data.properties)}
-							/>
+				<div id="mapView" className={`${props.location.query.view === "map" ? "flex" : "hidden"} mt-5`}>
+					{props.data.properties === 0 || props.location.query.view !== "map" ? (
+						<div> No results found. </div>
+					) : (
+						<div className="w-full">
+							<div className=" h-[600px] flex flex-col">
+								<Map
+									bounds={getBoundsFromPropertyList(polygons)}
+									drawPolygon
+									polygonData={combinePolygonsFromPropertyList(props.data.properties)}
+								/>
+							</div>
 						</div>
-					</div>
-				)}
+					)}
+				</div>
 			</div>
 		</div>
 	);

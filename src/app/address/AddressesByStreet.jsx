@@ -157,7 +157,7 @@ function AddressesByStreet(props) {
 				}); // eslint-disable-line
 
 				return (
-					<section>
+					<section id="view-container">
 						<EmailDownload downloadData={data.addresses_by_street} fileName={content.addresses_by_street_filename} />
 						<div id="listView" className={`mt-4 ${props.location.query.view === "map" ? "hidden" : "flex"}`}>
 							{data.addresses_by_street.length < 1 ? (

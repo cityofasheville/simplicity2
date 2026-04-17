@@ -121,7 +121,7 @@ const PropertiesByStreet = (props) => {
 	return (
 		<div>
 			<EmailDownload downloadData={props.data.properties_by_street} fileName="properties_by_street.csv" />
-			<div className="my-4">
+			<div className="my-4" id="view-container">
 				<div id="listView" className={props.location.query.view !== "list" ? "hidden" : "flex"}>
 					{props.data.properties_by_street.length < 1 ? (
 						<div className="alert alert-info">No results found</div>

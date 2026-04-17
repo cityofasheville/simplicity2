@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 const LoadingAnimation = (props) => {
 	return (
 		<div className="flex flex-col items-center">
-			<div class="h-16 w-16 animate-spin rounded-full border-b-4 border-current text-coa-blue-medium mt-8" />
+			<div className="h-16 w-16 animate-spin rounded-full border-b-4 border-current text-coa-blue-medium mt-8" />
 			<div className="mt-8">{props.message}</div>
 		</div>
 	);

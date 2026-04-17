@@ -207,7 +207,7 @@ const MaintenanceByStreet = (props) => {
 			<div>
 				<EmailDownload downloadData={props.data.streets} fileName="maintenance_by_street.csv" />
 			</div>
-			<div className="my-4">
+			<div className="my-4" id="view-container">
 				<div id="listView" hidden={props.location.query.view !== "list"} className="mt-3">
 					<Table
 						data={props.data.streets}

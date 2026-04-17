@@ -147,6 +147,15 @@ const DevelopmentTable = (props) => {
 				meta: {
 					simpleName: "Contractor Name",
 				},
+				filterFn: (row, columnId, filterValue) => {
+					const names = row.getValue(columnId);
+
+					// If it's not an array or is empty, it shouldn't match
+					if (!Array.isArray(names) || names.length === 0) return false;
+
+					// Return true if ANY name in the array includes the search term (case-insensitive)
+					return names.some((name) => name.toLowerCase().includes(String(filterValue).toLowerCase()));
+				},
 			},
 			{
 				accessorKey: "applied_date",

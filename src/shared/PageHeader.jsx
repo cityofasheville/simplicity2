@@ -4,6 +4,8 @@ import { Link } from "react-router";
 
 // change heading levels
 function PageHeader(props) {
+	console.log(props.h4);
+
 	return (
 		<section>
 			{props.image && (
@@ -40,9 +42,9 @@ function PageHeader(props) {
 						)}
 					</div>
 				)}
-				{props.h2 !== null && <h2 className="text-3xl text-coa-blue-medium">{props.h2}</h2>}
-				{props.h3 !== null && <h3>{props.h3}</h3>}
-				{props.h4 !== null && <h4>{props.h4}</h4>}
+				{props.h2 && <h2 className="text-3xl text-coa-blue-medium">{props.h2}</h2>}
+				{props.h3 && <h3>{props.h3}</h3>}
+				{props.h4 && <h4>{props.h4}</h4>}
 
 				{props.subheading !== null && props.subheading}
 				{/* <div className="ml-auto">{props.children}</div> */}

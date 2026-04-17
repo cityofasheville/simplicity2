@@ -176,7 +176,7 @@ const Address = (props) => (
 							<a
 								href="https://iframe.publicstuff.com/#?client_id=819"
 								target="_blank"
-								className="btn btn-small btn-warning inline-block w-auto"
+								className="btn btn-small btn-warning inline-block text-black w-auto"
 							>
 								{content.report_with_the_asheville_app}
 							</a>

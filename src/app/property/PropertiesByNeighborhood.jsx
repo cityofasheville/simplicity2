@@ -43,7 +43,7 @@ const propertyTableConfig = {
 		{
 			accessorKey: "address",
 			enableColumnFilter: true,
-
+			accessorFn: (row) => [row.property_address, row.property_zipcode].join(" "),
 			cell: ({ row }) => (
 				<Link to={"/address?id=" + row.original.property_civic_address_id}>
 					{row.original.property_address}, {row.original.property_zipcode}
@@ -90,7 +90,7 @@ const PropertiesByNeighborhood = (props) => {
 	return (
 		<div>
 			<EmailDownload downloadData={props.data.properties_by_neighborhood} fileName="properties_by_neighborhodd.csv" />
-			<section className="my-4">
+			<section className="my-4" id="view-container">
 				<div id="listView" className={`${props.location.query.view !== "list" ? "hidden" : "flex"}`}>
 					{props.data.properties_by_neighborhood.length < 1 ? (
 						<div className="alert alert-info">No results found</div>

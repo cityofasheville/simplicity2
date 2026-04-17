@@ -29,25 +29,25 @@ import ClimateJustice from "../../shared/ClimateJustice";
 const PropertyTableConfig = {
 	columns: [
 		{
-			accessorKey: "civic_address_id",
+			accessorKey: "address",
+			// cell: (info) => info.getValue(),
 			cell: ({ row }) => (
 				<Link
 					to={{
-						pathname: "/Property/" + `${row.original.civic_address_id}`,
+						pathname: "/address?id=" + `${row.original.civic_address_id}`,
 						state: { data: row },
 					}}
 				>
-					<span className="hover:underline">{row.original.civic_address_id}</span>
+					<span className="hover:underline">{row.original.address}</span>
 				</Link>
 			),
-
-			header: () => <span>Civic address ID(s)</span>,
+			header: () => <span>Address(es)</span>,
 			footer: (props) => props.column.id,
 		},
 		{
-			accessorKey: "address",
-			cell: (info) => info.getValue(),
-			header: () => <span>Address(es)</span>,
+			accessorKey: "civic_address_id",
+			cell: ({ row }) => <span>{row.original.civic_address_id}</span>,
+			header: () => <span>Civic address ID(s)</span>,
 			footer: (props) => props.column.id,
 		},
 	],

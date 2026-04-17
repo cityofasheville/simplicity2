@@ -70,9 +70,11 @@ function Properties(props) {
 					</Link>
 				</div>
 			</PageHeader>
-			<div className="flex">
+			<div className="flex" role="tablist">
 				<div className="btn-group ml-auto">
 					<button
+						role="tab"
+						aria-controls="view-container"
 						className="btn btn-primary"
 						onClick={() => refreshLocation(getNewUrlParams("map"), props.location)}
 						active={props.location.query.view === "map"}
@@ -81,6 +83,8 @@ function Properties(props) {
 						Map view
 					</button>
 					<button
+						role="tab"
+						aria-controls="view-container"
 						className="btn btn-primary"
 						onClick={() => refreshLocation(getNewUrlParams("list"), props.location)}
 						active={props.location.query.view === "list"}

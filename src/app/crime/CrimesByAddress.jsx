@@ -165,8 +165,10 @@ function CrimesByAddress(props) {
 							<div className="mr-auto">
 								<EmailDownload downloadData={data.crimes_by_address} fileName={content.crimes_by_address_filename} />
 							</div>
-							<div className="btn-group">
+							<div className="btn-group" role="tablist">
 								<button
+									role="tab"
+									aria-controls="view-container"
 									onClick={() => refreshLocation(getNewUrlParams("map"), props.location)}
 									active={props.location.query.view === "map"}
 									aria-selected={props.location.query.view === "map"}
@@ -175,6 +177,8 @@ function CrimesByAddress(props) {
 									{content.map_view}
 								</button>
 								<button
+									role="tab"
+									aria-controls="view-container"
 									onClick={() => refreshLocation(getNewUrlParams("list"), props.location)}
 									active={props.location.query.view === "list"}
 									aria-selected={props.location.query.view === "list"}
@@ -201,48 +205,49 @@ function CrimesByAddress(props) {
 								<div>{content.no_results_found}</div>
 							)}
 						</div> */}
+						<div>
+							<div id="listView" className={`${props.location.query.view === "list" ? "flex" : "hidden"}`}>
+								<CrimeTable data={data.crimes_by_address} location={props.location} />
+							</div>
 
-						<div id="listView" className={`${props.location.query.view === "list" ? "flex" : "hidden"}`}>
-							<CrimeTable data={data.crimes_by_address} location={props.location} />
-						</div>
-
-						<div id="mapView" className={`${props.location.query.view === "map" ? "flex" : "hidden"}`}>
-							{data.crimes_by_address.length === 0 || props.location.query.view !== "map" ? (
-								<div> {content.no_results_found}</div>
-							) : (
-								<div className="w-full">
-									<div className=" h-[600px] flex flex-col">
-										<Map
-											data={mapData}
-											showCenter
-											legend={createLegend(data.crimes_by_address)}
-											center={
-												props.location.query.x !== ""
-													? [parseFloat(props.location.query.y), parseFloat(props.location.query.x)]
-													: null
-											}
-											centerLabel={props.location.query.label}
-											drawCircle
-											radius={
-												props.location.query.within === undefined || props.location.query.within === ""
-													? 215
-													: parseInt(props.location.query.within, 10) / 3
-											}
-											within={
-												props.location.query.within === undefined || props.location.query.within === ""
-													? 660
-													: parseInt(props.location.query.within, 10)
-											}
-											zoomToPoint={
-												props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== ""
-													? props.location.query.zoomToPoint
-													: null
-											}
-										/>{" "}
+							<div id="mapView" className={`${props.location.query.view === "map" ? "flex" : "hidden"}`}>
+								{data.crimes_by_address.length === 0 || props.location.query.view !== "map" ? (
+									<div> {content.no_results_found}</div>
+								) : (
+									<div className="w-full">
+										<div className=" h-[600px] flex flex-col">
+											<Map
+												data={mapData}
+												showCenter
+												legend={createLegend(data.crimes_by_address)}
+												center={
+													props.location.query.x !== ""
+														? [parseFloat(props.location.query.y), parseFloat(props.location.query.x)]
+														: null
+												}
+												centerLabel={props.location.query.label}
+												drawCircle
+												radius={
+													props.location.query.within === undefined || props.location.query.within === ""
+														? 215
+														: parseInt(props.location.query.within, 10) / 3
+												}
+												within={
+													props.location.query.within === undefined || props.location.query.within === ""
+														? 660
+														: parseInt(props.location.query.within, 10)
+												}
+												zoomToPoint={
+													props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== ""
+														? props.location.query.zoomToPoint
+														: null
+												}
+											/>{" "}
+										</div>
+										<MapLegend type="crime" />
 									</div>
-									<MapLegend type="crime" />
-								</div>
-							)}
+								)}
+							</div>
 						</div>
 					</div>
 				);

@@ -15,7 +15,7 @@ function ClickableTile({ image, url, text }) {
 
 	return (
 		<div className="clickable-tile" ref={tileRef} style={{ cursor: "pointer" }} onClick={handleClick}>
-			<div class="w-full relative overflow-hidden pb-[100%]">
+			<div className="w-full relative overflow-hidden pb-[100%]">
 				<img alt="" src={image} width="auto" height="100%" className="absolute min-h-full" />
 				<a ref={linkRef} href={url} className="tile-link-action" target="_blank">
 					<span className="flex items-center justify-center text-center absolute w-full h-16 p-4 bg-white bg-opacity-85 bottom-0 font-normal text-coa-blue-dark text-md">

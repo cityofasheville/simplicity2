@@ -111,8 +111,9 @@ const CrimeSummary = (props) => {
 					</div>
 
 					<div
-						className="w-full flex flex-col"
-						hidden={props.location.query.entity === "street" || props.location.query.entity === "neighborhood"}
+						className={`w-full flex flex-col ${
+							props.location.query.entity === "street" || props.location.query.entity === "neighborhood" ? "hidden" : ""
+						}`}
 					>
 						<label htmlFor="extent" className="font-normal">
 							{content.within}:

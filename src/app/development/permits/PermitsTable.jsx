@@ -83,44 +83,6 @@ class PermitsTable extends React.Component {
 	}
 
 	render() {
-		console.log(this.props.tableHeaders);
-
-		console.log(this.props.data);
-		const permitTableConfig = {
-			columns: [
-				{
-					header: "Permits",
-					columns: this.props.tableHeaders.map((headerObj) => ({
-						id: headerObj.field,
-						header: headerObj.display,
-						accessorFn: (row) => row[headerObj.field],
-						cell: (info) => (headerObj.formatFunc ? headerObj.formatFunc(info.row.original) : info.getValue()),
-						sortingFn: headerObj.sortMethod ?? "auto",
-						filterFn: (row, columnId, filterValue) => {
-							const values = String(filterValue).split(",");
-							const cellValue = row.getValue(columnId);
-							const compareText = cellValue != null ? String(cellValue) : "";
-							return values.some((val) => compareText.toLowerCase().includes(val.trim().toLowerCase()));
-						},
-						enableSorting: true,
-						enableColumnFilter: true,
-						meta: {
-							simpleName: headerObj.display,
-						},
-					})),
-				},
-			],
-			navigationRender: {
-				paginationButtonsRender: true,
-				goToPageRender: true,
-				itemsPerPageRender: true,
-				itemsPerPage: 20,
-			},
-			filterRender: {
-				globalFilterRender: false,
-			},
-		};
-
 		const getPermitTypeDisplay = (permit) => {
 			const trcType = getTRCTypeFromPermit(permit);
 
@@ -273,9 +235,8 @@ class PermitsTable extends React.Component {
 				globalFilterRender: false,
 			},
 		};
-		const permitTableColumns = majorDevTableConfig.columns;
-		console.log("COlUMNS", permitTableColumns);
 
+		const permitTableColumns = majorDevTableConfig.columns;
 		const navRender = majorDevTableConfig.navigationRender;
 		const filterRender = majorDevTableConfig.filterRender;
 

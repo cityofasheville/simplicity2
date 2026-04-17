@@ -144,8 +144,10 @@ const DevelopmentByNeighborhood = (props) => {
 					<EmailDownload downloadData={props.data.permits_by_neighborhood} fileName="permits_by_neighborhood.csv" />
 				</div>
 				<div className="ml-auto">
-					<div className="btn-group ml-auto">
+					<div className="btn-group ml-auto" role="tablist">
 						<button
+							role="tab"
+							aria-controls="view-container"
 							className="btn btn-primary"
 							onClick={() => refreshLocation(getNewUrlParams("map"), props.location)}
 							active={props.location.query.view === "map"}
@@ -154,6 +156,8 @@ const DevelopmentByNeighborhood = (props) => {
 							Map view
 						</button>
 						<button
+							role="tab"
+							aria-controls="view-container"
 							className="btn btn-primary"
 							onClick={() => refreshLocation(getNewUrlParams("list"), props.location)}
 							active={props.location.query.view === "list"}
@@ -180,37 +184,39 @@ const DevelopmentByNeighborhood = (props) => {
 				)}
 			</div> */}
 
-			<div id="listView" className={`${props.location.query.view === "list" ? "flex" : "hidden"}`}>
-				<DevelopmentTable data={props.data.permits_by_neighborhood} location={props.location} />
-			</div>
+			<div id="view-container">
+				<div id="listView" className={`${props.location.query.view === "list" ? "flex" : "hidden"}`}>
+					<DevelopmentTable data={props.data.permits_by_neighborhood} location={props.location} />
+				</div>
 
-			<div id="mapView" className={`${props.location.query.view === "map" ? "flex" : "hidden"}`}>
-				{props.data.permits_by_neighborhood.length === 0 || props.location.query.view !== "map" ? (
-					<div className="alert alert-info">No results found</div>
-				) : (
-					<div className="w-full">
-						<div className="w-full h-[600px] flex">
-							<Map
-								data={mapData}
-								drawPolygon
-								legend={createLegend(props.data.permits_by_neighborhood)}
-								polygonData={combinePolygonsFromNeighborhoodList([props.data.neighborhoods[0]])}
-								bounds={
-									(props.location.query.zoomToPoint !== undefined) & (props.location.query.zoomToPoint !== "")
-										? null
-										: getBoundsFromPolygonData([props.data.neighborhoods[0].polygon])
-								}
-								within={parseInt(props.location.query.within, 10)}
-								zoomToPoint={
-									props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== ""
-										? props.location.query.zoomToPoint
-										: null
-								}
-							/>
+				<div id="mapView" className={`${props.location.query.view === "map" ? "flex" : "hidden"}`}>
+					{props.data.permits_by_neighborhood.length === 0 || props.location.query.view !== "map" ? (
+						<div className="alert alert-info">No results found</div>
+					) : (
+						<div className="w-full">
+							<div className="w-full h-[600px] flex">
+								<Map
+									data={mapData}
+									drawPolygon
+									legend={createLegend(props.data.permits_by_neighborhood)}
+									polygonData={combinePolygonsFromNeighborhoodList([props.data.neighborhoods[0]])}
+									bounds={
+										(props.location.query.zoomToPoint !== undefined) & (props.location.query.zoomToPoint !== "")
+											? null
+											: getBoundsFromPolygonData([props.data.neighborhoods[0].polygon])
+									}
+									within={parseInt(props.location.query.within, 10)}
+									zoomToPoint={
+										props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== ""
+											? props.location.query.zoomToPoint
+											: null
+									}
+								/>
+							</div>
+							<MapLegend type="development" />
 						</div>
-						<MapLegend type="development" />
-					</div>
-				)}
+					)}
+				</div>
 			</div>
 		</div>
 	);

@@ -165,7 +165,7 @@ function AddressesByNeighborhood(props) {
 				});
 
 				return (
-					<section>
+					<section id="view-container">
 						<EmailDownload
 							downloadData={data.addresses_by_neighborhood}
 							fileName={content.addresses_by_neighborhood_filename}

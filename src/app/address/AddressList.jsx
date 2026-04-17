@@ -51,8 +51,10 @@ function AddressList(props) {
 				</Link>
 			</PageHeader>
 			<div className="flex">
-				<div className="btn-group ml-auto">
+				<div role="tablist" aria-label="Choose view" className="btn-group ml-auto">
 					<button
+						role="tab"
+						aria-controls="view-container"
 						className="btn btn-primary"
 						onClick={() => refreshLocation(getNewUrlParams("map"), props.location)}
 						active={props.location.query.view === "map"}
@@ -62,6 +64,8 @@ function AddressList(props) {
 						Map view
 					</button>{" "}
 					<button
+						aria-controls="view-container"
+						role="tab"
 						className="btn btn-primary"
 						onClick={() => refreshLocation(getNewUrlParams("list"), props.location)}
 						active={props.location.query.view === "list"}

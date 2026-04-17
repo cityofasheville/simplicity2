@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import GlobalFilter from "../../../shared/Table/GlobalFilter.jsx";
 import TableControls from "../../../shared/Table/TableControls/TableControls";
 import PaginationNavButtons from "../../../shared/Table/PaginationNavButtons/PaginationNavButtons";
+import { getPlural } from "./searchResultsUtils";
 
 import {
 	useReactTable,
@@ -109,6 +110,9 @@ export default function SearchResultsTable({
 								if (filterOptions?.length > 0) {
 									headerMatch = filterOptions.find((option) => option.accessor === header.id);
 								}
+								console.log("header", header);
+								console.log("header match", headerGroup);
+
 								return (
 									<th
 										className="border p-2"
@@ -127,6 +131,7 @@ export default function SearchResultsTable({
 										{headerMatch && table.getPageCount() > 1 && (
 											<div className="mt-1">
 												<input
+													id={`filter-${header.id}`}
 													type="text"
 													value={header.column.getFilterValue() ?? ""}
 													onChange={(e) => header.column.setFilterValue(e.target.value)}
@@ -134,6 +139,7 @@ export default function SearchResultsTable({
 													className="w-full border rounded px-2 py-1 text-sm"
 													onClick={(e) => e.stopPropagation()} // prevents sort toggle
 												/>
+												<label className="sr-only" htmlFor={`filter-${header.id}`}>{`Search the table`}</label>
 											</div>
 										)}
 									</th>

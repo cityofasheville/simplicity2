@@ -1,20 +1,29 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-const ButtonGroup = props => (
-  <div className={['btn-group pull-', props.alignment].join('')} style={props.style}>
-    { props.children }
-  </div>
-);
+function ButtonGroup(props) {
+	let aligning = "";
+	if (props.alignment === "left") {
+		aligning = "mr-auto";
+	} else if (props.alignment === "right") {
+		aligning = "ml-auto";
+	}
+
+	return (
+		<div className={aligning} style={props.style}>
+			{props.children}
+		</div>
+	);
+}
 
 ButtonGroup.propTypes = {
-  children: PropTypes.node,
-  alignment: PropTypes.string,
-  style: PropTypes.object, // eslint-disable-line
+	children: PropTypes.node,
+	alignment: PropTypes.string,
+	style: PropTypes.object, // eslint-disable-line
 };
 
 ButtonGroup.defaultProps = {
-  // alignment: 'right',
+	// alignment: 'right',
 };
 
 export default ButtonGroup;

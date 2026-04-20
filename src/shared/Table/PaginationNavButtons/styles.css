@@ -1,0 +1,21 @@
+
+.page-item .page-link {
+  background-color: #ffffff;
+  color:#4077a5;
+}
+
+.page-item .page-link:hover {
+  background-color: #4077a5;
+  color:#ffffff;
+}
+
+.page-item.active .page-link {
+  color: #ffffff;
+  background-color: #004987;
+}
+
+.page-item.disabled .page-link {
+  color: #6c757d;
+  pointer-events: none;
+  cursor: auto;
+}

@@ -1,137 +1,8 @@
 import React from 'react';
 import Icon from '../../../shared/Icon';
-import FlowDiagram from './FlowDiagram';
-import TRCDataTable from './TRCDataTable';
-import Accordion from '../../../shared/Accordion';
 import PermitTypeCards from './PermitTypeCards';
 import CityLogoSvg from '../../../shared/CityLogoSvg';
-import {
-  DRAFTING_COMPASS,
-  USER_FRIENDS,
-  GAVEL,
-} from '../../../shared/iconConstants';
-
-export const faqs = [
-  {
-    header: 'How current is this data?',
-    body: 'Data in SimpliCity is updated nightly.',
-  },
-  {
-    header: 'Where is the Development Services Department?',
-    body: (<React.Fragment><a href="https://goo.gl/maps/sKweCmhK4iiEuz7t6" target="_blank" rel="noopener noreferrer">161 South Charlotte Street</a>, down the hill from City Hall.</React.Fragment>),
-  },
-  {
-    header: 'Where is City Hall?',
-    body: (<React.Fragment><a href="https://goo.gl/maps/FWoy1aRrV1ktdF8T7" target="_blank" rel="noopener noreferrer">70 Court Plaza</a>, off of College Street.</React.Fragment>),
-  },
-  {
-    header: 'Who builds these projects?',
-    body: 'Small business owners, land owners, developers, and other private investors submit applications for permission to develop property in the city.  Once approved, they work with private contractors.',
-  },
-  {
-    header: 'Who should I talk to if I have questions about one of these projects?',
-    body: 'Give our Planner of the Day a call at 828-259-5450 or email them at pod@ashevillenc.gov.  They will direct you to the city planner who is reviewing the application.',
-  },
-  {
-    header: 'How can I tell if a project includes affordable housing?',
-    body: 'If the developer has indicated that they are planning to include affordable housing, it will be indicated on the project page with an icon.  Throughout the process, a developer could alter their plans, and this may not be reflected on the project page immediately.',
-  },
-  {
-    header: 'How can I join one of the commissions that reviews projects?',
-    body: <React.Fragment>Visit <a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/" target="_blank" rel="noopener noreferrer">the Boards and Commissions web page</a> to view current vacancies and learn about application steps.</React.Fragment>,
-  },
-  {
-    header: 'I still have a question!',
-    body: (
-      <React.Fragment>
-        <p>If your question was not answered here, please <a href="https://forms.gle/CkkihZfs37opZfXM8" target="_blank" rel="noopener noreferrer">let us know what it was</a> so that we can improve this page.  If you have a question to which you need a response, please email pod@ashevillenc.gov instead.</p>
-        <p>If you have thoughts about to improve this tool, please <a href="https://forms.gle/kSRTZidJUtNdZ8Rz7" rel="noopener noreferrer" target="_blank">tell us</a>.</p>
-      </React.Fragment>
-    ),
-  },
-  // {
-  //   header: 'How much control does the City have over the look and feel of a project?',
-  //   body: 'Some review levels or zoning districts allow the City to review architectural design and some do not.  For instance, projects downtown, in historic districts, or in the river design area are subject to certain architectural requirements.  Conditional zoning projects allow Council the authority and flexibility to mandate some design elements.  Most projects outside of these cases do not allow for much flexibility in regulating architectural design.',
-  // },
-];
-
-export const devDashSections = [
-  {
-    linkId: 'types',
-    linkName: 'Project Types',
-    header: 'Types of large-scale development',
-    body: (<React.Fragment>
-      <p>The types of large-scale development are defined by <a href="https://codelibrary.amlegal.com/codes/ashevillenc/latest/asheville_nc/0-0-0-2930" target="_blank" rel="noopener noreferrer">the City of Asheville's Unified Development Ordinance.</a>  Projects located downtown are <a href="https://codelibrary.amlegal.com/codes/ashevillenc/latest/asheville_nc/0-0-0-14740#JD_7-5-9.1" target="_blank" rel="noopener noreferrer">defined slightly differently in the ordinance.</a></p>
-      <PermitTypeCards />
-    </React.Fragment>),
-  },
-  {
-    linkId: 'process',
-    linkName: 'Process',
-    header: 'The development process',
-    body: (<React.Fragment>
-      <p>After the developer submits an application, it goes through a decision-making process that includes city staff, elected and appointed city officials, developers, and residents.  Who is involved at what step depends on the type of project.</p>
-      <FlowDiagram />
-    </React.Fragment>),
-  },
-  {
-    linkId: 'notifications',
-    linkName: 'Get Notifications',
-    header: 'Sign up for notifications',
-    body: (<p>You can receive an email notification when a developer submits an application for a new large-scale development.  Visit <a href="https://notifications.ashevillenc.gov" target="_blank" rel="noopener noreferrer">notifications.ashevillenc.gov</a> to sign up or change your notification settings.</p>),
-  },
-  {
-    linkId: 'data',
-    linkName: 'Project Details',
-    header: 'Development details',
-    body: (<React.Fragment>
-      <p className="links-above-text">
-        <a href="/permits">All Permit Applications</a>
-        <a href="/">Search Nearby Development</a>
-        <a href="/permits/search">Search Permits by Address or ID</a>
-        <a href="https://data-avl.opendata.arcgis.com/datasets/b8fdb63db30b42d0875afb617e1551f4_2/explore?location=35.604370%2C-82.530822%2C11.13&showTable=true" target='_blank'>Open Data Portal - Permits</a>
-      </p>
-      <p style={{marginBottom: '1.5rem'}}>The map and table below contain proposed, large-scale, private development projects for which a permit application has been submitted.  
-        You can also explore permit applications using the above links. 
-      </p>
-      <TRCDataTable />
-    </React.Fragment>),
-  },
-  {
-    linkId: 'participate',
-    linkName: 'Get Involved',
-    header: 'How to get involved',
-    body: (<React.Fragment>
-      <p>Depending on the type of project, there are a few different ways for community members to get involved in the development process.</p>
-      <ul className="paragraphy-list">
-        <li>
-          <h3>Neighborhood meetings</h3>
-          <p>Developers planning to submit applications for development that must go through the Technical Review Committee (including projects of types Level II, Major Subdivision, Conditional Zoning, and Special Use Permit) must hold a public meeting before submitting the application.</p>
-          <p>Currently, developers are not required by law to notify the City of Asheville when those meetings take place.  Thus, the first record the city has of a proposed development is when the application is submitted, after the meeting.</p>
-          <p>However, in order to help ensure that residents can find out about developer-neighborhood meetings in advance, the city has asked developers to voluntarily notify the city.  After those developers fill out an online form, those meeting dates are automatically added to <a target="_blank" rel="noopener noreferrer" href="https://calendar.google.com/calendar/embed?src=ashevillenc.gov_gk5l650n9mopts9m7sfemhcpd8%40group.calendar.google.com&ctz=America%2FNew_York">a calendar that shows all developer-neighborhood meetings about which the city has been notified</a>.</p>
-        </li>
-        <li>
-          <h3>Committee and commission meetings</h3>
-          <p>As described above, there are several committees and commissions that participate in the major development review processs.  Depending on the size, type, and location of proposed development, it may go through the <a href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/technical-review-committee/" target="_blank" rel="noopener noreferrer">Technical Review Committee</a>, the <a href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/planning-and-zoning-commission/" target="_blank" rel="noopener noreferrer">Planning and Zoning Commission</a>, the <a href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/historic-resources-commission/" target="_blank" rel="noopener noreferrer">Historic Resources Commission</a>, the <a href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/downtown-commission/" target="_blank" rel="noopener noreferrer">Asheville Downtown Commission</a>, or the <a href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/asheville-area-riverfront-redevelopment-commission/" target="_blank" rel="noopener noreferrer">Asheville Area Riverfront Redevelopment Commission</a>.</p>
-          <p>Visit <a href="https://AshevilleNC.gov" rel="noopener noreferrer" target="_blank">AshevilleNC.gov</a> to learn more about city boards, commissions, and committees.</p>
-        </li>
-        <li>
-          <h3>Council meetings</h3>
-          <p>Projects of types Conditional Zoning and Special Use Permit are reveiwed in a public hearing before City Council.  Community members may speak as individuals for three minutes or on behalf of organizations for ten minutes (if three other people cede their speaking time) at a council meeting.</p>
-          <p>Information about City Council as well as minutes and agendas for upcoming and past council meetings can be found on <a href="https://www.ashevillenc.gov/government/" rel="noopener noreferrer" target="_blank">the City of Asheville website</a>.</p>
-        </li>
-      </ul>
-    </React.Fragment>)
-  },
-  {
-    linkId: 'faq',
-    linkName: 'Frequently Asked Questions',
-    header: 'Frequently asked questions',
-    body: (<Accordion
-      data={faqs}
-    />),
-  },
-];
+import { DRAFTING_COMPASS, USER_FRIENDS, GAVEL } from '../../../shared/iconConstants';
 
 export const orderedDates = [
   {
@@ -207,19 +78,31 @@ trcProjectTypes['Level I'] = {
   permit_subtype: 'Level I',
   short: 'I',
   descriptors: {
-    whyLevel: (<ul>
-      <li>Not located downtown and contains 5 to 19 residential units or 500 to 34,999 square feet of commercial space</li>
-      <li>Located downtown and is 500 to 19,999 square feet</li>
-    </ul>),
+    whyLevel: (
+      <ul className="list-disc ml-6">
+        <li>
+          Not located downtown and contains 5 to 19 residential units or 500 to 34,999 square feet
+          of commercial space
+        </li>
+        <li>Located downtown and is 500 to 19,999 square feet</li>
+      </ul>
+    ),
     participationOpp: 'There are no public participation opportunities for Level I projects.',
-    examples: (<ul>
-      <li>A new restaurant</li>
-      <li>A new pharmacy</li>
-      <li>A 15-unit apartment building</li>
-    </ul>),
-    recentAppsLink: <a href="/development/major?permit_type=level%20I%20#data">Recently submitted Level I projects</a>,
+    examples: (
+      <ul className="list-disc ml-6">
+        <li>A new restaurant</li>
+        <li>A new pharmacy</li>
+        <li>A 15-unit apartment building</li>
+      </ul>
+    ),
+    // recentAppsLink: (
+    //   <a href="/development/major?permit_type=level%20I%20#data">
+    //     Recently submitted Level I projects
+    //   </a>
+    // ),
   },
   color: '#FF3A3A',
+  tw: 'bg-[#FF3A3A] text-white',
 };
 trcProjectTypes['Major Subdivision'] = {
   id: 'Major Subdivision',
@@ -228,22 +111,61 @@ trcProjectTypes['Major Subdivision'] = {
   permit_subtype: 'Major',
   short: 'MS',
   descriptors: {
-    whyLevel: (<ul>
-      <li>Creation or extension of a road</li>
-      <li>Usually creates new residential lots</li>
-    </ul>),
-    participationOpp: (
-      <ul>
-        <li><a href="/development/major#participate">Neighborhood meeting</a></li>
-        <li><a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/historic-resources-commission/" target="_blank" rel="noopener noreferrer">Historic Resources Commission meeting</a> (if in <a href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/historic-district-guidelines/" target="_blank" rel="noopener noreferrer">a historic district</a> or concerning a <a href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/landmarks/" target="_blank" rel="noopener noreferrer">historic landmark</a>)</li>
+    whyLevel: (
+      <ul className="list-disc ml-6">
+        <li>Creation or extension of a road</li>
+        <li>Usually creates new residential lots</li>
       </ul>
     ),
-    examples: (<ul>
-      <li>A new neighborhood with a new road created</li>
-    </ul>),
-    recentAppsLink: <a href="/development/major?permit_type=Major%20Subdivision#data">Recently submitted Major Subdivision projects</a>,
+    participationOpp: (
+      <ul className="list-disc ml-6">
+        <li>
+          <a href="/development/major/engage">Neighborhood meeting</a>
+        </li>
+        <li>
+          <a
+            href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/historic-resources-commission/"
+            rel="noreferrer"
+          >
+            Historic Resources Commission meeting{' '}
+            <i className="bi bi-box-arrow-up-right text-sm" aria-hidden="true"></i>
+            <span className="sr-only">(external site)</span>
+          </a>{' '}
+          (if in{' '}
+          <a
+            href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/historic-district-guidelines/"
+            rel="noreferrer"
+          >
+            a historic district{' '}
+            <i className="bi bi-box-arrow-up-right text-sm" aria-hidden="true"></i>
+            <span className="sr-only">(external site)</span>
+          </a>{' '}
+          or concerning a{' '}
+          <a
+            href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/landmarks/"
+            rel="noreferrer"
+          >
+            historic landmark{' '}
+            <i className="bi bi-box-arrow-up-right text-sm" aria-hidden="true"></i>
+            <span className="sr-only">(external site)</span>
+          </a>
+          )
+        </li>
+      </ul>
+    ),
+    examples: (
+      <ul className="list-disc ml-6">
+        <li>A new neighborhood with a new road created</li>
+      </ul>
+    ),
+    // recentAppsLink: (
+    //   <a href="/development/major?permit_type=Major%20Subdivision#data">
+    //     Recently submitted Major Subdivision projects
+    //   </a>
+    // ),
   },
-  color: '#749B5F',
+  color: '#5B7B4C',
+  tw: 'bg-[#5B7B4C] text-white',
 };
 trcProjectTypes['Level II'] = {
   id: 'Level II',
@@ -253,30 +175,104 @@ trcProjectTypes['Level II'] = {
   short: 'II',
   descriptors: {
     whyLevel: (
-      <ul>
-        <li>Generally, residential developments between 19-49 unit or commerical developments between 35,000 and 99,999 square feet</li>
-        <li>Incentives for affordable housing change the review level for certain projects that may lie outside of these thresholds</li>
-        <li><a href="https:codelibrary.amlegal.com/codes/ashevillenc/latest/asheville_nc/0-0-4236">Section 7-5-9 of the UDO</a> has more information on Level II thresholds and incentives</li>
-      </ul>),
-    participationOpp: (
-      <ul>
-        <li>Downtown:
-          <ul><li><a href="/development/major#participate">Neighborhood meeting</a></li><li>Design review</li><li><a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/planning-and-zoning-commission/" target="_blank" rel="noopener noreferrer">Planning and Zoning Commission</a></li></ul>
+      <ul className="list-disc ml-6">
+        <li>
+          Generally, residential developments between 19-49 unit or commerical developments between
+          35,000 and 99,999 square feet
         </li>
-        <li>Not downtown:
-          <ul><li><a href="/development/major#participate">Neighborhood meeting</a></li><li>Design review (if on the river)</li></ul>
+        <li>
+          Incentives for affordable housing change the review level for certain projects that may
+          lie outside of these thresholds
         </li>
-        <li><a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/historic-resources-commission/" target="_blank" rel="noopener noreferrer">Historic Resources Commission meeting</a> (if in <a href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/historic-district-guidelines/" target="_blank" rel="noopener noreferrer">a historic district</a> or concerning a <a href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/landmarks/" target="_blank" rel="noopener noreferrer">historic landmark</a>)</li>
+        <li>
+          <a
+            href="https://codelibrary.amlegal.com/codes/ashevillenc/latest/asheville_nc/0-0-0-4236"
+            rel="noreferrer"
+          >
+            Section 7-5-9 of the UDO{' '}
+            <i className="bi bi-box-arrow-up-right text-sm" aria-hidden="true"></i>
+            <span className="sr-only">(external site)</span>
+          </a>{' '}
+          has more information on Level II thresholds and incentives
+        </li>
       </ul>
     ),
-    examples: (<ul>
-      <li>A 45-unit residential development</li>
-      <li>A new grocery store</li>
-      <li>A big box specialty retailer</li>
-    </ul>),
-    recentAppsLink: <a href="/development/major?permit_type=level%20II%20#data">Recently submitted Level II projects</a>,
+    participationOpp: (
+      <ul className="list-disc ml-6">
+        <li>
+          Downtown:
+          <ul className="list-disc ml-6">
+            <li>
+              <a href="/development/major/engage">Neighborhood meeting</a>
+            </li>
+            <li>Design review</li>
+            <li>
+              <a
+                href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/planning-and-zoning-commission/"
+                rel="noreferrer"
+              >
+                Planning and Zoning Commission{' '}
+                <i className="bi bi-box-arrow-up-right text-sm" aria-hidden="true"></i>
+                <span className="sr-only">(external site)</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          Not downtown:
+          <ul className="list-disc ml-6">
+            <li>
+              <a href="/development/major/engage">Neighborhood meeting</a>
+            </li>
+            <li>Design review (if on the river)</li>
+          </ul>
+        </li>
+        <li>
+          <a
+            href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/historic-resources-commission/"
+            rel="noreferrer"
+          >
+            Historic Resources Commission meeting{' '}
+            <i className="bi bi-box-arrow-up-right text-sm" aria-hidden="true"></i>
+            <span className="sr-only">(external site)</span>
+          </a>{' '}
+          (if in{' '}
+          <a
+            href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/historic-district-guidelines/"
+            rel="noreferrer"
+          >
+            a historic district{' '}
+            <i className="bi bi-box-arrow-up-right text-sm" aria-hidden="true"></i>
+            <span className="sr-only">(external site)</span>
+          </a>{' '}
+          or concerning a{' '}
+          <a
+            href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/landmarks/"
+            rel="noreferrer"
+          >
+            historic landmark{' '}
+            <i className="bi bi-box-arrow-up-right text-sm" aria-hidden="true"></i>
+            <span className="sr-only">(external site)</span>
+          </a>
+          )
+        </li>
+      </ul>
+    ),
+    examples: (
+      <ul className="list-disc ml-6">
+        <li>A 45-unit residential development</li>
+        <li>A new grocery store</li>
+        <li>A big box specialty retailer</li>
+      </ul>
+    ),
+    // recentAppsLink: (
+    //   <a href="/development/major?permit_type=level%20II%20#data">
+    //     Recently submitted Level II projects
+    //   </a>
+    // ),
   },
-  color: '#2d93ad',
+  color: '#24798F',
+  tw: 'bg-[#24798F] text-white',
 };
 trcProjectTypes['Conditional Zoning'] = {
   id: 'Conditional Zoning',
@@ -285,27 +281,97 @@ trcProjectTypes['Conditional Zoning'] = {
   permit_subtype: 'Conditional Zoning',
   short: 'CZ',
   descriptors: {
-    whyLevel: (<ul>
-      <li>The development will have a significant impact upon public services and infrastructure</li>
-      <li>Approval requires a rezoning to one of the expansion zoning districts found in Article VIII of the UDO</li>
-      <li>Exact thresholds for Conditional Zoning are defined by <a href="https:codelibrary.amlegal.com/codes/ashevillenc/latest/asheville_nc/0-0-0-4236">Section 7-5-9 of the UDO</a></li>
-    </ul> ),
+    whyLevel: (
+      <ul className="list-disc ml-6">
+        <li>
+          The development will have a significant impact upon public services and infrastructure
+        </li>
+        <li>
+          Approval requires a rezoning to one of the expansion zoning districts found in Article
+          VIII of the UDO
+        </li>
+        <li>
+          Exact thresholds for Conditional Zoning are defined by{' '}
+          <a
+            href="https://codelibrary.amlegal.com/codes/ashevillenc/latest/asheville_nc/0-0-0-4236"
+            rel="noreferrer"
+          >
+            Section 7-5-9 of the UDO{' '}
+            <i className="bi bi-box-arrow-up-right text-sm" aria-hidden="true"></i>
+            <span className="sr-only">(external site)</span>
+          </a>
+        </li>
+      </ul>
+    ),
     participationOpp: (
-      <ul>
-        <li><a href="/development/major#participate">Neighborhood meeting</a></li>
+      <ul className="list-disc ml-6">
+        <li>
+          <a href="/development/major/engage">Neighborhood meeting</a>
+        </li>
         <li>Design review (if downtown or on the river)</li>
-        <li><a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/historic-resources-commission/" target="_blank" rel="noopener noreferrer">Historic Resources Commission meeting</a> (if in <a href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/historic-district-guidelines/" target="_blank" rel="noopener noreferrer">a historic district</a> or concerning a <a href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/landmarks/" target="_blank" rel="noopener noreferrer">historic landmark</a>)</li>
-        <li><a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/planning-and-zoning-commission/" target="_blank" rel="noopener noreferrer">Planning and Zoning Commission</a></li>
-        <li><a href="https://ashevillenc.gov/government" target="_blank" rel="noopener noreferrer">City Council</a> hearing</li>
-      </ul>),
-    examples: (<ul>
-      <li>250-unite apartment complex</li>
-      <li>Corporate or industrial campus</li>
-      <li>Mixed use development with large retail stores</li>
-    </ul>),
-    recentAppsLink: <a href="/development/major?permit_type=Conditional%20Zoning#data">Recently submitted Conditional Zoning projects</a>,
+        <li>
+          <a
+            href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/historic-resources-commission/"
+            rel="noreferrer"
+          >
+            Historic Resources Commission meeting{' '}
+            <i className="bi bi-box-arrow-up-right text-sm" aria-hidden="true"></i>
+            <span className="sr-only">(external site)</span>
+          </a>{' '}
+          (if in{' '}
+          <a
+            href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/historic-district-guidelines/"
+            rel="noreferrer"
+          >
+            a historic district{' '}
+            <i className="bi bi-box-arrow-up-right text-sm" aria-hidden="true"></i>
+            <span className="sr-only">(external site)</span>
+          </a>{' '}
+          or concerning a{' '}
+          <a
+            href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/landmarks/"
+            rel="noreferrer"
+          >
+            historic landmark{' '}
+            <i className="bi bi-box-arrow-up-right text-sm" aria-hidden="true"></i>
+            <span className="sr-only">(external site)</span>
+          </a>
+          )
+        </li>
+        <li>
+          <a
+            href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/planning-and-zoning-commission/"
+            rel="noreferrer"
+          >
+            Planning and Zoning Commission{' '}
+            <i className="bi bi-box-arrow-up-right text-sm" aria-hidden="true"></i>
+            <span className="sr-only">(external site)</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://ashevillenc.gov/government" rel="noreferrer">
+            City Council <i className="bi bi-box-arrow-up-right text-sm" aria-hidden="true"></i>
+            <span className="sr-only">(external site)</span>
+          </a>{' '}
+          hearing
+        </li>
+      </ul>
+    ),
+    examples: (
+      <ul className="list-disc ml-6">
+        <li>250-unite apartment complex</li>
+        <li>Corporate or industrial campus</li>
+        <li>Mixed use development with large retail stores</li>
+      </ul>
+    ),
+    // recentAppsLink: (
+    //   <a href="/development/major?permit_type=Conditional%20Zoning#data">
+    //     Recently submitted Conditional Zoning projects
+    //   </a>
+    // ),
   },
   color: '#9B6681',
+  tw: 'bg-[#9B6681] text-white',
 };
 trcProjectTypes['Special Use Permit'] = {
   id: 'Special Use Permit',
@@ -314,102 +380,190 @@ trcProjectTypes['Special Use Permit'] = {
   permit_subtype: 'Special Use',
   short: 'SUP',
   descriptors: {
-    whyLevel: <React.Fragment>This is highly specialized permit process for land uses with potential public impacts that require individual consideration of their location, design, configuration and operation.  These uses are defined by <a href="https://codelibrary.amlegal.com/codes/ashevillenc/latest/asheville_nc/0-0-0-9513#JD_7-16-2" target="_blank" rel="noopener noreferrer">Section 7-16-2 of the Unified Development Ordinance</a>.</React.Fragment>,
+    whyLevel: (
+      <React.Fragment>
+        This is highly specialized permit process for land uses with potential public impacts that
+        require individual consideration of their location, design, configuration and operation.
+        These uses are defined by{' '}
+        <a
+          href="https://codelibrary.amlegal.com/codes/ashevillenc/latest/asheville_nc/0-0-0-9775"
+          rel="noreferrer"
+        >
+          Section 7-16-2 of the Unified Development Ordinance{' '}
+          <i className="bi bi-box-arrow-up-right text-sm" aria-hidden="true"></i>
+          <span className="sr-only">(external site)</span>
+        </a>
+        .
+      </React.Fragment>
+    ),
     participationOpp: (
-      <ul>
-        <li><a href="/development/major#participate">Neighborhood meeting</a></li>
+      <ul className="list-disc ml-6">
+        <li>
+          <a href="/development/major/engage">Neighborhood meeting</a>
+        </li>
         <li>Design review (if downtown or on the river)</li>
-        <li><a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/historic-resources-commission/" target="_blank" rel="noopener noreferrer">Historic Resources Commission meeting</a> (if in <a href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/historic-district-guidelines/" target="_blank" rel="noopener noreferrer">a historic district</a> or concerning a <a href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/landmarks/" target="_blank" rel="noopener noreferrer">historic landmark</a>)</li>
-        <li><a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/planning-and-zoning-commission/" target="_blank" rel="noopener noreferrer">Planning and Zoning Commission</a></li>
+        <li>
+          <a
+            href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/historic-resources-commission/"
+            rel="noreferrer"
+          >
+            Historic Resources Commission meeting{' '}
+            <i className="bi bi-box-arrow-up-right text-sm" aria-hidden="true"></i>
+            <span className="sr-only">(external site)</span>
+          </a>{' '}
+          (if in{' '}
+          <a
+            href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/historic-district-guidelines/"
+            rel="noreferrer"
+          >
+            a historic district{' '}
+            <i className="bi bi-box-arrow-up-right text-sm" aria-hidden="true"></i>
+            <span className="sr-only">(external site)</span>
+          </a>{' '}
+          or concerning a{' '}
+          <a
+            href="https://ashevillenc.gov/department/planning-urban-design/historic-resources/landmarks/"
+            rel="noreferrer"
+          >
+            historic landmark{' '}
+            <i className="bi bi-box-arrow-up-right text-sm" aria-hidden="true"></i>
+            <span className="sr-only">(external site)</span>
+          </a>
+          )
+        </li>
+        <li>
+          <a
+            href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/planning-and-zoning-commission/"
+            rel="noreferrer"
+          >
+            Planning and Zoning Commission{' '}
+            <i className="bi bi-box-arrow-up-right text-sm" aria-hidden="true"></i>
+            <span className="sr-only">(external site)</span>
+          </a>
+        </li>
       </ul>
     ),
-    examples: (<ul>
-      <li>Cell phone towers</li>
-      <li>Jails</li>
-      <li>Government buildings</li>
-      <li>Group homes</li>
-    </ul>),
-    recentAppsLink:(<div><span>Note: Special Use Permits are temporarily listed as "Conditional Use" within the data. </span> <a href="/development/major?permit_type=conditional%20use#data">Recently submitted Special Use Permits</a></div>),
+    examples: (
+      <ul className="list-disc ml-6">
+        <li>Cell phone towers</li>
+        <li>Jails</li>
+        <li>Government buildings</li>
+        <li>Group homes</li>
+      </ul>
+    ),
+    // recentAppsLink: (
+    //   <div>
+    //     <span>
+    //       Note: Special Use Permits are temporarily listed as "Conditional Use" within the
+    //       data.{' '}
+    //     </span>{' '}
+    //     <a href="/development/major?permit_type=conditional%20use#data">
+    //       Recently submitted Special Use Permits
+    //     </a>
+    //   </div>
+    // ),
   },
   color: '#073d49',
+  tw: 'bg-[#073d49] text-white',
 };
 
 export const whoIcons = {
   dev: {
     label: 'Developer',
-    icon: (<Icon path={DRAFTING_COMPASS} viewBox="0 0 512 512" />),
+    icon: <Icon path={DRAFTING_COMPASS} viewBox="0 0 512 512" hidden="true" />,
+    // bIcon: 'bi bi-compass',
   },
   staff: {
     label: 'City Staff',
-    icon: (<CityLogoSvg color="black" height={16} />),
+    icon: <CityLogoSvg color="black" height={16} hidden="true" />,
+    // bIcon: 'bi bi-compass',
   },
   council: {
     label: 'City Officials',
-    icon: (<Icon path={GAVEL} viewBox="0 0 512 512" />),
+    icon: <Icon path={GAVEL} viewBox="0 0 512 512" hidden="true" />,
+    // bIcon: 'bi bi-gavel',
   },
   neighbors: {
     label: 'Neighbors',
-    icon: (<Icon path={USER_FRIENDS} viewBox="0 0 640 512" size={19} />),
+    icon: <Icon path={USER_FRIENDS} viewBox="0 0 640 512" size={19} hidden="true" />,
+    // bIcon: 'bi bi-people',
   },
 };
 
 export const decisionIconHeader = (
-  <div style={{ display: 'flex', justifyContent: 'center' }}>
-    <div>
-      <div>
-        <svg height="16px" width="16px" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="check" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="svg-inline--fa fa-check fa-w-16 fa-2x"><path fill="currentColor" d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"></path></svg>
-        <span style={{ margin: '0 0 0 1rem' }}>Approved</span>
-      </div>
-      <div>
-        <svg height="16px" width="16px" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="times" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512" className="svg-inline--fa fa-times fa-w-11 fa-2x"><path fill="currentColor" d="M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z" className=""></path></svg>
-        <span style={{ margin: '0 0 0 1rem' }}>Denied</span>
-      </div>
-      <div>
-        <svg height="16px" width="16px" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="redo" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="svg-inline--fa fa-redo fa-w-16 fa-2x"><path fill="currentColor" d="M500.33 0h-47.41a12 12 0 0 0-12 12.57l4 82.76A247.42 247.42 0 0 0 256 8C119.34 8 7.9 119.53 8 256.19 8.1 393.07 119.1 504 256 504a247.1 247.1 0 0 0 166.18-63.91 12 12 0 0 0 .48-17.43l-34-34a12 12 0 0 0-16.38-.55A176 176 0 1 1 402.1 157.8l-101.53-4.87a12 12 0 0 0-12.57 12v47.41a12 12 0 0 0 12 12h200.33a12 12 0 0 0 12-12V12a12 12 0 0 0-12-12z" className=""></path></svg>
-        <span style={{ margin: '0 0 0 1rem' }}>Revise</span>
-      </div>
-    </div>
-  </div>
+  <ul className="px-4" aria-label="List of possible decisions for this step">
+    <li className="flex items-center justify-start gap-1">
+      <i className="bi bi-check2" aria-hidden="true"></i>
+      <span>Approved</span>
+    </li>
+    <li className="flex items-center justify-start gap-1">
+      <i className="bi bi-x-lg" aria-hidden="true"></i>
+      <span>Denied</span>
+    </li>
+    <li className="flex items-center justify-start gap-1">
+      <i className="bi bi-arrow-clockwise" aria-hidden="true"></i>
+      <span>Revise</span>
+    </li>
+  </ul>
 );
 
 const decisionNodeMaxWidth = 400;
 export const dagreNodes = [
   {
     id: 'Before the application is submitted',
+    htmlId: 'before-application',
     subNodes: [
       {
         id: 'Pre-application meeting',
+        htmlId: 'pre-application-meeting',
         steps: {
           what: 'Developers and city staff meet to look at initial sketches, discuss process and schedule, and identify applicable regulations.',
           who: ['dev', 'staff'],
           when: 'Required before application submission',
-          where: <a href="https://goo.gl/maps/FYcn1ATUY7Ux8q6G9" target="_blank" rel="noopener noreferrer">Development Services Department offices</a>,
+          where: (
+            <a href="https://goo.gl/maps/FYcn1ATUY7Ux8q6G9" rel="noreferrer">
+              Development Services Department offices
+            </a>
+          ),
         },
       },
       {
         id: 'Neighborhood meeting',
+        htmlId: 'neighborhood-meeting',
         steps: {
           what: 'Developers must notify all property owners within 200 feet of the proposed development site.  Neighbors meet with developers to collaborate on neighborhood needs and opportunities.',
           who: ['dev', 'neighbors'],
-          when: <React.Fragment>Ten days before application submission (<a href="/development/major#calendar">see calendar</a>)</React.Fragment>,
+          when: <React.Fragment>Ten days before application submission</React.Fragment>,
           where: 'Somewhere near the proposed development site, specified in the notice',
         },
       },
     ],
-    typeIds: [
-      'Level II',
-      'Major Subdivision',
-      'Conditional Zoning',
-      'Special Use Permit',
-    ],
+    typeIds: ['Level II', 'Major Subdivision', 'Conditional Zoning', 'Special Use Permit'],
   },
   {
     id: 'Permit application',
+    htmlId: 'permit-application',
     steps: {
-      what: <React.Fragment>Submission of required plans and documents and payment of application fees to the <a href="https://www.ashevillenc.gov/department/development-services/" rel="noopener noreferrer" target="_blank">Development Services Department</a>.</React.Fragment>,
+      what: (
+        <React.Fragment>
+          Submission of required plans and documents and payment of application fees to the{' '}
+          <a href="https://www.ashevillenc.gov/department/development-services/" rel="noreferrer">
+            Development Services Department{' '}
+            <i className="bi bi-box-arrow-up-right text-sm" aria-hidden="true"></i>
+            <span className="sr-only">(external site)</span>
+          </a>
+          .
+        </React.Fragment>
+      ),
       who: ['dev'],
       when: 'After all required preliminary steps are completed.',
-      where: <a href="https://goo.gl/maps/FYcn1ATUY7Ux8q6G9" target="_blank" rel="noopener noreferrer">Development Services Department offices</a>,
+      where: (
+        <a href="https://goo.gl/maps/FYcn1ATUY7Ux8q6G9" rel="noreferrer">
+          Development Services Department offices{' '}
+          <i className="bi bi-box-arrow-up-right text-sm" aria-hidden="true"></i>
+          <span className="sr-only">(external site)</span>
+        </a>
+      ),
     },
     typeIds: [
       'Level I',
@@ -421,119 +575,222 @@ export const dagreNodes = [
   },
   {
     id: 'Staff review',
+    htmlId: 'staff-review',
     steps: {
       what: 'A staff member reviews plans for compliance with applicable ordinances and documents and creates a report.',
       who: ['staff'],
       when: 'Within ten days of application submittal',
-      where: <a href="https://goo.gl/maps/FYcn1ATUY7Ux8q6G9" target="_blank" rel="noopener noreferrer">Development Services Department offices</a>,
+      where: (
+        <a href="https://goo.gl/maps/FYcn1ATUY7Ux8q6G9" rel="noreferrer">
+          Development Services Department offices{' '}
+          <i className="bi bi-box-arrow-up-right text-sm" aria-hidden="true"></i>
+          <span className="sr-only">(external site)</span>
+        </a>
+      ),
     },
-    typeIds: [
-      'Level I',
-    ],
+    typeIds: ['Level I'],
   },
   {
     id: 'Level I decision',
+    htmlId: 'level-1-decision',
     decisionNode: true,
-    typeIds: [
-      'Level I',
-    ],
+    typeIds: ['Level I'],
     maxWidth: decisionNodeMaxWidth,
   },
   {
     id: 'Technical Review Committee',
+    htmlId: 'technical-review-committee',
     steps: {
-      what: <React.Fragment>An eight-member body that ensures that the proposed project complies with standards and requirements.  Meeting agendas are available on <a href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/technical-review-committee/" target="_blank" rel="noopener noreferrer">the city website</a>.</React.Fragment>,
+      what: (
+        <React.Fragment>
+          An eight-member body that ensures that the proposed project complies with standards and
+          requirements. Meeting agendas are available on{' '}
+          <a
+            href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/technical-review-committee/"
+            rel="noreferrer"
+          >
+            the city website <i className="bi bi-box-arrow-up-right text-sm" aria-hidden="true"></i>
+            <span className="sr-only">(external site)</span>
+          </a>
+          .
+        </React.Fragment>
+      ),
       who: ['dev', 'staff'],
       when: 'First and third Monday of each month',
-      where: <a href="https://goo.gl/maps/FYcn1ATUY7Ux8q6G9" target="_blank" rel="noopener noreferrer">Development Services Department offices</a>,
+      where: (
+        <a href="https://goo.gl/maps/FYcn1ATUY7Ux8q6G9" rel="noreferrer">
+          Development Services Department offices{' '}
+          <i className="bi bi-box-arrow-up-right text-sm" aria-hidden="true"></i>
+          <span className="sr-only">(external site)</span>
+        </a>
+      ),
     },
-    typeIds: [
-      'Level II',
-      'Major Subdivision',
-      'Conditional Zoning',
-      'Special Use Permit',
-    ],
+    typeIds: ['Level II', 'Major Subdivision', 'Conditional Zoning', 'Special Use Permit'],
   },
   {
     id: 'Major Subdivision and Level II decision (not downtown)',
+    htmlId: 'major-subdivision-level-2-decision',
     decisionNode: true,
-    typeIds: [
-      'Level II',
-      'Major Subdivision',
-    ],
+    typeIds: ['Level II', 'Major Subdivision'],
     maxWidth: decisionNodeMaxWidth,
   },
   {
     id: 'Design review',
+    htmlId: 'design-review',
     steps: {
-      what: <div>Projects located Downtown, in the River District, or involving a historic landmark or site must be reviewed for architectural design elements by a special design review sub-committee of the <a href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/downtown-commission/" target="_blank" rel="noopener noreferrer">Asheville Downtown Commission</a>, the <a href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/asheville-area-riverfront-redevelopment-commission/" target="_blank" rel="noopener noreferrer">Asheville Area Riverfront Redevelopment Commission</a>, or the <a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/historic-resources-commission/" rel="noopener noreferrer" target="_blank">Historic Resources Commission</a>, respectively, prior to approval.</div>,
+      what: (
+        <div>
+          Projects located Downtown, in the River District, or involving a historic landmark or site
+          must be reviewed for architectural design elements by a special design review
+          sub-committee of the{' '}
+          <a
+            href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/downtown-commission/"
+            rel="noreferrer"
+          >
+            Asheville Downtown Commission{' '}
+            <i className="bi bi-box-arrow-up-right text-sm" aria-hidden="true"></i>
+            <span className="sr-only">(external site)</span>
+          </a>
+          , the{' '}
+          <a
+            href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/asheville-area-riverfront-redevelopment-commission/"
+            rel="noreferrer"
+          >
+            Asheville Area Riverfront Redevelopment Commission{' '}
+            <i className="bi bi-box-arrow-up-right text-sm" aria-hidden="true"></i>
+            <span className="sr-only">(external site)</span>
+          </a>
+          , or the{' '}
+          <a
+            href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/historic-resources-commission/"
+            rel="noreferrer"
+          >
+            Historic Resources Commission{' '}
+            <i className="bi bi-box-arrow-up-right text-sm" aria-hidden="true"></i>
+            <span className="sr-only">(external site)</span>
+          </a>
+          , respectively, prior to approval.
+        </div>
+      ),
       who: ['dev', 'staff', 'neighbors'],
-      when: (<ul style={{ padding: 0 }}>
-        <li>Downtown Commission: second Friday of each month</li>
-        <li>Riverfront Commission: second Thursday of each month</li>
-        <li>Historic Resources Commission: second Wednesday of each month</li>
-      </ul>),
-      where: (<ul style={{ padding: 0 }}>
-        <li>Downtown Commission: <a href="https://goo.gl/maps/7GkCkb1pPjRaXbAc7" target="_blank" rel="noopener noreferrer">City Hall</a></li>
-        <li>Riverfront Commission: <a href="https://goo.gl/maps/Wbamfs7tbhSmQ1Uz7" target="_blank" rel="noopener noreferrer">Explore Asheville offices</a></li>
-        <li>Historic Resources Commission: <a href="https://goo.gl/maps/7GkCkb1pPjRaXbAc7" target="_blank" rel="noopener noreferrer">City Hall</a></li>
-      </ul>),
+      when: (
+        <ul className="p-0">
+          <li>Downtown Commission: second Friday of each month</li>
+          <li>Riverfront Commission: second Thursday of each month</li>
+          <li>Historic Resources Commission: second Wednesday of each month</li>
+        </ul>
+      ),
+      where: (
+        <ul className="p-0">
+          <li>
+            Downtown Commission:{' '}
+            <a href="https://goo.gl/maps/7GkCkb1pPjRaXbAc7" rel="noreferrer">
+              City Hall <i className="bi bi-box-arrow-up-right text-sm" aria-hidden="true"></i>
+              <span className="sr-only">(external site)</span>
+            </a>
+          </li>
+          <li>
+            Riverfront Commission:{' '}
+            <a href="https://goo.gl/maps/Wbamfs7tbhSmQ1Uz7" rel="noreferrer">
+              Explore Asheville offices{' '}
+              <i className="bi bi-box-arrow-up-right text-sm" aria-hidden="true"></i>
+              <span className="sr-only">(external site)</span>
+            </a>
+          </li>
+          <li>
+            Historic Resources Commission:{' '}
+            <a href="https://goo.gl/maps/7GkCkb1pPjRaXbAc7" rel="noreferrer">
+              City Hall <i className="bi bi-box-arrow-up-right text-sm" aria-hidden="true"></i>
+              <span className="sr-only">(external site)</span>
+            </a>
+          </li>
+        </ul>
+      ),
     },
-    typeIds: [
-      'Level II',
-      'Major Subdivision',
-      'Conditional Zoning',
-      'Special Use Permit',
-    ],
+    typeIds: ['Level II', 'Major Subdivision', 'Conditional Zoning', 'Special Use Permit'],
   },
   {
     id: 'Major Subdivision decision (downtown)',
+    htmlId: 'major-subdivision-decision-downtown',
     decisionNode: true,
-    typeIds: [
-      'Major Subdivision',
-    ],
+    typeIds: ['Major Subdivision'],
     maxWidth: decisionNodeMaxWidth,
   },
   {
     id: 'Planning and Zoning Commission',
+    htmlId: 'planning-and-zoning-commission',
     steps: {
-      what: <React.Fragment>For  Conditional Zoning, Special Use, and Level III projects, the <a href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/planning-and-zoning-commission/" target="_blank" rel="noopener noreferrer">Planning and Zoning Commission</a> holds a public hearing and makes a recommendation for action to City Council.  For downtown Level II projects, the Planning and Zoning Commission verifies technical compliance with the requirements of applicable ordinances and documents and takes final action.</React.Fragment>,
+      what: (
+        <React.Fragment>
+          For Conditional Zoning, Special Use, and Level III projects, the{' '}
+          <a
+            href="https://www.ashevillenc.gov/department/city-clerk/boards-and-commissions/planning-and-zoning-commission/"
+            rel="noreferrer"
+          >
+            Planning and Zoning Commission{' '}
+            <i className="bi bi-box-arrow-up-right text-sm" aria-hidden="true"></i>
+            <span className="sr-only">(external site)</span>
+          </a>{' '}
+          holds a public hearing and makes a recommendation for action to City Council. For downtown
+          Level II projects, the Planning and Zoning Commission verifies technical compliance with
+          the requirements of applicable ordinances and documents and takes final action.
+        </React.Fragment>
+      ),
       who: ['dev', 'staff', 'neighbors', 'council'],
-      when: (<React.Fragment>Per <a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/planning-and-zoning-commission/">published schedule</a></React.Fragment>),
-      where: <a href="https://goo.gl/maps/7GkCkb1pPjRaXbAc7" target="_blank" rel="noopener noreferrer">City Hall</a>,
+      when: (
+        <React.Fragment>
+          Per{' '}
+          <a href="https://ashevillenc.gov/department/city-clerk/boards-and-commissions/planning-and-zoning-commission/">
+            published schedule
+          </a>
+        </React.Fragment>
+      ),
+      where: (
+        <a href="https://goo.gl/maps/7GkCkb1pPjRaXbAc7" rel="noreferrer">
+          City Hall <i className="bi bi-box-arrow-up-right text-sm" aria-hidden="true"></i>
+          <span className="sr-only">(external site)</span>
+        </a>
+      ),
     },
-    typeIds: [
-      'Level II',
-      'Conditional Zoning',
-      'Special Use Permit',
-    ],
+    typeIds: ['Level II', 'Conditional Zoning', 'Special Use Permit'],
   },
   {
     id: 'Level II decision (downtown)',
+    htmlId: 'level-2-decision-downtown',
     decisionNode: true,
-    typeIds: [
-      'Level II',
-    ],
+    typeIds: ['Level II'],
     maxWidth: decisionNodeMaxWidth,
   },
   {
     id: 'City Council',
     steps: {
-      what: <React.Fragment>Applications are reviewed during a public hearing before <a href="https://www.ashevillenc.gov/government/meet-city-council/" target="_blank" rel="noopener noreferrer">City Council</a>.  These projects arrive at the City Council meeting with a recommendation for action that has been sent by the Planning and Zoning Commission.</React.Fragment>,
+      what: (
+        <React.Fragment>
+          Applications are reviewed during a public hearing before{' '}
+          <a href="https://www.ashevillenc.gov/government/meet-city-council/" rel="noreferrer">
+            City Council <i className="bi bi-box-arrow-up-right text-sm" aria-hidden="true"></i>
+            <span className="sr-only">(external site)</span>
+          </a>
+          . These projects arrive at the City Council meeting with a recommendation for action that
+          has been sent by the Planning and Zoning Commission.
+        </React.Fragment>
+      ),
       who: ['dev', 'staff', 'neighbors', 'council'],
       when: 'The second and fourth Tuesday of each month',
-      where: <a href="https://goo.gl/maps/7GkCkb1pPjRaXbAc7" target="_blank" rel="noopener noreferrer">City Hall</a>,
+      where: (
+        <a href="https://goo.gl/maps/7GkCkb1pPjRaXbAc7" rel="noreferrer">
+          City Hall <i className="bi bi-box-arrow-up-right text-sm" aria-hidden="true"></i>
+          <span className="sr-only">(external site)</span>
+        </a>
+      ),
     },
-    typeIds: [
-      'Conditional Zoning',
-    ],
+    typeIds: ['Conditional Zoning'],
   },
   {
     id: 'City Council decision',
+    htmlId: 'city-council-decision',
     decisionNode: true,
-    typeIds: [
-      'Conditional Zoning',
-    ],
+    typeIds: ['Conditional Zoning'],
     maxWidth: decisionNodeMaxWidth,
   },
 ];
@@ -552,9 +809,7 @@ export const dagreLinks = [
   {
     source: 'Permit application',
     target: 'Staff review',
-    parallelEdges: [
-      { id: 'Level I' },
-    ],
+    parallelEdges: [{ id: 'Level I' }],
   },
   {
     source: 'Permit application',
@@ -570,30 +825,22 @@ export const dagreLinks = [
     source: 'Staff review',
     target: 'Level I decision',
     id: 'Level I',
+    parallelEdges: [{ id: 'Level I' }],
   },
   {
     source: 'Technical Review Committee',
     target: 'Major Subdivision and Level II decision (not downtown)',
-    parallelEdges: [
-      { id: 'Major Subdivision' },
-      { id: 'Level II' },
-    ],
+    parallelEdges: [{ id: 'Major Subdivision' }, { id: 'Level II' }],
   },
   {
     source: 'Design review',
     target: 'Planning and Zoning Commission',
-    parallelEdges: [
-      { id: 'Level II' },
-      { id: 'Conditional Zoning' },
-      { id: 'Special Use Permit' },
-    ],
+    parallelEdges: [{ id: 'Level II' }, { id: 'Conditional Zoning' }, { id: 'Special Use Permit' }],
   },
   {
     source: 'Design review',
     target: 'Major Subdivision decision (downtown)',
-    parallelEdges: [
-      { id: 'Major Subdivision' },
-    ],
+    parallelEdges: [{ id: 'Major Subdivision' }],
   },
   {
     source: 'Technical Review Committee',
@@ -608,22 +855,16 @@ export const dagreLinks = [
   {
     source: 'Planning and Zoning Commission',
     target: 'Level II decision (downtown)',
-    parallelEdges: [
-      { id: 'Level II' },
-    ],
+    parallelEdges: [{ id: 'Level II' }],
   },
   {
     source: 'Planning and Zoning Commission',
     target: 'City Council',
-    parallelEdges: [
-      { id: 'Conditional Zoning' },
-    ],
+    parallelEdges: [{ id: 'Conditional Zoning' }],
   },
   {
     source: 'City Council',
     target: 'City Council decision',
-    parallelEdges: [
-      { id: 'Conditional Zoning' },
-    ],
+    parallelEdges: [{ id: 'Conditional Zoning' }],
   },
 ];

@@ -7,7 +7,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "tw": "npx tailwindcss -i ./src/tw/tw-input.css -o ./src/tw/tw-output.css --watch"
   },
   "repository": {
     "type": "git",
@@ -50,6 +51,7 @@
   "dependencies": {
     "@ariakit/react": "^0.4.4",
     "@radix-ui/react-alert-dialog": "^1.1.4",
+    "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/themes": "^3.1.6",
     "@tanstack/react-table": "^8.21.2",
     "@testing-library/jest-dom": "^5.16.4",
@@ -104,7 +106,9 @@
     "react-leaflet-markercluster": "^1.1.8",
     "react-measure": "^2.0.2",
     "react-radio-group": "^3.0.2",
+    "react-responsive-pagination": "^2.12.0",
     "react-router": "3.2.1",
+    "react-router-dom": "^7.13.0",
     "react-scripts": "5.0.0",
     "react-table": "^6.11.5",
     "react-toggle": "^4.0.1",
@@ -114,6 +118,8 @@
     "selectly": "^0.5.0",
     "semiotic": "^1.19.0",
     "semiotic-mark": "^0.1.2",
+    "tailwind": "^3.1.0",
+    "tailwindcss": "^3.4.19",
     "unfetch": "^3.1.2",
     "url-loader": "^1.1.2",
     "web-vitals": "^2.1.4"

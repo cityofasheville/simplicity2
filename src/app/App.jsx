@@ -78,12 +78,15 @@ class Main extends React.Component {
             <main className="flex-grow w-full" id="main">
               <div className="layout-grid w-full h-100">
                 <EnvBanner />
-                {/* <Banner path="*">
-									<p className="text-center font-medium text-xl">
-										<em>IMPORTANT: Planned Maintenance Outage for All GIS Services</em>
-									</p>
-									<p className="text-center text-xl">Friday, February 28, 7 a.m. – 10 a.m.</p>
-								</Banner> */}
+                <Banner path="*">
+                  <p className="text-center font-medium text-xl">
+                    <em>IMPORTANT: Planned Maintenance Outage for All GIS Services</em>
+                  </p>
+                  <p className="text-center text-xl mb-4">Thursday, May 28, 6 p.m. – 10 p.m.</p>
+                  <p className="text-center">
+                    During this time, the SimpliCity address search may not function as expected.
+                  </p>
+                </Banner>
                 <ErrorBoundary>{this.props.children}</ErrorBoundary>
               </div>
             </main>

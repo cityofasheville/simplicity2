@@ -359,7 +359,7 @@ trcProjectTypes['Conditional Zoning'] = {
     ),
     examples: (
       <ul className="list-disc ml-6">
-        <li>250-unite apartment complex</li>
+        <li>250-unit apartment complex</li>
         <li>Corporate or industrial campus</li>
         <li>Mixed use development with large retail stores</li>
       </ul>

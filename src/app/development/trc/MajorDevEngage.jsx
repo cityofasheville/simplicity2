@@ -19,31 +19,66 @@ function MajorDevEngage() {
         </p>
 
         <h2 className="mt-6 mb-4 text-3xl text-coa-blue-dark">Neighborhood meetings</h2>
+
         <p className="mb-4">
-          Developers planning to submit applications for development that must go through the
-          Technical Review Committee (including projects of types Level II, Major Subdivision,
-          Conditional Zoning, and Special Use Permit) must hold a public meeting before submitting
-          the application.
+          Changes to the City’s Pre-Development Neighborhood Meeting Policy and the corresponding
+          Unified Development provisions have been made and are in effect. The City now requires the
+          following for a neighborhood/community meeting to be considered compliant:
         </p>
-        <p className="mb-4">
-          Currently, developers are not required by law to notify the City of Asheville when those
-          meetings take place. Thus, the first record the city has of a proposed development is when
-          the application is submitted, after the meeting.
-        </p>
-        <p className="mb-4">
-          However, in order to help ensure that residents can find out about developer-neighborhood
-          meetings in advance, the city has asked developers to voluntarily notify the city. After
-          those developers fill out an online form, those meeting dates are automatically added to{' '}
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://calendar.google.com/calendar/embed?src=ashevillenc.gov_gk5l650n9mopts9m7sfemhcpd8%40group.calendar.google.com&ctz=America%2FNew_York"
-          >
-            a calendar that shows all developer-neighborhood meetings about which the city has been
-            notified
-          </a>
-          .
-        </p>
+
+        <ul className="list-disc mb-4 ml-6">
+          <li className="mb-2">
+            ALL development applications reviewed by the Technical Review Committee (TRC) now
+            require notification to physical addresses of tenants and the mailing address of
+            property owners within the required notification radius as follows:
+            <ul className="list-disc mb-4 mt-2 ml-6">
+              <li className="mb-2">
+                Central Business District Zoning (excluding Conditional Zoning): 200 Feet
+              </li>
+              <li className="mb-2">
+                All Other Zoning Districts, and any Conditional Zoning: 400 Feet
+              </li>
+            </ul>
+          </li>
+          <li className="mb-2">
+            Email notification is now required to be provided to any neighborhood association
+            registered with the City of Asheville that the development exists wholly or partially
+            within.{' '}
+            <a href="https://www.ashevillenc.gov/department/communication-public-engagement/neighborhood-services/">
+              A map of neighborhood associations and corresponding contacts
+            </a>{' '}
+            is available for reference.
+          </li>
+          <li className="mb-2">
+            The UDO now requires that notices and meetings follow the requirements of best practice
+            suggestions (as possible) in the City of Asheville’s{' '}
+            <a href="https://docs.google.com/document/d/e/2PACX-1vTCrl-ppXqGMwP8L8oSBLl1Lomg50hHkNulTkZrRhDFQT_NW6o5HMiYt0fKhvSVBtv6o7iWIsEox75m/pub">
+              Neighborhood and Community Meeting Guide for Development
+            </a>
+            .
+          </li>
+          <li className="mb-2">
+            <strong>Neighborhood meeting registration is now required.</strong> The neighborhood
+            meeting must be registered with the City using the{' '}
+            <a href="https://form.jotform.com/82253796769172">meeting registration form</a> a
+            minimum of 14 days prior to the scheduled meeting.
+          </li>
+          <li className="mb-2">
+            Provide the required notice via US Mail using the provided{' '}
+            <a href="https://docs.google.com/document/d/1QDfvRPC2gZNfmkrxm2DdwbGDCaAglbixdnPJsSDiIOE/edit?usp=sharing">
+              public notice template
+            </a>
+            .
+          </li>
+          <li className="mb-2">
+            When the meeting has been completed, it must be reported to the City using the{' '}
+            <a href="https://form.jotform.com/AvlDSD/neighborhood-meeting-reporting">
+              post-meeting reporting form
+            </a>
+            . Applications for Level II, III, Major Subdivision and Conditional Zoning Development
+            will not be accepted unless this step has been completed.
+          </li>
+        </ul>
 
         <h2 className="mt-6 mb-4 text-3xl text-coa-blue-dark">Committee and commission meetings</h2>
         <p className="mb-4">

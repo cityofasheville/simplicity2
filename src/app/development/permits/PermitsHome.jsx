@@ -5,7 +5,10 @@ function PermitsHome(props) {
   const nav_items = [
     { name: 'Browse All Permits', path: '/permits' },
     { name: 'Permit Search', path: '/permits/search' },
-    { name: 'Development Services Portal', path: 'https://develop.ashevillenc.gov/' },
+    {
+      name: 'Development Services Portal',
+      path: 'https://www.ashevillenc.gov/department/development-services/development-portal/',
+    },
   ];
   return (
     <>

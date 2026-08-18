@@ -14,9 +14,10 @@
     @apply p-4 bg-light rounded shadow w-fit min-w-[200px] max-w-[600px] my-2 mx-auto flex justify-center;
   }
 
-  .alert-info {
+  /* Alert info exists, but keeping it as bg-light for now */
+  /* .alert-info {
     @apply bg-light; 
-  }
+  } */
 
   .alert-warning {
     @apply bg-warning;

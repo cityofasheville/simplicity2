@@ -643,10 +643,11 @@ html,
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
-.alert-info {
-  --tw-bg-opacity: 1;
-  background-color: rgb(246 252 255 / var(--tw-bg-opacity, 1));
-}
+/* Alert info exists, but keeping it as bg-light for now */
+
+/* .alert-info {
+    @apply bg-light; 
+  } */
 
 .alert-warning {
   --tw-bg-opacity: 1;

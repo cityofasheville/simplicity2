@@ -199,7 +199,7 @@ const Address = (props) => (
 
 			const addressData = data.addresses[0];
 			if (!addressData) {
-				return <Error className="text-black" message="Address not found." />;
+				return <div className="alert alert-info">No results found</div>;
 			}
 			const mapData = [
 				Object.assign(

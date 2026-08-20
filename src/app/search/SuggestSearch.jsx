@@ -38,7 +38,6 @@ function SuggestSearch({
 	simplicitySuggestValue = "name",
 	suggestionEntities = ["neighborhood", "street", "owner"],
 	patternsToExcludeFromSuggestions = [/^\d+$/, /^\d+-?\d*$/],
-	userQuery,
 	setUserQueryChecked,
 }) {
 	const combobox = Ariakit.useComboboxStore();
@@ -288,9 +287,6 @@ function SuggestSearch({
 
 	function handleFormSubmission(event) {
 		const sanitizedInput = DOMPurify.sanitize(inputValue).replace(inputReplacePattern, "");
-		console.log("Sanitized input", sanitizedInput);
-		console.log("userQuery", userQuery);
-
 		event.preventDefault();
 		if (sanitizedInput.length > 2) {
 			console.log("SUBMITTING");

@@ -289,7 +289,6 @@ function SuggestSearch({
 		const sanitizedInput = DOMPurify.sanitize(inputValue).replace(inputReplacePattern, "");
 		event.preventDefault();
 		if (sanitizedInput.length > 2) {
-			console.log("SUBMITTING");
 			currentUrlParams.set("search", sanitizedInput);
 			if (history.pushState) {
 				const newurl =
@@ -300,7 +299,6 @@ function SuggestSearch({
 					`?${currentUrlParams}${window.location.hash}`;
 				window.history.pushState({ path: newurl }, "", newurl);
 			}
-			// console.log('form submission detected');
 			submitButtonRef.current.focus();
 			setStatus("loading");
 			setUserQuery(sanitizedInput);

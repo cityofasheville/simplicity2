@@ -39,6 +39,7 @@ function SuggestSearch({
 	suggestionEntities = ["neighborhood", "street", "owner"],
 	patternsToExcludeFromSuggestions = [/^\d+$/, /^\d+-?\d*$/],
 	userQuery,
+	setUserQueryChecked,
 }) {
 	const combobox = Ariakit.useComboboxStore();
 
@@ -250,7 +251,6 @@ function SuggestSearch({
 
 	function handleSelect(suggestion) {
 		currentUrlParams.set("search", suggestion.value);
-		// if (userQuery !== suggestion.value) {
 		if (history.pushState) {
 			const newurl =
 				window.location.protocol +
@@ -265,7 +265,7 @@ function SuggestSearch({
 		setStatus("loading");
 		setUserQuery(suggestion.value);
 		setUserQueryChecked(false);
-		// }
+		setSuggestions([]);
 	}
 
 	function handleClear() {
@@ -292,7 +292,6 @@ function SuggestSearch({
 		console.log("userQuery", userQuery);
 
 		event.preventDefault();
-		// if (sanitizedInput.length > 2 && sanitizedInput !== userQuery) {
 		if (sanitizedInput.length > 2) {
 			console.log("SUBMITTING");
 			currentUrlParams.set("search", sanitizedInput);

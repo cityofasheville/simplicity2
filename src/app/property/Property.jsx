@@ -129,6 +129,9 @@ const Property = (props) => {
 	if (props.data.error) {
 		return <Error message={props.data.error.message} />;
 	}
+	if (!props.data.loading && !props.data.properties.civic_address_ids) {
+		return <div className="alert alert-info">No results found</div>;
+	}
 
 	const propertyData = props.inTable ? props.data : props.data.properties[0];
 	const dataForAddressesTable = [];

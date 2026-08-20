@@ -9,6 +9,7 @@ import {
 	formatSearchResults,
 	getIcon,
 } from "./searchResults/searchResultsUtils";
+import { browserHistory } from "react-router";
 import useDebounce from "../../hooks/useDebounce";
 import { ApiEnvironmentContext } from "../../routes";
 import { IM_SEARCH } from "../../shared/iconConstants";
@@ -30,7 +31,6 @@ const comboBoxStyle = {
 
 function SuggestSearch({
 	setUserQuery,
-	setUserQueryChecked,
 	// autoFocusInput = false,
 	debounceInterval = 500,
 	suggestWithGeocoder = true,
@@ -38,6 +38,7 @@ function SuggestSearch({
 	simplicitySuggestValue = "name",
 	suggestionEntities = ["neighborhood", "street", "owner"],
 	patternsToExcludeFromSuggestions = [/^\d+$/, /^\d+-?\d*$/],
+	userQuery,
 }) {
 	const combobox = Ariakit.useComboboxStore();
 
@@ -62,6 +63,15 @@ function SuggestSearch({
 	}
 
 	const apiEnvironment = React.useContext(ApiEnvironmentContext);
+
+	useEffect(() => {
+		const unlisten = browserHistory.listen((location) => {
+			if (location.pathname === "/") {
+				handleClear();
+			}
+		});
+		return unlisten;
+	}, []);
 
 	useEffect(() => {
 		// if (inputRef.current && autoFocusInput) {
@@ -240,6 +250,7 @@ function SuggestSearch({
 
 	function handleSelect(suggestion) {
 		currentUrlParams.set("search", suggestion.value);
+		// if (userQuery !== suggestion.value) {
 		if (history.pushState) {
 			const newurl =
 				window.location.protocol +
@@ -254,6 +265,7 @@ function SuggestSearch({
 		setStatus("loading");
 		setUserQuery(suggestion.value);
 		setUserQueryChecked(false);
+		// }
 	}
 
 	function handleClear() {
@@ -276,8 +288,13 @@ function SuggestSearch({
 
 	function handleFormSubmission(event) {
 		const sanitizedInput = DOMPurify.sanitize(inputValue).replace(inputReplacePattern, "");
+		console.log("Sanitized input", sanitizedInput);
+		console.log("userQuery", userQuery);
+
 		event.preventDefault();
+		// if (sanitizedInput.length > 2 && sanitizedInput !== userQuery) {
 		if (sanitizedInput.length > 2) {
+			console.log("SUBMITTING");
 			currentUrlParams.set("search", sanitizedInput);
 			if (history.pushState) {
 				const newurl =

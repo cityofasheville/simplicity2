@@ -129,9 +129,6 @@ const Property = (props) => {
 	if (props.data.error) {
 		return <Error message={props.data.error.message} />;
 	}
-	if (!props.data.loading && !props.data.properties.civic_address_ids) {
-		return <div className="alert alert-info">No results found</div>;
-	}
 
 	const propertyData = props.inTable ? props.data : props.data.properties[0];
 	const dataForAddressesTable = [];
@@ -301,50 +298,39 @@ const Property = (props) => {
 						label="Zoning"
 						name="zoning"
 						value={
-							<div>
-								{propertyData.zoning.split(",").map((zone, index) => (
+							propertyData.zoning &&
+							propertyData.zoning.split(",").map((zone, index) => {
+								const links = propertyData.zoning_links ? propertyData.zoning_links.split(",") : [];
+								return (
 									<span key={`zone_${index}`}>
-										{propertyData.zoning_links ? (
-											<a href={propertyData.zoning_links.split(",")[index]} target="_blank">
-												{propertyData.zoning.split(",")[index]}
+										{links[index] ? (
+											<a href={links[index]} target="_blank">
+												{zone}
 											</a>
 										) : (
-											propertyData.zoning.split(",")[index]
+											zone
 										)}
-
 										{propertyData.zoning.split(",").length > index + 1 ? ", " : ""}
 									</span>
-								))}
-							</div>
+								);
+							})
 						}
 						hasLabel
 					/>
-					{propertyData.local_landmark && (
-						<DetailsFormGroup
-							label="Local Landmark"
-							name="local_landmark"
-							value={
-								<div>
-									<div>{propertyData.local_landmark}</div>
-								</div>
-							}
-							hasLabel
-							icon={<Icon ariaHidden={true} path={IM_FLAG7} size={20} />}
-						/>
-					)}
-					{propertyData.historic_district && (
-						<DetailsFormGroup
-							label="Historic District"
-							name="historic_district"
-							value={
-								<div>
-									<div>{propertyData.historic_district}</div>
-								</div>
-							}
-							hasLabel
-							icon={<Icon ariaHidden={true} path={IM_LIBRARY} size={20} />}
-						/>
-					)}
+					<DetailsFormGroup
+						label="Local Landmark"
+						name="local_landmark"
+						value={propertyData.local_landmark}
+						hasLabel
+						icon={<Icon ariaHidden={true} path={IM_FLAG7} size={20} />}
+					/>
+					<DetailsFormGroup
+						label="Historic District"
+						name="historic_district"
+						value={propertyData.historic_district}
+						hasLabel
+						icon={<Icon ariaHidden={true} path={IM_LIBRARY} size={20} />}
+					/>
 					<DetailsFormGroup
 						label="Steep Slope"
 						name="steepslope"
@@ -353,7 +339,7 @@ const Property = (props) => {
 					/>
 				</div>
 
-				{dataForAddressesTable.length && (
+				{dataForAddressesTable.length > 0 && (
 					<div className="w-full">
 						<h4 className="text-xl text-coa-blue-medium">Associated Addresses</h4>
 						<Table

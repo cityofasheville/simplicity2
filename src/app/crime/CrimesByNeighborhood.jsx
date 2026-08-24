@@ -17,6 +17,7 @@ import { spanish } from "./spanish";
 import { withLanguage } from "../../utilities/lang/LanguageContext";
 import MapLegend from "../../shared/MapLegend";
 import GetCrimeMarker from "./GetCrimeMarker";
+import Alert from "../../alert";
 
 const GET_CRIMES_BY_NEIGHBORHOOD = gql`
 	query getCrimesQuery($nbrhd_ids: [String], $before: String, $after: String) {
@@ -218,7 +219,7 @@ function CrimesByNeighborhood(props) {
 								</div>
 								<div id="mapView" className={`${props.location.query.view === "map" ? "flex" : "hidden"}`}>
 									{data.crimes_by_neighborhood.length === 0 || props.location.query.view !== "map" ? (
-										<div className="alert alert-info">{content.no_results_found}</div>
+										<Alert type="info" message={content.no_results_found} />
 									) : (
 										<div className="w-full">
 											<div className="w-full h-[600px] flex">

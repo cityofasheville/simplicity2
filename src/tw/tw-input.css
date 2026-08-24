@@ -10,8 +10,8 @@
     @apply h-full w-full m-0 p-0;
   }
 
-  .alert {
-    @apply p-4 bg-light rounded shadow w-fit min-w-[200px] max-w-[600px] my-2 mx-auto flex justify-center;
+  /* .alert {
+    @apply p-4 bg-light rounded shadow w-full max-w-3xl my-6 mx-auto ;
   }
 
   /* Alert info exists, but keeping it as bg-light for now */
@@ -25,7 +25,7 @@
 
   .alert-danger {
     @apply bg-danger;
-  }
+  } */
 
   .skip-nav-link {
     @apply absolute -left-[9999px] -top-[9999px] z-[9999] bg-primary px-6 py-3 text-white font-semibold shadow-lg focus:left-0 focus:top-0;

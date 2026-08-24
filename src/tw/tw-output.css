@@ -623,17 +623,12 @@ html,
 }
 
 .alert {
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
   margin-left: auto;
   margin-right: auto;
-  display: flex;
-  width: -webkit-fit-content;
-  width: -moz-fit-content;
-  width: fit-content;
-  min-width: 200px;
-  max-width: 600px;
-  justify-content: center;
+  width: 100%;
+  max-width: 48rem;
   border-radius: 0.25rem;
   --tw-bg-opacity: 1;
   background-color: rgb(246 252 255 / var(--tw-bg-opacity, 1));
@@ -2230,6 +2225,22 @@ details[open] summary span.bi {
 
 .outline-coa-blue-medium {
   outline-color: #4077a5;
+}
+
+.outline-danger {
+  outline-color: #e74c3c;
+}
+
+.outline-info {
+  outline-color: #004987;
+}
+
+.outline-success {
+  outline-color: #11866f;
+}
+
+.outline-warning {
+  outline-color: #f39c12;
 }
 
 .blur-sm {

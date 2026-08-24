@@ -12,6 +12,7 @@ import DevelopmentTable from "./DevelopmentTable";
 import EmailDownload from "../../shared/EmailDownload";
 import { refreshLocation } from "../../utilities/generalUtilities";
 import MapLegend from "../../shared/MapLegend";
+import Alert from "../../alert";
 
 const getMarker = (type) => {
 	switch (type) {
@@ -185,7 +186,7 @@ const DevelopmentByAddress = (props) => {
 
 				<div id="mapView" className={`${props.location.query.view === "map" ? "flex" : "hidden"}`}>
 					{props.data.permits_by_address.length === 0 || props.location.query.view !== "map" ? (
-						<div className="alert alert-info">No results found</div>
+						<Alert type="info" message="No results found" />
 					) : (
 						<div className="w-full">
 							<div className="w-full h-[600px] flex">

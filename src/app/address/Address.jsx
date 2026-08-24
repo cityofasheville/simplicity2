@@ -29,6 +29,7 @@ import Map from "../../shared/visualization/Map";
 import { withLanguage } from "../../utilities/lang/LanguageContext";
 import { english } from "./english";
 import { spanish } from "./spanish";
+import Alert from "../../alert";
 
 const GET_ADDRESSES = gql`
 	query addresses($civicaddress_ids: [String]!) {
@@ -199,7 +200,7 @@ const Address = (props) => (
 
 			const addressData = data.addresses[0];
 			if (!addressData) {
-				return <div className="alert alert-info">No results found</div>;
+				return <Alert type="info">No results found</Alert>;
 			}
 			const mapData = [
 				Object.assign(

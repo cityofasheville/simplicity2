@@ -4,41 +4,39 @@ import SuggestSearch from "./SuggestSearch";
 import SearchResultGroup from "./searchResults/SearchResultGroup";
 import LoadingAnimation from "../../shared/LoadingAnimation";
 import { searchQuery, formatSearchResults } from "./searchResults/searchResultsUtils";
-import Alert from "../../alert";
+// import { set } from 'd3-collection';
+
+const MIN_SPINNER_DURATION = 400;
 
 function SuggestSearchWrapper({ searchMode = "main", autoFocusInput = true, debounceInterval = 250 }) {
 	const permitFormat = /^\d{2}-\d{5,10}(s|S|pz|pZ|Pz|PZ){0,1}$/;
 	const allNumericFormat = /^\d+$/;
 
-	const [userQueryChecked, setUserQueryChecked] = useState(false);
 	const [userQuery, setUserQuery] = useState("");
-	const [isPermit, setIsPermit] = useState(permitFormat.test(userQuery.trim()));
-	const [isAllNumeric, setIsAllNumeric] = useState(allNumericFormat.test(userQuery.trim()));
-	const [searchContexts, setSearchContexts] = useState(
-		searchMode === "main" ? ["address", "neighborhood", "street", "owner"] : ["address"]
-	);
+	const [queryCount, setQueryCount] = useState(0);
+	const [justSearched, setJustSearched] = useState(false);
 
 	useEffect(() => {
-		const nextIsPermit = permitFormat.test(userQuery.trim());
-		const nextIsAllNumeric = allNumericFormat.test(userQuery.trim());
-		let nextSearchContexts;
-
-		if (nextIsPermit) {
-			nextSearchContexts = ["permit"];
-		} else if (nextIsAllNumeric) {
-			nextSearchContexts = ["civicAddressId", "pin"];
-		} else {
-			if (searchMode === "main") {
-				nextSearchContexts = ["address", "neighborhood", "street", "owner"];
-			} else {
-				nextSearchContexts = ["address"];
-			}
+		if (queryCount === 0) {
+			return;
 		}
-		setIsPermit(nextIsPermit);
-		setIsAllNumeric(nextIsAllNumeric);
-		setSearchContexts(nextSearchContexts);
-		setUserQueryChecked(true);
-	}, [userQuery]);
+		setJustSearched(true);
+		const timeoutId = setTimeout(() => setJustSearched(false), MIN_SPINNER_DURATION);
+		return () => clearTimeout(timeoutId);
+	}, [queryCount]);
+
+	const isPermit = permitFormat.test(userQuery.trim());
+	const isAllNumeric = allNumericFormat.test(userQuery.trim());
+	let searchContexts;
+	if (isPermit) {
+		searchContexts = ["permit"];
+	} else if (isAllNumeric) {
+		searchContexts = ["civicAddressId", "pin"];
+	} else if (searchMode === "main") {
+		searchContexts = ["address", "neighborhood", "street", "owner"];
+	} else {
+		searchContexts = ["address"];
+	}
 
 	return (
 		<div>
@@ -49,33 +47,38 @@ function SuggestSearchWrapper({ searchMode = "main", autoFocusInput = true, debo
 			<section style={{ marginBottom: "32px", marginTop: "32px" }}>
 				<SuggestSearch
 					setUserQuery={setUserQuery}
-					setUserQueryChecked={setUserQueryChecked}
 					autoFocusInput={autoFocusInput}
 					debounceInterval={debounceInterval}
 					suggestWithGeocoder={true}
 					suggestWithSimplicity={searchMode === "main"}
 					simplicitySuggestValue="id"
 					suggestionEntities={["neighborhood", "street", "owner"]}
+					setQueryCount={setQueryCount}
 				/>
 			</section>
 
-			{userQuery.length > 2 && userQueryChecked && (
+			{userQuery.length > 2 && (
 				<Query
 					query={searchQuery}
 					errorPolicy="all"
+					fetchPolicy="network-only"
 					variables={{
 						searchContexts: searchContexts,
 						searchString: isPermit ? userQuery.toUpperCase() : userQuery,
 					}}
 				>
 					{({ loading, error, data }) => {
-						if (loading) {
-							return <LoadingAnimation />;
+						if (loading || justSearched) {
+							return (
+								<div style={{ minHeight: "400px" }}>
+									<LoadingAnimation />
+								</div>
+							);
 						}
 
 						if (error) {
 							return (
-								<Alert type="danger">
+								<div className="alert alert-danger alert-sm">
 									<span style={{ fontSize: "1.25rem" }}>There was an error fetching results.</span>
 									<hr style={{ margin: "0" }} />
 									<p style={{ marginTop: "12px" }}>
@@ -83,14 +86,18 @@ function SuggestSearchWrapper({ searchMode = "main", autoFocusInput = true, debo
 											<span key={i}>{message}</span>
 										))}
 									</p>
-								</Alert>
+								</div>
 							);
 						}
 
 						const formattedResults = formatSearchResults(data.search);
 
+						// if (formattedResults.length > 0) {
+						// 	document.getElementById("searchBox")?.scrollIntoView({ behavior: "smooth" });
+						// }
+
 						return (
-							<div className="row">
+							<div id="search-results" className="row">
 								<div className="col-sm-12">
 									{formattedResults.length > 0 &&
 										formattedResults.map((resultGroup, index) => (

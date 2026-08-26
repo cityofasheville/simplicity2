@@ -60,7 +60,7 @@ export default function SearchResultsTable({
 	const { pageSize, pageIndex } = table.getState().pagination;
 
 	useEffect(() => {
-		window.scrollTo(0, 0);
+		document.getElementById("searchBox")?.scrollIntoView({ behavior: "smooth" });
 	}, [pageIndex]);
 
 	function handleFilterChange(event) {
@@ -111,8 +111,6 @@ export default function SearchResultsTable({
 								if (filterOptions?.length > 0) {
 									headerMatch = filterOptions.find((option) => option.accessor === header.id);
 								}
-								console.log("header", header);
-								console.log("header match", headerGroup);
 
 								return (
 									<th

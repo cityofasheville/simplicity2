@@ -13,5 +13,4 @@ npm-debug.log
 
 .env
 
-# Not everyone is using this and eslint covers it anyway
-.prettierrc
+

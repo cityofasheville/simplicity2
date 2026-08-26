@@ -7,7 +7,7 @@ const Error = (props) => (
 	<Alert type="danger">
 		<div>
 			<p>
-				There was an error retrieving this data. You may report issues using{" "}
+				An error has occurred. You may report issues using{" "}
 				<a
 					href="https://docs.google.com/a/ashevillenc.gov/forms/d/e/1FAIpQLSdjNwOmoDY3PjQOVreeSL07zgI8otIIPWjY7BnejWMAjci8-w/viewform?c=0&w=1"
 					target="_blank"

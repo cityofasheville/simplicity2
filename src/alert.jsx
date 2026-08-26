@@ -21,7 +21,7 @@ function Alert({ children, type = "info" }) {
 		<div
 			className={`p-4 rounded shadow w-full max-w-3xl my-6 mx-auto outline ${OUTLINE_CLASSES[type]} flex items-center gap-4`}
 		>
-			<Icon path={INFO_CIRCLE} size={24} color={ICON_COLORS[type]} /> {children}
+			<Icon ariaHidden="true" path={INFO_CIRCLE} size={24} color={ICON_COLORS[type]} /> {children}
 		</div>
 	);
 }

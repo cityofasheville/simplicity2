@@ -9,6 +9,7 @@ import createFilterRenderer from "../../shared/FilterRenderer";
 import Table from "../../shared/Table/Table";
 import { IM_MAP5 } from "../../shared/iconConstants";
 import GetCrimeIcon from "./GetCrimeIcon";
+import Alert from "../../alert";
 
 const CrimeTable = (props) => {
 	let content;
@@ -151,7 +152,7 @@ const CrimeTable = (props) => {
 		<div>
 			<div className="col-sm-12">
 				{props.data.length < 1 ? (
-					<div className="alert alert-info">{content.no_results_found}</div>
+					<Alert type="info">{content.no_results_found}</Alert>
 				) : (
 					<div className="mt-3">
 						<Table

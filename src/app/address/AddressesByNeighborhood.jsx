@@ -13,6 +13,7 @@ import { spanish } from "./spanish";
 import { withLanguage } from "../../utilities/lang/LanguageContext";
 import createFilterRenderer from "../../shared/FilterRenderer";
 import Table from "../../shared/Table/Table";
+import Alert from "../../alert";
 
 const GET_ADDRESSES_BY_NEIGHBORHOOD = gql`
 	query addresses_by_neighborhood($nbrhd_ids: [String]) {
@@ -153,8 +154,8 @@ function AddressesByNeighborhood(props) {
 							popup: `
                 <b>${content.address || ""}</b>
                 <div>${item.street_number || ""} ${item.street_prefix || ""} ${item.street_name || ""} ${
-								item.street_type || ""
-							} ${item.unit || ""}</div>
+									item.street_type || ""
+								} ${item.unit || ""}</div>
                 <div>${item.city || ""}, NC ${item.zipcode || ""}</div>
                 <br /><b>${content.owner || ""}</b>
                 <div>${item.owner_name || ""}</div>
@@ -172,7 +173,7 @@ function AddressesByNeighborhood(props) {
 						/>
 						<div id="listView" className={` ${props.location.query.view === "map" ? "hidden" : "flex"}`}>
 							{data.addresses_by_neighborhood.length < 1 ? (
-								<div className="alert alert-info">{content.no_results_found}</div>
+								<Alert type="info">{content.no_results_found}</Alert>
 							) : (
 								<div className="mt-2">
 									<Table
@@ -190,7 +191,7 @@ function AddressesByNeighborhood(props) {
 
 						<div id="mapView" className={`mt-4 ${props.location.query.view === "map" ? "flex" : "hidden"}`}>
 							{data.addresses_by_neighborhood.length === 0 || props.location.query.view !== "map" ? (
-								<div className="alert alert-info">{content.no_results_found}</div>
+								<Alert type="info">{content.no_results_found}</Alert>
 							) : (
 								<div className="w-full h-[600px] flex">
 									<Map

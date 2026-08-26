@@ -16,6 +16,7 @@ import {
 } from "../search/searchResults/searchResultsUtils";
 import * as poweredByGoogle from "../search/searchResults/powered_by_google_on_white.png";
 // import styles from '../search/searchResults/searchResultGroup.css';
+import Alert from "../../alert";
 
 const dataColumns = (formattedData, miniResultsProps) => [
 	{
@@ -111,7 +112,11 @@ const MiniResults = (props) => {
 			</div>
 		);
 	} else if (formattedResults.length === 0) {
-		return <div className="alert alert-warning alert-sm">No results found. Is this an address in Asheville, NC?</div>;
+		return (
+			<Alert type="info" className="alert-sm">
+				No results found. Is this an address in Asheville, NC?
+			</Alert>
+		);
 	}
 	return null;
 };

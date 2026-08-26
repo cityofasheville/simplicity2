@@ -19,6 +19,7 @@ import {
 import createFilterRenderer from "../../shared/FilterRenderer";
 import Table from "../../shared/Table/Table";
 import Link from "react-router/lib/Link";
+import Alert from "../../alert";
 
 const getIcon = (type, isExpanded) => {
 	switch (type) {
@@ -220,7 +221,7 @@ const DevelopmentTable = (props) => {
 	return (
 		<div className="col-sm-12">
 			{props.data.length < 1 ? (
-				<div className="alert alert-info">No results found</div>
+				<Alert type="info">No results found</Alert>
 			) : (
 				<div className="mt-3">
 					<Table

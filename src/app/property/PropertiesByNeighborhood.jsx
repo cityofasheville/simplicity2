@@ -13,6 +13,7 @@ import expandingRows from "../../shared/react_table_hoc/ExpandingRows";
 import createFilterRenderer from "../../shared/FilterRenderer";
 import Table from "../../shared/Table/Table";
 import { Link } from "react-router";
+import Alert from "../../alert";
 
 const FilterRenderer = createFilterRenderer("Search...");
 
@@ -93,7 +94,7 @@ const PropertiesByNeighborhood = (props) => {
 			<section className="my-4" id="view-container">
 				<div id="listView" className={`${props.location.query.view !== "list" ? "hidden" : "flex"}`}>
 					{props.data.properties_by_neighborhood.length < 1 ? (
-						<div className="alert alert-info">No results found</div>
+						<Alert type="info">No results found</Alert>
 					) : (
 						<div className="mt-3">
 							<Table
@@ -118,7 +119,7 @@ const PropertiesByNeighborhood = (props) => {
 
 				<div id="mapView" className={`${props.location.query.view === "map" ? "flex" : "hidden"}`}>
 					{props.data.properties_by_neighborhood.length === 0 || props.location.query.view === "list" ? (
-						<div className="alert alert-info">No results found</div>
+						<Alert type="info">No results found</Alert>
 					) : (
 						<div className="w-full h-[600px] flex">
 							<Map

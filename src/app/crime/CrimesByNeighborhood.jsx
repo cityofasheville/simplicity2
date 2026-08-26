@@ -219,7 +219,7 @@ function CrimesByNeighborhood(props) {
 								</div>
 								<div id="mapView" className={`${props.location.query.view === "map" ? "flex" : "hidden"}`}>
 									{data.crimes_by_neighborhood.length === 0 || props.location.query.view !== "map" ? (
-										<Alert type="info" message={content.no_results_found} />
+										<Alert type="info">{content.no_results_found}</Alert>
 									) : (
 										<div className="w-full">
 											<div className="w-full h-[600px] flex">

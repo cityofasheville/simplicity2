@@ -186,7 +186,7 @@ const DevelopmentByAddress = (props) => {
 
 				<div id="mapView" className={`${props.location.query.view === "map" ? "flex" : "hidden"}`}>
 					{props.data.permits_by_address.length === 0 || props.location.query.view !== "map" ? (
-						<Alert type="info" message="No results found" />
+						<Alert type="info">No results found</Alert>
 					) : (
 						<div className="w-full">
 							<div className="w-full h-[600px] flex">

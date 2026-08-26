@@ -152,7 +152,7 @@ const CrimeTable = (props) => {
 		<div>
 			<div className="col-sm-12">
 				{props.data.length < 1 ? (
-					<Alert type="info" message={content.no_results_found} />
+					<Alert type="info">{content.no_results_found}</Alert>
 				) : (
 					<div className="mt-3">
 						<Table

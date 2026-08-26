@@ -37,6 +37,7 @@ function SuggestSearch({
 	simplicitySuggestValue = "name",
 	suggestionEntities = ["neighborhood", "street", "owner"],
 	patternsToExcludeFromSuggestions = [/^\d+$/, /^\d+-?\d*$/],
+	setQueryCount,
 }) {
 	const combobox = Ariakit.useComboboxStore();
 
@@ -251,6 +252,7 @@ function SuggestSearch({
 		setInputDisplayValue(suggestion.text);
 		setStatus("loading");
 		setUserQuery(suggestion.value);
+		setQueryCount((n) => n + 1);
 	}
 
 	function handleClear() {
@@ -286,7 +288,8 @@ function SuggestSearch({
 				window.history.pushState({ path: newurl }, "", newurl);
 			}
 			// console.log('form submission detected');
-			submitButtonRef.current.focus();
+			// submitButtonRef.current.focus();
+			setQueryCount((n) => n + 1);
 			setStatus("loading");
 			setUserQuery(sanitizedInput);
 		}

@@ -110,8 +110,6 @@ export default function SearchResultsTable({
 								if (filterOptions?.length > 0) {
 									headerMatch = filterOptions.find((option) => option.accessor === header.id);
 								}
-								console.log("header", header);
-								console.log("header match", headerGroup);
 
 								return (
 									<th

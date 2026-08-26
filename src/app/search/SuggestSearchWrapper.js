@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Query } from "react-apollo";
 import SuggestSearch from "./SuggestSearch";
 import SearchResultGroup from "./searchResults/SearchResultGroup";
@@ -6,11 +6,25 @@ import LoadingAnimation from "../../shared/LoadingAnimation";
 import { searchQuery, formatSearchResults } from "./searchResults/searchResultsUtils";
 // import { set } from 'd3-collection';
 
+const MIN_SPINNER_DURATION = 400;
+
 function SuggestSearchWrapper({ searchMode = "main", autoFocusInput = true, debounceInterval = 250 }) {
 	const permitFormat = /^\d{2}-\d{5,10}(s|S|pz|pZ|Pz|PZ){0,1}$/;
 	const allNumericFormat = /^\d+$/;
 
 	const [userQuery, setUserQuery] = useState("");
+	const [queryCount, setQueryCount] = useState(0);
+	const [justSearched, setJustSearched] = useState(false);
+
+	useEffect(() => {
+		if (queryCount === 0) {
+			return;
+		}
+		setJustSearched(true);
+		const timeoutId = setTimeout(() => setJustSearched(false), MIN_SPINNER_DURATION);
+		return () => clearTimeout(timeoutId);
+	}, [queryCount]);
+
 	const isPermit = permitFormat.test(userQuery.trim());
 	const isAllNumeric = allNumericFormat.test(userQuery.trim());
 	let searchContexts;
@@ -39,6 +53,7 @@ function SuggestSearchWrapper({ searchMode = "main", autoFocusInput = true, debo
 					suggestWithSimplicity={searchMode === "main"}
 					simplicitySuggestValue="id"
 					suggestionEntities={["neighborhood", "street", "owner"]}
+					setQueryCount={setQueryCount}
 				/>
 			</section>
 
@@ -46,13 +61,14 @@ function SuggestSearchWrapper({ searchMode = "main", autoFocusInput = true, debo
 				<Query
 					query={searchQuery}
 					errorPolicy="all"
+					fetchPolicy="network-only"
 					variables={{
 						searchContexts: searchContexts,
 						searchString: isPermit ? userQuery.toUpperCase() : userQuery,
 					}}
 				>
 					{({ loading, error, data }) => {
-						if (loading) {
+						if (loading || justSearched) {
 							return (
 								<div style={{ minHeight: "400px" }}>
 									<LoadingAnimation />

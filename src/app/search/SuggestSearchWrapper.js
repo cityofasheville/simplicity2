@@ -109,10 +109,10 @@ function SuggestSearchWrapper({ searchMode = "main", autoFocusInput = true, debo
 											/>
 										))}
 									{formattedResults.length === 0 && (
-										<div className="alert alert-warning alert-sm">
+										<Alert type="warning">
 											No results were found for "{userQuery}". Try a different search term and/or different search type
 											selections.
-										</div>
+										</Alert>
 									)}
 								</div>
 							</div>

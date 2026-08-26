@@ -75,7 +75,8 @@ export default function SearchResultsTable({
 		});
 		setColumnFilter(workingFilters);
 	}
-
+	//set a ref on the div
+	// or the heading above
 	return (
 		<div>
 			{filterRender.globalFilterRender && (

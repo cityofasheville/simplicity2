@@ -15,6 +15,7 @@ import ButtonGroup from "../../shared/ButtonGroup";
 import Button from "../../shared/Button";
 import { refreshLocation } from "../../utilities/generalUtilities";
 import MapLegend from "../../shared/MapLegend";
+import Alert from "../../alert";
 
 const getMarker = (type) => {
 	switch (type) {
@@ -183,7 +184,7 @@ const DevelopmentByStreet = (props) => {
 
 				<div id="mapView" className={`${props.location.query.view === "map" ? "flex" : "hidden"}`}>
 					{props.data.permits_by_street.length === 0 || props.location.query.view !== "map" ? (
-						<div className="alert alert-info">No results found</div>
+						<Alert type="info">No results found</Alert>
 					) : (
 						<div className="w-full">
 							<div className="w-full h-[600px] flex">

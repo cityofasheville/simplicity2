@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import CIPTimeline from "./CIPTimeline";
 import CIPMap from "./CIPMap";
 import { CIPTextReplacements } from "./CIPTextReplacements";
+import Alert from "../../alert";
 
 const GET_PROJECTS = gql`
 	query cip_projects($categories: [String], $ids: [String]) {
@@ -70,10 +71,10 @@ function Project(props) {
 					return (
 						<div className="container">
 							<h1 className="title__text">Project Details</h1>
-							<div className={`alert alert-danger my-8`}>
+							<Alert type="danger">
 								There was an error retrieving this project. If this problem perists, please contact
 								help@ashevillenc.gov.
-							</div>
+							</Alert>
 
 							<SuggestSearchWrapper searchMode="project" />
 						</div>
@@ -88,9 +89,9 @@ function Project(props) {
 					return (
 						<div className="container">
 							<h1 className="title__text">Project Details</h1>
-							<div className={`alert alert-warning my-8`}>
+							<Alert type="warning" className="my-8">
 								No project found for ID "{props.routeParams.id}". Please verify the project ID and try again.
-							</div>
+							</Alert>
 							<SuggestSearchWrapper searchMode="permit" />
 						</div>
 					);

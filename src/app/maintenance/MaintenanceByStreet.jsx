@@ -16,6 +16,7 @@ import Icon from "../../shared/Icon";
 import { IM_MAP5 } from "../../shared/iconConstants";
 import createFilterRenderer from "../../shared/FilterRenderer";
 import Table from "../../shared/Table/Table";
+import Alert from "../../alert";
 
 const getMaintenanceInfo = (entity, comma) => {
 	if (entity === null) {
@@ -228,7 +229,7 @@ const MaintenanceByStreet = (props) => {
 
 				<div id="mapView" hidden={props.location.query.view === "list"}>
 					{props.data.streets.length === 0 || props.location.query.view === "list" ? (
-						<div className="alert alert-info">No results found</div>
+						<Alert type="info">No results found</Alert>
 					) : (
 						<div className="w-full h-[600px] flex">
 							<Map

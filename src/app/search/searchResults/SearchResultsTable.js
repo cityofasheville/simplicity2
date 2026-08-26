@@ -59,9 +59,9 @@ export default function SearchResultsTable({
 
 	const { pageSize, pageIndex } = table.getState().pagination;
 
-	useEffect(() => {
-		window.scrollTo(0, 0);
-	}, [pageIndex]);
+	// useEffect(() => {
+	// 	document.getElementById("searchBox")?.scrollIntoView({ behavior: "smooth" });
+	// }, [pageIndex]);
 
 	function handleFilterChange(event) {
 		// console.log('Filter Changed', event.target);

@@ -30,7 +30,6 @@ const comboBoxStyle = {
 
 function SuggestSearch({
 	setUserQuery,
-	setUserQueryChecked,
 	// autoFocusInput = false,
 	debounceInterval = 500,
 	suggestWithGeocoder = true,
@@ -72,7 +71,6 @@ function SuggestSearch({
 			setInputDisplayValue(urlQuery);
 			setStatus("loading");
 			setUserQuery(urlQuery);
-			setUserQueryChecked(false);
 		}
 	}, []);
 
@@ -253,7 +251,6 @@ function SuggestSearch({
 		setInputDisplayValue(suggestion.text);
 		setStatus("loading");
 		setUserQuery(suggestion.value);
-		setUserQueryChecked(false);
 	}
 
 	function handleClear() {
@@ -292,7 +289,6 @@ function SuggestSearch({
 			submitButtonRef.current.focus();
 			setStatus("loading");
 			setUserQuery(sanitizedInput);
-			setUserQueryChecked(false);
 		}
 	}
 	// form-control combobox position-relative

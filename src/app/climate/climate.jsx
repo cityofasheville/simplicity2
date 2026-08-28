@@ -312,7 +312,7 @@ const Climate = (props) => {
 					<ClickableTile
 						image={IMG_CJI_STORYMAP}
 						text="City of Asheville Climate Vulnerability Initiative Webpage "
-						url="https://www.ashevillenc.gov/department/sustainability/climate-initiatives/climate-justice-initiative"
+						url="https://www.ashevillenc.gov/department/recovery-resilience/climate-initiatives/climate-resilience-initiative/"
 					/>
 					{/* <ClickableTile
 						image={IMG_CJI_WEB}
@@ -434,8 +434,8 @@ const Climate = (props) => {
 								{props.data.blockgroups[0].resflood < 3
 									? " (Lower Risk) "
 									: props.data.blockgroups[0].resflood === 3
-									? " (Medium Risk) "
-									: " (Higher Risk) "}
+										? " (Medium Risk) "
+										: " (Higher Risk) "}
 							</i>
 							<a
 								href="https://drive.google.com/file/d/0BzZzONRPV-VAVF9vb2pOMUtkRmFJR1AyNFluYU5ESU9rODRJ/view?resourcekey=0-ZQ80xC-a8bw4JDs7z0Neaw"
@@ -452,8 +452,8 @@ const Climate = (props) => {
 								{props.data.blockgroups[0].wfirescore < 3
 									? " (Lower Risk) "
 									: props.data.blockgroups[0].wfirescore === 3
-									? " (Medium Risk) "
-									: " (Higher Risk) "}
+										? " (Medium Risk) "
+										: " (Higher Risk) "}
 							</i>
 							<a
 								href="https://drive.google.com/file/d/0BzZzONRPV-VAVF9vb2pOMUtkRmFJR1AyNFluYU5ESU9rODRJ/view?resourcekey=0-ZQ80xC-a8bw4JDs7z0Neaw"
@@ -470,8 +470,8 @@ const Climate = (props) => {
 								{props.data.blockgroups[0].resland < 3
 									? " (Lower Risk) "
 									: props.data.blockgroups[0].resland === 3
-									? " (Medium Risk) "
-									: " (Higher Risk) "}
+										? " (Medium Risk) "
+										: " (Higher Risk) "}
 							</i>
 							<a
 								href="https://drive.google.com/file/d/0BzZzONRPV-VAVF9vb2pOMUtkRmFJR1AyNFluYU5ESU9rODRJ/view?resourcekey=0-ZQ80xC-a8bw4JDs7z0Neaw"

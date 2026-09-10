@@ -3,13 +3,10 @@ import PropTypes from "prop-types";
 import { Link } from "react-router";
 import AddressesByStreet from "./AddressesByStreet";
 import AddressesByNeighborhood from "./AddressesByNeighborhood";
-import ButtonGroup from "../../shared/ButtonGroup";
-import Button from "../../shared/Button";
 import LinkButton from "../../shared/LinkButton";
 import PageHeader from "../../shared/PageHeader";
 import Icon from "../../shared/Icon";
 import { IM_ENVELOP3 } from "../../shared/iconConstants";
-import { refreshLocation } from "../../utilities/generalUtilities";
 import { english } from "./english";
 import { spanish } from "./spanish";
 import { withLanguage } from "../../utilities/lang/LanguageContext";
@@ -23,10 +20,6 @@ function AddressList(props) {
 		default:
 			content = english;
 	}
-
-	const getNewUrlParams = (view) => ({
-		view,
-	});
 
 	const searchParams = new URLSearchParams(window.location.search);
 	const currentView = searchParams.get("view");
@@ -50,32 +43,6 @@ function AddressList(props) {
 					{searchParams.get("entity") === "street" ? content.back_to_street : content.back_to_neighborhood}
 				</Link>
 			</PageHeader>
-			<div className="flex">
-				<div role="tablist" aria-label="Choose view" className="btn-group ml-auto">
-					<button
-						role="tab"
-						aria-controls="view-container"
-						className="btn btn-primary"
-						onClick={() => refreshLocation(getNewUrlParams("map"), props.location)}
-						active={props.location.query.view === "map"}
-						aria-selected={props.location.query.view === "map"}
-						positionInGroup="left"
-					>
-						Map view
-					</button>{" "}
-					<button
-						aria-controls="view-container"
-						role="tab"
-						className="btn btn-primary"
-						onClick={() => refreshLocation(getNewUrlParams("list"), props.location)}
-						active={props.location.query.view === "list"}
-						aria-selected={props.location.query.view === "list"}
-						positionInGroup="middle"
-					>
-						List View
-					</button>
-				</div>
-			</div>
 			{searchParams.get("entity") === "street" ? (
 				<AddressesByStreet {...props} />
 			) : (

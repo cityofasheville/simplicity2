@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
 import EmailDownload from "../../shared/EmailDownload";
+import ViewToolbar from "../../shared/ViewToolbar";
 import Map from "../../shared/visualization/Map";
 import { getBoundsFromPolygonData, combinePolygonsFromNeighborhoodList } from "../../utilities/mapUtilities";
 import LoadingAnimation from "../../shared/LoadingAnimation";
@@ -166,44 +167,52 @@ function AddressesByNeighborhood(props) {
 				});
 
 				return (
-					<section id="view-container">
-						<EmailDownload
-							downloadData={data.addresses_by_neighborhood}
-							fileName={content.addresses_by_neighborhood_filename}
-						/>
-						<div id="listView" className={` ${props.location.query.view === "map" ? "hidden" : "flex"}`}>
-							{data.addresses_by_neighborhood.length < 1 ? (
-								<Alert type="info">{content.no_results_found}</Alert>
-							) : (
-								<div className="mt-2">
-									<Table
-										data={data.addresses_by_neighborhood}
-										columns={addressTableColumns}
-										showPagination={true}
-										className="w-full items-center"
-										navRender={navRender}
-										filterRender={filterRender}
-										filterOptions={[{ accessor: "address" }, { accessor: "owner" }]}
-									/>
-								</div>
-							)}
-						</div>
+					<div>
+						<ViewToolbar location={props.location}>
+							<EmailDownload
+								downloadData={data.addresses_by_neighborhood}
+								fileName={content.addresses_by_neighborhood_filename}
+							/>
+						</ViewToolbar>
+						<section id="view-container">
+							<div
+								id="listView"
+								className={`${props.location.query.view === "map" ? "hidden" : "flex"} w-full overflow-x-auto`}
+							>
+								{data.addresses_by_neighborhood.length < 1 ? (
+									<Alert type="info">{content.no_results_found}</Alert>
+								) : (
+									<div className="mt-2">
+										<Table
+											caption="Addresses in this neighborhood"
+											data={data.addresses_by_neighborhood}
+											columns={addressTableColumns}
+											showPagination={true}
+											className="w-full items-center"
+											navRender={navRender}
+											filterRender={filterRender}
+											filterOptions={[{ accessor: "address" }, { accessor: "owner" }]}
+										/>
+									</div>
+								)}
+							</div>
 
-						<div id="mapView" className={`mt-4 ${props.location.query.view === "map" ? "flex" : "hidden"}`}>
-							{data.addresses_by_neighborhood.length === 0 || props.location.query.view !== "map" ? (
-								<Alert type="info">{content.no_results_found}</Alert>
-							) : (
-								<div className="w-full h-[600px] flex">
-									<Map
-										data={mapData}
-										drawPolygon
-										polygonData={combinePolygonsFromNeighborhoodList([data.neighborhoods[0]])}
-										bounds={getBoundsFromPolygonData([data.neighborhoods[0].polygon])}
-									/>
-								</div>
-							)}
-						</div>
-					</section>
+							<div id="mapView" className={`mt-4 ${props.location.query.view === "map" ? "flex" : "hidden"}`}>
+								{data.addresses_by_neighborhood.length === 0 || props.location.query.view !== "map" ? (
+									<Alert type="info">{content.no_results_found}</Alert>
+								) : (
+									<div className="w-full h-[600px] flex">
+										<Map
+											data={mapData}
+											drawPolygon
+											polygonData={combinePolygonsFromNeighborhoodList([data.neighborhoods[0]])}
+											bounds={getBoundsFromPolygonData([data.neighborhoods[0].polygon])}
+										/>
+									</div>
+								)}
+							</div>
+						</section>
+					</div>
 				);
 			}}
 		</Query>

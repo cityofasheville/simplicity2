@@ -5,6 +5,7 @@ import gql from "graphql-tag";
 import { Query } from "react-apollo";
 import Map from "../../shared/visualization/Map";
 import EmailDownload from "../../shared/EmailDownload";
+import ViewToolbar from "../../shared/ViewToolbar";
 import { getBoundsFromStreetData, convertStreetLinesToLatLngArrays } from "../../utilities/mapUtilities";
 import LoadingAnimation from "../../shared/LoadingAnimation";
 import Error from "../../shared/Error";
@@ -158,14 +159,20 @@ function AddressesByStreet(props) {
 				}); // eslint-disable-line
 
 				return (
-					<section id="view-container">
-						<EmailDownload downloadData={data.addresses_by_street} fileName={content.addresses_by_street_filename} />
-						<div id="listView" className={`mt-4 ${props.location.query.view === "map" ? "hidden" : "flex"}`}>
-							{data.addresses_by_street.length < 1 ? (
-								<Alert type="info">No results found</Alert>
-							) : (
-								<div className="max-w-[1000px]">
+					<div>
+						<ViewToolbar location={props.location}>
+							<EmailDownload downloadData={data.addresses_by_street} fileName={content.addresses_by_street_filename} />
+						</ViewToolbar>
+						<section id="view-container">
+							<div
+								id="listView"
+								className={`mt-4 ${props.location.query.view === "map" ? "hidden" : "flex"} w-full overflow-x-auto`}
+							>
+								{data.addresses_by_street.length < 1 ? (
+									<Alert type="info">No results found</Alert>
+								) : (
 									<Table
+										caption="Addresses on this street"
 										data={data.addresses_by_street}
 										columns={addressTableColumns}
 										showPagination={true}
@@ -174,25 +181,25 @@ function AddressesByStreet(props) {
 										filterRender={filterRender}
 										filterOptions={[{ accessor: "address" }, { accessor: "owner" }]}
 									/>
-								</div>
-							)}
-						</div>
+								)}
+							</div>
 
-						<div id="mapView" className={`mt-4 ${props.location.query.view === "map" ? "flex" : "hidden"}`}>
-							{data.addresses_by_street.length === 0 || props.location.query.view !== "map" ? (
-								<Alert type="info">No results found</Alert>
-							) : (
-								<div className="w-full h-[600px] flex">
-									<Map
-										data={mapData}
-										bounds={getBoundsFromStreetData(data.streets)}
-										drawStreet
-										streetData={convertStreetLinesToLatLngArrays(data.streets)}
-									/>
-								</div>
-							)}
-						</div>
-					</section>
+							<div id="mapView" className={`mt-4 ${props.location.query.view === "map" ? "flex" : "hidden"}`}>
+								{data.addresses_by_street.length === 0 || props.location.query.view !== "map" ? (
+									<Alert type="info">No results found</Alert>
+								) : (
+									<div className="w-full h-[600px] flex">
+										<Map
+											data={mapData}
+											bounds={getBoundsFromStreetData(data.streets)}
+											drawStreet
+											streetData={convertStreetLinesToLatLngArrays(data.streets)}
+										/>
+									</div>
+								)}
+							</div>
+						</section>
+					</div>
 				);
 			}}
 		</Query>

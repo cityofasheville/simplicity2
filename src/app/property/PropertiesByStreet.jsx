@@ -5,6 +5,7 @@ import { graphql } from "react-apollo";
 import gql from "graphql-tag";
 import Map from "../../shared/visualization/Map";
 import EmailDownload from "../../shared/EmailDownload";
+import ViewToolbar from "../../shared/ViewToolbar";
 import Property from "./Property";
 import {
 	getBoundsFromStreetData,
@@ -121,15 +122,20 @@ const PropertiesByStreet = (props) => {
 	);
 	return (
 		<div>
-			<EmailDownload downloadData={props.data.properties_by_street} fileName="properties_by_street.csv" />
+			<ViewToolbar location={props.location}>
+				<EmailDownload downloadData={props.data.properties_by_street} fileName="properties_by_street.csv" />
+			</ViewToolbar>
 			<div className="my-4" id="view-container">
-				<div id="listView" className={props.location.query.view !== "list" ? "hidden" : "flex"}>
+				<div
+					id="listView"
+					className={`${props.location.query.view !== "list" ? "hidden" : "flex"} w-full overflow-x-auto`}
+				>
 					{props.data.properties_by_street.length < 1 ? (
 						<Alert type="info">No results found</Alert>
 					) : (
 						<div alt={["Table of addresses"].join(" ")} className="mt-2">
 							<Table
-								ariaLabel="PropertyDetails"
+								caption="Properties on this street"
 								navRender={navRender}
 								data={filteredData}
 								// data={props.data.properties_by_street}

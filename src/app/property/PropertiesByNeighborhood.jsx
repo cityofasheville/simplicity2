@@ -5,6 +5,7 @@ import { graphql } from "react-apollo";
 import gql from "graphql-tag";
 import Map from "../../shared/visualization/Map";
 import EmailDownload from "../../shared/EmailDownload";
+import ViewToolbar from "../../shared/ViewToolbar";
 import Property from "./Property";
 import { getBoundsFromPolygonData, combinePolygonsFromPropertyList } from "../../utilities/mapUtilities";
 import LoadingAnimation from "../../shared/LoadingAnimation";
@@ -90,15 +91,20 @@ const PropertiesByNeighborhood = (props) => {
 
 	return (
 		<div>
-			<EmailDownload downloadData={props.data.properties_by_neighborhood} fileName="properties_by_neighborhodd.csv" />
+			<ViewToolbar location={props.location}>
+				<EmailDownload downloadData={props.data.properties_by_neighborhood} fileName="properties_by_neighborhood.csv" />
+			</ViewToolbar>
 			<section className="my-4" id="view-container">
-				<div id="listView" className={`${props.location.query.view !== "list" ? "hidden" : "flex"}`}>
+				<div
+					id="listView"
+					className={`${props.location.query.view !== "list" ? "hidden" : "flex"} w-full overflow-x-auto`}
+				>
 					{props.data.properties_by_neighborhood.length < 1 ? (
 						<Alert type="info">No results found</Alert>
 					) : (
 						<div className="mt-3">
 							<Table
-								ariaLabel="PropertyDetails"
+								caption="Properties in this neighborhood"
 								navRender={navRender}
 								// data={props.data.properties_by_neighborhood}
 								data={filteredData}

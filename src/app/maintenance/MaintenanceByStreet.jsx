@@ -3,6 +3,7 @@ import { graphql } from "react-apollo";
 import gql from "graphql-tag";
 import AccessibleReactTable, { CellFocusWrapper } from "accessible-react-table";
 import EmailDownload from "../../shared/EmailDownload";
+import ViewToolbar from "../../shared/ViewToolbar";
 import LoadingAnimation from "../../shared/LoadingAnimation";
 import Error from "../../shared/Error";
 import Map from "../../shared/visualization/Map";
@@ -205,12 +206,16 @@ const MaintenanceByStreet = (props) => {
 
 	return (
 		<div className="row">
-			<div>
+			<ViewToolbar location={props.location}>
 				<EmailDownload downloadData={props.data.streets} fileName="maintenance_by_street.csv" />
-			</div>
+			</ViewToolbar>
 			<div className="my-4" id="view-container">
-				<div id="listView" hidden={props.location.query.view !== "list"} className="mt-3">
+				<div
+					id="listView"
+					className={`${props.location.query.view !== "list" ? "hidden" : "flex"} mt-3 w-full overflow-x-auto`}
+				>
 					<Table
+						caption="Street maintenance responsibility"
 						data={props.data.streets}
 						columns={maintenanceTableColumns}
 						showPagination={true}

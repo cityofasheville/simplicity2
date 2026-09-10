@@ -10,8 +10,8 @@ import PieChart from "../../shared/visualization/PieChart";
 import Map from "../../shared/visualization/Map";
 import CrimeTable from "../crime/CrimeTable";
 import EmailDownload from "../../shared/EmailDownload";
+import ViewToolbar from "../../shared/ViewToolbar";
 import { getBoundsFromPolygonData, combinePolygonsFromNeighborhoodList } from "../../utilities/mapUtilities";
-import { refreshLocation } from "../../utilities/generalUtilities";
 import { english } from "./english";
 import { spanish } from "./spanish";
 import { withLanguage } from "../../utilities/lang/LanguageContext";
@@ -160,47 +160,14 @@ function CrimesByNeighborhood(props) {
 					})
 				);
 
-				const getNewUrlParams = (view) => ({
-					view,
-				});
-
 				return (
 					<div>
-						<div className="flex my-4 items-end">
+						<ViewToolbar location={props.location} mapLabel={content.map_view} listLabel={content.list_view}>
 							<EmailDownload
 								downloadData={data.crimes_by_neighborhood}
 								fileName={content.crimes_by_neighborhood_filename}
 							/>
-							<div className="btn-group ml-auto" role="tablist">
-								<button
-									role="tab"
-									aria-controls="view-container"
-									onClick={() => refreshLocation(getNewUrlParams("map"), props.location)}
-									active={props.location.query.view === "map"}
-									aria-selected={props.location.query.view === "map"}
-									className="btn btn-primary"
-								>
-									{content.map_view}
-								</button>
-								<button
-									role="tab"
-									aria-controls="view-container"
-									onClick={() => refreshLocation(getNewUrlParams("list"), props.location)}
-									active={props.location.query.view === "list"}
-									aria-selected={props.location.query.view === "list"}
-									className="btn btn-primary"
-								>
-									{content.list_view}
-								</button>
-								{/* <button
-									onClick={() => refreshLocation(getNewUrlParams("summary"), props.location)}
-									className="btn btn-primary"
-									active={props.location.query.view === "summary"}
-								>
-									{content.chart_view}
-								</button> */}
-							</div>
-						</div>
+						</ViewToolbar>
 						<div>
 							{/* <div
 								id="summaryView"
@@ -214,7 +181,10 @@ function CrimesByNeighborhood(props) {
 								)}
 							</div> */}
 							<div id="view-container">
-								<div id="listView" className={`${props.location.query.view === "list" ? "flex" : "hidden"}`}>
+								<div
+									id="listView"
+									className={`${props.location.query.view === "list" ? "flex" : "hidden"} w-full overflow-x-auto`}
+								>
 									<CrimeTable data={data.crimes_by_neighborhood} location={props.location} />
 								</div>
 								<div id="mapView" className={`${props.location.query.view === "map" ? "flex" : "hidden"}`}>

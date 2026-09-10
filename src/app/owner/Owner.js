@@ -10,11 +10,11 @@ import ButtonGroup from "../../shared/ButtonGroup";
 import Button from "../../shared/Button";
 import LinkButton from "../../shared/LinkButton";
 import EmailDownload from "../../shared/EmailDownload";
+import ViewToolbar from "../../shared/ViewToolbar";
 import Icon from "../../shared/Icon";
 import { IM_USER } from "../../shared/iconConstants";
 import { getBoundsFromPropertyList, combinePolygonsFromPropertyList } from "../../utilities/mapUtilities";
 import Map from "../../shared/visualization/Map";
-import { refreshLocation } from "../../utilities/generalUtilities";
 import expandingRows from "../../shared/react_table_hoc/ExpandingRows";
 import createFilterRenderer from "../../shared/FilterRenderer";
 import { Link } from "react-router";
@@ -61,10 +61,6 @@ const Owner = (props) => {
 	if (props.data.error) {
 		return <Error message={props.data.error.message} />;
 	}
-
-	const getNewUrlParams = (view) => ({
-		view,
-	});
 
 	const polygons = Object.keys(props.data.properties).map((key) => props.data.properties[key].polygons);
 
@@ -140,33 +136,9 @@ const Owner = (props) => {
 					Back
 				</button>
 			</PageHeader>
-			<div className="flex flex-row">
-				<div className="mt-3 mb-4">
-					<EmailDownload downloadData={props.data.properties} fileName="properties_by_owner.csv" text="Download CSV" />
-				</div>
-				<div className="btn-group ml-auto" role="tablist">
-					<button
-						role="tab"
-						aria-controls="view-container"
-						className="btn btn-primary"
-						onClick={() => refreshLocation(getNewUrlParams("map"), props.location)}
-						active={props.location.query.view === "map"}
-						aria-selected={props.location.query.view === "map"}
-					>
-						Map view
-					</button>
-					<button
-						role="tab"
-						aria-controls="view-container"
-						className="btn btn-primary"
-						onClick={() => refreshLocation(getNewUrlParams("list"), props.location)}
-						active={props.location.query.view === "list"}
-						aria-selected={props.location.query.view === "list"}
-					>
-						List view
-					</button>
-				</div>
-			</div>
+			<ViewToolbar location={props.location}>
+				<EmailDownload downloadData={props.data.properties} fileName="properties_by_owner.csv" />
+			</ViewToolbar>
 
 			<div id="view-container">
 				<div id="listView" className={`${props.location.query.view === "list" ? "flex" : "hidden"}`}>

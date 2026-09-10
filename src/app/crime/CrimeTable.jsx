@@ -156,6 +156,7 @@ const CrimeTable = (props) => {
 				) : (
 					<div className="mt-3">
 						<Table
+							caption="Crime reports"
 							data={props.data}
 							columns={crimeTableColumns}
 							showPagination={true}

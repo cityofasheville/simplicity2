@@ -261,14 +261,13 @@ const Property = (props) => {
 				</div>
 				<div className="flex justify-center">
 					<Table
-						ariaLabel="PropertyDetails"
+						caption="Property details"
 						navRender={false}
 						data={summaryData}
 						filterRender={false}
 						columns={summaryTableColumns}
 						defaultPageSize={props.data.length}
 						showPagination={false}
-						className="w-full items-center"
 					/>
 				</div>
 
@@ -343,6 +342,7 @@ const Property = (props) => {
 					<div className="w-full">
 						<h4 className="text-xl text-coa-blue-medium">Associated Addresses</h4>
 						<Table
+							caption="Associated addresses"
 							columns={propertyTableColumns}
 							data={dataForAddressesTable}
 							navRender={navRender}

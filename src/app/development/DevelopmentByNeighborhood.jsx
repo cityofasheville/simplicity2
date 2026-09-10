@@ -10,10 +10,8 @@ import PieChart from "../../shared/visualization/PieChart";
 import Map from "../../shared/visualization/Map";
 import DevelopmentTable from "./DevelopmentTable";
 import EmailDownload from "../../shared/EmailDownload";
-import ButtonGroup from "../../shared/ButtonGroup";
-import Button from "../../shared/Button";
+import ViewToolbar from "../../shared/ViewToolbar";
 import { getBoundsFromPolygonData, combinePolygonsFromNeighborhoodList } from "../../utilities/mapUtilities";
-import { refreshLocation } from "../../utilities/generalUtilities";
 import MapLegend from "../../shared/MapLegend";
 import Alert from "../../alert";
 
@@ -132,48 +130,11 @@ const DevelopmentByNeighborhood = (props) => {
 		})
 	);
 
-	const getNewUrlParams = (view) => ({
-		view,
-	});
-
-	console.log("props.data.permits_by_neighborhood", props.data.permits_by_neighborhood);
-
 	return (
 		<div>
-			<div className="flex flex-col items-start gap-4 w-full my-3 md:flex-row md:items-center md:gap-0">
-				<div>
-					<EmailDownload downloadData={props.data.permits_by_neighborhood} fileName="permits_by_neighborhood.csv" />
-				</div>
-				<div className="btn-group max-w-full md:items-center md:shrink-0 md:ml-auto" role="tablist">
-					<button
-						role="tab"
-						aria-controls="view-container"
-						className="btn btn-primary"
-						onClick={() => refreshLocation(getNewUrlParams("map"), props.location)}
-						active={props.location.query.view === "map"}
-						aria-selected={props.location.query.view === "map"}
-					>
-						Map view
-					</button>
-					<button
-						role="tab"
-						aria-controls="view-container"
-						className="btn btn-primary"
-						onClick={() => refreshLocation(getNewUrlParams("list"), props.location)}
-						active={props.location.query.view === "list"}
-						aria-selected={props.location.query.view === "list"}
-					>
-						List view
-					</button>
-					{/* <button
-							className="btn btn-primary"
-							onClick={() => refreshLocation(getNewUrlParams("summary"), props.location)}
-							active={props.location.query.view === "summary"}
-						>
-							Chart
-					</button> */}
-				</div>
-			</div>
+			<ViewToolbar location={props.location}>
+				<EmailDownload downloadData={props.data.permits_by_neighborhood} fileName="permits_by_neighborhood.csv" />
+			</ViewToolbar>
 
 			{/* <div id="summaryView" className={`w-full h-full ${props.location.query.view === "summary" ? "flex" : "hidden"}`}>
 				{pieData.length > 0 ? (

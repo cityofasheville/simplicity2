@@ -1,13 +1,10 @@
 import React from "react";
 import { Link } from "react-router";
 import MaintenanceByStreet from "./MaintenanceByStreet";
-import ButtonGroup from "../../shared/ButtonGroup";
-import Button from "../../shared/Button";
 import LinkButton from "../../shared/LinkButton";
 import PageHeader from "../../shared/PageHeader";
 import Icon from "../../shared/Icon";
 import { IM_TRAFFIC_CONE } from "../../shared/iconConstants";
-import { refreshLocation } from "../../utilities/generalUtilities";
 
 const getSubtitle = (entity) => {
 	switch (entity) {
@@ -19,10 +16,6 @@ const getSubtitle = (entity) => {
 };
 
 function Maintenance(props) {
-	const getNewUrlParams = (view) => ({
-		view,
-	});
-
 	const searchParams = new URLSearchParams(window.location.search);
 	const currentView = searchParams.get("view");
 	searchParams.set("view", "map");
@@ -54,33 +47,6 @@ function Maintenance(props) {
 					Back to {props.location.query.entity}
 				</Link>
 			</PageHeader>
-			<div className="flex">
-				<div className="btn-group ml-auto" role="tablist">
-					<button
-						role="tab"
-						aria-controls="view-container"
-						className="btn btn-primary"
-						onClick={() => refreshLocation(getNewUrlParams("map"), props.location)}
-						active={props.location.query.view === "map"}
-						aria-selected={props.location.query.view === "map"}
-					>
-						Map view
-					</button>
-					<button
-						role="tab"
-						aria-controls="view-container"
-						className="btn btn-primary"
-						onClick={() => refreshLocation(getNewUrlParams("list"), props.location)}
-						active={props.location.query.view === "list"}
-						aria-selected={props.location.query.view === "list"}
-					>
-						List view
-					</button>
-					{/* <Button 
-              onClick={() => refreshLocation(getNewUrlParams('map'), props.location)} active={props.location.query.view !== 'list'} positionInGroup="left">Map view</Button>
-            <Button onClick={() => refreshLocation(getNewUrlParams('list'), props.location)} active={props.location.query.view === 'list'} positionInGroup="right">List view</Button> */}
-				</div>
-			</div>
 			{props.location.query.entity === "street" ? (
 				<MaintenanceByStreet {...props} />
 			) : (

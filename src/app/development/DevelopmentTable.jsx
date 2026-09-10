@@ -225,6 +225,7 @@ const DevelopmentTable = (props) => {
 			) : (
 				<div className="mt-3">
 					<Table
+						caption="Development permits"
 						data={props.data}
 						columns={crimeTableColumns}
 						showPagination={true}

@@ -23,6 +23,8 @@ export default function Table({
 	width = 300,
 	minWidth = 50,
 	maxWidth = 800,
+	className = "",
+	caption = "",
 }) {
 	const [sorting, setSorting] = React.useState([]);
 	const [globalFilter, setGlobalFilter] = React.useState("");
@@ -76,7 +78,7 @@ export default function Table({
 	}
 
 	return (
-		<div>
+		<div className={className}>
 			{filterRender.globalFilterRender && (
 				<GlobalFilter globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />
 			)}
@@ -101,6 +103,9 @@ export default function Table({
 			/>
 
 			<table className="w-full">
+				{/* Names the table for assistive tech. Visually hidden because most of these
+				    tables already sit under a visible heading — drop sr-only to show it. */}
+				{caption && <caption className="sr-only">{caption}</caption>}
 				<thead>
 					{table.getHeaderGroups().map((headerGroup) => (
 						<tr key={headerGroup.id}>

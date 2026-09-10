@@ -11,7 +11,7 @@ import Map from "../../shared/visualization/Map";
 import { getBoundsFromStreetData, convertStreetLinesToLatLngArrays } from "../../utilities/mapUtilities";
 import CrimeTable from "../crime/CrimeTable";
 import EmailDownload from "../../shared/EmailDownload";
-import { refreshLocation } from "../../utilities/generalUtilities";
+import ViewToolbar from "../../shared/ViewToolbar";
 import { english } from "./english";
 import { spanish } from "./spanish";
 import { withLanguage } from "../../utilities/lang/LanguageContext";
@@ -150,10 +150,10 @@ function CrimesByStreet(props) {
 					Object.assign({}, item, {
 						popup: `<div style="padding: 8px 0;">
               <p style="margin: 6px 0; text-transform: capitalize;"><b>Location</b>: ${item.address.toLowerCase()}</p><p style="margin: 6px 0;"><b>Date</b>: ${
-							item.date_occurred.indexOf("-") === -1
-								? moment.unix(item.date_occurred / 1000).format("M/DD/YYYY")
-								: moment.utc(item.date_occurred).format("M/DD/YYYY")
-						}</p><p style="margin: 6px 0; text-transform: capitalize;"><b>Type</b>: ${item.offense_long_description.toLowerCase()}</p>
+								item.date_occurred.indexOf("-") === -1
+									? moment.unix(item.date_occurred / 1000).format("M/DD/YYYY")
+									: moment.utc(item.date_occurred).format("M/DD/YYYY")
+							}</p><p style="margin: 6px 0; text-transform: capitalize;"><b>Type</b>: ${item.offense_long_description.toLowerCase()}</p>
             <p style="margin: 6px 0;"><b>Case number</b>: ${item.case_number}</p>
             </div>`, // eslint-disable-line
 						options: {
@@ -167,49 +167,11 @@ function CrimesByStreet(props) {
 					})
 				);
 
-				const getNewUrlParams = (view) => ({
-					view,
-				});
-
 				return (
 					<div>
-						<div className="flex my-4 items-center">
-							<div className="mr-auto">
-								<EmailDownload downloadData={data.crimes_by_street} fileName={content.crimes_by_street_filename} />
-							</div>
-							<div className="btn-group ml-auto" role="tablist">
-								<button
-									role="tab"
-									aria-controls="view-container"
-									className="btn btn-primary"
-									onClick={() => refreshLocation(getNewUrlParams("map"), props.location)}
-									active={props.location.query.view === "map"}
-									aria-selected={props.location.query.view === "map"}
-									positionInGroup="left"
-								>
-									{content.map_view}
-								</button>{" "}
-								<button
-									role="tab"
-									aria-controls="view-container"
-									className="btn btn-primary"
-									onClick={() => refreshLocation(getNewUrlParams("list"), props.location)}
-									active={props.location.query.view === "list"}
-									aria-selected={props.location.query.view === "list"}
-									positionInGroup="middle"
-								>
-									{content.list_view}
-								</button>
-								{/* <button
-									className="btn btn-primary"
-									onClick={() => refreshLocation(getNewUrlParams("summary"), props.location)}
-									positionInGroup="right"
-									active={props.location.query.view === "summary"}
-								>
-									{content.chart_view}
-								</button> */}
-							</div>
-						</div>
+						<ViewToolbar location={props.location} mapLabel={content.map_view} listLabel={content.list_view}>
+							<EmailDownload downloadData={data.crimes_by_street} fileName={content.crimes_by_street_filename} />
+						</ViewToolbar>
 						{/* <div
 							id="summaryView"
 							className={`w-full h-full ${props.location.query.view === "summary" ? "flex" : "hidden"}`}
@@ -221,7 +183,10 @@ function CrimesByStreet(props) {
 							)}
 						</div> */}
 						<div id="view-container">
-							<div id="listView" className={`${props.location.query.view === "list" ? "flex" : "hidden"}`}>
+							<div
+								id="listView"
+								className={`${props.location.query.view === "list" ? "flex" : "hidden"} w-full overflow-x-auto`}
+							>
 								<CrimeTable data={data.crimes_by_street} location={props.location} />
 							</div>
 

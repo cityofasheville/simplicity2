@@ -65,33 +65,36 @@ const CrimeSummary = (props) => {
 
 	return (
 		<div>
-			<div className="mb-8 mt-5 px-2 flex items-center">
-				<span className="text-coa-blue-medium pr-2">{<Icon ariaHidden={true} path={IM_SHIELD3} size={35} />}</span>
-				<h1 className="text-coa-blue-medium">
-					<span className="text-4xl">{content.crime}</span>
-				</h1>
+			<div className="mb-8 mt-5 px-2 flex flex-col items-start gap-3 md:flex-row md:items-center md:gap-2">
+				<div className="flex min-w-0 items-center gap-2 text-coa-blue-medium">
+					<span className="shrink-0">{<Icon ariaHidden={true} path={IM_SHIELD3} size={35} />}</span>
+					<h1 className="text-coa-blue-medium">
+						<span className="text-3xl sm:text-4xl">{content.crime}</span>
+					</h1>
+				</div>
 				<a
-					className="mx-2 px-2 rounded py-[1px] bg-info text-white flex items-center"
+					className="flex shrink-0 items-center btn btn-success btn-sm"
 					href="https://ashevillepd.policetocitizen.com/Home"
 					target="_blank"
+					rel="noopener noreferrer"
 				>
 					{<Icon ariaHidden={true} path={IM_LIBRARY2} size={16} />}
 					<span className="pl-2">{content.view_apd_reports}</span>
 				</a>
-				<button className="btn btn-primary ml-auto" onClick={browserHistory.goBack}>
+				<button className="btn btn-primary shrink-0 md:ml-auto" onClick={browserHistory.goBack}>
 					{content.back}
 				</button>
 			</div>
 			<form className="border p-4 rounded">
 				<fieldset className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-					<div className=" flex flex-col">
+					<div className="flex min-w-0 flex-col">
 						<label htmlFor="topicType" className="font-normal">
 							{content.view}:
 						</label>
 						<div className="block">{content.crimes.toLowerCase()}</div>
 					</div>
 
-					<div className="w-full flex flex-col">
+					<div className="w-full min-w-0 flex flex-col">
 						<label htmlFor="time" className="font-normal">
 							{content.during}:
 						</label>
@@ -100,7 +103,7 @@ const CrimeSummary = (props) => {
 							onChange={() => refreshLocation(getNewUrlParams(), props.location)}
 							name="time"
 							id="time"
-							className="border-2 rounded px-4 py-3"
+							className="w-full max-w-full border-2 rounded px-4 py-3"
 						>
 							{timeOptions.map((option, i) => (
 								<option value={option.value} key={["time", "option", i].join("_")} name="time">
@@ -111,7 +114,7 @@ const CrimeSummary = (props) => {
 					</div>
 
 					<div
-						className={`w-full flex flex-col ${
+						className={`w-full min-w-0 flex flex-col ${
 							props.location.query.entity === "street" || props.location.query.entity === "neighborhood" ? "hidden" : ""
 						}`}
 					>
@@ -123,7 +126,7 @@ const CrimeSummary = (props) => {
 							onChange={() => refreshLocation(getNewUrlParams(), props.location)}
 							name="extent"
 							id="extent"
-							className="border-2 rounded px-4 py-3"
+							className="w-full max-w-full border-2 rounded px-4 py-3"
 						>
 							{extentOptions.map((option, i) => (
 								<option value={option.value} key={["extent", "option", i].join("_")} name="extent">

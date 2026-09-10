@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router";
-import ButtonGroup from "../../shared/ButtonGroup";
 // import Button from '../../shared/Button';
 import LinkButton from "../../shared/LinkButton";
 import PageHeader from "../../shared/PageHeader";
@@ -8,7 +7,6 @@ import PropertiesByStreet from "./PropertiesByStreet";
 import PropertiesByNeighborhood from "./PropertiesByNeighborhood";
 import Icon from "../../shared/Icon";
 import { IM_HOME2 } from "../../shared/iconConstants";
-import { refreshLocation } from "../../utilities/generalUtilities";
 
 const getSubtitle = (entity) => {
 	switch (entity) {
@@ -22,10 +20,6 @@ const getSubtitle = (entity) => {
 };
 
 function Properties(props) {
-	const getNewUrlParams = (view) => ({
-		view,
-	});
-
 	const searchParams = new URLSearchParams(window.location.search);
 	const currentView = searchParams.get("view");
 	searchParams.set("view", "map");
@@ -70,30 +64,6 @@ function Properties(props) {
 					</Link>
 				</div>
 			</PageHeader>
-			<div className="flex" role="tablist">
-				<div className="btn-group ml-auto">
-					<button
-						role="tab"
-						aria-controls="view-container"
-						className="btn btn-primary"
-						onClick={() => refreshLocation(getNewUrlParams("map"), props.location)}
-						active={props.location.query.view === "map"}
-						aria-selected={props.location.query.view === "map"}
-					>
-						Map view
-					</button>
-					<button
-						role="tab"
-						aria-controls="view-container"
-						className="btn btn-primary"
-						onClick={() => refreshLocation(getNewUrlParams("list"), props.location)}
-						active={props.location.query.view === "list"}
-						aria-selected={props.location.query.view === "list"}
-					>
-						List view
-					</button>
-				</div>
-			</div>
 			{searchParams.get("entity") === "street" ? (
 				<PropertiesByStreet {...props} />
 			) : (

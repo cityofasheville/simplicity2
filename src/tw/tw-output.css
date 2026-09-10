@@ -690,6 +690,8 @@ nav a:hover {
           text-decoration-line: underline;
 }
 
+/* no-underline overrides the base `a` underline for links styled as buttons. */
+
 .btn {
   display: flex;
   align-items: center;
@@ -701,9 +703,16 @@ nav a:hover {
   padding-right: 1rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+  -webkit-text-decoration-line: none;
+          text-decoration-line: none;
   --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.btn:hover {
+  -webkit-text-decoration-line: none;
+          text-decoration-line: none;
 }
 
 .btn:focus {
@@ -867,11 +876,6 @@ details[open] summary span.bi {
   fill: #0e7490;
 }
 
-[aria-selected="true"] {
-  --tw-bg-opacity: 1;
-  background-color: rgb(0 73 135 / var(--tw-bg-opacity, 1));
-}
-
 .container {
   width: 100%;
 }
@@ -910,6 +914,78 @@ details[open] summary span.bi {
   .container {
     max-width: 1536px;
   }
+}
+
+/* Segmented toggle for two-state view switchers (map/list).
+     Unselected reads as outlined, selected as filled — a fill change rather
+     than a hue shift, so the states sit ~9:1 apart instead of ~1.9:1.
+     State is driven by aria-pressed, so no extra class wiring is needed. */
+
+.btn-toggle {
+  border-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(0 73 135 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(0 73 135 / var(--tw-text-opacity, 1));
+}
+
+.btn-toggle:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 73 135 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+
+.btn-toggle:focus {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 73 135 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+
+.btn-toggle:focus-within {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 73 135 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+
+.btn-toggle[aria-pressed="true"] {
+  --tw-border-opacity: 1;
+  border-color: rgb(0 73 135 / var(--tw-border-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(64 119 165 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+
+.btn-toggle[aria-pressed="true"]:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 73 135 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+
+.btn-toggle[aria-pressed="true"]:focus {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 73 135 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+
+.btn-toggle[aria-pressed="true"]:focus-within {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 73 135 / var(--tw-bg-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+
+/* Collapse the doubled 1px seam between adjacent outlined toggles. */
+
+.btn-group>.btn-toggle:not(:first-child) {
+  margin-left: -1px;
 }
 
 .sr-only {
@@ -1002,16 +1078,6 @@ details[open] summary span.bi {
 
 .m-\[2px\] {
   margin: 2px;
-}
-
-.mx-1 {
-  margin-left: 0.25rem;
-  margin-right: 0.25rem;
-}
-
-.mx-2 {
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
 }
 
 .mx-8 {
@@ -1398,16 +1464,16 @@ details[open] summary span.bi {
   width: 100%;
 }
 
+.min-w-0 {
+  min-width: 0px;
+}
+
 .min-w-3 {
   min-width: 0.75rem;
 }
 
 .min-w-6 {
   min-width: 1.5rem;
-}
-
-.min-w-0 {
-  min-width: 0px;
 }
 
 .max-w-3xl {
@@ -1418,20 +1484,16 @@ details[open] summary span.bi {
   max-width: 80rem;
 }
 
-.max-w-\[1000px\] {
-  max-width: 1000px;
-}
-
 .max-w-\[500px\] {
   max-width: 500px;
 }
 
-.max-w-lg {
-  max-width: 32rem;
-}
-
 .max-w-full {
   max-width: 100%;
+}
+
+.max-w-lg {
+  max-width: 32rem;
 }
 
 .flex-1 {
@@ -1439,6 +1501,10 @@ details[open] summary span.bi {
 }
 
 .flex-shrink-0 {
+  flex-shrink: 0;
+}
+
+.shrink-0 {
   flex-shrink: 0;
 }
 
@@ -1568,10 +1634,6 @@ details[open] summary span.bi {
   align-items: flex-start;
 }
 
-.items-end {
-  align-items: flex-end;
-}
-
 .items-center {
   align-items: center;
 }
@@ -1610,6 +1672,10 @@ details[open] summary span.bi {
 
 .gap-2 {
   gap: 0.5rem;
+}
+
+.gap-3 {
+  gap: 0.75rem;
 }
 
 .gap-4 {
@@ -1756,6 +1822,11 @@ details[open] summary span.bi {
   border-color: currentColor;
 }
 
+.border-danger {
+  --tw-border-opacity: 1;
+  border-color: rgb(231 76 60 / var(--tw-border-opacity, 1));
+}
+
 .border-gray-100 {
   --tw-border-opacity: 1;
   border-color: rgb(243 244 246 / var(--tw-border-opacity, 1));
@@ -1769,6 +1840,21 @@ details[open] summary span.bi {
 .border-gray-300 {
   --tw-border-opacity: 1;
   border-color: rgb(209 213 219 / var(--tw-border-opacity, 1));
+}
+
+.border-info {
+  --tw-border-opacity: 1;
+  border-color: rgb(0 73 135 / var(--tw-border-opacity, 1));
+}
+
+.border-success {
+  --tw-border-opacity: 1;
+  border-color: rgb(17 134 111 / var(--tw-border-opacity, 1));
+}
+
+.border-warning {
+  --tw-border-opacity: 1;
+  border-color: rgb(243 156 18 / var(--tw-border-opacity, 1));
 }
 
 .border-white {
@@ -1833,11 +1919,6 @@ details[open] summary span.bi {
 .bg-gray-50 {
   --tw-bg-opacity: 1;
   background-color: rgb(249 250 251 / var(--tw-bg-opacity, 1));
-}
-
-.bg-info {
-  --tw-bg-opacity: 1;
-  background-color: rgb(0 73 135 / var(--tw-bg-opacity, 1));
 }
 
 .bg-light {
@@ -2019,10 +2100,6 @@ details[open] summary span.bi {
 
 .pl-2 {
   padding-left: 0.5rem;
-}
-
-.pr-2 {
-  padding-right: 0.5rem;
 }
 
 .pt-2 {
@@ -2233,22 +2310,6 @@ details[open] summary span.bi {
   outline-color: #4077a5;
 }
 
-.outline-danger {
-  outline-color: #e74c3c;
-}
-
-.outline-info {
-  outline-color: #004987;
-}
-
-.outline-success {
-  outline-color: #11866f;
-}
-
-.outline-warning {
-  outline-color: #f39c12;
-}
-
 .blur-sm {
   --tw-blur: blur(4px);
   -webkit-filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
@@ -2331,7 +2392,7 @@ details[open] summary span.bi {
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  color: '#4077a5';
+  color: "#4077a5";
   text-decoration: underline;
 }
 
@@ -2564,6 +2625,11 @@ dialog::backdrop {
     padding-bottom: 1rem;
   }
 
+  .sm\:text-4xl {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+
   .sm\:text-base {
     font-size: 1rem;
     line-height: 1.5rem;
@@ -2628,16 +2694,16 @@ dialog::backdrop {
     justify-content: space-between;
   }
 
+  .md\:gap-0 {
+    gap: 0px;
+  }
+
   .md\:gap-2 {
     gap: 0.5rem;
   }
 
   .md\:gap-6 {
     gap: 1.5rem;
-  }
-
-  .md\:gap-0 {
-    gap: 0px;
   }
 
   .md\:whitespace-nowrap {

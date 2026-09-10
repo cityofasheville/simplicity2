@@ -243,6 +243,7 @@ class PermitsTable extends React.Component {
 		return (
 			<section title="Table of all permits, filtered by date">
 				<Table
+					caption="All permits, filtered by date"
 					data={this.props.data}
 					columns={permitTableColumns}
 					showPagination={true}

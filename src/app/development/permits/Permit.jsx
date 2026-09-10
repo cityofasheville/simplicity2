@@ -410,7 +410,7 @@ const Permit = (props) => (
 							<div>
 								<h3 className="text-2xl text-coa-blue-medium my-5">Comments</h3>
 								<Table
-									ariaLabel="Permit comments"
+									caption="Permit comments"
 									navRender={navRender}
 									data={data.permits[0].comments}
 									filterRender={filterRender}

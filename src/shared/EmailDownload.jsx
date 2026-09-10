@@ -29,8 +29,8 @@ const translate = (value, language) => {
 };
 
 const EmailDownload = (props) => (
-	<CSVLink className={props.className} data={props.downloadData} filename={props.fileName || "data.csv"}>
-		<span className="btn btn-sm btn-success block inline">
+	<CSVLink className={`btn btn-sm btn-success`} data={props.downloadData} filename={props.fileName || "data.csv"}>
+		<span className="">
 			<Icon ariaHidden={true} path={IM_DOWNLOAD7} /> {translate("Download", props.language.language)}
 		</span>
 	</CSVLink>

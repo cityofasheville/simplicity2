@@ -11,9 +11,7 @@ import Error from "../../shared/Error";
 import PieChart from "../../shared/visualization/PieChart";
 import DevelopmentTable from "./DevelopmentTable";
 import EmailDownload from "../../shared/EmailDownload";
-import ButtonGroup from "../../shared/ButtonGroup";
-import Button from "../../shared/Button";
-import { refreshLocation } from "../../utilities/generalUtilities";
+import ViewToolbar from "../../shared/ViewToolbar";
 import MapLegend from "../../shared/MapLegend";
 import Alert from "../../alert";
 
@@ -131,44 +129,11 @@ const DevelopmentByStreet = (props) => {
 		})
 	);
 
-	const getNewUrlParams = (view) => ({
-		view,
-	});
-
 	return (
 		<div>
-			<div className="flex flex-col items-start gap-4 my-4 md:flex-row md:items-center md:gap-0">
+			<ViewToolbar location={props.location}>
 				<EmailDownload downloadData={props.data.permits_by_street} fileName="permits_by_street.csv" />
-				<div className="btn-group max-w-full md:items-center md:shrink-0 md:ml-auto" role="tablist">
-					<button
-						role="tab"
-						aria-controls="view-container"
-						className="btn btn-primary"
-						onClick={() => refreshLocation(getNewUrlParams("map"), props.location)}
-						active={props.location.query.view === "map"}
-						aria-selected={props.location.query.view === "map"}
-					>
-						Map view
-					</button>
-					<button
-						role="tab"
-						aria-controls="view-container"
-						className="btn btn-primary"
-						onClick={() => refreshLocation(getNewUrlParams("list"), props.location)}
-						active={props.location.query.view === "list"}
-						aria-selected={props.location.query.view === "list"}
-					>
-						List view
-					</button>
-					{/* <button
-						className="btn btn-primary"
-						onClick={() => refreshLocation(getNewUrlParams("summary"), props.location)}
-						active={props.location.query.view === "summary"}
-					>
-						Chart
-					</button> */}
-				</div>
-			</div>
+			</ViewToolbar>
 
 			{/* <div id="summaryView" className={`w-full h-full ${props.location.query.view === "summary" ? "flex" : "hidden"}`}>
 				{props.data.permits_by_street.length === 0 ? (

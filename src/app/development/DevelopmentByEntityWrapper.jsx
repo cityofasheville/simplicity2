@@ -110,13 +110,13 @@ function DevelopmentByEntityWrapper(props) {
 	let pageSubHeading;
 	if (props.location.query.entity !== "address") {
 		pageSubHeading = (
-			<div className="h4">
+			<div className="h4 break-words">
 				{props.location.query.label} ({props.location.query.entity})
 			</div>
 		);
 	} else if (props.location.query.entity === "address") {
 		pageSubHeading = (
-			<div className="h4">
+			<div className="h4 break-words">
 				{props.location.query.label}
 				{" (address) "}
 				<label className="sr-only" htmlFor="extent">
@@ -127,7 +127,7 @@ function DevelopmentByEntityWrapper(props) {
 					onChange={(event) => onRadiusChange(event.target.value)}
 					name="extent"
 					id="extent"
-					className="w-auto inline mx-1"
+					className="w-auto max-w-full inline border-2 rounded px-4 py-2"
 				>
 					{extentOptionsWithAt.map((option, i) => (
 						<option value={option.value} key={["extent", "option", i].join("_")} name="extent">
@@ -145,13 +145,17 @@ function DevelopmentByEntityWrapper(props) {
 		<div>
 			<PageHeader
 				h1="Development"
-				subheading={pageSubHeading}
+				// subheading={pageSubHeading}
 				icon={<Icon ariaHidden={true} path={IM_OFFICE} size={35} />}
-			>
-				<div className="btn-group ml-auto">
+			></PageHeader>
+
+			<div className="flex flex-col-reverse items-start gap-4 md:flex-row md:items-center md:gap-0">
+				<div className="min-w-0 max-w-full">{pageSubHeading}</div>
+
+				<div className="btn-group max-w-full md:items-center md:shrink-0 md:ml-auto">
 					{props.location.query.search && (
 						<button
-							className="btn btn-primary"
+							className="btn btn-primary md:whitespace-nowrap"
 							onClick={() => {
 								browserHistory.replace(`/?search=${props.location.query.search}`);
 							}}
@@ -161,7 +165,7 @@ function DevelopmentByEntityWrapper(props) {
 					)}
 					{props.location.query.entity === "address" && props.location.query.id && (
 						<button
-							className="btn btn-primary"
+							className="btn btn-primary md:whitespace-nowrap"
 							onClick={() => {
 								browserHistory.replace(`/address?id=${props.location.query.id}&search=${props.location.query.search}`);
 							}}
@@ -170,7 +174,7 @@ function DevelopmentByEntityWrapper(props) {
 						</button>
 					)}
 				</div>
-			</PageHeader>
+			</div>
 
 			<div className="row">
 				{((props.location.query.entity === "address" && radius !== "0") ||
@@ -200,23 +204,23 @@ function DevelopmentByEntityWrapper(props) {
 							radius={+radius}
 							location={props.location}
 						/>
-				  )
+					)
 				: props.location.query.entity === "street"
-				? paramsSettled && (
-						<DevelopmentByStreet
-							after={formattedExtent[0]}
-							before={formattedExtent[1]}
-							radius={110}
-							location={props.location}
-						/>
-				  )
-				: paramsSettled && (
-						<DevelopmentByNeighborhood
-							after={formattedExtent[0]}
-							before={formattedExtent[1]}
-							location={props.location}
-						/>
-				  )}
+					? paramsSettled && (
+							<DevelopmentByStreet
+								after={formattedExtent[0]}
+								before={formattedExtent[1]}
+								radius={110}
+								location={props.location}
+							/>
+						)
+					: paramsSettled && (
+							<DevelopmentByNeighborhood
+								after={formattedExtent[0]}
+								before={formattedExtent[1]}
+								location={props.location}
+							/>
+						)}
 			<div className="grid grid-cols-1 md:grid-cols-3 gap-4 py-8">
 				<TopicCard
 					topic="DEVELOPMENT_WEBSITE"

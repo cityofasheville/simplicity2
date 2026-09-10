@@ -136,11 +136,11 @@ const DevelopmentByAddress = (props) => {
 
 	return (
 		<div>
-			<div className="flex my-4 items-center">
-				<div className="mr-auto">
+			<div className="flex flex-col items-start gap-4 my-4 md:flex-row md:items-center md:gap-0">
+				<div>
 					<EmailDownload downloadData={props.data.permits_by_address} fileName="permits_by_address.csv" />
 				</div>
-				<div className="btn-group ml-auto" role="tablist">
+				<div className="btn-group max-w-full md:items-center md:shrink-0 md:ml-auto" role="tablist">
 					<button
 						role="tab"
 						aria-controls="view-container"
@@ -180,7 +180,10 @@ const DevelopmentByAddress = (props) => {
 			</div> */}
 
 			<div id="view-container">
-				<div id="listView" className={`${props.location.query.view === "list" ? "flex" : "hidden"}`}>
+				<div
+					id="listView"
+					className={`${props.location.query.view === "list" ? "flex" : "hidden"} w-full overflow-x-auto`}
+				>
 					<DevelopmentTable data={props.data.permits_by_address} location={props.location} />
 				</div>
 

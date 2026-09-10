@@ -140,40 +140,38 @@ const DevelopmentByNeighborhood = (props) => {
 
 	return (
 		<div>
-			<div className="flex w-full my-3">
+			<div className="flex flex-col items-start gap-4 w-full my-3 md:flex-row md:items-center md:gap-0">
 				<div>
 					<EmailDownload downloadData={props.data.permits_by_neighborhood} fileName="permits_by_neighborhood.csv" />
 				</div>
-				<div className="ml-auto">
-					<div className="btn-group ml-auto" role="tablist">
-						<button
-							role="tab"
-							aria-controls="view-container"
-							className="btn btn-primary"
-							onClick={() => refreshLocation(getNewUrlParams("map"), props.location)}
-							active={props.location.query.view === "map"}
-							aria-selected={props.location.query.view === "map"}
-						>
-							Map view
-						</button>
-						<button
-							role="tab"
-							aria-controls="view-container"
-							className="btn btn-primary"
-							onClick={() => refreshLocation(getNewUrlParams("list"), props.location)}
-							active={props.location.query.view === "list"}
-							aria-selected={props.location.query.view === "list"}
-						>
-							List view
-						</button>
-						{/* <button
+				<div className="btn-group max-w-full md:items-center md:shrink-0 md:ml-auto" role="tablist">
+					<button
+						role="tab"
+						aria-controls="view-container"
+						className="btn btn-primary"
+						onClick={() => refreshLocation(getNewUrlParams("map"), props.location)}
+						active={props.location.query.view === "map"}
+						aria-selected={props.location.query.view === "map"}
+					>
+						Map view
+					</button>
+					<button
+						role="tab"
+						aria-controls="view-container"
+						className="btn btn-primary"
+						onClick={() => refreshLocation(getNewUrlParams("list"), props.location)}
+						active={props.location.query.view === "list"}
+						aria-selected={props.location.query.view === "list"}
+					>
+						List view
+					</button>
+					{/* <button
 							className="btn btn-primary"
 							onClick={() => refreshLocation(getNewUrlParams("summary"), props.location)}
 							active={props.location.query.view === "summary"}
 						>
 							Chart
-						</button> */}
-					</div>
+					</button> */}
 				</div>
 			</div>
 
@@ -186,7 +184,10 @@ const DevelopmentByNeighborhood = (props) => {
 			</div> */}
 
 			<div id="view-container">
-				<div id="listView" className={`${props.location.query.view === "list" ? "flex" : "hidden"}`}>
+				<div
+					id="listView"
+					className={`${props.location.query.view === "list" ? "flex" : "hidden"} w-full overflow-x-auto`}
+				>
 					<DevelopmentTable data={props.data.permits_by_neighborhood} location={props.location} />
 				</div>
 

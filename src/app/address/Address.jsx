@@ -323,7 +323,7 @@ const Address = (props) => (
 									icon={<Icon ariaHidden={true} path={IM_USERS} size={20} />}
 								/>
 							)}
-							<DetailsFormGroup
+							{/* <DetailsFormGroup
 								label={content.climate}
 								name="blockgroups"
 								value={
@@ -345,7 +345,7 @@ const Address = (props) => (
 								}
 								hasLabel
 								icon={<Icon ariaHidden={true} path={IM_USERS} size={20} />}
-							/>
+							/> */}
 							<DetailsFormGroup
 								label={content.owner}
 								name="owner"

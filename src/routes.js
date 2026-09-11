@@ -130,7 +130,7 @@ const Routes = () => (
 					</Route>
 					<Route path="street" component={Street}></Route>
 					<Route path="neighborhood" component={Neighborhood}></Route>
-					{/* <Route path="climate" component={Climate}></Route> */}
+					<Route path="climate" component={Climate}></Route>
 					<Route path="owner" component={Owner}></Route>
 					<Route path="dashboards" component={Topics} />
 					<Route path="capital_projects">

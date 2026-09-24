@@ -4,6 +4,7 @@ import SuggestSearch from "./SuggestSearch";
 import SearchResultGroup from "./searchResults/SearchResultGroup";
 import LoadingAnimation from "../../shared/LoadingAnimation";
 import { searchQuery, formatSearchResults } from "./searchResults/searchResultsUtils";
+import Alert from "../../alert";
 // import { set } from 'd3-collection';
 
 const MIN_SPINNER_DURATION = 400;

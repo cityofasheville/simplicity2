@@ -64,30 +64,12 @@ export const lowRiskIntro = `
 The following risks mostly pertain to other parts of the city.
 `;
 
-export const blockgroupscoreMethodologyNote = `
-<p>Through the
-<a
-  href="https://drive.google.com/file/d/1X_Gr4eUCmkXPOzAcvyxCe-uZPkX84Byz/view"
-  target="_blank"
->
-  2018 Climate Resilience Assessment
-</a>, the City of Asheville worked with the National Environmental Modeling
-and Analysis Center (NEMAC) at UNC Asheville to better understand which
-areas of the city are most at risk for various climate threats. This assessment
-assigned levels of risk for different geographic areas of the city (i.e.
-census block groups). Levels of risk for climate-related threats are
-determined by considering the percentage of land at risk within each
-geographic area.
-<br>
-Climate Risks can also be increased when extreme weather events impact communities 
-that have been marginalized by systemic discrimination, have health complications 
-and/or other risk factors.  To better understand how non climate factors impact 
-overall vulnerability,
-<a
-  href="#Climate Data"
->
- learn more about Climate Vulnerability information and data for Asheville below. 
-</a>
+export const blockgroupscoreMethodologyNote = `Our neighborhood, household and personal risk is defined not only by increasing weather and climate events, but also by health, demographic, infrastructure, and historical factors.  To better understand how events impact neighborhoods differently, this map displays Asheville's climate risks alongside factors that intensify impact and influence a community's ability to bounce back after disruption.  A "Community Climate Vulnerability" score can be generated for any location within City limits utilizing data factors outlined below.  We invite you to interact with this map to learn more about neighborhood vulnerability.
+
+Access to data about our city can help prioritize sustainability factors as we plan and prepare.  Knowing what risks and vulnerabilities we're facing will help us tailor resources and actions to serve our whole community and strengthen our individual, household and neighborhood resilience. Together We Thrive!
+</p>
+<p> The Community Climate Vulnerability Score represents the overall vulnerability of each Census Block Group based on the subcomponents listed below. Lower scores typically represent block groups with low climate hazard risk, low heat vulnerability, high tree canopy cover, and a low score in the Social Vulnerability Index. Scores range from 1-15, with 1 representing lowest vulnerability and 15 representing highest vulnerability. 
+
 </p>
 `;
 

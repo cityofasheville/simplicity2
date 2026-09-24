@@ -236,7 +236,7 @@ const Climate = (props) => {
 					<div className="flex align-middle border rounded shadow">
 						<div className=" px-4 py-5 gap-4">
 							<h4 className="text-2xl text-coa-blue-medium mb-2">
-								Climate Resiliency Neighborhood Threats Score: {climateResilienceScore}
+								Climate Resiliency Neighborhood Threats Score: {climateResilienceScore} out of 5
 							</h4>
 							<p>
 								This score is based on data provided by Fernleaf in the Land of Sky Regional Resilience Assessment.
@@ -246,16 +246,22 @@ const Climate = (props) => {
 							</p>
 							<ul className="mt-3">
 								<li>
-									<b>Flood Risk: {floodPercent}% </b>of parcels are highly vulnerable ({floodCount} parcels), compared
-									to 6% citywide.
+									<b>
+										<a href="#flood">Flood Risk</a>: {floodPercent}%{" "}
+									</b>
+									of parcels are highly vulnerable ({floodCount} parcels), compared to 6% citywide.
 								</li>
 								<li>
-									<b>Wildfire Risk: {wildfirePercent}% </b>of parcels are highly vulnerable ({wildfireCount} parcels),
-									compared to 13.9% citywide.
+									<b>
+										<a href="#wildfire">Wildfire Risk</a>: {wildfirePercent}%{" "}
+									</b>
+									of parcels are highly vulnerable ({wildfireCount} parcels), compared to 13.9% citywide.
 								</li>
 								<li>
-									<b>Landslide Risk: {landslidePercent}% </b>of parcels are highly vulnerable ({landslideCount}{" "}
-									parcels), compared to 9% citywide.
+									<b>
+										<a href="#landslide">Landslide Risk</a>: {landslidePercent}%{" "}
+									</b>
+									of parcels are highly vulnerable ({landslideCount} parcels), compared to 9% citywide.
 								</li>
 							</ul>
 						</div>
@@ -265,12 +271,12 @@ const Climate = (props) => {
 				<div className="flex h-full mb-8">
 					<div className="flex align-middle border rounded shadow">
 						<div className=" px-4 py-5 gap-4">
-							<h4 className="text-2xl text-coa-blue-medium mb-2">Heat Vulnerability Score: {heatScore}</h4>
+							<h4 className="text-2xl text-coa-blue-medium mb-2">Heat Vulnerability Score: {heatScore} out of 5</h4>
 							<p>
 								This heat vulnerability index shows which parts of Asheville are vulnerable to extreme heat, taking into
 								account land surface temperature, albedo, evapotranspiration, tree canopy cover, and social
 								vulnerability. Data for this metric comes from the NASA Develop 2024 Heat Vulnerability Index and the
-								U.S. Forest Service Tree Canopy Coverage dataset.
+								U.S. Forest Service Tree Canopy Coverage dataset. <a href="#heat">Learn more about heat risk.</a>
 							</p>
 							<p className="mt-3">
 								The NASA Develop HVI value for this block group is <b>{HVI}</b> relative to all block groups in the
@@ -287,7 +293,9 @@ const Climate = (props) => {
 				<div className="flex h-full mb-8">
 					<div className="flex align-middle border rounded shadow">
 						<div className=" px-4 py-5 gap-4">
-							<h4 className="text-2xl text-coa-blue-medium mb-2">CDC Social Vulnerability Index Score: {CDCScore}</h4>
+							<h4 className="text-2xl text-coa-blue-medium mb-2">
+								CDC Social Vulnerability Index Score: {CDCScore} out of 5
+							</h4>
 							<h5>2022 Overall Score: {svi} </h5>
 							<p className="mt-3">
 								Possible SVI scores range from 0 (lowest vulnerability) to 1 (highest vulnerability). This score is then
@@ -307,7 +315,8 @@ const Climate = (props) => {
 				</div>
 				{climateThreats.high.data.length > 0 && (
 					<>
-						<p className="text-xl text-coa-blue-medium mb-6">{climateThreats.high.notice}</p>
+						<p className="text-xl text-coa-blue-medium mb-6 ">{climateThreats.high.notice}</p>
+
 						{climateThreats.high.data.map((threat, index) => {
 							return (
 								<RiskOverview
@@ -346,6 +355,11 @@ const Climate = (props) => {
 				{climateThreats.low.data.length > 0 && (
 					<>
 						<p className="text-xl text-coa-blue-medium mb-6">{climateThreats.low.notice}</p>
+						<p className="my-3">
+							[Note from CH: The heading above to be based on the threat level from these different risks (low vs med vs
+							high). I grouped them under this one heading for the moment, since we're not measuring
+							wildfire/flood/landslide/heat risk in quite the same ways anymore.]
+						</p>
 						{climateThreats.low.data.map((threat, index) => {
 							return (
 								<RiskOverview
@@ -377,7 +391,7 @@ const Climate = (props) => {
 					better understand Climate Vulnerability and Resilience in our community.
 				</p>
 
-				<div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+				<div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
 					<ClickableTile
 						image={IMG_CJI_MAP}
 						text="Community Climate Vulnerability Map"
@@ -385,13 +399,13 @@ const Climate = (props) => {
 					/>
 					<ClickableTile
 						image={IMG_RESILIENCY_GUIDE}
-						text="Climate Resilience Personal Action Guide"
-						url="https://drive.google.com/file/d/0BzZzONRPV-VAVF9vb2pOMUtkRmFJR1AyNFluYU5ESU9rODRJ/view?resourcekey=0-ZQ80xC-a8bw4JDs7z0Neaw"
+						text="Climate Action Toolkit"
+						url="https://www.ashevillenc.gov/wp-content/uploads/2025/04/Climate-Action-Toolkit-English-Accessible.pdf"
 					/>
 					<ClickableTile
 						image={IMG_CJI_STORYMAP}
-						text="City of Asheville Climate Vulnerability Initiative Webpage "
-						url="https://www.ashevillenc.gov/department/sustainability/climate-initiatives/climate-justice-initiative"
+						text="Climate Resilience Initiative"
+						url="https://www.ashevillenc.gov/department/recovery-resilience/climate-initiatives/climate-resilience-initiative/"
 					/>
 				</div>
 			</aside>

@@ -1180,10 +1180,6 @@ details[open] summary span.bi {
   margin-left: 2.5rem;
 }
 
-.ml-12 {
-  margin-left: 3rem;
-}
-
 .ml-2 {
   margin-left: 0.5rem;
 }
@@ -1262,10 +1258,6 @@ details[open] summary span.bi {
 
 .mt-6 {
   margin-top: 1.5rem;
-}
-
-.mt-7 {
-  margin-top: 1.75rem;
 }
 
 .mt-8 {
@@ -1919,11 +1911,6 @@ details[open] summary span.bi {
 .bg-gray-50 {
   --tw-bg-opacity: 1;
   background-color: rgb(249 250 251 / var(--tw-bg-opacity, 1));
-}
-
-.bg-info {
-  --tw-bg-opacity: 1;
-  background-color: rgb(0 73 135 / var(--tw-bg-opacity, 1));
 }
 
 .bg-light {
@@ -2595,8 +2582,8 @@ dialog::backdrop {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .sm\:grid-cols-4 {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+  .sm\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .sm\:flex-row {

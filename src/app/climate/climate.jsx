@@ -356,8 +356,8 @@ const Climate = (props) => {
 					<>
 						<p className="text-xl text-coa-blue-medium mb-6">{climateThreats.low.notice}</p>
 						<p className="my-3">
-							[Note from CH: The heading above to be based on the threat level from these different risks (low vs med vs
-							high). I grouped them under this one heading for the moment, since we're not measuring
+							[Note from CH: The heading above used to be based on the threat level from these different risks (low vs
+							med vs high). I grouped them under this one heading for the moment, since we're not measuring
 							wildfire/flood/landslide/heat risk in quite the same ways anymore.]
 						</p>
 						{climateThreats.low.data.map((threat, index) => {

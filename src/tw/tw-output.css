@@ -1600,9 +1600,9 @@ details[open] summary span.bi {
   list-style-type: none;
 }
 
-.columns-3 {
-  -webkit-columns: 3;
-          columns: 3;
+.columns-1 {
+  -webkit-columns: 1;
+          columns: 1;
 }
 
 .break-inside-avoid {
@@ -1919,11 +1919,6 @@ details[open] summary span.bi {
 .bg-gray-50 {
   --tw-bg-opacity: 1;
   background-color: rgb(249 250 251 / var(--tw-bg-opacity, 1));
-}
-
-.bg-info {
-  --tw-bg-opacity: 1;
-  background-color: rgb(0 73 135 / var(--tw-bg-opacity, 1));
 }
 
 .bg-light {
@@ -2261,6 +2256,11 @@ details[open] summary span.bi {
   color: rgb(55 65 81 / var(--tw-text-opacity, 1));
 }
 
+.text-gray-900 {
+  --tw-text-opacity: 1;
+  color: rgb(17 24 39 / var(--tw-text-opacity, 1));
+}
+
 .text-primary {
   --tw-text-opacity: 1;
   color: rgb(64 119 165 / var(--tw-text-opacity, 1));
@@ -2589,6 +2589,11 @@ dialog::backdrop {
 
   .sm\:h-96 {
     height: 24rem;
+  }
+
+  .sm\:columns-3 {
+    -webkit-columns: 3;
+            columns: 3;
   }
 
   .sm\:grid-cols-2 {

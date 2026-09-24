@@ -84,7 +84,7 @@ function MapLegend({ type }) {
 				<span className="text-white">Map Legend</span>
 			</button>
 			{isOpen && (
-				<div className="columns-3 gap-6 border-2 border-coa-blue-medium bg-white p-2">
+				<div className="columns-1 sm:columns-3 gap-6 border-2 border-coa-blue-medium bg-white p-2">
 					{Object.entries(legendGroups).map(([iconName, types]) => (
 						<div key={`legendItem-${iconName}`} className="flex flex-row items-start break-inside-avoid my-1">
 							<img
@@ -102,3 +102,62 @@ function MapLegend({ type }) {
 }
 
 export default MapLegend;
+
+// import React, { useMemo, useState } from "react";
+
+// const defaultLegendItems = [
+// 	{ label: "NCDOT", color: "#506aed" },
+// 	{ label: "CITY OF ASHEVILLE", color: "#6fe8cb" },
+// 	{ label: "MULTIPLE", color: "#DB6D00" },
+// 	{ label: "NO INFORMATION AVAILABLE", color: "#f95eff" },
+// ];
+
+// function MaintenanceMapLegend({ data = [] }) {
+// 	const [isOpen, setIsOpen] = useState(true);
+
+// 	const legendItems = useMemo(() => {
+// 		if (data.length === 0) {
+// 			return defaultLegendItems;
+// 		}
+
+// 		const seen = new Set();
+// 		return data.reduce((items, entry) => {
+// 			const label = entry.maintenance_entity || entry.label || "NO INFORMATION AVAILABLE";
+// 			const color = entry.color || "#f95eff";
+
+// 			if (!seen.has(label)) {
+// 				seen.add(label);
+// 				items.push({ label, color });
+// 			}
+
+// 			return items;
+// 		}, []);
+// 	}, [data]);
+
+// 	return (
+// 		<div className="bg-coa-blue-medium">
+// 			<button className="py-2 px-3 w-full h-full" onClick={() => setIsOpen((prev) => !prev)}>
+// 				<span className="text-white">Map Legend</span>
+// 			</button>
+// 			{isOpen && (
+// 				<div className="border-2 border-coa-blue-medium bg-white p-2 flex flex-row flex-wrap items-center justify-between gap-3">
+// 					{legendItems.map(({ label, color }) => (
+// 						<div
+// 							key={`legendItem-${label}`}
+// 							className="flex flex-row items-center whitespace-nowrap flex-1 justify-center"
+// 						>
+// 							<span
+// 								aria-label={`${label} color`}
+// 								className="inline-block rounded-full mr-2"
+// 								style={{ width: "14px", height: "14px", backgroundColor: color, border: "1px solid #666" }}
+// 							/>
+// 							<span className="text-sm text-gray-900">{label}</span>
+// 						</div>
+// 					))}
+// 				</div>
+// 			)}
+// 		</div>
+// 	);
+// }
+
+// export default MaintenanceMapLegend;

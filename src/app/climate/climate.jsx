@@ -306,11 +306,11 @@ const Climate = (props) => {
 												<h5 className="text-xl text-coa-blue-medium mb-0">{risk.title}</h5>
 											</div>
 											<span className="text-3xl font-normal text-coa-blue-medium leading-none">{risk.percent}%</span>
-											<p className="mt-2 mb-0">
+											<p className="mt-2 mb-0 text-pretty">
 												of parcels are highly vulnerable ({risk.count} parcels), compared to {risk.citywide}%
 												citywide.{" "}
 											</p>
-											<p>
+											<p className="text-pretty">
 												<a key={risk.title} href={risk.link}>
 													{risk.linkText}
 												</a>

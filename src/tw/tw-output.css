@@ -1424,10 +1424,6 @@ details[open] summary span.bi {
   width: 100px;
 }
 
-.w-\[10px\] {
-  width: 10px;
-}
-
 .w-\[120px\] {
   width: 120px;
 }
@@ -1466,10 +1462,6 @@ details[open] summary span.bi {
 
 .w-full {
   width: 100%;
-}
-
-.w-\[20px\] {
-  width: 20px;
 }
 
 .min-w-0 {
@@ -1722,6 +1714,14 @@ details[open] summary span.bi {
 
 .text-nowrap {
   text-wrap: nowrap;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.text-pretty {
+  text-wrap: pretty;
 }
 
 .break-words {
@@ -2155,11 +2155,6 @@ details[open] summary span.bi {
 .text-4xl {
   font-size: 2.25rem;
   line-height: 2.5rem;
-}
-
-.text-5xl {
-  font-size: 3rem;
-  line-height: 1;
 }
 
 .text-\[1\.15rem\] {

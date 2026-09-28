@@ -1388,6 +1388,10 @@ details[open] summary span.bi {
   max-height: 8rem;
 }
 
+.max-h-\[50vh\] {
+  max-height: 50vh;
+}
+
 .max-h-\[85vh\] {
   max-height: 85vh;
 }
@@ -1921,11 +1925,6 @@ details[open] summary span.bi {
   background-color: rgb(249 250 251 / var(--tw-bg-opacity, 1));
 }
 
-.bg-info {
-  --tw-bg-opacity: 1;
-  background-color: rgb(0 73 135 / var(--tw-bg-opacity, 1));
-}
-
 .bg-light {
   --tw-bg-opacity: 1;
   background-color: rgb(246 252 255 / var(--tw-bg-opacity, 1));
@@ -1976,10 +1975,6 @@ details[open] summary span.bi {
 
 .p-4 {
   padding: 1rem;
-}
-
-.p-6 {
-  padding: 1.5rem;
 }
 
 .p-\[2px\] {
@@ -2085,6 +2080,10 @@ details[open] summary span.bi {
 
 .pb-4 {
   padding-bottom: 1rem;
+}
+
+.pb-6 {
+  padding-bottom: 1.5rem;
 }
 
 .pb-8 {
@@ -2841,5 +2840,25 @@ dialog::backdrop {
   .xl\:py-4 {
     padding-top: 1rem;
     padding-bottom: 1rem;
+  }
+}
+
+@media (max-height: 650px) {
+  .short\:max-h-\[50vh\] {
+    max-height: 50vh;
+  }
+
+  .short\:max-h-\[45vh\] {
+    max-height: 45vh;
+  }
+}
+
+@media (min-height: 900px) {
+  .tall\:max-h-\[500px\] {
+    max-height: 500px;
+  }
+
+  .tall\:max-h-\[640px\] {
+    max-height: 640px;
   }
 }

@@ -1716,10 +1716,6 @@ details[open] summary span.bi {
   text-wrap: nowrap;
 }
 
-.text-balance {
-  text-wrap: balance;
-}
-
 .text-pretty {
   text-wrap: pretty;
 }

@@ -46,7 +46,7 @@ import {
 const formatPercent = (value) => {
 	const numericValue = Number(value);
 
-	return Number.isFinite(numericValue) ? numericValue.toFixed(1) : value;
+	return Number.isFinite(numericValue) ? numericValue.toFixed(2) : value;
 	// return Number.isFinite(numericValue) ? Math.round(numericValue) : value;
 };
 
@@ -73,7 +73,7 @@ const Climate = (props) => {
 	const treeLevel = props.data.climate[0].tree_level;
 	const treeCanopyPercent = formatPercent(props.data.climate[0].tcc);
 	const CDCScore = props.data.climate[0].cdc_score;
-	const svi = props.data.climate[0].svi;
+	const svi = formatPercent(props.data.climate[0].svi);
 	const bipocPercent = formatPercent(props.data.climate[0].bipoc);
 
 	const heatIndex = 1;

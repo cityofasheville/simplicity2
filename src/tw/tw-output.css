@@ -1388,10 +1388,6 @@ details[open] summary span.bi {
   max-height: 8rem;
 }
 
-.max-h-\[50vh\] {
-  max-height: 50vh;
-}
-
 .max-h-\[85vh\] {
   max-height: 85vh;
 }
@@ -2844,20 +2840,12 @@ dialog::backdrop {
 }
 
 @media (max-height: 650px) {
-  .short\:max-h-\[50vh\] {
-    max-height: 50vh;
-  }
-
   .short\:max-h-\[45vh\] {
     max-height: 45vh;
   }
 }
 
 @media (min-height: 900px) {
-  .tall\:max-h-\[500px\] {
-    max-height: 500px;
-  }
-
   .tall\:max-h-\[640px\] {
     max-height: 640px;
   }

@@ -24,11 +24,11 @@ import IMG_CJI_WEB from "../../images/climate/sustainability-webpage.jpg";
 import Alert from "../../alert.jsx";
 
 const scoreScale = [
-	{ max: 6, fillColor: "#413da1", scoreColor: "white" },
-	{ max: 10, fillColor: "#9a3abb", scoreColor: "white" },
-	{ max: 14, fillColor: "#d66f96", scoreColor: "black" },
-	{ max: 18, fillColor: "#faab6b", scoreColor: "black" },
-	{ max: 24, fillColor: "#f3fa52", scoreColor: "black" },
+	{ max: 5, fillColor: "#3a7300", scoreColor: "white" },
+	{ max: 7, fillColor: "#53a600", scoreColor: "black" },
+	{ max: 10, fillColor: "#ebb788", scoreColor: "black" },
+	{ max: 12, fillColor: "#d957b9", scoreColor: "black" },
+	{ max: 15, fillColor: "#ab0080", scoreColor: "white" },
 ];
 
 import {
@@ -276,26 +276,6 @@ const Climate = (props) => {
 								flooding, and wildfire vulnerability/risk. These modules are combined to represent overall risk relative
 								to other census block groups across the city.
 							</p>
-							{/* <ul className="mt-3">
-								<li>
-									<b>
-										<a href="#flood">Flood Risk</a>: {floodPercent}%{" "}
-									</b>
-									of parcels are highly vulnerable ({floodCount} parcels), compared to 6% citywide.
-								</li>
-								<li>
-									<b>
-										<a href="#wildfire">Wildfire Risk</a>: {wildfirePercent}%{" "}
-									</b>
-									of parcels are highly vulnerable ({wildfireCount} parcels), compared to 13.9% citywide.
-								</li>
-								<li>
-									<b>
-										<a href="#landslide">Landslide Risk</a>: {landslidePercent}%{" "}
-									</b>
-									of parcels are highly vulnerable ({landslideCount} parcels), compared to 9% citywide.
-								</li>
-							</ul> */}
 							<div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-5">
 								{riskCardInfo.map((risk) => {
 									return (

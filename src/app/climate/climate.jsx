@@ -331,7 +331,10 @@ const Climate = (props) => {
 								This heat vulnerability index shows which parts of Asheville are vulnerable to extreme heat, taking into
 								account land surface temperature, albedo, evapotranspiration, tree canopy cover, and social
 								vulnerability. Data for this metric comes from the NASA Develop 2024 Heat Vulnerability Index and the
-								U.S. Forest Service Tree Canopy Coverage dataset. <a href="#heat">Learn more about heat risk.</a>
+								U.S. Forest Service Tree Canopy Coverage dataset.{" "}
+								<a href="ashevillenc.gov/department/sustainability/climate-initiatives/elevate-avl/extreme-temperature-hot-or-cold/">
+									Learn more about extreme temperature risk.
+								</a>
 							</p>
 							<p className="mt-3">
 								The NASA Develop HVI value for this block group is <b>{HVI}</b> relative to all block groups in the

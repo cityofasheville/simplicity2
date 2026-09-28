@@ -106,9 +106,9 @@ function MapLegend({ type, data = noData, openState = false }) {
 					<span className="bi bi-chevron-down justify-self-end text-l text-white" aria-hidden="true"></span>
 				</div>
 			</summary>
-			<div className="columns-1 sm:columns-3 gap-6 border-x-2 border-b-2 border-coa-blue-medium bg-white px-2">
+			<div className="columns-1 sm:columns-3 lg:columns-4 gap-6 border-x-2 border-b-2 border-coa-blue-medium bg-white">
 				{legendItems.map(({ key, label, icon, color }) => (
-					<div key={`legendItem-${key}`} className="flex flex-row items-start break-inside-avoid py-2">
+					<div key={`legendItem-${key}`} className="flex flex-row items-start break-inside-avoid py-2 mx-2">
 						{icon ? (
 							<img
 								alt={`${icon} Icon`}

@@ -161,6 +161,35 @@ const Climate = (props) => {
 			"https://drive.google.com/file/d/0BzZzONRPV-VAVF9vb2pOMUtkRmFJR1AyNFluYU5ESU9rODRJ/view?resourcekey=0-ZQ80xC-a8bw4JDs7z0Neaw",
 	});
 
+	let riskCardInfo = [
+		{
+			score: floodScore,
+			icon: ICON_FLOOD,
+			title: "Flood Risk",
+			link: "#flood",
+			percent: floodPercent,
+			count: floodCount,
+			citywide: "6",
+		},
+		{
+			score: wildfireScore,
+			icon: ICON_WILDFIRE,
+			title: "Wildfire Risk",
+			link: "#wildfire",
+			percent: wildfirePercent,
+			count: wildfireCount,
+			citywide: "13.9",
+		},
+		{
+			score: landslideScore,
+			icon: ICON_LANDSLIDE,
+			title: "Landslide Risk",
+			link: "#landslide",
+			percent: landslidePercent,
+			count: landslideCount,
+			citywide: "9",
+		},
+	];
 	return (
 		<div>
 			<PageHeader
@@ -264,6 +293,26 @@ const Climate = (props) => {
 									of parcels are highly vulnerable ({landslideCount} parcels), compared to 9% citywide.
 								</li>
 							</ul>
+							<div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-5">
+								{riskCardInfo.map((risk) => {
+									return (
+										<a
+											key={risk.title}
+											href={risk.link}
+											className="block p-4 border rounded shadow text-inherit no-underline hover:shadow-md"
+										>
+											<div className="flex items-center gap-3 mb-2">
+												<img src={risk.icon} className="w-[40px] h-auto flex-shrink-0" aria-hidden="true" alt="" />
+												<h5 className="text-xl text-coa-blue-medium mb-0">{risk.title}</h5>
+											</div>
+											<div className="text-5xl font-semibold text-coa-blue-medium leading-none">{risk.percent}%</div>
+											<p className="mt-2 mb-0">
+												of parcels are highly vulnerable ({risk.count} parcels), compared to {risk.citywide}% citywide.
+											</p>
+										</a>
+									);
+								})}
+							</div>
 						</div>
 					</div>
 				</div>

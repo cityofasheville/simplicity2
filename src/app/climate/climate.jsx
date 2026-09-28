@@ -192,7 +192,7 @@ const Climate = (props) => {
 			count: landslideCount,
 			citywide: "9",
 		},
-	];
+	].sort((a, b) => Number(b.percent) - Number(a.percent));
 	return (
 		<div>
 			<PageHeader
@@ -307,7 +307,10 @@ const Climate = (props) => {
 											</div>
 											<span className="text-3xl font-normal text-coa-blue-medium leading-none">{risk.percent}%</span>
 											<p className="mt-2 mb-0">
-												of parcels are highly vulnerable ({risk.count} parcels), compared to {risk.citywide}% citywide.{" "}
+												of parcels are highly vulnerable ({risk.count} parcels), compared to {risk.citywide}%
+												citywide.{" "}
+											</p>
+											<p>
 												<a key={risk.title} href={risk.link}>
 													{risk.linkText}
 												</a>

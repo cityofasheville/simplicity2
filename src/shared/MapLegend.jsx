@@ -1,37 +1,36 @@
-import { group } from "d3-array";
-import React, { useState } from "react";
+import React, { useMemo } from "react";
 
 const crimeMarkerMap = {
-	User: ["RUNAWAY JUVENILE"],
-	Hammer: ["DAMAGE TO PERSONAL PROPERTY", "VANDALISM"],
-	Ambulance: ["ASSAULT - SIMPLE", "ASSAULT ON FEMALE", "ASSAULT W/DEADLY WEAPON"],
-	Bubble: ["COMMUNICATING THREAT"],
-	Library2: ["INTIMIDATING STATE WITNESS", "PERJURY", "OBSTRUCTION OF JUSTICE"],
-	Profile: ["FRAUD", "FRAUD-CREDIT CARD", "FALSE PRETENSE - OBTAIN PROPERTY BY", "IMPERSONATE"],
-	Gun: ["CARRYING CONCEALED WEAPON"],
+	User: ["Runaway Juvenile"],
+	Hammer: ["Damage to Personal Property", "Vandalism"],
+	Ambulance: ["Assault - Simple", "Assault on Female", "Assault W/Deadly Weapon"],
+	Bubble: ["Communicating Threat"],
+	Library2: ["Intimidating State Witness", "Perjury", "Obstruction of Justice"],
+	Profile: ["Fraud", "Fraud-Credit Card", "False Pretense - Obtain Property By", "Impersonate"],
+	Gun: ["Carrying Concealed Weapon"],
 	Shield3: [
-		"RESIST, DELAY, OBSTRUCT OFFICER",
-		"CIT INCIDENT",
-		"DV ASSISTANCE OTHER",
-		"VICTIM ASSISTANCE OTHER",
-		"ASSAULT ON GOVERNMENT OFFICIAL",
+		"Resist, Delay, Obstruct Officer",
+		"CIT Incident",
+		"DV Assistance Other",
+		"Victim Assistance Other",
+		"Assault on Government Official",
 	],
-	Car: ["DWI", "UNAUTHORIZED USE OF MOTOR VEHICLE", "LARCENY OF MV OTHER", "LARCENY OF MV AUTO", "LARCENY OF MV TRUCK"],
-	Fence: ["TRESPASS"],
-	Pencil7: ["INFORMATION ONLY"],
+	Car: ["DWI", "Unauthorized Use of Motor Vehicle", "Larceny of MV Other", "Larceny of MV Auto", "Larceny of MV Truck"],
+	Fence: ["Trespass"],
+	Pencil7: ["Information Only"],
 	AidKit2: [
-		"DRUG PARAPHERNALIA POSSESS",
-		"DRUG OFFENSE - FELONY",
-		"DRUG OFFENSE - MISDEMEANOR",
-		"DRUG PARAPHERNALIA OTHER",
+		"Drug Paraphernalia Possess",
+		"Drug Offense - Felony",
+		"Drug Offense - Misdemeanor",
+		"Drug Paraphernalia Other",
 	],
-	BillDollar: ["COUNTERFEITING-BUYING/RECEIVING"],
+	BillDollar: ["Counterfeiting-Buying/Receiving"],
 	Dollar: [
-		"LARCENY ALL OTHER",
-		"LARCENY FROM BUILDING",
-		"LARCENY FROM MOTOR VEHICLE",
-		"ROBBERY - COMMON LAW",
-		"ROBBERY - ARMED - KNIFE",
+		"Larceny All Other",
+		"Larceny from Building",
+		"Larceny from Motor Vehicle",
+		"Robbery - Common Law",
+		"Robbery - Armed - Knife",
 	],
 	Ellipsis: ["Other"],
 };
@@ -49,115 +48,87 @@ const developmentMarkerMap = {
 	Ellipsis: ["Other"],
 };
 
-const formatList = (items) => {
+const maintenanceMarkerMap = [
+	{ label: "NCDOT", color: "#506aed" },
+	{ label: "City of Asheville", color: "#6fe8cb" },
+	{ label: "Multiple", color: "#DB6D00" },
+	{ label: "No Information Available", color: "#f95eff" },
+];
+
+const fallbackColor = "#f95eff";
+
+// maintenance_entity arrives upper case from formatMaintenanceData, so the
+// display label comes from defaultMaintenanceItems rather than from the data
+const maintenanceLabels = new Map(maintenanceMarkerMap.map((item) => [item.label.toUpperCase(), item.label]));
+
+// avoids a new array identity on every render when no data is passed
+const noData = [];
+
+function formatList(items) {
 	if (items.length === 0) return "";
 	if (items.length === 1) return items[0];
 	if (items.length === 2) return `${items[0]} or ${items[1]}`;
 
 	return `${items.slice(0, -1).join(", ")}, or ${items.at(-1)}`;
-};
+}
 
-const getLegendGroups = (type) => {
-	let map;
-	if (type == "crime") {
-		map = crimeMarkerMap;
-	} else {
-		// default to crime map for now
-		map = developmentMarkerMap;
-	}
-	const groups = {};
+function getIconItems(map) {
+	return Object.entries(map).map(([iconName, types]) => ({
+		key: iconName,
+		label: formatList(types),
+		icon: iconName,
+	}));
+}
 
-	Object.entries(map).forEach(([iconName, types]) => {
-		groups[iconName] = formatList(types);
-	});
+function getColorItems(data) {
+	return maintenanceMarkerMap.map((item) => ({ key: item.label, ...item }));
+}
 
-	return groups;
-};
+function getLegendItems(type, data) {
+	if (type === "crime") return getIconItems(crimeMarkerMap);
+	if (type === "maintenance") return getColorItems(data);
 
-function MapLegend({ type }) {
-	const legendGroups = getLegendGroups(type);
-	const [isOpen, setIsOpen] = useState(false);
+	return getIconItems(developmentMarkerMap);
+}
+
+function MapLegend({ type, data = noData, openState = false }) {
+	const legendItems = useMemo(() => getLegendItems(type, data), [type, data]);
 
 	return (
-		<div className="bg-coa-blue-medium">
-			<button className="py-2 px-3 w-full h-full" onClick={() => setIsOpen((prev) => !prev)}>
-				<span className="text-white">Map Legend</span>
-			</button>
-			{isOpen && (
-				<div className="columns-1 sm:columns-3 gap-6 border-2 border-coa-blue-medium bg-white p-2">
-					{Object.entries(legendGroups).map(([iconName, types]) => (
-						<div key={`legendItem-${iconName}`} className="flex flex-row items-start break-inside-avoid my-1">
-							<img
-								alt={`${iconName} Icon`}
-								src={iconName === "Other" ? require("../images/Ellipsis.png") : require(`../images/${iconName}.png`)}
-								className=" w-6 align-top mr-2"
-							/>
-							<span className="text-sm">{iconName === "Other" ? "Other" : types}</span>
-						</div>
-					))}
+		<details className="bg-coa-blue-medium" open={openState}>
+			{" "}
+			<summary className="list-none flex align-middle justify-between py-2 px-5 cursor-pointer">
+				{" "}
+				<div className="mr-1">
+					<span className="text-white">Map Legend</span>
 				</div>
-			)}
-		</div>
+				<div className="flex items-center">
+					<span className="bi bi-chevron-down justify-self-end text-l text-white" aria-hidden="true"></span>
+				</div>
+			</summary>
+			<div className="columns-1 sm:columns-3 gap-6 border-x-2 border-b-2 border-coa-blue-medium bg-white px-2">
+				{legendItems.map(({ key, label, icon, color }) => (
+					<div key={`legendItem-${key}`} className="flex flex-row items-start break-inside-avoid py-2">
+						{icon ? (
+							<img
+								alt={`${icon} Icon`}
+								src={require(`../images/${icon}.png`)}
+								className="w-6 align-top mr-2 shrink-0"
+							/>
+						) : (
+							<span
+								aria-label={`${label} color`}
+								className="inline-block rounded-full mr-2 mt-1 shrink-0"
+								style={{ width: "14px", height: "14px", backgroundColor: color, border: "1px solid #666" }}
+							/>
+						)}
+						<span className="text-sm">{label}</span>
+					</div>
+				))}
+			</div>
+			<span></span>
+		</details>
 	);
 }
 
 export default MapLegend;
-
-// import React, { useMemo, useState } from "react";
-
-// const defaultLegendItems = [
-// 	{ label: "NCDOT", color: "#506aed" },
-// 	{ label: "CITY OF ASHEVILLE", color: "#6fe8cb" },
-// 	{ label: "MULTIPLE", color: "#DB6D00" },
-// 	{ label: "NO INFORMATION AVAILABLE", color: "#f95eff" },
-// ];
-
-// function MaintenanceMapLegend({ data = [] }) {
-// 	const [isOpen, setIsOpen] = useState(true);
-
-// 	const legendItems = useMemo(() => {
-// 		if (data.length === 0) {
-// 			return defaultLegendItems;
-// 		}
-
-// 		const seen = new Set();
-// 		return data.reduce((items, entry) => {
-// 			const label = entry.maintenance_entity || entry.label || "NO INFORMATION AVAILABLE";
-// 			const color = entry.color || "#f95eff";
-
-// 			if (!seen.has(label)) {
-// 				seen.add(label);
-// 				items.push({ label, color });
-// 			}
-
-// 			return items;
-// 		}, []);
-// 	}, [data]);
-
-// 	return (
-// 		<div className="bg-coa-blue-medium">
-// 			<button className="py-2 px-3 w-full h-full" onClick={() => setIsOpen((prev) => !prev)}>
-// 				<span className="text-white">Map Legend</span>
-// 			</button>
-// 			{isOpen && (
-// 				<div className="border-2 border-coa-blue-medium bg-white p-2 flex flex-row flex-wrap items-center justify-between gap-3">
-// 					{legendItems.map(({ label, color }) => (
-// 						<div
-// 							key={`legendItem-${label}`}
-// 							className="flex flex-row items-center whitespace-nowrap flex-1 justify-center"
-// 						>
-// 							<span
-// 								aria-label={`${label} color`}
-// 								className="inline-block rounded-full mr-2"
-// 								style={{ width: "14px", height: "14px", backgroundColor: color, border: "1px solid #666" }}
-// 							/>
-// 							<span className="text-sm text-gray-900">{label}</span>
-// 						</div>
-// 					))}
-// 				</div>
-// 			)}
-// 		</div>
-// 	);
-// }
-
-// export default MaintenanceMapLegend;

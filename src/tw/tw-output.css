@@ -1708,6 +1708,10 @@ details[open] summary span.bi {
   overflow-y: auto;
 }
 
+.text-ellipsis {
+  text-overflow: ellipsis;
+}
+
 .whitespace-nowrap {
   white-space: nowrap;
 }
@@ -1774,6 +1778,11 @@ details[open] summary span.bi {
   border-width: 2px;
 }
 
+.border-x-2 {
+  border-left-width: 2px;
+  border-right-width: 2px;
+}
+
 .border-b {
   border-bottom-width: 1px;
 }
@@ -1796,6 +1805,10 @@ details[open] summary span.bi {
 
 .border-t {
   border-top-width: 1px;
+}
+
+.border-r {
+  border-right-width: 1px;
 }
 
 .border-blue-100 {
@@ -1943,6 +1956,11 @@ details[open] summary span.bi {
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+
+.bg-slate-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(226 232 240 / var(--tw-bg-opacity, 1));
 }
 
 .bg-opacity-70 {
@@ -2108,6 +2126,10 @@ details[open] summary span.bi {
 
 .pt-5 {
   padding-top: 1.25rem;
+}
+
+.pb-1 {
+  padding-bottom: 0.25rem;
 }
 
 .text-left {

@@ -1,5 +1,3 @@
-import React, { useMemo } from "react";
-
 const crimeMarkerMap = {
 	User: ["Runaway Juvenile"],
 	Hammer: ["Damage to Personal Property", "Vandalism"],
@@ -60,7 +58,7 @@ function formatList(items) {
 	if (items.length === 1) return items[0];
 	if (items.length === 2) return `${items[0]} or ${items[1]}`;
 
-	return `${items.slice(0, -1).join(", ")}, or ${items.at(-1)}`;
+	return `${items.slice(0, -1).join(", ")}, or ${items[items.length - 1]}`;
 }
 
 function getIconItems(mapData) {
@@ -86,37 +84,31 @@ function MapLegend({ type, openState = false }) {
 
 	return (
 		<details className="bg-coa-blue-medium" open={openState}>
-			{" "}
-			<summary className="list-none flex align-middle justify-between py-2 px-5 cursor-pointer">
-				{" "}
-				<div className="mr-1">
-					<span className="text-white">Map Legend</span>
-				</div>
-				<div className="flex items-center">
-					<span className="bi bi-chevron-down justify-self-end text-l text-white" aria-hidden="true"></span>
-				</div>
+			<summary className="list-none flex justify-between py-2 px-5 cursor-pointer">
+				<span className="text-white">Map Legend</span>
+				<span className="bi bi-chevron-down text-white" aria-hidden="true"></span>
 			</summary>
-			<div className="columns-1 sm:columns-3 lg:columns-4 gap-6 border-x-2 border-b-2 border-coa-blue-medium bg-white">
+			<ul className="columns-1 sm:columns-3 lg:columns-4 gap-6 border-x-2 border-b-2 border-coa-blue-medium bg-white">
 				{legendItems.map(({ key, label, icon, color }) => (
-					<div key={`legendItem-${key}`} className="flex flex-row items-start break-inside-avoid py-2 mx-2">
+					<li key={`legendItem-${key}`} className="flex flex-row items-start break-inside-avoid py-2 mx-2">
 						{icon ? (
 							<img
-								alt={`${icon} Icon`}
+								alt=""
+								aria-hidden="true"
 								src={require(`../images/${icon}.png`)}
 								className="w-6 align-top mr-2 shrink-0"
 							/>
 						) : (
 							<span
-								aria-label={`${label} color`}
+								aria-hidden="true"
 								className="inline-block rounded-full mr-2 mt-1 shrink-0"
 								style={{ width: "14px", height: "14px", backgroundColor: color, border: "1px solid #666" }}
 							/>
 						)}
 						<span className="text-sm">{label}</span>
-					</div>
+					</li>
 				))}
-			</div>
-			<span></span>
+			</ul>
 		</details>
 	);
 }

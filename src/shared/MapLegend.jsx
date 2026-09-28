@@ -55,15 +55,6 @@ const maintenanceMarkerMap = [
 	{ label: "No Information Available", color: "#f95eff" },
 ];
 
-const fallbackColor = "#f95eff";
-
-// maintenance_entity arrives upper case from formatMaintenanceData, so the
-// display label comes from defaultMaintenanceItems rather than from the data
-const maintenanceLabels = new Map(maintenanceMarkerMap.map((item) => [item.label.toUpperCase(), item.label]));
-
-// avoids a new array identity on every render when no data is passed
-const noData = [];
-
 function formatList(items) {
 	if (items.length === 0) return "";
 	if (items.length === 1) return items[0];
@@ -72,27 +63,26 @@ function formatList(items) {
 	return `${items.slice(0, -1).join(", ")}, or ${items.at(-1)}`;
 }
 
-function getIconItems(map) {
-	return Object.entries(map).map(([iconName, types]) => ({
+function getIconItems(mapData) {
+	return Object.entries(mapData).map(([iconName, types]) => ({
 		key: iconName,
 		label: formatList(types),
 		icon: iconName,
 	}));
 }
 
-function getColorItems(data) {
-	return maintenanceMarkerMap.map((item) => ({ key: item.label, ...item }));
+function getColorItems(mapData) {
+	return mapData.map((item) => ({ key: item.label, ...item }));
 }
 
-function getLegendItems(type, data) {
+function getLegendItems(type) {
 	if (type === "crime") return getIconItems(crimeMarkerMap);
-	if (type === "maintenance") return getColorItems(data);
-
+	if (type === "maintenance") return getColorItems(maintenanceMarkerMap);
 	return getIconItems(developmentMarkerMap);
 }
 
-function MapLegend({ type, data = noData, openState = false }) {
-	const legendItems = useMemo(() => getLegendItems(type, data), [type, data]);
+function MapLegend({ type, openState = false }) {
+	const legendItems = getLegendItems(type);
 
 	return (
 		<details className="bg-coa-blue-medium" open={openState}>

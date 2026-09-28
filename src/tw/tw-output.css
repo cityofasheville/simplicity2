@@ -1080,6 +1080,10 @@ details[open] summary span.bi {
   margin: 2px;
 }
 
+.m-auto {
+  margin: auto;
+}
+
 .mx-8 {
   margin-left: 2rem;
   margin-right: 2rem;
@@ -1140,6 +1144,10 @@ details[open] summary span.bi {
   margin-bottom: auto;
 }
 
+.mb-0 {
+  margin-bottom: 0px;
+}
+
 .mb-1 {
   margin-bottom: 0.25rem;
 }
@@ -1178,10 +1186,6 @@ details[open] summary span.bi {
 
 .ml-10 {
   margin-left: 2.5rem;
-}
-
-.ml-12 {
-  margin-left: 3rem;
 }
 
 .ml-2 {
@@ -1262,10 +1266,6 @@ details[open] summary span.bi {
 
 .mt-6 {
   margin-top: 1.5rem;
-}
-
-.mt-7 {
-  margin-top: 1.75rem;
 }
 
 .mt-8 {
@@ -1388,10 +1388,6 @@ details[open] summary span.bi {
   max-height: 8rem;
 }
 
-.max-h-\[50vh\] {
-  max-height: 50vh;
-}
-
 .max-h-\[85vh\] {
   max-height: 85vh;
 }
@@ -1426,6 +1422,10 @@ details[open] summary span.bi {
 
 .w-\[100px\] {
   width: 100px;
+}
+
+.w-\[10px\] {
+  width: 10px;
 }
 
 .w-\[120px\] {
@@ -1466,6 +1466,10 @@ details[open] summary span.bi {
 
 .w-full {
   width: 100%;
+}
+
+.w-\[20px\] {
+  width: 20px;
 }
 
 .min-w-0 {
@@ -1602,11 +1606,6 @@ details[open] summary span.bi {
 
 .list-none {
   list-style-type: none;
-}
-
-.columns-1 {
-  -webkit-columns: 1;
-          columns: 1;
 }
 
 .columns-3 {
@@ -2158,6 +2157,11 @@ details[open] summary span.bi {
   line-height: 2.5rem;
 }
 
+.text-5xl {
+  font-size: 3rem;
+  line-height: 1;
+}
+
 .text-\[1\.15rem\] {
   font-size: 1.15rem;
 }
@@ -2265,9 +2269,8 @@ details[open] summary span.bi {
   color: rgb(55 65 81 / var(--tw-text-opacity, 1));
 }
 
-.text-gray-900 {
-  --tw-text-opacity: 1;
-  color: rgb(17 24 39 / var(--tw-text-opacity, 1));
+.text-inherit {
+  color: inherit;
 }
 
 .text-primary {
@@ -2481,6 +2484,12 @@ dialog::backdrop {
           text-decoration-line: none;
 }
 
+.hover\:shadow-md:hover {
+  --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
 .focus\:left-0:focus {
   left: 0px;
 }
@@ -2600,17 +2609,8 @@ dialog::backdrop {
     height: 24rem;
   }
 
-  .sm\:columns-3 {
-    -webkit-columns: 3;
-            columns: 3;
-  }
-
   .sm\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .sm\:grid-cols-4 {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   .sm\:grid-cols-3 {
@@ -2863,20 +2863,12 @@ dialog::backdrop {
 }
 
 @media (max-height: 650px) {
-  .short\:max-h-\[50vh\] {
-    max-height: 50vh;
-  }
-
   .short\:max-h-\[45vh\] {
     max-height: 45vh;
   }
 }
 
 @media (min-height: 900px) {
-  .tall\:max-h-\[500px\] {
-    max-height: 500px;
-  }
-
   .tall\:max-h-\[640px\] {
     max-height: 640px;
   }

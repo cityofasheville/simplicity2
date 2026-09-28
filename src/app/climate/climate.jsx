@@ -166,7 +166,8 @@ const Climate = (props) => {
 			score: floodScore,
 			icon: ICON_FLOOD,
 			title: "Flood Risk",
-			link: "#flood",
+			link: "https://www.ashevillenc.gov/department/recovery-resilience/climate-initiatives/elevate-avl/climate-action-toolkit/flooding/",
+			linkText: "Learn more about flood risk.",
 			percent: floodPercent,
 			count: floodCount,
 			citywide: "6",
@@ -175,7 +176,8 @@ const Climate = (props) => {
 			score: wildfireScore,
 			icon: ICON_WILDFIRE,
 			title: "Wildfire Risk",
-			link: "#wildfire",
+			link: "https://www.ashevillenc.gov/department/recovery-resilience/climate-initiatives/elevate-avl/climate-action-toolkit/wildfire/",
+			linkText: "Learn more about wildfire risk.",
 			percent: wildfirePercent,
 			count: wildfireCount,
 			citywide: "13.9",
@@ -184,7 +186,8 @@ const Climate = (props) => {
 			score: landslideScore,
 			icon: ICON_LANDSLIDE,
 			title: "Landslide Risk",
-			link: "#landslide",
+			link: "https://www.ashevillenc.gov/department/recovery-resilience/climate-initiatives/elevate-avl/climate-action-toolkit/landslides/",
+			linkText: "Learn more about landslide risk.",
 			percent: landslidePercent,
 			count: landslideCount,
 			citywide: "9",
@@ -273,7 +276,7 @@ const Climate = (props) => {
 								flooding, and wildfire vulnerability/risk. These modules are combined to represent overall risk relative
 								to other census block groups across the city.
 							</p>
-							<ul className="mt-3">
+							{/* <ul className="mt-3">
 								<li>
 									<b>
 										<a href="#flood">Flood Risk</a>: {floodPercent}%{" "}
@@ -292,24 +295,24 @@ const Climate = (props) => {
 									</b>
 									of parcels are highly vulnerable ({landslideCount} parcels), compared to 9% citywide.
 								</li>
-							</ul>
+							</ul> */}
 							<div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-5">
 								{riskCardInfo.map((risk) => {
 									return (
-										<a
-											key={risk.title}
-											href={risk.link}
-											className="block p-4 border rounded shadow text-inherit no-underline hover:shadow-md"
-										>
-											<div className="flex items-center gap-3 mb-2">
-												<img src={risk.icon} className="w-[40px] h-auto flex-shrink-0" aria-hidden="true" alt="" />
+										<div className="block p-4 border rounded shadow text-inherit no-underline hover:shadow-md m-auto text-center h-full w-full">
+											<div className="flex items-center justify-center gap-2 mb-2">
+												{" "}
+												<img src={risk.icon} className="w-[25px] h-auto flex-shrink-0" aria-hidden="true" alt="" />
 												<h5 className="text-xl text-coa-blue-medium mb-0">{risk.title}</h5>
 											</div>
-											<div className="text-5xl font-semibold text-coa-blue-medium leading-none">{risk.percent}%</div>
+											<div className="text-3xl font-normal text-coa-blue-medium leading-none">{risk.percent}%</div>
 											<p className="mt-2 mb-0">
-												of parcels are highly vulnerable ({risk.count} parcels), compared to {risk.citywide}% citywide.
+												of parcels are highly vulnerable ({risk.count} parcels), compared to {risk.citywide}% citywide.{" "}
+												<a key={risk.title} href={risk.link}>
+													{risk.linkText}
+												</a>
 											</p>
-										</a>
+										</div>
 									);
 								})}
 							</div>
@@ -362,68 +365,6 @@ const Climate = (props) => {
 						</div>
 					</div>
 				</div>
-				{climateThreats.high.data.length > 0 && (
-					<>
-						<p className="text-xl text-coa-blue-medium mb-6 ">{climateThreats.high.notice}</p>
-
-						{climateThreats.high.data.map((threat, index) => {
-							return (
-								<RiskOverview
-									key={index}
-									icon={threat.icon}
-									title={threat.name}
-									overview={threat.overview}
-									actions={threat.actions}
-									externalLink={threat.externalLink}
-									riskLevel={"high"}
-								/>
-							);
-						})}
-					</>
-				)}
-
-				{climateThreats.medium.data.length > 0 && (
-					<>
-						<p className="text-xl text-coa-blue-medium mb-6">{climateThreats.medium.notice}</p>
-						{climateThreats.medium.data.map((threat, index) => {
-							return (
-								<RiskOverview
-									key={index}
-									icon={threat.icon}
-									title={threat.name}
-									overview={threat.overview}
-									actions={threat.actions}
-									externalLink={threat.externalLink}
-									riskLevel={"medium"}
-								/>
-							);
-						})}
-					</>
-				)}
-
-				{climateThreats.low.data.length > 0 && (
-					<>
-						<p className="text-xl text-coa-blue-medium mb-6">{climateThreats.low.notice}</p>
-						<p className="my-3">
-							[Note from CH: The heading above used to be based on the threat level from these different risks (low vs
-							med vs high). I grouped them under this one heading for the moment, since we're not measuring
-							wildfire/flood/landslide/heat risk in quite the same ways anymore.]
-						</p>
-						{climateThreats.low.data.map((threat, index) => {
-							return (
-								<RiskOverview
-									key={index}
-									icon={threat.icon}
-									title={threat.name}
-									overview={threat.overview}
-									actions={threat.actions}
-									externalLink={threat.externalLink}
-									riskLevel={"low"}
-								/>
-							);
-						})}
-					</>
-				)}
 			</div>
 			<aside id="Climate Data" className="p-4 border border-gray-200 rounded bg-gray-100 my-10">
 				<h3 className="text-3xl text-coa-blue-medium my-5">Climate Vulnerability Resources</h3>

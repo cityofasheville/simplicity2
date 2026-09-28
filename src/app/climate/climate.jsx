@@ -305,7 +305,7 @@ const Climate = (props) => {
 												<img src={risk.icon} className="w-[25px] h-auto flex-shrink-0" aria-hidden="true" alt="" />
 												<h5 className="text-xl text-coa-blue-medium mb-0">{risk.title}</h5>
 											</div>
-											<div className="text-3xl font-normal text-coa-blue-medium leading-none">{risk.percent}%</div>
+											<span className="text-3xl font-normal text-coa-blue-medium leading-none">{risk.percent}%</span>
 											<p className="mt-2 mb-0">
 												of parcels are highly vulnerable ({risk.count} parcels), compared to {risk.citywide}% citywide.{" "}
 												<a key={risk.title} href={risk.link}>

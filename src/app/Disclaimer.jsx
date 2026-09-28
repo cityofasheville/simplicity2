@@ -19,11 +19,11 @@ function Disclaimer({ onAccept }) {
 		<AlertDialog.Root open={isOpen} defaultOpen={true}>
 			<AlertDialog.Portal>
 				<AlertDialog.Overlay className="z-[9998] backdrop-blur-sm blur-sm fixed inset-0 bg-black/10" />
-				<AlertDialog.Content className="z-[9999] bg-white rounded w-[90vw] max-w-[500px] max-h-[85vh] fixed top-1/2 left-1/2 p-6  -translate-x-1/2 -translate-y-1/2 shadow-lg">
-					<AlertDialog.Title className="AlertDialogTitle mt-1 mb-8 text-xl font-medium focus:outline-none">
+				<AlertDialog.Content className="z-[9999] bg-white rounded w-[90vw] max-w-[500px] fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 shadow-lg">
+					<AlertDialog.Title className="mb-2 text-lg font-normal bg-light border-b focus:outline-none px-4 py-2">
 						City of Asheville Geographic Information Systems (GIS) Disclaimer
 					</AlertDialog.Title>
-					<AlertDialog.Description className="AlertDialogDescription">
+					<AlertDialog.Description className="AlertDialogDescription short:max-h-[45vh] tall:max-h-[640px] overflow-y-auto px-4 pt-2 pb-6 text-sm">
 						The City of Asheville acquires, develops, maintains, and uses GIS data in support of its internal business
 						functions and the public services it provides. The GIS data which the City of Asheville distributes and to
 						which it provides access may not be suitable for other purposes or uses. All GIS data sets are provided "as
@@ -33,7 +33,7 @@ function Disclaimer({ onAccept }) {
 						information. Use of all GIS data and map services provided by the City of Asheville are covered by this
 						disclaimer.
 					</AlertDialog.Description>
-					<div className="flex gap-6 justify-end">
+					<div className="flex justify-center bg-light border-t px-4 py-2">
 						<AlertDialog.Action asChild>
 							<button autoFocus onClick={handleAccept} className="btn btn-primary">
 								Accept

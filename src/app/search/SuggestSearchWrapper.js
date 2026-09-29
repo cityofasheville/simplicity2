@@ -5,6 +5,7 @@ import SearchResultGroup from "./searchResults/SearchResultGroup";
 import LoadingAnimation from "../../shared/LoadingAnimation";
 import { searchQuery, formatSearchResults } from "./searchResults/searchResultsUtils";
 // import { set } from 'd3-collection';
+import Alert from "../../alert";
 
 const MIN_SPINNER_DURATION = 400;
 
@@ -92,9 +93,9 @@ function SuggestSearchWrapper({ searchMode = "main", autoFocusInput = true, debo
 
 						const formattedResults = formatSearchResults(data.search);
 
-						// if (formattedResults.length > 0) {
-						// 	document.getElementById("searchBox")?.scrollIntoView({ behavior: "smooth" });
-						// }
+						if (formattedResults.length === 0) {
+							return <Alert type="info">No results found</Alert>;
+						}
 
 						return (
 							<div id="search-results" className="row">

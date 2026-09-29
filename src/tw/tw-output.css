@@ -1080,6 +1080,11 @@ details[open] summary span.bi {
   margin: 2px;
 }
 
+.mx-2 {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
 .mx-8 {
   margin-left: 2rem;
   margin-right: 2rem;
@@ -1600,9 +1605,9 @@ details[open] summary span.bi {
   list-style-type: none;
 }
 
-.columns-3 {
-  -webkit-columns: 3;
-          columns: 3;
+.columns-1 {
+  -webkit-columns: 1;
+          columns: 1;
 }
 
 .break-inside-avoid {
@@ -1772,6 +1777,11 @@ details[open] summary span.bi {
 
 .border-2 {
   border-width: 2px;
+}
+
+.border-x-2 {
+  border-left-width: 2px;
+  border-right-width: 2px;
 }
 
 .border-b {
@@ -2586,6 +2596,11 @@ dialog::backdrop {
     height: 24rem;
   }
 
+  .sm\:columns-3 {
+    -webkit-columns: 3;
+            columns: 3;
+  }
+
   .sm\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -2749,6 +2764,11 @@ dialog::backdrop {
 
   .lg\:h-\[30px\] {
     height: 30px;
+  }
+
+  .lg\:columns-4 {
+    -webkit-columns: 4;
+            columns: 4;
   }
 
   .lg\:grid-cols-2 {

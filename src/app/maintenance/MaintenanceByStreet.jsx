@@ -18,6 +18,7 @@ import { IM_MAP5 } from "../../shared/iconConstants";
 import createFilterRenderer from "../../shared/FilterRenderer";
 import Table from "../../shared/Table/Table";
 import Alert from "../../alert";
+import MapLegend from "../../shared/MapLegend";
 
 const getMaintenanceInfo = (entity, comma) => {
 	if (entity === null) {
@@ -236,17 +237,20 @@ const MaintenanceByStreet = (props) => {
 					{props.data.streets.length === 0 || props.location.query.view === "list" ? (
 						<Alert type="info">No results found</Alert>
 					) : (
-						<div className="w-full h-[600px] flex">
-							<Map
-								legend={createMaintenanceLegend(formatMaintenanceData(props.data.streets))}
-								maintenanceData={formatMaintenanceData(props.data.streets)}
-								drawMaintenance
-								bounds={
-									(props.location.query.bounds !== undefined) & (props.location.query.bounds !== "")
-										? JSON.parse(props.location.query.bounds)
-										: getBoundsFromStreetData(props.data.streets)
-								}
-							/>
+						<div>
+							<div className="w-full h-[600px] flex">
+								<Map
+									legend={createMaintenanceLegend(formatMaintenanceData(props.data.streets))}
+									maintenanceData={formatMaintenanceData(props.data.streets)}
+									drawMaintenance
+									bounds={
+										(props.location.query.bounds !== undefined) & (props.location.query.bounds !== "")
+											? JSON.parse(props.location.query.bounds)
+											: getBoundsFromStreetData(props.data.streets)
+									}
+								/>
+							</div>
+							<MapLegend type="maintenance" openState={true} />
 						</div>
 					)}
 				</div>

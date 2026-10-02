@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router";
 import { graphql } from "react-apollo";
 import gql from "graphql-tag";
 import LoadingAnimation from "../../shared/LoadingAnimation";
@@ -14,8 +15,6 @@ import PageHeader from "../../shared/PageHeader";
 import NeighborhoodPicker from "./NeighborhoodPicker";
 import { getBoundsFromPolygonData, combinePolygonsFromNeighborhoodList } from "../../utilities/mapUtilities";
 import { colorSchemes } from "../../shared/visualization/colorSchemes";
-
-// list hoods underneath when multiple
 
 const MULTI_VIEW_COLOR_SCHEME = colorSchemes.bright_colors;
 const legacy_neighborhood_ids = ["NBHD12", "NBHD14", "NBHD96", "NBHD61", "NBHD60", "NBHD17", "NBHD55", "NBHD92"];
@@ -119,11 +118,11 @@ function Neighborhood(props) {
 					</div>
 				</div>
 			</PageHeader>
-			<section className="bg-gray-50 p-4 ">
+			<section className="">
 				<div className="mb-4 w-full max-w-md">
 					<NeighborhoodPicker query={props.location.query} />
 				</div>
-				<div className="w-full h-[600px] flex mb-4">
+				<div className="w-full h-[600px] flex mb-4 shadow">
 					<Map
 						drawPolygon
 						// showPolygonLabels={mode === "legacy"}
@@ -131,6 +130,46 @@ function Neighborhood(props) {
 						bounds={getBoundsFromPolygonData(neighborhoods.map((n) => n.polygon))}
 					/>
 				</div>
+				{mode === SHOW_LEGACY && (
+					<div className="mb-4 bg-gray-50 p-4 border">
+						<ul
+							className="mb-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-2"
+							aria-label="Neighborhood legend"
+						>
+							{[...polygonData]
+								.sort((a, b) => a.name.localeCompare(b.name))
+								.map((poly) => (
+									<li key={poly.key} className="flex items-center gap-2">
+										<span
+											aria-hidden="true"
+											className="inline-block w-3 h-3 rounded-full shrink-0"
+											style={{ backgroundColor: poly.fillColor }}
+										/>
+										<Link
+											to={{
+												pathname: "/neighborhood",
+												query: {
+													entity: "neighborhood",
+													id: poly.nbhd_id,
+													label: poly.name,
+													entities: props.location.query.entities,
+													search: props.location.query.search,
+													hideNavbar: props.location.query.hideNavbar,
+												},
+											}}
+										>
+											{poly.name}
+										</Link>
+									</li>
+								))}
+						</ul>
+						<p>
+							Note: a legacy neighborhood is a historic or long-standing community, often historically under-resourced
+							or impacted by displacement, whose residents organize to build collective power and drive civic
+							engagement.
+						</p>
+					</div>
+				)}
 				{isSingle && (
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 						<DetailsIconLinkFormGroup
@@ -159,15 +198,6 @@ function Neighborhood(props) {
 								/>
 							</div>
 						))}
-					</div>
-				)}
-				{mode === "legacy" && (
-					<div>
-						<p>
-							Note: a legacy neighborhood is a historic or long-standing community, often historically under-resourced
-							or impacted by displacement, whose residents organize to build collective power and drive civic
-							engagement.
-						</p>
 					</div>
 				)}
 			</section>

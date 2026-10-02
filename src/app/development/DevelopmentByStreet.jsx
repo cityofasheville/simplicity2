@@ -143,37 +143,41 @@ const DevelopmentByStreet = (props) => {
 				)}
 			</div> */}
 			<div id="view-container">
-				<div
-					id="listView"
-					className={`${props.location.query.view === "list" ? "flex" : "hidden"} w-full overflow-x-auto`}
-				>
-					<DevelopmentTable data={props.data.permits_by_street} location={props.location} />
-				</div>
-
-				<div id="mapView" className={`${props.location.query.view === "map" ? "flex" : "hidden"}`}>
-					{props.data.permits_by_street.length === 0 || props.location.query.view !== "map" ? (
-						<Alert type="info">No results found</Alert>
-					) : (
-						<div className="w-full">
-							<div className="w-full h-[600px] flex">
-								<Map
-									data={mapData}
-									legend={createLegend(props.data.permits_by_street)}
-									within={props.location.query.within}
-									bounds={getBoundsFromStreetData(props.data.streets)}
-									drawStreet
-									streetData={convertStreetLinesToLatLngArrays(props.data.streets)}
-									zoomToPoint={
-										props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== ""
-											? props.location.query.zoomToPoint
-											: null
-									}
-								/>
-							</div>
-							<MapLegend type="development" />
+				{props.data.permits_by_street.length === 0 ? (
+					<Alert type="info">No results found</Alert>
+				) : (
+					<>
+						<div
+							id="listView"
+							className={`${props.location.query.view === "list" ? "flex" : "hidden"} w-full overflow-x-auto`}
+						>
+							<DevelopmentTable data={props.data.permits_by_street} location={props.location} />
 						</div>
-					)}
-				</div>
+
+						<div id="mapView" className={`${props.location.query.view === "map" ? "flex" : "hidden"}`}>
+							{props.location.query.view === "map" && (
+								<div className="w-full">
+									<div className="w-full h-[600px] flex">
+										<Map
+											data={mapData}
+											legend={createLegend(props.data.permits_by_street)}
+											within={props.location.query.within}
+											bounds={getBoundsFromStreetData(props.data.streets)}
+											drawStreet
+											streetData={convertStreetLinesToLatLngArrays(props.data.streets)}
+											zoomToPoint={
+												props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== ""
+													? props.location.query.zoomToPoint
+													: null
+											}
+										/>
+									</div>
+									<MapLegend type="development" />
+								</div>
+							)}
+						</div>
+					</>
+				)}
 			</div>
 		</div>
 	);

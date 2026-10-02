@@ -16,11 +16,26 @@ const ICON_COLORS = {
 	danger: "#e74c3c",
 };
 
-function Alert({ children, type = "info" }) {
+function Alert({ children, type = "info", className = "", ...props }) {
+	const alertClassName = [
+		"p-4",
+		"rounded",
+		"shadow",
+		"w-full",
+		"my-6",
+		"mx-auto",
+		"border-2",
+		BORDER_CLASSES[type],
+		"flex",
+		"items-center",
+		"gap-4",
+		className,
+	]
+		.filter(Boolean)
+		.join(" ");
+
 	return (
-		<div
-			className={`p-4 rounded shadow w-full max-w-3xl my-6 mx-auto border-2 ${BORDER_CLASSES[type]} flex items-center gap-4`}
-		>
+		<div className={alertClassName} {...props}>
 			<Icon ariaHidden="true" path={INFO_CIRCLE} size={24} color={ICON_COLORS[type]} /> {children}
 		</div>
 	);

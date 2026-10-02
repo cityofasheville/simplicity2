@@ -33,7 +33,7 @@ const SearchResults = (props) => {
 						/>
 					))}
 				{formattedResults.length === 0 && (
-					<Alert type="warning">
+					<Alert type="info">
 						No results found. Try a different search term and/or different search type selections.
 					</Alert>
 				)}

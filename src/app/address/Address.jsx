@@ -57,6 +57,7 @@ const GET_ADDRESSES = gql`
 			street_type
 			city
 			neighborhood
+			neighborhood_id
 			owner_cityname
 			owner_state
 			owner_zipcode
@@ -198,6 +199,7 @@ const Address = (props) => (
 				return <div>{entity}</div>;
 			};
 
+			console.log(data);
 			const addressData = data.addresses[0];
 			if (!addressData) {
 				return <Alert type="info">No results found</Alert>;
@@ -318,7 +320,21 @@ const Address = (props) => (
 								<DetailsFormGroup
 									label={content.neighborhood}
 									name="neighborhood"
-									value={addressData.neighborhood === null ? content.no_neighborhood_name : addressData.neighborhood}
+									value={
+										addressData.neighborhood === null ? (
+											content.no_neighborhood_name
+										) : addressData.neighborhood_id === null ? (
+											addressData.neighborhood
+										) : (
+											<Link
+												to={`/neighborhood?id=${encodeURIComponent(addressData.neighborhood_id)}&fromAddress=${
+													props.location.query.id
+												}&search=${props.location.query.search}&entities=${props.location.query.entities}`}
+											>
+												{addressData.neighborhood}
+											</Link>
+										)
+									}
 									hasLabel
 									icon={<Icon ariaHidden={true} path={IM_USERS} size={20} />}
 								/>

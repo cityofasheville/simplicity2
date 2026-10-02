@@ -87,7 +87,10 @@ class Main extends React.Component {
                     During this time, the SimpliCity address search may not function as expected.
                   </p>
                 </Banner> */}
-								<ErrorBoundary>{this.props.children}</ErrorBoundary>
+
+								<ErrorBoundary key={`${this.props.location.pathname}${this.props.location.search || ""}`}>
+									{this.props.children}
+								</ErrorBoundary>
 							</div>
 						</main>
 

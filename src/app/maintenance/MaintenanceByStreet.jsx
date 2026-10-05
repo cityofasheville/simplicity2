@@ -211,49 +211,53 @@ const MaintenanceByStreet = (props) => {
 				<EmailDownload downloadData={props.data.streets} fileName="maintenance_by_street.csv" />
 			</ViewToolbar>
 			<div className="my-4" id="view-container">
-				<div
-					id="listView"
-					className={`${props.location.query.view !== "list" ? "hidden" : "flex"} mt-3 w-full overflow-x-auto`}
-				>
-					<Table
-						caption="Street maintenance responsibility"
-						data={props.data.streets}
-						columns={maintenanceTableColumns}
-						showPagination={true}
-						className="w-full items-center"
-						navRender={navRender}
-						filterRender={filterRender}
-						filterOptions={[
-							{ accessor: "offense_long_description" },
-							{ accessor: "address" },
-							{ accessor: "case_number" },
-							{ accessor: "date_occurred" },
-							{ accessor: "geo_beat" },
-						]}
-					/>
-				</div>
-
-				<div id="mapView" hidden={props.location.query.view === "list"}>
-					{props.data.streets.length === 0 || props.location.query.view === "list" ? (
-						<Alert type="info">No results found</Alert>
-					) : (
-						<div>
-							<div className="w-full h-[600px] flex">
-								<Map
-									legend={createMaintenanceLegend(formatMaintenanceData(props.data.streets))}
-									maintenanceData={formatMaintenanceData(props.data.streets)}
-									drawMaintenance
-									bounds={
-										(props.location.query.bounds !== undefined) & (props.location.query.bounds !== "")
-											? JSON.parse(props.location.query.bounds)
-											: getBoundsFromStreetData(props.data.streets)
-									}
-								/>
-							</div>
-							<MapLegend type="maintenance" openState={true} />
+				{props.data.streets.length === 0 ? (
+					<Alert type="info">No results found</Alert>
+				) : (
+					<>
+						<div
+							id="listView"
+							className={`${props.location.query.view !== "list" ? "hidden" : "flex"} mt-3 w-full overflow-x-auto`}
+						>
+							<Table
+								caption="Street maintenance responsibility"
+								data={props.data.streets}
+								columns={maintenanceTableColumns}
+								showPagination={true}
+								className="w-full items-center"
+								navRender={navRender}
+								filterRender={filterRender}
+								filterOptions={[
+									{ accessor: "offense_long_description" },
+									{ accessor: "address" },
+									{ accessor: "case_number" },
+									{ accessor: "date_occurred" },
+									{ accessor: "geo_beat" },
+								]}
+							/>
 						</div>
-					)}
-				</div>
+
+						<div id="mapView" hidden={props.location.query.view === "list"}>
+							{props.location.query.view !== "list" && (
+								<div>
+									<div className="w-full h-[600px] flex">
+										<Map
+											legend={createMaintenanceLegend(formatMaintenanceData(props.data.streets))}
+											maintenanceData={formatMaintenanceData(props.data.streets)}
+											drawMaintenance
+											bounds={
+												(props.location.query.bounds !== undefined) & (props.location.query.bounds !== "")
+													? JSON.parse(props.location.query.bounds)
+													: getBoundsFromStreetData(props.data.streets)
+											}
+										/>
+									</div>
+									<MapLegend type="maintenance" openState={true} />
+								</div>
+							)}
+						</div>
+					</>
+				)}
 			</div>
 		</div>
 	);

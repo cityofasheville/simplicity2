@@ -145,45 +145,49 @@ const DevelopmentByAddress = (props) => {
 			</div> */}
 
 			<div id="view-container">
-				<div
-					id="listView"
-					className={`${props.location.query.view === "list" ? "flex" : "hidden"} w-full overflow-x-auto`}
-				>
-					<DevelopmentTable data={props.data.permits_by_address} location={props.location} />
-				</div>
-
-				<div id="mapView" className={`${props.location.query.view === "map" ? "flex" : "hidden"}`}>
-					{props.data.permits_by_address.length === 0 || props.location.query.view !== "map" ? (
-						<Alert type="info">No results found</Alert>
-					) : (
-						<div className="w-full">
-							<div className="w-full h-[600px] flex">
-								<Map
-									data={mapData}
-									showCenter
-									legend={createLegend(props.data.permits_by_address)}
-									center={
-										props.location.query.y !== ""
-											? [parseFloat(props.location.query.y), parseFloat(props.location.query.x)]
-											: null
-									}
-									centerLabel={props.location.query.label}
-									drawCircle
-									radius={props.radius ? parseInt(props.radius, 10) / 3 : 215}
-									within={props.radius ? parseInt(props.radius, 10) : 660}
-									zoom={parseInt(props.radius, 10) > 2640 ? 14 : parseInt(props.radius, 10) > 1320 ? 15 : 16}
-									// within={(props.location.query.within === undefined || props.location.query.within === '') ? 660 : parseInt(props.location.query.within, 10)}
-									zoomToPoint={
-										props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== ""
-											? props.location.query.zoomToPoint
-											: null
-									}
-								/>
-							</div>
-							<MapLegend type="development" />
+				{props.data.permits_by_address.length === 0 ? (
+					<Alert type="info">No results found</Alert>
+				) : (
+					<>
+						<div
+							id="listView"
+							className={`${props.location.query.view === "list" ? "flex" : "hidden"} w-full overflow-x-auto`}
+						>
+							<DevelopmentTable data={props.data.permits_by_address} location={props.location} />
 						</div>
-					)}
-				</div>
+
+						<div id="mapView" className={`${props.location.query.view === "map" ? "flex" : "hidden"}`}>
+							{props.location.query.view === "map" && (
+								<div className="w-full">
+									<div className="w-full h-[600px] flex">
+										<Map
+											data={mapData}
+											showCenter
+											legend={createLegend(props.data.permits_by_address)}
+											center={
+												props.location.query.y !== ""
+													? [parseFloat(props.location.query.y), parseFloat(props.location.query.x)]
+													: null
+											}
+											centerLabel={props.location.query.label}
+											drawCircle
+											radius={props.radius ? parseInt(props.radius, 10) / 3 : 215}
+											within={props.radius ? parseInt(props.radius, 10) : 660}
+											zoom={parseInt(props.radius, 10) > 2640 ? 14 : parseInt(props.radius, 10) > 1320 ? 15 : 16}
+											// within={(props.location.query.within === undefined || props.location.query.within === '') ? 660 : parseInt(props.location.query.within, 10)}
+											zoomToPoint={
+												props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== ""
+													? props.location.query.zoomToPoint
+													: null
+											}
+										/>
+									</div>
+									<MapLegend type="development" />
+								</div>
+							)}
+						</div>
+					</>
+				)}
 			</div>
 		</div>
 	);

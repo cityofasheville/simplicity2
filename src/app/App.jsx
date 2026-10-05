@@ -19,7 +19,7 @@ import Disclaimer from "./Disclaimer";
 // Everything not listed here (after, before, within, view, x, y, during, ...) is in-page
 // state — TimeSlider rewrites after/before on every brush, and keying on those would
 // remount the tree and reset the slider mid-interaction.
-const BOUNDARY_IDENTITY_PARAMS = ["entity", "id", "search"];
+const BOUNDARY_IDENTITY_PARAMS = ["entity", "id", "search", "show"];
 
 const getBoundaryKey = (location) => {
 	const query = location.query || {};
@@ -101,9 +101,7 @@ class Main extends React.Component {
                   </p>
                 </Banner> */}
 
-								<ErrorBoundary key={getBoundaryKey(this.props.location)}>
-									{this.props.children}
-								</ErrorBoundary>
+								<ErrorBoundary key={getBoundaryKey(this.props.location)}>{this.props.children}</ErrorBoundary>
 							</div>
 						</main>
 

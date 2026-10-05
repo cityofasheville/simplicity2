@@ -34,10 +34,24 @@
 }
 
 .closeLegend:hover {
-  color: #237cc9  !important;
+  color: #237cc9 !important;
 }
 
 .noPointer {
   cursor: -webkit-grab;
-	cursor: -moz-grab;
+  cursor: -moz-grab;
+}
+
+.leaflet-tooltip.polygon-label {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  font-weight: bold;
+  color: #1a1a1a;
+  text-shadow: 0 0 3px #fff, 0 0 3px #fff;
+  pointer-events: none;
+}
+
+.leaflet-tooltip.polygon-label::before {
+  display: none;
 }

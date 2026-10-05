@@ -95,48 +95,48 @@ const PropertiesByNeighborhood = (props) => {
 				<EmailDownload downloadData={props.data.properties_by_neighborhood} fileName="properties_by_neighborhood.csv" />
 			</ViewToolbar>
 			<section className="my-4" id="view-container">
-				<div
-					id="listView"
-					className={`${props.location.query.view !== "list" ? "hidden" : "flex"} w-full overflow-x-auto`}
-				>
-					{props.data.properties_by_neighborhood.length < 1 ? (
-						<Alert type="info">No results found</Alert>
-					) : (
-						<div className="mt-3">
-							<Table
-								caption="Properties in this neighborhood"
-								navRender={navRender}
-								// data={props.data.properties_by_neighborhood}
-								data={filteredData}
-								filterRender={filterRender}
-								columns={propertyTableColumns}
-								defaultPageSize={props.data.length}
-								showPagination={true}
-								className="w-full items-center"
-								filterOptions={[
-									{ accessor: "property_civic_address_id" },
-									{ accessor: "address" },
-									{ accessor: "pinnum" },
-								]}
-							/>
+				{props.data.properties_by_neighborhood.length === 0 ? (
+					<Alert type="info">No results found</Alert>
+				) : (
+					<>
+						<div
+							id="listView"
+							className={`${props.location.query.view !== "list" ? "hidden" : "flex"} w-full overflow-x-auto`}
+						>
+							<div className="mt-3">
+								<Table
+									caption="Properties in this neighborhood"
+									navRender={navRender}
+									// data={props.data.properties_by_neighborhood}
+									data={filteredData}
+									filterRender={filterRender}
+									columns={propertyTableColumns}
+									defaultPageSize={props.data.length}
+									showPagination={true}
+									className="w-full items-center"
+									filterOptions={[
+										{ accessor: "property_civic_address_id" },
+										{ accessor: "address" },
+										{ accessor: "pinnum" },
+									]}
+								/>
+							</div>
 						</div>
-					)}
-				</div>
 
-				<div id="mapView" className={`${props.location.query.view === "map" ? "flex" : "hidden"}`}>
-					{props.data.properties_by_neighborhood.length === 0 || props.location.query.view === "list" ? (
-						<Alert type="info">No results found</Alert>
-					) : (
-						<div className="w-full h-[600px] flex">
-							<Map
-								bounds={getBoundsFromPolygonData([props.data.neighborhoods[0].polygon])}
-								drawPolygon
-								// polygonData={combinePolygonsFromPropertyList(props.data.properties_by_neighborhood)}
-								polygonData={combinePolygonsFromPropertyList(filteredData)}
-							/>
+						<div id="mapView" className={`${props.location.query.view === "map" ? "flex" : "hidden"}`}>
+							{props.location.query.view !== "list" && (
+								<div className="w-full h-[600px] flex">
+									<Map
+										bounds={getBoundsFromPolygonData([props.data.neighborhoods[0].polygon])}
+										drawPolygon
+										// polygonData={combinePolygonsFromPropertyList(props.data.properties_by_neighborhood)}
+										polygonData={combinePolygonsFromPropertyList(filteredData)}
+									/>
+								</div>
+							)}
 						</div>
-					)}
-				</div>
+					</>
+				)}
 			</section>
 		</div>
 	);

@@ -93,10 +93,6 @@ function SuggestSearchWrapper({ searchMode = "main", autoFocusInput = true, debo
 
 						const formattedResults = formatSearchResults(data.search);
 
-						if (formattedResults.length === 0) {
-							return <Alert type="info">No results found</Alert>;
-						}
-
 						return (
 							<div id="search-results" className="row">
 								<div className="col-sm-12">
@@ -110,7 +106,7 @@ function SuggestSearchWrapper({ searchMode = "main", autoFocusInput = true, debo
 											/>
 										))}
 									{formattedResults.length === 0 && (
-										<Alert type="warning">
+										<Alert type="info">
 											No results were found for "{userQuery}". Try a different search term and/or different search type
 											selections.
 										</Alert>

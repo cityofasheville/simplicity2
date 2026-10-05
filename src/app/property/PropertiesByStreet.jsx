@@ -126,50 +126,50 @@ const PropertiesByStreet = (props) => {
 				<EmailDownload downloadData={props.data.properties_by_street} fileName="properties_by_street.csv" />
 			</ViewToolbar>
 			<div className="my-4" id="view-container">
-				<div
-					id="listView"
-					className={`${props.location.query.view !== "list" ? "hidden" : "flex"} w-full overflow-x-auto`}
-				>
-					{props.data.properties_by_street.length < 1 ? (
-						<Alert type="info">No results found</Alert>
-					) : (
-						<div alt={["Table of addresses"].join(" ")} className="mt-2">
-							<Table
-								caption="Properties on this street"
-								navRender={navRender}
-								data={filteredData}
-								// data={props.data.properties_by_street}
-								filterRender={filterRender}
-								columns={propertyTableColumns}
-								defaultPageSize={props.data.length}
-								showPagination={true}
-								className="w-full items-center"
-								filterOptions={[
-									{ accessor: "property_civic_address_id" },
-									{ accessor: "address" },
-									{ accessor: "pinnum" },
-								]}
-							/>
+				{props.data.properties_by_street.length === 0 ? (
+					<Alert type="info">No results found</Alert>
+				) : (
+					<>
+						<div
+							id="listView"
+							className={`${props.location.query.view !== "list" ? "hidden" : "flex"} w-full overflow-x-auto`}
+						>
+							<div alt={["Table of addresses"].join(" ")} className="mt-2">
+								<Table
+									caption="Properties on this street"
+									navRender={navRender}
+									data={filteredData}
+									// data={props.data.properties_by_street}
+									filterRender={filterRender}
+									columns={propertyTableColumns}
+									defaultPageSize={props.data.length}
+									showPagination={true}
+									className="w-full items-center"
+									filterOptions={[
+										{ accessor: "property_civic_address_id" },
+										{ accessor: "address" },
+										{ accessor: "pinnum" },
+									]}
+								/>
+							</div>
 						</div>
-					)}
-				</div>
 
-				<div id="mapView" className={`${props.location.query.view === "map" ? "flex" : "hidden"}`}>
-					{props.data.properties_by_street.length === 0 || props.location.query.view === "list" ? (
-						<Alert type="info">No results found</Alert>
-					) : (
-						<div className="w-full h-[600px] flex">
-							<Map
-								bounds={getBoundsFromStreetData(props.data.streets)}
-								drawStreet
-								streetData={convertStreetLinesToLatLngArrays(props.data.streets)}
-								drawPolygon
-								// polygonData={combinePolygonsFromPropertyList(props.data.properties_by_street)}
-								polygonData={combinePolygonsFromPropertyList(filteredData)}
-							/>
+						<div id="mapView" className={`${props.location.query.view === "map" ? "flex" : "hidden"}`}>
+							{props.location.query.view !== "list" && (
+								<div className="w-full h-[600px] flex">
+									<Map
+										bounds={getBoundsFromStreetData(props.data.streets)}
+										drawStreet
+										streetData={convertStreetLinesToLatLngArrays(props.data.streets)}
+										drawPolygon
+										// polygonData={combinePolygonsFromPropertyList(props.data.properties_by_street)}
+										polygonData={combinePolygonsFromPropertyList(filteredData)}
+									/>
+								</div>
+							)}
 						</div>
-					)}
-				</div>
+					</>
+				)}
 			</div>
 		</div>
 	);

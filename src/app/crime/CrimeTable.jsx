@@ -151,28 +151,24 @@ const CrimeTable = (props) => {
 	return (
 		<div>
 			<div className="col-sm-12">
-				{props.data.length < 1 ? (
-					<Alert type="info">{content.no_results_found}</Alert>
-				) : (
-					<div className="mt-3">
-						<Table
-							caption="Crime reports"
-							data={props.data}
-							columns={crimeTableColumns}
-							showPagination={true}
-							className="w-full items-center"
-							navRender={navRender}
-							filterRender={filterRender}
-							filterOptions={[
-								{ accessor: "offense_long_description" },
-								{ accessor: "address" },
-								{ accessor: "case_number" },
-								{ accessor: "date_occurred" },
-								{ accessor: "geo_beat" },
-							]}
-						/>
-					</div>
-				)}
+				<div className="mt-3">
+					<Table
+						caption="Crime reports"
+						data={props.data}
+						columns={crimeTableColumns}
+						showPagination={true}
+						className="w-full items-center"
+						navRender={navRender}
+						filterRender={filterRender}
+						filterOptions={[
+							{ accessor: "offense_long_description" },
+							{ accessor: "address" },
+							{ accessor: "case_number" },
+							{ accessor: "date_occurred" },
+							{ accessor: "geo_beat" },
+						]}
+					/>
+				</div>
 			</div>
 		</div>
 	);

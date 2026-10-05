@@ -1697,6 +1697,10 @@ details[open] summary span.bi {
   margin-bottom: calc(1rem * var(--tw-space-y-reverse));
 }
 
+.justify-self-start {
+  justify-self: start;
+}
+
 .justify-self-end {
   justify-self: end;
 }

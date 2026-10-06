@@ -17,6 +17,7 @@ import { withLanguage } from "../../utilities/lang/LanguageContext";
 import MapLegend from "../../shared/MapLegend";
 import GetCrimeMarker from "./GetCrimeMarker";
 import Alert from "../../alert";
+import { getCenter, getBoundsFromPoints } from "../../utilities/mapUtilities";
 
 const createLegend = (crimeData) => {
 	const crimeTypes = [];
@@ -154,6 +155,8 @@ function CrimesByAddress(props) {
 					});
 				});
 
+				const center = getCenter(props.location.query);
+
 				return (
 					<div>
 						<ViewToolbar location={props.location} mapLabel={content.map_view} listLabel={content.list_view}>
@@ -184,16 +187,19 @@ function CrimesByAddress(props) {
 									<div id="mapView" className={`${props.location.query.view === "map" ? "flex" : "hidden"}`}>
 										{props.location.query.view === "map" && (
 											<div className="w-full">
+												{!center && (
+													<Alert type="warning">
+														The location of this address is unavailable, so the search area is not highlighted. The map
+														is zoomed to show the results found.
+													</Alert>
+												)}
 												<div className=" h-[600px] flex flex-col">
 													<Map
 														data={mapData}
 														showCenter
 														legend={createLegend(data.crimes_by_address)}
-														center={
-															props.location.query.x !== ""
-																? [parseFloat(props.location.query.y), parseFloat(props.location.query.x)]
-																: null
-														}
+														center={center}
+														bounds={center ? undefined : getBoundsFromPoints(mapData)}
 														centerLabel={props.location.query.label}
 														drawCircle
 														radius={

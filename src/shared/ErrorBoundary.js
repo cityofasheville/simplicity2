@@ -12,6 +12,16 @@ class ErrorBoundary extends React.Component {
 		return { hasError: true };
 	}
 
+	componentDidUpdate(prevProps) {
+		// When the fallback is showing, let a change in resetKeys (e.g. a new date
+		// range or id) clear the error and retry the children — without remounting
+		// the subtree on every unrelated render the way a changing `key` would.
+		// resetKeys are expected to be primitives, so a stringify compare is enough.
+		if (this.state.hasError && JSON.stringify(prevProps.resetKeys) !== JSON.stringify(this.props.resetKeys)) {
+			this.setState({ hasError: false });
+		}
+	}
+
 	componentDidCatch(error, info) {
 		// You can also log the error to an error reporting service
 		console.log(error, info);

@@ -29,7 +29,11 @@ class TRCDataTable extends React.Component {
 					xSpan={2}
 					tickMeasure="month"
 				/>
-				<ErrorBoundary key={`${this.state.timeSpan[0]}-${this.state.timeSpan[1]}`}>
+				{/* resetKeys: if a query for one date range errors, picking a new
+					range clears the boundary and retries, without remounting the table on
+					every brush. The TimeSlider lives outside this boundary, so it is never
+					affected either way. */}
+				<ErrorBoundary resetKeys={[this.state.timeSpan[0], this.state.timeSpan[1]]}>
 					<PermitsTableWrapper
 						after={this.state.timeSpan[0]}
 						before={this.state.timeSpan[1]}

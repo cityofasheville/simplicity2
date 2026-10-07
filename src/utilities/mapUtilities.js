@@ -47,6 +47,13 @@ const getMaintenanceInfo = (entity, comma) => {
 	);
 };
 
+// Returns undefined (not null) so Map's default center applies.
+export const getCenter = (query) => {
+	const x = parseFloat(query.x);
+	const y = parseFloat(query.y);
+	return Number.isFinite(x) && Number.isFinite(y) ? [y, x] : undefined;
+};
+
 export const getBounds = (data) => {
 	let xMinIndex = 0;
 	let yMinIndex = 0;
@@ -86,6 +93,14 @@ const getAllStreetPoints = (streetData) => {
 };
 
 export const getBoundsFromStreetData = (data) => getBounds(getAllStreetPoints(data));
+
+// Bounds of the points that have usable coordinates; null if none do.
+export const getBoundsFromPoints = (data) =>
+	getBounds(
+		data
+			.filter((pt) => pt.x != null && pt.y != null && Number.isFinite(+pt.x) && Number.isFinite(+pt.y))
+			.map((pt) => ({ x: +pt.x, y: +pt.y }))
+	);
 
 export const convertStreetLinesToLatLngArrays = (streetData) => {
 	const lines = [];

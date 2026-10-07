@@ -82,6 +82,7 @@ const pickStyle = (polyValue, defaultValue) => (polyValue === undefined ? defaul
 const Map = (props) => {
 	const markers = [];
 	for (let pt of props.data) {
+		if (pt.x == null || pt.y == null || !Number.isFinite(+pt.x) || !Number.isFinite(+pt.y)) continue;
 		markers.push({
 			position: [pt.y, pt.x],
 			popup: pt.popup || null,
@@ -113,9 +114,9 @@ const Map = (props) => {
 					attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 				/>
 
-				{props.drawCircle && <Circle center={props.center} radius={props.radius} fillOpacity={0.22} />}
+				{props.drawCircle && props.center && <Circle center={props.center} radius={props.radius} fillOpacity={0.22} />}
 				{shouldZoomToNonCenter && <Circle center={zoomTo} radius={15} fillOpacity={0.15} color="red" />}
-				{props.showCenter && (
+				{props.showCenter && props.center && (
 					<Marker
 						position={props.center}
 						icon={L.icon({

@@ -311,9 +311,9 @@ const Climate = (props) => {
 							<p>
 								This heat vulnerability index (HVI) shows which parts of Asheville are most vulnerable to extreme heat.
 								HVI takes into account land surface temperature, surface reflectivity (albedo), how water moves from
-								surface to atmosphere (evapotranspiration) (), tree canopy cover, and social vulnerability. Data for
-								this metric comes from the NASA Develop 2024 Heat Vulnerability Index and the U.S. Forest Service Tree
-								Canopy Coverage dataset.{" "}
+								surface to atmosphere (evapotranspiration), tree canopy cover, and social vulnerability. Data for this
+								metric comes from the NASA Develop 2024 Heat Vulnerability Index and the U.S. Forest Service Tree Canopy
+								Coverage dataset.{" "}
 								<a href="https://www.ashevillenc.gov/department/recovery-resilience/climate-initiatives/elevate-avl/climate-action-toolkit/extreme-temperature-hot-or-cold/">
 									Learn more about extreme temperature risk.
 								</a>

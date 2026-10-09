@@ -237,17 +237,18 @@ const Climate = (props) => {
 				also by health, demographic, infrastructure, and historical factors. To better understand how events impact
 				neighborhoods differently, this map displays Asheville's climate risks alongside factors that intensify impact
 				and influence a community's ability to bounce back after disruption. A "Community Climate Vulnerability" score
-				can be generated for any location within City limits utilizing data factors outlined below. We invite you to
-				interact with this map to learn more about neighborhood vulnerability. Access to data about our city can help
-				prioritize sustainability factors as we plan and prepare. Knowing what risks and vulnerabilities we're facing
-				will help us tailor resources and actions to serve our whole community and strengthen our individual, household
-				and neighborhood resilience. Together We Thrive!
+				can be generated for any location within City limits using data factors outlined below.
+			</p>
+			<p className="my-4">
+				We invite you to interact with this map to learn more about neighborhood vulnerability, which can help to plan
+				and prepare. Knowing what risks and vulnerabilities we're facing helps us tailor resources and actions to serve
+				our whole community and strengthen our individual, household and neighborhood resilience. Together We Thrive!
 			</p>
 			<p>
 				The Community Climate Vulnerability Score represents the overall vulnerability of each Census Block Group based
-				on the subcomponents listed below. Lower scores typically represent block groups with low climate hazard risk,
-				low heat vulnerability, high tree canopy cover, and a low score in the Social Vulnerability Index. Scores range
-				from 1-15, with 1 representing lowest vulnerability and 15 representing highest vulnerability.
+				on the factors listed below. Lower scores typically represent block groups with low climate hazard risk, low
+				heat vulnerability, high tree canopy cover, and a low score in the Social Vulnerability Index. Scores range from
+				1-15, with 1 representing lowest vulnerability and 15 representing highest vulnerability.
 			</p>
 
 			<div>
@@ -308,11 +309,12 @@ const Climate = (props) => {
 						<div className=" px-4 py-5 gap-4">
 							<h4 className="text-2xl text-coa-blue-medium mb-2">Heat Vulnerability Score: {heatScore} out of 5</h4>
 							<p>
-								This heat vulnerability index shows which parts of Asheville are vulnerable to extreme heat, taking into
-								account land surface temperature, albedo, evapotranspiration, tree canopy cover, and social
-								vulnerability. Data for this metric comes from the NASA Develop 2024 Heat Vulnerability Index and the
-								U.S. Forest Service Tree Canopy Coverage dataset.{" "}
-								<a href="ashevillenc.gov/department/sustainability/climate-initiatives/elevate-avl/extreme-temperature-hot-or-cold/">
+								This heat vulnerability index (HVI) shows which parts of Asheville are most vulnerable to extreme heat.
+								HVI takes into account land surface temperature, surface reflectivity (albedo), how water moves from
+								surface to atmosphere (evapotranspiration) (), tree canopy cover, and social vulnerability. Data for
+								this metric comes from the NASA Develop 2024 Heat Vulnerability Index and the U.S. Forest Service Tree
+								Canopy Coverage dataset.{" "}
+								<a href="https://www.ashevillenc.gov/department/recovery-resilience/climate-initiatives/elevate-avl/climate-action-toolkit/extreme-temperature-hot-or-cold/">
 									Learn more about extreme temperature risk.
 								</a>
 							</p>
@@ -355,16 +357,15 @@ const Climate = (props) => {
 			<aside id="Climate Data" className="p-4 border border-gray-200 rounded bg-gray-100 my-10">
 				<h3 className="text-3xl text-coa-blue-medium my-5">Climate Vulnerability Resources</h3>
 				<p className="my-5">
-					Our neighborhood, household, and personal risk is defined not only by weather and climate events, but also by
-					health, age, community and historical factors. To better understand how climate events affect different
-					Asheville communities differently, the &nbsp;
+					Our neighborhood, household, and personal risk is defined not only by extreme weather, but also by health,
+					age, community and historical factors. To better understand how climate events affect different Asheville
+					communities, the{" "}
 					<a href="https://avl.maps.arcgis.com/apps/instant/lookup/index.html?appid=10e2c4ae45614b92ad4efaa61342b249%2F">
-						Citywide Climate Vulnerability Index Map
-					</a>
-					&nbsp; visualizes the climate risks outlined above alongside additional factors that can intensify impact and
-					influence a community's ability to bounce back after disruption. Details about how these Climate Vulnerability
-					factors show up in your census block group are scored and outlined below. Here are additional resources to
-					better understand Climate Vulnerability and Resilience in our community.
+						Community Climate Vulnerability Map
+					</a>{" "}
+					visualizes the climate risks outlined above alongside additional factors that can intensify impact and
+					influence a community's ability to bounce back after disruption. Here are additional resources to better
+					understand Climate Vulnerability and Resilience in our community.
 				</p>
 
 				<div className="grid grid-cols-1 sm:grid-cols-3 gap-4">

@@ -1080,6 +1080,10 @@ details[open] summary span.bi {
   margin: 2px;
 }
 
+.m-auto {
+  margin: auto;
+}
+
 .mx-2 {
   margin-left: 0.5rem;
   margin-right: 0.5rem;

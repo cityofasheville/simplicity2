@@ -1,4 +1,9 @@
 function RiskOverview({ title, icon, overview, actions, riskLevel, externalLink }) {
+	const anchorId = title
+		.toLowerCase()
+		.replace(/[^a-z0-9]+/g, "-")
+		.replace(/^-+|-+$/g, "");
+
 	let indicatorColor;
 	if (riskLevel === "high") {
 		indicatorColor = "#bd2304";
@@ -8,7 +13,7 @@ function RiskOverview({ title, icon, overview, actions, riskLevel, externalLink 
 		indicatorColor = "#4077a5";
 	}
 	return (
-		<div className="flex h-full mb-8">
+		<section id={anchorId} className="flex h-full mb-8 shadow">
 			<div className="flex align-middle border rounded">
 				<div className="min-h-full pl-1 rounded-l" style={{ backgroundColor: indicatorColor }}></div>
 				<div className="flex items-center">
@@ -35,7 +40,7 @@ function RiskOverview({ title, icon, overview, actions, riskLevel, externalLink 
 					</div>
 				</div>
 			</div>
-		</div>
+		</section>
 	);
 }
 

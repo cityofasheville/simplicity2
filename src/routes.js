@@ -101,6 +101,7 @@ if (window.location.href.indexOf("dashboards.ashevillenc.gov") > -1) {
 export const ApiEnvironmentContext = React.createContext();
 
 let SERVER_URL = "https://data-api1.ashevillenc.gov/graphql";
+
 if (process.env.REACT_APP_USE_DEV_API === true || process.env.REACT_APP_USE_DEV_API === "true") {
 	SERVER_URL = "https://dev-data-api2.ashevillenc.gov/graphql";
 }

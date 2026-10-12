@@ -204,6 +204,7 @@ const Address = (props) => (
 			if (!addressData) {
 				return <Alert type="info">No results found</Alert>;
 			}
+
 			const mapData = [
 				Object.assign(
 					{},
@@ -339,12 +340,12 @@ const Address = (props) => (
 									icon={<Icon ariaHidden={true} path={IM_USERS} size={20} />}
 								/>
 							)}
-							{/* <DetailsFormGroup
+							<DetailsFormGroup
 								label={content.climate}
 								name="blockgroups"
 								value={
-									addressData.blockgroups === null ? (
-										content.no_climate
+									addressData.block_group === null ? (
+										"No information available"
 									) : (
 										<div>
 											This address is in:
@@ -361,7 +362,7 @@ const Address = (props) => (
 								}
 								hasLabel
 								icon={<Icon ariaHidden={true} path={IM_USERS} size={20} />}
-							/> */}
+							/>
 							<DetailsFormGroup
 								label={content.owner}
 								name="owner"

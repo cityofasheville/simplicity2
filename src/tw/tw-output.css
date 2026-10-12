@@ -1080,6 +1080,10 @@ details[open] summary span.bi {
   margin: 2px;
 }
 
+.m-auto {
+  margin: auto;
+}
+
 .mx-2 {
   margin-left: 0.5rem;
   margin-right: 0.5rem;
@@ -1145,6 +1149,10 @@ details[open] summary span.bi {
   margin-bottom: auto;
 }
 
+.mb-0 {
+  margin-bottom: 0px;
+}
+
 .mb-1 {
   margin-bottom: 0.25rem;
 }
@@ -1183,10 +1191,6 @@ details[open] summary span.bi {
 
 .ml-10 {
   margin-left: 2.5rem;
-}
-
-.ml-12 {
-  margin-left: 3rem;
 }
 
 .ml-2 {
@@ -1267,10 +1271,6 @@ details[open] summary span.bi {
 
 .mt-6 {
   margin-top: 1.5rem;
-}
-
-.mt-7 {
-  margin-top: 1.75rem;
 }
 
 .mt-8 {
@@ -1744,6 +1744,10 @@ details[open] summary span.bi {
 
 .text-nowrap {
   text-wrap: nowrap;
+}
+
+.text-pretty {
+  text-wrap: pretty;
 }
 
 .break-words {
@@ -2296,6 +2300,10 @@ details[open] summary span.bi {
   color: rgb(55 65 81 / var(--tw-text-opacity, 1));
 }
 
+.text-inherit {
+  color: inherit;
+}
+
 .text-primary {
   --tw-text-opacity: 1;
   color: rgb(64 119 165 / var(--tw-text-opacity, 1));
@@ -2507,6 +2515,12 @@ dialog::backdrop {
           text-decoration-line: none;
 }
 
+.hover\:shadow-md:hover {
+  --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
 .focus\:left-0:focus {
   left: 0px;
 }
@@ -2635,8 +2649,8 @@ dialog::backdrop {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .sm\:grid-cols-4 {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+  .sm\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .sm\:flex-row {

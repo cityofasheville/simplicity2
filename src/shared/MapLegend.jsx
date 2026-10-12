@@ -1,37 +1,34 @@
-import { group } from "d3-array";
-import React, { useState } from "react";
-
 const crimeMarkerMap = {
-	User: ["RUNAWAY JUVENILE"],
-	Hammer: ["DAMAGE TO PERSONAL PROPERTY", "VANDALISM"],
-	Ambulance: ["ASSAULT - SIMPLE", "ASSAULT ON FEMALE", "ASSAULT W/DEADLY WEAPON"],
-	Bubble: ["COMMUNICATING THREAT"],
-	Library2: ["INTIMIDATING STATE WITNESS", "PERJURY", "OBSTRUCTION OF JUSTICE"],
-	Profile: ["FRAUD", "FRAUD-CREDIT CARD", "FALSE PRETENSE - OBTAIN PROPERTY BY", "IMPERSONATE"],
-	Gun: ["CARRYING CONCEALED WEAPON"],
+	User: ["Runaway Juvenile"],
+	Hammer: ["Damage to Personal Property", "Vandalism"],
+	Ambulance: ["Assault - Simple", "Assault on Female", "Assault W/Deadly Weapon"],
+	Bubble: ["Communicating Threat"],
+	Library2: ["Intimidating State Witness", "Perjury", "Obstruction of Justice"],
+	Profile: ["Fraud", "Fraud-Credit Card", "False Pretense - Obtain Property By", "Impersonate"],
+	Gun: ["Carrying Concealed Weapon"],
 	Shield3: [
-		"RESIST, DELAY, OBSTRUCT OFFICER",
-		"CIT INCIDENT",
-		"DV ASSISTANCE OTHER",
-		"VICTIM ASSISTANCE OTHER",
-		"ASSAULT ON GOVERNMENT OFFICIAL",
+		"Resist, Delay, Obstruct Officer",
+		"CIT Incident",
+		"DV Assistance Other",
+		"Victim Assistance Other",
+		"Assault on Government Official",
 	],
-	Car: ["DWI", "UNAUTHORIZED USE OF MOTOR VEHICLE", "LARCENY OF MV OTHER", "LARCENY OF MV AUTO", "LARCENY OF MV TRUCK"],
-	Fence: ["TRESPASS"],
-	Pencil7: ["INFORMATION ONLY"],
+	Car: ["DWI", "Unauthorized Use of Motor Vehicle", "Larceny of MV Other", "Larceny of MV Auto", "Larceny of MV Truck"],
+	Fence: ["Trespass"],
+	Pencil7: ["Information Only"],
 	AidKit2: [
-		"DRUG PARAPHERNALIA POSSESS",
-		"DRUG OFFENSE - FELONY",
-		"DRUG OFFENSE - MISDEMEANOR",
-		"DRUG PARAPHERNALIA OTHER",
+		"Drug Paraphernalia Possess",
+		"Drug Offense - Felony",
+		"Drug Offense - Misdemeanor",
+		"Drug Paraphernalia Other",
 	],
-	BillDollar: ["COUNTERFEITING-BUYING/RECEIVING"],
+	BillDollar: ["Counterfeiting-Buying/Receiving"],
 	Dollar: [
-		"LARCENY ALL OTHER",
-		"LARCENY FROM BUILDING",
-		"LARCENY FROM MOTOR VEHICLE",
-		"ROBBERY - COMMON LAW",
-		"ROBBERY - ARMED - KNIFE",
+		"Larceny All Other",
+		"Larceny from Building",
+		"Larceny from Motor Vehicle",
+		"Robbery - Common Law",
+		"Robbery - Armed - Knife",
 	],
 	Ellipsis: ["Other"],
 };
@@ -49,55 +46,70 @@ const developmentMarkerMap = {
 	Ellipsis: ["Other"],
 };
 
-const formatList = (items) => {
+const maintenanceMarkerMap = [
+	{ label: "NCDOT", color: "#506aed" },
+	{ label: "City of Asheville", color: "#6fe8cb" },
+	{ label: "Multiple", color: "#DB6D00" },
+	{ label: "No Information Available", color: "#f95eff" },
+];
+
+function formatList(items) {
 	if (items.length === 0) return "";
 	if (items.length === 1) return items[0];
 	if (items.length === 2) return `${items[0]} or ${items[1]}`;
 
-	return `${items.slice(0, -1).join(", ")}, or ${items.at(-1)}`;
-};
+	return `${items.slice(0, -1).join(", ")}, or ${items[items.length - 1]}`;
+}
 
-const getLegendGroups = (type) => {
-	let map;
-	if (type == "crime") {
-		map = crimeMarkerMap;
-	} else {
-		// default to crime map for now
-		map = developmentMarkerMap;
-	}
-	const groups = {};
+function getIconItems(mapData) {
+	return Object.entries(mapData).map(([iconName, types]) => ({
+		key: iconName,
+		label: formatList(types),
+		icon: iconName,
+	}));
+}
 
-	Object.entries(map).forEach(([iconName, types]) => {
-		groups[iconName] = formatList(types);
-	});
+function getColorItems(mapData) {
+	return mapData.map((item) => ({ key: item.label, ...item }));
+}
 
-	return groups;
-};
+function getLegendItems(type) {
+	if (type === "crime") return getIconItems(crimeMarkerMap);
+	if (type === "maintenance") return getColorItems(maintenanceMarkerMap);
+	return getIconItems(developmentMarkerMap);
+}
 
-function MapLegend({ type }) {
-	const legendGroups = getLegendGroups(type);
-	const [isOpen, setIsOpen] = useState(false);
+function MapLegend({ type, openState = false }) {
+	const legendItems = getLegendItems(type);
 
 	return (
-		<div className="bg-coa-blue-medium">
-			<button className="py-2 px-3 w-full h-full" onClick={() => setIsOpen((prev) => !prev)}>
+		<details className="bg-coa-blue-medium" open={openState}>
+			<summary className="list-none flex justify-between py-2 px-5 cursor-pointer">
 				<span className="text-white">Map Legend</span>
-			</button>
-			{isOpen && (
-				<div className="columns-3 gap-6 border-2 border-coa-blue-medium bg-white p-2">
-					{Object.entries(legendGroups).map(([iconName, types]) => (
-						<div key={`legendItem-${iconName}`} className="flex flex-row items-start break-inside-avoid my-1">
+				<span className="bi bi-chevron-down text-white" aria-hidden="true"></span>
+			</summary>
+			<ul className="columns-1 sm:columns-3 lg:columns-4 gap-6 border-x-2 border-b-2 border-coa-blue-medium bg-white">
+				{legendItems.map(({ key, label, icon, color }) => (
+					<li key={`legendItem-${key}`} className="flex flex-row items-start break-inside-avoid py-2 mx-2">
+						{icon ? (
 							<img
-								alt={`${iconName} Icon`}
-								src={iconName === "Other" ? require("../images/Ellipsis.png") : require(`../images/${iconName}.png`)}
-								className=" w-6 align-top mr-2"
+								alt=""
+								aria-hidden="true"
+								src={require(`../images/${icon}.png`)}
+								className="w-6 align-top mr-2 shrink-0"
 							/>
-							<span className="text-sm">{iconName === "Other" ? "Other" : types}</span>
-						</div>
-					))}
-				</div>
-			)}
-		</div>
+						) : (
+							<span
+								aria-hidden="true"
+								className="inline-block rounded-full mr-2 mt-1 shrink-0"
+								style={{ width: "14px", height: "14px", backgroundColor: color, border: "1px solid #666" }}
+							/>
+						)}
+						<span className="text-sm">{label}</span>
+					</li>
+				))}
+			</ul>
+		</details>
 	);
 }
 

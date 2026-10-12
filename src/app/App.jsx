@@ -13,6 +13,19 @@ import { defaultAuthState } from "../utilities/auth/graphql/authDefaultState";
 import LanguageProvider from "../utilities/lang/LanguageContext";
 import Disclaimer from "./Disclaimer";
 
+// Query params that identify *what* is being viewed, as opposed to in-page UI state.
+// Most SimpliCity routes share a pathname and distinguish content by query (/address?id=,
+// /development?entity=&id=), so the pathname alone is not enough to tell pages apart.
+// Everything not listed here (after, before, within, view, x, y, during, ...) is in-page
+// state — TimeSlider rewrites after/before on every brush, and keying on those would
+// remount the tree and reset the slider mid-interaction.
+const BOUNDARY_IDENTITY_PARAMS = ["entity", "id", "search", "show"];
+
+const getBoundaryKey = (location) => {
+	const query = location.query || {};
+	return [location.pathname, ...BOUNDARY_IDENTITY_PARAMS.map((param) => query[param] || "")].join("|");
+};
+
 // const displayNavbar = (hideNavbar) => {
 //   if (hideNavbar || window.location.pathname === '/mini_search') {
 //     return null;
@@ -87,7 +100,8 @@ class Main extends React.Component {
                     During this time, the SimpliCity address search may not function as expected.
                   </p>
                 </Banner> */}
-								<ErrorBoundary>{this.props.children}</ErrorBoundary>
+
+								<ErrorBoundary key={getBoundaryKey(this.props.location)}>{this.props.children}</ErrorBoundary>
 							</div>
 						</main>
 

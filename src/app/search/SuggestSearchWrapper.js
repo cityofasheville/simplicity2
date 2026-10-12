@@ -6,6 +6,7 @@ import LoadingAnimation from "../../shared/LoadingAnimation";
 import { searchQuery, formatSearchResults } from "./searchResults/searchResultsUtils";
 import Alert from "../../alert";
 // import { set } from 'd3-collection';
+import Alert from "../../alert";
 
 const MIN_SPINNER_DURATION = 400;
 
@@ -93,10 +94,6 @@ function SuggestSearchWrapper({ searchMode = "main", autoFocusInput = true, debo
 
 						const formattedResults = formatSearchResults(data.search);
 
-						// if (formattedResults.length > 0) {
-						// 	document.getElementById("searchBox")?.scrollIntoView({ behavior: "smooth" });
-						// }
-
 						return (
 							<div id="search-results" className="row">
 								<div className="col-sm-12">
@@ -110,7 +107,7 @@ function SuggestSearchWrapper({ searchMode = "main", autoFocusInput = true, debo
 											/>
 										))}
 									{formattedResults.length === 0 && (
-										<Alert type="warning">
+										<Alert type="info">
 											No results were found for "{userQuery}". Try a different search term and/or different search type
 											selections.
 										</Alert>

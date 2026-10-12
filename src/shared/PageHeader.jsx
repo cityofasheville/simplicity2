@@ -4,8 +4,6 @@ import { Link } from "react-router";
 
 // change heading levels
 function PageHeader(props) {
-	console.log(props.h4);
-
 	return (
 		<section>
 			{props.image && (

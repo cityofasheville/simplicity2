@@ -16,6 +16,8 @@ import { spanish } from "./spanish";
 import { withLanguage } from "../../utilities/lang/LanguageContext";
 import MapLegend from "../../shared/MapLegend";
 import GetCrimeMarker from "./GetCrimeMarker";
+import Alert from "../../alert";
+import { getCenter, getBoundsFromPoints } from "../../utilities/mapUtilities";
 
 const createLegend = (crimeData) => {
 	const crimeTypes = [];
@@ -153,6 +155,8 @@ function CrimesByAddress(props) {
 					});
 				});
 
+				const center = getCenter(props.location.query);
+
 				return (
 					<div>
 						<ViewToolbar location={props.location} mapLabel={content.map_view} listLabel={content.list_view}>
@@ -169,51 +173,58 @@ function CrimesByAddress(props) {
 							)}
 						</div> */}
 						<div id="view-container">
-							<div
-								id="listView"
-								className={`${props.location.query.view === "list" ? "flex" : "hidden"} w-full overflow-x-auto`}
-							>
-								<CrimeTable data={data.crimes_by_address} location={props.location} />
-							</div>
-
-							<div id="mapView" className={`${props.location.query.view === "map" ? "flex" : "hidden"}`}>
-								{data.crimes_by_address.length === 0 || props.location.query.view !== "map" ? (
-									<div> {content.no_results_found}</div>
-								) : (
-									<div className="w-full">
-										<div className=" h-[600px] flex flex-col">
-											<Map
-												data={mapData}
-												showCenter
-												legend={createLegend(data.crimes_by_address)}
-												center={
-													props.location.query.x !== ""
-														? [parseFloat(props.location.query.y), parseFloat(props.location.query.x)]
-														: null
-												}
-												centerLabel={props.location.query.label}
-												drawCircle
-												radius={
-													props.location.query.within === undefined || props.location.query.within === ""
-														? 215
-														: parseInt(props.location.query.within, 10) / 3
-												}
-												within={
-													props.location.query.within === undefined || props.location.query.within === ""
-														? 660
-														: parseInt(props.location.query.within, 10)
-												}
-												zoomToPoint={
-													props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== ""
-														? props.location.query.zoomToPoint
-														: null
-												}
-											/>{" "}
-										</div>
-										<MapLegend type="crime" />
+							{data.crimes_by_address.length === 0 ? (
+								<Alert type="info">{content.no_results_found}</Alert>
+							) : (
+								<>
+									<div
+										id="listView"
+										className={`${props.location.query.view === "list" ? "flex" : "hidden"} w-full overflow-x-auto`}
+									>
+										<CrimeTable data={data.crimes_by_address} location={props.location} />
 									</div>
-								)}
-							</div>
+
+									<div id="mapView" className={`${props.location.query.view === "map" ? "flex" : "hidden"}`}>
+										{props.location.query.view === "map" && (
+											<div className="w-full">
+												{!center && (
+													<Alert type="warning">
+														The location of this address is unavailable, so the search area is not highlighted. The map
+														is zoomed to show the results found.
+													</Alert>
+												)}
+												<div className=" h-[600px] flex flex-col">
+													<Map
+														data={mapData}
+														showCenter
+														legend={createLegend(data.crimes_by_address)}
+														center={center}
+														bounds={center ? undefined : getBoundsFromPoints(mapData)}
+														centerLabel={props.location.query.label}
+														drawCircle
+														radius={
+															props.location.query.within === undefined || props.location.query.within === ""
+																? 215
+																: parseInt(props.location.query.within, 10) / 3
+														}
+														within={
+															props.location.query.within === undefined || props.location.query.within === ""
+																? 660
+																: parseInt(props.location.query.within, 10)
+														}
+														zoomToPoint={
+															props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== ""
+																? props.location.query.zoomToPoint
+																: null
+														}
+													/>{" "}
+												</div>
+												<MapLegend type="crime" />
+											</div>
+										)}
+									</div>
+								</>
+							)}
 						</div>
 					</div>
 				);

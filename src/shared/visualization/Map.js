@@ -3,7 +3,17 @@ import PropTypes from "prop-types";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
 import L from "leaflet";
-import { Map as LeafletMap, Marker, TileLayer, Popup, Circle, Polyline, Polygon, LayersControl } from "react-leaflet";
+import {
+	Map as LeafletMap,
+	Marker,
+	TileLayer,
+	Popup,
+	Tooltip,
+	Circle,
+	Polyline,
+	Polygon,
+	LayersControl,
+} from "react-leaflet";
 import { GoogleLayer } from "react-leaflet-google";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import MapLegendControl from "./MapLegendControl";
@@ -57,6 +67,9 @@ const markerClusterOptions = {
 	iconCreateFunction: createClusterCustomIcon,
 };
 
+// A polygon's own style value wins over the Map-level default.
+const pickStyle = (polyValue, defaultValue) => (polyValue === undefined ? defaultValue : polyValue);
+
 // We can just pass undefined instead
 // const getBounds = (center, within) => {
 //   const degToAdd = parseInt(within, 10) / 500000;
@@ -69,6 +82,7 @@ const markerClusterOptions = {
 const Map = (props) => {
 	const markers = [];
 	for (let pt of props.data) {
+		if (pt.x == null || pt.y == null || !Number.isFinite(+pt.x) || !Number.isFinite(+pt.y)) continue;
 		markers.push({
 			position: [pt.y, pt.x],
 			popup: pt.popup || null,
@@ -100,9 +114,9 @@ const Map = (props) => {
 					attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 				/>
 
-				{props.drawCircle && <Circle center={props.center} radius={props.radius} fillOpacity={0.22} />}
+				{props.drawCircle && props.center && <Circle center={props.center} radius={props.radius} fillOpacity={0.22} />}
 				{shouldZoomToNonCenter && <Circle center={zoomTo} radius={15} fillOpacity={0.15} color="red" />}
-				{props.showCenter && (
+				{props.showCenter && props.center && (
 					<Marker
 						position={props.center}
 						icon={L.icon({
@@ -138,15 +152,20 @@ const Map = (props) => {
 				{props.drawPolygon &&
 					props.polygonData.map((poly, index) => (
 						<Polygon
-							key={["polygon", index].join("_")}
+							key={["polygon", poly.key !== undefined ? poly.key : index].join("_")}
 							positions={poly.polygons}
-							color={props.color}
-							opacity={props.opacity}
-							weight={props.weight}
-							fillColor={props.fillColor}
-							fillOpacity={props.fillOpacity}
+							color={pickStyle(poly.color, props.color)}
+							opacity={pickStyle(poly.opacity, props.opacity)}
+							weight={pickStyle(poly.weight, props.weight)}
+							fillColor={pickStyle(poly.fillColor, props.fillColor)}
+							fillOpacity={pickStyle(poly.fillOpacity, props.fillOpacity)}
 						>
 							{poly.popup && <Popup>{poly.popup}</Popup>}
+							{props.showPolygonLabels && (poly.label || poly.name) && (
+								<Tooltip permanent direction="center" className="polygon-label">
+									<span>{poly.label || poly.name}</span>
+								</Tooltip>
+							)}
 						</Polygon>
 					))}
 				<Query
@@ -167,6 +186,7 @@ const Map = (props) => {
 								weight="1.5"
 								positions={convertPolygonsToLatLngArrays(municipality.polygons)}
 								className="noPointer"
+								interactive={false}
 							></Polygon>
 						));
 					}}
@@ -223,6 +243,7 @@ Map.propTypes = {
 	weight: PropTypes.number,
 	drawCircle: PropTypes.bool,
 	drawPolygon: PropTypes.bool,
+	showPolygonLabels: PropTypes.bool,
 	radius: PropTypes.number,
 	showCenter: PropTypes.bool,
 	zoom: PropTypes.number,
@@ -252,6 +273,7 @@ Map.defaultProps = {
 	municipalities: ["Asheville Corporate Limits"],
 	name: "",
 	polygonData: null,
+	showPolygonLabels: false,
 	radius: 83,
 	showCenter: false,
 	streetData: null,

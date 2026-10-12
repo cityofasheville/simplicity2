@@ -220,28 +220,24 @@ const DevelopmentTable = (props) => {
 
 	return (
 		<div className="col-sm-12">
-			{props.data.length < 1 ? (
-				<Alert type="info">No results found</Alert>
-			) : (
-				<div className="mt-3">
-					<Table
-						caption="Development permits"
-						data={props.data}
-						columns={crimeTableColumns}
-						showPagination={true}
-						className="w-full items-center"
-						navRender={navRender}
-						filterRender={filterRender}
-						filterOptions={[
-							{ accessor: "application_name" },
-							{ accessor: "permit_type" },
-							{ accessor: "contractor_names" },
-							{ accessor: "applied_date" },
-							{ accessor: "permit_number" },
-						]}
-					/>
-				</div>
-			)}
+			<div className="mt-3">
+				<Table
+					caption="Development permits"
+					data={props.data}
+					columns={crimeTableColumns}
+					showPagination={true}
+					className="w-full items-center"
+					navRender={navRender}
+					filterRender={filterRender}
+					filterOptions={[
+						{ accessor: "application_name" },
+						{ accessor: "permit_type" },
+						{ accessor: "contractor_names" },
+						{ accessor: "applied_date" },
+						{ accessor: "permit_number" },
+					]}
+				/>
+			</div>
 		</div>
 	);
 };

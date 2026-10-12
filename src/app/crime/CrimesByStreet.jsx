@@ -17,6 +17,7 @@ import { spanish } from "./spanish";
 import { withLanguage } from "../../utilities/lang/LanguageContext";
 import MapLegend from "../../shared/MapLegend";
 import GetCrimeMarker from "./GetCrimeMarker";
+import Alert from "../../alert";
 
 const createLegend = (crimeData) => {
 	const crimeTypes = [];
@@ -183,36 +184,40 @@ function CrimesByStreet(props) {
 							)}
 						</div> */}
 						<div id="view-container">
-							<div
-								id="listView"
-								className={`${props.location.query.view === "list" ? "flex" : "hidden"} w-full overflow-x-auto`}
-							>
-								<CrimeTable data={data.crimes_by_street} location={props.location} />
-							</div>
-
-							<div id="mapView" className={`${props.location.query.view === "map" ? "flex" : "hidden"}`}>
-								{data.crimes_by_street.length === 0 || props.location.query.view !== "map" ? (
-									<div>{content.no_results_found}</div>
-								) : (
-									<div className="w-full">
-										<div className="w-full h-[600px] flex">
-											<Map
-												data={mapData}
-												legend={createLegend(data.crimes_by_street)}
-												bounds={getBoundsFromStreetData(data.streets)}
-												drawStreet
-												streetData={convertStreetLinesToLatLngArrays(data.streets)}
-												zoomToPoint={
-													props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== ""
-														? props.location.query.zoomToPoint
-														: null
-												}
-											/>
-										</div>
-										<MapLegend type="crime" />
+							{data.crimes_by_street.length === 0 ? (
+								<Alert type="info">{content.no_results_found}</Alert>
+							) : (
+								<>
+									<div
+										id="listView"
+										className={`${props.location.query.view === "list" ? "flex" : "hidden"} w-full overflow-x-auto`}
+									>
+										<CrimeTable data={data.crimes_by_street} location={props.location} />
 									</div>
-								)}
-							</div>
+
+									<div id="mapView" className={`${props.location.query.view === "map" ? "flex" : "hidden"}`}>
+										{props.location.query.view === "map" && (
+											<div className="w-full">
+												<div className="w-full h-[600px] flex">
+													<Map
+														data={mapData}
+														legend={createLegend(data.crimes_by_street)}
+														bounds={getBoundsFromStreetData(data.streets)}
+														drawStreet
+														streetData={convertStreetLinesToLatLngArrays(data.streets)}
+														zoomToPoint={
+															props.location.query.zoomToPoint !== undefined && props.location.query.zoomToPoint !== ""
+																? props.location.query.zoomToPoint
+																: null
+														}
+													/>
+												</div>
+												<MapLegend type="crime" />
+											</div>
+										)}
+									</div>
+								</>
+							)}
 						</div>
 					</div>
 				);

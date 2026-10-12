@@ -15,6 +15,7 @@ import { getTRCTypeFromPermit } from "../trc/utils";
 import { statusTranslation } from "../utils";
 import Table from "../../../shared/Table/Table";
 import Alert from "../../../alert";
+import Error from "../../../shared/Error";
 
 const GET_PERMIT = gql`
 	query getPermitsQuery($permit_numbers: [String]) {
@@ -86,10 +87,7 @@ const Permit = (props) => (
 				return (
 					<div className="container">
 						<h1 className="title__text">Permit Details</h1>
-						<Alert type="danger">
-							There was an error retrieving permit number "{props.routeParams.id}" - {error.message}. If this problem
-							perists, please contact help@ashevillenc.gov.
-						</Alert>
+						<Error message={error.message} />
 						<SuggestSearchWrapper searchMode="permit" />
 					</div>
 				);

@@ -1080,8 +1080,9 @@ details[open] summary span.bi {
   margin: 2px;
 }
 
-.m-auto {
-  margin: auto;
+.mx-2 {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
 }
 
 .mx-8 {
@@ -1324,6 +1325,10 @@ details[open] summary span.bi {
   height: 4rem;
 }
 
+.h-3 {
+  height: 0.75rem;
+}
+
 .h-5 {
   height: 1.25rem;
 }
@@ -1412,6 +1417,10 @@ details[open] summary span.bi {
   width: 6rem;
 }
 
+.w-3 {
+  width: 0.75rem;
+}
+
 .w-5 {
   width: 1.25rem;
 }
@@ -1494,6 +1503,10 @@ details[open] summary span.bi {
 
 .max-w-lg {
   max-width: 32rem;
+}
+
+.max-w-md {
+  max-width: 28rem;
 }
 
 .flex-1 {
@@ -1600,9 +1613,9 @@ details[open] summary span.bi {
   list-style-type: none;
 }
 
-.columns-3 {
-  -webkit-columns: 3;
-          columns: 3;
+.columns-1 {
+  -webkit-columns: 1;
+          columns: 1;
 }
 
 .break-inside-avoid {
@@ -1686,10 +1699,23 @@ details[open] summary span.bi {
   gap: 1.5rem;
 }
 
+.gap-x-4 {
+  -webkit-column-gap: 1rem;
+          column-gap: 1rem;
+}
+
+.gap-y-2 {
+  row-gap: 0.5rem;
+}
+
 .space-y-4 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-y-reverse: 0;
   margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1rem * var(--tw-space-y-reverse));
+}
+
+.justify-self-start {
+  justify-self: start;
 }
 
 .justify-self-end {
@@ -1776,6 +1802,11 @@ details[open] summary span.bi {
 
 .border-2 {
   border-width: 2px;
+}
+
+.border-x-2 {
+  border-left-width: 2px;
+  border-right-width: 2px;
 }
 
 .border-b {
@@ -2255,6 +2286,11 @@ details[open] summary span.bi {
   color: rgb(107 114 128 / var(--tw-text-opacity, 1));
 }
 
+.text-gray-600 {
+  --tw-text-opacity: 1;
+  color: rgb(75 85 99 / var(--tw-text-opacity, 1));
+}
+
 .text-gray-700 {
   --tw-text-opacity: 1;
   color: rgb(55 65 81 / var(--tw-text-opacity, 1));
@@ -2600,6 +2636,11 @@ dialog::backdrop {
     height: 24rem;
   }
 
+  .sm\:columns-3 {
+    -webkit-columns: 3;
+            columns: 3;
+  }
+
   .sm\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -2763,6 +2804,11 @@ dialog::backdrop {
 
   .lg\:h-\[30px\] {
     height: 30px;
+  }
+
+  .lg\:columns-4 {
+    -webkit-columns: 4;
+            columns: 4;
   }
 
   .lg\:grid-cols-2 {

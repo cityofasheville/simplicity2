@@ -71,11 +71,8 @@ function Project(props) {
 					return (
 						<div className="container">
 							<h1 className="title__text">Project Details</h1>
-							<Alert type="danger">
-								There was an error retrieving this project. If this problem perists, please contact
-								help@ashevillenc.gov.
-							</Alert>
-
+							// change to error, make message actual error message
+							<Error message={error.message} />
 							<SuggestSearchWrapper searchMode="project" />
 						</div>
 					);
@@ -89,7 +86,7 @@ function Project(props) {
 					return (
 						<div className="container">
 							<h1 className="title__text">Project Details</h1>
-							<Alert type="warning" className="my-8">
+							<Alert type="info" className="my-8">
 								No project found for ID "{props.routeParams.id}". Please verify the project ID and try again.
 							</Alert>
 							<SuggestSearchWrapper searchMode="permit" />

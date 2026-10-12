@@ -100,7 +100,7 @@ if (window.location.href.indexOf("dashboards.ashevillenc.gov") > -1) {
 
 export const ApiEnvironmentContext = React.createContext();
 
-// let SERVER_URL = "https://data-api1.ashevillenc.gov/graphql";
+let SERVER_URL = "https://data-api1.ashevillenc.gov/graphql";
 
 if (process.env.REACT_APP_USE_DEV_API === true || process.env.REACT_APP_USE_DEV_API === "true") {
 	SERVER_URL = "https://dev-data-api2.ashevillenc.gov/graphql";
@@ -108,8 +108,6 @@ if (process.env.REACT_APP_USE_DEV_API === true || process.env.REACT_APP_USE_DEV_
 if (process.env.REACT_APP_USE_LOCAL_API === true || process.env.REACT_APP_USE_LOCAL_API === "true") {
 	SERVER_URL = "http://localhost:8080/graphql";
 }
-// let SERVER_URL = "https://climate-data-api2.ashevillenc.gov/graphql";
-let SERVER_URL = "https://8nj7nwqytg.execute-api.us-east-1.amazonaws.com";
 
 const Routes = () => (
 	<ApolloProvider client={client}>

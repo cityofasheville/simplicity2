@@ -55,6 +55,21 @@ function markerClusterKeyDown(e) {
 	}
 }
 
+// Leaflet 1.8 renders the popup close button as <a href="#close"> and binds
+// Popup.close straight to its click, so nothing cancels the anchor's default
+// action: closing a popup appends "#close" to the URL. browserHistory treats
+// that as a navigation and the route falls through to <Route path="*"> —
+// the page swaps itself out for "Page not found" mid-session.
+// Fixed upstream in Leaflet 1.9; cancel the navigation here until we upgrade.
+const patchedCloseButtons = new WeakSet();
+
+function preventCloseButtonNavigation(e) {
+	const closeButton = e.popup && e.popup._closeButton;
+	if (!closeButton || patchedCloseButtons.has(closeButton)) return;
+	patchedCloseButtons.add(closeButton);
+	closeButton.addEventListener("click", (event) => event.preventDefault());
+}
+
 const createClusterCustomIcon = function (cluster) {
 	return L.divIcon({
 		html: `<div><span aria-label="${cluster.getChildCount()} projects">${cluster.getChildCount()}</span></div>`,
@@ -108,6 +123,7 @@ const Map = (props) => {
 				bounds={props.bounds === null ? undefined : props.bounds}
 				// Might need to update keyboard event in the next version
 				onKeyPress={markerClusterKeyDown}
+				onPopupOpen={preventCloseButtonNavigation}
 			>
 				<TileLayer
 					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

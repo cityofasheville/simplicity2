@@ -175,14 +175,14 @@ function Neighborhood(props) {
 						<DetailsIconLinkFormGroup
 							label="Address & Owner Mailing Lists"
 							icon={<Icon ariaHidden={true} path={IM_ENVELOP3} size={24} />}
-							href={`address/addressList${detailsURLBase}`}
+							href={`/address/addressList${detailsURLBase}`}
 							title="Address & Owner Mailing Lists"
 							inWindow
 						/>
 						<DetailsIconLinkFormGroup
 							label="Properties"
 							icon={<Icon ariaHidden={true} path={IM_HOME2} size={24} />}
-							href={`property/properties${detailsURLBase}`}
+							href={`/property/properties${detailsURLBase}`}
 							title="Properties"
 							inWindow
 						/>

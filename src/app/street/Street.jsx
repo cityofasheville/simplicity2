@@ -75,7 +75,7 @@ function Street(props) {
 						label="Address & Owner Mailing Lists"
 						icon={<Icon ariaHidden={true} path={IM_ENVELOP3} size={24} />}
 						href={[
-							"address/addressList",
+							"/address/addressList",
 							"?entity=",
 							props.location.query.entity,
 							"&entities=",
@@ -97,7 +97,7 @@ function Street(props) {
 						label="Properties"
 						icon={<Icon ariaHidden={true} path={IM_HOME2} size={24} />}
 						href={[
-							"property/properties",
+							"/property/properties",
 							"?entity=",
 							props.location.query.entity,
 							"&entities=",
@@ -119,7 +119,7 @@ function Street(props) {
 						label="Maintenance"
 						icon={<Icon ariaHidden={true} path={IM_TRAFFIC_CONE} size={24} />}
 						href={[
-							"maintenance",
+							"/maintenance",
 							"?entity=",
 							props.location.query.entity,
 							"&entities=",

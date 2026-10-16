@@ -8,6 +8,7 @@ import Table from "../../../shared/Table/Table";
 import { getTRCTypeFromPermit } from "../trc/utils";
 import moment from "moment";
 import TypePuck from "../trc/TypePuck";
+import { normalizeFilterText } from "../../utils";
 
 function extractTextFromReactComponents(component) {
 	if (component === null || component === undefined) {
@@ -103,6 +104,9 @@ class PermitsTable extends React.Component {
 			return trcType.id;
 		};
 
+		const textFilterMatches = (row, columnId, filterValue) =>
+			normalizeFilterText(row.getValue(columnId)).includes(normalizeFilterText(filterValue));
+
 		const majorDevTableConfig = {
 			columns: [
 				{
@@ -135,12 +139,7 @@ class PermitsTable extends React.Component {
 							accessorFn: (row) => row.address,
 							cell: (info) => info.getValue(),
 							sortingFn: "auto",
-							filterFn: (row, columnId, filterValue) => {
-								const values = String(filterValue).split(",");
-								const cellValue = row.getValue(columnId);
-								const compareText = cellValue != null ? String(cellValue) : "";
-								return values.some((val) => compareText.toLowerCase().includes(val.trim().toLowerCase()));
-							},
+							filterFn: textFilterMatches,
 							enableSorting: true,
 							enableColumnFilter: true,
 							meta: { simpleName: "Address" },
@@ -176,13 +175,7 @@ class PermitsTable extends React.Component {
 							},
 
 							sortingFn: "auto",
-							filterFn: (row, columnId, filterValue) => {
-								const values = String(filterValue).split(",");
-								const cellValue = row.getValue(columnId);
-								const compareText = cellValue != null ? String(cellValue) : "";
-
-								return values.some((val) => compareText.toLowerCase().includes(val.trim().toLowerCase()));
-							},
+							filterFn: textFilterMatches,
 
 							enableSorting: true,
 							enableColumnFilter: true,
@@ -194,12 +187,7 @@ class PermitsTable extends React.Component {
 							accessorFn: (row) => row.application_name,
 							cell: (info) => info.getValue(),
 							sortingFn: "auto",
-							filterFn: (row, columnId, filterValue) => {
-								const values = String(filterValue).split(",");
-								const cellValue = row.getValue(columnId);
-								const compareText = cellValue != null ? String(cellValue) : "";
-								return values.some((val) => compareText.toLowerCase().includes(val.trim().toLowerCase()));
-							},
+							filterFn: textFilterMatches,
 							enableSorting: true,
 							enableColumnFilter: true,
 							meta: { simpleName: "Project" },
@@ -212,12 +200,7 @@ class PermitsTable extends React.Component {
 								<a href={`/permits/${info.row.original.permit_number}`}>{info.row.original.permit_number}</a>
 							),
 							sortingFn: "auto",
-							filterFn: (row, columnId, filterValue) => {
-								const values = String(filterValue).split(",");
-								const cellValue = row.getValue(columnId);
-								const compareText = cellValue != null ? String(cellValue) : "";
-								return values.some((val) => compareText.toLowerCase().includes(val.trim().toLowerCase()));
-							},
+							filterFn: textFilterMatches,
 							enableSorting: true,
 							enableColumnFilter: true,
 							meta: { simpleName: "Record Link" },

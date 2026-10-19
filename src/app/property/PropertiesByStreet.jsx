@@ -19,6 +19,7 @@ import createFilterRenderer from "../../shared/FilterRenderer";
 import Table from "../../shared/Table/Table";
 import { Link } from "react-router";
 import Alert from "../../alert";
+import { normalizeFilterText } from "../utils";
 
 const FilterRenderer = createFilterRenderer("Search...");
 
@@ -48,8 +49,10 @@ const propertyTableConfig = {
 		},
 		{
 			id: "address",
-			accessorFn: (row) => [row.property_address, row.property_zipcode].join(" "),
+			accessorFn: (row) => [row.property_address, row.property_zipcode].filter(Boolean).join(" "),
 			enableColumnFilter: true,
+			filterFn: (row, columnId, filterValue) =>
+				normalizeFilterText(row.getValue(columnId)).includes(normalizeFilterText(filterValue)),
 
 			cell: ({ row }) => (
 				<Link to={"/address?id=" + row.original.property_civic_address_id}>

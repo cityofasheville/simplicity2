@@ -11,6 +11,7 @@ import LoadingAnimation from "../../shared/LoadingAnimation";
 import Error from "../../shared/Error";
 import { english } from "./english";
 import { spanish } from "./spanish";
+import { formatAddressUnit, normalizeFilterText } from "../utils";
 import { withLanguage } from "../../utilities/lang/LanguageContext";
 import createFilterRenderer from "../../shared/FilterRenderer";
 import Table from "../../shared/Table/Table";
@@ -55,20 +56,23 @@ const streetTableConfig = {
 
 			header: <span>Address</span>,
 			accessorFn: (row) =>
-				`
-				${row.street_number || ""}
-				${row.street_prefix || ""}
-				${row.street_name || ""}
-				${row.street_type || ""}
-				${row.unit || ""}
-				${row.city || ""}
-				${row.zipcode || ""}
-				`.trim(),
+				[
+					row.street_number,
+					row.street_prefix,
+					row.street_name,
+					row.street_type,
+					formatAddressUnit(row.unit),
+					row.city,
+					"NC",
+					row.zipcode,
+				]
+					.filter(Boolean)
+					.join(" "),
 			cell: ({ row }) => (
 				<div>
 					<div>
 						{row.original.street_number} {row.original.street_prefix} {row.original.street_name}{" "}
-						{row.original.street_type} {row.original.unit ? `#${row.original.unit}` : ""}
+						{row.original.street_type} {formatAddressUnit(row.original.unit)}
 					</div>
 					<div>
 						{row.original.city}, NC {row.original.zipcode}
@@ -80,13 +84,15 @@ const streetTableConfig = {
 			meta: {
 				simpleName: "Address",
 			},
+			filterFn: (row, columnId, filterValue) =>
+				normalizeFilterText(row.getValue(columnId)).includes(normalizeFilterText(filterValue)),
 		},
 		{
 			id: "owner",
 			accessorFn: (row) =>
-				`${row.owner_name || ""} ${row.owner_address || ""} ${row.owner_cityname || ""} ${row.owner_state || ""} ${
-					row.owner_zipcode || ""
-				}`,
+				[row.owner_name, row.owner_address, row.owner_cityname, row.owner_state, row.owner_zipcode]
+					.filter(Boolean)
+					.join(" "),
 			cell: ({ row }) => (
 				<div>
 					<div>{row.original.owner_name}</div>
@@ -103,6 +109,8 @@ const streetTableConfig = {
 			meta: {
 				simpleName: "Owner",
 			},
+			filterFn: (row, columnId, filterValue) =>
+				normalizeFilterText(row.getValue(columnId)).includes(normalizeFilterText(filterValue)),
 		},
 	],
 	navigationRender: {
@@ -149,7 +157,7 @@ function AddressesByStreet(props) {
               <b>${content.address || ""}</b>
               <div>${item.street_number || ""} ${item.street_prefix || ""} ${item.street_name || ""} ${
 								item.street_type || ""
-							} ${item.unit || ""}</div>
+							} ${formatAddressUnit(item.unit)}</div>
               <div>${item.city || ""}, NC ${item.zipcode || ""}</div>
               <br /><b>${content.owner || ""}</b>
               <div>${item.owner_name || ""}</div>

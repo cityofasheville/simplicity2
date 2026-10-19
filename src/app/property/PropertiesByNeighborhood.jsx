@@ -15,7 +15,7 @@ import createFilterRenderer from "../../shared/FilterRenderer";
 import Table from "../../shared/Table/Table";
 import { Link } from "react-router";
 import Alert from "../../alert";
-import { normalizeFilterText } from "../../app/utils";
+import { normalizeFilterText } from "../utils";
 
 const FilterRenderer = createFilterRenderer("Search...");
 
@@ -51,7 +51,7 @@ const propertyTableConfig = {
 				normalizeFilterText(row.getValue(columnId)).includes(normalizeFilterText(filterValue)),
 			cell: ({ row }) => (
 				<Link to={"/address?id=" + row.original.property_civic_address_id}>
-					{row.original.property_address.trim()}, {row.original.property_zipcode}
+					{(row.original.property_address ?? "").trim()}, {row.original.property_zipcode}
 				</Link>
 			),
 			header: () => <span>Address</span>,

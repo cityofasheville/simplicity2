@@ -276,6 +276,8 @@ function SuggestSearch({
 	function handleFormSubmission(event) {
 		const sanitizedInput = DOMPurify.sanitize(inputValue).replace(inputReplacePattern, "");
 		event.preventDefault();
+		setSuggestions([]);
+		combobox.setOpen(false);
 		if (sanitizedInput.length > 2) {
 			currentUrlParams.set("search", sanitizedInput);
 			if (history.pushState) {

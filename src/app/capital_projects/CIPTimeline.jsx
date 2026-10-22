@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 
 const CIPTimeline = ({ currentStatusItem, phase }) => {
 	const [dimensions, setDimensions] = useState(null);
-	const [isCompactView, setIsCompactView] = useState(() => typeof window !== "undefined" && window.innerWidth < 768);
+	const [isCompactView, setIsCompactView] = useState(() => typeof window !== "undefined" && window.innerWidth < 640);
 
 	const updateDimensions = useCallback(() => {
 		const container = document.getElementById("permit-timeline-container")?.parentElement?.getBoundingClientRect();
@@ -12,7 +12,7 @@ const CIPTimeline = ({ currentStatusItem, phase }) => {
 				height: container.height,
 			});
 		}
-		setIsCompactView(typeof window !== "undefined" && window.innerWidth < 768);
+		setIsCompactView(typeof window !== "undefined" && window.innerWidth < 640);
 	}, []);
 
 	useEffect(() => {

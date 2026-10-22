@@ -186,9 +186,7 @@ function Project(props) {
 							</div>
 						)}
 
-						{/* <div style={{ height: "120px" }}> */}
 						<CIPTimeline currentStatusItem={undefined} phase={project.status}></CIPTimeline>
-						{/* </div> */}
 
 						<div className="grid grid-cols-1 sm:grid-cols-2 mt-3">
 							{showMap ? (

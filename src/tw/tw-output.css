@@ -1249,10 +1249,6 @@ details[open] summary span.bi {
   margin-top: 0.25rem;
 }
 
-.mt-10 {
-  margin-top: 2.5rem;
-}
-
 .mt-2 {
   margin-top: 0.5rem;
 }
@@ -1279,6 +1275,10 @@ details[open] summary span.bi {
 
 .mt-\[2px\] {
   margin-top: 2px;
+}
+
+.mb-\[15px\] {
+  margin-bottom: 15px;
 }
 
 .box-border {
@@ -1369,8 +1369,8 @@ details[open] summary span.bi {
   height: 350px;
 }
 
-.h-\[356px\] {
-  height: 356px;
+.h-\[400px\] {
+  height: 400px;
 }
 
 .h-\[42px\] {
@@ -1393,6 +1393,18 @@ details[open] summary span.bi {
   height: 100%;
 }
 
+.h-\[700px\] {
+  height: 700px;
+}
+
+.h-\[356px\] {
+  height: 356px;
+}
+
+.h-\[420px\] {
+  height: 420px;
+}
+
 .max-h-32 {
   max-height: 8rem;
 }
@@ -1411,6 +1423,10 @@ details[open] summary span.bi {
 
 .min-h-screen {
   min-height: 100vh;
+}
+
+.min-h-0 {
+  min-height: 0px;
 }
 
 .w-16 {
@@ -2002,10 +2018,6 @@ details[open] summary span.bi {
 
 .p-2 {
   padding: 0.5rem;
-}
-
-.p-3 {
-  padding: 0.75rem;
 }
 
 .p-4 {

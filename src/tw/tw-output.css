@@ -1181,6 +1181,10 @@ details[open] summary span.bi {
   margin-bottom: 2rem;
 }
 
+.mb-\[15px\] {
+  margin-bottom: 15px;
+}
+
 .ml-0 {
   margin-left: 0px;
 }
@@ -1277,10 +1281,6 @@ details[open] summary span.bi {
   margin-top: 2px;
 }
 
-.mb-\[15px\] {
-  margin-bottom: 15px;
-}
-
 .box-border {
   box-sizing: border-box;
 }
@@ -1369,8 +1369,8 @@ details[open] summary span.bi {
   height: 350px;
 }
 
-.h-\[400px\] {
-  height: 400px;
+.h-\[420px\] {
+  height: 420px;
 }
 
 .h-\[42px\] {
@@ -1393,24 +1393,16 @@ details[open] summary span.bi {
   height: 100%;
 }
 
-.h-\[700px\] {
-  height: 700px;
-}
-
-.h-\[356px\] {
-  height: 356px;
-}
-
-.h-\[420px\] {
-  height: 420px;
-}
-
 .max-h-32 {
   max-height: 8rem;
 }
 
 .max-h-\[85vh\] {
   max-height: 85vh;
+}
+
+.min-h-0 {
+  min-height: 0px;
 }
 
 .min-h-20 {
@@ -1423,10 +1415,6 @@ details[open] summary span.bi {
 
 .min-h-screen {
   min-height: 100vh;
-}
-
-.min-h-0 {
-  min-height: 0px;
 }
 
 .w-16 {
@@ -2111,6 +2099,11 @@ details[open] summary span.bi {
 .py-\[2px\] {
   padding-top: 2px;
   padding-bottom: 2px;
+}
+
+.py-0\.5 {
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem;
 }
 
 .pb-10 {

@@ -186,18 +186,19 @@ const CIPTimeline = ({ currentStatusItem, phase }) => {
 	return (
 		<>
 			{isCompactView ? (
-				<div>
-					<div id="permit-timeline-container">
-						<div className="flex items-center gap-2 text-sm font-medium">
-							<span className="font-medium text-base">Project Status:</span>
-							<span className="font-medium text-base">{phase || "Unknown"}</span>
-						</div>
-					</div>
+				<div id="permit-timeline-container">
+					<h2 className="text-3xl text-coa-blue-medium">Project Status</h2>
+					<span
+						className="inline-block mt-4 text-base rounded px-2 py-0.5 bg-white text-black border-2"
+						style={{ borderColor: "#4b9617" }}
+					>
+						{phase || "Unknown"}
+					</span>
 				</div>
 			) : (
 				<div style={{ height: "120px" }}>
 					<div id="permit-timeline-container"></div>
-					<div className="mb-[15px] font-medium">Project Status:</div>
+					<h2 className="mb-[15px] text-3xl text-coa-blue-medium">Project Status</h2>
 					{dimensions && renderContent()}
 				</div>
 			)}

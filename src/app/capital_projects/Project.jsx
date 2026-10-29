@@ -186,29 +186,29 @@ function Project(props) {
 							</div>
 						)}
 
-						<div style={{ height: "120px" }}>
-							<CIPTimeline currentStatusItem={undefined} phase={project.status}></CIPTimeline>
-						</div>
-						<div className="p-3"></div>
+						<CIPTimeline currentStatusItem={undefined} phase={project.status}></CIPTimeline>
 
-						<div className="grid grid-cols-1 sm:grid-cols-2 mt-3">
+						<div className="grid grid-cols-1 sm:grid-cols-2 mt-3 gap-4">
 							{showMap ? (
-								<div className="permit-map-container w-full h-[356px] px-4 mt-10">
-									<CIPMap
-										data={getMyPoints(project)}
-										center={[35.5951, -82.5515]}
-										height="100%"
-										width="100%"
-										zoom={12}
-										bounds={calculateBounds(getMyPoints(project))}
-									/>
+								<div className="permit-map-container w-full h-[420px] flex flex-col">
+									<h2 className="text-3xl text-coa-blue-medium my-4 shrink-0">Location</h2>
+									<div className="flex-1 min-h-0">
+										<CIPMap
+											data={getMyPoints(project)}
+											center={[35.5951, -82.5515]}
+											height="100%"
+											width="100%"
+											zoom={12}
+											bounds={calculateBounds(getMyPoints(project))}
+										/>
+									</div>
 								</div>
 							) : (
 								""
 							)}
 
-							<div className="flex flex-col gap-1 px-4">
-								<h2 className="text-3xl text-coa-blue-medium">Details</h2>
+							<div className="flex flex-col gap-1">
+								<h2 className="text-3xl text-coa-blue-medium mt-4 mb-3">Details</h2>
 
 								<div className="flex flex-row justify-between bg-gray-100 p-4">
 									<div className="display-label">Zip Code</div>
@@ -261,7 +261,7 @@ function Project(props) {
 								</div>
 							</div>
 
-							<div className="px-4">
+							<div className="">
 								<h2 className="mt-4 mb-5 text-3xl text-coa-blue-medium">Project Contact</h2>
 								<address>
 									{project.coa_contact && (

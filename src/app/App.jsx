@@ -93,10 +93,10 @@ class Main extends React.Component {
 								<EnvBanner />
 								<Banner path="*">
 									<h2 className="text-center font-medium text-2xl">City building closure</h2>
-									<p className="text-center text-xl mb-4">Tuesday, November 24, 2026</p>
+									<p className="text-center text-xl mb-4">November 24 and 25, 2026</p>
 									<p className="text-center">
-										The Public Works building, including the Development Services permitting office, is currently
-										closed.
+										The City of Asheville Public Works and Development Services building, located at 161 S. Charlotte
+										St., will be closed Tuesday, November 24 and Wednesday, November 25.
 									</p>
 								</Banner>
 

@@ -91,15 +91,14 @@ class Main extends React.Component {
 						<main className="flex-grow w-full" id="main">
 							<div className="layout-grid w-full h-100">
 								<EnvBanner />
-								{/* <Banner path="*">
-                  <p className="text-center font-medium text-xl">
-                    <em>IMPORTANT: Planned Maintenance Outage for All GIS Services</em>
-                  </p>
-                  <p className="text-center text-xl mb-4">Thursday, May 28, 6 p.m. – 10 p.m.</p>
-                  <p className="text-center">
-                    During this time, the SimpliCity address search may not function as expected.
-                  </p>
-                </Banner> */}
+								<Banner path="*">
+									<h2 className="text-center font-medium text-2xl">City building closure</h2>
+									<p className="text-center text-xl mb-4">Tuesday, November 24, 2026</p>
+									<p className="text-center">
+										The Public Works building, including the Development Services permitting office, is currently
+										closed.
+									</p>
+								</Banner>
 
 								<ErrorBoundary key={getBoundaryKey(this.props.location)}>{this.props.children}</ErrorBoundary>
 							</div>
